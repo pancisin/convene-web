@@ -20,4 +20,24 @@ public class Company {
 	
 	@Column(unique = true)
 	private String ico;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getIco() {
+		return ico;
+	}
+
+	public void setIco(String ico) {
+		this.ico = ico;
+	}
+
+	public Long getId() {
+		return id;
+	}
 }

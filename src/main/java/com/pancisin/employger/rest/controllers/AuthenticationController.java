@@ -12,15 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.User;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
-import com.pancisin.employger.security.UserValidator;
 import com.pancisin.employger.security.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-	
-	@Autowired 
-	private UserValidator userValidator;
 	
 	@Autowired
 	private UserService userService;
@@ -36,6 +32,6 @@ public class AuthenticationController {
 		}
 
 		userService.save(user);
-		return ResponseEntity.ok("success");
+		return ResponseEntity.ok(userService.findByEmail(user.getEmail()));
 	}
 }

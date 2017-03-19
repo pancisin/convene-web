@@ -12,13 +12,16 @@
 
 </head>
 <body>
+  <script type="text/javascript" th:inline="javascript">
+    application = {
+      context: [[@{/}]],
+    };
+  </script>
+
   <div class="app app-default">
     <segment layout:fragment="content"> </segment>
   </div>
 
-
   <script th:src="@{/js/vendor.js}"></script>
-  <!--   <script th:src="@{/js/app.js}"></script> -->
-
 </body>
 </html>

@@ -16,6 +16,11 @@ spring:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
     show-sql: false
     generate-ddl: false
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
   thymeleaf:
     mode: LEGACYHTML5
     cache: false

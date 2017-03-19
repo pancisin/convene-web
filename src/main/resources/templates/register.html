@@ -17,7 +17,7 @@
             <div class="sk-cube3 sk-cube"></div>
           </div>
         </div>
-        <div class="title">Logging in...</div>
+        <div class="title">Registering...</div>
       </div>
 
       <div class="app-block">
@@ -100,7 +100,7 @@
             <span class="input-group-addon">
               <i class="fa fa-check" aria-hidden="true"></i>
             </span>
-            <input type="password" v-model="user.confirm_password" class="form-control" placeholder="Confirm Password">
+            <input type="password" v-model="user.passwordConfirm" class="form-control" placeholder="Confirm Password">
           </div>
 
           <div class="form-line">
@@ -111,14 +111,14 @@
             <span class="input-group-addon">
               <i class="fa fa-building-o" aria-hidden="true"></i>
             </span>
-            <input type="text" v-model="company.name" class="form-control" placeholder="Name">
+            <input type="text" v-model="user.company.name" class="form-control" placeholder="Name">
           </div>
 
           <div class="input-group">
             <span class="input-group-addon">
               <i class="fa fa-hashtag" aria-hidden="true"></i>
             </span>
-            <input type="number" v-model="company.ico" class="form-control" placeholder="ICO">
+            <input type="number" v-model="user.company.ico" class="form-control" placeholder="ICO">
           </div>
 
           <div class="text-center">
