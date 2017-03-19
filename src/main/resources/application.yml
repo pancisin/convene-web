@@ -1,0 +1,25 @@
+server:
+  port: 8180
+ 
+spring:
+  application:
+    name: employger
+  datasource:
+    url: jdbc:mysql://localhost:3306/employger_db
+    username: root
+    password: 
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    show-sql: false
+    generate-ddl: false
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
