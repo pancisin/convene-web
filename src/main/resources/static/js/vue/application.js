@@ -28,6 +28,25 @@ var users = Vue.component('users', {
   }
 });
 
+var licenses = Vue.component('licenses', {
+  template: '#licenses-component-template',
+  data: function() {
+    return {
+      licenses: [],
+    }
+  },
+  created: function() {
+    this.getLicenses();
+  },
+  methods: {
+    getLicenses: function() {
+      this.$http.get('/api/company/1/licenses').then(response => {
+        this.licenses = response.body;
+      });
+    }
+  }
+});
+
 var header_component = Vue.component('header-component', {
   template: '#header-component-template',
   data : function() {
@@ -60,6 +79,10 @@ const router = new VueRouter({
     {
       path: '/users',
       component: users
+    },
+    {
+      path: '/licenses',
+      component: licenses
     }
   ]
 })

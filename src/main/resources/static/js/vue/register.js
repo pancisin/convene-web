@@ -28,7 +28,7 @@ var register_app = new Vue({
         url : "/auth/register",
         data : JSON.stringify(this.user),
         success : function(data) {
-          window.location.href = application.context;
+          window.location.href = "/";
         },
         error: function(data) {
           self.fieldErrors = data.responseJSON.fieldErrors;

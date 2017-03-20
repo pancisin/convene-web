@@ -17,15 +17,15 @@ public class UserController {
 	@Autowired 
 	private UserRepository userRepository;
 	
+	@RequestMapping("/")
+	public ResponseEntity<?> users() {
+		return ResponseEntity.ok(userRepository.findAll());
+	}
+	
 	@RequestMapping("/me")
 	public ResponseEntity<?> me() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
 		return ResponseEntity.ok(auth_user);
-	}
-
-	@RequestMapping("/")
-	public ResponseEntity<?> users() {
-		return ResponseEntity.ok(userRepository.findAll());
 	}
 }

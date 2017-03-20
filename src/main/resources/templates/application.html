@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/vendor.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/flat-admin.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/theme/blue-sky.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}" />
 
 <script src="https://cdn.jsdelivr.net/vue.resource/1.2.1/vue-resource.min.js"></script>
 <script type='text/javascript' th:src="@{/webjars/vue/2.2.4/dist/vue.min.js}"></script>
@@ -17,10 +18,6 @@
   <div class="app app-default" id="application-container">
     <aside class="app-sidebar" id="sidebar">
       <div class="sidebar-header">
-        <!--         <a class="sidebar-brand" href="#"> -->
-        <!--           <span class="highlight">Flat v3</span> -->
-        <!--           Admin -->
-        <!--         </a> -->
         <button type="button" class="sidebar-toggle">
           <i class="fa fa-times"></i>
         </button>
@@ -64,7 +61,8 @@
 
     <div class="app-container">
       <header-component></header-component>
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+      <router-view></router-view></transition>
     </div>
 
   </div>
@@ -165,21 +163,17 @@
 
             <div class="dropdown-menu">
               <div class="profile-info">
-                <h4 class="username">{{ user.firstName }} {{ user.lastName }}</h4>
+                <h4 class="username">
+                  {{ user.firstName }} {{ user.lastName }} <br> <small v-text="user.company.name"></small>
+                </h4>
               </div>
               <ul class="action">
                 <li>
-                  <a href="#"> Profile </a>
+                  <router-link to="/licenses"> License & Billing </router-link>
                 </li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-danger pull-right">5</span>
-                    My Inbox
-                  </a>
-                </li>
-                <li>
-                  <a href="#"> Setting </a>
-                </li>
+                <!--                 <li> -->
+                <!--                   <a href="#"> Setting </a> -->
+                <!--                 </li> -->
                 <li>
                   <a href="/logout"> Logout </a>
                 </li>
@@ -224,13 +218,63 @@
   </div>
   </template>
 
+  <template id="licenses-component-template">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <div class="card card-mini">
+        <div class="card-header">
+          <div class="card-title">Billing</div>
+          <ul class="card-action">
+            <li>
+              <a @click="getLicenses()">
+                <i class="fa fa-refresh"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body no-padding table-responsive">
+          <table class="table card-table">
+            <thead>
+              <tr>
+                <th>Products</th>
+                <th class="right">Expires</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="license in licenses">
+                <td>Basic license</td>
+                <td class="right" v-text="moment(license.expires).fromNow()"></td>
+                <td>
+                  <span class="badge badge-info badge-icon" v-if="license.status == 'NEW'"
+                    <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    <span>Payment required</span>
+                  </span>
+                  <span class="badge badge-success badge-icon" v-if="license.status == 'ACTIVE'"
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <span>Paid & active</span>
+                  </span>
+                  <span class="badge badge-danger badge-icon" v-if="license.status == 'EXPIRED'"
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    <span>Expired</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div>
+  </div>
+  </template>
+
   <template id="dashboard-component-template">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <div class="card-title">Card</div>
-
         </div>
         <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
           exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
@@ -240,6 +284,7 @@
   </div>
   </template>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
   <script th:src="@{/js/vue/application.js}"></script>
   <script th:src="@{/js/vendor.js}"></script>
 </body>
