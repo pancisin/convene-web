@@ -4,11 +4,28 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 var dashboard = Vue.component('dashboard', {
-  template: '<h1>Dashboard</h1>'
+  template: '#dashboard-component-template'
 });
 
 var users = Vue.component('users', {
-  template: '<h1>Users</h1>'
+  template: '#users-component-template',
+  data: function() {
+    return {
+      users: [],
+    }
+  },
+  created: function() {
+    this.getUsers();
+  },
+  methods: {
+    getUsers: function() {
+      this.$http.get('/api/user/').then(response => {
+        this.users = response.body;
+      }, response => {
+        // error callback
+      });
+    }
+  }
 });
 
 var header_component = Vue.component('header-component', {

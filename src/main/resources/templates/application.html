@@ -64,11 +64,7 @@
 
     <div class="app-container">
       <header-component></header-component>
-
       <router-view></router-view>
-
-      <segment layout:fragment="content"> </segment>
-
     </div>
 
   </div>
@@ -100,19 +96,13 @@
           <li class="navbar-title">
             <span class="highlight">Customize</span>
           </li>
-          <li class="navbar-search hidden-sm">
-            <input id="search" type="text" placeholder="Search..">
-            <button class="btn-search">
-              <i class="fa fa-search"></i>
-            </button>
-          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-         
+
           <li class="dropdown notification">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <div class="icon">
-                <i class="fa fa-comments" aria-hidden="true"></i>
+                <i class="fa fa-bell" aria-hidden="true"></i>
               </div>
               <div class="title">Unread Messages</div>
               <div class="count">99</div>
@@ -164,54 +154,15 @@
               </ul>
             </div>
           </li>
-          <li class="dropdown notification warning">
+
+          <li class="dropdown profile" v-if="user != null">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <div class="icon">
-                <i class="fa fa-bell" aria-hidden="true"></i>
+                <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
               </div>
-              <div class="title">System Notifications</div>
-              <div class="count">10</div>
+              <div class="title">Settings</div>
             </a>
-            <div class="dropdown-menu">
-              <ul>
-                <li class="dropdown-header">Notification</li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-danger pull-right">8</span>
-                    <div class="message">
-                      <div class="content">
-                        <div class="title">New Order</div>
-                        <div class="description">$400 total</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-danger pull-right">14</span>
-                    Inbox
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-danger pull-right">5</span>
-                    Issues Report
-                  </a>
-                </li>
-                <li class="dropdown-footer">
-                  <a href="#">
-                    View All <i class="fa fa-angle-right" aria-hidden="true"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </li>
-          
-          <li class="dropdown profile" v-if="user != null">
-            <a href="/html/pages/profile.html" class="dropdown-toggle" data-toggle="dropdown">
-              <img class="profile-img" src="../assets/images/profile.png">
-              <div class="title">Profile</div>
-            </a>
+
             <div class="dropdown-menu">
               <div class="profile-info">
                 <h4 class="username">{{ user.firstName }} {{ user.lastName }}</h4>
@@ -230,7 +181,7 @@
                   <a href="#"> Setting </a>
                 </li>
                 <li>
-                  <a href="#"> Logout </a>
+                  <a href="/logout"> Logout </a>
                 </li>
               </ul>
             </div>
@@ -241,6 +192,53 @@
   </nav>
   </template>
 
+  <template id="users-component-template">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="card">
+        <div class="card-header">Users</div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Company</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users">
+                <th scope="row" v-text="user.id"></th>
+                <td v-text="user.firstName"></td>
+                <td v-text="user.lastName">Otto</td>
+                <td v-text="user.email"></td>
+                <td v-text="user.company.name"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </template>
+
+  <template id="dashboard-component-template">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Card</div>
+
+        </div>
+        <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+          occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+      </div>
+    </div>
+  </div>
+  </template>
 
   <script th:src="@{/js/vue/application.js}"></script>
   <script th:src="@{/js/vendor.js}"></script>

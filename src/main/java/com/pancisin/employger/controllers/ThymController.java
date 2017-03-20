@@ -9,7 +9,7 @@ public class ThymController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String dashboard() {
-		return "dashboard";
+		return "application";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
