@@ -115,6 +115,7 @@
   
   <script>
   export default {
+    name: 'header',
 	  data : function() {
 	    return {
 	      user : null

@@ -84,7 +84,6 @@
         <version>0.0.27</version>
 
         <executions>
-
           <execution>
             <id>install node and npm</id>
             <goals>
@@ -117,11 +116,9 @@
               <arguments>run build</arguments>
             </configuration>
           </execution>
-
         </executions>
+
       </plugin>
     </plugins>
   </build>
-
-
 </project>

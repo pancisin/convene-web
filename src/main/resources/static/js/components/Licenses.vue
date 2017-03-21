@@ -26,15 +26,15 @@
                 <td>Basic license</td>
                 <td class="right">{{ license.expires | moment("dddd, MMMM Do YYYY") }}</td>
                 <td>
-                  <span class="badge badge-info badge-icon" v-if="license.status == 'NEW'"
+                  <span class="badge badge-info badge-icon" v-if="license.status == 'NEW'">
                     <i class="fa fa-credit-card" aria-hidden="true"></i>
                     <span>Payment required</span>
                   </span>
-                  <span class="badge badge-success badge-icon" v-if="license.status == 'ACTIVE'"
+                  <span class="badge badge-success badge-icon" v-if="license.status == 'ACTIVE'">
                     <i class="fa fa-check" aria-hidden="true"></i>
                     <span>Paid & active</span>
                   </span>
-                  <span class="badge badge-danger badge-icon" v-if="license.status == 'EXPIRED'"
+                  <span class="badge badge-danger badge-icon" v-if="license.status == 'EXPIRED'">
                     <i class="fa fa-times" aria-hidden="true"></i>
                     <span>Expired</span>
                   </span>
@@ -51,6 +51,7 @@
   
   <script>
   export default {
+    name: 'licenses',
 	  data: function() {
 	    return {
 	      licenses: [],

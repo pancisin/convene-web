@@ -32,6 +32,7 @@
 
 <script>
  export default {
+ 	name: 'users',
   data: function() {
     return {
       users: [],
