@@ -26,6 +26,12 @@ public class CompanyController {
 		return ResponseEntity.ok(companyRepository.findOne(company_id));
 	}
 	
+	@RequestMapping("/{company_id}/employees")
+	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getEmployees());
+	}
+	
 	@RequestMapping("/{company_id}/licenses")
 	public ResponseEntity<?> getCompanyLicenses(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);

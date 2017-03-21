@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +30,10 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<License> licenses;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Employees> employees;
+	
 	public String getName() {
 		return name;
 	}
@@ -53,5 +56,9 @@ public class Company {
 
 	public List<License> getLicenses() {
 		return licenses;
+	}
+
+	public List<Employees> getEmployees() {
+		return employees;
 	}
 }

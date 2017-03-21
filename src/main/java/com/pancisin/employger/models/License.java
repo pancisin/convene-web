@@ -23,10 +23,10 @@ public class License {
 	private Long id;
 	
 	@JsonIgnore
-	@ManyToOne()
+	@ManyToOne
 	private Company company;
 
-	@Column()
+	@Column
 	private Timestamp acquired;
 	
 	@Column

@@ -8,7 +8,7 @@
   </div>
   <div class="sidebar-menu">
     <ul class="sidebar-nav">
-      <li class="">
+      <li>
         <router-link to="/">
         <div class="icon">
           <i class="fa fa-tasks" aria-hidden="true"></i>
@@ -17,12 +17,20 @@
         </router-link>
         </a>
       </li>
-      <li class="@@menu.messaging">
-        <router-link to="/users">
+      <li>
+        <router-link to="/employees">
+        <div class="icon">
+          <i class="fa fa-suitcase" aria-hidden="true"></i>
+        </div>
+        <div class="title">Work management</div>
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/employees">
         <div class="icon">
           <i class="fa fa-users" aria-hidden="true"></i>
         </div>
-        <div class="title">Users</div>
+        <div class="title">Employees</div>
         </router-link>
       </li>
     </ul>

@@ -13,12 +13,14 @@ import App from './components/App.vue';
 import UsersComponent from './components/Users.vue';
 import DashboardComponent from './components/Dashboard.vue';
 import LicensesComponent from './components/Licenses.vue';
+import EmployeesComponent from './components/Employees.vue';
 
 const router = new VueRouter({
   routes: [
     { path: '/', component: DashboardComponent },
     { path: '/users', component: UsersComponent },
-    { path: '/licenses', component: LicensesComponent }
+    { path: '/licenses', component: LicensesComponent },
+    { path: '/employees', component: EmployeesComponent }
   ]
 })
 
