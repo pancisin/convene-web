@@ -46,9 +46,9 @@
   },
   methods: {
     getUsers: function() {
-      this.$http.get('/api/company/1/employees').then(response => {
+      var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
+      this.$http.get(url).then(response => {
         this.employees = response.body;
-      }, response => {
       });
     }
   }

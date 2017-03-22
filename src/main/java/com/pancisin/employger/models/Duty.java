@@ -19,24 +19,37 @@ public class Duty {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@ManyToMany(mappedBy="duties")
+
+	@ManyToMany(mappedBy = "duties")
 	private List<Employee> employees;
-	
+
 	@Column(name = "location")
 	private String location;
-	
+
 	@Column(name = "start_name")
 	private Date startDate;
-	
+
 	@Column(name = "end_date")
 	private Date endDate;
 
 	@ManyToMany
 	private List<Schedule> recurrences;
-	
+
 	@OneToMany(mappedBy = "duty")
 	private List<Task> tasks;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Duty))
+			return false;
+		Duty duty = (Duty) obj;
+		return this.id.equals(duty.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 
 	public List<Employee> getEmployees() {
 		return employees;

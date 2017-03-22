@@ -5,9 +5,9 @@
 			 	<div class="card-header">
         	<div class="card-title">Duties</div>
 	          <ul class="card-action">
-	            <li>
-	              <a @click="">
-	                <i class="fa fa-refresh"></i>
+               <li>
+                <a @click=""> 
+	                <i class="fa fa-plus"></i>
 	              </a>
 	            </li>
 	          </ul>
@@ -39,7 +39,7 @@
                   	</div>
                   </td>
                   <td>
-                  	<ul>
+                  	<ul class="list-unstyled">
                   		<li v-for="emp in duty.employees">
                   			{{ emp.firstName }} {{ emp.lastName }}
                   		</li>
@@ -49,8 +49,6 @@
               </tbody>
             </table>
           </div>
-
-
 			 </div>
   	</div>
     <div class="col-xs-12 col-md-4">
@@ -100,16 +98,15 @@
   },
   methods: {
     fetchData: function() {
-      this.$http.get('/api/company/1/employees').then(response => {
+      var emp_url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
+      var dut_url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
+
+      this.$http.get(emp_url).then(response => {
         this.employees = response.body;
-      }, response => {
-        //error
       });
 
-      this.$http.get('/api/company/1/duties').then(response => {
+      this.$http.get(dut_url).then(response => {
         this.duties = response.body;
-      }, response => {
-        //error
       });
     }
   }

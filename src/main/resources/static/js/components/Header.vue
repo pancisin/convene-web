@@ -80,7 +80,7 @@
             </div>
           </li>
 
-          <li class="dropdown profile" v-if="user != null">
+          <li class="dropdown profile" v-if="$store.state.user != null">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <div class="icon">
                 <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
@@ -91,7 +91,7 @@
             <div class="dropdown-menu">
               <div class="profile-info">
                 <h4 class="username">
-                  {{ user.firstName }} {{ user.lastName }} <br> <small v-text="user.company.name"></small>
+                  {{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small>
                 </h4>
               </div>
               <ul class="action">
@@ -118,20 +118,7 @@
     name: 'header',
 	  data : function() {
 	    return {
-	      user : null
 	    }
 	  },
-	  created : function() {
-	    this.getUser();
-	  },
-	  methods: {
-	    getUser : function() {
-	      this.$http.get('/api/user/me').then(response => {
-	        this.user = response.body;
-	      }, response => {
-	        // error callback
-	      });
-	    }
-	  }
   }
   </script>
