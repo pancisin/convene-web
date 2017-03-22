@@ -32,7 +32,7 @@ public class Company {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
-	private List<Employees> employees;
+	private List<Employee> employees;
 	
 	public String getName() {
 		return name;
@@ -58,7 +58,7 @@ public class Company {
 		return licenses;
 	}
 
-	public List<Employees> getEmployees() {
+	public List<Employee> getEmployees() {
 		return employees;
 	}
 }

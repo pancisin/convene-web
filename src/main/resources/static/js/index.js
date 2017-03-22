@@ -14,13 +14,15 @@ import UsersComponent from './components/Users.vue';
 import DashboardComponent from './components/Dashboard.vue';
 import LicensesComponent from './components/Licenses.vue';
 import EmployeesComponent from './components/Employees.vue';
+import WorkManagement from './components/WorkManagement.vue';
 
 const router = new VueRouter({
   routes: [
     { path: '/', component: DashboardComponent },
     { path: '/users', component: UsersComponent },
     { path: '/licenses', component: LicensesComponent },
-    { path: '/employees', component: EmployeesComponent }
+    { path: '/employees', component: EmployeesComponent },
+    { path: '/work-management', component: WorkManagement }
   ]
 })
 

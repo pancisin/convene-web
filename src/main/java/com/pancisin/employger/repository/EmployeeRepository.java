@@ -2,8 +2,8 @@ package com.pancisin.employger.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.pancisin.employger.models.Employees;
+import com.pancisin.employger.models.Employee;
 
-public interface EmployeeRepository extends JpaRepository<Employees, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 }

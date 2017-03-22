@@ -18,7 +18,7 @@
         </a>
       </li>
       <li>
-        <router-link to="/employees">
+        <router-link to="/work-management">
         <div class="icon">
           <i class="fa fa-suitcase" aria-hidden="true"></i>
         </div>
