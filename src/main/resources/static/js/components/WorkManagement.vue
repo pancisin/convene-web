@@ -6,9 +6,9 @@
         	<div class="card-title">Duties</div>
 	          <ul class="card-action">
                <li>
-                <a @click=""> 
+                <router-link to="/duty/create">
 	                <i class="fa fa-plus"></i>
-	              </a>
+	              </router-link>
 	            </li>
 	          </ul>
           </div>
@@ -90,7 +90,10 @@
   data: function() {
     return {
       employees: [],
-      duties: []
+      duties: [],
+      display: {
+        modal: false
+      }
     }
   },
   created: function() {

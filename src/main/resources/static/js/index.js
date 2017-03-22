@@ -17,13 +17,14 @@ import DashboardComponent from './components/Dashboard.vue';
 import LicensesComponent from './components/Licenses.vue';
 import EmployeesComponent from './components/Employees.vue';
 import WorkManagement from './components/WorkManagement.vue';
+import CreateDuty from './components/CreateDuty.vue';
 
 const store = new Vuex.Store({
   state: {
     user: null
   },
   mutations: {
-    setUser (state, { user }) {
+    setUser(state, { user }) {
       state.user = user;
     }
   },
@@ -40,7 +41,8 @@ const router = new VueRouter({
     { path: '/users', component: UsersComponent },
     { path: '/licenses', component: LicensesComponent },
     { path: '/employees', component: EmployeesComponent },
-    { path: '/work-management', component: WorkManagement }
+    { path: '/work-management', component: WorkManagement },
+    { path: '/duty/create', component: CreateDuty }
   ],
   redirect: '/',
 })
@@ -49,11 +51,11 @@ const app = new Vue({
   el: '#application',
   store,
   router,
-  created: function() {
+  created: function () {
     this.initialize();
   },
   methods: {
-    initialize: function() {
+    initialize: function () {
       this.$http.get('/api/user/me').then(response => {
         var user = response.body;
         this.$store.commit('setUser', { user });
