@@ -4,10 +4,13 @@ import Vuex from 'vuex';
 import VueResource from 'vue-resource';
 import VueMoment from 'vue-moment';
 
+import vSelect from "vue-select";
+
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueResource);
 Vue.use(VueMoment);
+Vue.component('v-select', vSelect);
 
 Vue.config.devtools = true;
 

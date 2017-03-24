@@ -55,6 +55,10 @@ public class Task {
 		this.action = action;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -3,14 +3,20 @@ package com.pancisin.employger.models;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "duties")
@@ -20,9 +26,10 @@ public class Duty {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "duties")
+	@ManyToMany(mappedBy = "duties", cascade = CascadeType.ALL)
 	private List<Employee> employees;
 
+	@NotNull
 	@Column(name = "location")
 	private String location;
 
@@ -35,9 +42,13 @@ public class Duty {
 	@ManyToMany
 	private List<Schedule> recurrences;
 
-	@OneToMany(mappedBy = "duty")
+	@OneToMany(mappedBy = "duty", cascade= CascadeType.ALL)
 	private List<Task> tasks;
 
+	@JsonIgnore
+	@ManyToOne
+	private Company company;
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Duty))
@@ -55,6 +66,7 @@ public class Duty {
 		return employees;
 	}
 
+	@JsonIgnore
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
@@ -99,7 +111,16 @@ public class Duty {
 		return tasks;
 	}
 
+	@JsonIgnore
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 }

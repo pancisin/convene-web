@@ -1,14 +1,14 @@
 package com.pancisin.employger.rest.controllers;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.Company;
@@ -16,6 +16,7 @@ import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.DutyRepository;
+import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
 @RequestMapping("/api/company")
@@ -49,16 +50,20 @@ public class CompanyController {
 		return ResponseEntity.ok(company.getLicenses());
 	}
 	
-	@RequestMapping("/{company_id}/duties")
+	@RequestMapping(value = "/{company_id}/duties", method = RequestMethod.GET)
 	public ResponseEntity<?> getCompanyDuties(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(dutyRepository.findByCompany(company));
+	}
+	
+	@RequestMapping(value = "/{company_id}/duties", method = RequestMethod.POST)
+	public ResponseEntity<?> createCompanyDuties(@PathVariable Long company_id, @Valid @RequestBody Duty duty, BindingResult bindingResult) {
+		Company company = companyRepository.findOne(company_id);
+		duty.setCompany(company);
 		
-		Set<Duty> result = new HashSet<Duty>();
+		if (bindingResult.hasErrors()) 
+			throw new InvalidRequestException("Invalid data", bindingResult);
 		
-		for(Employee emp : company.getEmployees()) {
-			result.addAll(emp.getDuties());
-		}
-		
-		return ResponseEntity.ok(result);
+		return ResponseEntity.ok(dutyRepository.save(duty));
 	}
 }
