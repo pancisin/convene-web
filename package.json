@@ -20,11 +20,14 @@
     "webpack-dev-server": "^2.2.0"
   },
   "dependencies": {
+    "later": "^1.2.0",
+    "material-datetime-picker": "^2.3.0",
     "moment": "^2.18.0",
     "vue": "^2.2.4",
     "vue-moment": "^2.0.2",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.0",
+    "vue-strap": "^1.1.37",
     "vuex": "^2.2.1"
   }
 }

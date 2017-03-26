@@ -43,6 +43,16 @@ public class DutyController {
 	
 	@RequestMapping(value = "/{duty_id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateDuty(@PathVariable Long duty_id, @Valid @RequestBody Duty duty) {
-		return null;
+		Duty old = dutyRepository.findOne(duty_id);
+		old.setLocation(duty.getLocation());
+		old.setStartDate(duty.getStartDate());
+		old.setEndDate(duty.getEndDate());
+		old.setRecurrence(duty.getRecurrence());
+		old.setEmployees(duty.getEmployees());
+		old.setTasks(duty.getTasks());
+		
+		dutyRepository.save(old);
+		
+		return ResponseEntity.ok(old);
 	}
 }

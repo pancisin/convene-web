@@ -22,6 +22,13 @@ import EmployeesComponent from './components/Employees.vue';
 import WorkManagement from './components/WorkManagement.vue';
 import CreateDuty from './components/CreateDuty.vue';
 
+// import { datepicker } from 'vue-strap';
+// import { datepicker } from 'vue-strap/dist/vue-strap.min.js'
+// import datepicker from 'vue-strap/src/alert'
+
+import datepicker from './elements/DatePicker.vue';
+Vue.component('v-datepicker', datepicker);
+
 const store = new Vuex.Store({
   state: {
     user: null
