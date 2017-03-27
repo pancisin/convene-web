@@ -19,8 +19,7 @@
                 <tr>
                   <th>#</th>
                   <th>Location</th>
-                  <th>Starts</th>
-                  <th>Ends</th>
+                  <th>Closest occurrence</th>
                   <th>Tasks</th>
                   <th>Employees</th>
                 </tr>
@@ -28,9 +27,12 @@
               <tbody>
                 <tr v-for="duty in duties">
                   <th scope="row" v-text="duty.id"></th>
-                  <td>{{ duty.location }}</td>
-                  <td>{{ duty.startDate | moment("DD.MM.YYYY") }}</td>
-                  <td>{{ duty.endDate | moment("DD.MM.YYYY") }}</td>
+                  <td>
+                    <router-link :to="'/duty/' + duty.id">
+                      {{ duty.location }}
+                    </router-link>
+                  </td>
+                  <td>{{  getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
                   <td>
                   	<div class="list-group __timeline">
                   		<a v-for="task in duty.tasks" class="list-group-item">
@@ -85,7 +87,9 @@
 </template>
 
 <script>
- export default {
+import later from 'later';
+
+export default {
  	name: 'work-management',
   data: function() {
     return {
@@ -111,7 +115,10 @@
       this.$http.get(dut_url).then(response => {
         this.duties = response.body;
       });
+    },
+    getClosestOccurrence: function(duty) {
+      return later.schedule({ schedules : [ duty.recurrence ]}).next(1, new Date())[0];
     }
   }
- }
+}
 </script>

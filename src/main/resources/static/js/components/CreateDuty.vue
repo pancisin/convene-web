@@ -106,7 +106,18 @@ export default {
             }
         }
     },
+    created: function() {
+        var duty_id = this.$route.params.id; 
+        if (duty_id != null) {
+            this.$http.get('/api/duty/' + duty_id).then(response => {
+                this.duty = response.body;
+            })
+        }
+    },
     methods: {
+        getDuty: function() {
+
+        },
         submitDuty: function() {
             if (this.edit_mode) {
                 var url = ['/api/duty', this.duty.id].join('/');

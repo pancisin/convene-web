@@ -52,7 +52,8 @@ const router = new VueRouter({
     { path: '/licenses', component: LicensesComponent },
     { path: '/employees', component: EmployeesComponent },
     { path: '/work-management', component: WorkManagement },
-    { path: '/duty/create', component: CreateDuty }
+    { path: '/duty/create', component: CreateDuty },
+    { path: '/duty/:id', component: CreateDuty }
   ],
   redirect: '/',
 })

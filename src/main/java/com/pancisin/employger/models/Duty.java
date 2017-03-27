@@ -43,7 +43,7 @@ public class Duty {
 
 	@Column(name = "recurrence")
 	@Convert(converter = ScheduleConverter.class)
-	private Schedule recurrence;
+	private CronExpression recurrence;
 
 	@OneToMany(mappedBy = "duty", cascade= CascadeType.ALL)
 	private List<Task> tasks;
@@ -104,11 +104,11 @@ public class Duty {
 		return id;
 	}
 
-	public Schedule getRecurrence() {
+	public CronExpression getRecurrence() {
 		return recurrence;
 	}
 
-	public void setRecurrence(Schedule recurrence) {
+	public void setRecurrence(CronExpression recurrence) {
 		this.recurrence = recurrence;
 	}
 
