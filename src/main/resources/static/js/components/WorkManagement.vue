@@ -117,7 +117,7 @@ export default {
       });
     },
     getClosestOccurrence: function(duty) {
-      return later.schedule({ schedules : [ duty.recurrence ]}).next(1, new Date())[0];
+      // return later.schedule({ schedules : [ duty.recurrence ]}).next(1);
     }
   }
 }

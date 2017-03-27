@@ -115,9 +115,6 @@ export default {
         }
     },
     methods: {
-        getDuty: function() {
-
-        },
         submitDuty: function() {
             if (this.edit_mode) {
                 var url = ['/api/duty', this.duty.id].join('/');
