@@ -26,17 +26,20 @@
                 <td>Basic license</td>
                 <td class="right">{{ license.expires | moment("dddd, MMMM Do YYYY") }}</td>
                 <td>
-                  <span class="badge badge-info badge-icon" v-if="license.status == 'NEW'">
-                    <i class="fa fa-credit-card" aria-hidden="true"></i>
-                    <span>Payment required</span>
+                  <span class="badge badge-info badge-icon"
+                        v-if="license.status == 'NEW'">
+                      <i class="fa fa-credit-card" aria-hidden="true"></i>
+                      <span>Payment required</span>
                   </span>
-                  <span class="badge badge-success badge-icon" v-if="license.status == 'ACTIVE'">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    <span>Paid & active</span>
+                  <span class="badge badge-success badge-icon"
+                        v-if="license.status == 'ACTIVE'">
+                      <i class="fa fa-check" aria-hidden="true"></i>
+                      <span>Paid & active</span>
                   </span>
-                  <span class="badge badge-danger badge-icon" v-if="license.status == 'EXPIRED'">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                    <span>Expired</span>
+                  <span class="badge badge-danger badge-icon"
+                        v-if="license.status == 'EXPIRED'">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      <span>Expired</span>
                   </span>
                 </td>
               </tr>
@@ -47,27 +50,27 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"></div>
   </div>
-  </template>
+</template>
   
   <script>
   export default {
     name: 'licenses',
-	  data: function() {
-	    return {
-	      licenses: [],
-	    }
-	  },
-	  created: function() {
-	    this.getLicenses();
-	  },
-	  methods: {
-	    getLicenses: function() {
+    data: function () {
+      return {
+        licenses: [],
+      }
+    },
+    created: function () {
+      this.getLicenses();
+    },
+    methods: {
+      getLicenses: function () {
         var url = ['/api/company', this.$store.getters.company_id, 'licenses'].join('/');
 
         this.$http.get(url).then(response => {
-	        this.licenses = response.body;
-	      });
-	    }
-	  }
+          this.licenses = response.body;
+        });
+      }
+    }
   }
   </script>

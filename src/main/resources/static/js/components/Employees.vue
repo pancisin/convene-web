@@ -3,15 +3,15 @@
     <div class="col-xs-12 col-md-4 col-md-offset-8">
       <div class="card card-mini">
         <div class="card-header">
-        	<div class="card-title">Employees</div>
-	          <ul class="card-action">
-	            <li>
-	              <a @click="">
-	                <i class="fa fa-refresh"></i>
-	              </a>
-	            </li>
-	          </ul>
-          </div>
+          <div class="card-title">Employees</div>
+          <ul class="card-action">
+            <li>
+              <a @click="">
+                <i class="fa fa-refresh"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
         <div class="card-body no-padding table-responsive">
           <table class="table card-table">
             <thead>
@@ -22,7 +22,8 @@
             </thead>
             <tbody>
               <tr v-for="emp in employees">
-                <th scope="row" v-text="emp.id"></th>
+                <th scope="row"
+                    v-text="emp.id"></th>
                 <td>{{ emp.firstName }} {{ emp.lastName }}</td>
               </tr>
             </tbody>
@@ -34,23 +35,23 @@
 </template>
 
 <script>
- export default {
- 	name: 'employees',
-  data: function() {
+export default {
+  name: 'employees',
+  data: function () {
     return {
       employees: [],
     }
   },
-  created: function() {
+  created: function () {
     this.getUsers();
   },
   methods: {
-    getUsers: function() {
+    getUsers: function () {
       var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
       this.$http.get(url).then(response => {
         this.employees = response.body;
       });
     }
   }
- }
+}
 </script>

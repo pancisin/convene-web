@@ -1,70 +1,72 @@
   <template>
   <div class="row">
-  	<div class="col-xs-12 col-md-8">
-			 <div class="card card-mini">
-			 	<div class="card-header">
-        	<div class="card-title">Duties</div>
-	          <ul class="card-action">
-               <li>
-                <router-link to="/duty/create">
-	                <i class="fa fa-plus"></i>
-	              </router-link>
-	            </li>
-	          </ul>
-          </div>
-
-          <div class="card-body no-padding table-responsive">
-            <table class="table card-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Location</th>
-                  <th>Closest occurrence</th>
-                  <th>Tasks</th>
-                  <th>Employees</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="duty in duties">
-                  <th scope="row" v-text="duty.id"></th>
-                  <td>
-                    <router-link :to="'/duty/' + duty.id">
-                      {{ duty.location }}
-                    </router-link>
-                  </td>
-                  <td>{{  getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
-                  <td>
-                  	<div class="list-group __timeline">
-                  		<a v-for="task in duty.tasks" class="list-group-item">
-                  			{{ task.section }} : {{ task.fixture }} - {{ task.action }}
-                  		</a>
-                  	</div>
-                  </td>
-                  <td>
-                  	<ul class="list-unstyled">
-                  		<li v-for="emp in duty.employees">
-                  			{{ emp.firstName }} {{ emp.lastName }}
-                  		</li>
-                  	</ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-			 </div>
-  	</div>
+    <div class="col-xs-12 col-md-8">
+      <div class="card card-mini">
+        <div class="card-header">
+          <div class="card-title">Duties</div>
+          <ul class="card-action">
+            <li>
+              <router-link to="/duty/create">
+                <i class="fa fa-plus"></i>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+  
+        <div class="card-body no-padding table-responsive">
+          <table class="table card-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Location</th>
+                <th>Closest occurrence</th>
+                <th>Tasks</th>
+                <th>Employees</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="duty in duties">
+                <th scope="row"
+                    v-text="duty.id"></th>
+                <td>
+                  <router-link :to="'/duty/' + duty.id">
+                    {{ duty.location }}
+                  </router-link>
+                </td>
+                <td>{{ getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
+                <td>
+                  <div class="list-group __timeline">
+                    <a v-for="task in duty.tasks"
+                       class="list-group-item">
+                      {{ task.section }} : {{ task.fixture }} - {{ task.action }}
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <ul class="list-unstyled">
+                    <li v-for="emp in duty.employees">
+                      {{ emp.firstName }} {{ emp.lastName }}
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <div class="col-xs-12 col-md-4">
       <div class="card card-mini">
         <div class="card-header">
-        	<div class="card-title">Employees</div>
-	          <ul class="card-action">
-	            <li>
-	              <a @click="">
-	                <i class="fa fa-refresh"></i>
-	              </a>
-	            </li>
-	          </ul>
-          </div>
+          <div class="card-title">Employees</div>
+          <ul class="card-action">
+            <li>
+              <a @click="">
+                <i class="fa fa-refresh"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
         <div class="card-body no-padding table-responsive">
           <table class="table card-table">
             <thead>
@@ -75,7 +77,8 @@
             </thead>
             <tbody>
               <tr v-for="emp in employees">
-                <th scope="row" v-text="emp.id"></th>
+                <th scope="row"
+                    v-text="emp.id"></th>
                 <td>{{ emp.firstName }} {{ emp.lastName }}</td>
               </tr>
             </tbody>
@@ -90,8 +93,8 @@
 import later from 'later';
 
 export default {
- 	name: 'work-management',
-  data: function() {
+  name: 'work-management',
+  data: function () {
     return {
       employees: [],
       duties: [],
@@ -100,11 +103,11 @@ export default {
       }
     }
   },
-  created: function() {
+  created: function () {
     this.fetchData();
   },
   methods: {
-    fetchData: function() {
+    fetchData: function () {
       var emp_url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
       var dut_url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
 
@@ -116,7 +119,7 @@ export default {
         this.duties = response.body;
       });
     },
-    getClosestOccurrence: function(duty) {
+    getClosestOccurrence: function (duty) {
       // return later.schedule({ schedules : [ duty.recurrence ]}).next(1);
     }
   }
