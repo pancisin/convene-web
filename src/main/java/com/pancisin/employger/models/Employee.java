@@ -1,5 +1,6 @@
 package com.pancisin.employger.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class Employee {
 
 	@JsonIgnore
 	@ManyToMany
-	private List<Duty> duties;
+	private List<Duty> duties = new ArrayList<Duty>();
 	
 	public String getFirstName() {
 		return firstName;

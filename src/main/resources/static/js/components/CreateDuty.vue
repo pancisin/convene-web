@@ -37,7 +37,7 @@
                 <div class="form-group">
                   <label class="col-md-3 control-label">Recurrence</label>
                   <div class="col-md-9">
-                    <recurrece-input v-model="duty.recurrence"></recurrece-input>
+                    <recurrence-input :recurrence="duty.recurrence"></recurrence-input>
                   </div>
                 </div>
               </div>
@@ -68,12 +68,8 @@
                 <div class="col-md-9 col-md-offset-3">
                   <button type="submit"
                           class="btn btn-primary">
-                    <span v-if="edit_mode">
-                                  Update
-                              </span>
-                    <span v-else>
-                                  Create
-                              </span>
+                    <span v-if="edit_mode">Update</span>
+                    <span v-else>Create</span>
                   </button>
                   <button type="button"
                           class="btn btn-default"
@@ -82,7 +78,6 @@
               </div>
             </div>
           </form>
-  
         </div>
       </div>
     </div>
@@ -91,7 +86,7 @@
 
 <script>
 import { datepicker } from 'vue-strap';
-import RecurrenceInput from '../elements/RecurrenceInput.vue';
+import recurrenceInput from '../elements/RecurrenceInput.vue';
 
 export default {
   name: 'create-duty',
@@ -104,14 +99,21 @@ export default {
         endDate: null,
         employees: [],
         tasks: [],
-        recurrence: null,
+        recurrence: {
+          minute: [0],
+          hour: [0],
+          day: [],
+          month: [],
+          dayOfWeek: [],
+          weekOfMonth: []
+        },
       },
       employees: [],
     }
   },
   components: {
-    'datepicker': datepicker,
-    'recurrece-input': RecurrenceInput,
+    datepicker: datepicker,
+    recurrenceInput: recurrenceInput
   },
   computed: {
     edit_mode: {
@@ -132,17 +134,17 @@ export default {
     submitDuty: function () {
       if (this.edit_mode) {
         var url = ['/api/duty', this.duty.id].join('/');
-        this.$http.put(url, JSON.stringify(this.duty)).then(function (response) {
+        this.$http.put(url, JSON.stringify(this.duty)).then(response => {
           this.duty = response.body;
         });
       } else {
         var url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
-        this.$http.post(url, JSON.stringify(this.duty)).then(function (response) {
+        this.$http.post(url, JSON.stringify(this.duty)).then(response => {
           this.duty = response.body;
         });
       }
     },
-    getEmployees: function (search, loading) {
+    getEmployees: function(search, loading) {
       var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
       loading(true)
       this.$http.get(url).then(response => {

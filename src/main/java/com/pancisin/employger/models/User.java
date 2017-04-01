@@ -45,7 +45,7 @@ public class User implements UserDetails {
 	private String email;
 
 	@NotNull
-	@Size(min = 6, max = 30)
+//	@Size(min = 6, max = 30)
 	@Column
 	private String password;
 
@@ -123,7 +123,6 @@ public class User implements UserDetails {
 		this.email = email;
 	}
 
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

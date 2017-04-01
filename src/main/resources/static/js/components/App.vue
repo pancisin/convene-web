@@ -74,11 +74,6 @@ import HeaderComponent from './Header.vue';
 
 export default {
   name: 'app',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
   components: {
     headerComponent: HeaderComponent,
   },

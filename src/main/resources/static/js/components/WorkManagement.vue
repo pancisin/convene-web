@@ -17,29 +17,27 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <th>#</th>
+                <!--<th>#</th>-->
                 <th>Location</th>
                 <th>Closest occurrence</th>
-                <th>Tasks</th>
+                <th class="text-center">Tasks</th>
                 <th>Employees</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="duty in duties">
-                <th scope="row"
-                    v-text="duty.id"></th>
+                <!--<th scope="row"
+                      v-text="duty.id"></th>-->
                 <td>
                   <router-link :to="'/duty/' + duty.id">
                     {{ duty.location }}
                   </router-link>
                 </td>
-                <td>{{ getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
+                <td class="text-center">{{ getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
                 <td>
                   <div class="list-group __timeline">
                     <a v-for="task in duty.tasks"
-                       class="list-group-item">
-                      {{ task.section }} : {{ task.fixture }} - {{ task.action }}
-                    </a>
+                       class="list-group-item">{{ task.section }} : {{ task.fixture }} - {{ task.action }}</a>
                   </div>
                 </td>
                 <td>
@@ -120,7 +118,7 @@ export default {
       });
     },
     getClosestOccurrence: function (duty) {
-      // return later.schedule({ schedules : [ duty.recurrence ]}).next(1);
+      return later.schedule({ schedules: [duty.recurrence] }).next(1);
     }
   }
 }

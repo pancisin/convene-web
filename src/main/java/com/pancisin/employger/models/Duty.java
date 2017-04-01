@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pancisin.employger.repository.converters.ScheduleConverter;
+import com.pancisin.employger.repository.converters.CronConverter;
 
 @Entity
 @Table(name = "duties")
@@ -28,7 +29,7 @@ public class Duty {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "duties", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "duties")
 	private List<Employee> employees;
 
 	@NotNull
@@ -42,19 +43,19 @@ public class Duty {
 	private Date endDate;
 
 	@Column(name = "recurrence")
-	@Convert(converter = ScheduleConverter.class)
+	@Convert(converter = CronConverter.class)
 	private CronExpression recurrence;
 
-	@OneToMany(mappedBy = "duty", cascade= CascadeType.ALL)
+	@OneToMany(mappedBy = "duty", cascade = CascadeType.ALL)
 	private List<Task> tasks;
 
 	@JsonIgnore
 	@ManyToOne
 	private Company company;
-	
-	@Column(name="created", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+
+	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Duty))
@@ -62,12 +63,12 @@ public class Duty {
 		Duty duty = (Duty) obj;
 		return this.id.equals(duty.id);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id.hashCode();
 	}
-
+	
 	public List<Employee> getEmployees() {
 		return employees;
 	}
@@ -102,6 +103,10 @@ public class Duty {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public CronExpression getRecurrence() {

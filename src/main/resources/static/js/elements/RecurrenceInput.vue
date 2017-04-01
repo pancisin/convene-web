@@ -1,12 +1,12 @@
 <template>
   <div class="row"
-       v-if="value != null">
+       v-if="recurrence != null">
     <div class="col-md-4">
       <div class="checkbox"
            v-for="day in weekDays">
         <input type="checkbox"
                :id="day.id + '-input'"
-               v-model="value.dayOfWeek"
+               v-model="recurrence.dayOfWeek"
                :value="day.id">
         <label :for="day.id + '-input'"
                v-text="day.label"></label>
@@ -17,7 +17,7 @@
            v-for="month in months">
         <input type="checkbox"
                :id="'month-' + month.id + '-input'"
-               v-model="value.month"
+               v-model="recurrence.month"
                :value="month.id">
         <label :for="'month-' + month.id + '-input'"
                v-text="month.label"></label>
@@ -34,33 +34,23 @@
 import later from 'later';
 export default {
   props: {
-    value: {
-      type: Object,
-      required: true,
-      default: function () {
-        return {
-          minute: [0],
-          hour: [0],
-          day: null,
-          month: [],
-          dayOfWeek: [],
-          weekOfMonth: []
-        }
-      },
-      validator: function (val) {
-        return val != null;
+    recurrence: {
+      validator: value => {
+        // if (value == null)
+        //   value = {
+        //     minute: 0,
+        //     hour: 0,
+        //     day: [],
+        //     month: [],
+        //     dayOfWeek: [],
+        //     weekOfMonth: []
+        //   }
+        // return value != null;
+        return true;
       }
     }
   },
-  computed: {
-    occurrence: function () {
-      // return later.schedule({ schedules: [this.value] }).next(5, new Date());
-    }
-  },
-  mounted: function () {
-    console.log(this.value);
-  },
-  data: function () {
+  data: () => {
     return {
       weekDays: [
         {

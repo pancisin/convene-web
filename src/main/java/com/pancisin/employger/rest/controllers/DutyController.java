@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.Duty;
+import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.DutyRepository;
+import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -21,6 +23,9 @@ public class DutyController {
 	
 	@Autowired
 	private DutyRepository dutyRepository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<?> getDuties() {
@@ -43,16 +48,18 @@ public class DutyController {
 	
 	@RequestMapping(value = "/{duty_id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateDuty(@PathVariable Long duty_id, @Valid @RequestBody Duty duty) {
-		Duty old = dutyRepository.findOne(duty_id);
-		old.setLocation(duty.getLocation());
-		old.setStartDate(duty.getStartDate());
-		old.setEndDate(duty.getEndDate());
-		old.setRecurrence(duty.getRecurrence());
-		old.setEmployees(duty.getEmployees());
-		old.setTasks(duty.getTasks());
-		
-		dutyRepository.save(old);
-		
-		return ResponseEntity.ok(old);
+		Duty new_duty = dutyRepository.findOne(duty_id);
+		new_duty.setLocation(duty.getLocation());
+		new_duty.setStartDate(duty.getStartDate());
+		new_duty.setEndDate(duty.getEndDate());
+		new_duty.setRecurrence(duty.getRecurrence());
+
+		for(Employee emp : duty.getEmployees()) {
+			Employee new_emp = employeeRepository.findOne(emp.getId());
+			new_duty.getEmployees().add(new_emp);
+		}
+
+		dutyRepository.save(new_duty);
+		return ResponseEntity.ok(new_duty);
 	}
 }

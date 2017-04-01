@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
-import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
