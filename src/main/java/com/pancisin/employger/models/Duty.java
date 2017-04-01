@@ -29,7 +29,7 @@ public class Duty {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToMany(mappedBy = "duties")
+	@ManyToMany
 	private List<Employee> employees;
 
 	@NotNull

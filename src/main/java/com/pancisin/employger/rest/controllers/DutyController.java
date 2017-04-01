@@ -54,6 +54,8 @@ public class DutyController {
 		new_duty.setEndDate(duty.getEndDate());
 		new_duty.setRecurrence(duty.getRecurrence());
 
+		new_duty.getEmployees().clear();
+		
 		for(Employee emp : duty.getEmployees()) {
 			Employee new_emp = employeeRepository.findOne(emp.getId());
 			new_duty.getEmployees().add(new_emp);

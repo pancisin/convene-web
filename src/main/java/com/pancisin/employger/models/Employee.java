@@ -33,7 +33,7 @@ public class Employee {
 	private Company company;
 
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "employees")
 	private List<Duty> duties = new ArrayList<Duty>();
 	
 	public String getFirstName() {
