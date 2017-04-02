@@ -11,7 +11,7 @@
       <div class="sidebar-menu">
         <ul class="sidebar-nav">
           <li>
-            <router-link to="/">
+            <router-link to="/dashboard">
               <div class="icon">
                 <i class="fa fa-tasks"
                    aria-hidden="true"></i>

@@ -2942,10 +2942,10 @@ aside.app-sidebar {
     color: rgba(141, 146, 147, 0.45); }
   aside.app-sidebar .sidebar-menu ul.sidebar-nav > li > a .title {
     color: #8d9293; }
-  aside.app-sidebar .sidebar-menu ul.sidebar-nav > li.active > a .icon {
+  aside.app-sidebar .sidebar-menu ul.sidebar-nav > li > a.router-link-active .icon {
     background-color: rgba(41, 199, 95, 0.25);
     color: rgba(41, 199, 95, 0.75); }
-  aside.app-sidebar .sidebar-menu ul.sidebar-nav > li.active > a .title {
+  aside.app-sidebar .sidebar-menu ul.sidebar-nav > li > a.router-link-active .title {
     color: #29c75f; }
   aside.app-sidebar .sidebar-menu ul.sidebar-nav > li.dropdown > .dropdown-menu > ul > li.section {
     color: #29c75f; }

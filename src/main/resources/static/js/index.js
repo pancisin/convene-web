@@ -44,7 +44,7 @@ const store = new Vuex.Store({
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: DashboardComponent },
+    { path: '/dashboard', component: DashboardComponent },
     { path: '/users', component: UsersComponent },
     { path: '/licenses', component: LicensesComponent },
     { path: '/employees', component: EmployeesComponent },
@@ -52,8 +52,9 @@ const router = new VueRouter({
     { path: '/duty/create', component: CreateDuty },
     { path: '/duty/:id', component: CreateDuty }
   ],
-  redirect: '/',
 })
+
+router.replace('/dashboard');
 
 const app = new Vue({
   el: '#application',
