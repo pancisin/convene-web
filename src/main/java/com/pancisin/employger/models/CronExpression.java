@@ -1,6 +1,7 @@
 package com.pancisin.employger.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pancisin.employger.repository.converters.CronConverter;
 
 public class CronExpression {
 
@@ -13,6 +14,12 @@ public class CronExpression {
 
 	private int[] weekOfMonth = {};
 
+	@Override
+	public String toString() {
+		CronConverter conv = new CronConverter();
+		return conv.convertToDatabaseColumn(this);
+	}
+	
 	public int[] getMinute() {
 		return minute;
 	}

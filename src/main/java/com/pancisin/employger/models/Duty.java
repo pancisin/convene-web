@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,14 @@ public class Duty {
 	@Column(name = "recurrence")
 	@Convert(converter = CronConverter.class)
 	private CronExpression recurrence;
+	
+	@Column
+	private String description;
+	
+	@Transient
+	public String getCronRecurrence() {
+		return recurrence.toString();
+	}
 
 	@OneToMany(mappedBy = "duty", cascade = CascadeType.ALL)
 	private List<Task> tasks;
@@ -135,5 +144,13 @@ public class Duty {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -34,6 +34,10 @@ module.exports = {
         plugins : [ 'transform-runtime' ]
       }
     }, {
+      test : /\.css$/,
+      include: /node_modules/,
+      loader : "style-loader!css-loader"
+    }, {
       test : /\.(png|jpg|gif|svg)$/,
       loader : 'file-loader',
       options : {
@@ -41,33 +45,29 @@ module.exports = {
       }
     } ]
   },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true
+  devServer : {
+    historyApiFallback : true,
+    noInfo : true
   },
-  performance: {
-    hints: false
+  performance : {
+    hints : false
   },
-  devtool: '#eval-source-map'
+  devtool : '#eval-source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ])
+  module.exports.plugins = (module.exports.plugins || []).concat([ new webpack.DefinePlugin({
+    'process.env' : {
+      NODE_ENV : '"production"'
+    }
+  }), new webpack.optimize.UglifyJsPlugin({
+    sourceMap : true,
+    compress : {
+      warnings : false
+    }
+  }), new webpack.LoaderOptionsPlugin({
+    minimize : true
+  }) ])
 }

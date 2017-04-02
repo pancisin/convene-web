@@ -58,10 +58,11 @@ public class CompanyController {
 	@RequestMapping(value = "/{company_id}/duties", method = RequestMethod.POST)
 	public ResponseEntity<?> createCompanyDuties(@PathVariable Long company_id, @Valid @RequestBody Duty duty, BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
-		duty.setCompany(company);
 		
 		if (bindingResult.hasErrors()) 
 			throw new InvalidRequestException("Invalid data", bindingResult);
+
+		duty.setCompany(company);
 		
 		return ResponseEntity.ok(dutyRepository.save(duty));
 	}

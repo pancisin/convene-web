@@ -53,7 +53,8 @@ public class DutyController {
 		new_duty.setStartDate(duty.getStartDate());
 		new_duty.setEndDate(duty.getEndDate());
 		new_duty.setRecurrence(duty.getRecurrence());
-
+		new_duty.setDescription(duty.getDescription());
+		
 		new_duty.getEmployees().clear();
 		
 		for(Employee emp : duty.getEmployees()) {

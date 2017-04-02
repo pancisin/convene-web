@@ -17,7 +17,6 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <!--<th>#</th>-->
                 <th>Location</th>
                 <th>Closest occurrence</th>
                 <th class="text-center">Tasks</th>
@@ -26,14 +25,12 @@
             </thead>
             <tbody>
               <tr v-for="duty in duties">
-                <!--<th scope="row"
-                      v-text="duty.id"></th>-->
                 <td>
                   <router-link :to="'/duty/' + duty.id">
                     {{ duty.location }}
                   </router-link>
                 </td>
-                <td class="text-center">{{ getClosestOccurrence(duty) | moment("DD.MM.YYYY") }}</td>
+                <td>{{ getClosestOccurrence(duty) | moment("dddd, DD.MM.YYYY") }}</td>
                 <td>
                   <div class="list-group __timeline">
                     <a v-for="task in duty.tasks"
@@ -60,7 +57,7 @@
           <ul class="card-action">
             <li>
               <a @click="">
-                <i class="fa fa-refresh"></i>
+                <i class="fa fa-plus"></i>
               </a>
             </li>
           </ul>
@@ -102,7 +99,8 @@ export default {
     }
   },
   created: function () {
-    this.fetchData();
+    if (this.$store.getters.company_id != null)
+      this.fetchData();
   },
   methods: {
     fetchData: function () {
@@ -118,7 +116,8 @@ export default {
       });
     },
     getClosestOccurrence: function (duty) {
-      return later.schedule({ schedules: [duty.recurrence] }).next(1);
+      var occurrence = later.parse.cron(duty.cronRecurrence);
+      return later.schedule(occurrence).next(1);
     }
   }
 }

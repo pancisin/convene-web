@@ -15,9 +15,9 @@ public class CronConverter implements AttributeConverter<CronExpression, String>
 
 		chars[0] = arg0.getMinute() == null ? "0" : IntArrayToString(arg0.getMinute());
 		chars[1] = arg0.getHour() == null ? "0" : IntArrayToString(arg0.getHour());
-		chars[2] = arg0.getDayOfMonth() == null ? "*" : IntArrayToString(arg0.getDayOfMonth());
-		chars[3] = arg0.getMonth() == null ? "*" : IntArrayToString(arg0.getMonth());
-		chars[4] = arg0.getDayOfWeek() == null ? "*" : IntArrayToString(arg0.getDayOfWeek());
+		chars[2] = arg0.getDayOfMonth() == null || arg0.getDayOfMonth().length == 0  ? "*" : IntArrayToString(arg0.getDayOfMonth());
+		chars[3] = arg0.getMonth() == null || arg0.getMonth().length == 0 ? "*" : IntArrayToString(arg0.getMonth());
+		chars[4] = arg0.getDayOfWeek() == null || arg0.getDayOfWeek().length == 0 ? "*" : IntArrayToString(arg0.getDayOfWeek());
 
 		return String.join(" ", chars);
 	}

@@ -2,52 +2,73 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card">
-        <div class="card-header">Users</div>
+        <div class="card-header">Create or update duty</div>
         <div class="card-body">
   
           <form class="form form-horizontal"
                 @submit.prevent="submitDuty">
             <div class="section">
               <div class="section-body">
-                <div class="form-group">
-                  <label class="col-md-3 control-label">Location</label>
-                  <div class="col-md-9">
+                <div class="row">
+                  <div class="col-md-6">
                     <input type="text"
                            v-model="duty.location"
                            class="form-control"
-                           placeholder="">
+                           placeholder="Location">
+                    <textarea v-model="duty.description"
+                              rows="3"
+                              class="form-control"
+                              placeholder="Description"></textarea>
                   </div>
-                </div>
-  
-                <div class="form-group">
-                  <label class="col-md-3 control-label">Start Date</label>
-                  <div class="col-md-9">
-                    <v-datepicker :value.sync="duty.startDate"
-                                  class="form-control"></v-datepicker>
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label class="col-md-3 control-label">End Date</label>
-                  <div class="col-md-9">
-                    <datepicker :value.sync="duty.endDate"></datepicker>
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label class="col-md-3 control-label">Recurrence</label>
-                  <div class="col-md-9">
-                    <recurrence-input :recurrence="duty.recurrence"></recurrence-input>
+                  <div class="col-md-6">
+                    <datepicker v-model="duty.startDate"
+                                class="form-control"
+                                placeholder="Start date"></datepicker>
+                    <datepicker v-model="duty.endDate"
+                                class="form-control"
+                                placeholder="End date"></datepicker>
                   </div>
                 </div>
               </div>
             </div>
   
-            <transition name="fade">
-              <div class="section"
-                   v-if="edit_mode">
-                <div class="section-title">Advanced</div>
-                <div class="section-body">
+            <div class="section">
+              <div class="section-title">
+                Recurrence
+                <a class="btn btn-link"
+                   @click="display.recurrence = !display.recurrence">
+                  <i class="fa fa-lg fa-chevron-up"
+                     aria-hidden="true"
+                     v-if="display.recurrence"></i>
+                  <i class="fa fa-lg fa-chevron-down"
+                     aria-hidden="true"
+                     v-else></i>
+                </a>
+              </div>
+              <transition name="fade">
+                <div class="section-body"
+                     v-show="display.recurrence">
+                  <recurrence-input :recurrence="duty.recurrence"></recurrence-input>
+                </div>
+              </transition>
+            </div>
+  
+            <div class="section"
+                 v-show="edit_mode">
+              <div class="section-title">Advanced
+                <a class="btn btn-link"
+                   @click="display.advanced = !display.advanced">
+                  <i class="fa fa-lg fa-chevron-up"
+                     aria-hidden="true"
+                     v-if="display.advanced"></i>
+                  <i class="fa fa-lg fa-chevron-down"
+                     aria-hidden="true"
+                     v-else></i>
+                </a>
+              </div>
+              <transition name="fade">
+                <div class="section-body"
+                     v-show="display.advanced">
                   <div class="form-group">
                     <label class="col-md-3 control-label">Employees</label>
                     <div class="col-md-9">
@@ -60,15 +81,15 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </transition>
+              </transition>
+            </div>
   
             <div class="form-footer">
               <div class="form-group">
                 <div class="col-md-9 col-md-offset-3">
                   <button type="submit"
                           class="btn btn-primary">
-                    <span v-if="edit_mode">Update</span>
+                    <span v-if="edit_mode">Update and close</span>
                     <span v-else>Create</span>
                   </button>
                   <button type="button"
@@ -85,7 +106,7 @@
 </template>
 
 <script>
-import { datepicker } from 'vue-strap';
+import datepicker from '../elements/DatePicker.vue';
 import recurrenceInput from '../elements/RecurrenceInput.vue';
 
 export default {
@@ -109,11 +130,15 @@ export default {
         },
       },
       employees: [],
+      display: {
+        recurrence: false,
+        advanced: true,
+      }
     }
   },
   components: {
     datepicker: datepicker,
-    recurrenceInput: recurrenceInput
+    recurrenceInput: recurrenceInput,
   },
   computed: {
     edit_mode: {
@@ -137,6 +162,7 @@ export default {
         this.$http.put(url, JSON.stringify(this.duty)).then(response => {
           this.duty = response.body;
         });
+        this.$router.go(-1);
       } else {
         var url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
         this.$http.post(url, JSON.stringify(this.duty)).then(response => {
@@ -144,7 +170,7 @@ export default {
         });
       }
     },
-    getEmployees: function(search, loading) {
+    getEmployees: function (search, loading) {
       var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
       loading(true)
       this.$http.get(url).then(response => {
@@ -155,3 +181,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.section .section-title {
+  justify-content: space-between;
+}
+</style>
