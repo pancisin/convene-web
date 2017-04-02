@@ -23,8 +23,8 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-left">
-          <li class="navbar-title">
-            <span class="highlight">Customize</span>
+          <li class="navbar-title" v-if="$store.state.user != null">
+            <span class="highlight" v-text="$store.state.user.company.name"></span>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
