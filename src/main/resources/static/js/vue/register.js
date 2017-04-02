@@ -25,7 +25,7 @@ var register_app = new Vue({
 
       $.ajax({
         type : "POST",
-        url : "/auth/register",
+        url : "/employger/auth/register",
         data : JSON.stringify(this.user),
         success : function(data) {
           window.location.href = "/";
