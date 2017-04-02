@@ -6,6 +6,11 @@
           <div class="card-title">Duties</div>
           <ul class="card-action">
             <li>
+              <a href="javascript:;" @click="fetchData">
+                <i class="fa fa-refresh"></i>
+              </a>
+            </li>
+            <li>
               <router-link to="/duty/create">
                 <i class="fa fa-plus"></i>
               </router-link>
@@ -66,14 +71,11 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Name</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="emp in employees">
-                <th scope="row"
-                    v-text="emp.id"></th>
                 <td>{{ emp.firstName }} {{ emp.lastName }}</td>
               </tr>
             </tbody>
@@ -122,3 +124,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.card-action li {
+  display: inline;
+  margin-left: 15px;
+}
+</style>

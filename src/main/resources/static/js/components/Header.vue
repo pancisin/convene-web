@@ -106,9 +106,9 @@
                   </h4>
               </div>
               <ul class="action">
-                <li>
+                <!--<li>
                   <router-link to="/licenses"> License & Billing </router-link>
-                </li>
+                </li>-->
                 <li>
                   <a href="#"> Setting </a>
                 </li>
