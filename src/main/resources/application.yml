@@ -1,13 +1,10 @@
-server:
-  port: 8080
- 
-spring:
+spring: 
+  profiles: 
+    active: "production"
   application:
     name: employger
   datasource:
     url: jdbc:mysql://localhost:3306/employger_db
-    username: employger_db
-    password: 0NvnFaG7Uik1bkB6
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
@@ -29,4 +26,21 @@ spring:
   mvc:
     view:
       prefix: /
-      suffix: .jsp
+      suffix: .jsp 
+---
+spring:
+  profiles: local
+  datasource:
+    username: root
+    password: 
+server: 
+  port: 8180
+---
+spring: 
+  profiles: production
+  datasource:
+    username: employger_db
+    password: 0NvnFaG7Uik1bkB6
+server: 
+  port: 8080
+  
