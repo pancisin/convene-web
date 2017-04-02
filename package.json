@@ -18,7 +18,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
-    "later": "^1.2.0",
+    "later": "RickCarlino/later",
     "material-datetime-picker": "^2.3.0",
     "moment": "^2.18.0",
     "vue": "^2.2.6",
