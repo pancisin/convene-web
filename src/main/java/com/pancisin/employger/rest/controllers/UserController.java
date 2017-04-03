@@ -26,6 +26,7 @@ public class UserController {
 	public ResponseEntity<?> me() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
-		return ResponseEntity.ok(auth_user);
+		User stored = userRepository.findOne(auth_user.getId());
+		return ResponseEntity.ok(stored);
 	}
 }

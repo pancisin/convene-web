@@ -31,12 +31,12 @@ public class AuthController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@RequestMapping(value = { "/api/user", "/api/me" }, method = RequestMethod.GET)
-	public ResponseEntity<?> user(Principal principal) {
-		User auth_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userRepository.findOne(auth_user.getId());
-		return ResponseEntity.ok(user);
-	}
+//	@RequestMapping(value = { "/api/user", "/api/me" }, method = RequestMethod.GET)
+//	public ResponseEntity<?> user(Principal principal) {
+//		User auth_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		User user = userRepository.findOne(auth_user.getId());
+//		return ResponseEntity.ok(user);
+//	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user) {

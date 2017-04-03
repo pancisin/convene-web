@@ -1,61 +1,26 @@
+// CORE
 import Vue from 'vue'
-import VueRouter from 'vue-router';
-import Vuex from 'vuex';
 import VueResource from 'vue-resource';
-import VueMoment from 'vue-moment';
 
+// GLOBAL COMPONENTS
+import VueMoment from 'vue-moment';
 import vSelect from "vue-select";
 
-Vue.use(VueRouter);
-Vue.use(Vuex);
+// SERVICES
+import store from './services/store.js';
+import router from './services/router.js';
+
 Vue.use(VueResource);
 Vue.use(VueMoment);
 Vue.component('v-select', vSelect);
 
 Vue.config.devtools = true;
-Vue.http.options.root = 'http://104.251.219.31:8080/employger';
+// Vue.http.options.root = 'http://104.251.219.31:8080/employger';
+Vue.http.options.root = 'http://localhost:8180'
+Vue.http.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBqd3QuY29tIiwidXNlcklkIjoiNCJ9.-fRx7AJLeYBlHxXfZdgrL_ouCfUQJ-9siZvWie4KEfeA_6fFUIjl3VBOhzb3ccsZ6oaLVPpJIYKUUQbdDHdPZg';
 
+import Entry from './components/Entry.vue';
 import App from './components/App.vue';
-import UsersComponent from './components/Users.vue';
-import DashboardComponent from './components/Dashboard.vue';
-import LicensesComponent from './components/Licenses.vue';
-import EmployeesComponent from './components/Employees.vue';
-import WorkManagement from './components/WorkManagement.vue';
-import CreateDuty from './components/CreateDuty.vue';
-
-// import { datepicker } from 'vue-strap';
-// import { datepicker } from 'vue-strap/dist/vue-strap.min.js'
-// import datepicker from 'vue-strap/src/alert'
-
-const store = new Vuex.Store({
-  state: {
-    user: null
-  },
-  mutations: {
-    setUser(state, { user }) {
-      state.user = user;
-    }
-  },
-  getters: {
-    company_id: state => {
-      return state.user.company.id;
-    }
-  }
-})
-
-const router = new VueRouter({
-  routes: [
-    { path: '/dashboard', component: DashboardComponent },
-    { path: '/users', component: UsersComponent },
-    { path: '/licenses', component: LicensesComponent },
-    { path: '/employees', component: EmployeesComponent },
-    { path: '/work-management', component: WorkManagement },
-    { path: '/duty/create', component: CreateDuty },
-    { path: '/duty/:id', component: CreateDuty }
-  ],
-})
-
-router.replace('/dashboard');
 
 const app = new Vue({
   el: '#application',

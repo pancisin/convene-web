@@ -1,8 +1,10 @@
 package com.pancisin.employger.security.models;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import com.pancisin.employger.models.User;
+import com.pancisin.employger.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
