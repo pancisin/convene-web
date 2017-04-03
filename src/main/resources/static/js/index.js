@@ -19,7 +19,6 @@ Vue.config.devtools = true;
 Vue.http.options.root = 'http://localhost:8180'
 Vue.http.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MUBqd3QuY29tIiwidXNlcklkIjoiNCJ9.-fRx7AJLeYBlHxXfZdgrL_ouCfUQJ-9siZvWie4KEfeA_6fFUIjl3VBOhzb3ccsZ6oaLVPpJIYKUUQbdDHdPZg';
 
-import Entry from './components/Entry.vue';
 import App from './components/App.vue';
 
 const app = new Vue({

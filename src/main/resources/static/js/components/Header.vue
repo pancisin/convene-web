@@ -23,8 +23,10 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-left">
-          <li class="navbar-title" v-if="$store.state.user != null">
-            <span class="highlight" v-text="$store.state.user.company.name"></span>
+          <li class="navbar-title"
+              v-if="$store.state.user != null">
+            <span class="highlight"
+                  v-text="$store.state.user.company.name"></span>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -80,8 +82,8 @@
                 </li>
                 <li class="dropdown-footer">
                   <a href="#">
-                      View All <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
+                        View All <i class="fa fa-angle-right" aria-hidden="true"></i>
+                      </a>
                 </li>
               </ul>
             </div>
@@ -102,13 +104,13 @@
             <div class="dropdown-menu">
               <div class="profile-info">
                 <h4 class="username">
-                    {{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small>
-                  </h4>
+                      {{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small>
+                    </h4>
               </div>
               <ul class="action">
                 <!--<li>
-                  <router-link to="/licenses"> License & Billing </router-link>
-                </li>-->
+                    <router-link to="/licenses"> License & Billing </router-link>
+                  </li>-->
                 <li>
                   <a href="#"> Setting </a>
                 </li>
@@ -127,9 +129,5 @@
   <script>
   export default {
     name: 'header',
-    data: function () {
-      return {
-      }
-    },
   }
   </script>
