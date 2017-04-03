@@ -7,6 +7,7 @@ import VueMoment from 'vue-moment';
 import vSelect from "vue-select";
 
 // SERVICES
+import Auth from './services/auth.js';
 import store from './services/store.js';
 import router from './services/router.js';
 

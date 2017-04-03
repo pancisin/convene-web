@@ -1,8 +1,9 @@
 <template>
-  <div class="app-container app-login" :class="{'__loading' : working}">
+  <div class="app-container app-login"
+       :class="{'__loading' : working}">
     <div class="flex-center">
       <div class="app-header"></div>
-     
+  
       <div class="app-body">
         <div class="loader-container text-center">
           <div class="icon">
@@ -58,6 +59,7 @@
   </div>
 </template>
 <script>
+import Auth from '../services/auth.js';
 export default {
   data: function () {
     return {
@@ -74,13 +76,15 @@ export default {
       this.working = true;
       this.fieldErrors = [];
 
-      this.$http.post('login', JSON.stringify(this.user)).then(response => {
-        // router.go('/dashboard');
-        self.working = false;
-      }, response => {
-        this.fieldErrors = response.responseJSON.fieldErrors;
-        self.working = false;
-      });
+      Auth.login(this, this.user);
+
+      // this.$http.post('login', JSON.stringify(this.user)).then(response => {
+      //   // router.go('/dashboard');
+      //   self.working = false;
+      // }, response => {
+      //   this.fieldErrors = response.responseJSON.fieldErrors;
+      //   self.working = false;
+      // });
     }
   }
 };

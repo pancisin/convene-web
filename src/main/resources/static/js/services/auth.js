@@ -1,28 +1,65 @@
+import router from './router.js';
+
 export default {
-  authenticated: false,
+  user: {
+    authenticated: window.localStorage.getItem('id_token') ? true : false
+  },
 
-  // Send a request to the login URL and save the returned JWT
   login(context, creds, redirect) {
-    context.$http.post('/api/login', creds, (data) => {
-      localStorage.setItem('user', JSON.stringify(data))
+    context.$http.post('login', creds).then(response => {
+      window.localStorage.setItem('id_token', response.body)
 
-      this.authenticated = true
-      context.$root.user = data
+      this.user.authenticated = true
 
-      // Redirect to a specified route
       if (redirect) {
-        router.go(redirect)
+        router.push({ path: redirect })
       }
-
-    }).error((errors) => {
-      context.errors = errors;
+    }, response => {
+      context.fieldErrors = response.responseJSON.fieldErrors;
     })
   },
 
-  // To log out
-  logout: function () {
-    localStorage.removeItem('user');
-    this.authenticated = false;
-    router.go('/login')
+  currentUser(context) {
+    context.$http.get(CURRENT_USER_URL, { headers: this.getAuthHeader() }).then(resp => {
+      context.user = resp.body.user
+    }, error => {
+      console.log(error)
+    })
+  },
+
+  signup(context, creds, redirect) {
+    context.$http.post(REGISTRATION_URL, creds).then(resp => {
+      window.localStorage.setItem('id_token', resp.body.jwt)
+
+      this.user.authenticated = true;
+
+      if (redirect) {
+        router.push({ path: redirect })
+      }
+    }, resp => {
+      console.log(resp.body.errors)
+      context.errors = resp.body.errors
+    })
+  },
+
+  logout(context, options) {
+    context.$http.delete(SESSION_URL, options).then(data => {
+      window.localStorage.removeItem('id_token')
+      this.user.authenticated = false
+      router.push({ path: '/login' })
+    }, error => {
+      console.log(error.message)
+    })
+  },
+
+  checkAuth() {
+    const jwt = window.localStorage.getItem('id_token')
+    this.user.authenticated = jwt ? true : false
+  },
+
+  getAuthHeader() {
+    return {
+      'Authorization': window.localStorage.getItem('id_token')
+    }
   }
 }

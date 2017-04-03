@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import Auth from './auth.js';
+
 import UsersComponent from '../components/Users.vue';
 import DashboardComponent from '../components/Dashboard.vue';
 import LicensesComponent from '../components/Licenses.vue';
@@ -12,11 +14,31 @@ import Layout from '../components/Layout.vue';
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 
+const require_auth = (to, from, next) => {
+  if (!Auth.user.authenticated) {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } else {
+    next();
+  }
+}
+
+const afterAuth = (_to, from, next) => {
+  if (auth.user.authenticated) {
+    next(from.path)
+  } else {
+    next()
+  }
+}
+
 const router = new VueRouter({
   routes: [
     {
       path: '/',
       component: Layout,
+      beforeEnter: require_auth,
       children: [
         {
           path: '/dashboard',
@@ -59,18 +81,4 @@ const router = new VueRouter({
   ],
 })
 
-router.replace('/dashboard');
-
 export default router;
-
-// authentication service
-// import Auth from './services/auth.js';
-
-// router.beforeEach(function (transition) {
-//   if (transition.to.auth && !Auth.authenticated) {
-//     // if route requires auth and user isn't authenticated
-//     transition.redirect('/login')
-//   } else {
-//     transition.next()
-//   }
-// });
