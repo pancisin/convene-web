@@ -41,8 +41,9 @@ public class AuthController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user) {
 		User stored = userRepository.findByEmail(user.getEmail());
+		user.setHashedPassword(hashPassword(user.getPassword()));
 		
-		if (user == null || !stored.getPassword().equals(hashPassword(user.getPassword()))) {
+		if (user == null || !stored.getHashedPassword().equals(user.getHashedPassword())) {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -58,7 +59,8 @@ public class AuthController {
 			bindingResult.rejectValue("email", "Duplicate.user.email");
 			throw new InvalidRequestException("Invalid data", bindingResult);
 		} else {
-			user.setPassword(hashPassword(user.getPassword()));
+			user.setLocked(false);
+			user.setHashedPassword(hashPassword(user.getPassword()));
 			userRepository.save(user);
 			return ResponseEntity.ok(JwtAuthenticationToken.generateToken(user, secret));
 		}

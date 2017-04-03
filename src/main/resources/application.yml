@@ -27,6 +27,10 @@ spring:
     view:
       prefix: /
       suffix: .jsp 
+jwt: 
+  header: Authorization
+  secret: h02n40Vw37q67650661mZA87rGh17Xk8
+  
 ---
 spring:
   profiles: local

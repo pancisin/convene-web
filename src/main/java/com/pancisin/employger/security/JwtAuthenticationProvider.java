@@ -15,27 +15,30 @@ import com.pancisin.employger.security.utils.JwtUtil;
 @Component
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-  @Autowired
-  private JwtUtil jwtUtil;
+	@Autowired
+	private JwtUtil jwtUtil;
 
-  @Override
-  public boolean supports(Class<?> authentication) {
-    return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
-  }
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
+	}
 
-  @Override
-  protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-  }
+	@Override
+	protected void additionalAuthenticationChecks(UserDetails userDetails,
+			UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+	}
 
-  @Override
-  protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-    JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
-    String token = jwtAuthenticationToken.getToken();
-    User parsedUser = jwtUtil.parseToken(token);
-    if (parsedUser == null) {
-      throw new JwtTokenMalformedException("JWT token is not valid");
-    }
-//    List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList(null);
-    return new User(parsedUser.getId(), parsedUser.getEmail(), token, null);
-  }
+	@Override
+	protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
+			throws AuthenticationException {
+		JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) authentication;
+		String token = jwtAuthenticationToken.getToken();
+		User parsedUser = jwtUtil.parseToken(token);
+		if (parsedUser == null) {
+			throw new JwtTokenMalformedException("JWT token is not valid");
+		}
+		// List<GrantedAuthority> authorityList =
+		// AuthorityUtils.commaSeparatedStringToAuthorityList(null);
+		return new User(parsedUser.getId(), parsedUser.getEmail(), token, null);
+	}
 }

@@ -26,30 +26,32 @@ import com.pancisin.employger.security.JwtAuthenticationTokenFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  private JwtAuthenticationEntryPoint unauthorizedHandler;
+	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
 
-  @Autowired
-  private JwtAuthenticationProvider authenticationProvider;
+	@Autowired
+	private JwtAuthenticationProvider authenticationProvider;
 
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManager() throws Exception {
-    return new ProviderManager(Arrays.asList(authenticationProvider));
-  }
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManager() throws Exception {
+		return new ProviderManager(Arrays.asList(authenticationProvider));
+	}
 
-  @Bean
-  public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-    JwtAuthenticationTokenFilter authenticationTokenFilter = new JwtAuthenticationTokenFilter();
-    authenticationTokenFilter.setAuthenticationManager(authenticationManager());
-    authenticationTokenFilter.setAuthenticationSuccessHandler(new JwtAuthenticationSuccessHandler());
-    return authenticationTokenFilter;
-  }
+	@Bean
+	public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+		JwtAuthenticationTokenFilter authenticationTokenFilter = new JwtAuthenticationTokenFilter();
+		authenticationTokenFilter.setAuthenticationManager(authenticationManager());
+		authenticationTokenFilter.setAuthenticationSuccessHandler(new JwtAuthenticationSuccessHandler());
+		return authenticationTokenFilter;
+	}
 
-  @Override
-  protected void configure(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity.csrf().disable().authorizeRequests().antMatchers("/api/**").authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-    httpSecurity.headers().cacheControl();
-  }
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/api/**").authenticated().and()
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+		httpSecurity.headers().cacheControl();
+	}
 }
