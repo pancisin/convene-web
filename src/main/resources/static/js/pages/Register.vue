@@ -171,12 +171,10 @@ export default {
       this.working = true;
       this.fieldErrors = [];
 
-      this.$http.post('login', JSON.stringify(this.user)).then(response => {
-        router.go('/dashboard');
-        self.working = false;
-      }, response => {
-        this.fieldErrors = response.responseJSON.fieldErrors;
-        self.working = false;
+      Auth.login(this, this.user, '/').then(() => {
+        Vue.http.headers.common['Authorization'] = Auth.getAuthHeader();
+      }, () => {
+        this.working = false;
       });
     }
   }

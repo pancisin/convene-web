@@ -13,7 +13,7 @@ export default {
         this.user.authenticated = true
         resolve();
 
-        if (redirect) 
+        if (redirect)
           router.push({ path: redirect })
       }, response => {
         reject();
@@ -31,18 +31,21 @@ export default {
   },
 
   signup(context, creds, redirect) {
-    context.$http.post('register', creds).then(resp => {
-      window.localStorage.setItem('id_token', resp.body.token)
+    return new Promise((resolve, reject) => {
+      context.$http.post('register', creds).then(resp => {
+        window.localStorage.setItem('id_token', resp.body.token)
 
-      this.user.authenticated = true;
+        this.user.authenticated = true;
 
-      if (redirect) {
-        router.push({ path: redirect })
-      }
-    }, resp => {
-      console.log(resp.body.errors)
-      context.errors = resp.body.errors
-    })
+        resolve();
+        if (redirect) {
+          router.push({ path: redirect })
+        }
+      }, response => {
+        context.fieldErrors = response.responseJSON.fieldErrors;
+        reject(response);
+      })
+    });
   },
 
   logout(context, redirect) {
