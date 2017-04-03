@@ -1,7 +1,8 @@
 <template>
-  <div class="app-container app-login">
+  <div class="app-container app-login" :class="{'__loading' : working}">
     <div class="flex-center">
       <div class="app-header"></div>
+     
       <div class="app-body">
         <div class="loader-container text-center">
           <div class="icon">

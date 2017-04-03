@@ -2,7 +2,6 @@ package com.pancisin.employger.rest.controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
 
 import javax.validation.Valid;
 
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,13 +28,6 @@ public class AuthController {
 
 	@Autowired
 	private UserRepository userRepository;
-
-//	@RequestMapping(value = { "/api/user", "/api/me" }, method = RequestMethod.GET)
-//	public ResponseEntity<?> user(Principal principal) {
-//		User auth_user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		User user = userRepository.findOne(auth_user.getId());
-//		return ResponseEntity.ok(user);
-//	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user) {

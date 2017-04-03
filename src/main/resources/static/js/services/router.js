@@ -10,6 +10,7 @@ import WorkManagement from '../components/WorkManagement.vue';
 import CreateDuty from '../components/CreateDuty.vue';
 import Layout from '../components/Layout.vue';
 import Login from '../pages/Login.vue';
+import Register from '../pages/Register.vue';
 
 const router = new VueRouter({
   routes: [
@@ -48,13 +49,13 @@ const router = new VueRouter({
       ]
     },
     {
-      path: '/login', 
+      path: '/login',
       component: Login
     },
-    // {
-    //   path: '/register',
-    //   component: Register
-    // }
+    {
+      path: '/register',
+      component: Register
+    }
   ],
 })
 
