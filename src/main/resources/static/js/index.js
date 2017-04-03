@@ -13,6 +13,7 @@ Vue.use(VueMoment);
 Vue.component('v-select', vSelect);
 
 Vue.config.devtools = true;
+Vue.http.options.root = 'http://104.251.219.31:8080/employger';
 
 import App from './components/App.vue';
 import UsersComponent from './components/Users.vue';
@@ -65,7 +66,7 @@ const app = new Vue({
   },
   methods: {
     initialize: function () {
-      this.$http.get('/api/user/me').then(response => {
+      this.$http.get('api/user/me').then(response => {
         var user = response.body;
         this.$store.commit('setUser', { user });
         this.$emit('user-loaded', user.id);

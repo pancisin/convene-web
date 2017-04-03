@@ -158,20 +158,20 @@ export default {
   methods: {
     submitDuty: function () {
       if (this.edit_mode) {
-        var url = ['/api/duty', this.duty.id].join('/');
+        var url = ['api/duty', this.duty.id].join('/');
         this.$http.put(url, JSON.stringify(this.duty)).then(response => {
           this.duty = response.body;
         });
         this.$router.go(-1);
       } else {
-        var url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
+        var url = ['api/company', this.$store.getters.company_id, 'duties'].join('/');
         this.$http.post(url, JSON.stringify(this.duty)).then(response => {
           this.duty = response.body;
         });
       }
     },
     getEmployees: function (search, loading) {
-      var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
+      var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
       loading(true)
       this.$http.get(url).then(response => {
         this.employees = response.body;

@@ -106,8 +106,8 @@ export default {
   },
   methods: {
     fetchData: function () {
-      var emp_url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
-      var dut_url = ['/api/company', this.$store.getters.company_id, 'duties'].join('/');
+      var emp_url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
+      var dut_url = ['api/company', this.$store.getters.company_id, 'duties'].join('/');
 
       this.$http.get(emp_url).then(response => {
         this.employees = response.body;

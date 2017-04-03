@@ -65,7 +65,7 @@
     },
     methods: {
       getLicenses: function () {
-        var url = ['/api/company', this.$store.getters.company_id, 'licenses'].join('/');
+        var url = ['api/company', this.$store.getters.company_id, 'licenses'].join('/');
 
         this.$http.get(url).then(response => {
           this.licenses = response.body;

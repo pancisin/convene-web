@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     getUsers: function () {
-      var url = ['/api/company', this.$store.getters.company_id, 'employees'].join('/');
+      var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
       this.$http.get(url).then(response => {
         this.employees = response.body;
       });

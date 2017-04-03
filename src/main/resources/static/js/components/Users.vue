@@ -43,7 +43,7 @@
   },
   methods: {
     getUsers: function() {
-      this.$http.get('/api/user/').then(response => {
+      this.$http.get('api/user/').then(response => {
         this.users = response.body;
       }, response => {
         // error callback
