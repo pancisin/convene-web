@@ -59,7 +59,9 @@
   </div>
 </template>
 <script>
-import Auth from '../services/auth.js';
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+import Auth from '../services/auth.js'
 export default {
   data: function () {
     return {
@@ -76,15 +78,11 @@ export default {
       this.working = true;
       this.fieldErrors = [];
 
-      Auth.login(this, this.user);
-
-      // this.$http.post('login', JSON.stringify(this.user)).then(response => {
-      //   // router.go('/dashboard');
-      //   self.working = false;
-      // }, response => {
-      //   this.fieldErrors = response.responseJSON.fieldErrors;
-      //   self.working = false;
-      // });
+      Auth.login(this, this.user, '/').then(() => {
+        Vue.http.headers.common['Authorization'] = Auth.getAuthHeader();
+      }, () => {
+        this.working = false;
+      });
     }
   }
 };

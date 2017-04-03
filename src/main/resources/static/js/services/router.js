@@ -26,7 +26,7 @@ const require_auth = (to, from, next) => {
 }
 
 const afterAuth = (_to, from, next) => {
-  if (auth.user.authenticated) {
+  if (Auth.user.authenticated) {
     next(from.path)
   } else {
     next()
@@ -72,11 +72,13 @@ const router = new VueRouter({
     },
     {
       path: '/login',
-      component: Login
+      component: Login,
+      beforeEnter: afterAuth
     },
     {
       path: '/register',
-      component: Register
+      component: Register,
+      beforeEnter: afterAuth
     }
   ],
 })

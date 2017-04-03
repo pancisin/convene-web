@@ -38,7 +38,9 @@ public class AuthController {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 
-		return ResponseEntity.ok(JwtAuthenticationToken.generateToken(stored, secret));
+		stored.setToken(JwtAuthenticationToken.generateToken(stored, secret));
+		
+		return ResponseEntity.ok(stored);
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

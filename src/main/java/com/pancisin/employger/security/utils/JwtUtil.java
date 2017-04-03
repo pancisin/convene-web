@@ -16,7 +16,7 @@ public class JwtUtil {
   @Value("${jwt.secret}")
   private String secret;
 
-  public User parseToken(String token) {
+	public User parseToken(String token) {
     try {
       Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 

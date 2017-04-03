@@ -171,6 +171,10 @@ public class User implements UserDetails {
 		this.hashedPassword = hashedPassword;
 	}
 
+	public void setToken(String token) {
+		this.token = token;
+	}
+
 	public String getToken() {
 		return token;
 	}

@@ -6,30 +6,33 @@ export default {
   },
 
   login(context, creds, redirect) {
-    context.$http.post('login', creds).then(response => {
-      window.localStorage.setItem('id_token', response.body)
+    return new Promise((resolve, reject) => {
+      context.$http.post('login', creds).then(response => {
+        window.localStorage.setItem('id_token', response.body.token)
 
-      this.user.authenticated = true
+        this.user.authenticated = true
+        resolve();
 
-      if (redirect) {
-        router.push({ path: redirect })
-      }
-    }, response => {
-      context.fieldErrors = response.responseJSON.fieldErrors;
-    })
+        if (redirect) 
+          router.push({ path: redirect })
+      }, response => {
+        reject();
+        // context.fieldErrors = response.responseJSON.fieldErrors;
+      })
+    });
   },
 
   currentUser(context) {
-    context.$http.get(CURRENT_USER_URL, { headers: this.getAuthHeader() }).then(resp => {
-      context.user = resp.body.user
+    context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(resp => {
+      context.user = resp.body
     }, error => {
       console.log(error)
     })
   },
 
   signup(context, creds, redirect) {
-    context.$http.post(REGISTRATION_URL, creds).then(resp => {
-      window.localStorage.setItem('id_token', resp.body.jwt)
+    context.$http.post('register', creds).then(resp => {
+      window.localStorage.setItem('id_token', resp.body.token)
 
       this.user.authenticated = true;
 
@@ -42,14 +45,10 @@ export default {
     })
   },
 
-  logout(context, options) {
-    context.$http.delete(SESSION_URL, options).then(data => {
-      window.localStorage.removeItem('id_token')
-      this.user.authenticated = false
-      router.push({ path: '/login' })
-    }, error => {
-      console.log(error.message)
-    })
+  logout(context, redirect) {
+    window.localStorage.removeItem('id_token')
+    this.user.authenticated = false
+    router.push({ path: redirect })
   },
 
   checkAuth() {
@@ -58,8 +57,6 @@ export default {
   },
 
   getAuthHeader() {
-    return {
-      'Authorization': window.localStorage.getItem('id_token')
-    }
+    return 'Bearer ' + window.localStorage.getItem('id_token');
   }
 }
