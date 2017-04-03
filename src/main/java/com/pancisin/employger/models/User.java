@@ -45,22 +45,32 @@ public class User implements UserDetails {
 	private String email;
 
 	@NotNull
-//	@Size(min = 6, max = 30)
+	// @Size(min = 6, max = 30)
 	@Column
 	private String password;
 
 	@Transient
 	private String passwordConfirm;
-	
+
 	@Transient
 	private String token;
-	
+
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
 	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	private Company company;
-	
+
+	public User(Long id, String email, String token, Collection<? extends GrantedAuthority> authorities) {
+		this.id = id;
+		this.email = email;
+		this.token = token;
+		this.authorities = authorities;
+	}
+
+	public User() {
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
