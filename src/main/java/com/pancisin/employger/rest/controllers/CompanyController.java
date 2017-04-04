@@ -27,23 +27,38 @@ public class CompanyController {
 	@Autowired
 	private DutyRepository dutyRepository;
 	
-	@RequestMapping("/")
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<?> getCompanies() {
 		return ResponseEntity.ok(companyRepository.findAll());
 	}
 	
-	@RequestMapping("/{company_id}")
+	@RequestMapping(value = "/{company_id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getCompany(@PathVariable Long company_id) {
 		return ResponseEntity.ok(companyRepository.findOne(company_id));
 	}
 	
-	@RequestMapping("/{company_id}/employees")
+	@RequestMapping(value = "/{company_id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateCompany(@PathVariable Long company_id, @RequestBody Company company) {
+		Company stored = companyRepository.findOne(company_id);
+		
+		if (stored == null) {
+			return null;
+		}
+		
+		stored.setName(company.getName());
+		stored.setLogo(company.getLogo());
+		
+		companyRepository.save(stored);
+		return ResponseEntity.ok(stored);
+	}
+	
+	@RequestMapping(value = "/{company_id}/employees", method = RequestMethod.GET)
 	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getEmployees());
 	}
 	
-	@RequestMapping("/{company_id}/licenses")
+	@RequestMapping(value = "/{company_id}/licenses", method = RequestMethod.GET)
 	public ResponseEntity<?> getCompanyLicenses(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getLicenses());

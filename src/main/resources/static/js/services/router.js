@@ -14,6 +14,7 @@ import Layout from '../components/Layout.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Account from '../pages/Account.vue'
+import Company from '../pages/Company.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -72,6 +73,10 @@ const router = new VueRouter({
         {
           path: '/account',
           component: Account
+        },
+        {
+          path: '/company',
+          component: Company
         }
       ]
     },

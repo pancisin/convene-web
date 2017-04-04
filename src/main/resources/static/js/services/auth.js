@@ -26,12 +26,15 @@ export default {
   },
 
   currentUser(context) {
-    context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(resp => {
-      var user = resp.body;
-      context.user = user;
-      context.$store.commit('setUser', { user });
-    }, error => {
-      console.log(error)
+    return new Promise((resolve, reject) => {
+      context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(response => {
+        var user = response.body;
+        context.user = user;
+        context.$store.commit('setUser', { user });
+        resolve(user)
+      }, response => {
+        reject(response)
+      })
     })
   },
 

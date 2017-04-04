@@ -26,6 +26,9 @@ public class Company {
 	@Column(unique = true)
 	private String ico;
 
+	@Column()
+	private String logo;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<License> licenses;
@@ -60,5 +63,13 @@ public class Company {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 }
