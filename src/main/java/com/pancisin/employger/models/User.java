@@ -1,7 +1,6 @@
 package com.pancisin.employger.models;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,23 +43,40 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String email;
 
-	@NotNull
-//	@Size(min = 6, max = 30)
-	@Column
+	@Size(min = 6, max = 30)
+	@Transient
 	private String password;
 
+	@JsonIgnore
+	@Column(name = "password")
+	private String hashedPassword;
+	
 	@Transient
 	private String passwordConfirm;
-	
+
 	@Transient
 	private String token;
 	
+	@JsonIgnore
+	@Column(name = "locked")
+	private boolean locked;
+
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
 	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
 	private Company company;
-	
+
+	public User(Long id, String email, String token, Collection<? extends GrantedAuthority> authorities) {
+		this.id = id;
+		this.email = email;
+		this.token = token;
+		this.authorities = authorities;
+	}
+
+	public User() {
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -78,7 +94,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return !locked;
 	}
 
 	@Override
@@ -145,5 +161,29 @@ public class User implements UserDetails {
 
 	public void setCompany(Company company) {
 		this.company = company;
+	}
+
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 }

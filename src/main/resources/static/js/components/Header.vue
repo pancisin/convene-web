@@ -23,8 +23,10 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-left">
-          <li class="navbar-title" v-if="$store.state.user != null">
-            <span class="highlight" v-text="$store.state.user.company.name"></span>
+          <li class="navbar-title"
+              v-if="$store.state.user != null">
+            <span class="highlight"
+                  v-text="$store.state.user.company.name"></span>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -79,9 +81,7 @@
                   </a>
                 </li>
                 <li class="dropdown-footer">
-                  <a href="#">
-                      View All <i class="fa fa-angle-right" aria-hidden="true"></i>
-                    </a>
+                  <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
                 </li>
               </ul>
             </div>
@@ -89,31 +89,31 @@
   
           <li class="dropdown profile"
               v-if="$store.state.user != null">
-            <a href="#"
+            <a href="javascript:;"
                class="dropdown-toggle"
                data-toggle="dropdown">
-              <div class="icon">
-                <i class="fa fa-cog fa-2x"
-                   aria-hidden="true"></i>
-              </div>
+              <div class="icon"><i class="fa fa-cog fa-2x"
+                   aria-hidden="true"></i></div>
               <div class="title">Settings</div>
             </a>
   
             <div class="dropdown-menu">
               <div class="profile-info">
-                <h4 class="username">
-                    {{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small>
-                  </h4>
+                <h4 class="username">{{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small></h4>
               </div>
               <ul class="action">
                 <!--<li>
-                  <router-link to="/licenses"> License & Billing </router-link>
-                </li>-->
+                                          <router-link to="/licenses"> License & Billing </router-link>
+                                        </li>-->
                 <li>
-                  <a href="#"> Setting </a>
+                  <router-link to="/account"> Account </router-link>
                 </li>
                 <li>
-                  <a href="/logout"> Logout </a>
+                  <a href="#"> Company </a>
+                </li>
+                <li>
+                  <a href="javascript:;"
+                     @click="logout"> Logout </a>
                 </li>
               </ul>
             </div>
@@ -124,12 +124,14 @@
   </nav>
 </template>
   
-  <script>
-  export default {
-    name: 'header',
-    data: function () {
-      return {
-      }
-    },
+<script>
+import Auth from '../services/auth.js';
+export default {
+  name: 'header',
+  methods: {
+    logout: function () {
+      Auth.logout(this, '/login')
+    }
   }
-  </script>
+}
+</script>
