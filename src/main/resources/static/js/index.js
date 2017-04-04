@@ -21,8 +21,11 @@ Vue.http.options.root = 'http://localhost:8180'
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());
+
   next(response => {
-    console.log(response);
+    if (response.status == 401) {
+      Auth.logout();
+    }
   });
 });
 
@@ -33,7 +36,8 @@ const app = new Vue({
   store,
   router,
   created: function () {
-    this.initialize();
+    if (Auth.user.authenticated)
+      this.initialize();
   },
   methods: {
     initialize: function () {

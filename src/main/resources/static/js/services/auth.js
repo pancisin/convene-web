@@ -8,7 +8,10 @@ export default {
   login(context, creds, redirect) {
     return new Promise((resolve, reject) => {
       context.$http.post('login', creds).then(response => {
-        window.localStorage.setItem('id_token', response.body.token)
+        var user = response.body;
+        window.localStorage.setItem('id_token', user.token)
+
+        context.$store.commit('setUser', { user });
 
         this.user.authenticated = true
         resolve(response.body.token);
@@ -32,9 +35,11 @@ export default {
 
   signup(context, creds, redirect) {
     return new Promise((resolve, reject) => {
-      context.$http.post('register', creds).then(resp => {
-        window.localStorage.setItem('id_token', resp.body.token)
+      context.$http.post('register', creds).then(response => {
+        var user = response.body;
+        window.localStorage.setItem('id_token', user.token)
 
+        context.$store.commit('setUser', { user });
         this.user.authenticated = true;
 
         resolve(response.body.token);
@@ -42,7 +47,7 @@ export default {
           router.push({ path: redirect })
         }
       }, response => {
-        context.fieldErrors = response.responseJSON.fieldErrors;
+        context.fieldErrors = response.body.fieldErrors;
         reject(response);
       })
     });

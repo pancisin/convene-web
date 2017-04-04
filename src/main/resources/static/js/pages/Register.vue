@@ -172,7 +172,7 @@ export default {
       this.working = true;
       this.fieldErrors = [];
 
-      Auth.login(this, this.user, '/').then(token => {
+      Auth.signup(this, this.user, '/').then(token => {
         this.working = false;
       }, () => {
         this.working = false;
