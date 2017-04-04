@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import Auth from '../services/auth.js'
 export default {
   data: function () {
     return {
@@ -171,8 +172,8 @@ export default {
       this.working = true;
       this.fieldErrors = [];
 
-      Auth.login(this, this.user, '/').then(() => {
-        Vue.http.headers.common['Authorization'] = Auth.getAuthHeader();
+      Auth.login(this, this.user, '/').then(token => {
+        this.working = false;
       }, () => {
         this.working = false;
       });

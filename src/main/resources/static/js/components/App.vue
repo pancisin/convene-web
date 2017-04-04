@@ -18,7 +18,7 @@ a {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .2s
+  transition: opacity .5s
 }
 
 .fade-enter,

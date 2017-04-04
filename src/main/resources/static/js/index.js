@@ -18,7 +18,13 @@ Vue.component('v-select', vSelect);
 Vue.config.devtools = true;
 // Vue.http.options.root = 'http://104.251.219.31:8080/employger';
 Vue.http.options.root = 'http://localhost:8180'
-Vue.http.headers.common['Authorization'] = Auth.getAuthHeader();
+
+Vue.http.interceptors.push((request, next) => {
+  request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());
+  next(response => {
+    console.log(response);
+  });
+});
 
 import App from './components/App.vue';
 

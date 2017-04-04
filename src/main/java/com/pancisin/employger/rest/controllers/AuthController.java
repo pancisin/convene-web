@@ -39,7 +39,6 @@ public class AuthController {
 		}
 
 		stored.setToken(JwtAuthenticationToken.generateToken(stored, secret));
-		
 		return ResponseEntity.ok(stored);
 	}
 
@@ -54,8 +53,9 @@ public class AuthController {
 		} else {
 			user.setLocked(false);
 			user.setHashedPassword(hashPassword(user.getPassword()));
-			userRepository.save(user);
-			return ResponseEntity.ok(JwtAuthenticationToken.generateToken(user, secret));
+			User stored = userRepository.save(user);
+			stored.setToken(JwtAuthenticationToken.generateToken(user, secret));
+			return ResponseEntity.ok(stored);
 		}
 	}
 

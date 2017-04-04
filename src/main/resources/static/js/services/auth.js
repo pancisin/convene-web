@@ -11,7 +11,7 @@ export default {
         window.localStorage.setItem('id_token', response.body.token)
 
         this.user.authenticated = true
-        resolve();
+        resolve(response.body.token);
 
         if (redirect)
           router.push({ path: redirect })
@@ -37,7 +37,7 @@ export default {
 
         this.user.authenticated = true;
 
-        resolve();
+        resolve(response.body.token);
         if (redirect) {
           router.push({ path: redirect })
         }
@@ -60,6 +60,6 @@ export default {
   },
 
   getAuthHeader() {
-    return 'Bearer ' + window.localStorage.getItem('id_token');
+    return window.localStorage.getItem('id_token');
   }
 }
