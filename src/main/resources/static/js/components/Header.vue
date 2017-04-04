@@ -89,13 +89,11 @@
   
           <li class="dropdown profile"
               v-if="$store.state.user != null">
-            <a href="#"
+            <a href="javascript:;"
                class="dropdown-toggle"
                data-toggle="dropdown">
-              <div class="icon">
-                <i class="fa fa-cog fa-2x"
-                   aria-hidden="true"></i>
-              </div>
+              <div class="icon"><i class="fa fa-cog fa-2x"
+                   aria-hidden="true"></i></div>
               <div class="title">Settings</div>
             </a>
   
@@ -105,10 +103,13 @@
               </div>
               <ul class="action">
                 <!--<li>
-                  <router-link to="/licenses"> License & Billing </router-link>
-                </li>-->
+                                          <router-link to="/licenses"> License & Billing </router-link>
+                                        </li>-->
                 <li>
-                  <a href="#"> Setting </a>
+                  <router-link to="/account"> Account </router-link>
+                </li>
+                <li>
+                  <a href="#"> Company </a>
                 </li>
                 <li>
                   <a href="javascript:;"

@@ -34,7 +34,7 @@ public class AuthController {
 		User stored = userRepository.findByEmail(user.getEmail());
 		user.setHashedPassword(hashPassword(user.getPassword()));
 		
-		if (user == null || !stored.getHashedPassword().equals(user.getHashedPassword())) {
+		if (user == null || stored == null || !stored.getHashedPassword().equals(user.getHashedPassword())) {
 			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 

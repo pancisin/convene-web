@@ -27,7 +27,9 @@ export default {
 
   currentUser(context) {
     context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(resp => {
-      context.user = resp.body
+      var user = resp.body;
+      context.user = user;
+      context.$store.commit('setUser', { user });
     }, error => {
       console.log(error)
     })
