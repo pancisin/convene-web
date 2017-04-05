@@ -12,18 +12,25 @@
               </div>
               <div class="section-body">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
+                    <img :src="company.logo" class="img-thumbnail"/>
+                    <input type="file"
+                           @change="onLogoChange"
+                           class="form-control"
+                           placeholder="Company logo">
+  
+                  </div>
+                  <div class="col-md-8">
                     <input type="text"
                            v-model="company.ico"
                            class="form-control"
                            placeholder="ICO"
                            disabled>
-                  </div>
-                  <div class="col-md-6">
                     <input type="text"
                            v-model="company.name"
                            class="form-control"
                            placeholder="Company name">
+  
                   </div>
                 </div>
               </div>
@@ -71,6 +78,24 @@ export default {
       this.$http.put('api/company/' + this.company.id, this.company).then(response => {
         this.company = response.body;
       });
+    },
+    onLogoChange: function (e) {
+      var self = this;
+
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+
+      var file = files[0];
+
+      var image = new Image();
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        self.company.logo = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     }
   }
 }

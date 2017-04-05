@@ -1,5 +1,13 @@
 package com.pancisin.employger.rest.controllers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.regex.Pattern;
+
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +30,9 @@ import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestExceptio
 @RestController
 @RequestMapping("/api/company")
 public class CompanyController {
+
+	@Autowired
+	ServletContext servletContext;
 
 	@Autowired
 	private CompanyRepository companyRepository;
@@ -47,8 +58,25 @@ public class CompanyController {
 			return null;
 		}
 
+		if (Pattern.compile("^data:image/[^;]*;base64,?").matcher(company.getLogo()).find()) {
+			String relative_path = "resources/logos/" + company.getIco().toString() + ".jpg";
+
+			File file = new File(servletContext.getRealPath("/") + relative_path);
+			file.getParentFile().mkdirs();
+			
+			try (FileOutputStream imageOutFile = new FileOutputStream(file)) {
+				String imageData = company.getLogo().replaceFirst("^data:image/[^;]*;base64,?", "");
+				byte[] imageByteArray = Base64.getDecoder().decode(imageData);
+				imageOutFile.write(imageByteArray);
+				stored.setLogo("/" + relative_path);
+			} catch (FileNotFoundException e) {
+				System.out.println("Image not found" + e);
+			} catch (IOException ioe) {
+				System.out.println("Exception while reading the Image " + ioe);
+			}
+		}
+
 		stored.setName(company.getName());
-		stored.setLogo(company.getLogo());
 
 		companyRepository.save(stored);
 		return ResponseEntity.ok(stored);
