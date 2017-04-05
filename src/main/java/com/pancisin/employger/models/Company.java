@@ -2,13 +2,18 @@ package com.pancisin.employger.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,6 +31,9 @@ public class Company {
 	@Column(unique = true)
 	private String ico;
 
+	@Column()
+	private String logo;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<License> licenses;
@@ -33,6 +41,20 @@ public class Company {
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Employee> employees;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Address address = new Address();
+	
+	@Column(name = "phone_number")
+	private String phoneNumber;
+	
+	@Email
+	@Column(name = "email")
+	private String email;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+	private List<User> users;
 	
 	public String getName() {
 		return name;
@@ -60,5 +82,41 @@ public class Company {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<User> getUsers() {
+		return users;
 	}
 }

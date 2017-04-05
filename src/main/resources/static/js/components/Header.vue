@@ -102,14 +102,12 @@
                 <h4 class="username">{{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small></h4>
               </div>
               <ul class="action">
-                <!--<li>
-                                          <router-link to="/licenses"> License & Billing </router-link>
-                                        </li>-->
+                <!--<li><router-link to="/licenses"> License & Billing </router-link></li>-->
                 <li>
                   <router-link to="/account"> Account </router-link>
                 </li>
                 <li>
-                  <a href="#"> Company </a>
+                  <router-link to="/company"> Company </router-link>
                 </li>
                 <li>
                   <a href="javascript:;"
