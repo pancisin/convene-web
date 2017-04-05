@@ -77,11 +77,20 @@ public class CompanyController {
 		}
 
 		stored.setName(company.getName());
-
+		stored.setEmail(company.getEmail());
+		stored.setPhoneNumber(company.getPhoneNumber());
+		stored.setAddress(company.getAddress());
+		
 		companyRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}
 
+	@GetMapping("/{company_id}/users")
+	public ResponseEntity<?> getUsers(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getUsers());
+	}
+	
 	@GetMapping("/{company_id}/employees")
 	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
