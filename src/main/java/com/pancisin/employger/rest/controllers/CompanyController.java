@@ -4,13 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +29,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinition;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.model.time.ExecutionTime;
+import com.cronutils.parser.CronParser;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.repository.CompanyRepository;
@@ -106,7 +119,27 @@ public class CompanyController {
 	@GetMapping("/{company_id}/duties")
 	public ResponseEntity<?> getCompanyDuties(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
-		return ResponseEntity.ok(dutyRepository.findByCompany(company));
+		return ResponseEntity.ok(company.getDuties());
+	}
+	
+	@GetMapping("/{company_id}/duties/{date_to}")
+	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id, @PathVariable @DateTimeFormat(iso=ISO.DATE) String date_to) {
+		Company company = companyRepository.findOne(company_id);
+		List<Duty> result = new ArrayList<Duty>();
+		
+		ZonedDateTime now = ZonedDateTime.now();
+		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
+		Duration week = Duration.ofDays(7);
+		
+		for (Duty duty : company.getDuties()) {
+			ExecutionTime ex = ExecutionTime.forCron(parser.parse(duty.getCronRecurrence()));
+			Duration dur = ex.timeToNextExecution(now);
+			
+			if (week.compareTo(dur) == 1)
+				result.add(duty);
+		}
+		
+		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/{company_id}/duties")

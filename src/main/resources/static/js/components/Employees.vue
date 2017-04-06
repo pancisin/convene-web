@@ -1,6 +1,6 @@
   <template>
   <div class="row">
-    <div class="col-xs-12 col-md-4 col-md-offset-8">
+    <div class="col-xs-12">
       <div class="card card-mini">
         <div class="card-header">
           <div class="card-title">Employees</div>
