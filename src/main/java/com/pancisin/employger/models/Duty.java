@@ -1,7 +1,9 @@
 package com.pancisin.employger.models;
 
-import java.sql.Date;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +20,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.scheduling.support.CronSequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.employger.repository.converters.CronConverter;
@@ -38,10 +42,10 @@ public class Duty {
 	private String location;
 
 	@Column(name = "start_date")
-	private Date startDate;
+	private java.sql.Date startDate;
 
 	@Column(name = "end_date")
-	private Date endDate;
+	private java.sql.Date endDate;
 
 	@Column(name = "recurrence")
 	@Convert(converter = CronConverter.class)
@@ -72,6 +76,35 @@ public class Duty {
 		Duty duty = (Duty) obj;
 		return this.id.equals(duty.id);
 	}
+	
+	@JsonIgnore
+	public List<Date> getNextOcurrences(int count, Date currentIteration) {
+		List<Date> ocurrences = new ArrayList<Date>();
+		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
+		for (int i = 0; i < 5; i++) {
+			currentIteration = cron.next(currentIteration);
+			ocurrences.add(currentIteration);
+		}
+		return ocurrences;
+	}
+	
+	@JsonIgnore
+	public List<Date> getOcurrencesInRange(Date start, Date end) {
+		if (start.compareTo(end) > 0) 
+			throw new InvalidParameterException();
+		
+		List<Date> ocurrences = new ArrayList<Date>();
+		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
+
+		Date iteration = start;
+		
+		do {
+			iteration = cron.next(iteration);
+			ocurrences.add(iteration);
+		} while (iteration.compareTo(end) < 0);
+		
+		return ocurrences;
+	}
 
 	@Override
 	public int hashCode() {
@@ -94,19 +127,19 @@ public class Duty {
 		this.location = location;
 	}
 
-	public Date getStartDate() {
+	public java.sql.Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(java.sql.Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public java.sql.Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(java.sql.Date endDate) {
 		this.endDate = endDate;
 	}
 

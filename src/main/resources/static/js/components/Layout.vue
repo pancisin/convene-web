@@ -5,7 +5,8 @@
       <div class="sidebar-header">
         <a class="sidebar-brand"
            href="#">
-           <img :src="$store.state.user.company.logo" class="img-thumbnail" />
+          <img :src="$store.state.user.company.logo"
+               class="img-thumbnail" />
         </a>
         <button type="button"
                 class="sidebar-toggle">
