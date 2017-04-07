@@ -3830,8 +3830,8 @@ ui-view > .app-messaging-container {
       list-style: none;
       margin: 0;
       padding: 0; }
-      .card .card-header .card-action > li > a {
-        color: #dfe6e8; }
+      /*.card .card-header .card-action > li > a {
+        color: #dfe6e8; }*/
       .card .card-header .card-action > li > .dropdown-menu {
         right: 0;
         left: auto;

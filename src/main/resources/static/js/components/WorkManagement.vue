@@ -59,13 +59,6 @@
       <div class="card card-mini">
         <div class="card-header">
           <div class="card-title">Employees</div>
-          <ul class="card-action">
-            <li>
-              <a @click="">
-                <i class="fa fa-plus"></i>
-              </a>
-            </li>
-          </ul>
         </div>
         <div class="card-body no-padding table-responsive">
           <table class="table card-table">
@@ -124,10 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.card-action li {
-  display: inline;
-  margin-left: 15px;
-}
-</style>

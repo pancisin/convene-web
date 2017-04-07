@@ -4,13 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +29,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cronutils.model.CronType;
+import com.cronutils.model.definition.CronDefinition;
+import com.cronutils.model.definition.CronDefinitionBuilder;
+import com.cronutils.model.time.ExecutionTime;
+import com.cronutils.parser.CronParser;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
+import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.DutyRepository;
+import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -39,6 +54,9 @@ public class CompanyController {
 
 	@Autowired
 	private DutyRepository dutyRepository;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
 	@GetMapping("/")
 	public ResponseEntity<?> getCompanies() {
@@ -63,7 +81,7 @@ public class CompanyController {
 
 			File file = new File(servletContext.getRealPath("/") + relative_path);
 			file.getParentFile().mkdirs();
-			
+
 			try (FileOutputStream imageOutFile = new FileOutputStream(file)) {
 				String imageData = company.getLogo().replaceFirst("^data:image/[^;]*;base64,?", "");
 				byte[] imageByteArray = Base64.getDecoder().decode(imageData);
@@ -80,7 +98,7 @@ public class CompanyController {
 		stored.setEmail(company.getEmail());
 		stored.setPhoneNumber(company.getPhoneNumber());
 		stored.setAddress(company.getAddress());
-		
+
 		companyRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}
@@ -90,11 +108,23 @@ public class CompanyController {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getUsers());
 	}
-	
+
 	@GetMapping("/{company_id}/employees")
 	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getEmployees());
+	}
+
+	@PostMapping("/{company_id}/employees")
+	public ResponseEntity<?> postEmployee(@PathVariable Long company_id, @RequestBody @Valid Employee employee,
+			BindingResult bindingResult) {
+		Company company = companyRepository.findOne(company_id);
+		
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
+		
+		employee.setCompany(company);
+		return ResponseEntity.ok(employeeRepository.save(employee));
 	}
 
 	@GetMapping("/{company_id}/licenses")
@@ -106,7 +136,28 @@ public class CompanyController {
 	@GetMapping("/{company_id}/duties")
 	public ResponseEntity<?> getCompanyDuties(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
-		return ResponseEntity.ok(dutyRepository.findByCompany(company));
+		return ResponseEntity.ok(company.getDuties());
+	}
+
+	@GetMapping("/{company_id}/duties/{date_to}")
+	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id,
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
+		Company company = companyRepository.findOne(company_id);
+		List<Duty> result = new ArrayList<Duty>();
+
+		ZonedDateTime now = ZonedDateTime.now();
+		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
+		Duration week = Duration.ofDays(7);
+
+		for (Duty duty : company.getDuties()) {
+			ExecutionTime ex = ExecutionTime.forCron(parser.parse(duty.getCronRecurrence()));
+			Duration dur = ex.timeToNextExecution(now);
+
+			if (week.compareTo(dur) == 1)
+				result.add(duty);
+		}
+
+		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/{company_id}/duties")

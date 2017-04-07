@@ -35,11 +35,11 @@ public class Company {
 	private String logo;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<License> licenses;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<Employee> employees;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -55,6 +55,10 @@ public class Company {
 	@JsonIgnore
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<User> users;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Duty> duties;
 	
 	public String getName() {
 		return name;
@@ -118,5 +122,13 @@ public class Company {
 
 	public List<User> getUsers() {
 		return users;
+	}
+
+	public List<Duty> getDuties() {
+		return duties;
+	}
+
+	public void setDuties(List<Duty> duties) {
+		this.duties = duties;
 	}
 }
