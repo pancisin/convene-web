@@ -126,16 +126,25 @@
         </div>
       </div>
     </div>
+
+    <modal :show="display.modal" @close="display.modal = false">
+      <h4 slot="header">Success !</h4>
+      <p slot="body">Your company information have been updated successfuly.</p>
+    </modal>
   </div>
 </template>
 
 <script>
 import Auth from '../services/auth.js'
 export default {
+  name: 'company',
   data: function () {
     return {
       company: null,
       users: [],
+      display: {
+        modal: false,
+      }
     }
   },
   created: function () {
@@ -148,6 +157,7 @@ export default {
     submit: function () {
       this.$http.put('api/company/' + this.company.id, this.company).then(response => {
         this.company = response.body;
+        this.display.modal = true;
       });
     },
     fetchUsers: function () {

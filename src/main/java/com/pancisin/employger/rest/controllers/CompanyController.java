@@ -36,8 +36,10 @@ import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
+import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.DutyRepository;
+import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -52,6 +54,9 @@ public class CompanyController {
 
 	@Autowired
 	private DutyRepository dutyRepository;
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
 	@GetMapping("/")
 	public ResponseEntity<?> getCompanies() {
@@ -76,7 +81,7 @@ public class CompanyController {
 
 			File file = new File(servletContext.getRealPath("/") + relative_path);
 			file.getParentFile().mkdirs();
-			
+
 			try (FileOutputStream imageOutFile = new FileOutputStream(file)) {
 				String imageData = company.getLogo().replaceFirst("^data:image/[^;]*;base64,?", "");
 				byte[] imageByteArray = Base64.getDecoder().decode(imageData);
@@ -93,7 +98,7 @@ public class CompanyController {
 		stored.setEmail(company.getEmail());
 		stored.setPhoneNumber(company.getPhoneNumber());
 		stored.setAddress(company.getAddress());
-		
+
 		companyRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}
@@ -103,11 +108,23 @@ public class CompanyController {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getUsers());
 	}
-	
+
 	@GetMapping("/{company_id}/employees")
 	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getEmployees());
+	}
+
+	@PostMapping("/{company_id}/employees")
+	public ResponseEntity<?> postEmployee(@PathVariable Long company_id, @RequestBody @Valid Employee employee,
+			BindingResult bindingResult) {
+		Company company = companyRepository.findOne(company_id);
+		
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
+		
+		employee.setCompany(company);
+		return ResponseEntity.ok(employeeRepository.save(employee));
 	}
 
 	@GetMapping("/{company_id}/licenses")
@@ -121,24 +138,25 @@ public class CompanyController {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getDuties());
 	}
-	
+
 	@GetMapping("/{company_id}/duties/{date_to}")
-	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id, @PathVariable @DateTimeFormat(iso=ISO.DATE) String date_to) {
+	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id,
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
 		Company company = companyRepository.findOne(company_id);
 		List<Duty> result = new ArrayList<Duty>();
-		
+
 		ZonedDateTime now = ZonedDateTime.now();
 		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
 		Duration week = Duration.ofDays(7);
-		
+
 		for (Duty duty : company.getDuties()) {
 			ExecutionTime ex = ExecutionTime.forCron(parser.parse(duty.getCronRecurrence()));
 			Duration dur = ex.timeToNextExecution(now);
-			
+
 			if (week.compareTo(dur) == 1)
 				result.add(duty);
 		}
-		
+
 		return ResponseEntity.ok(result);
 	}
 

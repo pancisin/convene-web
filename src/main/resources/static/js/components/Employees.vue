@@ -6,8 +6,13 @@
           <div class="card-title">Employees</div>
           <ul class="card-action">
             <li>
-              <a @click="">
+              <a @click="getEmployees">
                 <i class="fa fa-refresh"></i>
+              </a>
+            </li>
+            <li>
+              <a @click="display.modal = true">
+                <i class="fa fa-plus"></i>
               </a>
             </li>
           </ul>
@@ -18,19 +23,47 @@
               <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="emp in employees">
                 <th scope="row"
                     v-text="emp.id"></th>
-                <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+                <td>
+                  <a class="btn-link"
+                     @click="editEmployee(emp)">{{ emp.firstName }} {{ emp.lastName }} </a>
+                </td>
+                <td>
+                  <a @click="deleteEmployee(emp.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+  
+    <modal :show="display.modal"
+           :question="true"
+           @accept="submitEmployee"
+           @close="display.modal = false">
+      <h4 slot="header">Create employee</h4>
+      <form class="form"
+            slot="body"
+            @submit.prevent="submitEmployee">
+        <label>First Name</label>
+        <input type="text"
+               v-model="employee.firstName"
+               class="form-control"
+               placeholder="First Name">
+        <label>Last Name</label>
+        <input type="text"
+               v-model="employee.lastName"
+               class="form-control"
+               placeholder="Last Name">
+      </form>
+    </modal>
   </div>
 </template>
 
@@ -40,17 +73,50 @@ export default {
   data: function () {
     return {
       employees: [],
+      employee: {
+        firstName: null,
+        lastName: null,
+      },
+      display: {
+        modal: false
+      }
     }
   },
   created: function () {
-    this.getUsers();
+    this.getEmployees();
   },
   methods: {
-    getUsers: function () {
+    getEmployees: function () {
       var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
       this.$http.get(url).then(response => {
         this.employees = response.body;
       });
+    },
+    submitEmployee: function () {
+      var push = this.employee.id == null;
+
+      var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
+      this.$http.post(url, this.employee).then(response => {
+        if (push)
+          this.employees.push(response.body);
+
+        this.display.modal = false;
+      }, response => {
+        response.body.fieldErrors;
+      });
+    },
+    deleteEmployee: function (employee_id) {
+      var url = ['api/employee', employee_id].join('/');
+      this.$http.delete(url).then(response => {
+        for (var i = 0; i < this.employees.length; i++) {
+          if (this.employees[i].id == employee_id)
+            this.employees.splice(i, 1);
+        }
+      });
+    },
+    editEmployee: function (employee) {
+      this.employee = employee;
+      this.display.modal = true;
     }
   }
 }

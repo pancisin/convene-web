@@ -5,6 +5,7 @@ import VueResource from 'vue-resource'
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
 import vSelect from "vue-select"
+import Modal from './elements/Modal.vue'
 
 // SERVICES
 import Auth from './services/auth.js'
@@ -14,10 +15,11 @@ import router from './services/router.js'
 Vue.use(VueResource);
 Vue.use(VueMoment);
 Vue.component('v-select', vSelect);
+Vue.component('modal', Modal)
 
 Vue.config.devtools = true;
-// Vue.http.options.root = 'http://104.251.219.31:8080/employger';
-Vue.http.options.root = 'http://localhost:8180'
+Vue.http.options.root = 'http://104.251.219.31:8080/employger'
+// Vue.http.options.root = 'http://localhost:8180'
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());

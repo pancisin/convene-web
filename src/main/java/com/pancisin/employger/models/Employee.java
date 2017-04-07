@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,9 +24,11 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotEmpty
 	@Column(name = "first_name")
 	private String firstName;
 	
+	@NotEmpty
 	@Column(name = "last_name")
 	private String lastName;
 	
