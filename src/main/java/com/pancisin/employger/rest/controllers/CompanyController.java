@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
@@ -141,17 +142,17 @@ public class CompanyController {
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
 		Company company = companyRepository.findOne(company_id);
 		List<Duty> result = new ArrayList<Duty>();
-
-		ZonedDateTime now = ZonedDateTime.now();
-		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
-		Duration week = Duration.ofDays(7);
-
-		for (Duty duty : company.getDuties()) {
-			ExecutionTime ex = ExecutionTime.forCron(parser.parse(duty.getCronRecurrence()));
-			Duration dur = ex.timeToNextExecution(now);
-
-			if (week.compareTo(dur) == 1)
-				result.add(duty);
+		
+		Date dateTo;
+		try {
+			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
+			for (Duty duty : company.getDuties()) {
+				CronSequenceGenerator cron = new CronSequenceGenerator("0 " + duty.getCronRecurrence());
+				if (cron.next(new Date()).before(dateTo))
+					result.add(duty);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 
 		return ResponseEntity.ok(result);

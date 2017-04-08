@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
+import com.pancisin.employger.repository.UserRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
