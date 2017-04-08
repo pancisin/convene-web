@@ -1,15 +1,10 @@
 package com.pancisin.employger.rest.controllers;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +15,6 @@ import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
-import com.pancisin.employger.repository.UserRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -59,6 +53,7 @@ public class DutyController {
 		new_duty.setEndDate(duty.getEndDate());
 		new_duty.setRecurrence(duty.getRecurrence());
 		new_duty.setDescription(duty.getDescription());
+		new_duty.setCustomer(duty.getCustomer());
 		
 		new_duty.getEmployees().clear();
 		

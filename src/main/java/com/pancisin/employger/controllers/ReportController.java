@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.repository.DutyRepository;
 
@@ -40,7 +42,7 @@ public class ReportController {
 		PdfWriter.getInstance(document, outputStream);
 		document.open();
 
-		document.addTitle("Bank Statement");
+		document.addTitle(duty.getLocation());
 		document.addSubject("Bank Statement");
 		document.addKeywords("Report, PDF, iText");
 		document.addAuthor("Satyam");
@@ -50,10 +52,17 @@ public class ReportController {
 		document.add(new Paragraph(" "));
 		document.add(new Paragraph(" "));
 
-		PdfPTable table = new PdfPTable(3);
+		Company company = duty.getCompany();
+		Paragraph header = new Paragraph(company.getName());
+		header.setAlignment(Element.ALIGN_CENTER);
+		
+		document.add(header);
+		
+		PdfPTable table = new PdfPTable(4);
 		table.addCell("Date");
-		table.addCell("Recurrence");
+		table.addCell("Location");
 		table.addCell("Description");
+		table.addCell("Employees");
 
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(new Date());
@@ -63,6 +72,7 @@ public class ReportController {
 			table.addCell(date.toString());
 			table.addCell(duty.getLocation());
 			table.addCell(duty.getDescription());
+			table.addCell(duty.getEmployees().toString());
 		}
 
 		document.add(table);

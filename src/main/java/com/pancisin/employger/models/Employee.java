@@ -40,6 +40,11 @@ public class Employee {
 	@ManyToMany(mappedBy = "employees")
 	private List<Duty> duties = new ArrayList<Duty>();
 	
+	@Override
+	public String toString() {
+		return firstName + " " + lastName;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

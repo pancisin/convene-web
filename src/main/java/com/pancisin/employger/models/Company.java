@@ -60,6 +60,10 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<Duty> duties;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Customer> customers;
+	
 	public String getName() {
 		return name;
 	}
@@ -130,5 +134,13 @@ public class Company {
 
 	public void setDuties(List<Duty> duties) {
 		this.duties = duties;
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(List<Customer> customers) {
+		this.customers = customers;
 	}
 }

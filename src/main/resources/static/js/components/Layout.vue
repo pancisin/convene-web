@@ -42,6 +42,15 @@
               <div class="title">Employees</div>
             </router-link>
           </li>
+          <li>
+            <router-link to="/customers">
+              <div class="icon">
+                <i class="fa fa-users"
+                   aria-hidden="true"></i>
+              </div>
+              <div class="title">Customers</div>
+            </router-link>
+          </li>
         </ul>
       </div>
       <div class="sidebar-footer">

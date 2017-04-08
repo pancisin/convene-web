@@ -33,9 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.pancisin.employger.models.Company;
+import com.pancisin.employger.models.Customer;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
+import com.pancisin.employger.repository.CustomerRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
@@ -56,6 +58,9 @@ public class CompanyController {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
+	@Autowired
+	private CustomerRepository customerRepository;
+	
 	@GetMapping("/")
 	public ResponseEntity<?> getCompanies() {
 		return ResponseEntity.ok(companyRepository.findAll());
@@ -117,10 +122,10 @@ public class CompanyController {
 	public ResponseEntity<?> postEmployee(@PathVariable Long company_id, @RequestBody @Valid Employee employee,
 			BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
-		
+
 		if (bindingResult.hasErrors())
 			throw new InvalidRequestException("Invalid data", bindingResult);
-		
+
 		employee.setCompany(company);
 		return ResponseEntity.ok(employeeRepository.save(employee));
 	}
@@ -137,12 +142,30 @@ public class CompanyController {
 		return ResponseEntity.ok(company.getDuties());
 	}
 
+	@GetMapping("/{company_id}/customers")
+	public ResponseEntity<?> getCompanyCustomers(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getCustomers());
+	}
+
+	@PostMapping("/{company_id}/customers")
+	public ResponseEntity<?> postCompanyCustomer(@PathVariable Long company_id, @RequestBody @Valid Customer customer,
+			BindingResult bindingResult) {
+		Company company = companyRepository.findOne(company_id);
+
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
+
+		customer.setCompany(company);
+		return ResponseEntity.ok(customerRepository.save(customer));
+	}
+
 	@GetMapping("/{company_id}/duties/{date_to}")
 	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
 		Company company = companyRepository.findOne(company_id);
 		List<Duty> result = new ArrayList<Duty>();
-		
+
 		Date dateTo;
 		try {
 			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);

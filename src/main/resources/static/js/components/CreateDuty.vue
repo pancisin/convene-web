@@ -11,6 +11,9 @@
               <div class="section-body">
                 <div class="row">
                   <div class="col-md-6">
+                    <v-select label="name"
+                              v-model="duty.customer"
+                              :options="customers"></v-select>
                     <input type="text"
                            v-model="duty.location"
                            class="form-control"
@@ -119,6 +122,7 @@ export default {
         startDate: '',
         endDate: null,
         employees: [],
+        customer: null,
         tasks: [],
         recurrence: {
           minute: [0],
@@ -129,6 +133,7 @@ export default {
           weekOfMonth: []
         },
       },
+      customers: [],
       employees: [],
       display: {
         recurrence: false,
@@ -148,6 +153,7 @@ export default {
     }
   },
   created: function () {
+    this.getCustomers();
     var duty_id = this.$route.params.id;
     if (duty_id != null) {
       this.$http.get('api/duty/' + duty_id).then(response => {
@@ -169,6 +175,12 @@ export default {
           this.duty = response.body;
         });
       }
+    },
+    getCustomers: function () {
+      var url = ['api/company', this.$store.getters.company_id, 'customers'].join('/');
+      this.$http.get(url).then(response => {
+        this.customers = response.body;
+      })
     },
     getEmployees: function (search, loading) {
       var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');

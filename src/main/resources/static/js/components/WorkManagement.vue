@@ -26,6 +26,7 @@
                 <th>Closest occurrence</th>
                 <th class="text-center">Tasks</th>
                 <th>Employees</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -48,6 +49,9 @@
                       {{ emp.firstName }} {{ emp.lastName }}
                     </li>
                   </ul>
+                </td>
+                <td>
+                  <a :href="'/report/duty/' + duty.id"><i class="fa fa-download" aria-hidden="true"></i></a>
                 </td>
               </tr>
             </tbody>

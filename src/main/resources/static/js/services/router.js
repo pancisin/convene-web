@@ -15,6 +15,8 @@ import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
 import Account from '../pages/Account.vue'
 import Company from '../pages/Company.vue'
+import Customers from '../pages/Customers.vue'
+import CustomerCreate from '../pages/Customer.create.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -77,6 +79,18 @@ const router = new VueRouter({
         {
           path: '/company',
           component: Company
+        },
+        {
+          path: '/customers',
+          component: Customers
+        },
+        {
+          path: '/customers/create',
+          component: CustomerCreate
+        },
+        {
+          path: '/customers/:id',
+          component: CustomerCreate
         }
       ]
     },
