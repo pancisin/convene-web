@@ -41,7 +41,7 @@ public class Duty {
 	@Column(name = "location")
 	private String location;
 	
-	@OneToOne
+	@ManyToOne
 	private Customer customer;
 
 	@Column(name = "start_date")
@@ -84,7 +84,7 @@ public class Duty {
 	public List<Date> getNextOcurrences(int count, Date currentIteration) {
 		List<Date> ocurrences = new ArrayList<Date>();
 		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < count; i++) {
 			currentIteration = cron.next(currentIteration);
 			ocurrences.add(currentIteration);
 		}

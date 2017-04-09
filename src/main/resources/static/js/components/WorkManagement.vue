@@ -22,15 +22,19 @@
           <table class="table card-table">
             <thead>
               <tr>
+                <th>Customer</th>
                 <th>Location</th>
                 <th>Closest occurrence</th>
                 <th class="text-center">Tasks</th>
                 <th>Employees</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="duty in duties">
+                <td>
+                  {{ duty.customer.name }}
+                </td>
                 <td>
                   <router-link :to="'/duty/' + duty.id">
                     {{ duty.location }}
@@ -50,7 +54,7 @@
                     </li>
                   </ul>
                 </td>
-                <td>
+                <td class="text-center"> 
                   <a :href="'/report/duty/' + duty.id"><i class="fa fa-download" aria-hidden="true"></i></a>
                 </td>
               </tr>
