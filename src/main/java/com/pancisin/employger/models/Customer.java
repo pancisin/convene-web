@@ -2,13 +2,16 @@ package com.pancisin.employger.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -49,6 +52,9 @@ public class Customer {
 	@JsonIgnore
 	@OneToMany(mappedBy = "customer")
 	private List<Duty> duties;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Report report = new Report();
 	
 	public Company getCompany() {
 		return company;
@@ -108,5 +114,13 @@ public class Customer {
 
 	public void setDuties(List<Duty> duties) {
 		this.duties = duties;
+	}
+
+	public Report getReport() {
+		return report;
+	}
+
+	public void setReport(Report report) {
+		this.report = report;
 	}
 }

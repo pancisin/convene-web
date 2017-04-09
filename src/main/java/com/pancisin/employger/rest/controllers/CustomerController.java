@@ -34,6 +34,17 @@ public class CustomerController {
 	
 	@PutMapping("/{customer_id}")
 	public ResponseEntity<?> putCustomer(@PathVariable Long customer_id, @RequestBody @Valid Customer customer) {
+		Customer stored = customerRespository.findOne(customer_id);
+		
+		stored.setName(customer.getName());
+		stored.setAddress(customer.getAddress());
+		stored.setDescription(customer.getDescription());
+		stored.setEmail(customer.getEmail());
+		stored.setPerson(customer.getName());
+		
+		stored.setReport(customer.getReport());
+		
+		customerRespository.save(stored);
 		return null;
 	}
 		

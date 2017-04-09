@@ -26,7 +26,7 @@
                 <th>Contact person</th>
                 <th>Contact email</th>
                 <th>Description</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                 <td v-text="cust.person"></td>
                 <td v-text="cust.email"></td>
                 <td v-text="cust.description"></td>
-                <td>
+                <td class="text-center">
                   <a @click="deleteCustomer(cust.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </td>
               </tr>
