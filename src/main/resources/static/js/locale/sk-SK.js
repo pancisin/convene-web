@@ -14,7 +14,20 @@ export default {
   actions: {
     update_close: "Upraviť a zavrieť",
     create: "Vytvoriť",
+    update: "Aktualizovať",
     cancel: "Zrušiť"
+  },
+  company: {
+    default: "Spoločnosť",
+    ico: "IČO",
+    name: "Názov",
+    contact: "Kontaktné informácie",
+    email: "Email",
+    phone: "Mobil",
+    zip: "PSČ",
+    city: "Mesto",
+    street: "Ulica",
+    number: "Číslo",
   },
   customer: {
     default: "Zákazník | Zákazníci",

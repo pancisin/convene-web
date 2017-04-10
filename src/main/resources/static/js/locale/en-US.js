@@ -14,7 +14,20 @@ export default {
   actions: {
     update_close: "Update and close",
     create: "Create",
+    update: "Update",
     cancel: "Cancel"
+  },
+  company: {
+    default: "Company",
+    ico: "ico",
+    name: "Name",
+    contact: "Contact information",
+    email: "Email",
+    phone: "Mobile phone number",
+    zip: "Zip code",
+    city: "City",
+    street: "Street",
+    number: "Number",
   },
   customer: {
     default: "Customer | Customers",

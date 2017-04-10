@@ -25,39 +25,39 @@
                     <input type="text"
                            v-model="company.ico"
                            class="form-control"
-                           placeholder="ICO"
+                           :placeholder="$t('company.ico')"
                            disabled>
                     <input type="text"
                            v-model="company.name"
                            class="form-control"
-                           placeholder="Company name">
+                           :placeholder="$t('company.name')">
   
                     <div class="section">
                       <div class="section-title">
-                        Contact information
+                        {{ $t('company.contact') }}
                       </div>
                       <div class="section-body">
                         <input type="text"
                                v-model="company.email"
                                class="form-control"
-                               placeholder="Contact email">
+                               :placeholder="$t('company.email')">
                         <input type="text"
                                v-model="company.phoneNumber"
                                class="form-control"
-                               placeholder="Mobile phone number">
+                               :placeholder="$t('company.phone')">
   
                         <div class="row">
                           <div class="col-xs-4">
                             <input type="text"
                                    v-model="company.address.zip"
                                    class="form-control"
-                                   placeholder="zip">
+                                   :placeholder="$t('company.zip')">
                           </div>
                           <div class="col-xs-8">
                             <input type="text"
                                    v-model="company.address.city"
                                    class="form-control"
-                                   placeholder="City">
+                                   :placeholder="$t('company.city')">
                           </div>
                         </div>
   
@@ -66,13 +66,13 @@
                             <input type="text"
                                    v-model="company.address.street"
                                    class="form-control"
-                                   placeholder="Street">
+                                   :placeholder="$t('company.street')">
                           </div>
                           <div class="col-xs-2">
                             <input type="text"
                                    v-model="company.address.number"
                                    class="form-control"
-                                   placeholder="Number">
+                                   :placeholder="$t('company.number')">
                           </div>
                         </div>
   
@@ -88,7 +88,7 @@
                 <div class="col-md-9 col-md-offset-4">
                   <button type="submit"
                           class="btn btn-primary">
-                    Update
+                    {{ $t('actions.update') }}
                   </button>
                 </div>
               </div>

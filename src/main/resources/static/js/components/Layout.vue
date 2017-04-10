@@ -53,28 +53,6 @@
           </li>
         </ul>
       </div>
-      <div class="sidebar-footer">
-        <ul class="menu">
-          <li>
-            <a href="/"
-               class="dropdown-toggle"
-               data-toggle="dropdown">
-              <i class="fa fa-cogs"
-                 aria-hidden="true"></i>
-            </a>
-          </li>
-          <li>
-            <select @change="switchLanguage">
-              <option value="en">English</option>
-              <option value="sk">Slovak</option>
-            </select>
-
-            <a href="#">
-              <span class="flag-icon flag-icon-th flag-icon-squared"></span>
-            </a>
-          </li>
-        </ul>
-      </div>
     </aside>
   
     <div class="app-container">
@@ -94,11 +72,6 @@ export default {
   name: 'app',
   components: {
     headerComponent: HeaderComponent,
-  },
-  methods: {
-    switchLanguage: function(e) {
-      this.$i18n.locale = e.target.value;
-    }
   }
 }
 </script>
