@@ -1,14 +1,10 @@
 package com.pancisin.employger.rest.controllers;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +53,7 @@ public class DutyController {
 		new_duty.setEndDate(duty.getEndDate());
 		new_duty.setRecurrence(duty.getRecurrence());
 		new_duty.setDescription(duty.getDescription());
+		new_duty.setCustomer(duty.getCustomer());
 		
 		new_duty.getEmployees().clear();
 		

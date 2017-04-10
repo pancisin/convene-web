@@ -1,6 +1,7 @@
 // CORE
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import VueI18n from 'vue-i18n'
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
@@ -12,9 +13,14 @@ import Auth from './services/auth.js'
 import store from './services/store.js'
 import router from './services/router.js'
 
-Vue.use(VueResource);
-Vue.use(VueMoment);
-Vue.component('v-select', vSelect);
+// TRANSLATIONS
+import sk from './locale/sk-SK.js'
+import en from './locale/en-US.js'
+
+Vue.use(VueResource)
+Vue.use(VueI18n)
+Vue.use(VueMoment)
+Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 
 Vue.config.devtools = true;
@@ -31,12 +37,21 @@ Vue.http.interceptors.push((request, next) => {
   });
 });
 
+const i18n = new VueI18n({
+  locale: 'sk',
+  fallbackLocale: 'en',
+  messages: {
+    sk, en
+  }
+})
+
 import App from './components/App.vue';
 
 const app = new Vue({
   el: '#application',
   store,
   router,
+  i18n,
   created: function () {
     if (Auth.user.authenticated)
       this.initialize();

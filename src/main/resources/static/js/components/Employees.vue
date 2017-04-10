@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <div class="card card-mini">
         <div class="card-header">
-          <div class="card-title">Employees</div>
+          <div class="card-title">{{ $tc('employee.default', 2) }}</div>
           <ul class="card-action">
             <li>
               <a @click="getEmployees">
@@ -22,7 +22,7 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>{{ $t('employee.name') }}</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -48,16 +48,16 @@
            :question="true"
            @accept="submitEmployee"
            @close="display.modal = false">
-      <h4 slot="header">Create employee</h4>
+      <h4 slot="header">{{ $t('employee.create') }}</h4>
       <form class="form"
             slot="body"
             @submit.prevent="submitEmployee">
-        <label>First Name</label>
+        <label>{{ $t('employee.firstName') }}</label>
         <input type="text"
                v-model="employee.firstName"
                class="form-control"
                placeholder="First Name">
-        <label>Last Name</label>
+        <label>{{ $t('employee.lastName') }}</label>
         <input type="text"
                v-model="employee.lastName"
                class="form-control"

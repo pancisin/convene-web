@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card">
-        <div class="card-header">Create or update duty</div>
+        <div class="card-header">{{ $t('duty.create_update') }}</div>
         <div class="card-body">
   
           <form class="form form-horizontal"
@@ -11,22 +11,26 @@
               <div class="section-body">
                 <div class="row">
                   <div class="col-md-6">
+                    <v-select label="name"
+                              v-model="duty.customer"
+                              :options="customers"
+                              :placeholder="$tc('customer.default', 1)"></v-select>
                     <input type="text"
                            v-model="duty.location"
                            class="form-control"
-                           placeholder="Location">
+                           :placeholder="$t('duty.location')">
                     <textarea v-model="duty.description"
                               rows="3"
                               class="form-control"
-                              placeholder="Description"></textarea>
+                              :placeholder="$t('duty.description')"></textarea>
                   </div>
                   <div class="col-md-6">
                     <datepicker v-model="duty.startDate"
                                 class="form-control"
-                                placeholder="Start date"></datepicker>
+                                :placeholder="$t('duty.start_date')"></datepicker>
                     <datepicker v-model="duty.endDate"
                                 class="form-control"
-                                placeholder="End date"></datepicker>
+                                :placeholder="$t('duty.end_date')"></datepicker>
                   </div>
                 </div>
               </div>
@@ -34,7 +38,7 @@
   
             <div class="section">
               <div class="section-title">
-                Recurrence
+                {{ $t('duty.recurrence') }}
                 <a class="btn btn-link"
                    @click="display.recurrence = !display.recurrence">
                   <i class="fa fa-lg fa-chevron-up"
@@ -55,7 +59,7 @@
   
             <div class="section"
                  v-show="edit_mode">
-              <div class="section-title">Advanced
+              <div class="section-title">{{ $t('duty.advanced') }}
                 <a class="btn btn-link"
                    @click="display.advanced = !display.advanced">
                   <i class="fa fa-lg fa-chevron-up"
@@ -70,7 +74,7 @@
                 <div class="section-body"
                      v-show="display.advanced">
                   <div class="form-group">
-                    <label class="col-md-3 control-label">Employees</label>
+                    <label class="col-md-3 control-label">{{ $t('duty.employees') }}</label>
                     <div class="col-md-9">
                       <v-select label="firstName"
                                 :debounce="250"
@@ -89,12 +93,12 @@
                 <div class="col-md-9 col-md-offset-3">
                   <button type="submit"
                           class="btn btn-primary">
-                    <span v-if="edit_mode">Update and close</span>
-                    <span v-else>Create</span>
+                    <span v-if="edit_mode">{{ $t('actions.update_close') }}</span>
+                    <span v-else>{{ $t('actions.create') }}</span>
                   </button>
                   <button type="button"
                           class="btn btn-default"
-                          @click="$router.go(-1)">Cancel</button>
+                          @click="$router.go(-1)">{{ $t('actions.cancel') }}</button>
                 </div>
               </div>
             </div>
@@ -119,6 +123,7 @@ export default {
         startDate: '',
         endDate: null,
         employees: [],
+        customer: null,
         tasks: [],
         recurrence: {
           minute: [0],
@@ -129,6 +134,7 @@ export default {
           weekOfMonth: []
         },
       },
+      customers: [],
       employees: [],
       display: {
         recurrence: false,
@@ -148,6 +154,7 @@ export default {
     }
   },
   created: function () {
+    this.getCustomers();
     var duty_id = this.$route.params.id;
     if (duty_id != null) {
       this.$http.get('api/duty/' + duty_id).then(response => {
@@ -169,6 +176,12 @@ export default {
           this.duty = response.body;
         });
       }
+    },
+    getCustomers: function () {
+      var url = ['api/company', this.$store.getters.company_id, 'customers'].join('/');
+      this.$http.get(url).then(response => {
+        this.customers = response.body;
+      })
     },
     getEmployees: function (search, loading) {
       var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');

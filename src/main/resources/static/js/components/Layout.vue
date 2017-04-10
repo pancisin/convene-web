@@ -21,7 +21,7 @@
                 <i class="fa fa-tasks"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Dashboard</div>
+              <div class="title">{{ $t('menu.dashboard') }}</div>
             </router-link>
           </li>
           <li>
@@ -30,7 +30,7 @@
                 <i class="fa fa-suitcase"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Work management</div>
+              <div class="title">{{ $t('menu.work_management') }}</div>
             </router-link>
           </li>
           <li>
@@ -39,25 +39,17 @@
                 <i class="fa fa-users"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Employees</div>
+              <div class="title">{{ $t('menu.employees') }}</div>
             </router-link>
           </li>
-        </ul>
-      </div>
-      <div class="sidebar-footer">
-        <ul class="menu">
           <li>
-            <a href="/"
-               class="dropdown-toggle"
-               data-toggle="dropdown">
-              <i class="fa fa-cogs"
-                 aria-hidden="true"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="flag-icon flag-icon-th flag-icon-squared"></span>
-            </a>
+            <router-link to="/customers">
+              <div class="icon">
+                <i class="fa fa-users"
+                   aria-hidden="true"></i>
+              </div>
+              <div class="title">{{ $t('menu.customers') }}</div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -80,6 +72,6 @@ export default {
   name: 'app',
   components: {
     headerComponent: HeaderComponent,
-  },
+  }
 }
 </script>

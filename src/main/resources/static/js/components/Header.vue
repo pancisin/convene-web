@@ -30,62 +30,10 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-  
-          <li class="dropdown notification">
-            <a href="#"
-               class="dropdown-toggle"
-               data-toggle="dropdown">
-              <div class="icon">
-                <i class="fa fa-bell"
-                   aria-hidden="true"></i>
-              </div>
-              <div class="title">Unread Messages</div>
-              <div class="count">99</div>
-            </a>
-            <div class="dropdown-menu">
-              <ul>
-                <li class="dropdown-header">Message</li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-warning pull-right">10</span>
-                    <div class="message">
-                      <div class="content">
-                        <div class="title">"Payment Confirmation.."</div>
-                        <div class="description">Alan Anderson</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-warning pull-right">5</span>
-                    <div class="message">
-                      <div class="content">
-                        <div class="title">"Hello World"</div>
-                        <div class="description">Marco Harmon</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <span class="badge badge-warning pull-right">2</span>
-                    <div class="message">
-                      <img class="profile"
-                           src="https://placehold.it/100x100">
-                      <div class="content">
-                        <div class="title">"Order Confirmation.."</div>
-                        <div class="description">Brenda Lawson</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="dropdown-footer">
-                  <a href="#">View All <i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                </li>
-              </ul>
-            </div>
-          </li>
+          <select @change="switchLanguage">
+            <option value="en">English</option>
+            <option value="sk">Slovak</option>
+          </select>
   
           <li class="dropdown profile"
               v-if="$store.state.user != null">
@@ -94,7 +42,7 @@
                data-toggle="dropdown">
               <div class="icon"><i class="fa fa-cog fa-2x"
                    aria-hidden="true"></i></div>
-              <div class="title">Settings</div>
+              <div class="title">{{ $t('settings.default') }}</div>
             </a>
   
             <div class="dropdown-menu">
@@ -104,14 +52,14 @@
               <ul class="action">
                 <!--<li><router-link to="/licenses"> License & Billing </router-link></li>-->
                 <li>
-                  <router-link to="/account"> Account </router-link>
+                  <router-link to="/account">{{ $t('settings.account') }}</router-link>
                 </li>
                 <li>
-                  <router-link to="/company"> Company </router-link>
+                  <router-link to="/company">{{ $t('settings.company') }}</router-link>
                 </li>
                 <li>
                   <a href="javascript:;"
-                     @click="logout"> Logout </a>
+                     @click="logout">{{ $t('settings.logout' )}}</a>
                 </li>
               </ul>
             </div>
@@ -129,6 +77,9 @@ export default {
   methods: {
     logout: function () {
       Auth.logout(this, '/login')
+    },
+    switchLanguage: function (e) {
+      this.$i18n.locale = e.target.value;
     }
   }
 }

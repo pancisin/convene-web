@@ -1,6 +1,7 @@
 package com.pancisin.employger.models;
 
 import java.security.InvalidParameterException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,13 +11,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -40,6 +41,9 @@ public class Duty {
 	@NotNull
 	@Column(name = "location")
 	private String location;
+	
+	@ManyToOne
+	private Customer customer;
 
 	@Column(name = "start_date")
 	private java.sql.Date startDate;
@@ -78,28 +82,28 @@ public class Duty {
 	}
 	
 	@JsonIgnore
-	public List<Date> getNextOcurrences(int count, Date currentIteration) {
+	public List<Date> getNextOcurrences(int count, Date currentIteration) throws ParseException {
 		List<Date> ocurrences = new ArrayList<Date>();
-		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
-		for (int i = 0; i < 5; i++) {
-			currentIteration = cron.next(currentIteration);
+		org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
+
+		for (int i = 0; i < count; i++) {
+			currentIteration = cron.getNextValidTimeAfter(currentIteration);
 			ocurrences.add(currentIteration);
 		}
 		return ocurrences;
 	}
 	
 	@JsonIgnore
-	public List<Date> getOcurrencesInRange(Date start, Date end) {
+	public List<Date> getOcurrencesInRange(Date start, Date end) throws ParseException {
 		if (start.compareTo(end) > 0) 
 			throw new InvalidParameterException();
 		
 		List<Date> ocurrences = new ArrayList<Date>();
-		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
-
+		org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
 		Date iteration = start;
 		
 		do {
-			iteration = cron.next(iteration);
+			iteration = cron.getNextValidTimeAfter(iteration);
 			ocurrences.add(iteration);
 		} while (iteration.compareTo(end) < 0);
 		
@@ -185,5 +189,13 @@ public class Duty {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 }

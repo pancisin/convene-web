@@ -5,6 +5,7 @@ import com.pancisin.employger.repository.converters.CronConverter;
 
 public class CronExpression {
 
+	private int[] second = { 0 };
 	private int[] minute = { 0 };
 	private int[] hour = { 0 };
 	@JsonProperty("day")
@@ -20,6 +21,14 @@ public class CronExpression {
 		return conv.convertToDatabaseColumn(this);
 	}
 	
+	public int[] getSecond() {
+		return second;
+	}
+
+	public void setSecond(int[] second) {
+		this.second = second;
+	}
+
 	public int[] getMinute() {
 		return minute;
 	}

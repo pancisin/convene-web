@@ -1,7 +1,7 @@
 <template>
   <div class="row"
        v-if="recurrence != null">
-    <div class="col-md-4">
+    <div class="col-md-2">
       <div class="checkbox"
            v-for="day in weekDays">
         <input type="checkbox"
@@ -12,7 +12,18 @@
                v-text="day.label"></label>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
+      <div class="checkbox"
+           v-for="n in 5">
+        <input type="checkbox"
+               :id="'week-' + n + '-input'"
+               v-model="recurrence.weekOfMonth"
+               :value="n">
+        <label :for="'week-' + n + '-input'"
+               v-text="n"></label>
+      </div>
+    </div>
+    <div class="col-md-2">
       <div class="checkbox"
            v-for="month in months">
         <input type="checkbox"
@@ -23,7 +34,7 @@
                v-text="month.label"></label>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-2">
       <ul class="list-unstyled">
         <li v-for="day in occurrence">{{ day | moment("DD.MM.YYYY") }}</li>
       </ul>

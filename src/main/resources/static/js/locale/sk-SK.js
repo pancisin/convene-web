@@ -1,0 +1,70 @@
+export default {
+  menu: {
+    dashboard: "Prehľad",
+    work_management: "Správca úloh",
+    employees: "Zamestnanci",
+    customers: "Zákazníci"
+  },
+  settings: {
+    default: "Nastavenia",
+    account: "Konto",
+    company: "Spoločnosť",
+    logout: "Odhlásiť sa"
+  },
+  actions: {
+    update_close: "Upraviť a zavrieť",
+    create: "Vytvoriť",
+    update: "Aktualizovať",
+    cancel: "Zrušiť"
+  },
+  company: {
+    default: "Spoločnosť",
+    ico: "IČO",
+    name: "Názov",
+    contact: "Kontaktné informácie",
+    email: "Email",
+    phone: "Mobil",
+    zip: "PSČ",
+    city: "Mesto",
+    street: "Ulica",
+    number: "Číslo",
+  },
+  customer: {
+    default: "Zákazník | Zákazníci",
+    name: "Názov",
+    address: "Adresa",
+    person: {
+      default: "Kontaktná osoba",
+      name: "Meno a priezvisko",
+      email: "Email"
+    },
+    email: "Kontaktný email",
+    description: "Opis",
+    report: {
+      default: "Nastavenie automatického odosielania",
+      active: "Odosielať automatický rozpis práce elektronickou poštou."
+    }
+  },
+  duty: {
+    default: "Zakázka | Zakázky",
+    location: "Miesto",
+    description: "Opis",
+    start_date: "Dátum začiatku",
+    end_date: "Dátum konca",
+
+    closest_occ: "Najbližšií výskyt",
+    tasks: "Úlohy",
+
+    create_update: "Vytvoriť alebo upraviť úlohu",
+    recurrence: "Opakovanie",
+    advanced: "Pokročilé",
+    employees: "Zamestnanci"
+  },
+  employee: {
+    default: "Zamestnanec | Zamestnanci",
+    name: "Meno a priezvisko",
+    create: "Vytvoriť zamestnanca",
+    firstName: "Krstné meno",
+    lastName: "Priezvisko",
+  }
+}

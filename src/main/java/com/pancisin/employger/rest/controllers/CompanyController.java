@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -27,14 +28,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
 import com.pancisin.employger.models.Company;
+import com.pancisin.employger.models.Customer;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
+import com.pancisin.employger.repository.CustomerRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
@@ -55,6 +54,9 @@ public class CompanyController {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
+	@Autowired
+	private CustomerRepository customerRepository;
+	
 	@GetMapping("/")
 	public ResponseEntity<?> getCompanies() {
 		return ResponseEntity.ok(companyRepository.findAll());
@@ -116,10 +118,10 @@ public class CompanyController {
 	public ResponseEntity<?> postEmployee(@PathVariable Long company_id, @RequestBody @Valid Employee employee,
 			BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
-		
+
 		if (bindingResult.hasErrors())
 			throw new InvalidRequestException("Invalid data", bindingResult);
-		
+
 		employee.setCompany(company);
 		return ResponseEntity.ok(employeeRepository.save(employee));
 	}
@@ -136,22 +138,40 @@ public class CompanyController {
 		return ResponseEntity.ok(company.getDuties());
 	}
 
+	@GetMapping("/{company_id}/customers")
+	public ResponseEntity<?> getCompanyCustomers(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getCustomers());
+	}
+
+	@PostMapping("/{company_id}/customers")
+	public ResponseEntity<?> postCompanyCustomer(@PathVariable Long company_id, @RequestBody @Valid Customer customer,
+			BindingResult bindingResult) {
+		Company company = companyRepository.findOne(company_id);
+
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
+
+		customer.setCompany(company);
+		return ResponseEntity.ok(customerRepository.save(customer));
+	}
+
 	@GetMapping("/{company_id}/duties/{date_to}")
 	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
 		Company company = companyRepository.findOne(company_id);
 		List<Duty> result = new ArrayList<Duty>();
 
-		ZonedDateTime now = ZonedDateTime.now();
-		CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX));
-		Duration week = Duration.ofDays(7);
-
-		for (Duty duty : company.getDuties()) {
-			ExecutionTime ex = ExecutionTime.forCron(parser.parse(duty.getCronRecurrence()));
-			Duration dur = ex.timeToNextExecution(now);
-
-			if (week.compareTo(dur) == 1)
-				result.add(duty);
+		Date dateTo;
+		try {
+			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
+			for (Duty duty : company.getDuties()) {
+				List<Date> occ = duty.getNextOcurrences(1, new Date());
+				if (occ.size() > 0 && occ.get(0).before(dateTo))
+					result.add(duty);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 
 		return ResponseEntity.ok(result);

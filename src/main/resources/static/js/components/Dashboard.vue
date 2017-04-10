@@ -58,8 +58,8 @@ export default {
 
         for (var i = 0; i < response.body.length; i++) {
           var duty = response.body[i];
-          var schedule = later.parse.cron(duty.cronRecurrence);
-          var ocurrences = later.schedule(schedule).next(20, Date.now(), new Date('2017-04-13'));
+          var schedule = later.parse.cron(duty.cronRecurrence, true);
+          var ocurrences = later.schedule(schedule).next(20, Date.now(), new Date('2017-04-30'));
 
           for (var j = 0; j < ocurrences.length; j++) {
             this.duties.push({
