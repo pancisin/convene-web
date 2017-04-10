@@ -24,8 +24,8 @@ Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 
 Vue.config.devtools = true;
-// Vue.http.options.root = 'http://104.251.219.31:8080/employger'
-Vue.http.options.root = 'http://localhost:8180'
+Vue.http.options.root = 'http://104.251.219.31:8080/employger'
+// Vue.http.options.root = 'http://localhost:8180'
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());
