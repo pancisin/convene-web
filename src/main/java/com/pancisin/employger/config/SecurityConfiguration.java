@@ -52,6 +52,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
-		httpSecurity.headers().cacheControl();
+		httpSecurity.headers().cacheControl().disable();
 	}
 }
