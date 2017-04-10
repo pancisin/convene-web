@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-md-9">
       <div class="card card-mini">
         <div class="card-header">
-          <div class="card-title">Duties</div>
+          <div class="card-title">{{ $tc('duty.default', 2) }}</div>
           <ul class="card-action">
             <li>
               <a href="javascript:;" @click="fetchData">
@@ -22,11 +22,11 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <th>Customer</th>
-                <th>Location</th>
-                <th>Closest occurrence</th>
-                <th class="text-center">Tasks</th>
-                <th>Employees</th>
+                <th>{{ $tc('customer.default', 1) }}</th>
+                <th>{{ $t('duty.location') }}</th>
+                <th>{{ $t('duty.closest_occ') }}</th>
+                <th class="text-center">{{ $t('duty.tasks') }}</th>
+                <th>{{ $tc('employee.default', 2) }}</th>
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
@@ -66,13 +66,13 @@
     <div class="col-xs-12 col-md-3">
       <div class="card card-mini">
         <div class="card-header">
-          <div class="card-title">Customers</div>
+          <div class="card-title">{{ $tc('customer.default', 2) }}</div>
         </div>
         <div class="card-body no-padding table-responsive">
           <table class="table card-table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>{{ $t('customer.name') }}</th>
                 <th class="text-center">Report</th>
               </tr>
             </thead>

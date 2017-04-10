@@ -21,7 +21,7 @@
                 <i class="fa fa-tasks"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Dashboard</div>
+              <div class="title">{{ $t('menu.dashboard') }}</div>
             </router-link>
           </li>
           <li>
@@ -30,7 +30,7 @@
                 <i class="fa fa-suitcase"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Work management</div>
+              <div class="title">{{ $t('menu.work_management') }}</div>
             </router-link>
           </li>
           <li>
@@ -39,7 +39,7 @@
                 <i class="fa fa-users"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Employees</div>
+              <div class="title">{{ $t('menu.employees') }}</div>
             </router-link>
           </li>
           <li>
@@ -48,7 +48,7 @@
                 <i class="fa fa-users"
                    aria-hidden="true"></i>
               </div>
-              <div class="title">Customers</div>
+              <div class="title">{{ $t('menu.customers') }}</div>
             </router-link>
           </li>
         </ul>
@@ -64,6 +64,11 @@
             </a>
           </li>
           <li>
+            <select @change="switchLanguage">
+              <option value="en">English</option>
+              <option value="sk">Slovak</option>
+            </select>
+
             <a href="#">
               <span class="flag-icon flag-icon-th flag-icon-squared"></span>
             </a>
@@ -90,5 +95,10 @@ export default {
   components: {
     headerComponent: HeaderComponent,
   },
+  methods: {
+    switchLanguage: function(e) {
+      this.$i18n.locale = e.target.value;
+    }
+  }
 }
 </script>

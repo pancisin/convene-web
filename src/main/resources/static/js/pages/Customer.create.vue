@@ -12,35 +12,35 @@
                 <input type="text"
                        v-model="customer.name"
                        class="form-control"
-                       placeholder="Name">
+                       :placeholder="$t('customer.name')">
                 <input type="text"
                        v-model="customer.address"
                        class="form-control"
-                       placeholder="Address">
+                       :placeholder="$t('customer.address')">
                 <textarea v-model="customer.description"
                           class="form-control"
-                          placeholder="Description"></textarea>
+                          :placeholder="$t('customer.description')"></textarea>
               </div>
               <div class="col-md-6">
                 <div class="section">
                   <div class="section-title">
-                    Contact person
+                    {{ $t('customer.person.default') }}
                   </div>
                   <div class="section-body">
                     <input type="text"
                            v-model="customer.person"
                            class="form-control"
-                           placeholder="Firstname and lastname">
+                           :placeholder="$t('customer.person.name')">
                     <input type="email"
                            v-model="customer.email"
                            class="form-control"
-                           placeholder="Email">
+                           :placeholder="$t('customer.person.email')">
                     <div class="checkbox">
                       <input type="checkbox"
                              v-model="customer.report.active"
                              id="report-active-checkbox">
                       <label for="report-active-checkbox">
-                        Send automatic report via email
+                        {{ $t('customer.report.active') }}
                       </label>
                     </div>
                   </div>
@@ -51,7 +51,7 @@
             <div class="section"
                  v-if="customer.report.active">
               <div class="section-title">
-                Automatic report settings
+                {{ $t('customer.report.default') }}
               </div>
               <div class="section-body">
                 <div class="row">
@@ -79,12 +79,12 @@
                 <div class="col-md-9 col-md-offset-3">
                   <button type="submit"
                           class="btn btn-primary">
-                    <span v-if="edit_mode">Update and close</span>
-                    <span v-else>Create</span>
+                    <span v-if="edit_mode">{{ $t('actions.update_close') }}</span>
+                    <span v-else>{{ $t('actions.create') }}</span>
                   </button>
                   <button type="button"
                           class="btn btn-default"
-                          @click="$router.go(-1)">Cancel</button>
+                          @click="$router.go(-1)">{{ $t('actions.cancel') }}</button>
                 </div>
               </div>
             </div>

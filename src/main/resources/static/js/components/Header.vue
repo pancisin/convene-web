@@ -31,7 +31,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
   
-          <li class="dropdown notification">
+          <!--<li class="dropdown notification">
             <a href="#"
                class="dropdown-toggle"
                data-toggle="dropdown">
@@ -85,7 +85,7 @@
                 </li>
               </ul>
             </div>
-          </li>
+          </li>-->
   
           <li class="dropdown profile"
               v-if="$store.state.user != null">
@@ -94,7 +94,7 @@
                data-toggle="dropdown">
               <div class="icon"><i class="fa fa-cog fa-2x"
                    aria-hidden="true"></i></div>
-              <div class="title">Settings</div>
+              <div class="title">{{ $t('settings.default') }}</div>
             </a>
   
             <div class="dropdown-menu">
@@ -104,14 +104,14 @@
               <ul class="action">
                 <!--<li><router-link to="/licenses"> License & Billing </router-link></li>-->
                 <li>
-                  <router-link to="/account"> Account </router-link>
+                  <router-link to="/account">{{ $t('settings.account') }}</router-link>
                 </li>
                 <li>
-                  <router-link to="/company"> Company </router-link>
+                  <router-link to="/company">{{ $t('settings.company') }}</router-link>
                 </li>
                 <li>
                   <a href="javascript:;"
-                     @click="logout"> Logout </a>
+                     @click="logout">{{ $t('settings.logout' )}}</a>
                 </li>
               </ul>
             </div>

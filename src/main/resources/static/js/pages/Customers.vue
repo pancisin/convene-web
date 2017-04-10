@@ -3,7 +3,7 @@
     <div class="col-xs-12">
       <div class="card card-mini">
         <div class="card-header">
-          <div class="card-title">Customers</div>
+          <div class="card-title">{{ $tc('customer.default', 2) }}</div>
           <ul class="card-action">
             <li>
               <a @click="getCustomers">
@@ -21,18 +21,15 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Contact person</th>
-                <th>Contact email</th>
-                <th>Description</th>
+                <th>{{ $t('customer.name') }}</th>
+                <th>{{ $t('customer.person.default') }}</th>
+                <th>{{ $t('customer.email') }}</th>
+                <th>{{ $t('customer.description') }}</th>
                 <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="cust in customers">
-                <th scope="row"
-                    v-text="cust.id"></th>
                 <td>
                   <router-link :to="'/customers/' + cust.id" class="btn-link">
                     {{ cust.name }}
