@@ -8,7 +8,7 @@
                 @submit.prevent="submitCustomer">
   
             <div class="row">
-              <div class="col-md-2">
+              <div class="col-md-6">
                 <input type="text"
                        v-model="customer.name"
                        class="form-control"
@@ -21,7 +21,7 @@
                           class="form-control"
                           placeholder="Description"></textarea>
               </div>
-              <div class="col-md-10">
+              <div class="col-md-6">
                 <div class="section">
                   <div class="section-title">
                     Contact person
@@ -55,7 +55,7 @@
               </div>
               <div class="section-body">
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-2">
                     <div class="radio"
                          v-for="period in periods">
                       <input type="radio"
@@ -67,7 +67,7 @@
                       </label>
                     </div>
                   </div>
-                  <div class="col-md-8">
+                  <div class="col-md-10">
                     <recurrence-input :recurrence="customer.report.recurrence"></recurrence-input>
                   </div>
                 </div>
@@ -128,21 +128,21 @@ export default {
     if (customer_id != null) {
       this.$http.get('api/customer/' + customer_id).then(response => {
         this.customer = response.body;
-
-        if (this.customer.report == null)
-          this.customer.report = {
-            active: false,
-            recurrence: {
-              minute: [0],
-              hour: [0],
-              day: [],
-              month: [],
-              dayOfWeek: [],
-              weekOfMonth: []
-            },
-          }
       })
     };
+
+    if (this.customer.report == null)
+      this.customer.report = {
+        active: false,
+        recurrence: {
+          minute: [0],
+          hour: [0],
+          day: [],
+          month: [],
+          dayOfWeek: [],
+          weekOfMonth: []
+        },
+      }
     this.fetchPeriods();
   },
   methods: {

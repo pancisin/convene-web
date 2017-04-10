@@ -1,6 +1,7 @@
 package com.pancisin.employger.models;
 
 import java.security.InvalidParameterException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -81,28 +82,28 @@ public class Duty {
 	}
 	
 	@JsonIgnore
-	public List<Date> getNextOcurrences(int count, Date currentIteration) {
+	public List<Date> getNextOcurrences(int count, Date currentIteration) throws ParseException {
 		List<Date> ocurrences = new ArrayList<Date>();
-		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
+		org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
+
 		for (int i = 0; i < count; i++) {
-			currentIteration = cron.next(currentIteration);
+			currentIteration = cron.getNextValidTimeAfter(currentIteration);
 			ocurrences.add(currentIteration);
 		}
 		return ocurrences;
 	}
 	
 	@JsonIgnore
-	public List<Date> getOcurrencesInRange(Date start, Date end) {
+	public List<Date> getOcurrencesInRange(Date start, Date end) throws ParseException {
 		if (start.compareTo(end) > 0) 
 			throw new InvalidParameterException();
 		
 		List<Date> ocurrences = new ArrayList<Date>();
-		CronSequenceGenerator cron = new CronSequenceGenerator("0 " + this.getCronRecurrence());
-
+		org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
 		Date iteration = start;
 		
 		do {
-			iteration = cron.next(iteration);
+			iteration = cron.getNextValidTimeAfter(iteration);
 			ocurrences.add(iteration);
 		} while (iteration.compareTo(end) < 0);
 		

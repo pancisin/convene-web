@@ -121,8 +121,13 @@ export default {
       });
     },
     getClosestOccurrence: function (duty) {
-      var occurrence = later.parse.cron(duty.cronRecurrence);
-      return later.schedule(occurrence).next(1);
+      var schedule = {
+        schedules: [
+          duty.recurrence,
+        ]
+      }
+      // var occurrence = later.parse.cron('0 ' + duty.cronRecurrence, true);
+      return later.schedule(schedule).next(1);
     }
   }
 }

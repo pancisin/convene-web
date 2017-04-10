@@ -1,6 +1,7 @@
 package com.pancisin.employger.controllers;
 
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ public class ReportController {
 	
 	@GetMapping("/customer/{customer_id}")
 	public void getCustomerReport(@PathVariable Long customer_id, HttpServletResponse response,
-			OutputStream outputStream) throws DocumentException {
+			OutputStream outputStream) throws DocumentException, ParseException {
 		Customer customer = customerRepository.findOne(customer_id);
 		
 		response.setContentType("application/pdf");
@@ -77,7 +78,7 @@ public class ReportController {
 
 	@GetMapping("/duty/{duty_id}")
 	public void something(@PathVariable Long duty_id, HttpServletResponse response, OutputStream outputStream)
-			throws DocumentException {
+			throws DocumentException, ParseException {
 		Duty duty = dutyRepository.findOne(duty_id);
 
 		response.setContentType("application/pdf");

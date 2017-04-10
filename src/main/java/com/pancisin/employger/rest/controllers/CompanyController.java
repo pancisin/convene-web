@@ -168,7 +168,7 @@ public class CompanyController {
 		try {
 			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
 			for (Duty duty : company.getDuties()) {
-				CronSequenceGenerator cron = new CronSequenceGenerator("0 " + duty.getCronRecurrence());
+				CronSequenceGenerator cron = new CronSequenceGenerator(duty.getCronRecurrence());
 				if (cron.next(new Date()).before(dateTo))
 					result.add(duty);
 			}
