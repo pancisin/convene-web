@@ -30,7 +30,8 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <select @change="switchLanguage">
+          <select @change="switchLanguage"
+                  class="form-control">
             <option value="en">English</option>
             <option value="sk">Slovak</option>
           </select>

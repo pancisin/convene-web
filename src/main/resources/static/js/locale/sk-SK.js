@@ -11,11 +11,26 @@ export default {
     company: "Spoločnosť",
     logout: "Odhlásiť sa"
   },
+  account: {
+    firstName: "Meno",
+    lastName: "Priezvisko",
+    email: "Email",
+    password: "Heslo",
+    confirm_password: "Zopakujte heslo",
+  },
+  register: {
+    already: "Ste uź v systéme registrovaný ?",
+    not_yet: "Ešte stále nemáte vytvorený účet ?"
+  },
   actions: {
     update_close: "Upraviť a zavrieť",
     create: "Vytvoriť",
     update: "Aktualizovať",
-    cancel: "Zrušiť"
+    cancel: "Zrušiť",
+    logging: "Prihlasujem...",
+    login: "Prihlásiť sa",
+    register: "Registruj",
+    registering: "Registrujem..."
   },
   company: {
     default: "Spoločnosť",

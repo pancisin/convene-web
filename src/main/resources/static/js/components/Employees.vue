@@ -1,6 +1,6 @@
   <template>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-4">
       <div class="card card-mini">
         <div class="card-header">
           <div class="card-title">{{ $tc('employee.default', 2) }}</div>
@@ -21,20 +21,17 @@
           <table class="table card-table">
             <thead>
               <tr>
-                <th>#</th>
                 <th>{{ $t('employee.name') }}</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="emp in employees">
-                <th scope="row"
-                    v-text="emp.id"></th>
                 <td>
                   <a class="btn-link"
                      @click="editEmployee(emp)">{{ emp.firstName }} {{ emp.lastName }} </a>
                 </td>
-                <td>
+                <td class="text-center">
                   <a @click="deleteEmployee(emp.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 </td>
               </tr>

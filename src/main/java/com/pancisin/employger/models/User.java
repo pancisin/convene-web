@@ -1,5 +1,6 @@
 package com.pancisin.employger.models;
 
+import java.util.Calendar;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -61,6 +62,9 @@ public class User implements UserDetails {
 	@Column(name = "locked")
 	private boolean locked;
 
+	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Calendar created;
+	
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
@@ -185,5 +189,9 @@ public class User implements UserDetails {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+
+	public Calendar getCreated() {
+		return created;
 	}
 }

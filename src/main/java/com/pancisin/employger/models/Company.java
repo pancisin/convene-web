@@ -1,5 +1,6 @@
 package com.pancisin.employger.models;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,9 +28,11 @@ public class Company {
 	private Long id;
 
 	@Column
+	@NotEmpty
 	private String name;
 	
 	@Column(unique = true)
+	@NotEmpty
 	private String ico;
 
 	@Column()
@@ -63,6 +67,9 @@ public class Company {
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Customer> customers;
+	
+	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Calendar created;
 	
 	public String getName() {
 		return name;
@@ -142,5 +149,9 @@ public class Company {
 
 	public void setCustomers(List<Customer> customers) {
 		this.customers = customers;
+	}
+
+	public Calendar getCreated() {
+		return created;
 	}
 }

@@ -14,7 +14,7 @@
               <div class="sk-cube3 sk-cube"></div>
             </div>
           </div>
-          <div class="title">Logging in...</div>
+          <div class="title">{{ $t('actions.logging') }}</div>
         </div>
   
         <div class="app-block">
@@ -31,7 +31,7 @@
                 <input type="email"
                        name="email"
                        class="form-control"
-                       placeholder="Username"
+                       :placeholder="$t('account.email')"
                        aria-describedby="basic-addon1"
                        v-model="user.email">
               </div>
@@ -41,16 +41,19 @@
                 <input type="password"
                        name="password"
                        class="form-control"
-                       placeholder="Password"
+                       :placeholder="$t('account.password')"
                        aria-describedby="basic-addon2"
                        v-model="user.password">
               </div>
               <div class="text-center">
                 <input type="submit"
                        class="btn btn-success btn-submit"
-                       value="Login">
+                       :value="$t('actions.login')">
               </div>
             </form>
+            <div class="form-suggestion">{{ $t('register.not_yet') }}
+              <router-link to="/register">{{ $t('actions.register') }}</router-link>
+            </div>
           </div>
         </div>
       </div>

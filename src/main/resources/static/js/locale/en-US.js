@@ -11,11 +11,26 @@ export default {
     company: "Company",
     logout: "Logout"
   },
+  account: {
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Email",
+    password: "Password",
+    confirm_password: "Confirm password",
+  },
+  register: {
+    already: "Do you already have an account ?",
+    not_yet: "Still haven't got an account ?"
+  },
   actions: {
     update_close: "Update and close",
     create: "Create",
     update: "Update",
-    cancel: "Cancel"
+    cancel: "Cancel",
+    logging: "Logging in...",
+    login: "Sign in",
+    register: "Sign up",
+    registering: "Registering..."
   },
   company: {
     default: "Company",
@@ -51,7 +66,7 @@ export default {
     description: "Description",
     start_date: "Start date",
     end_date: "End date",
-    
+
     closest_occ: "Closest occurrence",
     tasks: "Tasks",
 

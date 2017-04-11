@@ -14,7 +14,7 @@
               <div class="sk-cube3 sk-cube"></div>
             </div>
           </div>
-          <div class="title">Registering...</div>
+          <div class="title">{{ $t('actions.registering') }}</div>
         </div>
   
         <div class="app-block">
@@ -73,7 +73,7 @@
               </ul>
             </div>
   
-            <div class="form-suggestion">Create an account for free. And pay later.</div>
+            <!--<div class="form-suggestion">Create an account for free. And pay later.</div>-->
   
             <form @submit.prevent="submit">
               <div class="input-group">
@@ -81,35 +81,35 @@
                 <input type="text"
                        v-model="user.firstName"
                        class="form-control"
-                       placeholder="First name">
+                       :placeholder="$t('account.firstName')">
               </div>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
                 <input type="text"
                        v-model="user.lastName"
                        class="form-control"
-                       placeholder="Last name">
+                       :placeholder="$t('account.lastName')">
               </div>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
                 <input type="email"
                        v-model="user.email"
                        class="form-control"
-                       placeholder="Email">
+                       :placeholder="$t('account.email')">
               </div>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
                 <input type="password"
                        v-model="user.password"
                        class="form-control"
-                       placeholder="Password">
+                       :placeholder="$t('account.password')">
               </div>
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-check" aria-hidden="true"></i></span>
                 <input type="password"
                        v-model="user.passwordConfirm"
                        class="form-control"
-                       placeholder="Confirm Password">
+                       :placeholder="$t('account.confirm_password')">
               </div>
   
               <div class="form-line">
@@ -121,7 +121,7 @@
                 <input type="text"
                        v-model="user.company.name"
                        class="form-control"
-                       placeholder="Name">
+                       :placeholder="$t('company.name')">
               </div>
   
               <div class="input-group">
@@ -129,15 +129,19 @@
                 <input type="number"
                        v-model="user.company.ico"
                        class="form-control"
-                       placeholder="ICO">
+                       :placeholder="$t('company.ico')">
               </div>
   
               <div class="text-center">
                 <input type="submit"
                        class="btn btn-success btn-submit"
-                       value="Register" />
+                       :value="$t('actions.register')" />
               </div>
             </form>
+  
+            <div class="form-suggestion">{{ $t('register.already') }}
+              <router-link to="/login">{{ $t('actions.login') }}</router-link>
+            </div>
           </div>
   
         </div>
