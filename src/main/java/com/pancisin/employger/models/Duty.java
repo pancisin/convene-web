@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ import org.springframework.scheduling.support.CronSequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.employger.repository.converters.CronConverter;
+import com.pancisin.employger.rest.controllers.objects.DutyInstance;
 
 @Entity
 @Table(name = "duties")
@@ -73,6 +75,10 @@ public class Duty {
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "duty")
+	private List<DutyClause> clauses;
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Duty))
@@ -197,5 +203,9 @@ public class Duty {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public List<DutyClause> getClauses() {
+		return clauses;
 	}
 }

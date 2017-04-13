@@ -12,14 +12,23 @@
                 <th>#</th>
                 <th>Date</th>
                 <th>Location</th>
+                <th>Clause</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="d in duties">
+              <tr v-for="inst in instances"
+                  :class="{ 'warning' : inst.clause != null }">
                 <th scope="row"
-                    v-text="d.duty.id"></th>
-                <td>{{ d.date | moment("dddd, DD.MM.YYYY") }}</td>
-                <td v-text="d.duty.location"></td>
+                    v-text="inst.duty.id"></th>
+                <td>
+                  {{ inst.date | moment("dddd, DD.MM.YYYY") }}
+                </td>
+                <td v-text="inst.duty.location"></td>
+                <td>
+                  <span v-if="inst.clause != null">
+                      Clause Here !
+                    </span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -45,7 +54,7 @@ export default {
   name: 'dashboard',
   data: function () {
     return {
-      duties: [],
+      instances: [],
     }
   },
   created: function () {
@@ -53,25 +62,27 @@ export default {
   },
   methods: {
     fetchDuties: function () {
-      var url = ['api/company', this.$store.getters.company_id, 'duties', '2017-04-13'].join('/');
+      var url = ['api/company', this.$store.getters.company_id, 'instances', '2017-04-20'].join('/');
       this.$http.get(url).then(response => {
 
-        for (var i = 0; i < response.body.length; i++) {
-          var duty = response.body[i];
-          var schedule = later.parse.cron(duty.cronRecurrence, true);
-          var ocurrences = later.schedule(schedule).next(20, Date.now(), new Date('2017-04-30'));
+        // for (var i = 0; i < response.body.length; i++) {
+        //   var duty = response.body[i];
+        //   var schedule = later.parse.cron(duty.cronRecurrence, true);
+        //   var ocurrences = later.schedule(schedule).next(20, Date.now(), new Date('2017-04-30'));
 
-          for (var j = 0; j < ocurrences.length; j++) {
-            this.duties.push({
-              duty,
-              date: ocurrences[j]
-            });
-          }
-        }
+        //   for (var j = 0; j < ocurrences.length; j++) {
+        //     this.duties.push({
+        //       duty,
+        //       date: ocurrences[j]
+        //     });
+        //   }
+        // }
 
-        this.duties.sort((a, b) => {
-          return new Date(a.date) > new Date(b.date);
-        })
+        // this.duties.sort((a, b) => {
+        //   return new Date(a.date) - new Date(b.date);
+        // })
+
+        this.instances = response.body;
       });
     },
   }

@@ -31,12 +31,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Customer;
 import com.pancisin.employger.models.Duty;
+import com.pancisin.employger.models.DutyClause;
 import com.pancisin.employger.models.Employee;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.CustomerRepository;
+import com.pancisin.employger.repository.DutyClauseRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
+import com.pancisin.employger.rest.controllers.objects.DutyInstance;
 
 @RestController
 @RequestMapping("/api/company")
@@ -52,11 +55,14 @@ public class CompanyController {
 	private DutyRepository dutyRepository;
 
 	@Autowired
+	private DutyClauseRepository clauseRepository;
+
+	@Autowired
 	private EmployeeRepository employeeRepository;
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@GetMapping("/")
 	public ResponseEntity<?> getCompanies() {
 		return ResponseEntity.ok(companyRepository.findAll());
@@ -169,6 +175,34 @@ public class CompanyController {
 				List<Date> occ = duty.getNextOcurrences(1, new Date());
 				if (occ.size() > 0 && occ.get(0).before(dateTo))
 					result.add(duty);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/{company_id}/instances/{date_to}")
+	public ResponseEntity<?> getDutyInstances(@PathVariable Long company_id,
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
+		Company company = companyRepository.findOne(company_id);
+		List<DutyInstance> result = new ArrayList<DutyInstance>();
+
+		Date dateTo;
+		try {
+			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
+			for (Duty duty : company.getDuties()) {
+				List<Date> occ = duty.getOcurrencesInRange(new Date(), dateTo);
+
+				for (Date occurence : occ) {
+					DutyClause clause = clauseRepository.find(duty, occurence);
+					DutyInstance inst = new DutyInstance();
+					inst.setDate(clause == null ? occurence : clause.getAlternativeDate());
+					inst.setDuty(duty);
+					inst.setClause(clause);
+					result.add(inst);
+				}
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
