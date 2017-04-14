@@ -8,12 +8,13 @@
               Calendar
             </div>
             <div class="card-body">
-              <calendar :events="instances"></calendar>
+              <calendar></calendar>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row"
+           v-show="false">
         <div class="col-md-8">
           <div class="card card-mini">
             <div class="card-header">
@@ -41,8 +42,8 @@
                     <td v-text="inst.duty.location"></td>
                     <td>
                       <span v-if="inst.clause != null">
-                                Clause Here !
-                              </span>
+                                  Clause Here !
+                                </span>
                     </td>
                   </tr>
                 </tbody>
@@ -69,42 +70,8 @@ import calendar from '../elements/Calendar.vue'
 
 export default {
   name: 'dashboard',
-  data: function () {
-    return {
-      instances: [],
-    }
-  },
-  created: function () {
-    this.fetchDuties();
-  },
   components: {
     calendar,
   },
-  methods: {
-    fetchDuties: function () {
-      var url = ['api/company', this.$store.getters.company_id, 'instances', '2017-04-20'].join('/');
-      this.$http.get(url).then(response => {
-
-        // for (var i = 0; i < response.body.length; i++) {
-        //   var duty = response.body[i];
-        //   var schedule = later.parse.cron(duty.cronRecurrence, true);
-        //   var ocurrences = later.schedule(schedule).next(20, Date.now(), new Date('2017-04-30'));
-
-        //   for (var j = 0; j < ocurrences.length; j++) {
-        //     this.duties.push({
-        //       duty,
-        //       date: ocurrences[j]
-        //     });
-        //   }
-        // }
-
-        // this.duties.sort((a, b) => {
-        //   return new Date(a.date) - new Date(b.date);
-        // })
-
-        this.instances = response.body;
-      });
-    },
-  }
 }
 </script>

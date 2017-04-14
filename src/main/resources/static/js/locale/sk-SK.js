@@ -32,6 +32,10 @@ export default {
     register: "Registruj",
     registering: "Registrujem..."
   },
+  calendar: {
+    next: "Nasledujúci",
+    prev: "Predchádzajúci",
+  },
   company: {
     default: "Spoločnosť",
     ico: "IČO",

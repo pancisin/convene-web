@@ -3,13 +3,13 @@
        v-if="recurrence != null">
     <div class="col-md-2">
       <div class="checkbox"
-           v-for="day in weekDays">
+           v-for="day in weekdays">
         <input type="checkbox"
-               :id="day.id + '-input'"
+               :id="day + '-input'"
                v-model="recurrence.dayOfWeek"
-               :value="day.id">
-        <label :for="day.id + '-input'"
-               v-text="day.label"></label>
+               :value="weekdays.indexOf(day)">
+        <label :for="day + '-input'"
+               v-text="day"></label>
       </div>
     </div>
     <div class="col-md-2">
@@ -27,11 +27,11 @@
       <div class="checkbox"
            v-for="month in months">
         <input type="checkbox"
-               :id="'month-' + month.id + '-input'"
+               :id="'month-' + month + '-input'"
                v-model="recurrence.month"
-               :value="month.id">
-        <label :for="'month-' + month.id + '-input'"
-               v-text="month.label"></label>
+               :value="months.indexOf(month)">
+        <label :for="'month-' + month + '-input'"
+               v-text="month"></label>
       </div>
     </div>
     <div class="col-md-2">
@@ -42,7 +42,9 @@
   </div>
 </template>
 <script>
-import later from 'later';
+import moment from "moment"
+import later from 'later'
+
 export default {
   props: {
     recurrence: {
@@ -61,89 +63,21 @@ export default {
       }
     }
   },
-  data: () => {
-    return {
-      weekDays: [
-        {
-          id: 1,
-          label: 'Monday'
-        },
-        {
-          id: 2,
-          label: 'Tuesday'
-        },
-        {
-          id: 3,
-          label: 'Wednesday'
-        },
-        {
-          id: 4,
-          label: 'Thursday'
-        },
-        {
-          id: 5,
-          label: 'Friday'
-        },
-        {
-          id: 6,
-          label: 'Satuday'
-        },
-        {
-          id: 7,
-          label: 'Sunday'
-        }
-      ],
-      months: [
-        {
-          id: 1,
-          label: 'January'
-        },
-        {
-          id: 2,
-          label: 'February'
-        },
-        {
-          id: 3,
-          label: 'March'
-        },
-        {
-          id: 4,
-          label: 'April'
-        },
-        {
-          id: 5,
-          label: 'May'
-        },
-        {
-          id: 6,
-          label: 'June'
-        },
-        {
-          id: 7,
-          label: 'July'
-        },
-        {
-          id: 8,
-          label: 'August'
-        },
-        {
-          id: 9,
-          label: 'September'
-        },
-        {
-          id: 10,
-          label: 'October'
-        },
-        {
-          id: 11,
-          label: 'November'
-        },
-        {
-          id: 12,
-          label: 'December'
-        },
-      ]
+  computed: {
+    weekdays: function () {
+      var wkds = moment.weekdays();
+      wkds.push(wkds.shift());
+      return wkds;
+    },
+    months: () => {
+      return moment.months();
     }
-  }
+  },
 }
 </script>
+
+<style lang="less">
+.checkbox label {
+  text-transform: capitalize;
+}
+</style>

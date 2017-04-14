@@ -183,17 +183,21 @@ public class CompanyController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/{company_id}/instances/{date_to}")
+	@GetMapping("/{company_id}/instances/{date_from}/{date_to}")
 	public ResponseEntity<?> getDutyInstances(@PathVariable Long company_id,
-			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to,
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_from) {
 		Company company = companyRepository.findOne(company_id);
 		List<DutyInstance> result = new ArrayList<DutyInstance>();
 
 		Date dateTo;
+		Date dateFrom;
 		try {
 			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
+			dateFrom = new SimpleDateFormat("y-M-d").parse(date_from);
+			
 			for (Duty duty : company.getDuties()) {
-				List<Date> occ = duty.getOcurrencesInRange(new Date(), dateTo);
+				List<Date> occ = duty.getOcurrencesInRange(dateFrom, dateTo);
 
 				for (Date occurence : occ) {
 					DutyClause clause = clauseRepository.find(duty, occurence);
