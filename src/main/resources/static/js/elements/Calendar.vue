@@ -85,7 +85,7 @@ export default {
             timestamp: start.valueOf(),
             month: start.month(),
             instances: instances.filter(elem => {
-              return moment(elem.date).date() == start.date();
+              return moment(elem.date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD');
             })
           });
 
@@ -115,14 +115,11 @@ export default {
           return elem.duty.id != self.dragElem.duty.id;
         });
 
-        console.log(day.timestamp);
-
         this.storeClause(this.dragElem, day.timestamp).then(clause => {
           this.dragElem.clause = clause;
-
-          self.dragSource = null;
-          self.dragElem = null;
-          self.$forceUpdate();
+          this.dragSource = null;
+          this.dragElem = null;
+          this.$forceUpdate();
         });
       }
     },
