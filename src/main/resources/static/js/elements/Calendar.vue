@@ -129,7 +129,7 @@ export default {
 
         this.$http.post(url, {
           id: instance.clause != null ? instance.clause.id : null,
-          primaryDate: instance.date,
+          primaryDate: instance.clause != null ? instance.clause.primaryDate : instance.date,
           alternativeDate: alternative_date,
         }).then(response => {
           resolve(response.body);
