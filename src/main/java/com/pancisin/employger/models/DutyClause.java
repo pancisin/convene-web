@@ -1,6 +1,6 @@
 package com.pancisin.employger.models;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,10 +25,10 @@ public class DutyClause {
 	private Duty duty;
 	
 	@Column(name = "primary_date")
-	private Date primaryDate;
+	private Calendar primaryDate;
 	
 	@Column(name = "alternative_date")
-	private Date alternativeDate;
+	private Calendar alternativeDate;
 
 	public Long getId() {
 		return id;
@@ -37,20 +37,20 @@ public class DutyClause {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Date getPrimaryDate() {
+	
+	public Calendar getPrimaryDate() {
 		return primaryDate;
 	}
 
-	public void setPrimaryDate(Date primaryDate) {
+	public void setPrimaryDate(Calendar primaryDate) {
 		this.primaryDate = primaryDate;
 	}
 
-	public Date getAlternativeDate() {
+	public Calendar getAlternativeDate() {
 		return alternativeDate;
 	}
 
-	public void setAlternativeDate(Date alternativeDate) {
+	public void setAlternativeDate(Calendar alternativeDate) {
 		this.alternativeDate = alternativeDate;
 	}
 

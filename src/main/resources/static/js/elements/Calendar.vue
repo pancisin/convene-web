@@ -18,13 +18,17 @@
       </thead>
       <tbody>
         <tr v-for="week in weeks">
-          <td v-for="day in week" :class="{ 'current' : isCurrent(day.day, day.month) }">
+          <td v-for="day in week"
+              :class="{ 'current' : isCurrent(day.day, day.month) }">
             <span class="monthday"
                   v-text="day.day"></span>
-            <ul>
+            <ul @dragover.prevent
+                @drop="drop(day)">
               <li v-for="instance in day.instances"
                   v-text="instance.duty.location"
-                  :class="{ 'edited' : instance.clause != null }">
+                  :class="{ 'edited' : instance.clause != null }"
+                  draggable="true"
+                  v-on:dragstart="dragstart(instance, day)">
               </li>
             </ul>
           </td>
@@ -41,6 +45,8 @@ export default {
     return {
       weeks: [],
       month: moment().month(),
+      dragElem: null,
+      dragSource: null,
     }
   },
   computed: {
@@ -66,13 +72,17 @@ export default {
       this.$http.get(url).then(response => {
         var instances = response.body;
         this.weeks = [];
+        var first_week = start.week();
 
         while (start.diff(end, 'days') < 1) {
-          if (this.weeks[start.week()] == null)
-            this.weeks[start.week()] = [];
+          var week_index = start.week() - first_week;
 
-          this.weeks[start.week()].push({
+          if (this.weeks[week_index] == null)
+            this.weeks[week_index] = [];
+
+          this.weeks[week_index].push({
             day: start.date(),
+            timestamp: start.valueOf(),
             month: start.month(),
             instances: instances.filter(elem => {
               return moment(elem.date).date() == start.date();
@@ -88,8 +98,48 @@ export default {
       this.month += i;
       this.updateCalendar();
     },
-    isCurrent: function(day, month) {
+    isCurrent: function (day, month) {
       return moment().date() == day && moment().month() == month;
+    },
+    dragstart: function (inst, source_day) {
+      this.dragElem = inst;
+      this.dragSource = source_day;
+    },
+    drop: function (day) {
+      var self = this;
+      if (day.instances.filter(elem => {
+        return elem.duty.id == self.dragElem.duty.id;
+      }) == 0) {
+        day.instances.push(this.dragElem);
+        this.dragSource.instances = this.dragSource.instances.filter(elem => {
+          return elem.duty.id != self.dragElem.duty.id;
+        });
+
+        console.log(day.timestamp);
+
+        this.storeClause(this.dragElem, day.timestamp).then(clause => {
+          this.dragElem.clause = clause;
+
+          self.dragSource = null;
+          self.dragElem = null;
+          self.$forceUpdate();
+        });
+      }
+    },
+    storeClause: function (instance, alternative_date) {
+      return new Promise((resolve, reject) => {
+        var url = ['api/duty', instance.duty.id, 'clause'].join('/');
+
+        this.$http.post(url, {
+          id: instance.clause != null ? instance.clause.id : null,
+          primaryDate: instance.date,
+          alternativeDate: alternative_date,
+        }).then(response => {
+          resolve(response.body);
+        }, response => {
+          reject();
+        });
+      })
     }
   }
 }
@@ -115,7 +165,6 @@ table.calendar-table {
 
   td {
     border: 1px solid #ccc;
-    height: 140px;
     vertical-align: top;
     transition: background-color .3s ease;
     position: relative;
@@ -134,6 +183,7 @@ table.calendar-table {
     ul {
       padding-left: 0;
       list-style: none;
+      min-height: 100px;
 
       li {
         background: #51d17d;

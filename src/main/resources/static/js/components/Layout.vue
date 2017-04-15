@@ -57,7 +57,7 @@
   
     <div class="app-container">
       <header-component></header-component>
-      <transition name="fade"
+      <transition name="fade-down"
                   mode="out-in">
         <router-view></router-view>
       </transition>

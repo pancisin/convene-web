@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -186,30 +187,23 @@ public class CompanyController {
 	@GetMapping("/{company_id}/instances/{date_from}/{date_to}")
 	public ResponseEntity<?> getDutyInstances(@PathVariable Long company_id,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to,
-			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_from) {
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_from) throws ParseException {
 		Company company = companyRepository.findOne(company_id);
 		List<DutyInstance> result = new ArrayList<DutyInstance>();
 
-		Date dateTo;
-		Date dateFrom;
-		try {
-			dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
-			dateFrom = new SimpleDateFormat("y-M-d").parse(date_from);
-			
-			for (Duty duty : company.getDuties()) {
-				List<Date> occ = duty.getOcurrencesInRange(dateFrom, dateTo);
+		Date dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
+		Date dateFrom = new SimpleDateFormat("y-M-d").parse(date_from);
 
-				for (Date occurence : occ) {
-					DutyClause clause = clauseRepository.find(duty, occurence);
-					DutyInstance inst = new DutyInstance();
-					inst.setDate(clause == null ? occurence : clause.getAlternativeDate());
-					inst.setDuty(duty);
-					inst.setClause(clause);
-					result.add(inst);
-				}
+		for (Duty duty : company.getDuties()) {
+			List<Date> occ = duty.getOcurrencesInRange(dateFrom, dateTo);
+
+			for (Date occurence : occ) {
+				DutyClause clause = clauseRepository.find(duty, occurence);
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(occurence);
+				DutyInstance inst = new DutyInstance(duty, clause == null ? cal : clause.getAlternativeDate(), clause);
+				result.add(inst);
 			}
-		} catch (ParseException e) {
-			e.printStackTrace();
 		}
 
 		return ResponseEntity.ok(result);

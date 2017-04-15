@@ -1,6 +1,6 @@
 package com.pancisin.employger.rest.controllers.objects;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.DutyClause;
@@ -8,8 +8,15 @@ import com.pancisin.employger.models.DutyClause;
 public class DutyInstance {
 
 	private Duty duty;
-	private Date date;
+	private Calendar date;
 	private DutyClause clause;
+	
+	
+	public DutyInstance(Duty duty, Calendar date, DutyClause clause) {
+		this.duty = duty;
+		this.date = date;
+		this.clause = clause;
+	}
 	
 	public boolean hasClause() {
 		return clause != null;
@@ -23,11 +30,11 @@ public class DutyInstance {
 		this.duty = duty;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
 

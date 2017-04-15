@@ -7,7 +7,7 @@
         <input type="checkbox"
                :id="day + '-input'"
                v-model="recurrence.dayOfWeek"
-               :value="weekdays.indexOf(day)">
+               :value="weekdays.indexOf(day) + 1">
         <label :for="day + '-input'"
                v-text="day"></label>
       </div>
@@ -29,7 +29,7 @@
         <input type="checkbox"
                :id="'month-' + month + '-input'"
                v-model="recurrence.month"
-               :value="months.indexOf(month)">
+               :value="months.indexOf(month) + 1">
         <label :for="'month-' + month + '-input'"
                v-text="month"></label>
       </div>
