@@ -9,11 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity()
-@Table(name = "clauses")
+@Table(name = "clauses", uniqueConstraints = { @UniqueConstraint(columnNames = { "primary_date", "duty_id" }) })
 public class DutyClause {
 
 	@Id
@@ -23,10 +24,10 @@ public class DutyClause {
 	@JsonIgnore
 	@ManyToOne
 	private Duty duty;
-	
+
 	@Column(name = "primary_date")
 	private Calendar primaryDate;
-	
+
 	@Column(name = "alternative_date")
 	private Calendar alternativeDate;
 
@@ -37,7 +38,7 @@ public class DutyClause {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public Calendar getPrimaryDate() {
 		return primaryDate;
 	}

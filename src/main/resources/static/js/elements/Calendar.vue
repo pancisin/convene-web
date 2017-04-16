@@ -25,10 +25,13 @@
             <ul @dragover.prevent
                 @drop="drop(day)">
               <li v-for="instance in day.instances"
-                  v-text="instance.duty.location"
                   :class="{ 'edited' : instance.clause != null }"
                   draggable="true"
                   v-on:dragstart="dragstart(instance, day)">
+  
+                <i v-show="instance.loading"
+                   class="fa fa-spinner fa-spin fa-fw"></i> {{ instance.duty.location }}
+                <a><i class="fa fa-pencil" aria-hidden="true"></i></a>
               </li>
             </ul>
           </td>
@@ -114,9 +117,11 @@ export default {
         this.dragSource.instances = this.dragSource.instances.filter(elem => {
           return elem.duty.id != self.dragElem.duty.id;
         });
+        this.dragElem.loading = true;
 
         this.storeClause(this.dragElem, day.timestamp).then(clause => {
           this.dragElem.clause = clause;
+          this.dragElem.loading = false;
           this.dragSource = null;
           this.dragElem = null;
           this.$forceUpdate();
@@ -190,6 +195,20 @@ table.calendar-table {
 
         &.edited {
           background: #ef9a1c;
+        }
+
+        .fa {
+          margin-right: 10px;
+        }
+
+        a {
+          color: #fff;
+          float: right;
+          display: none;
+        }
+
+        &:hover a {
+          display: block;
         }
       }
     }
