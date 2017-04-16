@@ -16,3 +16,14 @@ a {
 .fade-leave-to {
   opacity: 0
 }
+
+.fade-down-enter-active,
+.fade-down-leave-active {
+  transition: all .3s
+}
+
+.fade-down-enter,
+.fade-down-leave-to {
+  opacity: 0;
+  transform: translateY(50px);
+}

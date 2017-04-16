@@ -19,6 +19,8 @@
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
     "later": "RickCarlino/later",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.3",
     "material-datetime-picker": "^2.3.0",
     "moment": "^2.18.0",
     "vue": "^2.2.6",

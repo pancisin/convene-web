@@ -32,6 +32,10 @@ export default {
     register: "Sign up",
     registering: "Registering..."
   },
+  calendar: {
+    next: "Next",
+    prev: "Previous",
+  },
   company: {
     default: "Company",
     ico: "ico",
