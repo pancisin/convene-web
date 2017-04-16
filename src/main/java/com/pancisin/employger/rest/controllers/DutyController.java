@@ -4,10 +4,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.DutyClause;
 import com.pancisin.employger.models.Employee;
+import com.pancisin.employger.models.Notification;
 import com.pancisin.employger.repository.DutyClauseRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
@@ -24,6 +25,9 @@ import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestExceptio
 @RestController
 @RequestMapping("/api/duty")
 public class DutyController {
+	
+	@Autowired
+	private SimpMessagingTemplate webSocket;
 	
 	@Autowired
 	private DutyRepository dutyRepository;
@@ -69,6 +73,8 @@ public class DutyController {
 			new_duty.getEmployees().add(new_emp);
 		}
 
+		webSocket.convertAndSend("/queue/notifications", new Notification("Duty manipulation", "Duty has been updated"));
+		
 		dutyRepository.save(new_duty);
 		return ResponseEntity.ok(new_duty);
 	}

@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueI18n from 'vue-i18n'
+import VueWebsocket from "./services/websocket.js"
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
@@ -19,6 +20,7 @@ import en from './locale/en-US.js'
 
 Vue.use(VueResource)
 Vue.use(VueI18n)
+Vue.use(VueWebsocket);
 Vue.use(VueMoment)
 Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)

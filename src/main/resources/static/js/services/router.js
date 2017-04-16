@@ -17,6 +17,7 @@ import Account from '../pages/Account.vue'
 import Company from '../pages/Company.vue'
 import Customers from '../pages/Customers.vue'
 import CustomerCreate from '../pages/Customer.create.vue'
+import Instance from '../pages/Instance.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -43,9 +44,10 @@ const router = new VueRouter({
       path: '/',
       component: Layout,
       beforeEnter: require_auth,
+      redirect: '/dashboard',
       children: [
         {
-          path: '/',
+          path: '/dashboard',
           component: DashboardComponent
         },
         {
@@ -91,6 +93,10 @@ const router = new VueRouter({
         {
           path: '/customers/:id',
           component: CustomerCreate
+        },
+        {
+          path: '/instance/:id/:timestamp',
+          component: Instance
         }
       ]
     },

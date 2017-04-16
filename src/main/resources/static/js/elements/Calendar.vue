@@ -17,9 +17,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="week in weeks">
-          <td v-for="day in week"
-              :class="{ 'current' : isCurrent(day.day, day.month) }">
+        <tr v-for="(week, index) in weeks"
+            :key="index">
+          <td v-for="(day, index) in week"
+              :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
             <span class="monthday"
                   v-text="day.day"></span>
             <ul @dragover.prevent
@@ -31,7 +32,10 @@
   
                 <i v-show="instance.loading"
                    class="fa fa-spinner fa-spin fa-fw"></i> {{ instance.duty.location }}
-                <a><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                <router-link :to="'/instance/' + instance.duty.id + '/' + instance.date">
+                  <i class="fa fa-pencil"
+                     aria-hidden="true"></i>
+                </router-link>
               </li>
             </ul>
           </td>
@@ -142,6 +146,9 @@ export default {
           reject();
         });
       })
+    },
+    editInstance: function (instance) {
+      this.$emit('edit-instance', instance);
     }
   }
 }
@@ -174,6 +181,20 @@ table.calendar-table {
 
     &.current {
       background: #e0ffae;
+    }
+
+    &.disabled {
+      position: relative;
+
+      &:after {
+        content: '';
+        background: rgba(238, 237, 237, 0.81);
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        position: absolute;
+      }
     }
 
     .monthday {
@@ -214,7 +235,7 @@ table.calendar-table {
     }
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      // background-color: rgba(0, 0, 0, 0.1);
     }
   }
 }

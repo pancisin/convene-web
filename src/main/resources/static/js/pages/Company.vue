@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <modal :show="display.modal" @close="display.modal = false">
+    <modal :show.sync="display.modal" @close="display.modal = false">
       <h4 slot="header">Success !</h4>
       <p slot="body">Your company information have been updated successfuly.</p>
     </modal>

@@ -16,7 +16,7 @@
       <div class="sidebar-menu">
         <ul class="sidebar-nav">
           <li>
-            <router-link to="/">
+            <router-link to="/dashboard">
               <div class="icon">
                 <i class="fa fa-tasks"
                    aria-hidden="true"></i>
@@ -72,6 +72,12 @@ export default {
   name: 'app',
   components: {
     headerComponent: HeaderComponent,
-  }
+  },
 }
 </script>
+
+<style lang="less">
+aside.app-sidebar {
+  background-color: #333;
+}
+</style>

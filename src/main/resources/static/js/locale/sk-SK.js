@@ -85,5 +85,9 @@ export default {
     create: "Vytvoriť zamestnanca",
     firstName: "Krstné meno",
     lastName: "Priezvisko",
+  },
+  instance: {
+    update: "Upraviť inštanciu úlohy",
+    
   }
 }
