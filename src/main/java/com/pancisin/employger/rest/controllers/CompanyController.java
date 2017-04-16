@@ -221,4 +221,10 @@ public class CompanyController {
 
 		return ResponseEntity.ok(dutyRepository.save(duty));
 	}
+	
+	@GetMapping("/{company_id}/notifications")
+	public ResponseEntity<?> getNotifications(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getNotifications());
+	}
 }

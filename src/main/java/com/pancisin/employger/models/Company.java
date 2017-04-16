@@ -71,6 +71,10 @@ public class Company {
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "recipient")
+	private List<Notification> notifications;
+	
 	public String getName() {
 		return name;
 	}
@@ -153,5 +157,9 @@ public class Company {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public List<Notification> getNotifications() {
+		return notifications;
 	}
 }

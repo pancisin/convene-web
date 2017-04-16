@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "notifications")
 public class Notification {
@@ -16,6 +18,7 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Company recipient;
 	
@@ -25,6 +28,10 @@ public class Notification {
 	@Column
 	private String message;
 
+	public Notification() {
+		
+	}
+	
 	public Notification(String title, String message) {
 		this.title = title;
 		this.message = message;

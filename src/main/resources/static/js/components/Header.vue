@@ -35,7 +35,8 @@
           <option value="sk">Slovak</option>
         </select>
   
-        <li class="dropdown notification" :class="notificationsClass">
+        <li class="dropdown notification"
+            :class="notificationsClass">
           <a href="#"
              class="dropdown-toggle"
              data-toggle="dropdown">
@@ -118,14 +119,8 @@ export default {
     }
   },
   created: function () {
-    this.connectWM('stomp', {}, frame => {
-      this.$stompClient.subscribe('/queue/notifications', response => {
-        var notification = JSON.parse(response.body);
-        this.notifications.push(notification);
-      });
-    }, frame => {
-      console.log(frame);
-    });
+    this.fetchNotifications();
+    this.initializeStomp();
   },
   methods: {
     logout: function () {
@@ -133,6 +128,23 @@ export default {
     },
     switchLanguage: function (e) {
       this.$i18n.locale = e.target.value;
+    },
+    initializeStomp: function () {
+      this.connectWM('stomp', {}, frame => {
+        this.$stompClient.subscribe('/queue/notifications', response => {
+          var notification = JSON.parse(response.body);
+          this.notifications.push(notification);
+        });
+      }, frame => {
+        console.log(frame);
+      });
+    },
+    fetchNotifications: function () {
+      var url = ['api/company', this.$store.getters.company_id, 'notifications'].join('/');
+
+      this.$http.get(url).then(response => {
+        this.notifications = response.body;
+      });
     }
   }
 }
