@@ -9,7 +9,7 @@ import DashboardComponent from '../components/Dashboard.vue'
 import LicensesComponent from '../components/Licenses.vue'
 import EmployeesComponent from '../components/Employees.vue'
 import WorkManagement from '../components/WorkManagement.vue'
-import CreateDuty from '../components/CreateDuty.vue'
+import CreateDuty from '../pages/CreateDuty.vue'
 import Layout from '../components/Layout.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
@@ -17,6 +17,7 @@ import Account from '../pages/Account.vue'
 import Company from '../pages/Company.vue'
 import Customers from '../pages/Customers.vue'
 import CustomerCreate from '../pages/Customer.create.vue'
+import Instance from '../pages/Instance.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -43,9 +44,10 @@ const router = new VueRouter({
       path: '/',
       component: Layout,
       beforeEnter: require_auth,
+      redirect: '/dashboard',
       children: [
         {
-          path: '/',
+          path: '/dashboard',
           component: DashboardComponent
         },
         {
@@ -61,7 +63,7 @@ const router = new VueRouter({
           component: EmployeesComponent
         },
         {
-          path: '/work-management',
+          path: '/duty',
           component: WorkManagement
         },
         {
@@ -91,6 +93,10 @@ const router = new VueRouter({
         {
           path: '/customers/:id',
           component: CustomerCreate
+        },
+        {
+          path: '/instance/:id/:timestamp',
+          component: Instance
         }
       ]
     },

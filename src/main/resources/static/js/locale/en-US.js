@@ -85,5 +85,12 @@ export default {
     create: "Create employee",
     firstName: "Firstname",
     lastName: "lastName",
+  },
+  instance: {
+    update: "Update instance of duty",
+
+  },
+  notification: {
+    default: "Notification" | "Notifications",
   }
 }

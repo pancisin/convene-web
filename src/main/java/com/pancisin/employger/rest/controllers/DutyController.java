@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,10 +19,14 @@ import com.pancisin.employger.repository.DutyClauseRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
 import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestException;
+import com.pancisin.employger.websocket.components.Notifier;
 
 @RestController
 @RequestMapping("/api/duty")
 public class DutyController {
+	
+	@Autowired
+	private Notifier notifier;
 	
 	@Autowired
 	private DutyRepository dutyRepository;
@@ -68,7 +71,9 @@ public class DutyController {
 			Employee new_emp = employeeRepository.findOne(emp.getId());
 			new_duty.getEmployees().add(new_emp);
 		}
-
+		
+//		notifier.notifyCompany(new_duty.getCompany(), "Duty Updated", "just testing");
+		
 		dutyRepository.save(new_duty);
 		return ResponseEntity.ok(new_duty);
 	}
