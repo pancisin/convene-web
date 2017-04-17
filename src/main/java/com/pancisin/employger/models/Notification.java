@@ -1,5 +1,7 @@
 package com.pancisin.employger.models;
 
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,30 +15,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "notifications")
 public class Notification {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@JsonIgnore
 	@ManyToOne
 	private Company recipient;
-	
+
 	@Column
 	private String title;
-	
+
 	@Column
 	private String message;
 
+	@Column
+	private boolean seen;
+
+	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Calendar created;
+
 	public Notification() {
-		
+
 	}
-	
+
 	public Notification(String title, String message) {
 		this.title = title;
 		this.message = message;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -52,7 +60,7 @@ public class Notification {
 	public void setRecipient(Company recipient) {
 		this.recipient = recipient;
 	}
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -67,5 +75,21 @@ public class Notification {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
+	}
+
+	public Calendar getCreated() {
+		return created;
+	}
+
+	public void setCreated(Calendar created) {
+		this.created = created;
 	}
 }

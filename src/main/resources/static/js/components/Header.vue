@@ -29,11 +29,13 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <select @change="switchLanguage"
-                class="form-control">
-          <option value="en">English</option>
-          <option value="sk">Slovak</option>
-        </select>
+        <li>
+          <select @change="switchLanguage"
+                  class="form-control">
+            <option value="en">English</option>
+            <option value="sk">Slovak</option>
+          </select>
+        </li>
   
         <li class="dropdown notification"
             :class="notificationsClass">
@@ -48,16 +50,16 @@
           </a>
           <div class="dropdown-menu">
             <ul>
-              <li class="dropdown-header">Notification</li>
+              <li class="dropdown-header">{{ $tc('notification.default', 2) }}</li>
               <li v-for="notification in notifications">
                 <a>
-                  <!--<span class="badge badge-danger pull-right">8</span>-->
+                  <span class="badge badge-primary pull-right"
+                        @click="markAsSeen(notification)"><i class="fa fa-check" aria-hidden="true"></i></span>
                   <div class="message">
                     <div class="content">
                       <div class="title"
                            v-text="notification.title"></div>
-                      <div class="description"
-                           v-text="notification.message"></div>
+                      <div class="description">{{ notification.created | timeFromNow }}</div>
                     </div>
                   </div>
                 </a>
@@ -102,6 +104,7 @@
   
 <script>
 import Auth from '../services/auth.js'
+import moment from "moment"
 
 export default {
   name: 'header',
@@ -133,7 +136,7 @@ export default {
       this.connectWM('stomp', {}, frame => {
         this.$stompClient.subscribe('/queue/notifications', response => {
           var notification = JSON.parse(response.body);
-          this.notifications.push(notification);
+          this.notifications.unshift(notification);
         });
       }, frame => {
         console.log(frame);
@@ -144,7 +147,21 @@ export default {
 
       this.$http.get(url).then(response => {
         this.notifications = response.body;
+        this.notifications.sort((a, b) => {
+          return moment(b.created).isAfter(a.created);
+        })
       });
+    },
+    markAsSeen: function (notification) {
+      this.notifications = this.notifications.filter(elem => {
+        return elem.id != notification.id;
+      })
+    }
+  },
+  filters: {
+    timeFromNow: function (date) {
+      if (date == null) return "";
+      return moment(date).fromNow();
     }
   }
 }

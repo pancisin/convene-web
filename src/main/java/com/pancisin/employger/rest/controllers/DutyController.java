@@ -72,7 +72,7 @@ public class DutyController {
 			new_duty.getEmployees().add(new_emp);
 		}
 		
-		notifier.notifyCompany(new_duty.getCompany(), "Duty Updated", "just testing");
+//		notifier.notifyCompany(new_duty.getCompany(), "Duty Updated", "just testing");
 		
 		dutyRepository.save(new_duty);
 		return ResponseEntity.ok(new_duty);

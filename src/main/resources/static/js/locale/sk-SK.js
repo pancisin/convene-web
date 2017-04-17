@@ -89,5 +89,8 @@ export default {
   instance: {
     update: "Upraviť inštanciu úlohy",
     
+  },
+  notification: {
+    default: "Oznámenie | Oznámenia",
   }
 }

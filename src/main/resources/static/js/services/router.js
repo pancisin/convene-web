@@ -9,7 +9,7 @@ import DashboardComponent from '../components/Dashboard.vue'
 import LicensesComponent from '../components/Licenses.vue'
 import EmployeesComponent from '../components/Employees.vue'
 import WorkManagement from '../components/WorkManagement.vue'
-import CreateDuty from '../components/CreateDuty.vue'
+import CreateDuty from '../pages/CreateDuty.vue'
 import Layout from '../components/Layout.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
@@ -63,7 +63,7 @@ const router = new VueRouter({
           component: EmployeesComponent
         },
         {
-          path: '/work-management',
+          path: '/duty',
           component: WorkManagement
         },
         {

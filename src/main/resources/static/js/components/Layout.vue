@@ -25,7 +25,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/work-management">
+            <router-link to="/duty">
               <div class="icon">
                 <i class="fa fa-suitcase"
                    aria-hidden="true"></i>

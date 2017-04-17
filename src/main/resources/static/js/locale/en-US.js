@@ -89,5 +89,8 @@ export default {
   instance: {
     update: "Update instance of duty",
 
+  },
+  notification: {
+    default: "Notification" | "Notifications",
   }
 }

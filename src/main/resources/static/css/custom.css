@@ -27,3 +27,11 @@ a {
   opacity: 0;
   transform: translateY(50px);
 }
+
+.card.card-tab .card-header > ul > li, .card.card-tab ul.nav-tabs > li {
+  width: auto;
+}
+
+.card.card-tab .card-header {
+  overflow: hidden;
+}
