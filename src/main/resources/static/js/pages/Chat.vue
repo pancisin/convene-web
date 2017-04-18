@@ -40,9 +40,10 @@
         </div>
         <ul class="chat">
           <!--<li class="line">
-                          <div class="title">24 Jun 2016</div>
-                        </li>-->
-          <li v-for="mes in messages">
+                              <div class="title">24 Jun 2016</div>
+                            </li>-->
+          <li v-for="mes in messages"
+              :class="{ 'right' : mes.sender.id == user.id }">
             <div class="message"
                  v-text="mes.content"></div>
             <div class="info">
@@ -70,6 +71,7 @@
 
 <script>
 import Auth from '../services/auth.js'
+import moment from "moment"
 export default {
   name: 'chat',
   data: function () {
@@ -78,7 +80,12 @@ export default {
       message: null,
       recipient: null,
       users: [],
-      company: null,
+      user: null,
+    }
+  },
+  watch: {
+    recipient: function() {
+      this.fetchMessages();
     }
   },
   created: function () {
@@ -86,7 +93,7 @@ export default {
     this.fetchMessages();
 
     Auth.currentUser(this).then((user) => {
-      this.company = user.company;
+      this.user = user;
       this.fetchCompanyUsers();
     });
   },
@@ -94,7 +101,9 @@ export default {
     initializeChatStomp: function () {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/queue/chat', response => {
-          this.messages.push(JSON.parse(response.body));
+          var message = JSON.parse(response.body);
+          if (message.sender.id != this.user.id)
+            this.messages.push(message);
         });
 
         this.$stompClient.subscribe("/user/exchange/amq.direct/chat.message", response => {
@@ -105,12 +114,15 @@ export default {
       })
     },
     fetchCompanyUsers: function () {
-      this.$http.get('api/company/' + this.company.id + '/users').then(response => {
+      this.$http.get('api/company/' + this.user.company.id + '/users').then(response => {
         this.users = response.body;
       });
     },
     fetchMessages: function () {
-
+      if (this.recipient != null)
+        this.$http.get('/api/message/user/' + this.recipient.id).then(response => {
+          this.messages = response.body;
+        })
     },
     sendMessage: function () {
       if (this.message == null || this.message == '') return;
@@ -120,6 +132,12 @@ export default {
 
       var self = this;
       function completed(result) {
+        self.messages.push({
+          content: self.message,
+          sender: self.user,
+          recipient: self.recipient,
+          created: moment()
+        })
         self.message = null;
       }
 
