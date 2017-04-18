@@ -38,13 +38,12 @@
                           :placeholder="$t('duty.description')"></textarea>
               </div>
               <div class="col-md-6">
-                <datepicker></datepicker>
-                <!--<datepicker v-model="duty.startDate"
-                                    class="form-control"
-                                    :placeholder="$t('duty.start_date')"></datepicker>
-                        <datepicker v-model="duty.endDate"
-                                    class="form-control"
-                                    :placeholder="$t('duty.end_date')"></datepicker>-->
+                <datepicker v-model="duty.startDate"
+                            class="form-control"
+                            :placeholder="$t('duty.start_date')"></datepicker>
+                <datepicker v-model="duty.endDate"
+                            class="form-control"
+                            :placeholder="$t('duty.end_date')"></datepicker>
               </div>
             </div>
   
@@ -92,9 +91,8 @@
 </template>
 
 <script>
-// import datepicker from '../elements/DatePicker.vue';
+import datepicker from '../elements/DatePicker.vue';
 import recurrenceInput from '../elements/RecurrenceInput.vue';
-import datepicker from 'vue-material-datepicker';
 
 export default {
   name: 'create-duty',

@@ -26,13 +26,11 @@
     "vue": "^2.2.6",
     "vue-i18n": "^6.0.0",
     "vue-loader": "^11.1.4",
-    "vue-material-datepicker": "^2.0.1",
     "vue-moment": "^2.0.2",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.1",
     "vue-select": "^2.2.0",
     "vue-template-compiler": "^2.2.6",
-    "vuejs-datepicker": "^0.6.5",
     "vuex": "^2.2.1",
     "webpack": "^2.2.0",
     "webstomp-client": "^1.0.6"

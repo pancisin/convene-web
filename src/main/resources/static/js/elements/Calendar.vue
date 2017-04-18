@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="calendar-header">
-      <a class="btn btn-primary"
+      <a class="btn btn-xs btn-primary"
          @click="moveCursor(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('calendar.prev') }}</a>
       <h3 v-text="monthName"></h3>
-      <a class="btn btn-primary"
+      <a class="btn btn-xs btn-primary"
          @click="moveCursor(1)">{{ $t('calendar.next') }} <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
   

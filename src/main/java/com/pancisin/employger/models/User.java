@@ -1,5 +1,6 @@
 package com.pancisin.employger.models;
 
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Principal {
 
 	private static final long serialVersionUID = -2205856327940777873L;
 
@@ -193,5 +194,10 @@ public class User implements UserDetails {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	@Override
+	public String getName() {
+		return this.getEmail();
 	}
 }
