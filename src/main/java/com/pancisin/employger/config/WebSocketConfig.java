@@ -19,8 +19,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import com.pancisin.employger.models.User;
-import com.pancisin.employger.security.JwtAuthenticationProvider;
-import com.pancisin.employger.security.models.JwtAuthenticationToken;
 import com.pancisin.employger.security.utils.JwtUtil;
 
 @Configuration
@@ -35,7 +33,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/queue");
+		config.enableSimpleBroker("/queue/", "/exchange/");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
@@ -50,14 +48,13 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
 			@Override
 			public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
 				StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
 				if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 					List<String> headers = accessor.getNativeHeader(tokenHeader);
 					String token = headers.get(0);
 					User user = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
-					
+
 					accessor.setUser((Principal) user);
 				}
 

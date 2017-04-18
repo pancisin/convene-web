@@ -5,19 +5,17 @@
       <div class="chat-group">
         <div class="heading">Conversation</div>
         <ul class="group full-height">
-          <li class="section">unread</li>
-          <li class="message">
-            <a data-toggle="collapse"
-               href="#collapseMessaging"
-               aria-expanded="false"
-               aria-controls="collapseMessaging">
-              <span class="badge badge-warning pull-right">10</span>
+          <li class="section">Users</li>
+          <li class="message"
+              v-for="user in users"
+              :class="{ 'selected' : recipient != null && recipient.id == user.id }">
+            <a @click="recipient = user">
+              <!--<span class="badge badge-warning pull-right">10</span>-->
               <div class="message">
-                <img class="profile"
-                     src="https://placehold.it/100x100">
+                <!--<img class="profile" src="https://placehold.it/100x100">-->
                 <div class="content">
-                  <div class="title">"Payment Confirmation.."</div>
-                  <div class="description">Alan Anderson</div>
+                  <div class="title">{{ user.firstName }} {{ user.lastName }}</div>
+                  <div class="description">{{ user.email }}</div>
                 </div>
               </div>
             </a>
@@ -28,27 +26,29 @@
         <div class="heading">
           <div class="title">
             <a class="btn-back"
-               data-toggle="collapse"
-               href="#collapseMessaging"
-               aria-expanded="false"
-               aria-controls="collapseMessaging">
+               @click="recipient = null"
+               v-if="recipient != null">
               <i class="fa fa-angle-left"
                  aria-hidden="true"></i>
             </a>
-            Lucia Marshall <span class="badge badge-success badge-icon"><i class="fa fa-circle" aria-hidden="true"></i><span>Online</span></span>
+            <span v-if="recipient != null">{{ recipient.firstName }} {{ recipient.lastName }}</span>
+            <span v-else><template v-if="company != null">{{ company.name }}</template></span>
+  
+            <!--<span class="badge badge-success badge-icon"><i class="fa fa-circle" aria-hidden="true"></i><span>Online</span></span>-->
           </div>
           <div class="action"></div>
         </div>
         <ul class="chat">
-          <li class="line">
-            <div class="title">24 Jun 2016</div>
-          </li>
+          <!--<li class="line">
+                          <div class="title">24 Jun 2016</div>
+                        </li>-->
           <li v-for="mes in messages">
             <div class="message"
                  v-text="mes.content"></div>
             <div class="info">
-              <div class="datetime"
-                   v-text="mes.created"></div>
+              <div class="datetime">{{ mes.created | moment("dddd, DD.MM.YYYY") }}</div>
+              <div class="status"
+                   v-text="mes.sender.name"></div>
             </div>
           </li>
         </ul>
@@ -69,17 +69,26 @@
 </template>
 
 <script>
+import Auth from '../services/auth.js'
 export default {
   name: 'chat',
   data: function () {
     return {
       messages: [],
       message: null,
+      recipient: null,
+      users: [],
+      company: null,
     }
   },
   created: function () {
     this.initializeChatStomp();
     this.fetchMessages();
+
+    Auth.currentUser(this).then((user) => {
+      this.company = user.company;
+      this.fetchCompanyUsers();
+    });
   },
   methods: {
     initializeChatStomp: function () {
@@ -87,9 +96,18 @@ export default {
         this.$stompClient.subscribe('/queue/chat', response => {
           this.messages.push(JSON.parse(response.body));
         });
+
+        this.$stompClient.subscribe("/user/exchange/amq.direct/chat.message", response => {
+          this.messages.push(JSON.parse(response.body));
+        })
       }, frame => {
         console.log(frame);
       })
+    },
+    fetchCompanyUsers: function () {
+      this.$http.get('api/company/' + this.company.id + '/users').then(response => {
+        this.users = response.body;
+      });
     },
     fetchMessages: function () {
 
@@ -100,10 +118,17 @@ export default {
         content: this.message,
       }
 
-      this.sendWM('/app/chat', data).then(result => {
-        this.message = null;
-      });
-    }
+      var self = this;
+      function completed(result) {
+        self.message = null;
+      }
+
+      if (this.recipient == null) {
+        this.sendWM('/app/chat', data).then(completed);
+      } else {
+        this.sendWM('/app/chat.private.' + this.recipient.email, data).then(completed)
+      }
+    },
   }
 }
 </script>
@@ -111,5 +136,15 @@ export default {
 <style lang="less">
 ul.chat {
   max-height: 500px;
+}
+
+ul.group {
+  .message.selected {
+    background: #eef4d4;
+  }
+}
+
+.messaging {
+  min-height: 600px;
 }
 </style>

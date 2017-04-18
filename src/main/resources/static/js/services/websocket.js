@@ -38,7 +38,7 @@ export default {
           data = JSON.stringify(data);
 
         this.$stompClient.send(target, data, {
-          'Authorization': 'Bearer ' + Auth.getAuthHeader(),
+          // 'Authorization': 'Bearer ' + Auth.getAuthHeader(),
         });
         resolve();
       })
