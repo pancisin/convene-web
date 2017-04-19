@@ -32,20 +32,24 @@
                  aria-hidden="true"></i>
             </a>
             <span v-if="recipient != null">{{ recipient.firstName }} {{ recipient.lastName }}</span>
-            <span v-else><template v-if="company != null">{{ company.name }}</template></span>
+            <span v-else>{{ user.company.name }}</span>
   
             <!--<span class="badge badge-success badge-icon"><i class="fa fa-circle" aria-hidden="true"></i><span>Online</span></span>-->
           </div>
           <div class="action"></div>
         </div>
         <ul class="chat"
-            ref="chatContainer">
+            ref="chatContainer"
+            is="transition-group"
+            name="fade">
           <li class="line"
-              v-if="messages[0] != null">
+              v-if="messages[0] != null"
+              :key="-1">
             <div class="title">{{ messages[0].created | moment("dddd, DD.MM.YYYY") }}</div>
           </li>
-          <li v-for="mes in messages"
-              :class="{ 'right' : mes.sender.id == user.id }">
+          <li v-for="(mes, index) in messages"
+              :class="{ 'right' : mes.sender.id == user.id }"
+              :key="index">
             <div class="message"
                  v-text="mes.content"></div>
             <div class="info">
@@ -172,7 +176,7 @@ export default {
         this.messages.push(message);
 
       this.$nextTick(() => {
-        var container = this.$refs.chatContainer;
+        var container = this.$refs.chatContainer.$el;
         container.scrollTop = container.scrollHeight;
       })
     }
@@ -187,7 +191,7 @@ export default {
 
 ul.group {
   li.message.selected {
-    background: #e7edee;
+    background: #f4f7f7;
 
     .description {
       opacity: 1 !important;
