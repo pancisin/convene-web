@@ -6,20 +6,29 @@ export default {
   install(Vue) {
     const keyPrefix = "_";
     Vue.prototype.keyPrefix = keyPrefix;
+    var connecting = null;
 
     let connectWM = function (serverEndPoint) {
-      return new Promise((resolve, reject) => {
-        if (this.$stompClient && this.$stompClient.connected) resolve();
+      var promise = new Promise((resolve, reject) => {
+        if (this.$stompClient != null && this.$stompClient.connected) {
+          connecting = null;
+          resolve();
+        } else if (this.$stompClient != null && !this.$stompClient.connected && connecting != null) {
+          connecting.then(resolve);
+        } else {
+          connecting = promise;
+          let socket = new SockJS(serverEndPoint);
 
-        let socket = new SockJS(serverEndPoint);
+          let stompClient = Stomp.over(socket);
+          Vue.prototype.$stompClient = stompClient;
 
-        let stompClient = Stomp.over(socket);
-        Vue.prototype.$stompClient = stompClient;
+          this.$stompClient.connect({
+            'Authorization': 'Bearer ' + Auth.getAuthHeader(),
+          }, resolve, reject);
+        }
+      });
 
-        this.$stompClient.connect({
-          'Authorization': 'Bearer ' + Auth.getAuthHeader(),
-        }, resolve, reject);
-      })
+      return promise;
     }
 
     Vue.prototype.connectWM = connectWM;
