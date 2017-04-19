@@ -18,6 +18,7 @@ import Company from '../pages/Company.vue'
 import Customers from '../pages/Customers.vue'
 import CustomerCreate from '../pages/Customer.create.vue'
 import Instance from '../pages/Instance.vue'
+import Chat from '../pages/Chat.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -97,6 +98,10 @@ const router = new VueRouter({
         {
           path: '/instance/:id/:timestamp',
           component: Instance
+        },
+        {
+          path: '/chat',
+          component: Chat
         }
       ]
     },

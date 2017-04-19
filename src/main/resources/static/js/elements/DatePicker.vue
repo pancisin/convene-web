@@ -1,12 +1,9 @@
 <template>
   <input type="text"
          ref="input"
-         v-bind:value="value"
-         v-on:click="picker.open()">
+         v-bind:value="value">
 </template>
 <script>
-import MaterialDateTimePicker from 'material-datetime-picker';
-
 export default {
   props: {
     value: String
@@ -18,7 +15,6 @@ export default {
   },
   created: function () {
     var self = this;
-    this.picker = new MaterialDateTimePicker().on('submit', (val) => self.$emit('input', val));
   },
 }
 </script>

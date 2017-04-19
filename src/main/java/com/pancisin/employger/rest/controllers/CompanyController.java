@@ -11,7 +11,9 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -194,17 +196,19 @@ public class CompanyController {
 		Date dateTo = new SimpleDateFormat("y-M-d").parse(date_to);
 		Date dateFrom = new SimpleDateFormat("y-M-d").parse(date_from);
 
-		for (Duty duty : company.getDuties()) {
-			List<Date> occ = duty.getOcurrencesInRange(dateFrom, dateTo);
+		List<DutyClause> clauses = clauseRepository.getRelated(dateFrom, dateTo);
 
-			for (Date occurence : occ) {
-				DutyClause clause = clauseRepository.find(duty, occurence);
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(occurence);
-				DutyInstance inst = new DutyInstance(duty, clause == null ? cal : clause.getAlternativeDate(), clause);
-				result.add(inst);
-			}
-		}
+		result = company.getDuties().stream()
+				.flatMap(duty -> duty.getOcurrencesInRange(dateFrom, dateTo).stream().map(occ -> {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(occ);
+
+					Optional<DutyClause> clause = clauses.stream().filter(dc -> dc.getPrimaryDate().equals(cal))
+							.findFirst();
+
+					return new DutyInstance(duty, clause.isPresent() ? clause.get().getAlternativeDate() : cal,
+							clause.isPresent() ? clause.get() : null);
+				})).collect(Collectors.toList());
 
 		return ResponseEntity.ok(result);
 	}
@@ -221,7 +225,7 @@ public class CompanyController {
 
 		return ResponseEntity.ok(dutyRepository.save(duty));
 	}
-	
+
 	@GetMapping("/{company_id}/notifications")
 	public ResponseEntity<?> getNotifications(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);

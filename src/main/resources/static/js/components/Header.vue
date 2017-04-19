@@ -49,11 +49,14 @@
                  v-text="notifications.length"></div>
           </a>
           <div class="dropdown-menu">
-            <ul>
-              <li class="dropdown-header">{{ $tc('notification.default', 2) }}</li>
-              <li v-for="notification in notifications">
+            <ul is="transition-group"
+                name="fade-down">
+              <li class="dropdown-header"
+                  key="0">{{ $tc('notification.default', 2) }}</li>
+              <li v-for="notification in notifications"
+                  :key="notification.id">
                 <a>
-                  <span class="badge badge-primary pull-right"
+                  <span class="pull-right"
                         @click="markAsSeen(notification)"><i class="fa fa-check" aria-hidden="true"></i></span>
                   <div class="message">
                     <div class="content">
@@ -133,14 +136,14 @@ export default {
       this.$i18n.locale = e.target.value;
     },
     initializeStomp: function () {
-      this.connectWM('stomp', {}, frame => {
+      this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/queue/notifications', response => {
           var notification = JSON.parse(response.body);
           this.notifications.unshift(notification);
         });
       }, frame => {
         console.log(frame);
-      });
+      })
     },
     fetchNotifications: function () {
       var url = ['api/company', this.$store.getters.company_id, 'notifications'].join('/');

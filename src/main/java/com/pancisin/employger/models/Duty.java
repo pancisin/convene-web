@@ -38,7 +38,7 @@ public class Duty {
 	@NotNull
 	@Column(name = "location")
 	private String location;
-	
+
 	@ManyToOne
 	private Customer customer;
 
@@ -51,10 +51,10 @@ public class Duty {
 	@Column(name = "recurrence")
 	@Convert(converter = CronConverter.class)
 	private CronExpression recurrence;
-	
+
 	@Column
 	private String description;
-	
+
 	@Transient
 	public String getCronRecurrence() {
 		return recurrence.toString();
@@ -73,7 +73,7 @@ public class Duty {
 	@JsonIgnore
 	@OneToMany(mappedBy = "duty")
 	private List<DutyClause> clauses;
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Duty))
@@ -81,7 +81,7 @@ public class Duty {
 		Duty duty = (Duty) obj;
 		return this.id.equals(duty.id);
 	}
-	
+
 	@JsonIgnore
 	public List<Date> getNextOcurrences(int count, Date currentIteration) throws ParseException {
 		List<Date> ocurrences = new ArrayList<Date>();
@@ -93,21 +93,27 @@ public class Duty {
 		}
 		return ocurrences;
 	}
-	
+
 	@JsonIgnore
-	public List<Date> getOcurrencesInRange(Date start, Date end) throws ParseException {
-		if (start.compareTo(end) > 0) 
+	public List<Date> getOcurrencesInRange(Date start, Date end) {
+		if (start.compareTo(end) > 0)
 			throw new InvalidParameterException();
-		
-		List<Date> ocurrences = new ArrayList<Date>();
-		org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
-		Date iteration = start;
-		
-		do {
-			iteration = cron.getNextValidTimeAfter(iteration);
-			ocurrences.add(iteration);
-		} while (iteration.compareTo(end) < 0);
-		
+
+		List<Date> ocurrences = null;
+
+		try {
+			ocurrences = new ArrayList<Date>();
+			org.quartz.CronExpression cron = new org.quartz.CronExpression(this.getCronRecurrence());
+			Date iteration = start;
+
+			do {
+				iteration = cron.getNextValidTimeAfter(iteration);
+				ocurrences.add(iteration);
+			} while (iteration.compareTo(end) < 0);
+		} catch (Exception ex) {
+
+		}
+
 		return ocurrences;
 	}
 
@@ -115,7 +121,7 @@ public class Duty {
 	public int hashCode() {
 		return id.hashCode();
 	}
-	
+
 	public List<Employee> getEmployees() {
 		return employees;
 	}

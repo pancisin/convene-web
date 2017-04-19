@@ -51,6 +51,15 @@
               <div class="title">{{ $t('menu.customers') }}</div>
             </router-link>
           </li>
+          <li>
+            <router-link to="/chat">
+              <div class="icon">
+                <i class="fa fa-comments"
+                   aria-hidden="true"></i>
+              </div>
+              <div class="title">Chat</div>
+            </router-link>
+          </li>
         </ul>
       </div>
     </aside>

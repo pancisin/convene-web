@@ -88,9 +88,17 @@ export default {
   },
   instance: {
     update: "Upraviť inštanciu úlohy",
-    
+
   },
   notification: {
     default: "Oznámenie | Oznámenia",
+  },
+  chat: {
+    conversations: "Konverzácie",
+    send: "Odoslať",
+    placeholder: "Napíšte niečo...",
+  },
+  user: {
+    default: "Používateľ | Používatelia"
   }
 }

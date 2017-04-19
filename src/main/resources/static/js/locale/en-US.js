@@ -91,6 +91,14 @@ export default {
 
   },
   notification: {
-    default: "Notification" | "Notifications",
+    default: "Notification | Notifications",
+  },
+  chat: {
+    conversations: 'Conversations',
+    send: "Send",
+    placeholder: "Type something...",
+  },
+  user: {
+    default: "User | Users"
   }
 }
