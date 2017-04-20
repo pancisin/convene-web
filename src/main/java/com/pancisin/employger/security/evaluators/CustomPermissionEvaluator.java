@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
+import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.User;
 import com.pancisin.employger.repository.UserRepository;
 
@@ -26,13 +27,21 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		User user = (User) authentication.getPrincipal();
 		User stored = userRepository.findOne(user.getId());
 
+		Company company = stored.getCompany();
+		
 		switch (targetType) {
 		case "company":
-			return stored.getCompany().getId() == targetId;
+			return company.getId() == targetId;
 		case "customer": 
-			return stored.getCompany().getCustomers().stream().filter(c -> c.getId() == targetId).count() == 1;
+			return company.getCustomers().stream().anyMatch(c -> c.getId() == targetId);
 		case "duty":
-			return stored.getCompany().getDuties().stream().filter(d -> d.getId() == targetId).count() == 1;
+			return company.getDuties().stream().anyMatch(d -> d.getId() == targetId);
+		case "employee":
+			return company.getEmployees().stream().anyMatch(e -> e.getId() == targetId);
+		case "message":
+			return false;
+		case "license":
+			return company.getLicenses().stream().anyMatch(l -> l.getId() == targetId);
 		}
 
 		return false;
