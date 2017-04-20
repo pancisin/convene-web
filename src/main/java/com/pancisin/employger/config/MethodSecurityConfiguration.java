@@ -1,6 +1,5 @@
 package com.pancisin.employger.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -13,9 +12,6 @@ import com.pancisin.employger.security.evaluators.CustomPermissionEvaluator;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
-
-	// @Autowired
-	// private CustomPermissionEvaluator customPermEval;
 
 	@Bean
 	public CustomPermissionEvaluator customPermEval() {

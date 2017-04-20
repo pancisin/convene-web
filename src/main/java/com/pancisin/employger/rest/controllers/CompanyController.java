@@ -46,7 +46,7 @@ import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestExceptio
 import com.pancisin.employger.rest.controllers.objects.DutyInstance;
 
 @RestController
-@PreAuthorize("hasPermission(#company_id, 'Company', 'read')")
+@PreAuthorize("hasPermission(#company_id, 'company', '')")
 @RequestMapping("/api/company/{company_id}")
 public class CompanyController {
 
