@@ -228,4 +228,10 @@ public class CompanyController {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getNotifications());
 	}
+	
+	@GetMapping("/attributes")
+	public ResponseEntity<?> getAttributes(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getAttributes());
+	}
 }

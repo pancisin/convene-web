@@ -60,6 +60,7 @@ public class Duty {
 		return recurrence.toString();
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "duty", cascade = CascadeType.ALL)
 	private List<Task> tasks;
 

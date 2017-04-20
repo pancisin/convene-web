@@ -49,6 +49,17 @@
   
             <div v-show="currentTab == 'tasks'"
                  key="tasks">
+  
+              <div class="row">
+                <div class="col-md-3"
+                     v-for="attr in attributes">
+                     {{ attr.name }}
+                     <select class="form-control">
+                       <option v-for="opt in attr.options"  v-text="opt.value" :value="opt.id">
+                       </option>
+                     </select>
+                </div>
+              </div>
             </div>
   
             <div v-show="currentTab == 'recurrence'"
@@ -105,7 +116,6 @@ export default {
         endDate: null,
         employees: [],
         customer: null,
-        tasks: [],
         recurrence: {
           minute: [0],
           hour: [0],
@@ -115,6 +125,8 @@ export default {
           weekOfMonth: []
         },
       },
+      attributes: [],
+      tasks: [],
       customers: [],
       employees: [],
       tabs: [
@@ -151,10 +163,13 @@ export default {
   },
   created: function () {
     this.getCustomers();
+    this.getAttributes();
+
     var duty_id = this.$route.params.id;
     if (duty_id != null) {
       this.$http.get('api/duty/' + duty_id).then(response => {
         this.duty = response.body;
+        this.getTasks();
       })
     }
   },
@@ -179,12 +194,25 @@ export default {
         this.customers = response.body;
       })
     },
+    getAttributes: function () {
+      var url = ['api/company', this.$store.getters.company_id, 'attributes'].join('/');
+      this.$http.get(url).then(response => {
+        this.attributes = response.body;
+      })
+    },
     getEmployees: function (search, loading) {
       var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');
       loading(true)
       this.$http.get(url).then(response => {
         this.employees = response.body;
         loading(false)
+      })
+    },
+    getTasks: function () {
+      var url = ['api/duty', this.duty.id, 'tasks'].join('/');
+
+      this.$http.get(url).then(response => {
+        this.tasks = response.body;
       })
     }
   }
