@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,8 @@ import com.pancisin.employger.rest.controllers.exceptions.InvalidRequestExceptio
 import com.pancisin.employger.rest.controllers.objects.DutyInstance;
 
 @RestController
-@RequestMapping("/api/company")
+@PreAuthorize("hasPermission(#company_id, 'company', '')")
+@RequestMapping("/api/company/{company_id}")
 public class CompanyController {
 
 	@Autowired
@@ -66,17 +68,12 @@ public class CompanyController {
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	@GetMapping("/")
-	public ResponseEntity<?> getCompanies() {
-		return ResponseEntity.ok(companyRepository.findAll());
-	}
-
-	@GetMapping("/{company_id}")
+	@GetMapping()
 	public ResponseEntity<?> getCompany(@PathVariable Long company_id) {
 		return ResponseEntity.ok(companyRepository.findOne(company_id));
 	}
 
-	@PutMapping(value = "/{company_id}")
+	@PutMapping()
 	public ResponseEntity<?> updateCompany(@PathVariable Long company_id, @RequestBody Company company) {
 		Company stored = companyRepository.findOne(company_id);
 
@@ -111,19 +108,19 @@ public class CompanyController {
 		return ResponseEntity.ok(stored);
 	}
 
-	@GetMapping("/{company_id}/users")
+	@GetMapping("/users")
 	public ResponseEntity<?> getUsers(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getUsers());
 	}
 
-	@GetMapping("/{company_id}/employees")
+	@GetMapping("/employees")
 	public ResponseEntity<?> getEmployees(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getEmployees());
 	}
 
-	@PostMapping("/{company_id}/employees")
+	@PostMapping("/employees")
 	public ResponseEntity<?> postEmployee(@PathVariable Long company_id, @RequestBody @Valid Employee employee,
 			BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
@@ -135,25 +132,25 @@ public class CompanyController {
 		return ResponseEntity.ok(employeeRepository.save(employee));
 	}
 
-	@GetMapping("/{company_id}/licenses")
+	@GetMapping("/licenses")
 	public ResponseEntity<?> getCompanyLicenses(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getLicenses());
 	}
 
-	@GetMapping("/{company_id}/duties")
+	@GetMapping("/duties")
 	public ResponseEntity<?> getCompanyDuties(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getDuties());
 	}
 
-	@GetMapping("/{company_id}/customers")
+	@GetMapping("/customers")
 	public ResponseEntity<?> getCompanyCustomers(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getCustomers());
 	}
 
-	@PostMapping("/{company_id}/customers")
+	@PostMapping("/customers")
 	public ResponseEntity<?> postCompanyCustomer(@PathVariable Long company_id, @RequestBody @Valid Customer customer,
 			BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
@@ -165,7 +162,7 @@ public class CompanyController {
 		return ResponseEntity.ok(customerRepository.save(customer));
 	}
 
-	@GetMapping("/{company_id}/duties/{date_to}")
+	@GetMapping("/duties/{date_to}")
 	public ResponseEntity<?> getDutiesInOccurrence(@PathVariable Long company_id,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to) {
 		Company company = companyRepository.findOne(company_id);
@@ -186,7 +183,7 @@ public class CompanyController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/{company_id}/instances/{date_from}/{date_to}")
+	@GetMapping("/instances/{date_from}/{date_to}")
 	public ResponseEntity<?> getDutyInstances(@PathVariable Long company_id,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_to,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) String date_from) throws ParseException {
@@ -213,7 +210,7 @@ public class CompanyController {
 		return ResponseEntity.ok(result);
 	}
 
-	@PostMapping("/{company_id}/duties")
+	@PostMapping("/duties")
 	public ResponseEntity<?> createCompanyDuties(@PathVariable Long company_id, @Valid @RequestBody Duty duty,
 			BindingResult bindingResult) {
 		Company company = companyRepository.findOne(company_id);
@@ -226,7 +223,7 @@ public class CompanyController {
 		return ResponseEntity.ok(dutyRepository.save(duty));
 	}
 
-	@GetMapping("/{company_id}/notifications")
+	@GetMapping("/notifications")
 	public ResponseEntity<?> getNotifications(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getNotifications());
