@@ -77,7 +77,10 @@ export default {
     create_update: "Create or update duty",
     recurrence: "Recurrence",
     advanced: "Advanced",
-    employees: "Employees"
+    employees: "Employees",
+    task: {
+      add: "Add task",
+    }
   },
   employee: {
     default: "Employee | Employees",

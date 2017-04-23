@@ -94,6 +94,7 @@ public class DutyController {
 	public ResponseEntity<?> postTask(@PathVariable Long duty_id, @RequestBody Task task) {
 		Duty duty = dutyRepository.findOne(duty_id);
 		task.setDuty(duty);
-		return ResponseEntity.ok(taskRepository.save(task));
+		Task stored = taskRepository.save(task);
+		return ResponseEntity.ok(stored);
 	}
 }

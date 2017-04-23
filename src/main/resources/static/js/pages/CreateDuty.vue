@@ -50,15 +50,57 @@
             <div v-show="currentTab == 'tasks'"
                  key="tasks">
   
-              <div class="row">
-                <div class="col-md-3"
-                     v-for="attr in attributes">
-                     {{ attr.name }}
-                     <select class="form-control">
-                       <option v-for="opt in attr.options"  v-text="opt.value" :value="opt.id">
-                       </option>
-                     </select>
+              <table class="table table-striped"
+                     v-if="attributes != null">
+                <thead>
+                  <tr>
+                    <th v-for="attr in attributes"
+                        v-text="attr.name">
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="t in tasks">
+                    <td v-for="(attr, index) in attributes">
+                      <ul v-if="t.attributes[index] != null"
+                          class="list-unstyled">
+                        <li v-for="option in t.attributes[index].values"
+                            v-text="option.value"></li>
+                      </ul>
+                    </td>
+                    <td>
+                      <a @click="deleteTask(t)"
+                         class="btn btn-link">remove</a>
+                      <a @click=""
+                         class="btn btn-link">edit</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+  
+              <!--<div class="row"
+                               v-for="t in tasks">
+                            <ul v-for="attr in t.attributes">
+                              <li v-for="option in attr.values"
+                                  v-text="option.value"></li>
+                            </ul>
+                          </div>-->
+  
+              <div class="section">
+                <div class="section-title">{{ $t('duty.task.add') }}</div>
+                <div class="row">
+                  <div class="col-md-3"
+                       v-for="(attr, index) in attributes">
+  
+                    <v-checkbox v-for="opt in attr.options"
+                                :option="opt"
+                                v-model="task.attributes[index].values" />
+  
+                  </div>
                 </div>
+                <a @click="submitTask"
+                   class="btn btn-primary pull-right">Add</a>
               </div>
             </div>
   
@@ -102,8 +144,9 @@
 </template>
 
 <script>
-import datepicker from '../elements/DatePicker.vue';
-import recurrenceInput from '../elements/RecurrenceInput.vue';
+import datepicker from '../elements/DatePicker.vue'
+import recurrenceInput from '../elements/RecurrenceInput.vue'
+import vCheckbox from '../elements/Checkbox.vue'
 
 export default {
   name: 'create-duty',
@@ -126,6 +169,7 @@ export default {
         },
       },
       attributes: [],
+      task: null,
       tasks: [],
       customers: [],
       employees: [],
@@ -151,8 +195,7 @@ export default {
     }
   },
   components: {
-    datepicker: datepicker,
-    recurrenceInput: recurrenceInput,
+    datepicker, recurrenceInput, vCheckbox
   },
   computed: {
     edit_mode: {
@@ -188,6 +231,23 @@ export default {
         });
       }
     },
+    submitTask: function () {
+      var url = ['api/duty', this.duty.id, 'tasks'].join('/');
+
+      this.$http.post(url, JSON.stringify(this.task)).then(response => {
+        this.tasks.push(response.body);
+        this.initializeTask();
+      });
+    },
+    deleteTask: function (task) {
+      var url = ['api/task', task.id].join('/');
+
+      this.$http.delete(url).then(response => {
+        this.tasks = this.tasks.filter(t => {
+          return t.id != task.id;
+        })
+      });
+    },
     getCustomers: function () {
       var url = ['api/company', this.$store.getters.company_id, 'customers'].join('/');
       this.$http.get(url).then(response => {
@@ -198,7 +258,21 @@ export default {
       var url = ['api/company', this.$store.getters.company_id, 'attributes'].join('/');
       this.$http.get(url).then(response => {
         this.attributes = response.body;
+        this.initializeTask();
       })
+    },
+    initializeTask: function () {
+      this.task = {
+        attributes: [],
+        note: 'test',
+      },
+        this.attributes.forEach(x => {
+          this.task.attributes.push({
+            id: x.id,
+            name: x.name,
+            values: []
+          });
+        })
     },
     getEmployees: function (search, loading) {
       var url = ['api/company', this.$store.getters.company_id, 'employees'].join('/');

@@ -1,9 +1,12 @@
 package com.pancisin.employger.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,19 +27,31 @@ public class Task {
 	private Long id;
 
 	@JsonIgnore
-	@ManyToMany()
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<AttributeOption> attributeOptions;
 
 	@JsonIgnore
 	@ManyToOne
 	private Duty duty;
 
+	@Column
+	private String note;
+
 	@Transient
+	private List<Attribute> attributes;
+
 	public List<Attribute> getAttributes() {
+		if (attributes != null) return attributes;
 		return attributeOptions.stream().collect(Collectors.groupingBy(a -> a.getAttribute())).entrySet().stream()
 				.map(e -> {
 					return new Attribute(e.getValue(), e.getKey());
 				}).collect(Collectors.toList());
+	}
+
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
+		attributeOptions = new ArrayList<AttributeOption>();
+		attributes.stream().forEach(a -> attributeOptions.addAll(a.getValues()));
 	}
 
 	public void setId(Long id) {
@@ -61,5 +76,13 @@ public class Task {
 
 	public void setDuty(Duty duty) {
 		this.duty = duty;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }
