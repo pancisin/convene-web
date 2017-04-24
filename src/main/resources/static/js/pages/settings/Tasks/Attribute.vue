@@ -25,6 +25,10 @@
         </tbody>
       </table>
     </div>
+    <div class="col-md-6 text-center">
+      <a class="btn btn-danger"
+         @click="deleteAttribute">Delete attribute</a>
+    </div>
   </div>
 </template>
 
@@ -44,6 +48,8 @@ export default {
       this.$http.post(url, JSON.stringify({
         value: this.new_option,
       })).then(response => {
+        if (this.attribute.options == null)
+          this.attribute.options = [];
         this.attribute.options.push(response.body);
         this.new_option = null;
       })
@@ -54,6 +60,23 @@ export default {
       this.$http.delete(url).then(response => {
         this.attribute.options = this.attribute.options.filter(x => {
           return x.id != option.id;
+        })
+      }, response => {
+        this.$emit('error', {
+          title: response.body.error,
+          message: response.body.message
+        })
+      })
+    },
+    deleteAttribute: function () {
+      var url = ['api/attribute', this.attribute.id].join('/');
+
+      this.$http.delete(url).then(response => {
+        this.$emit('destructed', this.attribute);
+      }, response => {
+        this.$emit('error', {
+          title: response.body.error,
+          message: response.body.message
         })
       })
     }

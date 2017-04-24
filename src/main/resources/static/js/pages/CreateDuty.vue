@@ -77,10 +77,9 @@
                       <td v-text="t.note">
                       </td>
                       <td>
-                        <a @click="deleteTask(t)"
-                           class="btn btn-link">remove</a>
-                        <a @click=""
-                           class="btn btn-link">edit</a>
+                        <a @click="deleteTask(t)">{{ $t('actions.remove') }}</a>
+                        <!--<a @click=""
+                           class="btn btn-link">edit</a>-->
                       </td>
                     </tr>
                   </tbody>
@@ -108,14 +107,14 @@
                     </tbody>
                   </table>
   
-                  <div class="form-group">
-                    <label>{{ $t('duty.task.note') }}</label>
-                    <input type="text"
-                           v-model="task.note"
-                           class="form-control" />
+                  <label>{{ $t('duty.task.note') }}</label>
+                  <input type="text"
+                         v-model="task.note"
+                         class="form-control" />
+                  <div class="text-right">
+                    <a @click="submitTask"
+                       class="btn btn-primary">{{ $t('duty.task.add') }}</a>
                   </div>
-                  <a @click="submitTask"
-                     class="btn btn-primary pull-right">Add</a>
                 </div>
               </div>
   

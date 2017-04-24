@@ -33,7 +33,8 @@ export default {
     logging: "Logging in...",
     login: "Sign in",
     register: "Sign up",
-    registering: "Registering..."
+    registering: "Registering...",
+    remove: "Remove"
   },
   calendar: {
     next: "Next",

@@ -4,8 +4,7 @@
       <div class="card card-tab card-mini">
         <div class="card-header">
           <ul class="nav nav-tabs">
-            <li role="tab1"
-                v-for="attribute in attributes"
+            <li v-for="attribute in attributes"
                 :class="{ 'active' : selectedAttribute.id == attribute.id }">
               <a aria-controls="tab1"
                  role="tab"
@@ -13,11 +12,12 @@
                  @click="selectedAttribute = attribute"
                  aria-expanded="false">{{ $t(attribute.name) }}</a>
             </li>
-            <li role="tab1">
+            <li>
               <a aria-controls="tab1"
                  role="tab"
                  data-toggle="tab"
-                 aria-expanded="false">
+                 aria-expanded="false"
+                 @click="display.modal = true">
                 <i class="fa fa-plus"
                    aria-hidden="true"></i>
               </a>
@@ -25,13 +25,35 @@
           </ul>
         </div>
         <div class="card-body">
-          <transition name="fade">
-            <component :is="currentTab"
-                       :attribute="selectedAttribute"></component>
-          </transition>
+          <attribute :attribute="selectedAttribute"
+                     @destructed="removeAttribute"
+                     @error="displayError"></attribute>
         </div>
       </div>
     </div>
+  
+    <modal :show="display.modal"
+           :question="true"
+           @accept="submitAttribute"
+           @close="display.modal = false">
+      <h4 slot="header">Create Attribute</h4>
+      <p slot="body">
+        <label>Attribute</label>
+        <input type="text"
+               class="form-control"
+               v-model="new_attribute" />
+      </p>
+    </modal>
+  
+    <modal :show.sync="display.error_modal"
+           @close="display.error_modal = false">
+      <h4 slot="header"
+          v-if="error != null"
+          v-text="error.title"></h4>
+      <p slot="body"
+         v-if="error != null"
+         v-text="error.message"></p>
+    </modal>
   </div>
 </template>
 
@@ -41,9 +63,15 @@ export default {
   name: "task-settings",
   data: function () {
     return {
-      currentTab: 'attribute',
       selectedAttribute: null,
       attributes: [],
+      creating_attr: false,
+      new_attribute: null,
+      display: {
+        modal: false,
+        error_modal: false,
+      }, 
+      error: null,
     }
   },
   components: {
@@ -62,6 +90,29 @@ export default {
         }
       })
     },
+    submitAttribute: function () {
+      var url = ['api/company', this.$store.getters.company_id, 'attributes'].join('/');
+
+      this.$http.post(url, JSON.stringify({
+        name: this.new_attribute
+      })).then(response => {
+        this.new_attribute = null;
+        this.attributes.push(response.body);
+        this.display.modal = false;
+      })
+    },
+    removeAttribute: function (attribute) {
+      this.attributes = this.attributes.filter(x => {
+        return x.id != attribute.id;
+      });
+
+      if (this.attributes.length > 0)
+        this.selectedAttribute = this.attributes[0];
+    },
+    displayError: function (error) {
+      this.error = error;
+      this.display.error_modal = true;
+    }
   }
 }
 </script>

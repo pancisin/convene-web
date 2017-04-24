@@ -33,7 +33,8 @@ export default {
     logging: "Prihlasujem...",
     login: "Prihlásiť sa",
     register: "Registruj",
-    registering: "Registrujem..."
+    registering: "Registrujem...",
+    remove: "Odstraniť"
   },
   calendar: {
     next: "Nasledujúci",
