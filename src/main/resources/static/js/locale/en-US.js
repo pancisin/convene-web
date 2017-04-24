@@ -83,6 +83,7 @@ export default {
     employees: "Employees",
     task: {
       add: "Add task",
+      note: "Note"
     }
   },
   employee: {

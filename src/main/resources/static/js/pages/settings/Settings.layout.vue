@@ -17,8 +17,8 @@
                          class="list-group-item">{{ $t('settings.account') }}</router-link>
             <router-link to="/settings/company"
                          class="list-group-item">{{ $t('settings.company') }}</router-link>
-            <router-link to="/settings/license"
-                         class="list-group-item">{{ $t('settings.license') }}</router-link>
+            <!--<router-link to="/settings/license"
+                         class="list-group-item">{{ $t('settings.license') }}</router-link>-->
             <router-link to="/settings/task"
                          class="list-group-item">{{ $t('settings.task') }}</router-link>
             <router-link to="/settings/users"

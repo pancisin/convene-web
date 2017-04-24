@@ -80,7 +80,11 @@ export default {
     create_update: "Vytvoriť alebo upraviť úlohu",
     recurrence: "Opakovanie",
     advanced: "Pokročilé",
-    employees: "Zamestnanci"
+    employees: "Zamestnanci",
+    task: {
+      add: "Pridať úlohu",
+      note: "Poznámka"
+    }
   },
   employee: {
     default: "Zamestnanec | Zamestnanci",
