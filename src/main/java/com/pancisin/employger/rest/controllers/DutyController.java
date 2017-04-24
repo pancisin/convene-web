@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.DutyClause;
 import com.pancisin.employger.models.Employee;
+import com.pancisin.employger.models.Task;
 import com.pancisin.employger.repository.DutyClauseRepository;
 import com.pancisin.employger.repository.DutyRepository;
 import com.pancisin.employger.repository.EmployeeRepository;
+import com.pancisin.employger.repository.TaskRepository;
 import com.pancisin.employger.websocket.components.Notifier;
 
 @RestController
@@ -32,6 +35,9 @@ public class DutyController {
 	@Autowired
 	private DutyRepository dutyRepository;
 
+	@Autowired
+	private TaskRepository taskRepository;
+	
 	@Autowired
 	private DutyClauseRepository clauseRepository;
 
@@ -77,5 +83,17 @@ public class DutyController {
 		Duty duty = dutyRepository.findOne(duty_id);
 		clause.setDuty(duty);
 		return ResponseEntity.ok(clauseRepository.save(clause));
+	}
+
+	@GetMapping("/tasks") 
+	public ResponseEntity<?> getTasks(@PathVariable Long duty_id) {
+		return ResponseEntity.ok(dutyRepository.findOne(duty_id).getTasks());
+	}
+	
+	@PostMapping("/tasks")
+	public ResponseEntity<?> postTask(@PathVariable Long duty_id, @RequestBody Task task) {
+		Duty duty = dutyRepository.findOne(duty_id);
+		task.setDuty(duty);
+		return ResponseEntity.ok(taskRepository.save(task));
 	}
 }

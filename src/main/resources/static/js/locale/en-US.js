@@ -3,13 +3,16 @@ export default {
     dashboard: "Dashboard",
     work_management: "Work management",
     employees: "Employees",
-    customers: "Customers"
+    customers: "Customers",
   },
   settings: {
     default: "Settings",
     account: "Account",
     company: "Company",
-    logout: "Logout"
+    license: "Licese",
+    logout: "Logout",
+    task: 'Task attributes',
+    users: 'Users',
   },
   account: {
     firstName: "First name",
@@ -30,7 +33,8 @@ export default {
     logging: "Logging in...",
     login: "Sign in",
     register: "Sign up",
-    registering: "Registering..."
+    registering: "Registering...",
+    remove: "Remove"
   },
   calendar: {
     next: "Next",
@@ -77,7 +81,11 @@ export default {
     create_update: "Create or update duty",
     recurrence: "Recurrence",
     advanced: "Advanced",
-    employees: "Employees"
+    employees: "Employees",
+    task: {
+      add: "Add task",
+      note: "Note"
+    }
   },
   employee: {
     default: "Employee | Employees",

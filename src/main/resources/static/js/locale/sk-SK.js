@@ -9,7 +9,10 @@ export default {
     default: "Nastavenia",
     account: "Konto",
     company: "Spoločnosť",
-    logout: "Odhlásiť sa"
+    license: "Licencia",
+    logout: "Odhlásiť sa",
+    task: 'Atribúty úloh',
+    users: 'Používatelia',
   },
   account: {
     firstName: "Meno",
@@ -30,7 +33,8 @@ export default {
     logging: "Prihlasujem...",
     login: "Prihlásiť sa",
     register: "Registruj",
-    registering: "Registrujem..."
+    registering: "Registrujem...",
+    remove: "Odstraniť"
   },
   calendar: {
     next: "Nasledujúci",
@@ -77,7 +81,11 @@ export default {
     create_update: "Vytvoriť alebo upraviť úlohu",
     recurrence: "Opakovanie",
     advanced: "Pokročilé",
-    employees: "Zamestnanci"
+    employees: "Zamestnanci",
+    task: {
+      add: "Pridať úlohu",
+      note: "Poznámka"
+    }
   },
   employee: {
     default: "Zamestnanec | Zamestnanci",

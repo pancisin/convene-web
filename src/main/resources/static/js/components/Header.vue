@@ -73,25 +73,24 @@
   
         <li class="dropdown profile"
             v-if="$store.state.user != null">
-          <a href="javascript:;"
-             class="dropdown-toggle"
-             data-toggle="dropdown">
+          <router-link to="/settings"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
             <div class="icon"><i class="fa fa-cog fa-2x"
                  aria-hidden="true"></i></div>
             <div class="title">{{ $t('settings.default') }}</div>
-          </a>
+          </router-link>
   
           <div class="dropdown-menu">
             <div class="profile-info">
               <h4 class="username">{{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small></h4>
             </div>
             <ul class="action">
-              <!--<li><router-link to="/licenses"> License & Billing </router-link></li>-->
               <li>
-                <router-link to="/account">{{ $t('settings.account') }}</router-link>
+                <router-link to="/settings/account">{{ $t('settings.account') }}</router-link>
               </li>
               <li>
-                <router-link to="/company">{{ $t('settings.company') }}</router-link>
+                <router-link to="/settings/company">{{ $t('settings.company') }}</router-link>
               </li>
               <li>
                 <a href="javascript:;"

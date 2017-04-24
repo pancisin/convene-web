@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "companies")
 public class Company {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -30,51 +30,55 @@ public class Company {
 	@Column
 	@NotEmpty
 	private String name;
-	
+
 	@Column(unique = true)
 	@NotEmpty
 	private String ico;
 
 	@Column()
 	private String logo;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<License> licenses;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<Employee> employees;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address = new Address();
-	
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
-	
+
 	@Email
 	@Column(name = "email")
 	private String email;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
 	private List<User> users;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Duty> duties;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "company")
 	private List<Customer> customers;
-	
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "recipient")
 	private List<Notification> notifications;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "company")
+	private List<Attribute> attributes;
+
 	public String getName() {
 		return name;
 	}
@@ -161,5 +165,9 @@ public class Company {
 
 	public List<Notification> getNotifications() {
 		return notifications;
+	}
+
+	public List<Attribute> getAttributes() {
+		return attributes;
 	}
 }

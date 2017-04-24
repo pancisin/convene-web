@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-xs-12">
-      <div class="card">
+      <div class="card card-mini">
         <div class="card-header">
           Company information
         </div>
@@ -98,36 +98,8 @@
       </div>
     </div>
   
-    <div class="col-xs-12">
-      <div class="card">
-        <div class="card-header">
-          Users
-        </div>
-        <div class="card-body no-padding">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody v-for="user in users">
-              <tr>
-                <th scope="row"
-                    v-text="user.id">1</th>
-                <td v-text="user.firstName"></td>
-                <td v-text="user.lastName"></td>
-                <td v-text="user.email"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <modal :show.sync="display.modal" @close="display.modal = false">
+    <modal :show.sync="display.modal"
+           @close="display.modal = false">
       <h4 slot="header">Success !</h4>
       <p slot="body">Your company information have been updated successfuly.</p>
     </modal>
@@ -135,7 +107,7 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
+import Auth from '../../services/auth.js'
 export default {
   name: 'company',
   data: function () {
@@ -150,7 +122,6 @@ export default {
   created: function () {
     Auth.currentUser(this).then((user) => {
       this.company = user.company;
-      this.fetchUsers();
     });
   },
   methods: {
@@ -158,11 +129,6 @@ export default {
       this.$http.put('api/company/' + this.company.id, this.company).then(response => {
         this.company = response.body;
         this.display.modal = true;
-      });
-    },
-    fetchUsers: function () {
-      this.$http.get('api/company/' + this.company.id + '/users').then(response => {
-        this.users = response.body;
       });
     },
     onLogoChange: function (e) {

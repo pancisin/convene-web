@@ -32,11 +32,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.employger.models.Attribute;
 import com.pancisin.employger.models.Company;
 import com.pancisin.employger.models.Customer;
 import com.pancisin.employger.models.Duty;
 import com.pancisin.employger.models.DutyClause;
 import com.pancisin.employger.models.Employee;
+import com.pancisin.employger.repository.AttributeRepository;
 import com.pancisin.employger.repository.CompanyRepository;
 import com.pancisin.employger.repository.CustomerRepository;
 import com.pancisin.employger.repository.DutyClauseRepository;
@@ -68,6 +70,9 @@ public class CompanyController {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	@Autowired
+	private AttributeRepository attributeRepository;
+	
 	@GetMapping()
 	public ResponseEntity<?> getCompany(@PathVariable Long company_id) {
 		return ResponseEntity.ok(companyRepository.findOne(company_id));
@@ -227,5 +232,18 @@ public class CompanyController {
 	public ResponseEntity<?> getNotifications(@PathVariable Long company_id) {
 		Company company = companyRepository.findOne(company_id);
 		return ResponseEntity.ok(company.getNotifications());
+	}
+
+	@GetMapping("/attributes")
+	public ResponseEntity<?> getAttributes(@PathVariable Long company_id) {
+		Company company = companyRepository.findOne(company_id);
+		return ResponseEntity.ok(company.getAttributes());
+	}
+
+	@PostMapping("/attributes")
+	public ResponseEntity<?> postAttribute(@PathVariable Long company_id, @RequestBody Attribute attr) {
+		Company company = companyRepository.findOne(company_id);
+		attr.setCompany(company);
+		return ResponseEntity.ok(attributeRepository.save(attr));
 	}
 }
