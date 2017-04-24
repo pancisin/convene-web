@@ -13,8 +13,8 @@
             <th>Email</th>
           </tr>
         </thead>
-        <tbody v-for="user in users">
-          <tr>
+        <tbody>
+          <tr v-for="user in users">
             <th scope="row"
                 v-text="user.id">1</th>
             <td v-text="user.firstName"></td>
