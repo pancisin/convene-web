@@ -12,6 +12,7 @@ export default {
     license: "Licencia",
     logout: "Odhlásiť sa",
     task: 'Atribúty úloh',
+    users: 'Používatelia',
   },
   account: {
     firstName: "Meno",

@@ -89,4 +89,10 @@ export default {
 aside.app-sidebar {
   background-color: #333;
 }
+
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+  background-color: #2aab56;
+}
 </style>

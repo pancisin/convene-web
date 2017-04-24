@@ -73,13 +73,13 @@
   
         <li class="dropdown profile"
             v-if="$store.state.user != null">
-          <a href="javascript:;"
-             class="dropdown-toggle"
-             data-toggle="dropdown">
+          <router-link to="/settings"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
             <div class="icon"><i class="fa fa-cog fa-2x"
                  aria-hidden="true"></i></div>
             <div class="title">{{ $t('settings.default') }}</div>
-          </a>
+          </router-link>
   
           <div class="dropdown-menu">
             <div class="profile-info">

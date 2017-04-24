@@ -22,6 +22,7 @@ import Account from '../pages/settings/Account.vue'
 import Company from '../pages/settings/Company.vue'
 import LicensesComponent from '../pages/settings/License.vue'
 import TaskSettings from '../pages/settings/Tasks.vue'
+import Users from '../pages/settings/Users.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -115,6 +116,10 @@ const router = new VueRouter({
             {
               path: 'task',
               component: TaskSettings
+            },
+            {
+              path: 'users',
+              component: Users
             }
           ]
         }

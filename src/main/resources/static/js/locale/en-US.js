@@ -12,6 +12,7 @@ export default {
     license: "Licese",
     logout: "Logout",
     task: 'Task attributes',
+    users: 'Users',
   },
   account: {
     firstName: "First name",

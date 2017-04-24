@@ -1,5 +1,11 @@
 <template>
   <div class="row">
+    <div class="col-md-9">
+      <transition name="fade"
+                  mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </div>
     <div class="col-md-3">
       <div class="card card-mini">
         <div class="card-header">
@@ -15,15 +21,11 @@
                          class="list-group-item">{{ $t('settings.license') }}</router-link>
             <router-link to="/settings/task"
                          class="list-group-item">{{ $t('settings.task') }}</router-link>
+            <router-link to="/settings/users"
+                         class="list-group-item">{{ $t('settings.users') }}</router-link>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-9">
-      <transition name="fade"
-                  mode="out-in">
-        <router-view></router-view>
-      </transition>
     </div>
   </div>
 </template>
