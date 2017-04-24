@@ -6,13 +6,20 @@
           <tr v-for="(opt, index) in attribute.options">
             <th v-text="index"></th>
             <td v-text="opt.value"></td>
+            <td>
+              <a @click="deleteOption(opt)">remove</a>
+            </td>
           </tr>
           <tr>
             <th><i class="fa fa-plus"
                  aria-hidden="true"></i></th>
-            <td>
-              <input type="text" v-model="new_option" />
-              <a @click="submitOption">Add</a>
+            <td colspan="2">
+              <input type="text"
+                     v-model="new_option"
+                     @keyup.enter="submitOption"
+                     class="form-control" />
+              <a @click="submitOption"
+                 class="btn btn-xs btn-primary pull-right">Add</a>
             </td>
           </tr>
         </tbody>
@@ -25,19 +32,30 @@
 export default {
   name: 'attribute',
   props: ['attribute'],
-  data: function() {
+  data: function () {
     return {
       new_option: null,
     }
   },
   methods: {
-    submitOption: function() {
-      // TODO : Prepare and implement backend for submitting attribute options. Attribute controller required.
+    submitOption: function () {
+      var url = ['api/attribute', this.attribute.id, 'options'].join('/');
 
-      this.attribute.options.push({
+      this.$http.post(url, JSON.stringify({
         value: this.new_option,
-      });
-      this.new_option = null;
+      })).then(response => {
+        this.attribute.options.push(response.body);
+        this.new_option = null;
+      })
+    },
+    deleteOption: function (option) {
+      var url = ['api/attribute', this.attribute.id, 'options', option.id].join('/');
+
+      this.$http.delete(url).then(response => {
+        this.attribute.options = this.attribute.options.filter(x => {
+          return x.id != option.id;
+        })
+      })
     }
   }
 }

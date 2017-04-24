@@ -44,6 +44,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			return company.getLicenses().stream().anyMatch(l -> l.getId() == targetId);
 		case "task":
 			return true;
+		case "attribute":
+			return company.getAttributes().stream().anyMatch(a -> a.getId() == targetId);
 		}
 
 		return false;
