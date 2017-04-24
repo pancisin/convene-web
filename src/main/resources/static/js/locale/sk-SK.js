@@ -9,7 +9,9 @@ export default {
     default: "Nastavenia",
     account: "Konto",
     company: "Spoločnosť",
-    logout: "Odhlásiť sa"
+    license: "Licencia",
+    logout: "Odhlásiť sa",
+    task: 'Atribúty úloh',
   },
   account: {
     firstName: "Meno",

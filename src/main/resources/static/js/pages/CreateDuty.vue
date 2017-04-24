@@ -60,8 +60,10 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr v-for="t in tasks">
+                <tbody is="transition-group"
+                       name="fade">
+                  <tr v-for="t in tasks"
+                      :key="t.id">
                     <td v-for="(attr, index) in attributes">
                       <ul v-if="t.attributes[index] != null"
                           class="list-unstyled">
@@ -78,14 +80,6 @@
                   </tr>
                 </tbody>
               </table>
-  
-              <!--<div class="row"
-                               v-for="t in tasks">
-                            <ul v-for="attr in t.attributes">
-                              <li v-for="option in attr.values"
-                                  v-text="option.value"></li>
-                            </ul>
-                          </div>-->
   
               <div class="section">
                 <div class="section-title">{{ $t('duty.task.add') }}</div>

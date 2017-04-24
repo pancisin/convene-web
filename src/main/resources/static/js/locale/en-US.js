@@ -3,13 +3,15 @@ export default {
     dashboard: "Dashboard",
     work_management: "Work management",
     employees: "Employees",
-    customers: "Customers"
+    customers: "Customers",
   },
   settings: {
     default: "Settings",
     account: "Account",
     company: "Company",
-    logout: "Logout"
+    license: "Licese",
+    logout: "Logout",
+    task: 'Task attributes',
   },
   account: {
     firstName: "First name",

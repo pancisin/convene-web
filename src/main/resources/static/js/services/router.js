@@ -6,19 +6,22 @@ import Auth from './auth.js';
 
 import UsersComponent from '../components/Users.vue'
 import DashboardComponent from '../components/Dashboard.vue'
-import LicensesComponent from '../components/Licenses.vue'
 import EmployeesComponent from '../components/Employees.vue'
 import WorkManagement from '../components/WorkManagement.vue'
 import CreateDuty from '../pages/CreateDuty.vue'
 import Layout from '../components/Layout.vue'
 import Login from '../pages/Login.vue'
 import Register from '../pages/Register.vue'
-import Account from '../pages/Account.vue'
-import Company from '../pages/Company.vue'
 import Customers from '../pages/Customers.vue'
 import CustomerCreate from '../pages/Customer.create.vue'
 import Instance from '../pages/Instance.vue'
 import Chat from '../pages/Chat.vue'
+
+import Settings from '../pages/settings/Settings.layout.vue'
+import Account from '../pages/settings/Account.vue'
+import Company from '../pages/settings/Company.vue'
+import LicensesComponent from '../pages/settings/License.vue'
+import TaskSettings from '../pages/settings/Tasks.vue'
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
@@ -40,6 +43,7 @@ const afterAuth = (_to, from, next) => {
 }
 
 const router = new VueRouter({
+  linkActiveClass: 'active',
   routes: [
     {
       path: '/',
@@ -56,10 +60,6 @@ const router = new VueRouter({
           component: UsersComponent
         },
         {
-          path: '/licenses',
-          component: LicensesComponent
-        },
-        {
           path: '/employees',
           component: EmployeesComponent
         },
@@ -74,14 +74,6 @@ const router = new VueRouter({
         {
           path: '/duty/:id',
           component: CreateDuty
-        },
-        {
-          path: '/account',
-          component: Account
-        },
-        {
-          path: '/company',
-          component: Company
         },
         {
           path: '/customers',
@@ -102,6 +94,29 @@ const router = new VueRouter({
         {
           path: '/chat',
           component: Chat
+        },
+        {
+          path: '/settings',
+          component: Settings,
+          redirect: '/settings/account',
+          children: [
+            {
+              path: 'account',
+              component: Account
+            },
+            {
+              path: 'company',
+              component: Company
+            },
+            {
+              path: 'license',
+              component: LicensesComponent
+            },
+            {
+              path: 'task',
+              component: TaskSettings
+            }
+          ]
         }
       ]
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-xs-12">
-      <div class="card">
+      <div class="card card-mini">
         <div class="card-header">
           Company information
         </div>
@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
+import Auth from '../../services/auth.js'
 export default {
   name: 'company',
   data: function () {
