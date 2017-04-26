@@ -75,7 +75,7 @@
             <tbody>
               <tr v-for="cust in customers">
                 <td v-text="cust.name"></td>
-                <td class="text-center"><a :href="'/report/customer/' + cust.id"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                <td class="text-center"><a :href="'report/customer/' + cust.id"><i class="fa fa-download" aria-hidden="true"></i></a></td>
               </tr>
             </tbody>
           </table>

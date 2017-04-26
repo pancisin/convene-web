@@ -69,7 +69,8 @@ export default {
     report: {
       default: "Automatic report settings",
       active: "Send automatic report via email."
-    }
+    },
+    create: "Create or update customer",
   },
   duty: {
     default: "Duty | Duties",
@@ -111,5 +112,10 @@ export default {
   },
   user: {
     default: "User | Users"
+  },
+  period: {
+    DAILY: "Daily",
+    WEEKLY: "Weekly",
+    MONTHLY: "Monthly",
   }
 }

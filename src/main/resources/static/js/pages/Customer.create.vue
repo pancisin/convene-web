@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card card-mini">
-        <div class="card-header">Create or update customer</div>
+        <div class="card-header">{{ $t('customer.create') }}</div>
         <div class="card-body">
           <form class="form form-horizontal"
                 @submit.prevent="submitCustomer">
@@ -62,8 +62,8 @@
                              :id="'period-radio-' + period"
                              v-model="customer.report.interval"
                              :value="period">
-                      <label v-text="period"
-                             :for="'period-radio-' + period">
+                      <label :for="'period-radio-' + period">
+                        {{ $t('period.' + period) }}
                       </label>
                     </div>
                   </div>

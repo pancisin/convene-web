@@ -69,7 +69,8 @@ export default {
     report: {
       default: "Nastavenie automatického odosielania",
       active: "Odosielať automatický rozpis práce elektronickou poštou."
-    }
+    },
+    create: "Vytvoriť alebo upraviť zákazníka",
   },
   duty: {
     default: "Zakázka | Zakázky",
@@ -111,5 +112,10 @@ export default {
   },
   user: {
     default: "Používateľ | Používatelia"
+  },
+  period: {
+    DAILY: "Denne",
+    WEEKLY: "Týždenne",
+    MONTHLY: "Mesačne",
   }
 }
