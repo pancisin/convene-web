@@ -51,6 +51,9 @@ export default {
     city: "Mesto",
     street: "Ulica",
     number: "Číslo",
+    information: "Informácie spoločnosti",
+    residence: "Sídlo",
+    contacts: "Kontakty",
   },
   customer: {
     default: "Zákazník | Zákazníci",

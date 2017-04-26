@@ -1,8 +1,5 @@
 <template>
   <div class="card card-mini">
-    <div class="card-header">
-      Users
-    </div>
     <div class="card-body no-padding">
       <table class="table">
         <thead>

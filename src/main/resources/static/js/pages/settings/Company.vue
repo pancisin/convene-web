@@ -2,26 +2,28 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card card-mini">
-        <div class="card-header">
-          Company information
-        </div>
         <div class="card-body">
           <form class="form form-horizontal"
                 @submit.prevent="submit"
                 v-if="company != null">
-            <div class="section">
-              <div class="section-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <img :src="company.logo"
-                         class="img-thumbnail" />
-                    <input type="file"
-                           @change="onLogoChange"
-                           class="form-control"
-                           placeholder="Company logo">
   
+            <div class="row">
+              <div class="col-md-4">
+                <img :src="company.logo"
+                     class="img-thumbnail" />
+                <input type="file"
+                       @change="onLogoChange"
+                       class="form-control"
+                       placeholder="Company logo">
+  
+              </div>
+              <div class="col-md-8">
+                <div class="section">
+                  <div class="section-title">
+                    <i class="icon fa fa-info"
+                       aria-hidden="true"></i> {{ $t('company.information') }}
                   </div>
-                  <div class="col-md-8">
+                  <div class="section-body">
                     <input type="text"
                            v-model="company.ico"
                            class="form-control"
@@ -31,51 +33,41 @@
                            v-model="company.name"
                            class="form-control"
                            :placeholder="$t('company.name')">
+                  </div>
+                </div>
   
-                    <div class="section">
-                      <div class="section-title">
-                        {{ $t('company.contact') }}
+                <div class="section">
+                  <div class="section-title">
+                    <i class="icon fa fa-home"
+                       aria-hidden="true"></i> {{ $t('company.residence') }}
+                  </div>
+                  <div class="section-body">
+                    <div class="row">
+                      <div class="col-xs-10">
+                        <input type="text"
+                               v-model="company.address.street"
+                               class="form-control"
+                               :placeholder="$t('company.street')">
                       </div>
-                      <div class="section-body">
+                      <div class="col-xs-2">
                         <input type="text"
-                               v-model="company.email"
+                               v-model="company.address.number"
                                class="form-control"
-                               :placeholder="$t('company.email')">
+                               :placeholder="$t('company.number')">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-4">
                         <input type="text"
-                               v-model="company.phoneNumber"
+                               v-model="company.address.zip"
                                class="form-control"
-                               :placeholder="$t('company.phone')">
-  
-                        <div class="row">
-                          <div class="col-xs-4">
-                            <input type="text"
-                                   v-model="company.address.zip"
-                                   class="form-control"
-                                   :placeholder="$t('company.zip')">
-                          </div>
-                          <div class="col-xs-8">
-                            <input type="text"
-                                   v-model="company.address.city"
-                                   class="form-control"
-                                   :placeholder="$t('company.city')">
-                          </div>
-                        </div>
-  
-                        <div class="row">
-                          <div class="col-xs-10">
-                            <input type="text"
-                                   v-model="company.address.street"
-                                   class="form-control"
-                                   :placeholder="$t('company.street')">
-                          </div>
-                          <div class="col-xs-2">
-                            <input type="text"
-                                   v-model="company.address.number"
-                                   class="form-control"
-                                   :placeholder="$t('company.number')">
-                          </div>
-                        </div>
-  
+                               :placeholder="$t('company.zip')">
+                      </div>
+                      <div class="col-xs-8">
+                        <input type="text"
+                               v-model="company.address.city"
+                               class="form-control"
+                               :placeholder="$t('company.city')">
                       </div>
                     </div>
                   </div>
@@ -83,15 +75,33 @@
               </div>
             </div>
   
-            <div class="form-footer">
-              <div class="form-group">
-                <div class="col-md-9 col-md-offset-4">
-                  <button type="submit"
-                          class="btn btn-primary">
-                    {{ $t('actions.update') }}
-                  </button>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="section">
+                  <div class="section-title">
+                    <i class="icon fa fa-phone"
+                       aria-hidden="true"></i> {{ $t('company.contacts')}}
+                  </div>
+                  <div class="section-body">
+                  </div>
                 </div>
+  
+                <input type="text"
+                       v-model="company.email"
+                       class="form-control"
+                       :placeholder="$t('company.email')">
+                <input type="text"
+                       v-model="company.phoneNumber"
+                       class="form-control"
+                       :placeholder="$t('company.phone')">
               </div>
+            </div>
+  
+            <div class="text-center">
+              <button type="submit"
+                      class="btn btn-primary">
+                {{ $t('actions.update') }}
+              </button>
             </div>
           </form>
         </div>

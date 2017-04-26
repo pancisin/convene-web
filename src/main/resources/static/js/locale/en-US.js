@@ -51,6 +51,9 @@ export default {
     city: "City",
     street: "Street",
     number: "Number",
+    information: "Company information",
+    residence: "Residence",
+    contacts: "Contacts",
   },
   customer: {
     default: "Customer | Customers",

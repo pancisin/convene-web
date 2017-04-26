@@ -1,8 +1,5 @@
 <template>
   <div class="card card-mini">
-    <div class="card-header">
-      Personal information
-    </div>
     <div class="card-body">
       <form class="form form-horizontal"
             @submit.prevent="submit">
