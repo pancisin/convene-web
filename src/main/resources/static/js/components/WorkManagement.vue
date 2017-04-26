@@ -27,7 +27,6 @@
                 <th>{{ $t('duty.closest_occ') }}</th>
                 <th class="text-center">{{ $t('duty.tasks') }}</th>
                 <th>{{ $tc('employee.default', 2) }}</th>
-                <th class="text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -53,9 +52,6 @@
                       {{ emp.firstName }} {{ emp.lastName }}
                     </li>
                   </ul>
-                </td>
-                <td class="text-center"> 
-                  <a :href="'/report/duty/' + duty.id"><i class="fa fa-download" aria-hidden="true"></i></a>
                 </td>
               </tr>
             </tbody>

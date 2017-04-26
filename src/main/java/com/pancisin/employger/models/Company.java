@@ -1,7 +1,10 @@
 package com.pancisin.employger.models;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +19,11 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pancisin.employger.repository.DutyClauseRepository;
+import com.pancisin.employger.rest.controllers.objects.DutyInstance;
 
 @Entity
 @Table(name = "companies")

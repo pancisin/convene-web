@@ -23,6 +23,11 @@ public class AttributeOption {
 	@ManyToOne
 	private Attribute attribute;
 
+	@Override
+	public String toString() {
+		return value;
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -34,6 +34,11 @@ public class Address {
 	@OneToOne(mappedBy = "address")
 	private Company company;
 
+	@Override
+	public String toString() {
+		return this.getStreet() + " " + this.getNumber() + ", " + this.getZip() + " " + this.getCity(); 
+	}
+	
 	public Long getId() {
 		return id;
 	}
