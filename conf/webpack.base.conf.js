@@ -7,7 +7,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../src/main/resources/static/dist/'),
-    filename: 'app-bundle.js'
+    filename: '[name].js'
   },
   resolve: {
     extensions: [ '', '.js', '.vue' ],
@@ -16,36 +16,31 @@ module.exports = {
     }
   },
   module: {
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.(png|jpg|gif|svg)/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: '[name].[ext]?[hash]'
-        }
-      },
-      {
-        test: /\.(woff|eot|ttf|woff(2)?|otf)/i,
-        loader: 'file-loader?[name].[ext]?[hash]'
+    loaders: [ {
+      test: /\.vue$/,
+      loader: 'vue'
+    }, {
+      test: /\.js$/,
+      loader: 'babel',
+      exclude: /node_modules/
+    }, {
+      test: /\.(png|jpg|gif|svg)/,
+      loader: 'url',
+      query: {
+        limit: 10000,
+        name: '[name].[ext]?[hash]'
       }
-    ]
+    }, {
+      test: /\.(woff|eot|ttf|woff(2)?|otf)/i,
+      loader: 'file-loader?[name].[ext]?[hash]'
+    } ]
   },
   vue: {
     loaders: {
       js: 'babel-loader'
     },
     autoprefixer: {
-      browsers: ['last 2 versions']
+      browsers: [ 'last 2 versions' ]
     }
   },
   eslint: {
