@@ -3,8 +3,8 @@
   "version": "0.0.1-SNAPSHOT",
   "description": "",
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --config build/webpack.dev.conf.js",
-    "build": "rimraf src/main/resources/static/dist && webpack --progress --hide-modules --config build/webpack.prod.conf.js"
+    "dev": "webpack-dev-server --inline --hot --config conf/webpack.dev.conf.js",
+    "build": "rimraf src/main/resources/static/dist && webpack --progress --hide-modules --config conf/webpack.prod.conf.js"
   },
   "private": true,
   "author": "Patrik Pancisin",
