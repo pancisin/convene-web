@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueI18n from 'vue-i18n'
-import VueWebsocket from "./services/websocket.js"
+import VueWebsocket from './services/websocket.js'
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
@@ -26,8 +26,6 @@ Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 
 Vue.config.devtools = true;
-Vue.http.options.root = 'http://104.251.219.31:8080/employger'
-// Vue.http.options.root = 'http://localhost:8180'
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());

@@ -1,6 +1,6 @@
 spring: 
   profiles: 
-    active: "production"
+    active: local
   application:
     name: employger
   datasource:
@@ -11,7 +11,7 @@ spring:
       ddl-auto: update
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
-    show-sql: false
+    show-sql: true
     generate-ddl: false
     properties:
       javax:
