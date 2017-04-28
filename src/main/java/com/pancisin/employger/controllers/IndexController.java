@@ -12,6 +12,7 @@ import com.pancisin.employger.utils.EnviromentProvider;
 @Controller
 @RequestMapping("/")
 public class IndexController {
+	
 	@Autowired
 	EnviromentProvider environmentProvider;
 

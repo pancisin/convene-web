@@ -11,7 +11,7 @@ public class EnviromentProvider implements EnvironmentAware {
 
 	@Cacheable("EnvironmentProvider.isProduction")
 	public Boolean isProduction() {
-		return environment.acceptsProfiles("prod");
+		return environment.acceptsProfiles("production");
 	}
 
 	@Cacheable("EnvironmentProvider.isDevelopment")
