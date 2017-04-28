@@ -51,7 +51,7 @@ new ExtractTextPlugin('[name].[contenthash].css'),
 // see https://github.com/ampedandwired/html-webpack-plugin
 new HtmlWebpackPlugin({
   filename: 'index.html',
-  template: 'build/index.template.html'
+  template: 'conf/index.template.html'
 }) ]);
 
 module.exports = config;
