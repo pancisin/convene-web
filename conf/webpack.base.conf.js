@@ -30,6 +30,10 @@ module.exports = {
         limit: 10000,
         name: '[name].[ext]?[hash]'
       }
+    },{
+      test: /\.css$/,
+      include: /node_modules/,
+      loader: "style-loader!css-loader"
     }, {
       test: /\.(woff|eot|ttf|woff(2)?|otf)/i,
       loader: 'file-loader?[name].[ext]?[hash]'
