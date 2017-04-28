@@ -4,26 +4,6 @@ Vue.use(VueRouter);
 
 import Auth from './auth.js';
 
-import UsersComponent from '../components/Users.vue'
-import DashboardComponent from '../components/Dashboard.vue'
-import EmployeesComponent from '../components/Employees.vue'
-import WorkManagement from '../components/WorkManagement.vue'
-import CreateDuty from '../pages/CreateDuty.vue'
-import Layout from '../components/Layout.vue'
-import Login from '../pages/Login.vue'
-import Register from '../pages/Register.vue'
-import Customers from '../pages/Customers.vue'
-import CustomerCreate from '../pages/Customer.create.vue'
-import Instance from '../pages/Instance.vue'
-import Chat from '../pages/Chat.vue'
-
-import Settings from '../pages/settings/Settings.layout.vue'
-import Account from '../pages/settings/Account.vue'
-import Company from '../pages/settings/Company.vue'
-import LicensesComponent from '../pages/settings/License.vue'
-import TaskSettings from '../pages/settings/Tasks.vue'
-import Users from '../pages/settings/Users.vue'
-
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
     next({
@@ -43,83 +23,83 @@ const afterAuth = (_to, from, next) => {
   }
 }
 
-const router = new VueRouter({
+export default new VueRouter({
   linkActiveClass: 'active',
   routes: [
     {
       path: '/',
-      component: Layout,
+      component: resolve => require(['../components/Layout.vue'], resolve),
       beforeEnter: require_auth,
       redirect: '/dashboard',
       children: [
         {
           path: '/dashboard',
-          component: DashboardComponent
+          component: resolve => require(['../pages/Dashboard.vue'], resolve)
         },
         {
           path: '/users',
-          component: UsersComponent
+          component: resolve => require(['../pages/Users.vue'], resolve)
         },
         {
           path: '/employees',
-          component: EmployeesComponent
+          component: resolve => require(['../pages/Employees.vue'], resolve)
         },
         {
           path: '/duty',
-          component: WorkManagement
+          component: resolve => require(['../pages/WorkManagement.vue'], resolve)
         },
         {
           path: '/duty/create',
-          component: CreateDuty
+          component: resolve => require(['../pages/Duty.create.vue'], resolve)
         },
         {
           path: '/duty/:id',
-          component: CreateDuty
+          component: resolve => require(['../pages/Duty.create.vue'], resolve)
         },
         {
           path: '/customers',
-          component: Customers
+          component: resolve => require(['../pages/Customers.vue'], resolve)
         },
         {
           path: '/customers/create',
-          component: CustomerCreate
+          component: resolve => require(['../pages/Customer.create.vue'], resolve)
         },
         {
           path: '/customers/:id',
-          component: CustomerCreate
+          component: resolve => require(['../pages/Customer.create.vue'], resolve)
         },
         {
           path: '/instance/:id/:timestamp',
-          component: Instance
+          component: resolve => require(['../pages/Instance.vue'], resolve)
         },
         {
           path: '/chat',
-          component: Chat
+          component: resolve => require(['../pages/Chat.vue'], resolve)
         },
         {
           path: '/settings',
-          component: Settings,
+          component: resolve => require(['../pages/settings/Settings.layout.vue'], resolve),
           redirect: '/settings/account',
           children: [
             {
               path: 'account',
-              component: Account
+              component: resolve => require(['../pages/settings/Account.vue'], resolve)
             },
             {
               path: 'company',
-              component: Company
+              component: resolve => require(['../pages/settings/Company.vue'], resolve)
             },
             {
               path: 'license',
-              component: LicensesComponent
+              component: resolve => require(['../pages/settings/License.vue'], resolve)
             },
             {
               path: 'task',
-              component: TaskSettings
+              component: resolve => require(['../pages/settings/Tasks.vue'], resolve)
             },
             {
               path: 'users',
-              component: Users
+              component: resolve => require(['../pages/settings/Users.vue'], resolve)
             }
           ]
         }
@@ -127,15 +107,13 @@ const router = new VueRouter({
     },
     {
       path: '/login',
-      component: Login,
+      component: resolve => require(['../pages/Login.vue'], resolve),
       beforeEnter: afterAuth
     },
     {
       path: '/register',
-      component: Register,
+      component: resolve => require(['../pages/Register.vue'], resolve),
       beforeEnter: afterAuth
     }
   ],
 })
-
-export default router;

@@ -3,7 +3,6 @@ package com.pancisin.employger.controllers;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.pancisin.employger.export.CompanyPageHeaderEvent;
 import com.pancisin.employger.models.Attribute;
 import com.pancisin.employger.models.AttributeOption;
 import com.pancisin.employger.models.Company;
@@ -55,7 +54,7 @@ public class ReportController {
 		response.setHeader("Content-Disposition", "attachment; filename=file.pdf");
 
 		Document document = createDocument(customer.getCompany(), outputStream);
-		document.setMargins(0, 0, 25, 25);
+		document.setMargins(0, 0, 50, 25);
 		document.addTitle(customer.getName());
 
 		List<Attribute> attributes = customer.getCompany().getAttributes();
@@ -106,7 +105,7 @@ public class ReportController {
 		}
 
 		document.open();
-		document.add(getHeader(customer.getCompany()));
+//		document.add(getHeader(customer.getCompany()));
 		document.add(table);
 		document.close();
 	}
@@ -148,7 +147,9 @@ public class ReportController {
 
 	private Document createDocument(Company company, OutputStream outputStream) throws DocumentException {
 		Document document = new Document();
-		PdfWriter.getInstance(document, outputStream);
+		PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+		CompanyPageHeaderEvent event = new CompanyPageHeaderEvent(company);
+		writer.setPageEvent(event);
 		document.open();
 
 		document.addSubject("Bank Statement");
@@ -157,19 +158,5 @@ public class ReportController {
 		document.addCreator(company.getName());
 
 		return document;
-	}
-
-	private Paragraph getHeader(Company company) {
-		StringBuilder htext = new StringBuilder();
-		htext.append(company.getName()).append(", ").append(company.getAddress().toString()).append(", ")
-				.append(company.getEmail());
-
-		Paragraph header = new Paragraph(htext.toString());
-		header.setAlignment(Element.ALIGN_CENTER);
-
-		header.add(new Paragraph(" "));
-		header.add(new Paragraph(" "));
-
-		return header;
 	}
 }

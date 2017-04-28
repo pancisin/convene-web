@@ -12,7 +12,7 @@ module.exports = {
 
   output : {
     path : PATHS.build,
-    publicPath : '/assets/',
+    publicPath : 'assets/',
     filename : 'app-bundle.js'
   },
 
@@ -35,7 +35,7 @@ module.exports = {
       }
     }, {
       test : /\.css$/,
-      include: /node_modules/,
+      include : /node_modules/,
       loader : "style-loader!css-loader"
     }, {
       test : /\.(png|jpg|gif|svg)$/,
@@ -52,6 +52,9 @@ module.exports = {
   performance : {
     hints : false
   },
+  plugins: [
+  
+  ],
   devtool : '#eval-source-map'
 }
 
