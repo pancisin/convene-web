@@ -24,13 +24,16 @@ module.exports = {
       loader: 'babel',
       exclude: /node_modules/
     }, {
+      test: /\.less$/,
+      loaders: [ 'style', 'css', 'less' ]
+    }, {
       test: /\.(png|jpg|gif|svg)/,
       loader: 'url',
       query: {
         limit: 10000,
         name: '[name].[ext]?[hash]'
       }
-    },{
+    }, {
       test: /\.css$/,
       include: /node_modules/,
       loader: "style-loader!css-loader"

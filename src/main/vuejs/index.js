@@ -14,6 +14,12 @@ import Auth from './services/auth.js'
 import store from './services/store.js'
 import router from './services/router.js'
 
+
+// LOAD STYLES
+require("./assets/less/vendor.less")
+require("./assets/less/flat-admin.less")
+require("./assets/less/custom.less")
+
 // TRANSLATIONS
 import sk from './locale/sk-SK.js'
 import en from './locale/en-US.js'
