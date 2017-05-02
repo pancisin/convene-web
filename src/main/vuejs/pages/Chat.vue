@@ -122,7 +122,7 @@ export default {
         );
 
         this.subscriptions.push(
-          this.$stompClient.subscribe("/user/exchange/amq.direct/chat.message", response => this.addMessage(JSON.parse(response.body)))
+          this.$stompClient.subscribe("/user/queue/chat.message", response => this.addMessage(JSON.parse(response.body)))
         );
       }, frame => {
         console.log(frame);

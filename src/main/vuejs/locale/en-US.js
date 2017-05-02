@@ -104,6 +104,7 @@ export default {
   },
   notification: {
     default: "Notification | Notifications",
+    empty: "There's nothing to display."
   },
   chat: {
     conversations: 'Conversations',

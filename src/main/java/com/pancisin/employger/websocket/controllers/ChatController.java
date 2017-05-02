@@ -43,6 +43,7 @@ public class ChatController {
 		message.setSender((User) principal);
 		message.setRecipient(recipient);
 
-		simpMessagingTemplate.convertAndSend("/user/" + username + "/exchange/amq.direct/chat.message", messageRepository.save(message));
+		simpMessagingTemplate.convertAndSendToUser(username, "/queue/chat.message", messageRepository.save(message));
+//		simpMessagingTemplate.convertAndSend("/user/" + username + "/exchange/amq.direct/chat.message", messageRepository.save(message));
 	}
 }

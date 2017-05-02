@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.User;
+import com.pancisin.employger.repository.NotificationRepository;
 import com.pancisin.employger.repository.UserRepository;
 
 @RestController
@@ -19,12 +22,10 @@ public class UserController {
 	@Autowired 
 	private UserRepository userRepository;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<?> users() {
-		return ResponseEntity.ok(userRepository.findAll());
-	}
+	@Autowired
+	private NotificationRepository notificationRepository;
 	
-	@RequestMapping(value = "/me", method = RequestMethod.GET)
+	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
@@ -32,7 +33,7 @@ public class UserController {
 		return ResponseEntity.ok(stored);
 	}
 	
-	@RequestMapping(value = "/me", method = RequestMethod.PUT)
+	@PutMapping("/me")
 	public ResponseEntity<User> updateMe(@RequestBody User user) {
 		User auth = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -42,5 +43,11 @@ public class UserController {
 		
 		userRepository.save(stored);
 		return ResponseEntity.ok(stored);
+	}
+	
+	@GetMapping("/me/notifications")
+	public ResponseEntity<?> getNotifications() {
+		User auth = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ResponseEntity.ok(notificationRepository.getUserNotifications(auth.getId()));
 	}
 }

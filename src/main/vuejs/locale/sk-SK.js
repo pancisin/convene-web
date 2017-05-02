@@ -104,6 +104,7 @@ export default {
   },
   notification: {
     default: "Oznámenie | Oznámenia",
+    empty: "Nemáte žiadne nové oznámenia."
   },
   chat: {
     conversations: "Konverzácie",

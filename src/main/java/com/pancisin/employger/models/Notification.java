@@ -22,7 +22,7 @@ public class Notification {
 
 	@JsonIgnore
 	@ManyToOne
-	private Company recipient;
+	private User recipient;
 
 	@Column
 	private String title;
@@ -53,11 +53,11 @@ public class Notification {
 		this.id = id;
 	}
 
-	public Company getRecipient() {
+	public User getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(Company recipient) {
+	public void setRecipient(User recipient) {
 		this.recipient = recipient;
 	}
 
