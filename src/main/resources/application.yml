@@ -1,6 +1,6 @@
 spring: 
   profiles: 
-    active: "production"
+    active: production
   application:
     name: employger
   datasource:
