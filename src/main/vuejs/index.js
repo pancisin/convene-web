@@ -16,9 +16,16 @@ import router from './services/router.js'
 
 
 // LOAD STYLES
-require("./assets/less/vendor.less")
-require("./assets/less/flat-admin.less")
-require("./assets/less/custom.less")
+require("bootstrap")
+require("node-waves")
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+require("./assets/less/core.less")
+require("./assets/less/components.less")
+require("./assets/less/menu.less")
+require("./assets/less/pages.less")
+require("./assets/less/responsive.less")
 
 // TRANSLATIONS
 import sk from './locale/sk-SK.js'

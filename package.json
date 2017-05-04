@@ -10,8 +10,11 @@
   "author": "Patrik Pancisin",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
     "later": "RickCarlino/later",
     "moment": "^2.18.0",
+    "node-waves": "^0.7.5",
     "sockjs-client": "^1.1.2",
     "vue": "^2.2.6",
     "vue-i18n": "^6.0.0",

@@ -4,18 +4,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.pancisin</groupId>
-  <artifactId>employger</artifactId>
+  <artifactId>bookster</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>employger</name>
-  <description>Employees manager web application.</description>
+  <name>bookster</name>
+  <description>Booking web application with rest API providing simple management of small and middle conferences or events.</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.5.2.RELEASE</version>
-    <relativePath /> <!-- lookup parent from repository -->
+    <relativePath />
   </parent>
 
   <properties>
@@ -103,8 +103,6 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <!-- Optional configuration which provides for running any npm 
-              command -->
             <configuration>
               <arguments>install</arguments>
             </configuration>

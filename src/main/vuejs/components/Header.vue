@@ -1,88 +1,125 @@
  <template>
-  <nav class="navbar navbar-default" id="navbar">
-    <div class="navbar-collapse collapse in">
-      <ul class="nav navbar-nav navbar-mobile">
-        <li>
-          <button type="button" class="sidebar-toggle">
-            <i class="fa fa-bars"></i>
-          </button>
-        </li>
-        <li class="logo">
-          <a class="navbar-brand" href="#">
-            <span class="highlight">Flat v3</span> Admin
-          </a>
-        </li>
-        <li>
-          <button type="button" class="navbar-toggle">
-          </button>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-left">
-        <li class="navbar-title" v-if="$store.state.user != null">
-          <span class="highlight" v-text="$store.state.user.company.name"></span>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-          <select @change="switchLanguage" class="form-control">
-            <option value="en">English</option>
-            <option value="sk">Slovak</option>
-          </select>
-        </li>
+  <div class="topbar">
   
-        <li class="dropdown notification" :class="notificationsClass">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <div class="icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
-            <div class="title">System Notifications</div>
-            <div class="count" v-text="notifications.length"></div>
-          </a>
-          <div class="dropdown-menu">
-            <ul is="transition-group" name="fade-down">
-              <li class="dropdown-header" key="0">{{ $tc('notification.default', 2) }}</li>
-              <li v-for="notification in notifications" :key="notification.id">
-                <a>
-                  <span class="pull-right" @click="markAsSeen(notification)"><i class="fa fa-check" aria-hidden="true"></i></span>
-                  <div class="message">
-                    <div class="content">
-                      <div class="title" v-text="notification.title"></div>
-                      <div class="description">{{ notification.created | timeFromNow }}</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li v-if="notifications.length == 0" :key="0">
-                <a>{{ $t('notification.empty') }}</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-  
-        <li class="dropdown profile" v-if="$store.state.user != null">
-          <router-link to="/settings" class="dropdown-toggle" data-toggle="dropdown">
-            <div class="icon"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></div>
-            <div class="title">{{ $t('settings.default') }}</div>
-          </router-link>
-  
-          <div class="dropdown-menu">
-            <div class="profile-info">
-              <h4 class="username">{{ $store.state.user.firstName }} {{ $store.state.user.lastName }} <br> <small v-text="$store.state.user.company.name"></small></h4>
-            </div>
-            <ul class="action">
-              <li>
-                <router-link to="/settings/account">{{ $t('settings.account') }}</router-link>
-              </li>
-              <li>
-                <router-link to="/settings/company">{{ $t('settings.company') }}</router-link>
-              </li>
-              <li>
-                <a href="javascript:;" @click="logout">{{ $t('settings.logout' )}}</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+    <!-- LOGO -->
+    <div class="topbar-left">
+      <div class="text-center">
+        <a href="index.html" class="logo"><i class="md md-equalizer"></i> <span>Bookster</span> </a>
+      </div>
     </div>
-  </nav>
+  
+    <!-- Navbar -->
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="">
+          <div class="pull-left">
+            <button class="button-menu-mobile open-left waves-effect">
+              <i class="md md-menu"></i>
+            </button>
+            <span class="clearfix"></span>
+          </div>
+  
+          <ul class="nav navbar-nav hidden-xs">
+            <li><a href="#" class="waves-effect">Files</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Web design</a></li>
+                <li><a href="#">Projects two</a></li>
+                <li><a href="#">Graphic design</a></li>
+                <li><a href="#">Projects four</a></li>
+              </ul>
+            </li>
+          </ul>
+  
+          <form role="search" class="navbar-left app-search pull-left hidden-xs">
+            <input type="text" placeholder="Search..." class="form-control app-search-input">
+            <a href=""><i class="fa fa-search"></i></a>
+          </form>
+  
+          <ul class="nav navbar-nav navbar-right pull-right">
+  
+            <li class="dropdown hidden-xs">
+              <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
+                <i class="md md-notifications"></i> <span class="badge badge-xs badge-pink">3</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-lg">
+                <li class="text-center notifi-title">Notification</li>
+                <li class="list-group nicescroll notification-list" style="overflow: hidden; outline: none;" tabindex="5000">
+                  <!-- list item-->
+                  <a href="javascript:void(0);" class="list-group-item">
+                    <div class="media">
+                      <div class="pull-left p-r-10">
+                        <em class="fa fa-diamond noti-primary"></em>
+                      </div>
+                      <div class="media-body">
+                        <h5 class="media-heading">A new order has been placed A new
+                                                                order has been placed</h5>
+                        <p class="m-0">
+                          <small>There are new settings available</small>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+  
+                  <!-- list item-->
+                  <a href="javascript:void(0);" class="list-group-item">
+                    <div class="media">
+                      <div class="pull-left p-r-10">
+                        <em class="fa fa-cog noti-warning"></em>
+                      </div>
+                      <div class="media-body">
+                        <h5 class="media-heading">New settings</h5>
+                        <p class="m-0">
+                          <small>There are new settings available</small>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+  
+                  <!-- list item-->
+                  <a href="javascript:void(0);" class="list-group-item">
+                    <div class="media">
+                      <div class="pull-left p-r-10">
+                        <em class="fa fa-bell-o noti-success"></em>
+                      </div>
+                      <div class="media-body">
+                        <h5 class="media-heading">Updates</h5>
+                        <p class="m-0">
+                          <small>There are <span class="text-primary">2</span> new
+                                                                    updates available
+                                                                </small>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+  
+                </li>
+  
+                <li>
+                  <a href="javascript:void(0);" class=" text-right">
+                    <small><b>See all notifications</b></small>
+                  </a>
+                </li>
+  
+                <div id="ascrail2000" class="nicescroll-rails" style="width: 8px; z-index: 1000; cursor: default; position: absolute; top: 0px; left: -8px; height: 0px; display: none;">
+                  <div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
+                </div>
+                <div id="ascrail2000-hr" class="nicescroll-rails" style="height: 8px; z-index: 1000; top: -8px; left: 0px; position: absolute; cursor: default; display: none;">
+                  <div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
+                </div>
+              </ul>
+            </li>
+            <li class="hidden-xs">
+              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="md md-settings"></i></a>
+            </li>
+  
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
 </template>
   
 <script>
