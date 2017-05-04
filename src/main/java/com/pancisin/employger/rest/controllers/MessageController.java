@@ -28,16 +28,6 @@ public class MessageController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	@GetMapping("/{page}")
-	public ResponseEntity<?> getPublicConversation(@PathVariable int page) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User auth_user = (User) auth.getPrincipal();
-		
-		List<Long> users = userRepository.findOne(auth_user.getId()).getCompany().getUsers().stream().map(u -> u.getId()).collect(Collectors.toList());
-		
-		return ResponseEntity.ok(messageRepository.getPublicUser(users, new PageRequest(page, pageLimit)));
-	}
 
 	@GetMapping("/user/{user_id}/{page}")
 	public ResponseEntity<?> getPrivateConversation(@PathVariable Long user_id, @PathVariable int page) {

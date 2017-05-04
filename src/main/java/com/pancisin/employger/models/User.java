@@ -69,9 +69,6 @@ public class User implements UserDetails, Principal {
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
-	@ManyToOne(optional = false, cascade = CascadeType.PERSIST)
-	private Company company;
-
 	public User(Long id, String email, String token, Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.email = email;
@@ -158,14 +155,6 @@ public class User implements UserDetails, Principal {
 
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
-	}
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
 	}
 
 	public String getHashedPassword() {

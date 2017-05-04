@@ -22,9 +22,8 @@ public class License {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@JsonIgnore
 	@ManyToOne
-	private Company company;
+	private User user;
 
 	@Column
 	private Timestamp acquired;
@@ -39,12 +38,12 @@ public class License {
 		return id;
 	}
 
-	public Company getCompany() {
-		return company;
+	public User getCompany() {
+		return user;
 	}
 
-	public void setCompany(Company company) {
-		this.company = company;
+	public void setCompany(User company) {
+		this.user = company;
 	}
 
 	public Timestamp getAcquired() {

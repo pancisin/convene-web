@@ -129,7 +129,7 @@ export default {
   },
   created: function () {
     this.fetchNotifications();
-    this.initializeStomp();
+    // this.initializeStomp();
   },
   methods: {
     logout: function () {
