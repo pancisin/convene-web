@@ -1,14 +1,12 @@
  <template>
   <div class="topbar">
   
-    <!-- LOGO -->
     <div class="topbar-left">
       <div class="text-center">
-        <a href="index.html" class="logo"><i class="md md-equalizer"></i> <span>Bookster</span> </a>
+        <a href="index.html" class="logo"><i class="fa fa-book"></i> <span>Bookster</span> </a>
       </div>
     </div>
   
-    <!-- Navbar -->
     <div class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="">
@@ -41,20 +39,19 @@
   
             <li class="dropdown hidden-xs">
               <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                <i class="md md-notifications"></i> <span class="badge badge-xs badge-pink">3</span>
+                <i class="fa fa-bell-o"></i> <span class="badge badge-xs badge-pink">3</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-lg">
                 <li class="text-center notifi-title">Notification</li>
                 <li class="list-group nicescroll notification-list" style="overflow: hidden; outline: none;" tabindex="5000">
-                  <!-- list item-->
+  
                   <a href="javascript:void(0);" class="list-group-item">
                     <div class="media">
                       <div class="pull-left p-r-10">
                         <em class="fa fa-diamond noti-primary"></em>
                       </div>
                       <div class="media-body">
-                        <h5 class="media-heading">A new order has been placed A new
-                                                                order has been placed</h5>
+                        <h5 class="media-heading">A new order has been placed A new order has been placed</h5>
                         <p class="m-0">
                           <small>There are new settings available</small>
                         </p>
@@ -62,7 +59,6 @@
                     </div>
                   </a>
   
-                  <!-- list item-->
                   <a href="javascript:void(0);" class="list-group-item">
                     <div class="media">
                       <div class="pull-left p-r-10">
@@ -77,7 +73,6 @@
                     </div>
                   </a>
   
-                  <!-- list item-->
                   <a href="javascript:void(0);" class="list-group-item">
                     <div class="media">
                       <div class="pull-left p-r-10">
@@ -86,9 +81,7 @@
                       <div class="media-body">
                         <h5 class="media-heading">Updates</h5>
                         <p class="m-0">
-                          <small>There are <span class="text-primary">2</span> new
-                                                                    updates available
-                                                                </small>
+                          <small>There are <span class="text-primary">2</span> new updates available</small>
                         </p>
                       </div>
                     </div>
@@ -102,21 +95,14 @@
                   </a>
                 </li>
   
-                <div id="ascrail2000" class="nicescroll-rails" style="width: 8px; z-index: 1000; cursor: default; position: absolute; top: 0px; left: -8px; height: 0px; display: none;">
-                  <div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
-                </div>
-                <div id="ascrail2000-hr" class="nicescroll-rails" style="height: 8px; z-index: 1000; top: -8px; left: 0px; position: absolute; cursor: default; display: none;">
-                  <div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
-                </div>
               </ul>
             </li>
             <li class="hidden-xs">
-              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="md md-settings"></i></a>
+              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="fa fa-cogs"></i></a>
             </li>
   
           </ul>
         </div>
-        <!--/.nav-collapse -->
       </div>
     </div>
   </div>

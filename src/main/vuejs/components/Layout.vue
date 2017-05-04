@@ -29,7 +29,7 @@
       <div class="user-detail">
         <div class="dropup">
           <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
-            <img src="assets/images/users/avatar-2.jpg" alt="user-img" class="img-circle">
+            <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="user-img" class="img-circle">
             <span class="user-info-span"><h5 class="m-t-0 m-b-0">John Deo</h5><p class="text-muted m-b-0"><small><i class="fa fa-circle text-success"></i> <span>Online</span></small>
             </p>
             </span>
@@ -47,7 +47,9 @@
   
     <div class="content-page">
       <div class="content">
-        <router-view></router-view>
+        <transition name="fade-down" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </div>
   
       <footer class="footer text-right">
