@@ -24,7 +24,12 @@
           <tbody>
             <tr v-for="event in events">
               <td v-text="event.id"></td>
-              <td v-text="event.name"></td>
+              <td>
+                <router-link :to="'/event/' + event.id">
+                  {{ event.name }}
+                </router-link>
+
+              </td>
               <td>
                 <ul>
                   <li v-for="p in event.programme">

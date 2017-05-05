@@ -24,23 +24,18 @@
 
 
 
-          <li>
-            <router-link to="/duty" class="waves-effect waves-primary">
-              <i class="fa fa-suitcase" aria-hidden="true"></i>
-              <span>{{ $t('menu.work_management') }}</span>
-            </router-link>
-          </li>
+       
         </ul>
         <div class="clearfix"></div>
       </div>
   
       <div class="clearfix"></div>
   
-      <div class="user-detail">
+      <div class="user-detail" v-if="$store.state.user != null">
         <div class="dropup">
           <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
             <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="user-img" class="img-circle">
-            <span class="user-info-span"><h5 class="m-t-0 m-b-0">John Deo</h5><p class="text-muted m-b-0"><small><i class="fa fa-circle text-success"></i> <span>Online</span></small>
+            <span class="user-info-span"><h5 class="m-t-0 m-b-0">{{ $store.state.user.firstName }} {{ $store.state.user.lastName }}</h5><p class="text-muted m-b-0"><small><i class="fa fa-circle text-success"></i> <span>Online</span></small>
             </p>
             </span>
           </a>

@@ -28,28 +28,14 @@
   
             </div>
             <div class="tab-pane m-t-10 fade in" id="tab2">
-              <div class="row">
-                <div class="form-group clearfix">
-                  <label class="col-lg-2 control-label" for="name"> First name *</label>
-                  <div class="col-lg-10">
-                    <input id="name" name="name" type="text" class="required form-control">
-                  </div>
-                </div>
-                <div class="form-group clearfix">
-                  <label class="col-lg-2 control-label " for="surname"> Last name *</label>
-                  <div class="col-lg-10">
-                    <input id="surname" name="surname" type="text" class="required form-control">
-                  </div>
-                </div>
-  
-                <div class="form-group clearfix">
-                  <label class="col-lg-2 control-label " for="email">Email *</label>
-                  <div class="col-lg-10">
-                    <input id="email" name="email" type="text" class="required email form-control">
-                  </div>
-                </div>
-  
-              </div>
+              <table class="table table-striped">
+                <tbody>
+                  <tr v-for="programme in event.programme">
+                    <td v-text="programme.time"></td>
+                    <td v-text="programme.description"></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div class="tab-pane m-t-10 fade" id="tab3">
               <div class="row">
@@ -68,7 +54,8 @@
           </div>
   
           <div class="text-center m-b-10">
-            <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit">Submit {{ event.name }}</button>
+            <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit">
+              <span v-if="submitted">Save</span><span v-else>Submit</span> {{ event.name }}</button>
           </div>
         </div>
       </form>
@@ -86,6 +73,7 @@ export default {
         name: null,
         date: null,
         visibility: null,
+        programme: [],
       }
     }
   },
@@ -95,10 +83,15 @@ export default {
     }
   },
   created() {
-
+    var event_id = this.$route.params.id;
+    if (event_id != null) {
+      this.$http.get('api/event/' + event_id).then(response => {
+        this.event = response.body;
+      })
+    }
   },
   methods: {
-    submit: function() {
+    submit: function () {
       this.$http.post('api/user/event', this.event).then(response => {
         this.event = response.body;
       })
