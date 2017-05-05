@@ -3,6 +3,7 @@ package com.pancisin.employger.models;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -79,6 +81,10 @@ public class User implements UserDetails, Principal {
 	public User() {
 	}
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "owner")
+	private List<Event> events;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -183,6 +189,10 @@ public class User implements UserDetails, Principal {
 
 	public Calendar getCreated() {
 		return created;
+	}
+	
+	public List<Event> getEvents() {
+		return events;
 	}
 
 	@Override

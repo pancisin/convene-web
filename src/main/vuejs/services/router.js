@@ -37,41 +37,21 @@ export default new VueRouter({
           component: resolve => require(['../pages/Dashboard.vue'], resolve)
         },
         {
+          path: '/event',
+          component: resolve => require(['../pages/Event.index.vue'], resolve)
+        },
+
+
+        {
           path: '/users',
           component: resolve => require(['../pages/Users.vue'], resolve)
         },
         {
-          path: '/employees',
-          component: resolve => require(['../pages/Employees.vue'], resolve)
+          path: '/event/create',
+          component: resolve => require(['../pages/Event.create.vue'], resolve)
         },
-        {
-          path: '/duty',
-          component: resolve => require(['../pages/WorkManagement.vue'], resolve)
-        },
-        {
-          path: '/duty/create',
-          component: resolve => require(['../pages/Duty.create.vue'], resolve)
-        },
-        {
-          path: '/duty/:id',
-          component: resolve => require(['../pages/Duty.create.vue'], resolve)
-        },
-        {
-          path: '/customers',
-          component: resolve => require(['../pages/Customers.vue'], resolve)
-        },
-        {
-          path: '/customers/create',
-          component: resolve => require(['../pages/Customer.create.vue'], resolve)
-        },
-        {
-          path: '/customers/:id',
-          component: resolve => require(['../pages/Customer.create.vue'], resolve)
-        },
-        {
-          path: '/instance/:id/:timestamp',
-          component: resolve => require(['../pages/Instance.vue'], resolve)
-        },
+      
+     
         {
           path: '/chat',
           component: resolve => require(['../pages/Chat.vue'], resolve)

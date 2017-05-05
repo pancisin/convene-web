@@ -16,6 +16,15 @@
           </li>
   
           <li>
+            <router-link to="/event" class="waves-effect waves-primary">
+              <i class="fa fa-suitcase" aria-hidden="true"></i>
+              <span>Events</span>
+            </router-link>
+          </li>
+
+
+
+          <li>
             <router-link to="/duty" class="waves-effect waves-primary">
               <i class="fa fa-suitcase" aria-hidden="true"></i>
               <span>{{ $t('menu.work_management') }}</span>

@@ -26,26 +26,16 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		User user = (User) authentication.getPrincipal();
 		User stored = userRepository.findOne(user.getId());
 
-//		Company company = stored.getCompany();
-//		
-//		switch (targetType) {
-//		case "company":
-//			return company.getId() == targetId;
+		switch (targetType) {
+		case "event":
+			return stored.getEvents().stream().anyMatch(e -> e.getId() == targetId);
 //		case "customer": 
 //			return company.getCustomers().stream().anyMatch(c -> c.getId() == targetId);
-//		case "duty":
-//			return company.getDuties().stream().anyMatch(d -> d.getId() == targetId);
-//		case "employee":
-//			return company.getEmployees().stream().anyMatch(e -> e.getId() == targetId);
 //		case "message":
 //			return true;
 //		case "license":
-//			return company.getLicenses().stream().anyMatch(l -> l.getId() == targetId);
-//		case "task":
-//			return true;
-//		case "attribute":
-//			return company.getAttributes().stream().anyMatch(a -> a.getId() == targetId);
-//		}
+//			return stored.getLicenses().stream().anyMatch(l -> l.getId() == targetId);
+		}
 
 		return true;
 	}
