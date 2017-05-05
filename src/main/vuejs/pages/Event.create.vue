@@ -6,59 +6,72 @@
         This basic wizard have no form validation and allows you to skip to another step by clicking on the tab.
       </p>
   
-      <form @submit.prevent="submit">
-        <div id="basicwizard" class=" pull-in">
-          <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
-            <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a></li>
-            <li><a href="#tab2" data-toggle="tab" aria-expanded="true">Programme</a></li>
-            <li><a href="#tab3" data-toggle="tab">Attendees</a></li>
-          </ul>
-          <div class="tab-content bx-s-0 m-b-0">
-            <div class="tab-pane m-t-10 active in fade" id="tab1">
-              <div class="row">
+      <div id="basicwizard" class=" pull-in">
+        <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
+          <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a></li>
+          <li><a href="#tab2" data-toggle="tab" aria-expanded="true">Programme</a></li>
+          <li><a href="#tab3" data-toggle="tab">Attendees</a></li>
+        </ul>
+        <div class="tab-content bx-s-0 m-b-0">
+          <div class="tab-pane m-t-10 active in fade" id="tab1">
+            <div class="row">
   
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Name *</label>
-                  <div class="col-md-9">
-                    <input class="form-control required" v-model="event.name" type="text">
-                  </div>
-                </div>
-  
-              </div>
-  
-            </div>
-            <div class="tab-pane m-t-10 fade in" id="tab2">
-              <table class="table table-striped">
-                <tbody>
-                  <tr v-for="programme in event.programme">
-                    <td v-text="programme.time"></td>
-                    <td v-text="programme.description"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="tab-pane m-t-10 fade" id="tab3">
-              <div class="row">
-                <div class="form-group clearfix">
-                  <div class="col-lg-12">
-                    <div class="checkbox checkbox-primary">
-                      <input id="checkbox-h" type="checkbox">
-                      <label for="checkbox-h">
-                        I agree with the Terms and Conditions.
-                      </label>
-                    </div>
-                  </div>
+              <div class="form-group clearfix">
+                <label class="col-md-3 control-label">Name *</label>
+                <div class="col-md-9">
+                  <input class="form-control required" v-model="event.name" type="text">
                 </div>
               </div>
+  
             </div>
+  
           </div>
-  
-          <div class="text-center m-b-10">
-            <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit">
-              <span v-if="submitted">Save</span><span v-else>Submit</span> {{ event.name }}</button>
+          <div class="tab-pane m-t-10 fade in" id="tab2">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>time</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="programme in event.programme">
+                  <td v-text="programme.time"></td>
+                  <td v-text="programme.description"></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="text" v-model="new_programme.time" class="form-control" />
+                  </td>
+                  <td>
+                    <input type="text" v-model="new_programme.description" class="form-control" />
+                    <a @click="submitProgramme" class="btn bnt-link"><i class="fa fa-save" /></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane m-t-10 fade" id="tab3">
+            <div class="row">
+              <div class="form-group clearfix">
+                <div class="col-lg-12">
+                  <div class="checkbox checkbox-primary">
+                    <input id="checkbox-h" type="checkbox">
+                    <label for="checkbox-h">
+                      I agree with the Terms and Conditions.
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </form>
+  
+        <div class="text-center m-b-10">
+          <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
+            <span v-if="submitted">Save</span><span v-else>Submit</span> {{ event.name }}</button>
+        </div>
+      </div>
   
     </div>
   </div>
@@ -73,7 +86,11 @@ export default {
         name: null,
         date: null,
         visibility: null,
-        programme: [],
+        programme: []
+      },
+      new_programme: {
+        time: null,
+        description: null
       }
     }
   },
@@ -94,6 +111,17 @@ export default {
     submit: function () {
       this.$http.post('api/user/event', this.event).then(response => {
         this.event = response.body;
+      })
+    },
+    submitProgramme: function () {
+      var url = ['api/event', this.event.id, 'programme'].join('/');
+
+      this.$http.post(url, this.new_programme).then(response => {
+        this.event.programme.push(response.body);
+        this.new_programme = {
+          time: null,
+          description: null
+        }
       })
     }
   }

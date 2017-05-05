@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-
+  
     <header-component></header-component>
   
     <div class="left side-menu">
@@ -18,13 +18,28 @@
           <li>
             <router-link to="/event" class="waves-effect waves-primary">
               <i class="fa fa-suitcase" aria-hidden="true"></i>
-              <span>Events</span>
+              <span>My events</span>
             </router-link>
           </li>
-
-
-
-       
+  
+          <li class="menu-title">Pages</li>
+  
+          <li>
+            <router-link to="/page/create" class="waves-effect waves-primary">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              <span>Create page</span>
+            </router-link>
+          </li>
+  
+          <li class="menu-title">Conferences <span class="label label-warning pull-right">Enterprise</span></li>
+  
+          <li>
+            <router-link to="/conference/create" class="waves-effect waves-primary">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              <span>Create conference</span>
+            </router-link>
+          </li>
+  
         </ul>
         <div class="clearfix"></div>
       </div>

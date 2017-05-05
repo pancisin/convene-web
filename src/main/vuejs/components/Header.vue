@@ -3,7 +3,9 @@
   
     <div class="topbar-left">
       <div class="text-center">
-        <a href="index.html" class="logo"><i class="fa fa-book"></i> <span>Bookster</span> </a>
+        <router-link to="/" class="logo">
+          <i class="fa fa-book"></i> <span>Bookster</span>
+        </router-link>
       </div>
     </div>
   

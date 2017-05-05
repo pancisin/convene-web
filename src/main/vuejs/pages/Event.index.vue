@@ -17,9 +17,11 @@
       <div class="panel-body">
         <table class="table table-bordered">
           <thead>
+            <tr>
             <th>#ID</th>
             <th>name</th>
             <th>programme</th>
+            </tr>
           </thead>
           <tbody>
             <tr v-for="event in events">

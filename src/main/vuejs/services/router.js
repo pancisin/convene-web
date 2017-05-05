@@ -40,8 +40,14 @@ export default new VueRouter({
           path: '/event',
           component: resolve => require(['../pages/Event.index.vue'], resolve)
         },
-
-
+        {
+          path: '/page/create',
+          component: resolve => require(['../pages/Page.create.vue'], resolve)
+        },
+        {
+          path: '/conference/create',
+          component: resolve => require(['../pages/Conference.create.vue'], resolve)
+        },
         {
           path: '/users',
           component: resolve => require(['../pages/Users.vue'], resolve)
@@ -54,8 +60,8 @@ export default new VueRouter({
           path: '/event/:id',
           component: resolve => require(['../pages/Event.create.vue'], resolve)
         },
-      
-     
+
+
         {
           path: '/chat',
           component: resolve => require(['../pages/Chat.vue'], resolve)
