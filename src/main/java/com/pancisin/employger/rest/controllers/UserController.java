@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.employger.models.Event;
+import com.pancisin.employger.models.Page;
 import com.pancisin.employger.models.User;
 import com.pancisin.employger.repository.EventRepository;
 import com.pancisin.employger.repository.NotificationRepository;
+import com.pancisin.employger.repository.PageRepository;
 import com.pancisin.employger.repository.UserRepository;
 
 @RestController
@@ -27,6 +29,9 @@ public class UserController {
 
 	@Autowired
 	private NotificationRepository notificationRepository;
+
+	@Autowired
+	private PageRepository pageRepository;
 
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
@@ -71,5 +76,10 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getEvents());
+	}
+
+	@PostMapping("/page")
+	public ResponseEntity<?> postPage(@RequestBody Page page) {
+		return ResponseEntity.ok(pageRepository.save(page));
 	}
 }

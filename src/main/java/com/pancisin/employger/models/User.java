@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -84,6 +85,9 @@ public class User implements UserDetails, Principal {
 	@JsonIgnore
 	@OneToMany(mappedBy = "owner")
 	private List<Event> events;
+	
+	@ManyToMany(mappedBy = "administrators")
+	private List<Page> pages;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -198,5 +202,9 @@ public class User implements UserDetails, Principal {
 	@Override
 	public String getName() {
 		return this.email;
+	}
+
+	public List<Page> getPages() {
+		return pages;
 	}
 }

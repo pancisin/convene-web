@@ -22,7 +22,14 @@
             </router-link>
           </li>
   
-          <li class="menu-title">Pages</li>
+          <li class="menu-title">Pages <span class="label label-info pull-right">Pro</span></li>
+  
+          <li v-for="page in  $store.state.user.pages">
+            <router-link :to="'/page/' + page.id" class="waves-effect waves-primary">
+              <i class="fa fa-glass" aria-hidden="true"></i>
+              <span v-text="page.name"></span>
+            </router-link>
+          </li>
   
           <li>
             <router-link to="/page/create" class="waves-effect waves-primary">
