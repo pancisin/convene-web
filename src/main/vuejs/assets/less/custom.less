@@ -14,11 +14,18 @@ a {
 
 .fade-down-enter-active,
 .fade-down-leave-active {
-    transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
 }
 
 .fade-down-enter,
 .fade-down-leave-to {
     opacity: 0;
-    transform: translateY(50px);
+}
+
+.fade-down-enter {
+    transform: translateX(-50px);
+}
+
+.fade-down-leave-to {
+    transform: translateX(50px);
 }

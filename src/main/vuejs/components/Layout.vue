@@ -1,6 +1,5 @@
 <template>
   <div id="wrapper">
-  
     <header-component></header-component>
   
     <div class="left side-menu">
@@ -9,15 +8,15 @@
           <li class="menu-title">Main</li>
   
           <li>
-            <router-link to="/dashboard" class="waves-effect waves-primary">
-              <i class="fa fa-trash"></i>
+            <router-link to="/admin/dashboard" class="waves-effect waves-primary">
+              <i class="material-icons">dashboard</i>
               <span>{{ $t('menu.dashboard') }}</span>
             </router-link>
           </li>
   
           <li>
-            <router-link to="/event" class="waves-effect waves-primary">
-              <i class="fa fa-suitcase" aria-hidden="true"></i>
+            <router-link to="/admin/event" class="waves-effect waves-primary">
+              <i class="material-icons">event</i>
               <span>My events</span>
             </router-link>
           </li>
@@ -25,15 +24,15 @@
           <li class="menu-title">Pages <span class="label label-info pull-right">Pro</span></li>
   
           <li v-for="page in  $store.state.user.pages">
-            <router-link :to="'/page/' + page.id" class="waves-effect waves-primary">
-              <i class="fa fa-glass" aria-hidden="true"></i>
+            <router-link :to="'/admin/page/' + page.id" class="waves-effect waves-primary">
+              <i class="material-icons">work</i>
               <span v-text="page.name"></span>
             </router-link>
           </li>
   
           <li>
-            <router-link to="/page/create" class="waves-effect waves-primary">
-              <i class="fa fa-plus" aria-hidden="true"></i>
+            <router-link to="/admin/page/create" class="waves-effect waves-primary text-muted">
+              <i class="material-icons">add</i>
               <span>Create page</span>
             </router-link>
           </li>
@@ -41,9 +40,36 @@
           <li class="menu-title">Conferences <span class="label label-warning pull-right">Enterprise</span></li>
   
           <li>
-            <router-link to="/conference/create" class="waves-effect waves-primary">
-              <i class="fa fa-plus" aria-hidden="true"></i>
+            <router-link to="/admin/conference/create" class="waves-effect waves-primary text-muted">
+              <i class="material-icons">add</i>
               <span>Create conference</span>
+            </router-link>
+          </li>
+  
+          <li class="menu-title">About Bookster</li>
+  
+          <li>
+            <router-link to="/faq" class="waves-effect waves-primary">
+              <i class="fa fa-question" aria-hidden="true"></i>
+              <span>FAQ</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/terms" class="waves-effect waves-primary">
+              <i class="material-icons">lock</i>
+              <span>Terms & Agreements</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/privacy-policy" class="waves-effect waves-primary">
+              <i class="material-icons">lock</i>
+              <span>Privacy policy</span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/contact" class="waves-effect waves-primary">
+              <i class="material-icons">business</i>
+              <span>Contact</span>
             </router-link>
           </li>
   
@@ -164,100 +190,10 @@
                 <li class="list-group-item">
                   <a href="#">
                     <div class="avatar">
-                      <img src="assets/images/users/avatar-1.jpg" alt="">
+                      <!--<img src="assets/images/users/avatar-1.jpg" alt="">-->
                     </div>
                     <span class="name">Chadengle</span>
                     <i class="fa fa-circle online"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-2.jpg" alt="">
-                    </div>
-                    <span class="name">Tomaslau</span>
-                    <i class="fa fa-circle online"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-3.jpg" alt="">
-                    </div>
-                    <span class="name">Stillnotdavid</span>
-                    <i class="fa fa-circle online"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-4.jpg" alt="">
-                    </div>
-                    <span class="name">Kurafire</span>
-                    <i class="fa fa-circle online"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-5.jpg" alt="">
-                    </div>
-                    <span class="name">Shahedk</span>
-                    <i class="fa fa-circle away"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-6.jpg" alt="">
-                    </div>
-                    <span class="name">Adhamdannaway</span>
-                    <i class="fa fa-circle away"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-7.jpg" alt="">
-                    </div>
-                    <span class="name">Ok</span>
-                    <i class="fa fa-circle away"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-8.jpg" alt="">
-                    </div>
-                    <span class="name">Arashasghari</span>
-                    <i class="fa fa-circle offline"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-9.jpg" alt="">
-                    </div>
-                    <span class="name">Joshaustin</span>
-                    <i class="fa fa-circle offline"></i>
-                  </a>
-                  <span class="clearfix"></span>
-                </li>
-                <li class="list-group-item">
-                  <a href="#">
-                    <div class="avatar">
-                      <img src="assets/images/users/avatar-10.jpg" alt="">
-                    </div>
-                    <span class="name">Sortino</span>
-                    <i class="fa fa-circle offline"></i>
                   </a>
                   <span class="clearfix"></span>
                 </li>

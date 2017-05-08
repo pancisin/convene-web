@@ -1,20 +1,6 @@
   <template>
   <div class="container">
   
-    <!-- Page-Title -->
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="page-title-box">
-          <ol class="breadcrumb pull-right">
-            <li><a href="#">Minton</a></li>
-            <li><a href="#">UI Kit</a></li>
-            <li class="active">Panels</li>
-          </ol>
-          <h4 class="page-title">Panels</h4>
-        </div>
-      </div>
-    </div>
-  
     <div class="row">
       <div class="col-lg-4">
         <div class="panel panel-default">

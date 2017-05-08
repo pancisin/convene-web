@@ -1,17 +1,8 @@
   <template>
   <div class="container">
-    <div class="page-title-box">
-      <ol class="breadcrumb pull-right">
-        <li><a href="#">Minton</a></li>
-        <li><a href="#">UI Kit</a></li>
-        <li class="active">Panels</li>
-      </ol>
-      <h4 class="page-title">Events</h4>
-    </div>
-  
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Panel Default</h3>
+        <h3 class="panel-title">My events</h3>
         <p class="panel-sub-title font-13 text-muted">Sub title goes here with small font</p>
       </div>
       <div class="panel-body">
@@ -27,7 +18,7 @@
             <tr v-for="event in events">
               <td v-text="event.id"></td>
               <td>
-                <router-link :to="'/event/' + event.id">
+                <router-link :to="'event/' + event.id">
                   {{ event.name }}
                 </router-link>
 
@@ -44,7 +35,7 @@
         </table>
       </div>
       
-      <router-link to="/event/create" class="btn btn-primary">Add</router-link>
+      <router-link to="event/create" class="btn btn-primary">Add</router-link>
     </div>
   </div>
 </template>

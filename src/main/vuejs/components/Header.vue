@@ -100,7 +100,7 @@
               </ul>
             </li>
             <li class="hidden-xs">
-              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="fa fa-cogs"></i></a>
+              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="material-icons">settings</i></a>
             </li>
   
           </ul>

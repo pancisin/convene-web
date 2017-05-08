@@ -10,19 +10,35 @@
         <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
           <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a></li>
           <li><a href="#tab2" data-toggle="tab" aria-expanded="true">Programme</a></li>
-          <li><a href="#tab3" data-toggle="tab">Attendees</a></li>
+          <li><a href="#tab3" data-toggle="tab">Invitations</a></li>
         </ul>
         <div class="tab-content bx-s-0 m-b-0">
           <div class="tab-pane m-t-10 active in fade" id="tab1">
             <div class="row">
+              <div class="col-xs-12">
+                <div class="form-group clearfix">
+                  <label class="col-md-3 control-label">Name *</label>
+                  <div class="col-md-9">
+                    <input class="form-control required" v-model="event.name" type="text">
+                  </div>
+                </div>
   
-              <div class="form-group clearfix">
-                <label class="col-md-3 control-label">Name *</label>
-                <div class="col-md-9">
-                  <input class="form-control required" v-model="event.name" type="text">
+                <div class="form-group clearfix">
+                  <label class="col-md-3 control-label">Visibility *</label>
+                  <div class="col-md-9">
+                    <select v-model="event.visibility" class="form-control">
+                      <option value="PUBLI">Public</option>
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="form-group clearfix">
+                  <label class="col-md-3 control-label">Summary *</label>
+                  <div class="col-md-9">
+                    <input class="form-control required" v-model="event.summary" type="text">
+                  </div>
                 </div>
               </div>
-  
             </div>
   
           </div>
@@ -52,16 +68,12 @@
             </table>
           </div>
           <div class="tab-pane m-t-10 fade" id="tab3">
-            <div class="row">
-              <div class="form-group clearfix">
-                <div class="col-lg-12">
-                  <div class="checkbox checkbox-primary">
-                    <input id="checkbox-h" type="checkbox">
-                    <label for="checkbox-h">
-                      I agree with the Terms and Conditions.
-                    </label>
-                  </div>
-                </div>
+            <div class="form-group clearfix">
+              <div class="checkbox checkbox-primary">
+                <input id="checkbox-h" type="checkbox">
+                <label for="checkbox-h">
+                  I agree with the Terms and Conditions.
+                </label>
               </div>
             </div>
           </div>

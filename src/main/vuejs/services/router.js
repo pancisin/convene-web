@@ -28,46 +28,66 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: resolve => require(['../components/Layout.vue'], resolve),
-      beforeEnter: require_auth,
-      redirect: '/dashboard',
+      component: resolve => require(['../components/Public.vue'], resolve),
       children: [
         {
-          path: '/dashboard',
-          component: resolve => require(['../pages/Dashboard.vue'], resolve)
+          path: '',
+          component: resolve => require(['../pages/public/Dashboard.vue'], resolve),
         },
         {
-          path: '/event',
+          path: 'event',
           component: resolve => require(['../pages/Event.index.vue'], resolve)
         },
         {
-          path: '/page/create',
-          component: resolve => require(['../pages/Page.create.vue'], resolve)
-        },
-        {
-          path: '/conference/create',
-          component: resolve => require(['../pages/Conference.create.vue'], resolve)
-        },
-        {
-          path: '/users',
-          component: resolve => require(['../pages/Users.vue'], resolve)
-        },
-        {
-          path: '/event/create',
+          path: 'event/create',
           component: resolve => require(['../pages/Event.create.vue'], resolve)
         },
         {
           path: '/event/:id',
+          component: resolve => require(['../pages/public/Event.public.vue'], resolve),
+        }
+      ]
+    },
+    {
+      path: '/admin',
+      component: resolve => require(['../components/Layout.vue'], resolve),
+      beforeEnter: require_auth,
+      redirect: '/admin/dashboard',
+      children: [
+        {
+          path: 'dashboard',
+          component: resolve => require(['../pages/Dashboard.vue'], resolve)
+        },
+        {
+          path: 'event',
+          component: resolve => require(['../pages/Event.index.vue'], resolve)
+        },
+        {
+          path: 'page/create',
+          component: resolve => require(['../pages/Page.create.vue'], resolve)
+        },
+        {
+          path: 'conference/create',
+          component: resolve => require(['../pages/Conference.create.vue'], resolve)
+        },
+        {
+          path: 'users',
+          component: resolve => require(['../pages/Users.vue'], resolve)
+        },
+        {
+          path: 'event/create',
           component: resolve => require(['../pages/Event.create.vue'], resolve)
         },
         {
-          path: '/page/:id',
+          path: 'event/:id',
+          component: resolve => require(['../pages/Event.create.vue'], resolve)
+        },
+        {
+          path: 'page/:id',
           component: resolve => require(['../pages/Page.vue'], resolve)
         },
-
-
         {
-          path: '/chat',
+          path: 'chat',
           component: resolve => require(['../pages/Chat.vue'], resolve)
         },
         {
