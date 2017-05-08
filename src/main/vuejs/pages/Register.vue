@@ -2,7 +2,9 @@
   <div class="wrapper-page">
   
     <div class="text-center">
-      <a href="index.html" class="logo-lg"><i class="md md-equalizer"></i> <span>Bookster</span> </a>
+      <router-link to="/" class="logo-lg">
+        <i class="fa fa-book"></i> <span>Bookster</span>
+      </router-link>
     </div>
   
     <form class="form-horizontal m-t-20" @submit.prevent="submit">
@@ -68,7 +70,9 @@
   
       <div class="form-group m-t-30">
         <div class="col-sm-12 text-center">
-          <a href="pages-login.html" class="text-muted">Already have account?</a>
+          <router-link to="/login" class="text-muted">
+            Already have account?
+          </router-link>
         </div>
       </div>
     </form>

@@ -1,64 +1,57 @@
 <template>
-  <div class="app-container app-login"
-       :class="{'__loading' : working}">
-    <div class="flex-center">
-      <div class="app-header"></div>
+  <div class="wrapper-page">
   
-      <div class="app-body">
-        <div class="loader-container text-center">
-          <div class="icon">
-            <div class="sk-folding-cube">
-              <div class="sk-cube1 sk-cube"></div>
-              <div class="sk-cube2 sk-cube"></div>
-              <div class="sk-cube4 sk-cube"></div>
-              <div class="sk-cube3 sk-cube"></div>
-            </div>
-          </div>
-          <div class="title">{{ $t('actions.logging') }}</div>
-        </div>
+    <div class="text-center">
+      <router-link to="/" class="logo-lg">
+        <i class="fa fa-book"></i> <span>Bookster</span>
+      </router-link>
+    </div>
   
-        <div class="app-block">
-          <div class="app-form">
-            <div class="form-header">
-              <div class="app-brand">
-                <span class="highlight">Employger</span> Admin
-              </div>
-            </div>
-            <form @submit.prevent="submit">
-              <div class="input-group">
-                <span class="input-group-addon"
-                      id="basic-addon1"><i class="fa fa-user" aria-hidden="true"></i></span>
-                <input type="email"
-                       name="email"
-                       class="form-control"
-                       :placeholder="$t('account.email')"
-                       aria-describedby="basic-addon1"
-                       v-model="user.email">
-              </div>
-              <div class="input-group">
-                <span class="input-group-addon"
-                      id="basic-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
-                <input type="password"
-                       name="password"
-                       class="form-control"
-                       :placeholder="$t('account.password')"
-                       aria-describedby="basic-addon2"
-                       v-model="user.password">
-              </div>
-              <div class="text-center">
-                <input type="submit"
-                       class="btn btn-success btn-submit"
-                       :value="$t('actions.login')">
-              </div>
-            </form>
-            <div class="form-suggestion">{{ $t('register.not_yet') }}
-              <router-link to="/register">{{ $t('actions.register') }}</router-link>
-            </div>
-          </div>
+    <form class="form-horizontal m-t-20" @submit.prevent="submit">
+  
+      <div class="form-group">
+        <div class="col-xs-12">
+          <input class="form-control" type="text" required="" placeholder="Email" v-model="user.email">
+          <i class="fa fa-user form-control-feedback l-h-34"></i>
         </div>
       </div>
-      <div class="app-footer"></div>
-    </div>
+  
+      <div class="form-group">
+        <div class="col-xs-12">
+          <input class="form-control" type="password" required="" placeholder="Password" v-model="user.password">
+          <i class="fa fa-key form-control-feedback l-h-34"></i>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <div class="col-xs-12">
+          <div class="checkbox checkbox-primary">
+            <input id="checkbox-signup" type="checkbox">
+            <label for="checkbox-signup">
+              Remember me
+            </label>
+          </div>
+  
+        </div>
+      </div>
+  
+      <div class="form-group text-right m-t-20">
+        <div class="col-xs-12">
+          <button class="btn btn-primary btn-custom w-md waves-effect waves-light" type="submit">Log In</button>
+        </div>
+      </div>
+  
+      <div class="form-group m-t-30">
+        <div class="col-sm-7">
+          <a class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+        </div>
+        <div class="col-sm-5 text-right">
+          <router-link to="/register" class="text-muted">
+            Create an account
+          </router-link>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script>
@@ -66,7 +59,6 @@ import Auth from '../services/auth.js'
 export default {
   data: function () {
     return {
-      working: false,
       user: {
         email: null,
         password: null,
@@ -76,14 +68,8 @@ export default {
   },
   methods: {
     submit: function () {
-      this.working = true;
       this.fieldErrors = [];
-
-      Auth.login(this, this.user, '/').then(token => {
-        this.working = false;
-      }, () => {
-        this.working = false;
-      });
+      Auth.login(this, this.user, '/');
     }
   }
 };

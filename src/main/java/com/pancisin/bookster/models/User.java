@@ -89,6 +89,9 @@ public class User implements UserDetails, Principal {
 	@ManyToMany(mappedBy = "administrators")
 	private List<Page> pages;
 	
+	@OneToMany(mappedBy = "owner")
+	private List<Conference> conferences;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -206,5 +209,9 @@ public class User implements UserDetails, Principal {
 
 	public List<Page> getPages() {
 		return pages;
+	}
+
+	public List<Conference> getConferences() {
+		return conferences;
 	}
 }

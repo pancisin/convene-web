@@ -40,6 +40,18 @@
             </li>
           </ul>
         </div>
+
+         <div class="card-box">
+          <h4 class="text-dark  header-title m-t-0 m-b-30">Opened conferences</h4>
+  
+          <ul class="list-unstyled">
+            <li>
+              page
+              <hr>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>

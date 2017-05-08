@@ -27,7 +27,7 @@
                   <label class="col-md-3 control-label">Visibility *</label>
                   <div class="col-md-9">
                     <select v-model="event.visibility" class="form-control">
-                      <option value="PUBLI">Public</option>
+                      <option :value="option" v-for="option in visibility_options" v-text="option"></option>
                     </select>
                   </div>
                 </div>
@@ -94,12 +94,10 @@ export default {
   name: 'event-create',
   data() {
     return {
-      event: {
-        name: null,
-        date: null,
-        visibility: null,
-        programme: []
-      },
+      event: new Object(),
+      visibility_options: [
+        'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
+      ],
       new_programme: {
         time: null,
         description: null

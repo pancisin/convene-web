@@ -8,25 +8,19 @@
       </transition>
     </div>
   
-    <footer class="footer text-right">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            2017 © Minton.
-          </div>
-        </div>
-      </div>
-    </footer>
+    <footer-component></footer-component>
   </div>
 </template>
 
 <script> 
-import HeaderComponent from './PublicHeader.vue';
+import HeaderComponent from './PublicHeader.vue'
+import FooterComponent from './Footer.vue'
 
 export default {
   name: 'layout',
   components: {
-    headerComponent: HeaderComponent,
+    HeaderComponent,
+    FooterComponent
   },
 }
 </script>

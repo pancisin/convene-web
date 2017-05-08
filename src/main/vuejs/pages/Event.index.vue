@@ -11,6 +11,7 @@
             <tr>
             <th>#ID</th>
             <th>name</th>
+            <th class="text-center">visibility</th>
             <th>programme</th>
             </tr>
           </thead>
@@ -21,8 +22,8 @@
                 <router-link :to="'event/' + event.id">
                   {{ event.name }}
                 </router-link>
-
               </td>
+              <td v-text="event.visibility" class="text-center"></td>
               <td>
                 <ul>
                   <li v-for="p in event.programme">
@@ -34,8 +35,6 @@
           </tbody>
         </table>
       </div>
-      
-      <router-link to="event/create" class="btn btn-primary">Add</router-link>
     </div>
   </div>
 </template>

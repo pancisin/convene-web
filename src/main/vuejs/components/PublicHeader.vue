@@ -126,6 +126,11 @@
                 </li>
                 <li>
                   <ul>
+                    <li><a>Pricing</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <ul>
                     <li><a href="pages-login.html">FAQ</a></li>
                     <li><a href="pages-register.html">Terms & Agreements</a></li>
                     <li><a href="pages-recoverpw.html">Contact</a></li>

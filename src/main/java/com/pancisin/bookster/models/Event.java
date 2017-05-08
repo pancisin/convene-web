@@ -109,5 +109,13 @@ public class Event {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
+
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
 }
 

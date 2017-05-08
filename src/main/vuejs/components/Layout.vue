@@ -21,6 +21,13 @@
             </router-link>
           </li>
   
+          <li>
+            <router-link to="/admin/event/create" class="waves-effect waves-primary">
+              <i class="material-icons">add</i>
+              <span>Create event</span>
+            </router-link>
+          </li>
+  
           <li class="menu-title">Pages <span class="label label-info pull-right">Pro</span></li>
   
           <li v-for="page in  $store.state.user.pages">
@@ -38,6 +45,13 @@
           </li>
   
           <li class="menu-title">Conferences <span class="label label-warning pull-right">Enterprise</span></li>
+  
+          <li v-for="conference in  $store.state.user.conferences">
+            <router-link :to="'/admin/conference/' +conference.id" class="waves-effect waves-primary">
+              <i class="material-icons">work</i>
+              <span v-text="conference.name"></span>
+            </router-link>
+          </li>
   
           <li>
             <router-link to="/admin/conference/create" class="waves-effect waves-primary text-muted">
@@ -103,11 +117,8 @@
         <transition name="fade-down" mode="out-in">
           <router-view></router-view>
         </transition>
+        <footer-component></footer-component>
       </div>
-  
-      <footer class="footer text-right">
-        2017 © Minton.
-      </footer>
     </div>
   
     <div class="side-bar right-bar">
@@ -265,12 +276,14 @@
 </template>
 
 <script> 
-import HeaderComponent from './Header.vue';
+import HeaderComponent from './Header.vue'
+import FooterComponent from './Footer.vue'
 
 export default {
   name: 'app',
   components: {
-    headerComponent: HeaderComponent,
+    HeaderComponent,
+    FooterComponent
   },
 }
 </script>

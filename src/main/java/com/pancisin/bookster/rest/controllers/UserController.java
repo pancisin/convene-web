@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.PageRepository;
@@ -33,6 +35,9 @@ public class UserController {
 	@Autowired
 	private PageRepository pageRepository;
 
+	@Autowired
+	private ConferenceRepository conferenceRepository;
+	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -72,7 +77,7 @@ public class UserController {
 	}
 
 	@GetMapping("/event")
-	public ResponseEntity<?> getEvent() {
+	public ResponseEntity<?> getEvents() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getEvents());
@@ -81,5 +86,10 @@ public class UserController {
 	@PostMapping("/page")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		return ResponseEntity.ok(pageRepository.save(page));
+	}
+	
+	@PostMapping("/conference")
+	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
+		return ResponseEntity.ok(conferenceRepository.save(conference));
 	}
 }

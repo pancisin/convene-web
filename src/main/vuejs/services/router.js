@@ -67,6 +67,10 @@ export default new VueRouter({
           component: resolve => require(['../pages/Page.create.vue'], resolve)
         },
         {
+          path: 'conference/:id',
+          component: resolve => require(['../pages/Conference.vue'], resolve)
+        },
+        {
           path: 'conference/create',
           component: resolve => require(['../pages/Conference.create.vue'], resolve)
         },
