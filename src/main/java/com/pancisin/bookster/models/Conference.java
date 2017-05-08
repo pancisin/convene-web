@@ -38,7 +38,7 @@ public class Conference {
 	@Enumerated(EnumType.STRING)
     private Visibility visibility;
 	
-	@Column
+	@Column(length = 1000)
 	private String summary;
 	
 	public Long getId() {

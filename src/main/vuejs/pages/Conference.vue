@@ -4,10 +4,25 @@
       <h4 class="text-dark  header-title m-t-0" v-text="conference.name"></h4>
       <p class="text-muted m-b-25 font-13" v-text="conference.summary"></p>
   
-      <ul>
-        <li v-for="event in conference.events" v-text="event.name">
-        </li>
-      </ul>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#ID</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="event in conference.events">
+            <td v-text="event.id"> </td>
+            <td v-text="event.date"></td>
+            <td v-text="event.name"></td>
+            <td v-text="event.summary"></td>
+          </tr>
+        </tbody>
+      </table>
+  
     </div>
   </div>
 </template>
@@ -34,6 +49,7 @@ export default {
       var url = ['api/conference', conference_id, 'events'].join('/');
       this.$http.get(url).then(response => {
         this.conference.events = response.body;
+        this.$forceUpdate();
       });
     }
   }
