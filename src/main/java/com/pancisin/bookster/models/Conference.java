@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pancisin.bookster.models.enums.Visibility;
 
 @Entity
 @Table(name = "conferences")
@@ -27,10 +30,17 @@ public class Conference {
 	@JsonIgnore
 	@ManyToOne
 	private User owner;
-	
-	@OneToMany
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "conference")
 	private List<Event> events;
 
+	@Enumerated(EnumType.STRING)
+    private Visibility visibility;
+	
+	@Column
+	private String summary;
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,5 +67,21 @@ public class Conference {
 
 	public List<Event> getEvents() {
 		return events;
+	}
+
+	public Visibility getVisibility() {
+		return visibility;
+	}
+
+	public void setVisibility(Visibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 }

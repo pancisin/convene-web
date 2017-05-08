@@ -43,6 +43,10 @@ public class Event {
 	
 	@OneToMany(mappedBy = "event")
 	private List<Programme> programme;
+
+	@JsonIgnore
+	@ManyToOne
+	private Conference conference;
 	
 	@ManyToOne
 	private Page page;
@@ -116,6 +120,14 @@ public class Event {
 
 	public void setVisibility(Visibility visibility) {
 		this.visibility = visibility;
+	}
+
+	public Conference getConference() {
+		return conference;
+	}
+
+	public void setConference(Conference conference) {
+		this.conference = conference;
 	}
 }
 

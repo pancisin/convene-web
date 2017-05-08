@@ -7,19 +7,24 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 	@Autowired
-	public UserRepository userRepository;
+	private UserRepository userRepository;
 
 	@Autowired
-	public EventRepository eventRepository;
+	private EventRepository eventRepository;
+	
+	@Autowired
+	private ConferenceRepository conferenceRepository;
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -41,6 +46,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		case "event":
 			Event event = eventRepository.findOne((Long)targetId);
 			return event.getVisibility() == Visibility.PUBLIC || (stored != null && event.getOwner().getId() == stored.getId());
+		case "conference":
+			Conference conference = conferenceRepository.findOne((Long)targetId);
+			return conference.getVisibility() == Visibility.PUBLIC || (stored != null && conference.getOwner().getId() == stored.getId());
 //		case "customer": 
 //			return company.getCustomers().stream().anyMatch(c -> c.getId() == targetId);
 //		case "message":

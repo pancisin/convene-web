@@ -22,4 +22,9 @@ public class ConferenceController {
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(conferenceRepository.findOne(conference_id));
 	}
+	
+	@GetMapping("/events")
+	public ResponseEntity<?> getEvents(@PathVariable Long conference_id) {
+		return ResponseEntity.ok(conferenceRepository.findOne(conference_id).getEvents());
+	}
 }
