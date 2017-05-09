@@ -1,5 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,13 +66,22 @@ public class EventController {
 	
 	@PatchMapping("/toggle-attend")
 	public ResponseEntity<?> toggleAttend(@PathVariable Long event_id) {
-		Event event = eventRepository.findOne(event_id);
-		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
+		int attend_count = eventRepository.isAttending(event_id, auth_user.getId());
+		boolean status = false;
 		
-		event.getAttendees().add(auth_user);
-		return ResponseEntity.ok(eventRepository.save(event));
+		Event event = eventRepository.findOne(event_id);
+		if (attend_count > 0) {
+			event.setAttendees(event.getAttendees().stream().filter(u -> u.getId() != auth_user.getId()).collect(Collectors.toList()));
+			status = false;
+		} else {
+			event.getAttendees().add(auth_user);
+			status = true;
+		}
+		
+		eventRepository.save(event);
+		return ResponseEntity.ok(status);
 	}
 	
 	@GetMapping("/attend-status")

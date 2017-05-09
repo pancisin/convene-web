@@ -138,5 +138,9 @@ public class Event {
 	public List<User> getAttendees() {
 		return attendees;
 	}
+
+	public void setAttendees(List<User> attendees) {
+		this.attendees = attendees;
+	}
 }
 

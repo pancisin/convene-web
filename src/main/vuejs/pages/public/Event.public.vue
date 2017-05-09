@@ -44,7 +44,7 @@ export default {
   created() {
     var event_id = this.$route.params.id;
     if (event_id != null) {
-      this.$http.get('public/api/event/' + event_id).then(response => {
+      this.$http.get('api/event/' + event_id).then(response => {
         this.event = response.body;
         this.checkAttendance();
       })
@@ -55,7 +55,7 @@ export default {
     attend() {
       var url = ['api/event', this.event.id, 'toggle-attend'].join('/');
       this.$http.patch(url).then(response => {
-        console.log(response);
+        this.attending = response.body;
       });
     },
     checkAttendance() {

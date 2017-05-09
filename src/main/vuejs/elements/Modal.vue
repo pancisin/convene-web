@@ -5,7 +5,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" @click="close">×</button>
-            <h4 class="modal-title"><slot name="header">Header</slot></h4>
+            <h4 class="modal-title">
+              <slot name="header">Header</slot>
+            </h4>
           </div>
           <div class="modal-body">
             <slot name="body"></slot>
@@ -33,8 +35,8 @@ export default {
       this.$emit('close');
     },
     outside() {
-      if (show)
-        this.$emit('close');
+      // if (this.show)
+      //   this.$emit('close');
     }
   },
 }

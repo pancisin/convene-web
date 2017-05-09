@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="card-box p-b-0">
       <h4 class="text-dark  header-title m-t-0">Create event</h4>
       <p class="text-muted m-b-25 font-13">

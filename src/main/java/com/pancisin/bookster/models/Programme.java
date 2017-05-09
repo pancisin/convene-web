@@ -20,6 +20,9 @@ public class Programme {
 	
 	@Column
 	private String time;
+
+	@Column
+	private String name;
 	
 	@Column
 	private String description;
@@ -58,5 +61,13 @@ public class Programme {
 
 	public void setEvent(Event event) {
 		this.event = event;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

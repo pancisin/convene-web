@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="event != null">
   
     <div class="col-md-4">
       <div class="form-group">
@@ -25,22 +25,31 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>time</th>
+            <th>Time</th>
+            <th>Name</th>
             <th>Description</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="programme in event.programme">
             <td v-text="programme.time"></td>
+            <td v-text="programme.name"></td>
             <td v-text="programme.description"></td>
+            <td><a @click="removeProgramme(programme.id)" class="btn btn-danger"><i class="fa fa-trash" /></a></td>
           </tr>
           <tr>
             <td>
               <input type="text" v-model="new_programme.time" class="form-control" />
             </td>
+             <td>
+              <input type="text" v-model="new_programme.name" class="form-control" />
+            </td>
             <td>
               <input type="text" v-model="new_programme.description" class="form-control" />
-              <a @click="submitProgramme" class="btn bnt-link">
+            </td>
+            <td>
+              <a @click="submitProgramme" class="btn btn-success">
                 <i class="fa fa-save" />
               </a>
             </td>
@@ -97,7 +106,7 @@ export default {
         })
       }
     },
-    submitProgramme: function () {
+    submitProgramme() {
       var url = ['api/event', this.event.id, 'programme'].join('/');
 
       this.$http.post(url, this.new_programme).then(response => {
@@ -106,6 +115,15 @@ export default {
           time: null,
           description: null
         }
+      })
+    },
+    removeProgramme(programme_id) {
+      var url = ['api/programme', programme_id].join('/');
+
+      this.$http.delete(url).then(response => {
+        this.event.programme = this.event.programme.filter(p => {
+          return p.id != programme_id;
+        })
       })
     }
   }

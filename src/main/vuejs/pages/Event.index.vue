@@ -1,5 +1,5 @@
   <template>
-  <div class="container">
+  <div>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">My events</h3>

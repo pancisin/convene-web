@@ -29,6 +29,7 @@ export default new VueRouter({
     {
       path: '/',
       component: resolve => require(['../components/Public.vue'], resolve),
+      beforeEnter: require_auth,
       children: [
         {
           path: '',

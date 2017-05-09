@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="card-box p-b-0">
       <h4 class="text-dark  header-title m-t-0">
         <span v-if="edit" v-text="conference.name"></span>
@@ -14,7 +14,7 @@
           <a href="#tab1" data-toggle="tab">Basic information</a>
         </li>
         <li>
-          <a href="#tab2" data-toggle="tab">Events</a>
+          <a href="#tab2" data-toggle="tab">Days</a>
         </li>
         <li>
           <a href="#tab3" data-toggle="tab">Invitations</a>
