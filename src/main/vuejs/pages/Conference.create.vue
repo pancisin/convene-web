@@ -1,86 +1,90 @@
 <template>
   <div class="container">
     <div class="card-box p-b-0">
-      <h4 class="text-dark  header-title m-t-0"><span v-if="edit" v-text="conference.name"></span><span v-else> Create conference</span></h4>
+      <h4 class="text-dark  header-title m-t-0">
+        <span v-if="edit" v-text="conference.name"></span>
+        <span v-else> Create conference</span>
+      </h4>
       <p class="text-muted m-b-25 font-13">
         This basic wizard have no form validation and allows you to skip to another step by clicking on the tab.
       </p>
   
-      <div id="basicwizard" class=" pull-in">
-        <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
-          <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a></li>
-          <li><a href="#tab2" data-toggle="tab" aria-expanded="true">Events</a></li>
-          <li><a href="#tab3" data-toggle="tab">Invitations</a></li>
-        </ul>
-        <div class="tab-content bx-s-0 m-b-0">
-          <div class="tab-pane m-t-10 active in fade" id="tab1">
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Name *</label>
-                  <div class="col-md-9">
-                    <input class="form-control required" v-model="conference.name" type="text">
-                  </div>
-                </div>
-  
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Visibility *</label>
-                  <div class="col-md-9">
-                    <select v-model="conference.visibility" class="form-control">
-                      <option :value="option" v-for="option in visibility_options" v-text="option"></option>
-                    </select>
-                  </div>
-                </div>
-  
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Summary *</label>
-                  <div class="col-md-9">
-                    <input class="form-control required" v-model="conference.summary" type="text">
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-          </div>
-          <div class="tab-pane m-t-10 fade in" id="tab2">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Date</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="event in conference.events">
-                  <td>
-                    <a @click="selectedEvent = event; display.modalEvent = true" v-text="event.name">
-  
-                    </a>
-  
-                  </td>
-                  <td v-text="event.date"></td>
-                  <td v-text="event.summary"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tab-pane m-t-10 fade" id="tab3">
+      <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
+        <li class="active">
+          <a href="#tab1" data-toggle="tab">Basic information</a>
+        </li>
+        <li>
+          <a href="#tab2" data-toggle="tab">Events</a>
+        </li>
+        <li>
+          <a href="#tab3" data-toggle="tab">Invitations</a>
+        </li>
+      </ul>
+      <div class="tab-content bx-s-0 m-b-0">
+        <div class="tab-pane m-t-10 active in fade" id="tab1">
+          <div class="row">
             <div class="form-group clearfix">
-              <div class="checkbox checkbox-primary">
-                <input id="checkbox-h" type="checkbox">
-                <label for="checkbox-h">
-                  I agree with the Terms and Conditions.
-                </label>
+              <label class="col-md-3 control-label">Name *</label>
+              <div class="col-md-9">
+                <input class="form-control required" v-model="conference.name" type="text">
+              </div>
+            </div>
+  
+            <div class="form-group clearfix">
+              <label class="col-md-3 control-label">Visibility *</label>
+              <div class="col-md-9">
+                <select v-model="conference.visibility" class="form-control">
+                  <option :value="option" v-for="option in visibility_options" v-text="option"></option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="form-group clearfix">
+              <label class="col-md-3 control-label">Summary *</label>
+              <div class="col-md-9">
+                <input class="form-control required" v-model="conference.summary" type="text">
               </div>
             </div>
           </div>
         </div>
+        <div class="tab-pane m-t-10 fade in" id="tab2">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="event in conference.events">
+                <td>
+                  <a @click="selectedEvent = event; display.modalEvent = true" v-text="event.name">
+                  </a>
   
-        <div class="text-center m-b-10">
-          <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
-            <span v-if="edit">Save</span><span v-else>Submit</span> {{ conference.name }}</button>
+                </td>
+                <td v-text="event.date"></td>
+                <td v-text="event.summary"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <div class="tab-pane m-t-10 fade" id="tab3">
+          <div class="form-group clearfix">
+            <div class="checkbox checkbox-primary">
+              <input id="checkbox-h" type="checkbox">
+              <label for="checkbox-h">
+                I agree with the Terms and Conditions.
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="text-center m-b-10">
+        <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
+          <span v-if="edit">Save</span>
+          <span v-else>Submit</span> {{ conference.name }}</button>
       </div>
   
     </div>

@@ -283,6 +283,11 @@ import NotificationContainer from '../elements/NotificationContainer.vue'
 
 export default {
   name: 'app',
+  data() {
+    return {
+  
+    }
+  },
   components: {
     HeaderComponent,
     FooterComponent,

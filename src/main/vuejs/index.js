@@ -40,6 +40,10 @@ Vue.use(notifier)
 Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 
+// DIRECTIVES
+import clickOutside from './directives/clickOutside.js'
+Vue.directive('click-outside', clickOutside);
+
 Vue.config.devtools = true;
 
 Vue.http.interceptors.push((request, next) => {

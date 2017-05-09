@@ -4,7 +4,8 @@
     <div class="topbar-left">
       <div class="text-center">
         <router-link to="/" class="logo">
-          <i class="fa fa-book"></i> <span>Bookster</span>
+          <i class="fa fa-book"></i>
+          <span>Bookster</span>
         </router-link>
       </div>
     </div>
@@ -19,88 +20,48 @@
             <span class="clearfix"></span>
           </div>
   
-          <!--<ul class="nav navbar-nav hidden-xs">
-            <li><a href="#" class="waves-effect">Files</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle waves-effect" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projects <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Web design</a></li>
-                <li><a href="#">Projects two</a></li>
-                <li><a href="#">Graphic design</a></li>
-                <li><a href="#">Projects four</a></li>
-              </ul>
-            </li>
-          </ul>-->
-  
-          <!--<form role="search" class="navbar-left app-search pull-left hidden-xs">
-            <input type="text" placeholder="Search..." class="form-control app-search-input">
-            <a href=""><i class="fa fa-search"></i></a>
-          </form>-->
-  
           <ul class="nav navbar-nav navbar-right pull-right">
-  
-            <li class="dropdown hidden-xs">
-              <a href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
-                <i class="fa fa-bell-o"></i> <span class="badge badge-xs badge-pink">3</span>
+            <li class="dropdown hidden-xs" v-click-outside="closeNotifications">
+              <a @click="display.notifications = !display.notifications" class="dropdown-toggle waves-effect waves-light">
+                <i class="fa fa-bell-o"></i>
+                <span class="badge badge-xs" v-text="notifications.length"></span>
               </a>
-              <ul class="dropdown-menu dropdown-menu-lg">
+              <ul class="dropdown-menu dropdown-menu-lg" v-show="display.notifications">
                 <li class="text-center notifi-title">Notification</li>
-                <li class="list-group nicescroll notification-list" style="overflow: hidden; outline: none;" tabindex="5000">
+                <li class="list-group notification-list">
   
-                  <a href="javascript:void(0);" class="list-group-item">
+                  <a v-for="not in notifications" class="list-group-item">
                     <div class="media">
                       <div class="pull-left p-r-10">
                         <em class="fa fa-diamond noti-primary"></em>
                       </div>
                       <div class="media-body">
-                        <h5 class="media-heading">A new order has been placed A new order has been placed</h5>
+                        <h5 class="media-heading" v-text="not.title"></h5>
                         <p class="m-0">
-                          <small>There are new settings available</small>
+                          <small v-text="not.message"></small>
                         </p>
                       </div>
                     </div>
                   </a>
   
-                  <a href="javascript:void(0);" class="list-group-item">
-                    <div class="media">
-                      <div class="pull-left p-r-10">
-                        <em class="fa fa-cog noti-warning"></em>
-                      </div>
-                      <div class="media-body">
-                        <h5 class="media-heading">New settings</h5>
-                        <p class="m-0">
-                          <small>There are new settings available</small>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-  
-                  <a href="javascript:void(0);" class="list-group-item">
-                    <div class="media">
-                      <div class="pull-left p-r-10">
-                        <em class="fa fa-bell-o noti-success"></em>
-                      </div>
-                      <div class="media-body">
-                        <h5 class="media-heading">Updates</h5>
-                        <p class="m-0">
-                          <small>There are <span class="text-primary">2</span> new updates available</small>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+                  <div v-if="notifications.length == 0" class="text-center m-t-10 text-muted">There's nothing to display</div>
   
                 </li>
   
                 <li>
                   <a href="javascript:void(0);" class=" text-right">
-                    <small><b>See all notifications</b></small>
+                    <small>
+                      <b>See all notifications</b>
+                    </small>
                   </a>
                 </li>
   
               </ul>
             </li>
             <li class="hidden-xs">
-              <a href="#" class="right-bar-toggle waves-effect waves-light"><i class="material-icons">settings</i></a>
+              <a href="#" class="right-bar-toggle waves-effect waves-light">
+                <i class="material-icons">settings</i>
+              </a>
             </li>
   
           </ul>
@@ -118,7 +79,9 @@ export default {
   name: 'header',
   data: function () {
     return {
-      notifications: [],
+      display: {
+        notifications: false,
+      }
     }
   },
   computed: {
@@ -127,10 +90,13 @@ export default {
         return "warning";
       else
         return "";
+    },
+    notifications() {
+      return this.$store.state.notifications;
     }
   },
   created: function () {
-    this.fetchNotifications();
+    // this.fetchNotifications();
     // this.initializeStomp();
   },
   methods: {
@@ -166,6 +132,10 @@ export default {
           return elem.id != notification.id;
         })
       })
+    },
+    closeNotifications(e) {
+      if (this.display.notifications)
+        this.display.notifications = false;
     }
   },
   filters: {
@@ -173,22 +143,6 @@ export default {
       if (date == null) return "";
       return moment(date).fromNow();
     }
-  }
+  },
 }
 </script>
-
-<style lang="less">
-.navbar {
-  height: auto;
-  border: 0;
-  padding: 0;
-}
-
-.navbar .navbar-collapse .navbar-nav {
-  height: auto;
-}
-
-.navbar .navbar-collapse .navbar-nav>li.navbar-title {
-  height: 60px;
-}
-</style>

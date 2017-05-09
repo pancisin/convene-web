@@ -88,10 +88,12 @@ export default {
       if (this.edit) {
         this.$http.put('api/event/' + this.event.id, this.event).then(response => {
           this.event = response.body;
+          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
           this.event = response.body;
+          this.$success('Success !', 'Event ' + this.event.name + ' has been created.');
         })
       }
     },
