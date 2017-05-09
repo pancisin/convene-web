@@ -82,7 +82,7 @@
       </div>
   
       <div class="text-center m-b-10">
-        <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
+        <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
           <span v-if="edit">Save</span>
           <span v-else>Submit</span> {{ conference.name }}</button>
       </div>

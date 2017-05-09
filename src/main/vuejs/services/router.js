@@ -45,6 +45,10 @@ export default new VueRouter({
         {
           path: '/event/:id',
           component: resolve => require(['../pages/public/Event.public.vue'], resolve),
+        },
+        {
+          path: '/conference',
+          component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
         }
       ]
     },
