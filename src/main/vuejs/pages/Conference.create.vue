@@ -86,9 +86,8 @@
     </div>
   
     <modal :show.sync="display.modalEvent" @close="display.modalEvent = false">
-      <h4 slot="header">Success !</h4>
+      <h4 slot="header">Event</h4>
       <p slot="body">
-        Your company information have been updated successfuly.
         <event-form :event="selectedEvent"></event-form>
       </p>
     </modal>
@@ -134,6 +133,7 @@ export default {
         var url = ['api/conference', this.conference.id].join('/');
         this.$http.put(url, this.conference).then(response => {
           this.conference = response.body;
+          this.$success('Success !', 'conference updated');
         })
       } else {
         this.$http.post('api/user/conference', this.conference).then(response => {

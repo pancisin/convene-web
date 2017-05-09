@@ -4,11 +4,18 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    user: null
+    user: null,
+    notifications: []
   },
   mutations: {
     setUser(state, { user }) {
       state.user = user;
+    },
+    addNotification(state, notification) {
+      state.notifications.push(notification);
+    },
+    removeNotification(state, notification) {
+      state.notifications.splice(state.notifications.indexOf(notification), 1);
     }
   },
   getters: {

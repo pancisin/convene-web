@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,18 @@ public class EventController {
 	@GetMapping
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.findOne(event_id));
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> putEvent(@PathVariable Long event_id, @RequestBody Event event) {
+		Event stored = eventRepository.findOne(event_id);
+		
+		stored.setName(event.getName());
+		stored.setSummary(event.getSummary());
+		stored.setVisibility(event.getVisibility());
+		stored.setDate(event.getDate());
+		
+		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 	
 	@DeleteMapping

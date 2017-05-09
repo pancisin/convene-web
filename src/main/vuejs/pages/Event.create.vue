@@ -122,7 +122,6 @@ export default {
       this.$http.post('api/user/event', this.event).then(response => {
         this.event = response.body;
       })
-
     },
     submitProgramme: function () {
       var url = ['api/event', this.event.id, 'programme'].join('/');

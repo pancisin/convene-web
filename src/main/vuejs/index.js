@@ -13,7 +13,7 @@ import Modal from './elements/Modal.vue'
 import Auth from './services/auth.js'
 import store from './services/store.js'
 import router from './services/router.js'
-
+import notifier from './services/notifier.js'
 
 // LOAD STYLES
 require("bootstrap")
@@ -34,8 +34,9 @@ import en from './locale/en-US.js'
 
 Vue.use(VueResource)
 Vue.use(VueI18n)
-Vue.use(VueWebsocket);
+Vue.use(VueWebsocket)
 Vue.use(VueMoment)
+Vue.use(notifier)
 Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 

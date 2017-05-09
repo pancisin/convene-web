@@ -29,3 +29,21 @@ a {
 .fade-down-leave-to {
     transform: translateX(50px);
 }
+
+.fade-up-enter-active,
+.fade-up-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+
+.fade-up-enter,
+.fade-up-leave-to {
+    opacity: 0;
+}
+
+.fade-up-enter {
+    transform: translateY(50px);
+}
+
+.fade-up-leave-to {
+    transform: translateY(-50px);
+}

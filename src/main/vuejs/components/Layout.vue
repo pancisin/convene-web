@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <notification-container></notification-container>
     <header-component></header-component>
   
     <div class="left side-menu">
@@ -278,12 +279,14 @@
 <script> 
 import HeaderComponent from './Header.vue'
 import FooterComponent from './Footer.vue'
+import NotificationContainer from '../elements/NotificationContainer.vue'
 
 export default {
   name: 'app',
   components: {
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    NotificationContainer
   },
 }
 </script>
