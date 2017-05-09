@@ -50,6 +50,10 @@ export default new VueRouter({
         {
           path: '/conference',
           component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
+        },
+        {
+          path: '/page/:id',
+          component : resolve => require(['../pages/public/Page.vue'], resolve)
         }
       ]
     },
@@ -69,7 +73,7 @@ export default new VueRouter({
         },
         {
           path: 'page/create',
-          component: resolve => require(['../pages/Page.create.vue'], resolve)
+          component: resolve => require(['../pages/Page.vue'], resolve)
         },
         {
           path: 'conference/create',

@@ -79,8 +79,7 @@ public class UserController {
 	@GetMapping("/event")
 	public ResponseEntity<?> getEvents() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		return ResponseEntity.ok(stored.getEvents());
+		return ResponseEntity.ok(eventRepository.getOwned(auth.getId()));
 	}
 	
 	@GetMapping("/event/attending")
@@ -93,6 +92,7 @@ public class UserController {
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
+		page.getAdministrators().add(stored);
 		return ResponseEntity.ok(pageRepository.save(page));
 	}
 

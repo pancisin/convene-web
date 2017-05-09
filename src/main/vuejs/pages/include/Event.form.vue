@@ -58,8 +58,8 @@
       </table>
     </div>
   
-    <div class="text-center col-xs-12">
-      <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
+    <div class="text-center col-xs-12 m-t-10">
+      <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ event.name }}</button>
     </div>

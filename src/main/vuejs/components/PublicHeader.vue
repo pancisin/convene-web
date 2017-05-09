@@ -70,20 +70,24 @@
           <ul class="navigation-menu">
             <li>
               <router-link to="/">
-                <i class="fa fa-home"></i>Home
+                <i class="material-icons">home</i> Home
               </router-link>
             </li>
             <li>
               <router-link to="/event">
-                <i class="fa fa-calendar"></i> My events</router-link>
+                <i class="material-icons">event</i> My events</router-link>
+            </li>
+            <li>
+              <router-link to="/page">
+                <i class="material-icons">explore</i> Explore pages</router-link>
             </li>
             <li>
               <router-link to="/conference">
-                <i class="fa fa-suitcase"></i> Conferences</router-link>
+                <i class="material-icons">people</i> Conferences</router-link>
             </li>
             <li class="has-submenu">
               <a>
-                <i class="fa fa-question"></i>About bookster</a>
+                <i class="material-icons">question_answer</i> About bookster</a>
               <ul class="submenu megamenu">
                 <li>
                   <ul>
@@ -137,7 +141,7 @@ export default {
   },
   methods: {
     logout: function () {
-      Auth.logout(this, '/')
+      Auth.logout(this, '/login')
     },
   }
 }

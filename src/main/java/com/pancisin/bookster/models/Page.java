@@ -1,5 +1,6 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ public class Page {
 	
 	@JsonIgnore
 	@ManyToMany
-	private List<User> administrators;
+	private List<User> administrators = new ArrayList<User>();
 	
 	@Column
 	private String name;
