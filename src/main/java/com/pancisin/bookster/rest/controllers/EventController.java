@@ -3,8 +3,11 @@ package com.pancisin.bookster.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Programme;
+import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 
@@ -56,5 +60,24 @@ public class EventController {
 		Event event = eventRepository.findOne(event_id);
 		programme.setEvent(event);
 		return ResponseEntity.ok(programmeRepository.save(programme));
+	}
+	
+	@PatchMapping("/toggle-attend")
+	public ResponseEntity<?> toggleAttend(@PathVariable Long event_id) {
+		Event event = eventRepository.findOne(event_id);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User auth_user = (User) auth.getPrincipal();
+		
+		event.getAttendees().add(auth_user);
+		return ResponseEntity.ok(eventRepository.save(event));
+	}
+	
+	@GetMapping("/attend-status")
+	public ResponseEntity<?> getAttendStatus(@PathVariable Long event_id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User auth_user = (User) auth.getPrincipal();
+		int attend_count = eventRepository.isAttending(event_id, auth_user.getId());
+		return ResponseEntity.ok(attend_count > 0);
 	}
 }

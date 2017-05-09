@@ -10,6 +10,7 @@
         <div class="row">
           <div class="col-md-9 m-b-10">
             <p v-text="event.summary"></p>
+            <a class="btn btn-primary" @click="attend"><span v-if="attending">Cancel</span><span v-else>Attend</span></a>
           </div>
           <div class="col-md-3 bg-muted">
             <div class="timeline-2">
@@ -37,6 +38,7 @@ export default {
   data() {
     return {
       event: null,
+      attending: false,
     }
   },
   created() {
@@ -44,11 +46,25 @@ export default {
     if (event_id != null) {
       this.$http.get('public/api/event/' + event_id).then(response => {
         this.event = response.body;
+        this.checkAttendance();
       })
     }
+
   },
   methods: {
+    attend() {
+      var url = ['api/event', this.event.id, 'toggle-attend'].join('/');
+      this.$http.patch(url).then(response => {
+        console.log(response);
+      });
+    },
+    checkAttendance() {
+      var url = ['api/event', this.event.id, 'attend-status'].join('/');
 
+      this.$http.get(url).then(response => {
+        this.attending = response.body;
+      })
+    }
   }
 }
 </script>
