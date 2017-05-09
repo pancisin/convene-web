@@ -37,7 +37,7 @@ public class UserController {
 
 	@Autowired
 	private ConferenceRepository conferenceRepository;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -85,11 +85,16 @@ public class UserController {
 
 	@PostMapping("/page")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(pageRepository.save(page));
 	}
-	
+
 	@PostMapping("/conference")
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		conference.setOwner(stored);
 		return ResponseEntity.ok(conferenceRepository.save(conference));
 	}
 }

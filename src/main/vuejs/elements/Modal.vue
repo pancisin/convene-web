@@ -1,33 +1,14 @@
 <template>
-  <transition name="modal">
-    <div class="modal"
-         v-show="show">
-      <div class="modal-dialog">
+  <transition name="fade-down">
+    <div class="modal" v-click-outside="outside" role="dialog" v-show="show">
+      <div class="modal-dialog modal-full">
         <div class="modal-content">
           <div class="modal-header">
-            <slot name="header">
-              Information
-            </slot>
+            <button type="button" class="close" data-dismiss="modal" @click="close">×</button>
+            <h4 class="modal-title"><slot name="header">Header</slot></h4>
           </div>
-  
           <div class="modal-body">
-            <slot name="body">
-            </slot>
-          </div>
-  
-          <div class="modal-footer">
-            <slot name="footer">
-              <button type="button"
-                      class="btn btn-sm btn-default"
-                      data-dismiss="modal"
-                      @click="close">
-                <span v-if="question">Disagree</span><span v-else>Ok</span>
-              </button>
-              <button v-if="question"
-                      type="button"
-                      class="btn btn-sm btn-success"
-                      @click="accept">I agree</button>
-            </slot>
+            <slot name="body"></slot>
           </div>
         </div>
       </div>
@@ -45,39 +26,136 @@ export default {
     question: Boolean,
   },
   methods: {
-    accept: function () {
+    accept() {
       this.$emit('accept');
     },
-    close: function() {
+    close() {
       this.$emit('close');
+    },
+    outside() {
+      if (show)
+        this.$emit('close');
+    }
+  },
+  directives: {
+    'click-outside': {
+      bind: function (el, binding, vNode) {
+        if (typeof binding.value !== 'function') {
+          const compName = vNode.context.name
+          let warn = `[Vue-click-outside:] provided expression '${binding.expression}' is not a function, but has to be`
+          if (compName) { warn += `Found in component '${compName}'` }
+
+          console.warn(warn)
+        }
+        const bubble = binding.modifiers.bubble
+        const handler = (e) => {
+          if (bubble || (!el.contains(e.target) && el !== e.target)) {
+            binding.value(e)
+          }
+        }
+        el.__vueClickOutside__ = handler
+
+        document.addEventListener('click', handler)
+      },
+
+      unbind: function (el, binding) {
+        document.removeEventListener('click', el.__vueClickOutside__)
+        el.__vueClickOutside__ = null
+      }
     }
   }
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 .modal {
-  background-color: rgba(0, 0, 0, .5);
-  transition: opacity .3s ease;
   display: block;
+  .modal-dialog {
+    .modal-content {
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      border-color: #DDDDDD;
+      border-radius: 2px;
+      box-shadow: none;
+      padding: 30px;
+      .modal-header {
+        border-bottom-width: 2px;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 15px;
+      }
+      .modal-body {
+        padding: 20px 0;
+      }
+      .modal-footer {
+        padding: 0;
+        padding-top: 15px;
+      }
+    }
+  }
 }
 
-.modal-enter-active {
-  transition: all .3s ease;
+.modal-full {
+  width: 98%;
 }
 
-.modal-enter {
-  opacity: 0;
+.modal-content {
+  .nav.nav-tabs {
+    &+ {
+      .tab-content {
+        margin-bottom: 0px;
+      }
+    }
+  }
+  .panel-group {
+    margin-bottom: 0px;
+  }
+  .panel {
+    border-top: none;
+  }
 }
 
-.modal-leave-active {
-  opacity: 0;
-  transition: all .3s ease;
+.modal-demo {
+  background-color: #FFF;
+  width: 600px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  background-clip: padding-box;
+  display: none;
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #eeeeee;
+  }
 }
 
-.modal-enter .modal-content,
-.modal-leave-active .modal-content {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+.custom-modal-title {
+  padding: 15px 25px 15px 25px;
+  line-height: 22px;
+  font-size: 18px;
+  background-color: #3bafda;
+  color: #ffffff;
+  text-align: left;
+  margin: 0px;
+}
+
+.custom-modal-text {
+  padding: 20px;
+}
+
+.custombox-modal-flash {
+  .close {
+    top: 20px;
+    z-index: 9999;
+  }
+}
+
+.custombox-modal-rotatedown {
+  .close {
+    top: 20px;
+    z-index: 9999;
+  }
 }
 </style>

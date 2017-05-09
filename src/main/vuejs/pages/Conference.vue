@@ -35,16 +35,22 @@ export default {
       conference: new Object(),
     }
   },
+  watch: {
+    '$route': 'getConference'
+  },
   created() {
-    var conference_id = this.$route.params.id;
-    if (conference_id != null) {
-      this.$http.get('api/conference/' + conference_id).then(response => {
-        this.conference = response.body;
-        this.getEvents(conference_id);
-      })
-    }
+    this.getConference();
   },
   methods: {
+    getConference() {
+      var conference_id = this.$route.params.id;
+      if (conference_id != null) {
+        this.$http.get('api/conference/' + conference_id).then(response => {
+          this.conference = response.body;
+          this.getEvents(conference_id);
+        })
+      }
+    },
     getEvents(conference_id) {
       var url = ['api/conference', conference_id, 'events'].join('/');
       this.$http.get(url).then(response => {

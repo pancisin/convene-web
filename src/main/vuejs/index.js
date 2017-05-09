@@ -26,7 +26,7 @@ require("./assets/less/components.less")
 require("./assets/less/menu.less")
 require("./assets/less/pages.less")
 require("./assets/less/responsive.less")
-require("./assets/less/custom.less")
+require("./assets/less/transition.less")
 
 // TRANSLATIONS
 import sk from './locale/sk-SK.js'
