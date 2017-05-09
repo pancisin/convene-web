@@ -2,7 +2,7 @@ spring:
   profiles: 
     active: production
   application:
-    name: employger
+    name: bookster
   datasource:
     url: jdbc:mysql://localhost:3306/bookster_db
     driver-class-name: com.mysql.jdbc.Driver
@@ -22,8 +22,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 jwt: 
   header: Authorization
-  secret: h02n40Vw37q67650661mZA87rGh17Xk8
-  
+  secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
+          
 ---
 spring:
   profiles: local
@@ -37,7 +37,7 @@ spring:
   profiles: production
   datasource:
     username: bookster_db
-    password: 
+    password: FMDg3bjHvBg87Oxw
 server: 
   port: 8080
   
