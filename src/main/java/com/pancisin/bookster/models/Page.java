@@ -37,6 +37,10 @@ public class Page {
 	@ManyToOne
 	private Category category;
 	
+	@JsonIgnore
+	@ManyToMany
+	private List<User> followers;
+	
 	public Long getId() {
 		return id;
 	}
@@ -71,5 +75,13 @@ public class Page {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public List<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<User> followers) {
+		this.followers = followers;
 	}
 }

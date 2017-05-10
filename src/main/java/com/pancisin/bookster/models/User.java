@@ -72,6 +72,10 @@ public class User implements UserDetails, Principal {
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
+	@JsonIgnore
+	@ManyToMany(mappedBy = "followers")
+	private List<Page> followed;
+	
 	public User(Long id, String email, String token, Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.email = email;

@@ -13,7 +13,9 @@
           <img src="http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-140mmf_35-56g_ed_vr/img/sample/sample1_l.jpg" />
   
           <div class="title">
-            <h4 v-text="page.name"></h4>
+            <router-link :to="'page/' + page.id">
+              <h4 v-text="page.name"></h4>
+            </router-link>
             <small class="text-muted" v-text="page.category.name"></small>
           </div>
   
