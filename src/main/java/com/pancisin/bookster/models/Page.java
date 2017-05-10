@@ -30,12 +30,12 @@ public class Page {
 	@Column
 	private String name;
 	
-	@Column
-	private String category;
-
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Event> events;
+	
+	@ManyToOne
+	private Category category;
 	
 	public Long getId() {
 		return id;
@@ -61,15 +61,15 @@ public class Page {
 		this.name = name;
 	}
 
-	public String getCategory() {
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(Category category) {
 		this.category = category;
-	}
-
-	public List<Event> getEvents() {
-		return events;
 	}
 }

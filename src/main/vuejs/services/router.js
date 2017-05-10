@@ -52,6 +52,10 @@ export default new VueRouter({
           component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
         },
         {
+          path: '/explore',
+          component: resolve => require(['../pages/public/Page.index.vue'], resolve)
+        },
+        {
           path: '/page/:id',
           component : resolve => require(['../pages/public/Page.vue'], resolve)
         }

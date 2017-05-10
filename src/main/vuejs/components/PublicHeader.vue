@@ -78,7 +78,7 @@
                 <i class="material-icons">event</i> My events</router-link>
             </li>
             <li>
-              <router-link to="/page">
+              <router-link to="/explore">
                 <i class="material-icons">explore</i> Explore pages</router-link>
             </li>
             <li>
