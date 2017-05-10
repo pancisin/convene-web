@@ -12,7 +12,7 @@
 <link href="{%=o.htmlWebpackPlugin.files.css[css] %}" rel="stylesheet">
 {% } %}
 </head>
-<body>
+<body class="fixed-left">
   <div id="application"></div>
   {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}
   <script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>

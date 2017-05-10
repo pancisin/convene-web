@@ -41,6 +41,10 @@ public class Page {
 	@ManyToMany
 	private List<User> followers;
 	
+	public int getFollowersCount() {
+		return this.followers.size();
+	}
+	
 	public Long getId() {
 		return id;
 	}

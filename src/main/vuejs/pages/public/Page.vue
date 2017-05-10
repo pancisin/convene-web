@@ -5,7 +5,10 @@
       <div class="col-md-8">
         <div class="panel panel-border panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">{{ page.name }}</h3>
+            <h3 class="panel-title">{{ page.name }} <span class="label label-primary">  {{ page.followersCount }} followers</span></h3>
+            
+
+
             <p class="panel-sub-title font-13 text-muted"></p>
           </div>
           <div class="panel-body">
@@ -17,7 +20,7 @@
         </div>
       </div>
       <div class="col-md-4">
-        
+
       </div>
     </div>
   

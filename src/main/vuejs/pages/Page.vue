@@ -21,7 +21,9 @@
             </div>
             <div class="form-group">
               <label class="control-label">Category:</label>
-              <input type="text" class="form-control" v-model="page.category">
+              <select v-model="page.category" class="form-control">
+                <option v-for="cat in categories" v-text="cat.name" :value="cat"></option>
+              </select>
             </div>
           </div>
         </div>
@@ -46,7 +48,8 @@ export default {
       edit: false,
       display: {
         modalEdit: false,
-      }
+      },
+      categories: [],
     }
   },
   components: {
@@ -57,6 +60,7 @@ export default {
   },
   created() {
     this.getPage();
+    this.getCategories();
   },
   methods: {
     submit() {
@@ -79,6 +83,11 @@ export default {
         this.$store.state.user.pages = this.$store.state.user.pages.filter(p => {
           return p.id != this.page.id;
         })
+      })
+    },
+    getCategories() {
+      this.$http.get('api/categories').then(response => {
+        this.categories = response.body;
       })
     },
     getPage() {
