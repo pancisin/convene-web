@@ -57,7 +57,7 @@ export default new VueRouter({
         },
         {
           path: '/page/:id',
-          component : resolve => require(['../pages/public/Page.vue'], resolve)
+          component : resolve => require(['../pages/public/Page.vue'], resolve),
         }
       ]
     },
@@ -101,8 +101,25 @@ export default new VueRouter({
         },
         {
           path: 'page/:id',
-          component: resolve => require(['../pages/Page.vue'], resolve)
+          component: resolve => require(['../pages/Page.vue'], resolve),
+          redirect: '/admin/page/:id/overview',
+          children: [
+            {
+              path: 'overview',
+              component: resolve => require(['../pages/page/Overview.vue'], resolve)
+            },
+            {
+              path: 'events',
+              component: resolve => require(['../pages/page/Events.vue'], resolve)
+            },
+            {
+              path: 'services',
+              component: resolve => require(['../pages/page/Services.vue'], resolve)
+            }
+          ]
         },
+
+
         {
           path: 'chat',
           component: resolve => require(['../pages/Chat.vue'], resolve)

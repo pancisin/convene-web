@@ -9,7 +9,7 @@
   
       <div class="form-group">
         <label class="control-label">Visibility: </label>
-        <select v-model="event.visibility" class="form-control">
+        <select v-model="event.visibility" class="form-control" :disabled="conference != null">
           <option :value="option" v-for="option in visibility_options" v-text="option"></option>
         </select>
       </div>
@@ -36,13 +36,17 @@
             <td v-text="programme.time"></td>
             <td v-text="programme.name"></td>
             <td v-text="programme.description"></td>
-            <td><a @click="removeProgramme(programme.id)" class="btn btn-danger"><i class="fa fa-trash" /></a></td>
+            <td>
+              <a @click="removeProgramme(programme.id)" class="btn btn-danger">
+                <i class="fa fa-trash" />
+              </a>
+            </td>
           </tr>
           <tr>
             <td>
               <input type="text" v-model="new_programme.time" class="form-control" />
             </td>
-             <td>
+            <td>
               <input type="text" v-model="new_programme.name" class="form-control" />
             </td>
             <td>
@@ -70,8 +74,12 @@
 export default {
   name: 'event-form',
   props: {
-    event: Object,
-    default: new Object()
+    event: {
+      type: Object,
+      default: new Object()
+    },
+    conference: Object,
+    page: Object
   },
   data() {
     return {
@@ -100,8 +108,15 @@ export default {
           this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
         });
       } else {
-        this.$http.post('api/user/event', this.event).then(response => {
+
+        var entity = this.page != null ? 'page/' + this.page.id : 'user';
+        entity = this.conference != null ? 'conference/' + this.conference.id : entity;
+
+        var url = ['api', entity, 'event'].join('/');
+
+        this.$http.post(url, this.event).then(response => {
           this.event = response.body;
+          this.$emit('updated', this.event);
           this.$success('Success !', 'Event ' + this.event.name + ' has been created.');
         })
       }

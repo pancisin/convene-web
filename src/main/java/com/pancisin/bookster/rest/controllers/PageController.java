@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
 @RestController
@@ -28,6 +31,9 @@ public class PageController {
 	@Autowired
 	private PageRepository pageRepository;
 
+	@Autowired
+	private EventRepository eventRepository;
+	
 	@GetMapping
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
 		return ResponseEntity.ok(pageRepository.findOne(page_id));
@@ -45,6 +51,13 @@ public class PageController {
 		stored.setName(page.getName());
 		stored.setCategory(page.getCategory());
 		return ResponseEntity.ok(pageRepository.save(stored));
+	}
+	
+	@PostMapping("/event")
+	public ResponseEntity<?> postEvent(@PathVariable Long page_id, @RequestBody Event event) {
+		Page stored = pageRepository.findOne(page_id);
+		event.setPage(stored);
+		return ResponseEntity.ok(eventRepository.save(event));
 	}
 
 	@PatchMapping("/toggle-follow")

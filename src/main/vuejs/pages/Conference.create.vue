@@ -68,6 +68,10 @@
               </tr>
             </tbody>
           </table>
+
+          <div class="text-right">
+            <a @click="addDay" class="btn btn-success">Add day</a>
+          </div>
         </div>
         <div class="tab-pane m-t-10 fade" id="tab3">
           <div class="form-group clearfix">
@@ -92,7 +96,7 @@
     <modal :show.sync="display.modalEvent" @close="display.modalEvent = false">
       <h4 slot="header">Event</h4>
       <p slot="body">
-        <event-form :event="selectedEvent"></event-form>
+        <event-form :event="selectedEvent" :conference="conference" @updated="eventUpdated"></event-form>
       </p>
     </modal>
   </div>
@@ -147,6 +151,9 @@ export default {
       }
     },
     getConference() {
+      this.conference = new Object();
+      this.edit = false;
+      
       var conference_id = this.$route.params.id;
       if (conference_id != null) {
         this.edit = true;
@@ -161,6 +168,13 @@ export default {
         })
       }
     },
+    addDay() {
+      this.selectedEvent = new Object();
+      this.display.modalEvent = true;
+    },
+    eventUpdated: function(event) {
+      this.conference.events.push(event);
+    }
   }
 }
 </script>
