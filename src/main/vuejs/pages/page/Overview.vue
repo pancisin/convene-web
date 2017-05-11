@@ -1,6 +1,6 @@
 <template>
-  <div class="card-box p-b-0" v-if="page != null">
-    <h4 class="text-dark  header-title m-t-0" v-text="page.name"></h4>
+  <div class="card-box" v-if="page != null">
+    <h4 class="text-dark  header-title m-t-0" >Overview</h4>
     <p class="text-muted m-b-25 font-13">
       This basic wizard have no form validation and allows you to skip to another step by clicking on the tab.
     </p>
@@ -88,7 +88,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

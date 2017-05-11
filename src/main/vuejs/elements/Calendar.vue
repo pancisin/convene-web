@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="calendar-header">
-      <a class="btn btn-xs btn-primary"
-         @click="moveCursor(-1)"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('calendar.prev') }}</a>
+      <a class="btn btn-link" @click="moveCursor(-1)">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('calendar.prev') }}</a>
       <h3 v-text="monthName"></h3>
-      <a class="btn btn-xs btn-primary"
-         @click="moveCursor(1)">{{ $t('calendar.next') }} <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+      <a class="btn btn-link" @click="moveCursor(1)">{{ $t('calendar.next') }}
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+      </a>
     </div>
   
     <table class="calendar-table">
@@ -17,24 +18,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(week, index) in weeks"
-            :key="index">
-          <td v-for="(day, index) in week"
-              :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
-            <span class="monthday"
-                  v-text="day.day"></span>
-            <ul @dragover.prevent
-                @drop="drop(day)">
-              <li v-for="instance in day.instances"
-                  :class="{ 'edited' : instance.clause != null }"
-                  draggable="true"
-                  v-on:dragstart="dragstart(instance, day)">
+        <tr v-for="(week, index) in weeks" :key="index">
+          <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
+            <span class="monthday" v-text="day.day"></span>
+            <ul @dragover.prevent @drop="drop(day)">
+              <li v-for="instance in day.instances" :class="{ 'edited' : instance.clause != null }" draggable="true" v-on:dragstart="dragstart(instance, day)">
   
-                <i v-show="instance.loading"
-                   class="fa fa-spinner fa-spin fa-fw"></i> {{ instance.duty.location }}
+                <i v-show="instance.loading" class="fa fa-spinner fa-spin fa-fw"></i> {{ instance.duty.location }}
                 <router-link :to="'/instance/' + instance.duty.id + '/' + instance.date">
-                  <i class="fa fa-pencil"
-                     aria-hidden="true"></i>
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
                 </router-link>
               </li>
             </ul>
@@ -75,31 +67,25 @@ export default {
       var start = moment().month(this.month).startOf('month').startOf('isoweek');
       var end = moment().month(this.month).endOf('month').endOf('isoweek');
 
-      var url = ['api/company', this.$store.getters.company_id, 'instances', start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')].join('/');
-      this.$http.get(url).then(response => {
-        var instances = response.body;
-        this.weeks = [];
-        var first_week = start.week();
+      this.weeks = [];
+      var first_week = start.week();
 
-        while (start.diff(end, 'days') < 1) {
-          var week_index = start.week() - first_week;
+      while (start.diff(end, 'days') < 1) {
+        var week_index = start.week() - first_week;
 
-          if (this.weeks[week_index] == null)
-            this.weeks[week_index] = [];
+        if (this.weeks[week_index] == null)
+          this.weeks[week_index] = [];
 
-          this.weeks[week_index].push({
-            day: start.date(),
-            timestamp: start.valueOf(),
-            month: start.month(),
-            instances: instances.filter(elem => {
-              return moment(elem.date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD');
-            })
-          });
-
-          start.add(1, 'days');
-        }
-
-      });
+        this.weeks[week_index].push({
+          day: start.date(),
+          timestamp: start.valueOf(),
+          month: start.month(),
+          // instances: instances.filter(elem => {
+          //   return moment(elem.date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD');
+          // })
+        });
+        start.add(1, 'days');
+      }
     },
     moveCursor: function (i) {
       this.month += i;
@@ -206,7 +192,7 @@ table.calendar-table {
     ul {
       padding-left: 0;
       list-style: none;
-      min-height: 100px;
+      min-height: 50px;
 
       li {
         background: #51d17d;
@@ -235,7 +221,7 @@ table.calendar-table {
     }
 
     &:hover {
-      // background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 }

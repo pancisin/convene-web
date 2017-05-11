@@ -1,12 +1,15 @@
 <template>
   <div class="row">
+    <div class="col-xs-12">
+      <h3 v-text="page.name" class="page-title"></h3>
+    </div>
     <div class="col-md-3">
       <div class="list-group">
         <router-link to="overview" class="list-group-item">
           Overview
         </router-link>
         <router-link to="events" class="list-group-item">
-          Events
+          Event calendar
         </router-link>
         <router-link to="services" class="list-group-item">
           Services
@@ -17,8 +20,7 @@
       </div>
     </div>
     <div class="col-md-9">
-      <h3 v-text="page.name" class="page-title"></h3>
-      <transition name="fade-up">
+      <transition name="fade-up" mode="out-in">
         <router-view :page="page"></router-view>
       </transition>
     </div>

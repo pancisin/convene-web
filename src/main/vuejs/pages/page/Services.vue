@@ -1,5 +1,5 @@
 <template>
-  <div class="card-box p-b-0" v-if="page != null">
+  <div class="card-box" v-if="page != null">
     <h4 class="text-dark  header-title m-t-0">Services</h4>
     
   </div>
