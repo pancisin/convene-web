@@ -57,7 +57,7 @@ export default new VueRouter({
         },
         {
           path: '/page/:id',
-          component : resolve => require(['../pages/public/Page.vue'], resolve),
+          component: resolve => require(['../pages/public/Page.vue'], resolve),
         }
       ]
     },
@@ -76,16 +76,23 @@ export default new VueRouter({
           component: resolve => require(['../pages/Event.index.vue'], resolve)
         },
         {
-          path: 'page/create',
-          component: resolve => require(['../pages/Page.vue'], resolve)
-        },
-        {
           path: 'conference/create',
-          component: resolve => require(['../pages/Conference.create.vue'], resolve)
+          component: resolve => require(['../pages/conference/Overview.vue'], resolve)
         },
         {
           path: 'conference/:id',
-          component: resolve => require(['../pages/Conference.create.vue'], resolve)
+          component: resolve => require(['../pages/Conference.vue'], resolve),
+          redirect: '/admin/conference/:id/overview',
+          children: [
+            {
+              path: 'overview',
+              component: resolve => require(['../pages/conference/Overview.vue'], resolve)
+            },
+            {
+              path: 'events',
+              component: resolve => require(['../pages/conference/Events.vue'], resolve)
+            }
+          ]
         },
         {
           path: 'users',
@@ -98,6 +105,10 @@ export default new VueRouter({
         {
           path: 'event/:id',
           component: resolve => require(['../pages/Event.create.vue'], resolve)
+        },
+        {
+          path: 'page/create',
+          component: resolve => require(['../pages/page/Overview.vue'], resolve)
         },
         {
           path: 'page/:id',

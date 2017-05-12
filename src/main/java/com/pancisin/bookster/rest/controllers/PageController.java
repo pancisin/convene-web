@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
+import com.pancisin.bookster.repository.ServiceRepository;
 
 @RestController
 @PreAuthorize("hasPermission(#page_id, 'page', '')")
@@ -33,6 +35,9 @@ public class PageController {
 
 	@Autowired
 	private EventRepository eventRepository;
+	
+	@Autowired
+	private ServiceRepository serviceRepository;
 	
 	@GetMapping
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -50,6 +55,7 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 		stored.setName(page.getName());
 		stored.setCategory(page.getCategory());
+		stored.setSummary(page.getSummary());
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 	
@@ -81,5 +87,18 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(stored.getFollowers().stream().anyMatch(x -> x.getId() == user.getId()));
+	}
+	
+	@GetMapping("/service")
+	public ResponseEntity<?> getServices(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(stored.getServices());
+	}
+		
+	@PostMapping("/service")
+	public ResponseEntity<?> postService(@PathVariable Long page_id, @RequestBody Service service) {
+		Page stored = pageRepository.findOne(page_id);
+		service.setPage(stored);
+		return ResponseEntity.ok(serviceRepository.save(service));
 	}
 }

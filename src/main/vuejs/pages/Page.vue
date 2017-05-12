@@ -21,28 +21,20 @@
     </div>
     <div class="col-md-9">
       <transition name="fade-up" mode="out-in">
-        <router-view :page="page"></router-view>
+        <router-view :page="page" :edit="edit"></router-view>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-import Modal from '../elements/Modal.vue'
 export default {
   name: 'page',
   data() {
     return {
       page: new Object(),
       edit: false,
-      display: {
-        modalEdit: false,
-      },
-      categories: [],
     }
-  },
-  components: {
-    Modal
   },
   watch: {
     '$route': 'getPage'
@@ -52,8 +44,8 @@ export default {
   },
   methods: {
     getPage() {
+      this.page = new Object();
       var page_id = this.$route.params.id;
-      console.log(page_id);
       if (page_id != null) {
         this.$http.get('api/page/' + page_id).then(response => {
           this.page = response.body;
@@ -61,7 +53,6 @@ export default {
         })
       } else {
         this.page = new Object();
-        this.display.modalEdit = true;
       }
     }
   }

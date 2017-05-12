@@ -17,8 +17,7 @@
               <h4 v-text="page.name"></h4>
             </router-link>
             <small class="text-muted" v-text="page.category.name"></small>
-          </div>
-  
+          </div>  
         </div>
       </div>
     </div>

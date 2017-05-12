@@ -30,6 +30,9 @@ public class Page {
 	@Column
 	private String name;
 	
+	@Column(length = 1000)
+	private String summary;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Event> events;
@@ -39,7 +42,11 @@ public class Page {
 	
 	@JsonIgnore
 	@ManyToMany
-	private List<User> followers;
+	private List<User> followers = new ArrayList<User>();
+	
+	@JsonIgnore
+	@OneToMany
+	private List<Service> services;
 	
 	public int getFollowersCount() {
 		return this.followers.size();
@@ -87,5 +94,17 @@ public class Page {
 
 	public void setFollowers(List<User> followers) {
 		this.followers = followers;
+	}
+
+	public List<Service> getServices() {
+		return services;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
 	}
 }

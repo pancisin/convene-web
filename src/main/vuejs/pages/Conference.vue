@@ -1,28 +1,25 @@
 <template>
-  <div class="container" v-if="conference != null">
-    <div class="card-box p-b-0">
-      <h4 class="text-dark  header-title m-t-0" v-text="conference.name"></h4>
-      <p class="text-muted m-b-25 font-13" v-text="conference.summary"></p>
-  
-      <table class="table">
-        <thead>
-          <tr>
-            <th>#ID</th>
-            <th>Date</th>
-            <th>Name</th>
-            <th>Summary</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="event in conference.events">
-            <td v-text="event.id"> </td>
-            <td v-text="event.date"></td>
-            <td v-text="event.name"></td>
-            <td v-text="event.summary"></td>
-          </tr>
-        </tbody>
-      </table>
-  
+  <div class="row">
+    <div class="col-xs-12">
+      <h3 v-text="conference.name" class="page-title"></h3>
+    </div>
+    <div class="col-md-3">
+      <div class="list-group">
+        <router-link to="overview" class="list-group-item">
+          Overview
+        </router-link>
+        <router-link to="events" class="list-group-item">
+          Events
+        </router-link>
+        <router-link to="followers" class="list-group-item">
+          Attendants
+        </router-link>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <transition name="fade-up" mode="out-in">
+        <router-view :conference="conference" :edit="edit"></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -33,6 +30,7 @@ export default {
   data() {
     return {
       conference: new Object(),
+      edit: false
     }
   },
   watch: {
@@ -43,21 +41,17 @@ export default {
   },
   methods: {
     getConference() {
+      this.conference = new Object();
+      this.edit = false;
+      
       var conference_id = this.$route.params.id;
       if (conference_id != null) {
+        this.edit = true;
         this.$http.get('api/conference/' + conference_id).then(response => {
           this.conference = response.body;
-          this.getEvents(conference_id);
         })
       }
     },
-    getEvents(conference_id) {
-      var url = ['api/conference', conference_id, 'events'].join('/');
-      this.$http.get(url).then(response => {
-        this.conference.events = response.body;
-        this.$forceUpdate();
-      });
-    }
   }
 }
 </script>

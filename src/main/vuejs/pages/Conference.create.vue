@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card-box p-b-0">
+    <div class="card-box">
       <h4 class="text-dark  header-title m-t-0">
         <span v-if="edit" v-text="conference.name"></span>
         <span v-else> Create conference</span>
