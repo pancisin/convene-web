@@ -28,24 +28,24 @@ public class ServiceController {
 
 	@Autowired
 	private ServiceRepository serviceRepository;
-	
+
 	@Autowired
 	private BookRequestRepository bookRequestRepository;
-	
+
 	@Autowired
 	private EmailServiceImpl emailService;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getService(@PathVariable Long service_id) {
 		return ResponseEntity.ok(serviceRepository.findOne(service_id));
 	}
-	
+
 	@DeleteMapping
 	public ResponseEntity<?> deleteService(@PathVariable Long service_id) {
 		serviceRepository.delete(service_id);
 		return ResponseEntity.ok("success");
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<?> putService(@PathVariable Long service_id, @RequestBody Service service) {
 		Service stored = serviceRepository.findOne(service_id);
@@ -55,16 +55,19 @@ public class ServiceController {
 		stored.setUnit(service.getUnit());
 		return ResponseEntity.ok(serviceRepository.save(stored));
 	}
-	
+
 	@PostMapping("/request")
 	public ResponseEntity<?> postRequest(@PathVariable Long service_id, @RequestBody BookRequest request) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Service service = serviceRepository.findOne(service_id);
 		request.setUser(auth);
 		request.setService(service);
+		request.setApproved(false);
 		
-		emailService.sendSimpleMessage(auth.getEmail(), auth.getUsername() + " requested service", "service > " + service.getName());
-		
+		String message = "User " + auth.getUsername() + " requested " + request.getUnits() + " units of " + service.getName();
+		service.getPage().getAdministrators().stream()
+				.forEach(u -> emailService.sendSimpleMessage(u.getEmail(), "Service request", message));
+
 		return ResponseEntity.ok(bookRequestRepository.save(request));
 	}
 }

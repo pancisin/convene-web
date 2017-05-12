@@ -30,6 +30,9 @@ public class BookRequest {
 	@Column
 	private Calendar date;
 
+	@Column
+	private Boolean approved;
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,5 +67,13 @@ public class BookRequest {
 
 	public void setDate(Calendar date) {
 		this.date = date;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
 	}
 }
