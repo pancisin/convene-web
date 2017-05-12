@@ -37,7 +37,7 @@
                   <img src="assets/images/users/avatar-1.jpg" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-text="event.summary"></p>
+                <p class="inbox-item-text" v-if="event.summary != null">{{ event.summary.substr(0, 100) }}</p>
                 <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
               </div>
             </router-link>

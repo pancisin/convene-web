@@ -59,6 +59,12 @@ public class PageController {
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 	
+	@GetMapping("/event")
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(stored.getEvents());
+	}
+	
 	@PostMapping("/event")
 	public ResponseEntity<?> postEvent(@PathVariable Long page_id, @RequestBody Event event) {
 		Page stored = pageRepository.findOne(page_id);

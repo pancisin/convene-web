@@ -15,9 +15,9 @@
           Services
           <span class="label label-info pull-right">Pro</span>
         </router-link>
-        <router-link to="followers" class="list-group-item">
+        <!--<router-link to="followers" class="list-group-item">
           Followers
-        </router-link>
+        </router-link>-->
       </div>
     </div>
     <div class="col-md-9">

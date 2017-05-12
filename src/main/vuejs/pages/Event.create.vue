@@ -8,64 +8,71 @@
   
       <div id="basicwizard" class=" pull-in">
         <ul class="nav nav-tabs navtab-custom nav-justified bg-muted">
-          <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a></li>
-          <li><a href="#tab2" data-toggle="tab" aria-expanded="true">Programme</a></li>
-          <li><a href="#tab3" data-toggle="tab">Invitations</a></li>
+          <li class="active">
+            <a href="#tab1" data-toggle="tab" aria-expanded="false">Basic information</a>
+          </li>
+          <li>
+            <a href="#tab2" data-toggle="tab" aria-expanded="true">Programme</a>
+          </li>
+          <li>
+            <a href="#tab3" data-toggle="tab">Invitations</a>
+          </li>
         </ul>
-        <div class="tab-content bx-s-0 m-b-0">
+        <div class="tab-content">
           <div class="tab-pane m-t-10 active in fade" id="tab1">
-            <div class="row">
-              <div class="col-xs-12">
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Name *</label>
-                  <div class="col-md-9">
-                    <input class="form-control required" v-model="event.name" type="text">
-                  </div>
-                </div>
   
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Visibility *</label>
-                  <div class="col-md-9">
-                    <select v-model="event.visibility" class="form-control">
-                      <option :value="option" v-for="option in visibility_options" v-text="option"></option>
-                    </select>
-                  </div>
-                </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">Name:</label>
+                <input class="form-control required" v-model="event.name" type="text">
+              </div>
+            </div>
   
-                <div class="form-group clearfix">
-                  <label class="col-md-3 control-label">Summary *</label>
-                  <div class="col-md-9">
-                    <input class="form-control required" v-model="event.summary" type="text">
-                  </div>
-                </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="control-label">Visibility:</label>
+                <select v-model="event.visibility" class="form-control">
+                  <option :value="option" v-for="option in visibility_options" v-text="option"></option>
+                </select>
+              </div>
+            </div>
+  
+            <div class="col-xs-12">
+              <div class="form-group clearfix">
+                <label class="control-label">Summary:</label>
+                <froala :tag="'textarea'" v-model="event.summary"></froala>
               </div>
             </div>
   
           </div>
           <div class="tab-pane m-t-10 fade in" id="tab2">
-            <table class="table table-striped table-bordered">
-              <thead>
-                <tr>
-                  <th>time</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="programme in event.programme">
-                  <td v-text="programme.time"></td>
-                  <td v-text="programme.description"></td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="text" v-model="new_programme.time" class="form-control" />
-                  </td>
-                  <td>
-                    <input type="text" v-model="new_programme.description" class="form-control" />
-                    <a @click="submitProgramme" class="btn bnt-link"><i class="fa fa-save" /></a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="col-xs-12">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>time</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="programme in event.programme">
+                    <td v-text="programme.time"></td>
+                    <td v-text="programme.description"></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input type="text" v-model="new_programme.time" class="form-control" />
+                    </td>
+                    <td>
+                      <input type="text" v-model="new_programme.description" class="form-control" />
+                      <a @click="submitProgramme" class="btn bnt-link">
+                        <i class="fa fa-save" />
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="tab-pane m-t-10 fade" id="tab3">
             <div class="form-group clearfix">
@@ -81,7 +88,8 @@
   
         <div class="text-center m-b-10">
           <button class="btn btn-rounded btn-lg btn-inverse btn-primary" type="submit" @click="submit">
-            <span v-if="submitted">Save</span><span v-else>Submit</span> {{ event.name }}</button>
+            <span v-if="submitted">Save</span>
+            <span v-else>Submit</span> {{ event.name }}</button>
         </div>
       </div>
   

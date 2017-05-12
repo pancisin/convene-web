@@ -11,9 +11,9 @@
         <router-link to="events" class="list-group-item">
           Events
         </router-link>
-        <router-link to="followers" class="list-group-item">
+        <!--<router-link to="followers" class="list-group-item">
           Attendants
-        </router-link>
+        </router-link>-->
       </div>
     </div>
     <div class="col-md-9">

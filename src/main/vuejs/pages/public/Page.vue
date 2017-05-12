@@ -22,7 +22,48 @@
         </div>
       </div>
       <div class="col-md-4">
+        <div class="card-box">
+          <h4 class="text-dark  header-title m-t-0">Services</h4>
   
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="service in services">
+                <td v-text="service.name"></td>
+                <td v-text="service.duration"></td>
+                <td v-text="service.price"></td>
+                <td>
+                  <a class="btn btn-rounded btn-primary btn-xs">Book</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-box">
+          <h4 class="text-dark  header-title m-t-0">Events</h4>
+  
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="event in events">
+                <td v-text="event.name"></td>
+                <td v-text="event.date"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   
@@ -36,6 +77,8 @@ export default {
     return {
       follows: false,
       page: null,
+      services: [],
+      events: [],
     }
   },
   watch: {
@@ -51,6 +94,8 @@ export default {
         this.$http.get('api/page/' + page_id).then(response => {
           this.page = response.body;
           this.checkFollow();
+          this.getServices();
+          this.getEvents();
         })
       }
     },
@@ -58,6 +103,16 @@ export default {
       var url = ['api/page', this.page.id, 'follow-status'].join('/');
       this.$http.get(url).then(response => {
         this.follows = response.body;
+      })
+    },
+    getServices() {
+      this.$http.get('api/page/' + this.page.id + '/service').then(response => {
+        this.services = response.body;
+      });
+    },
+    getEvents() {
+      this.$http.get('api/page/' + this.page.id + '/event').then(response => {
+        this.events = response.body;
       })
     },
     toggleFollow() {

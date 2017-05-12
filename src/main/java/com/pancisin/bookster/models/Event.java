@@ -52,7 +52,7 @@ public class Event {
 	@ManyToOne
 	private Page page;
 	
-	@Column
+	@Column(length = 1000)
 	private String summary;
 	
 	@JsonIgnore

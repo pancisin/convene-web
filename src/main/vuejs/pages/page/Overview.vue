@@ -67,7 +67,8 @@ export default {
           this.edit = true;
           this.page = response.body;
           this.$store.state.user.pages.push(this.page);
-          this.$success('Success !', 'Page ' + this.page.name + ' has been created.')
+          this.$success('Success !', 'Page ' + this.page.name + ' has been created.');
+          this.$router.push('/admin/page/' + this.page.id);
         });
       }
     },

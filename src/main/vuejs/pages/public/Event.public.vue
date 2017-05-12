@@ -9,7 +9,7 @@
         <hr>
         <div class="row">
           <div class="col-md-9 m-b-10">
-            <p v-text="event.summary"></p>
+            <div v-html="event.summary"></div>
             <a class="btn btn-primary" @click="attend"><span v-if="attending">Cancel</span><span v-else>Attend</span></a>
           </div>
           <div class="col-md-3 bg-muted">

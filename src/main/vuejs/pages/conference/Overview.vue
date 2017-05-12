@@ -68,6 +68,8 @@ export default {
         this.$http.post('api/user/conference', this.conference).then(response => {
           this.edit = true;
           this.conference = response.body;
+          this.$store.state.user.conferences.push(this.conference);
+          this.$router.push('/admin/conference/' + this.conference.id);
         })
       }
     },
