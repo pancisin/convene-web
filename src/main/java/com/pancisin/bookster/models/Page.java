@@ -45,7 +45,7 @@ public class Page {
 	private List<User> followers = new ArrayList<User>();
 	
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "page")
 	private List<Service> services;
 	
 	public int getFollowersCount() {

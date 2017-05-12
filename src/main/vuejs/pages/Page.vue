@@ -13,6 +13,7 @@
         </router-link>
         <router-link to="services" class="list-group-item">
           Services
+          <span class="label label-info pull-right">Pro</span>
         </router-link>
         <router-link to="followers" class="list-group-item">
           Followers
@@ -44,8 +45,11 @@ export default {
   },
   methods: {
     getPage() {
-      this.page = new Object();
       var page_id = this.$route.params.id;
+
+      if (this.page.id != null && this.page.id == page_id)
+        return;
+      this.page = new Object();
       if (page_id != null) {
         this.$http.get('api/page/' + page_id).then(response => {
           this.page = response.body;
@@ -54,6 +58,7 @@ export default {
       } else {
         this.page = new Object();
       }
+
     }
   }
 }

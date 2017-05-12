@@ -24,6 +24,7 @@
     </div>
   
     <div class="text-center">
+      <button class="btn btn-rounded btn-danger" @click="deletePage">Delete</button>
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ page.name }}</button>
@@ -32,7 +33,6 @@
 </template>
 
 <script>
-import Modal from '../../elements/Modal.vue'
 export default {
   name: 'page-overview',
   props: {
@@ -47,14 +47,8 @@ export default {
       default: false
     }
   },
-  components: {
-    Modal
-  },
   data() {
     return {
-      display: {
-        modalEdit: false,
-      },
       categories: [],
     }
   },

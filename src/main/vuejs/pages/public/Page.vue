@@ -6,7 +6,7 @@
         <div class="panel panel-border panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">{{ page.name }}
-              <span class="label label-primary"> {{ page.followersCount }} followers</span>
+              <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
             </h3>
   
             <p class="panel-sub-title font-13 text-muted"></p>
