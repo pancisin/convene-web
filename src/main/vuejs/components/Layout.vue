@@ -72,7 +72,7 @@
           <li>
             <router-link to="/terms" class="waves-effect waves-primary">
               <i class="material-icons">lock</i>
-              <span>Terms & Agreements</span>
+              <span>Terms & Conditions</span>
             </router-link>
           </li>
           <li>
@@ -257,21 +257,8 @@
   
           </div>
         </div>
-        <div id="ascrail2002" class="nicescroll-rails" style="width: 8px; z-index: 99; cursor: default; position: absolute; top: -70px; left: -1673px; height: 100px; display: none;">
-          <div style="position: relative; top: 0px; float: right; width: 6px; height: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
-        </div>
-        <div id="ascrail2002-hr" class="nicescroll-rails" style="height: 8px; z-index: 99; top: 22px; left: -1665px; position: absolute; cursor: default; display: none;">
-          <div style="position: relative; top: 0px; height: 6px; width: 0px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
-        </div>
-      </div>
-      <div id="ascrail2001" class="nicescroll-rails" style="width: 8px; z-index: 99; cursor: default; position: absolute; top: 0px; left: 262px; height: 80px; opacity: 0;">
-        <div style="position: relative; top: 0px; float: right; width: 6px; height: 32px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
-      </div>
-      <div id="ascrail2001-hr" class="nicescroll-rails" style="height: 8px; z-index: 99; top: 72px; left: 0px; position: absolute; cursor: default; display: none; width: 262px; opacity: 0;">
-        <div style="position: relative; top: 0px; height: 6px; width: 270px; background-color: rgb(152, 166, 173); border: 1px solid rgb(255, 255, 255); background-clip: padding-box; border-radius: 5px;"></div>
       </div>
     </div>
-    <!-- /Right-bar -->
   
   </div>
 </template>

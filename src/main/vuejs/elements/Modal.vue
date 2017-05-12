@@ -1,7 +1,7 @@
 <template>
   <transition name="fade-up">
     <div class="modal" v-click-outside="outside" role="dialog" v-show="show">
-      <div class="modal-dialog modal-full">
+      <div class="modal-dialog" :class="{ 'modal-full' : full }">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" @click="close">×</button>
@@ -23,9 +23,13 @@ export default {
   props: {
     show: {
       type: Boolean,
-      default: false,
+      default: false
     },
     question: Boolean,
+    full: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     accept() {

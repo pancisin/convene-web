@@ -6,16 +6,18 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Price</th>
-          <th>Duration</th>
+          <th>Detail</th>
+          <th>Unit</th>
+          <th>Price per unit</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="service in services">
           <td v-text="service.name"></td>
-          <td v-text="service.price"></td>
-          <td v-text="service.duration"></td>
+          <td v-text="service.detail"></td>
+          <td v-text="service.unit"></td>
+          <td v-text="service.pricePerUnit"></td>
           <td class="text-center">
             <a @click="deleteService(service)" class="btn btn-rounded btn-xs btn-danger">
               <i class="fa fa-trash"></i>
@@ -32,7 +34,7 @@
       <a @click="editService" class="btn btn-rounded btn-success">Create service</a>
     </div>
   
-    <modal :show.sync="displayEditModal" @close="displayEditModal = false">
+    <modal :show.sync="displayEditModal" @close="displayEditModal = false" :full="false">
       <h4 slot="header">Create service</h4>
       <div slot="body">
         <service-form :service="selectedService" :pageId="page.id" @updated="updatedService" />
@@ -42,7 +44,6 @@
 </template>
 
 <script>
-import Modal from '../../elements/Modal.vue'
 import ServiceForm from './Service.form.vue'
 export default {
   props: ['page'],
@@ -54,7 +55,7 @@ export default {
     }
   },
   components: {
-    Modal, ServiceForm
+    ServiceForm
   },
   created() {
     this.getServices();

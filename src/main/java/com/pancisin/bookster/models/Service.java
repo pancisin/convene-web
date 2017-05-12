@@ -26,11 +26,14 @@ public class Service {
 	private Page page;
 	
 	@Column
-	private Double price;
+	private Double pricePerUnit;
 	
 	@Column
-	private int duration;
+	private String detail;
 
+	@Column
+	private String unit;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,19 +58,27 @@ public class Service {
 		this.page = page;
 	}
 
-	public Double getPrice() {
-		return price;
+	public Double getPricePerUnit() {
+		return pricePerUnit;
 	}
 
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setPricePerUnit(Double pricePerUnit) {
+		this.pricePerUnit = pricePerUnit;
 	}
 
-	public int getDuration() {
-		return duration;
+	public String getDetail() {
+		return detail;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

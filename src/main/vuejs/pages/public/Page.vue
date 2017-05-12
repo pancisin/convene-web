@@ -26,21 +26,11 @@
           <h4 class="text-dark  header-title m-t-0">Services</h4>
   
           <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Duration</th>
-                <th>Price</th>
-                <th></th>
-              </tr>
-            </thead>
             <tbody>
               <tr v-for="service in services">
                 <td v-text="service.name"></td>
-                <td v-text="service.duration"></td>
-                <td v-text="service.price"></td>
-                <td>
-                  <a class="btn btn-rounded btn-primary btn-xs">Book</a>
+                <td class="text-right">
+                  <a class="btn btn-rounded btn-primary btn-xs" @click="bookService(service)">Book</a>
                 </td>
               </tr>
             </tbody>
@@ -67,10 +57,17 @@
       </div>
     </div>
   
+    <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
+      <h4 slot="header">Book a service</h4>
+      <div slot="body">
+        <service-book :service="selectedService" @submitted="submitted"/>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import ServiceBook from './page/Service.book.vue'
 export default {
   name: 'page',
   data() {
@@ -79,7 +76,12 @@ export default {
       page: null,
       services: [],
       events: [],
+      selectedService: null,
+      displayBookModal: false,
     }
+  },
+  components: {
+    ServiceBook
   },
   watch: {
     '$route': 'getPage'
@@ -120,6 +122,13 @@ export default {
       this.$http.patch(url).then(response => {
         this.follows = response.body;
       })
+    },
+    bookService(service) {
+      this.selectedService = service;
+      this.displayBookModal = true;
+    },
+    submitted: function(bookRequest) {
+      this.displayBookModal = false;
     }
   }
 }

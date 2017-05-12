@@ -20,10 +20,21 @@ spring:
             mode: none
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pancisin.patrick@gmail.com
+    password: Papancisin1
+    properties:
+      mail:
+        smtp:
+          auth: true,
+          starttls:
+            enable: true
 jwt: 
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
-          
+                    
 ---
 spring:
   profiles: local

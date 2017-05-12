@@ -6,13 +6,18 @@
     </div>
   
     <div class="form-group">
-      <label class="control-label">Price: </label>
-      <input class="form-control required" v-model="service.price" type="text">
+      <label class="control-label">Detail: </label>
+      <input class="form-control required" v-model="service.detail" type="text">
     </div>
   
     <div class="form-group">
-      <label class="control-label">Duration: </label>
-      <input class="form-control required" v-model="service.duration" type="text">
+      <label class="control-label">Unit: </label>
+      <input class="form-control required" v-model="service.unit" type="text">
+    </div>
+  
+    <div class="form-group">
+      <label class="control-label">Price per unit: </label>
+      <input class="form-control required" v-model="service.pricePerUnit" type="text">
     </div>
   
     <button @click="submit" class="btn btn-rounded btn-success">Submit</button>
