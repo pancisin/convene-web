@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="service != null">
     <h2 v-text="service.name"></h2>
   
     <div class="form-group">
@@ -15,7 +15,7 @@
       <h4>= {{ bookRequest.units * service.pricePerUnit }}e</h4>
     </div>
     <hr>
-
+  
     <div class="text-center">
       <a @click="submit" class="btn btn-rounded btn-success">Submit</a>
     </div>

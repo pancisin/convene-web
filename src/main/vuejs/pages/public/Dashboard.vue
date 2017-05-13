@@ -11,8 +11,8 @@
           <div class="inbox-widget mx-box">
             <router-link :to="'event/' + event.id" v-for="event in attending" :key="event.id">
               <div class="inbox-item">
-                <div class="inbox-item-img">
-                  <img src="assets/images/users/avatar-1.jpg" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                  <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
                 <p class="inbox-item-text" v-if="event.summary != null">{{ event.summary.substr(0, 100) }}</p>
@@ -33,8 +33,8 @@
           <div class="inbox-widget mx-box">
             <router-link :to="'event/' + event.id" v-for="event in events" :key="event.id">
               <div class="inbox-item">
-                <div class="inbox-item-img">
-                  <img src="assets/images/users/avatar-1.jpg" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                  <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
                 <p class="inbox-item-text" v-if="event.summary != null">{{ event.summary.substr(0, 100) }}</p>

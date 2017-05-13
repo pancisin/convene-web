@@ -1,7 +1,7 @@
 <template>
   <div class="card-box" v-if="page != null">
     <h4 class="text-dark  header-title m-t-0">Overview</h4>
-    <div class="row">
+    <div class="row" v-if="edit">
       <div class="col-md-6">
         <img :src="page.bannerUrl" class="img-thumbnail" />
         <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">

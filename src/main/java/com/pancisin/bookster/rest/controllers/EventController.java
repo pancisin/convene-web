@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
@@ -33,6 +34,9 @@ public class EventController {
 	
 	@Autowired
 	private ProgrammeRepository programmeRepository;
+
+	@Autowired
+	private StorageServiceImpl storageService;
 	
 	@GetMapping
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
@@ -47,6 +51,12 @@ public class EventController {
 		stored.setSummary(event.getSummary());
 		stored.setVisibility(event.getVisibility());
 		stored.setDate(event.getDate());
+		
+		if (storageService.isBinary(event.getBannerUrl())) {
+			String url = "banners/events/" + stored.getId();
+			storageService.storeBinary(event.getBannerUrl(), url);
+			stored.setBannerUrl("/files/" + url + ".jpg");
+		}
 		
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}

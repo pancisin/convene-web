@@ -22,7 +22,7 @@
           <span v-else>Follow</span>
         </a>
   
-        <div class="card-box">
+        <div class="card-box" v-if="services.length > 0">
           <h4 class="text-dark  header-title m-t-0">Services</h4>
   
           <table class="table">
@@ -36,7 +36,7 @@
             </tbody>
           </table>
         </div>
-        <div class="card-box">
+        <div class="card-box" v-if="events.length > 0">
           <h4 class="text-dark  header-title m-t-0">Events</h4>
   
           <table class="table">
@@ -48,7 +48,10 @@
             </thead>
             <tbody>
               <tr v-for="event in events">
-                <td v-text="event.name"></td>
+                <td>
+                  <router-link :to="'/event/' + event.id" v-text="event.name">
+                  </router-link>
+                </td>
                 <td v-text="event.date"></td>
               </tr>
             </tbody>

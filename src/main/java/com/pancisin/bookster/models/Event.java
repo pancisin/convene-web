@@ -61,6 +61,9 @@ public class Event {
 	@ManyToMany
 	private List<User> attendees;
 	
+	@Column
+	private String bannerUrl;
+	
 	public Long getId() {
 		return id;
 	}
@@ -143,6 +146,14 @@ public class Event {
 
 	public void setAttendees(List<User> attendees) {
 		this.attendees = attendees;
+	}
+
+	public String getBannerUrl() {
+		return bannerUrl;
+	}
+
+	public void setBannerUrl(String bannerUrl) {
+		this.bannerUrl = bannerUrl;
 	}
 }
 

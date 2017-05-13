@@ -40,10 +40,6 @@ export default new VueRouter({
           component: resolve => require(['../pages/Event.index.vue'], resolve)
         },
         {
-          path: 'event/create',
-          component: resolve => require(['../pages/Event.create.vue'], resolve)
-        },
-        {
           path: '/event/:id',
           component: resolve => require(['../pages/public/Event.public.vue'], resolve),
         },

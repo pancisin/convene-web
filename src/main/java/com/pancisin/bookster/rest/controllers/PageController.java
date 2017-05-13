@@ -72,7 +72,7 @@ public class PageController {
 			storageService.storeBinary(page.getBannerUrl(), url);
 			stored.setBannerUrl("/files/" + url + ".jpg");
 		}
-		
+			
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 	
