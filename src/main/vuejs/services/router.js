@@ -100,11 +100,22 @@ export default new VueRouter({
         },
         {
           path: 'event/create',
-          component: resolve => require(['../pages/Event.create.vue'], resolve)
+          component: resolve => require(['../pages/event/Overview.vue'], resolve)
         },
         {
           path: 'event/:id',
-          component: resolve => require(['../pages/Event.create.vue'], resolve)
+          component: resolve => require(['../pages/Event.vue'], resolve),
+          redirect: '/admin/event/:id/overview',
+          children: [
+            {
+              path: 'overview',
+              component: resolve => require(['../pages/event/Overview.vue'], resolve)
+            },
+            {
+              path: 'programme',
+              component: resolve => require(['../pages/event/Programme.vue'], resolve)
+            }
+          ]
         },
         {
           path: 'page/create',
