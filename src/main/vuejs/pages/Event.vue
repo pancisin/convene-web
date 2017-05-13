@@ -11,12 +11,9 @@
         <router-link to="programme" class="list-group-item">
           Programme
         </router-link>
-        <router-link to="services" class="list-group-item">
-          Share
-        </router-link>
-        <!--<router-link to="followers" class="list-group-item">
-            Followers
-          </router-link>-->
+        <!--<router-link to="services" class="list-group-item">
+          Invite
+        </router-link>-->
       </div>
     </div>
     <div class="col-md-9">

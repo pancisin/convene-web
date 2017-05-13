@@ -3,34 +3,31 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">My events</h3>
-        <p class="panel-sub-title font-13 text-muted">Sub title goes here with small font</p>
       </div>
       <div class="panel-body">
-        <table class="table table-bordered">
+        <table class="table">
           <thead>
             <tr>
-            <th>#ID</th>
             <th>name</th>
-            <th class="text-center">visibility</th>
-            <th>programme</th>
+            <th class="text-center">date</th>
+            <!--<th>programme</th>-->
             </tr>
           </thead>
           <tbody>
             <tr v-for="event in events">
-              <td v-text="event.id"></td>
               <td>
                 <router-link :to="'event/' + event.id">
                   {{ event.name }}
                 </router-link>
               </td>
-              <td v-text="event.visibility" class="text-center"></td>
-              <td>
+              <td v-text="event.date" class="text-center"></td>
+              <!--<td>
                 <ul>
                   <li v-for="p in event.programme">
                     {{ p.time }} - {{ p.description }}
                   </li>
                 </ul>
-              </td>
+              </td>-->
             </tr>
           </tbody>
         </table>
