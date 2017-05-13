@@ -63,8 +63,8 @@
           <div class="inbox-widget">
             <router-link :to="'page/' + page.id" v-for="page in pages" :key="page.id">
               <div class="inbox-item">
-                <div class="inbox-item-img">
-                  <img src="assets/images/users/avatar-1.jpg" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                  <img :src="page.bannerUrl" class="img-circle">
                 </div>
                 <p class="inbox-item-author" v-text="page.name"></p>
                 <p class="inbox-item-text" v-if="page.category != null" v-text="page.category.name"></p>
