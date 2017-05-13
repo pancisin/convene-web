@@ -70,7 +70,7 @@ public class PageController {
 		if (storageService.isBinary(page.getBannerUrl())) {
 			String url = "banners/pages/" + stored.getId();
 			storageService.storeBinary(page.getBannerUrl(), url);
-			stored.setBannerUrl("/files/" + url);
+			stored.setBannerUrl("/files/" + url + ".jpg");
 		}
 		
 		return ResponseEntity.ok(pageRepository.save(stored));

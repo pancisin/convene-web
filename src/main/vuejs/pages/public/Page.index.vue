@@ -11,7 +11,7 @@
       <div class="explore-container">
         <div class="page-panel" v-for="page in pages">
           <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
-          <img v-else src="/bookster_logo.png" />
+          <img v-else src="/bookster_logo.png" style="min-width:auto" />
   
           <div class="title">
             <router-link :to="'page/' + page.id">
@@ -66,6 +66,9 @@ export default {
   position: relative;
   margin: 10px;
   overflow: hidden;
+  box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
+  background: #3bafda;
+  text-align: center;
 
   img {
     min-width: 100%;
