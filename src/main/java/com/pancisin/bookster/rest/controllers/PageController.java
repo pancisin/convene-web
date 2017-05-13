@@ -67,8 +67,11 @@ public class PageController {
 		stored.setCategory(page.getCategory());
 		stored.setSummary(page.getSummary());
 		
-		if (storageService.isBinary(page.getBannerUrl())) 
-			stored.setBannerUrl(storageService.storeBinary(page.getBannerUrl(), "banners/pages/" + stored.getId()));
+		if (storageService.isBinary(page.getBannerUrl())) {
+			String url = "banners/pages/" + stored.getId();
+			storageService.storeBinary(page.getBannerUrl(), url);
+			stored.setBannerUrl("/files/" + url);
+		}
 		
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
