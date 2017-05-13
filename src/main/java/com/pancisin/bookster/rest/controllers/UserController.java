@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.components.EmailServiceImpl;
+import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
@@ -40,7 +40,7 @@ public class UserController {
 	private ConferenceRepository conferenceRepository;
 
 	@Autowired
-	private EmailServiceImpl emailService;
+	private EmailService emailService;
 	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {

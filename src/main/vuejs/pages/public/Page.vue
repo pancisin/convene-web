@@ -9,19 +9,19 @@
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
             </h3>
   
-            <p class="panel-sub-title font-13 text-muted"></p>
+            <img :src="page.bannerUrl" class="img" style="width: 100%" />
           </div>
           <div class="panel-body">
             <div v-html="page.summary" class="m-b-20"></div>
-  
-            <a class="btn btn-rounded btn-inverse" @click="toggleFollow">
-              <span v-if="follows">Unfollow</span>
-              <span v-else>Follow</span>
-            </a>
           </div>
         </div>
       </div>
       <div class="col-md-4">
+        <a class="btn btn-block m-b-20" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
+          <span v-if="follows">Unfollow</span>
+          <span v-else>Follow</span>
+        </a>
+  
         <div class="card-box">
           <h4 class="text-dark  header-title m-t-0">Services</h4>
   
@@ -60,7 +60,7 @@
     <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
       <h4 slot="header">Book a service</h4>
       <div slot="body">
-        <service-book :service="selectedService" @submitted="submitted"/>
+        <service-book :service="selectedService" @submitted="submitted" />
       </div>
     </modal>
   </div>
@@ -127,7 +127,7 @@ export default {
       this.selectedService = service;
       this.displayBookModal = true;
     },
-    submitted: function(bookRequest) {
+    submitted: function (bookRequest) {
       this.displayBookModal = false;
     }
   }

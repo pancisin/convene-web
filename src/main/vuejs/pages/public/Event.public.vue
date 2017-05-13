@@ -10,10 +10,14 @@
         <div class="row">
           <div class="col-md-9 m-b-10">
             <div v-html="event.summary"></div>
-            <a class="btn btn-primary" @click="attend"><span v-if="attending">Cancel</span><span v-else>Attend</span></a>
           </div>
-          <div class="col-md-3 bg-muted">
-            <div class="timeline-2">
+          <div class="col-md-3">
+            <a class="btn btn-primary btn-block" :class="{ 'btn-danger' : attending }" @click="attend">
+              <span v-if="attending">Cancel</span>
+              <span v-else>Attend</span>
+            </a>
+  
+            <div class="timeline-2 m-t-20">
               <div class="time-item" v-for="p in event.programme">
                 <div class="item-info">
                   <small class="text-muted" v-text="p.time"></small>

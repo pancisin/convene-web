@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.components.EmailServiceImpl;
+import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
@@ -33,7 +33,7 @@ public class ServiceController {
 	private BookRequestRepository bookRequestRepository;
 
 	@Autowired
-	private EmailServiceImpl emailService;
+	private EmailService emailService;
 
 	@GetMapping
 	public ResponseEntity<?> getService(@PathVariable Long service_id) {

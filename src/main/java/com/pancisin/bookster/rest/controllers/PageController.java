@@ -1,5 +1,11 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Service;
@@ -39,6 +46,9 @@ public class PageController {
 	@Autowired
 	private ServiceRepository serviceRepository;
 	
+	@Autowired
+	private StorageServiceImpl storageService;
+	
 	@GetMapping
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
 		return ResponseEntity.ok(pageRepository.findOne(page_id));
@@ -51,11 +61,15 @@ public class PageController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> deletePage(@PathVariable Long page_id, @RequestBody Page page) {
+	public ResponseEntity<?> putPage(@PathVariable Long page_id, @RequestBody Page page) {
 		Page stored = pageRepository.findOne(page_id);
 		stored.setName(page.getName());
 		stored.setCategory(page.getCategory());
 		stored.setSummary(page.getSummary());
+		
+		if (storageService.isBinary(page.getBannerUrl())) 
+			stored.setBannerUrl(storageService.storeBinary(page.getBannerUrl(), "banners/pages/" + stored.getId()));
+		
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 	

@@ -10,7 +10,8 @@
   
       <div class="explore-container">
         <div class="page-panel" v-for="page in pages">
-          <img src="http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-140mmf_35-56g_ed_vr/img/sample/sample1_l.jpg" />
+          <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
+          <img v-else src="/bookster_logo.png" />
   
           <div class="title">
             <router-link :to="'page/' + page.id">
@@ -67,8 +68,9 @@ export default {
   overflow: hidden;
 
   img {
-    width: 100%;
+    min-width: 100%;
     transition: all .3s ease;
+    height: 200px;
   }
 
   .title {

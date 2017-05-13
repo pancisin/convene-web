@@ -50,6 +50,9 @@ public class Page {
 	@OneToMany(mappedBy = "page")
 	private List<Service> services;
 	
+	@Column
+	private String bannerUrl;
+	
 	public int getFollowersCount() {
 		return this.followers.size();
 	}
@@ -108,5 +111,13 @@ public class Page {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	public String getBannerUrl() {
+		return bannerUrl;
+	}
+
+	public void setBannerUrl(String bannerUrl) {
+		this.bannerUrl = bannerUrl;
 	}
 }

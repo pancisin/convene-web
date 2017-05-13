@@ -3,6 +3,13 @@
     <h4 class="text-dark  header-title m-t-0">Overview</h4>
     <div class="row">
       <div class="col-md-6">
+        <img :src="page.bannerUrl" class="img-thumbnail" />
+        <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6">
         <div class="form-group">
           <label class="control-label">Name: </label>
           <input class="form-control required" v-model="page.name" type="text">
@@ -89,6 +96,24 @@ export default {
         this.categories = response.body;
       })
     },
+    onLogoChange(e) {
+      var self = this;
+
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length)
+        return;
+
+      var file = files[0];
+
+      var image = new Image();
+      var reader = new FileReader();
+
+      reader.onload = (e) => {
+        self.page.bannerUrl = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 }
 </script>
