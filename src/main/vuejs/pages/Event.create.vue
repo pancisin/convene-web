@@ -40,7 +40,7 @@
             <div class="col-xs-12">
               <div class="form-group clearfix">
                 <label class="control-label">Summary:</label>
-                <froala :tag="'textarea'" v-model="event.summary"></froala>
+                <text-editor v-model="event.summary"></text-editor>
               </div>
             </div>
   
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import TextEditor from '../elements/TextEditor.vue'
 export default {
   name: 'event-create',
   data() {
@@ -111,6 +112,9 @@ export default {
         description: null
       }
     }
+  },
+  components: {
+    TextEditor
   },
   computed: {
     submitted() {

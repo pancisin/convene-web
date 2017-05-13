@@ -21,7 +21,7 @@
   
     <div class="form-group">
       <label class="control-label">Summary: </label>
-      <froala :tag="'textarea'" v-model="conference.summary"></froala>
+      <text-editor v-model="conference.summary"></text-editor>
     </div>
   
     <div class="text-center">
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import TextEditor from '../../elements/TextEditor.vue'
 export default {
   props:
   {
@@ -55,6 +56,9 @@ export default {
         ]
       }
     }
+  },
+  components: { 
+    TextEditor
   },
   methods: {
     submit() {

@@ -15,8 +15,6 @@ require('froala-editor/css/froala_editor.pkgd.min.css')
 require('font-awesome/css/font-awesome.css')
 require('froala-editor/css/froala_style.min.css')
 
-import VueFroala from 'vue-froala-wysiwyg'
-
 // SERVICES
 import Auth from './services/auth.js'
 import store from './services/store.js'
@@ -45,7 +43,6 @@ Vue.use(VueI18n)
 Vue.use(VueWebsocket)
 Vue.use(VueMoment)
 Vue.use(notifier)
-Vue.use(VueFroala)
 Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 

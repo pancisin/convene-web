@@ -20,7 +20,7 @@
   
     <div class="form-group">
       <label class="control-label">Summary: </label>
-      <froala :tag="'textarea'" v-model="page.summary"></froala>
+      <text-editor v-model="page.summary"></text-editor>
     </div>
   
     <div class="text-center">
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import TextEditor from '../../elements/TextEditor.vue'
 export default {
   name: 'page-overview',
   props: {
@@ -51,6 +52,9 @@ export default {
     return {
       categories: [],
     }
+  },
+  components: {
+    TextEditor
   },
   created() {
     this.getCategories();
