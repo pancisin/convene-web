@@ -4,16 +4,16 @@
   
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
-        <div class="form-group">
-          <label class="control-label">Name: </label>
+        <div class="form-group" :class="{ 'has-error' : errors.name != null }">
+          <label class="control-label">Name</label>
           <input class="form-control required" v-model="event.name" type="text">
         </div>
         <div class="form-group">
-          <label class="control-label">Date: </label>
+          <label class="control-label">Date</label>
           <date-picker v-model="event.date" />
         </div>
         <div class="form-group">
-          <label class="control-label">Visibility: </label>
+          <label class="control-label">Visibility</label>
           <select v-model="event.visibility" class="form-control">
             <option :value="option" v-for="option in visibility_options" v-text="option"></option>
           </select>
@@ -26,7 +26,7 @@
     </div>
   
     <div class="form-group">
-      <label class="control-label">Summary: </label>
+      <label class="control-label">Summary</label>
       <text-editor v-model="event.summary"></text-editor>
     </div>
   
@@ -69,18 +69,21 @@ export default {
   },
   data() {
     return {
-      errors: [],
+      errors: new Object(),
     }
   },
   methods: {
     submit: function () {
+      this.errors = new Object();
       if (this.edit) {
         var url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
           this.event = response.body;
           this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
         }, response => {
-          this.errors = response.body.fieldErrors;
+          response.body.fieldErrors.forEach((e) => {
+            this.$set(this.errors, e.field, e);
+          });
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
