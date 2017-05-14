@@ -67,7 +67,7 @@ public class PageController {
 		stored.setCategory(page.getCategory());
 		stored.setSummary(page.getSummary());
 		
-		if (storageService.isBinary(page.getBannerUrl())) {
+		if (page.getBannerUrl() != null && storageService.isBinary(page.getBannerUrl())) {
 			String url = "banners/pages/" + stored.getId();
 			storageService.storeBinary(page.getBannerUrl(), url);
 			stored.setBannerUrl("/files/" + url + ".jpg");

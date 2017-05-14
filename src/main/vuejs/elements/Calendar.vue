@@ -140,7 +140,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .calendar-header {
   display: flex;
   justify-content: space-between;

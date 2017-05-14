@@ -9,11 +9,7 @@ import VueMoment from 'vue-moment'
 import vSelect from "vue-select"
 import Modal from './elements/Modal.vue'
 
-require('froala-editor/js/froala_editor.pkgd.min')
-
-require('froala-editor/css/froala_editor.pkgd.min.css')
 require('font-awesome/css/font-awesome.css')
-require('froala-editor/css/froala_style.min.css')
 
 // SERVICES
 import Auth from './services/auth.js'

@@ -20,7 +20,7 @@
                   {{ event.name }}
                 </router-link>
               </td>
-              <td v-text="event.date" class="text-center"></td>
+              <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
               <!--<td>
                 <ul>
                   <li v-for="p in event.programme">
