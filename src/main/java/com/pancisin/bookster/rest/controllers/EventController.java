@@ -2,11 +2,14 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +26,7 @@ import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
+import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
 @PreAuthorize("hasPermission(#event_id, 'event', '')")
@@ -44,8 +48,11 @@ public class EventController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<?> putEvent(@PathVariable Long event_id, @RequestBody Event event) {
+	public ResponseEntity<?> putEvent(@PathVariable Long event_id, @Valid @RequestBody Event event, BindingResult bindingResult) {
 		Event stored = eventRepository.findOne(event_id);
+		
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
 		
 		stored.setName(event.getName());
 		stored.setSummary(event.getSummary());

@@ -67,6 +67,11 @@ export default {
   components: {
     TextEditor, DatePicker
   },
+  data() {
+    return {
+      errors: [],
+    }
+  },
   methods: {
     submit: function () {
       if (this.edit) {
@@ -74,6 +79,8 @@ export default {
         this.$http.put(url, this.event).then(response => {
           this.event = response.body;
           this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
+        }, response => {
+          this.errors = response.body.fieldErrors;
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {

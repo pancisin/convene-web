@@ -15,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.bookster.models.enums.Visibility;
@@ -28,15 +31,18 @@ public class Event {
 	private Long id;
 	
 	@Column
+	@NotEmpty
 	private String name;
 	
 	@Column
+	@NotNull
 	private Calendar date;
 	
 	@JsonIgnore
 	@ManyToOne
 	private User owner;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
     private Visibility visibility;
 	
