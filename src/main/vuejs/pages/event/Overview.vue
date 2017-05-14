@@ -4,15 +4,15 @@
   
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
-        <div class="form-group" :class="{ 'has-error' : errors.name != null }">
+        <div class="form-group" :class="{ 'has-error' : errors.name }">
           <label class="control-label">Name</label>
           <input class="form-control required" v-model="event.name" type="text">
         </div>
-        <div class="form-group">
+        <div class="form-group" :class="{ 'has-error' : errors.date }">
           <label class="control-label">Date</label>
           <date-picker v-model="event.date" />
         </div>
-        <div class="form-group">
+        <div class="form-group" :class="{ 'has-error' : errors.visibility }"> 
           <label class="control-label">Visibility</label>
           <select v-model="event.visibility" class="form-control">
             <option :value="option" v-for="option in visibility_options" v-text="option"></option>
@@ -84,6 +84,7 @@ export default {
           response.body.fieldErrors.forEach((e) => {
             this.$set(this.errors, e.field, e);
           });
+          this.$error('Error !', 'Problem in saving event.');
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
@@ -91,6 +92,11 @@ export default {
           this.$router.push('/admin/event/' + this.event.id);
           this.$success('Success !', 'Event ' + this.event.name + ' has been created.')
           this.edit = true;
+        }, response => {
+          response.body.fieldErrors.forEach((e) => {
+            this.$set(this.errors, e.field, e);
+          });
+          this.$error('Error !', 'Problem in saving event.');
         })
       }
     },
