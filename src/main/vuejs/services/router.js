@@ -131,6 +131,20 @@ export default new VueRouter({
               component: resolve => require(['../pages/page/Events.vue'], resolve)
             },
             {
+              path: 'create-event',
+              component: resolve => require(['../pages/event/Overview.vue'], resolve),
+              props: (route) => (
+                {
+                  page_id: route.params.id,
+                  edit: false
+                }
+              )
+            },
+            {
+              path: 'calendar',
+              component: resolve => require(['../pages/page/Calendar.vue'], resolve)
+            },
+            {
               path: 'services',
               component: resolve => require(['../pages/page/Services.vue'], resolve)
             }

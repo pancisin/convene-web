@@ -53,7 +53,9 @@ export default {
     edit: {
       type: Boolean,
       default: false
-    }
+    },
+    page_id: String,
+    conference_id: String
   },
   computed: {
     visibility_options: {
@@ -87,7 +89,16 @@ export default {
           this.$error('Error !', 'Problem in saving event.');
         });
       } else {
-        this.$http.post('api/user/event', this.event).then(response => {
+        var url = null;
+        if (this.page_id != null) {
+          url = ['api/page', this.page_id, 'event'].join('/');
+        } else if (this.conference_id != null) {
+          url = ['api/conference', this.conference_id, 'event'].join('/');
+        } else {
+          url = 'api/user/event';
+        }
+
+        this.$http.post(url, this.event).then(response => {
           this.event = response.body;
           this.$router.push('/admin/event/' + this.event.id);
           this.$success('Success !', 'Event ' + this.event.name + ' has been created.')

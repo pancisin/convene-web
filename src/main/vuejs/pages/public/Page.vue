@@ -52,7 +52,7 @@
                   <router-link :to="'/event/' + event.id" v-text="event.name">
                   </router-link>
                 </td>
-                <td v-text="event.date"></td>
+                <td>{{ event.date | moment('DD.MM.YYYY') }}</td>
               </tr>
             </tbody>
           </table>

@@ -69,14 +69,15 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			if (permission.equals("update"))
 				return stored != null && conference.getOwner().getId() == stored.getId();
 			else
-				return conference.getVisibility() == Visibility.PUBLIC;
+				return conference.getVisibility() == Visibility.PUBLIC
+						|| conference.getOwner().getId() == stored.getId();
 		case "event":
 			Event event = eventRepository.findOne((Long) targetId);
 
 			if (permission.equals("update"))
 				return stored != null && event.getOwner().getId() == stored.getId();
 			else
-				return event.getVisibility() == Visibility.PUBLIC;
+				return event.getVisibility() == Visibility.PUBLIC || event.getOwner().getId() == stored.getId();
 		case "license":
 			return true;
 		case "notification":

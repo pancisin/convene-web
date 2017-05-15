@@ -8,21 +8,24 @@
         <router-link to="overview" class="list-group-item">
           Overview
         </router-link>
-        <router-link to="events" class="list-group-item">
+        <router-link to="calendar" class="list-group-item">
           Event calendar
+        </router-link>
+        <router-link to="events" class="list-group-item">
+          Events
         </router-link>
         <router-link to="services" class="list-group-item">
           Services
           <span class="label label-info pull-right">Pro</span>
         </router-link>
-        <!--<router-link to="followers" class="list-group-item">
-          Followers
-        </router-link>-->
+        <!--<router-link to="followers" class="list-group-item">Followers</router-link>-->
       </div>
     </div>
     <div class="col-md-9">
       <transition name="fade-up" mode="out-in">
-        <router-view :page="page" :edit="edit"></router-view>
+        <keep-alive>
+          <router-view :page="page" :edit="edit"></router-view>
+        </keep-alive>
       </transition>
     </div>
   </div>
