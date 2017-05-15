@@ -136,3 +136,26 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+.panel-heading {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+
+  .panel-title {
+    position: absolute;
+  }
+
+  img {
+    position: absolute;
+    left: 0;
+    top: -50%;
+  }
+
+  &:after {
+    content: '';
+    
+  }
+}
+</style>

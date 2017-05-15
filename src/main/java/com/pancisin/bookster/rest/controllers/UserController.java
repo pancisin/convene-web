@@ -62,7 +62,7 @@ public class UserController {
 		return ResponseEntity.ok(stored);
 	}
 
-	@GetMapping("/me/notifications")
+	@GetMapping("/notification")
 	public ResponseEntity<?> getNotifications() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(notificationRepository.getUserNotifications(auth.getId()));

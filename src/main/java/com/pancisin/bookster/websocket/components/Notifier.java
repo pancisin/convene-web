@@ -20,7 +20,6 @@ public class Notifier {
 	public void notifyUser(User user, String title, String message) {
 		Notification notification = new Notification(title, message);
 		notification.setRecipient(user);
-		webSocket.convertAndSendToUser(user.getEmail(), "/queue/notifier",
-				notificationRepository.save(notification));
+		webSocket.convertAndSendToUser(user.getEmail(), "/queue/notifier", notificationRepository.save(notification));
 	}
 }

@@ -20,6 +20,7 @@ import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
+import com.pancisin.bookster.websocket.components.Notifier;
 
 @RestController
 @PreAuthorize("hasPermission(#service_id, 'service', '')")
@@ -34,6 +35,9 @@ public class ServiceController {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private Notifier notifier;
 
 	@GetMapping
 	public ResponseEntity<?> getService(@PathVariable Long service_id) {
@@ -63,10 +67,13 @@ public class ServiceController {
 		request.setUser(auth);
 		request.setService(service);
 		request.setApproved(false);
-		
-		String message = "User " + auth.getUsername() + " requested " + request.getUnits() + " units of " + service.getName();
-		service.getPage().getAdministrators().stream()
-				.forEach(u -> emailService.sendSimpleMessage(u.getEmail(), "Service request", message));
+
+		String message = "User " + auth.getUsername() + " requested " + request.getUnits() + " units of "
+				+ service.getName();
+		service.getPage().getAdministrators().stream().forEach(u -> {
+			emailService.sendSimpleMessage(u.getEmail(), "Service request", message);
+			notifier.notifyUser(u, "Service request", message);
+		});
 
 		return ResponseEntity.ok(bookRequestRepository.save(request));
 	}
