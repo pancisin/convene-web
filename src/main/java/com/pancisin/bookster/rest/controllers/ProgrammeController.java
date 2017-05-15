@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 
 @RestController
-@PreAuthorize("hasPermission(#programme_id, 'programme', '')")
 @RequestMapping("/api/programme/{programme_id}")
 public class ProgrammeController {
 
@@ -19,6 +18,7 @@ public class ProgrammeController {
 	private ProgrammeRepository programmeRepository;
 	
 	@DeleteMapping
+	@PreAuthorize("hasPermission(#programme_id, 'programme', 'update')")
 	public ResponseEntity<?> deleteProgramme(@PathVariable Long programme_id) {
 		programmeRepository.delete(programme_id);
 		return ResponseEntity.ok("success");

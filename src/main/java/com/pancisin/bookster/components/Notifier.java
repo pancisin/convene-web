@@ -1,4 +1,4 @@
-package com.pancisin.bookster.websocket.components;
+package com.pancisin.bookster.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

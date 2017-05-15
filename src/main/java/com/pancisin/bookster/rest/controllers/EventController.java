@@ -29,7 +29,6 @@ import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
-@PreAuthorize("hasPermission(#event_id, 'event', '')")
 @RequestMapping("/api/event/{event_id}")
 public class EventController {
 
@@ -43,11 +42,13 @@ public class EventController {
 	private StorageServiceImpl storageService;
 	
 	@GetMapping
+	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.findOne(event_id));
 	}
 	
 	@PutMapping
+	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> putEvent(@PathVariable Long event_id, @Valid @RequestBody Event event, BindingResult bindingResult) {
 		Event stored = eventRepository.findOne(event_id);
 		
@@ -69,12 +70,14 @@ public class EventController {
 	}
 	
 	@DeleteMapping
+	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> deleteEvent(@PathVariable Long event_id) {
 		eventRepository.delete(event_id);
 		return ResponseEntity.ok("success");
 	}
 	
 	@PostMapping("/programme")
+	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> postProgramme(@PathVariable Long event_id, @RequestBody Programme programme) {
 		Event event = eventRepository.findOne(event_id);
 		programme.setEvent(event);
@@ -82,6 +85,7 @@ public class EventController {
 	}
 	
 	@PatchMapping("/toggle-attend")
+	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> toggleAttend(@PathVariable Long event_id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
@@ -102,6 +106,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/attend-status")
+	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> getAttendStatus(@PathVariable Long event_id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();

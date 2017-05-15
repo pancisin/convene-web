@@ -13,7 +13,7 @@ import com.pancisin.bookster.models.Notification;
 import com.pancisin.bookster.repository.NotificationRepository;
 
 @RestController
-@PreAuthorize("hasPermission(#notification_id, 'notification', '')")
+@PreAuthorize("hasPermission(#notification_id, 'notification', 'read')")
 @RequestMapping("/api/notification/{notification_id}")
 public class NotificationController {
 

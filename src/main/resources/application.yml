@@ -34,7 +34,6 @@ spring:
 jwt: 
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
-                    
 ---
 spring:
   profiles: local
@@ -45,6 +44,8 @@ server:
   port: 8180
 storage:
   path: /files/
+mailing:
+  enabled: false
 ---
 spring: 
   profiles: production
@@ -55,4 +56,6 @@ server:
   port: 8080
 storage:
   path: /uploads/bookster/
+mailing: 
+  enabled: true
   
