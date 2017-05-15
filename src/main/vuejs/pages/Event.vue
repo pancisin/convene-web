@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: 'page',
+  name: 'event',
   data() {
     return {
       event: new Object(),

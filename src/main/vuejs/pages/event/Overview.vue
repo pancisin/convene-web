@@ -2,32 +2,31 @@
   <div class="card-box">
     <h4 class="text-dark  header-title m-t-0">Overview</h4>
   
-    <div class="row" v-if="edit">
-      <div class="col-md-6">
-        <img :src="event.bannerUrl" class="img-thumbnail" />
-        <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
-      </div>
-    </div>
-  
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Name: </label>
+      <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
+        <div class="form-group" :class="{ 'has-error' : errors.name }">
+          <label class="control-label">Name</label>
           <input class="form-control required" v-model="event.name" type="text">
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Visibility: </label>
+        <div class="form-group" :class="{ 'has-error' : errors.date }">
+          <label class="control-label">Date</label>
+          <date-picker v-model="event.date" />
+        </div>
+        <div class="form-group" :class="{ 'has-error' : errors.visibility }"> 
+          <label class="control-label">Visibility</label>
           <select v-model="event.visibility" class="form-control">
             <option :value="option" v-for="option in visibility_options" v-text="option"></option>
           </select>
         </div>
       </div>
+      <div class="col-md-6" v-if="edit">
+        <img :src="event.bannerUrl" class="img-thumbnail" />
+        <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
+      </div>
     </div>
   
     <div class="form-group">
-      <label class="control-label">Summary: </label>
+      <label class="control-label">Summary</label>
       <text-editor v-model="event.summary"></text-editor>
     </div>
   
@@ -41,6 +40,7 @@
 
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
+import DatePicker from '../../elements/DatePicker.vue'
 export default {
   props:
   {
@@ -64,16 +64,27 @@ export default {
       }
     }
   },
-  components: { 
-    TextEditor
+  components: {
+    TextEditor, DatePicker
+  },
+  data() {
+    return {
+      errors: new Object(),
+    }
   },
   methods: {
-     submit: function () {
+    submit: function () {
+      this.errors = new Object();
       if (this.edit) {
         var url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
           this.event = response.body;
           this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
+        }, response => {
+          response.body.fieldErrors.forEach((e) => {
+            this.$set(this.errors, e.field, e);
+          });
+          this.$error('Error !', 'Problem in saving event.');
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
@@ -81,10 +92,15 @@ export default {
           this.$router.push('/admin/event/' + this.event.id);
           this.$success('Success !', 'Event ' + this.event.name + ' has been created.')
           this.edit = true;
+        }, response => {
+          response.body.fieldErrors.forEach((e) => {
+            this.$set(this.errors, e.field, e);
+          });
+          this.$error('Error !', 'Problem in saving event.');
         })
       }
     },
-     onLogoChange(e) {
+    onLogoChange(e) {
       var self = this;
 
       var files = e.target.files || e.dataTransfer.files;

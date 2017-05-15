@@ -1,9 +1,12 @@
 package com.pancisin.bookster.rest.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +25,7 @@ import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -41,7 +45,7 @@ public class UserController {
 
 	@Autowired
 	private EmailService emailService;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -72,9 +76,12 @@ public class UserController {
 	private EventRepository eventRepository;
 
 	@PostMapping("/event")
-	public ResponseEntity<?> postEvent(@RequestBody Event event) {
+	public ResponseEntity<?> postEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
+
+		if (bindingResult.hasErrors())
+			throw new InvalidRequestException("Invalid data", bindingResult);
 
 		event.setOwner(stored);
 		return ResponseEntity.ok(eventRepository.save(event));
@@ -85,7 +92,7 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(eventRepository.getOwned(auth.getId()));
 	}
-	
+
 	@GetMapping("/event/attending")
 	public ResponseEntity<?> getAttendingEvents() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
