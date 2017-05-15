@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Notification from './Notification.vue'
+import Notification from './Toast.vue'
 
 export default {
   name: 'notification-container',
@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     notifications() {
-      return this.$store.state.notifications;
+      return this.$store.state.toasts;
     }
   },
   methods: {

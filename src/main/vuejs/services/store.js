@@ -5,7 +5,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     user: null,
-    notifications: []
+    notifications: [],
+    toasts: [],
   },
   mutations: {
     setUser(state, { user }) {
@@ -14,8 +15,21 @@ const store = new Vuex.Store({
     addNotification(state, notification) {
       state.notifications.push(notification);
     },
+    addToast(state, notification) {
+      state.toasts.push(notification);
+      setTimeout(() => {
+        state.toasts.splice(state.toasts.indexOf(toast), 1);
+      }, 5000)
+    },
     removeNotification(state, notification) {
-      state.notifications.splice(state.notifications.indexOf(notification), 1);
+      state.notifications.push(state.notifications.filter(n => {
+        return n.id != notification.id;
+      }));
+    }
+  },
+  actions: {
+    initNotifications({ commit, state }, notifications) {
+      state.notifications = notifications;
     }
   },
   getters: {
