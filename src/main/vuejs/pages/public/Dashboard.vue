@@ -67,7 +67,9 @@
                   <img :src="page.bannerUrl" class="img-circle">
                 </div>
                 <p class="inbox-item-author" v-text="page.name"></p>
-                <p class="inbox-item-text" v-if="page.category != null" v-text="page.category.name"></p>
+                <p class="inbox-item-text" v-if="page.category != null">
+                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                </p>
               </div>
             </router-link>
           </div>

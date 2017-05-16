@@ -27,7 +27,9 @@
             <router-link :to="'page/' + page.id">
               <h4 v-text="page.name"></h4>
             </router-link>
-            <small class="text-muted" v-if="page.category != null" v-text="page.category.name"></small>
+            <small class="text-muted" v-if="page.category != null">
+              {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+            </small>
           </div>
         </div>
       </div>

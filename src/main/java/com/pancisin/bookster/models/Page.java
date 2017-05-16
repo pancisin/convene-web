@@ -68,8 +68,8 @@ public class Page {
 	}
 	
 	public Category getCategory() {
-		if (branch != null)
-			return branch.getCategory();
+		if (getBranch() != null)
+			return getBranch().getCategory();
 		
 		return null;
 	}
