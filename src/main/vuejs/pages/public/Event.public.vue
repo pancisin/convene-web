@@ -5,8 +5,9 @@
         <img :src="event.bannerUrl" class="img-thumbnail" style="width: 100%" />
       </div>
       <div :class="{ 'col-md-9' : event.bannerUrl }">
-        <div class="panel panel-border panel-primary">
+        <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
+            <img :src="event.bannerUrl" />
             <h3 class="panel-title">{{ event.name }}</h3>
             <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YY') }}</p>
           </div>

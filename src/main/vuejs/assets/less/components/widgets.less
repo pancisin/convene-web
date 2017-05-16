@@ -1,0 +1,205 @@
+.inbox-widget {
+    .inbox-item {
+        border-bottom: 1px solid #f1f1f1;
+        overflow: hidden;
+        padding: 10px 0;
+        position: relative;
+        .inbox-item-img {
+            display: block;
+            float: left;
+            margin-right: 15px;
+            width: 40px;
+        }
+        img {
+            width: 40px;
+            height: 40px;
+        }
+        .inbox-item-author {
+            color: #333333;
+            display: block;
+            margin: 0;
+        }
+        .inbox-item-text {
+            color: #a0a0a0;
+            display: block;
+            font-size: 12px;
+            margin: 0;
+        }
+        .inbox-item-date {
+            color: #a9a9a9;
+            font-size: 11px;
+            position: absolute;
+            right: 7px;
+            top: 2px;
+        }
+    }
+}
+
+.conversation-list {
+    list-style: none;
+    max-height: 330px;
+    padding: 0px 20px;
+    li {
+        margin-bottom: 24px;
+    }
+    .chat-avatar {
+        display: inline-block;
+        float: left;
+        text-align: center;
+        width: 40px;
+        img {
+            border-radius: 100%;
+            width: 100%;
+        }
+        i {
+            font-size: 12px;
+            font-style: normal;
+        }
+    }
+    .ctext-wrap {
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        background: #f5f5f5;
+        border-radius: 3px;
+        display: inline-block;
+        padding: 10px;
+        position: relative;
+        i {
+            color: #1a2942;
+            display: block;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: bold;
+            position: relative;
+        }
+        p {
+            margin: 0px;
+            padding-top: 3px;
+        }
+        &:after {
+            right: 100%;
+            top: 20%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(213, 242, 239, 0);
+            border-right-color: #f5f5f5;
+            border-width: 5px;
+            margin-top: -5px;
+        }
+    }
+    .conversation-text {
+        display: inline-block;
+        float: left;
+        font-size: 12px;
+        margin-left: 12px;
+        width: 70%;
+    }
+    .odd {
+        .chat-avatar {
+            float: right !important;
+        }
+        .conversation-text {
+            float: right !important;
+            margin-right: 12px;
+            text-align: right;
+            width: 70% !important;
+        }
+        .ctext-wrap {
+            background: #e8e9ec !important;
+            i {
+                color: #acacac;
+            }
+            &:after {
+                border-color: rgba(238, 238, 242, 0) !important;
+                border-left-color: #e8e9ec !important;
+                left: 100% !important;
+                top: 20% !important;
+            }
+        }
+    }
+}
+
+.chat-send {
+    padding-left: 0px;
+    padding-right: 30px;
+    button {
+        width: 100%;
+    }
+}
+
+.chat-inputbar {
+    padding-left: 30px;
+}
+
+#todo-message {
+    font-size: 16px;
+}
+
+.todo-list {
+    li {
+        border: 0px;
+        margin: 0px;
+        padding: 3px 0 !important;
+        background: transparent !important;
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+}
+
+.todo-send {
+    padding-left: 0px;
+}
+
+.widget-bg-color-icon {
+    .bg-icon {
+        height: 80px;
+        width: 80px;
+        text-align: center;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        background-clip: padding-box;
+        i {
+            font-size: 32px;
+            color: #ffffff !important;
+            line-height: 68px;
+        }
+    }
+    .bg-icon-info {
+        background-color: rgba(103, 209, 248, 0.75);
+        border: 6px solid rgba(103, 209, 248, 0.3);
+    }
+    .bg-icon-primary {
+        background-color: rgba(3, 156, 253, 0.75);
+        border: 6px solid rgba(3, 156, 253, 0.3);
+    }
+    .bg-icon-pink {
+        background-color: rgba(247, 99, 151, 0.75);
+        border: 6px solid rgba(247, 99, 151, 0.3);
+    }
+    .bg-icon-purple {
+        background-color: rgba(114, 102, 186, 0.75);
+        border: 6px solid rgba(114, 102, 186, 0.3);
+    }
+    .bg-icon-success {
+        background-color: rgba(82, 187, 86, 0.75);
+        border: 6px solid rgba(82, 187, 86, 0.3);
+    }
+    .bg-icon-warning {
+        background-color: rgba(241, 181, 61, 0.75);
+        border: 6px solid rgba(241, 181, 61, 0.3);
+    }
+    .bg-icon-danger {
+        background-color: rgba(239, 83, 80, 0.75);
+        border: 6px solid rgba(239, 83, 80, 0.3);
+    }
+    .bg-icon-inverse {
+        background-color: rgba(76, 86, 103, 0.75);
+        border: 6px solid rgba(76, 86, 103, 0.3);
+    }
+}

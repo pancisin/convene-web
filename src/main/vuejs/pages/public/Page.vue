@@ -3,9 +3,9 @@
   
     <div class="row">
       <div class="col-md-8">
-        <div class="panel panel-border panel-default">
+        <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
-            <img :src="page.bannerUrl" class="img" style="width: 100%" />
+            <img :src="page.bannerUrl" class="img" />
             
             <h3 class="panel-title">{{ page.name }}
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
@@ -136,32 +136,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.panel-heading {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
-
-  .panel-title {
-    position: relative;
-    font-size: 25px;
-  }
-
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-
-    filter: blur(15px);
-  }
-
-  &:after {
-    content: '';
-    
-  }
-}
-</style>
