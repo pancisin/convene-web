@@ -19,7 +19,7 @@
         <div class="form-group">
           <label class="control-label">Category: </label>
           <select v-model="page.category" class="form-control">
-            <option v-for="cat in categories" v-text="cat.name" :value="cat"></option>
+            <option v-for="cat in categories" :value="cat">{{ $t('category.' + cat.code + '.default') }}</option>
           </select>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label class="control-label">Branch: </label>
           <select v-model="page.branch" class="form-control">
-            <option v-for="branch in branches" v-text="branch.name" :value="branch"></option>
+            <option v-for="branch in branches" :value="branch">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
           </select>
         </div>
       </div>
