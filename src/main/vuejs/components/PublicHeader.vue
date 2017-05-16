@@ -83,10 +83,10 @@
               <router-link to="/explore">
                 <i class="material-icons">explore</i> Explore pages</router-link>
             </li>
-            <li>
+            <!--<li>
               <router-link to="/conference">
                 <i class="material-icons">people</i> Conferences</router-link>
-            </li>
+            </li>-->
             <li class="has-submenu">
               <a>
                 <i class="material-icons">question_answer</i> About bookster</a>

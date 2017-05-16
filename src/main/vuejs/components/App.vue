@@ -6,14 +6,18 @@
 </template>
 
 <script>
+import Auth from '../services/auth.js'
 export default {
   name: 'app-root',
   created() {
+    if (Auth.user.authenticated)
+      Auth.updateUserData(this);
+
     this.initializeStomp();
     this.fetchNotifications();
   },
   methods: {
-    initializeStomp: function () {
+    initializeStomp() {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
@@ -21,11 +25,11 @@ export default {
         });
       })
     },
-    fetchNotifications: function () {
+    fetchNotifications() {
       this.$http.get('api/user/notification').then(response => {
         this.$store.dispatch('initNotifications', response.body)
       });
-    },
+    }
   }
 };
 </script>

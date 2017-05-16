@@ -1,4 +1,6 @@
+import category from './category.sk-SK.js'
 export default {
+  category,
   menu: {
     dashboard: "Prehľad",
     work_management: "Správca úloh",

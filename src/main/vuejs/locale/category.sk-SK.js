@@ -1,0 +1,61 @@
+export default {
+  local_business: {
+    default: 'Lokálne podnikanie alebo miesto',
+    airport: 'Letisko',
+    nightlife: 'Umenie/Zábava/Nočný život',
+    attractions: 'Atrakcia/Things to Do',
+    bank: 'Banka/Finančné služby',
+    bar: 'Bar',
+    bookshop: 'Kníhkupectvo',
+    business: 'Business Services',
+    church: 'Kostol/Náboženská organizácia',
+    cinema: 'Kino',
+    club: 'Klub',
+    community: 'Komunita/Vláda',
+    concert_venue: 'Koncertná sála',
+    diy: 'Urob si sám',
+    doctor: 'Doktor',
+    event_planning: 'Event Planning/Event Services',
+    food: 'Jedlo/Groceries',
+    health: 'Zdravie/Medical/Pharmacy',
+    hospital: 'Nemocnica/Klinika',
+    hotel: 'Hotel',
+    landmark: 'Landmark',
+    lawyer: 'Právnik',
+    library: 'Knižnica',
+    local_business: 'Lokálne podnikanie',
+    middle_school: 'Stredná škola',
+    museum: 'Múzeum/Umelecká galéria',
+    outdoor: 'Outdoor Gear/Sporting Goods',
+    pet_services: 'Služby pre zvieratá',
+    professional_services: 'Profesionálne sluźby',
+    property: 'Property',
+    public: 'Verejné miesto',
+    restaurant: 'Reštaurácia/Kaviareň',
+    school: 'Škola',
+    shopping: 'Nakupovanie/Retail',
+    spas: 'Spas/Beauty/Personal Care',
+    sports_venue: 'Športová hala',
+    sports: 'Šport/Rekreácia/Aktivity',
+    tours: 'Túry/Sightseeing',
+    transport: 'Doprava',
+    university: 'Univerzita',
+    vehicles: 'Vozidlá',
+  },
+  company: {
+    default: 'Spoločnosť, organizácia alebo inštitúcia',
+
+  },
+  product: {
+    default: 'Značka alebo produkt',
+
+  },
+  public_figure: {
+    default: 'Umelec, Skupina alebo verejná osobnosť',
+
+  },
+  entertainment: {
+    default: 'Zábava',
+
+  },
+}

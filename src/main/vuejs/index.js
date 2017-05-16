@@ -6,7 +6,6 @@ import VueWebsocket from './services/websocket.js'
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
-import vSelect from "vue-select"
 import Modal from './elements/Modal.vue'
 
 require('font-awesome/css/font-awesome.css')
@@ -38,7 +37,6 @@ Vue.use(VueI18n)
 Vue.use(VueWebsocket)
 Vue.use(VueMoment)
 Vue.use(notifier)
-Vue.component('v-select', vSelect)
 Vue.component('modal', Modal)
 
 // DIRECTIVES
@@ -58,7 +56,7 @@ Vue.http.interceptors.push((request, next) => {
 });
 
 const i18n = new VueI18n({
-  locale: 'sk',
+  locale: 'en',
   fallbackLocale: 'en',
   messages: {
     sk, en
@@ -72,19 +70,5 @@ const app = new Vue({
   store,
   router,
   i18n,
-  created: function () {
-    if (Auth.user.authenticated)
-      this.initialize();
-  },
-  methods: {
-    initialize: function () {
-      this.$http.get('api/user/me').then(response => {
-        var user = response.body;
-        this.$store.commit('setUser', { user });
-        this.$emit('user-loaded', user.id);
-      }, response => {
-      });
-    },
-  },
   render: h => h(App)
 })

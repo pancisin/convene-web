@@ -25,12 +25,14 @@ export default {
     });
   },
 
-  currentUser(context) {
+  updateUserData(context) {
     return new Promise((resolve, reject) => {
       context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(response => {
         var user = response.body;
         context.user = user;
         context.$store.commit('setUser', { user });
+
+        context.$emit('user-loaded', user.id);
         resolve(user)
       }, response => {
         reject(response)

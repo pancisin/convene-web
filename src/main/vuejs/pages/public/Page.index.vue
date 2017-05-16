@@ -1,13 +1,27 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <ul class="list-inline">
-          <li v-for="cat in categories" v-text="cat.name">
-          </li>
-        </ul>
-      </div>
   
+    <transition name="fade-down">
+      <ul class="list-inline" v-if="categories != null">
+        <li v-for="cat in categories">
+          <a class="btn btn-default" @click="selectCategory(cat)">
+            {{ $t('category.' + cat.code + '.default') }}
+          </a>
+        </li>
+      </ul>
+    </transition>
+  
+    <transition name="fade-down">
+      <ul class="list-inline" v-if="filters.category != null">
+        <li v-for="branch in branches">
+          <a class="btn btn-default">
+            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+          </a>
+        </li>
+      </ul>
+    </transition>
+  
+    <div class="row">
       <div class="explore-container">
         <div class="page-panel" v-for="page in pages">
           <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
@@ -18,7 +32,7 @@
               <h4 v-text="page.name"></h4>
             </router-link>
             <small class="text-muted" v-if="page.category != null" v-text="page.category.name"></small>
-          </div>  
+          </div>
         </div>
       </div>
     </div>
@@ -32,7 +46,12 @@ export default {
   data() {
     return {
       pages: [],
-      categories: []
+      categories: [],
+      branches: [],
+
+      filters: {
+        category: null,
+      }
     }
   },
   created() {
@@ -49,7 +68,14 @@ export default {
       this.$http.get('api/categories').then(response => {
         this.categories = response.body;
       })
-    }
+    },
+    selectCategory(category) {
+      this.filters.category = category;
+      var url = ['api/categories', category.id, 'branches'].join('/');
+      this.$http.get(url).then(response => {
+        this.branches = response.body;
+      })
+    },
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
-    <input type="text" ref="input" :value="selected | moment('DD.MM.YYYY')" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input type="text" ref="input" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
       <div class="date-picker" v-show="displayDatePicker">
@@ -8,11 +8,9 @@
         <div class="date-picker-header">
           <a class="btn btn-link" @click="moveCursor(-1)">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
-            <!--{{ $t('calendar.prev') }}-->
           </a>
           <h4 v-text="monthName"></h4>
           <a class="btn btn-link" @click="moveCursor(1)">
-            <!--{{ $t('calendar.next') }}-->
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
@@ -68,7 +66,7 @@ export default {
     focus(newVal) {
       if (newVal) this.displayDatePicker = true;
     },
-    'value' (newVal) {
+    'value'(newVal) {
       this.selected = newVal;
     }
   },

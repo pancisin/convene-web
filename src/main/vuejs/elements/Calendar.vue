@@ -59,7 +59,6 @@ export default {
     }
   },
   created: function () {
-    moment.locale('sk');
     this.updateCalendar();
   },
   methods: {

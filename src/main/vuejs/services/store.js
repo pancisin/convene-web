@@ -33,9 +33,8 @@ const store = new Vuex.Store({
     }
   },
   getters: {
-    company_id: state => {
-      // return state.user.company.id;
-      return 0;
+    locale: state => {
+      return state.user.locale;
     }
   }
 });

@@ -32,23 +32,22 @@ public class Branch {
 	@OneToMany(mappedBy = "category")
 	private List<Page> pages;
 
+	@Column
+	private String code;
+	
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
 	public Long getId() {
 		return id;
+	}
+
+	public String getCode() {
+		return code;
 	}
 }
