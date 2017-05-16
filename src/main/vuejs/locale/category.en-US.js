@@ -1,196 +1,186 @@
 export default {
   local_business: {
     default: 'Local Business or Place',
-    airport: 'Airport',
-    nightlife: 'Arts/Entertainment/Nightlife',
-    attractions: 'Attractions/Things to Do',
-    bank: 'Bank/Financial Services',
-    bar: 'Bar',
-    bookshop: 'Bookshop',
-    business: 'Business Services',
-    church: 'Church/Religious Organisation',
-    cinema: 'Cinema',
-    club: 'Club',
-    community: 'Community/Government',
-    concert_venue: 'Concert Venue',
-    diy: 'DIY',
-    doctor: 'Doctor',
-    event_planning: 'Event Planning/Event Services',
-    food: 'Food/Groceries',
-    health: 'Health/Medical/Pharmacy',
-    hospital: 'Hospital/Clinic',
-    hotel: 'Hotel',
-    landmark: 'Landmark',
-    lawyer: 'Lawyer',
-    library: 'Library',
-    local_business: 'Local Business',
-    middle_school: 'Middle School',
-    museum: 'Museum/Art Gallery',
-    outdoor: 'Outdoor Gear/Sporting Goods',
-    pet_services: 'Pet Services',
-    professional_services: 'Professional Services',
-    property: 'Property',
-    public: 'Public Places',
-    restaurant: 'Restaurant/Cafe',
-    school: 'School',
-    shopping: 'Shopping/Retail',
-    spas: 'Spas/Beauty/Personal Care',
-    sports_venue: 'Sports Venue',
-    sports: 'Sports/Recreation/Activities',
-    tours: 'Tours/Sightseeing',
-    transport: 'Transport',
-    university: 'University',
-    vehicles: 'Vehicles',
+    airport: "Airport",
+    "arts": "Arts/Entertainment/Nightlife",
+    "attractions": "Attractions/Things to Do",
+    "bank": "Bank/Financial Services",
+    "bar": "Bar",
+    "bookshop": "Bookshop",
+    "business_services": "Business Services",
+    "church": "Church/Religious Organisation",
+    "cinema": "Cinema",
+    "club": "Club",
+    "community": "Community/Government",
+    "concert_venue": "Concert Venue",
+    "diy": "DIY",
+    "doctor": "Doctor",
+    "event_planning": "Event Planning/Event Services",
+    "food": "Food/Groceries",
+    "health": "Health/Medical/Pharmacy",
+    "hospital": "Hospital/Clinic",
+    "hotel": "Hotel",
+    "landmark": "Landmark",
+    "lawyer": "Lawyer",
+    "library": "Library",
+    "local_business": "Local Business",
+    "middle_school": "Middle School",
+    "museum": "Museum/Art Gallery",
+    "outdoor_gear": "Outdoor Gear/Sporting Goods",
+    "pet_services": "Pet Services",
+    "professional_services": "Professional Services",
+    "property": "Property",
+    "public_places": "Public Places",
+    "restaurant": "Restaurant/Cafe",
+    "school": "School",
+    "shopping": "Shopping/Retail",
+    "spas": "Spas/Beauty/Personal Care",
+    "sports_venue": "Sports Venue",
+    "sports": "Sports/Recreation/Activities",
+    "tours": "Tours/Sightseeing",
+    "transport": "Transport",
+    "university": "University",
+    "vehicles": "Vehicles"
   },
   company: {
     default: 'Company, Organisation or Institution',
-    //       Aerospace/Defence
-    // Bank/Financial Institution
-    // Biotechnology
-    // Cars and Parts
-    // Cause
-    // Chemicals
-    // Church/Religious Organisation
-    // Community Organisation
-    // Company
-    // Computers/Technology
-    // Consulting/Business Services
-    // Education
-    // Energy/Utility
-    // Engineering/Construction
-    // Farming/Agriculture
-    // Food/Beverages
-    // Government Organisation
-    // Health/Beauty
-    // Health/Medical/Pharmaceuticals
-    // Industrials
-    // Insurance Company
-    // Internet/Software
-    // Legal/Law
-    // Media/News/Publishing
-    // Middle School
-    // Mining/Materials
-    // Non-governmental Organisation (NGO)
-    // Non-profit Organisation
-    // Organisation
-    // Political Organisation
-    // Political Party
-    // Preschool
-    // Primary School
-    // Retail and Consumer Merchandise
-    // School
-    // Small Business
-    // Telecommunication
-    // Transport/Freight
-    // Travel/Leisure
-    // University
-
-
+    aerospace: "Aerospace/Defence",
+    "bank": "Bank/Financial Institution",
+    "biotechnology": "Biotechnology",
+    "cars_and_parts": "Cars and Parts",
+    "cause": "Cause",
+    "chemicals": "Chemicals",
+    "church": "Church/Religious Organisation",
+    "community_organisation": "Community Organisation",
+    "company": "Company",
+    "computers": "Computers/Technology",
+    "consulting": "Consulting/Business Services",
+    "education": "Education",
+    "energy": "Energy/Utility",
+    "engineering": "Engineering/Construction",
+    "farming": "Farming/Agriculture",
+    "food": "Food/Beverages",
+    "government_organisation": "Government Organisation",
+    "health": "Health/Beauty",
+    "health": "Health/Medical/Pharmaceuticals",
+    "industrials": "Industrials",
+    "insurance_company": "Insurance Company",
+    "internet": "Internet/Software",
+    "legal": "Legal/Law",
+    "media": "Media/News/Publishing",
+    "middle_school": "Middle School",
+    "mining": "Mining/Materials",
+    "non-governmental_organisation_(ngo)": "Non-governmental Organisation (NGO)",
+    "non-profit_organisation": "Non-profit Organisation",
+    "organisation": "Organisation",
+    "political_organisation": "Political Organisation",
+    "political_party": "Political Party",
+    "preschool": "Preschool",
+    "primary_school": "Primary School",
+    "retail_and_consumer_merchandise": "Retail and Consumer Merchandise",
+    "school": "School",
+    "small_business": "Small Business",
+    "telecommunication": "Telecommunication",
+    "transport": "Transport/Freight",
+    "travel": "Travel/Leisure",
+    "university": "University"
   },
   product: {
     default: 'Brand or Product',
-
-    // App Page
-    // Appliances
-    // Baby Goods/Kids Goods
-    // Bags/Luggage
-    // Board Game
-    // Building Materials
-    // Camera/Photo
-    // Cars
-    // Clothing
-    // Commercial Equipment
-    // Computers
-    // Electronics
-    // Food/Beverages
-    // Furniture
-    // Games/Toys
-    // Health/Beauty
-    // Home Decor
-    // Household Supplies
-    // Jewellery/Watches
-    // Kitchen/Cooking
-    // Medications
-    // Office Supplies
-    // Patio/Garden
-    // Pet Supplies
-    // Phone/Tablet
-    // Product/Service
-    // Software
-    // Tools/Equipment
-    // Video Game
-    // Vitamins/Supplements
-    // Website
-    // Wine/Spirits
-
-
+    app_page: 'App Page',
+    "appliances": "Appliances",
+    "baby_goods": "Baby Goods/Kids Goods",
+    "bags": "Bags/Luggage",
+    "board_game": "Board Game",
+    "building_materials": "Building Materials",
+    "camera": "Camera/Photo",
+    "cars": "Cars",
+    "clothing": "Clothing",
+    "commercial_equipment": "Commercial Equipment",
+    "computers": "Computers",
+    "electronics": "Electronics",
+    "food": "Food/Beverages",
+    "furniture": "Furniture",
+    "games": "Games/Toys",
+    "health": "Health/Beauty",
+    "home_decor": "Home Decor",
+    "household_supplies": "Household Supplies",
+    "jewellery": "Jewellery/Watches",
+    "kitchen": "Kitchen/Cooking",
+    "medications": "Medications",
+    "office_supplies": "Office Supplies",
+    "patio": "Patio/Garden",
+    "pet_supplies": "Pet Supplies",
+    "phone": "Phone/Tablet",
+    "product": "Product/Service",
+    "software": "Software",
+    "tools": "Tools/Equipment",
+    "video_game": "Video Game",
+    "vitamins": "Vitamins/Supplements",
+    "website": "Website",
+    "wine": "Wine/Spirits"
   },
   public_figure: {
     default: 'Artist, Band or Public Figure',
-
-    //       Actor/Director
-    // Artist
-    // Author
-    // Blogger
-    // Business Person
-    // Chef
-    // Coach
-    // Comedian
-    // Dancer
-    // Designer
-    // Entertainer
-    // Entrepreneur
-    // Fictional Character
-    // Film Character
-    // Government Official
-    // Journalist
-    // Musician/Band
-    // News Personality
-    // Pet
-    // Photographer
-    // Politician
-    // Producer
-    // Public Figure
-    // Scientist
-    // Sportsperson
-    // Teacher
-    // Writer
-
+    actor: 'Actor/Director',
+    "artist": "Artist",
+    "author": "Author",
+    "blogger": "Blogger",
+    "business_person": "Business Person",
+    "chef": "Chef",
+    "coach": "Coach",
+    "comedian": "Comedian",
+    "dancer": "Dancer",
+    "designer": "Designer",
+    "entertainer": "Entertainer",
+    "entrepreneur": "Entrepreneur",
+    "fictional_character": "Fictional Character",
+    "film_character": "Film Character",
+    "government_official": "Government Official",
+    "journalist": "Journalist",
+    "musician": "Musician/Band",
+    "news_personality": "News Personality",
+    "pet": "Pet",
+    "photographer": "Photographer",
+    "politician": "Politician",
+    "producer": "Producer",
+    "public_figure": "Public Figure",
+    "scientist": "Scientist",
+    "sportsperson": "Sportsperson",
+    "teacher": "Teacher",
+    "writer": "Writer"
   },
   entertainment: {
     default: 'Entertainment',
-    
-    // Album
-    // Amateur Sports Team
-    // Book
-    // Book Series
-    // Bookshop
-    // Cinema
-    // Concert Tour
-    // Concert Venue
-    // Fictional Character
-    // Film
-    // Film Character
-    // Library
-    // Magazine
-    // Movie Studio
-    // Music Award
-    // Music Chart
-    // Music Video
-    // Performance Art
-    // Radio Station
-    // Record Label
-    // School Sports Team
-    // Song
-    // Sports League
-    // Sports Team
-    // Sports Venue
-    // Theatrical Play
-    // TV Channel
-    // TV Network
-    // TV Programme
-    // TV/Film Award
-
-
+    album: 'Album',
+    "amateur_sports_team": "Amateur Sports Team",
+    "book": "Book",
+    "book_series": "Book Series",
+    "bookshop": "Bookshop",
+    "cinema": "Cinema",
+    "concert_tour": "Concert Tour",
+    "concert_venue": "Concert Venue",
+    "fictional_character": "Fictional Character",
+    "film": "Film",
+    "film_character": "Film Character",
+    "library": "Library",
+    "magazine": "Magazine",
+    "movie_studio": "Movie Studio",
+    "music_award": "Music Award",
+    "music_chart": "Music Chart",
+    "music_video": "Music Video",
+    "performance_art": "Performance Art",
+    "radio_station": "Radio Station",
+    "record_label": "Record Label",
+    "school_sports_team": "School Sports Team",
+    "song": "Song",
+    "sports_league": "Sports League",
+    "sports_team": "Sports Team",
+    "sports_venue": "Sports Venue",
+    "theatrical_play": "Theatrical Play",
+    "tv_channel": "TV Channel",
+    "tv_network": "TV Network",
+    "tv_programme": "TV Programme",
+    "tv": "TV/Film Award"
   },
 }
