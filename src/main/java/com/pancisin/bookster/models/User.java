@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +23,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "users")
@@ -50,6 +52,7 @@ public class User implements UserDetails, Principal {
 
 	@Size(min = 6, max = 30)
 	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@JsonIgnore
@@ -57,9 +60,11 @@ public class User implements UserDetails, Principal {
 	private String hashedPassword;
 	
 	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String passwordConfirm;
 
 	@Transient
+	@JsonProperty(access = Access.READ_ONLY)
 	private String token;
 	
 	@JsonIgnore
@@ -95,6 +100,9 @@ public class User implements UserDetails, Principal {
 	
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
+	
+	@ManyToOne
+	private Locale locale;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -217,5 +225,13 @@ public class User implements UserDetails, Principal {
 
 	public List<Conference> getConferences() {
 		return conferences;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 }

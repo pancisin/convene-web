@@ -5,11 +5,11 @@
       <div class="col-md-8">
         <div class="panel panel-border panel-default">
           <div class="panel-heading">
+            <img :src="page.bannerUrl" class="img" style="width: 100%" />
+            
             <h3 class="panel-title">{{ page.name }}
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
             </h3>
-  
-            <img :src="page.bannerUrl" class="img" style="width: 100%" />
           </div>
           <div class="panel-body">
             <div v-html="page.summary" class="m-b-20"></div>
@@ -144,13 +144,19 @@ export default {
   overflow: hidden;
 
   .panel-title {
-    position: absolute;
+    position: relative;
+    font-size: 25px;
   }
 
   img {
     position: absolute;
+    top: 0;
     left: 0;
-    top: -50%;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+
+    filter: blur(15px);
   }
 
   &:after {

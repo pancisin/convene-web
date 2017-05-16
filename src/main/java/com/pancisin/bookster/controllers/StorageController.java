@@ -1,9 +1,12 @@
 package com.pancisin.bookster.controllers;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,12 +25,11 @@ public class StorageController {
 	@GetMapping("/files/**/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpServletRequest request) {
-
 		String url = request.getRequestURL().toString();
 		Resource file = storageService.loadAsResource(url.split("/files/")[1]);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-				.body(file);
+				.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).body(file);
 	}
 
 }

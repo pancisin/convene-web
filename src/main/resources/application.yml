@@ -31,6 +31,10 @@ spring:
           auth: true,
           starttls:
             enable: true
+#  jackson:
+#    mapper: 
+#      default-view-inclusion: true
+
 jwt: 
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi

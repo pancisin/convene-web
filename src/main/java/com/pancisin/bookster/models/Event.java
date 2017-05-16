@@ -20,22 +20,28 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.models.views.Compact;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "events")
 public class Event {
 
 	@Id
+	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column
 	@NotEmpty
+	@JsonView(Compact.class)
 	private String name;
 	
 	@Column
 	@NotNull
+	@JsonView(Summary.class)
 	private Calendar date;
 	
 	@JsonIgnore
@@ -44,6 +50,7 @@ public class Event {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
+	@JsonView(Summary.class)
     private Visibility visibility;
 	
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
@@ -57,6 +64,7 @@ public class Event {
 	private Conference conference;
 	
 	@ManyToOne
+	@JsonView(Summary.class)
 	private Page page;
 	
 	@Lob
@@ -68,6 +76,7 @@ public class Event {
 	private List<User> attendees;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String bannerUrl;
 	
 	public Long getId() {

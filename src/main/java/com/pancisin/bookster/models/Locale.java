@@ -4,43 +4,50 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name = "categories")
-public class Category {
-	
+@Table(name = "locales")
+public class Locale {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column
 	private String name;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "category")
-	private List<Branch> branches;
+	@Column
+	private String code;
+	
+	@Column
+	private String dateFormat;
+	
+	@Column
+	private String timeFormat;
 	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getCode() {
+		return code;
+	}
+
+	public String getDateFormat() {
+		return dateFormat;
+	}
+
+	public String getTimeFormat() {
+		return timeFormat;
 	}
 }

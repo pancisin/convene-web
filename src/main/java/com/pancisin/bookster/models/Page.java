@@ -15,12 +15,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Compact;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "pages")
 public class Page {
 
 	@Id
+	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
@@ -29,6 +33,7 @@ public class Page {
 	private List<User> administrators = new ArrayList<User>();
 	
 	@Column
+	@JsonView(Compact.class)
 	private String name;
 	
 	@Lob
@@ -40,7 +45,7 @@ public class Page {
 	private List<Event> events;
 	
 	@ManyToOne
-	private Category category;
+	private Branch category;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -51,8 +56,10 @@ public class Page {
 	private List<Service> services;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String bannerUrl;
 	
+	@JsonView(Summary.class)
 	public int getFollowersCount() {
 		return this.followers.size();
 	}
@@ -85,11 +92,11 @@ public class Page {
 		return events;
 	}
 
-	public Category getCategory() {
+	public Branch getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(Branch category) {
 		this.category = category;
 	}
 

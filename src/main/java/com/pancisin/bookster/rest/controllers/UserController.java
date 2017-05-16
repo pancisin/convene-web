@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.Locale;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
@@ -74,6 +79,12 @@ public class UserController {
 
 	@Autowired
 	private EventRepository eventRepository;
+	
+	@GetMapping("/event")
+	public ResponseEntity<?> getEvents() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ResponseEntity.ok(eventRepository.getOwned(auth.getId()));
+	}
 
 	@PostMapping("/event")
 	public ResponseEntity<?> postEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
@@ -87,16 +98,19 @@ public class UserController {
 		return ResponseEntity.ok(eventRepository.save(event));
 	}
 
-	@GetMapping("/event")
-	public ResponseEntity<?> getEvents() {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(eventRepository.getOwned(auth.getId()));
-	}
-
 	@GetMapping("/event/attending")
 	public ResponseEntity<?> getAttendingEvents() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(eventRepository.getAttending(auth.getId()));
+	}
+	
+	@JsonIgnoreProperties({"summary"})
+	@JsonView(Summary.class)
+	@GetMapping("/page")
+	public ResponseEntity<?> getPage() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		return ResponseEntity.ok(stored.getPages());
 	}
 
 	@PostMapping("/page")
@@ -107,11 +121,26 @@ public class UserController {
 		return ResponseEntity.ok(pageRepository.save(page));
 	}
 
+	@GetMapping("/conference")
+	public ResponseEntity<?> getConference() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		return ResponseEntity.ok(stored.getConferences());
+	}
+	
 	@PostMapping("/conference")
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 		conference.setOwner(stored);
 		return ResponseEntity.ok(conferenceRepository.save(conference));
+	}
+
+	@PutMapping("/locale")
+	public ResponseEntity<?> changeLocale(@RequestBody Locale locale) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		stored.setLocale(locale);
+		return ResponseEntity.ok(userRepository.save(stored));
 	}
 }
