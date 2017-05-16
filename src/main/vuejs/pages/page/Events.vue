@@ -38,8 +38,12 @@ export default {
   watch: {
     'page': 'getEvents',
   },
+  created() {
+    this.getEvents();
+  },
   methods: {
     getEvents() {
+      if (this.page.id == null) return;
       this.$http.get('api/page/' + this.page.id + '/event').then(response => {
         this.events = response.body;
       });

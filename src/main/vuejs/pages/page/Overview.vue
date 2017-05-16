@@ -106,6 +106,7 @@ export default {
     getCategories() {
       this.$http.get('api/categories').then(response => {
         this.categories = response.body;
+        this.getBranches();
       })
     },
     onLogoChange(e) {
@@ -127,6 +128,7 @@ export default {
       reader.readAsDataURL(file);
     },
     getBranches() {
+      if (this.page.category == null) return;
       var url = ['api/categories', this.page.category.id, 'branches'].join('/');
       this.$http.get(url).then(response => {
         this.branches = response.body;

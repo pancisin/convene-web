@@ -2,7 +2,7 @@
   <div class="card-box">
     <h4 class="text-dark  header-title m-t-0">Overview</h4>
     
-    <table class="table">
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>User</th>
@@ -11,7 +11,8 @@
       </thead>
       <tbody>
         <tr v-for="request in requests">
-          <td>{{ request }}</td>
+          <td v-text="request.email"></td>
+          <td>{{ request.date | moment($store.getters.locale.dateFormat) }}</td>
         </tr>
       </tbody>
     </table>
