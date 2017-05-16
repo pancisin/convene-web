@@ -7,11 +7,15 @@
 
 <script>
 import Auth from '../services/auth.js'
+import moment from "moment"
 export default {
   name: 'app-root',
   created() {
     if (Auth.user.authenticated)
-      Auth.updateUserData(this);
+      Auth.updateUserData(this).then(user => {
+        moment.locale(user.locale.code);
+        this.$i18n.locale = user.locale.code;
+      });
 
     this.initializeStomp();
     this.fetchNotifications();

@@ -1,25 +1,21 @@
 <template>
   <div class="container">
   
-    <transition name="fade-down">
-      <ul class="list-inline" v-if="categories != null">
-        <li v-for="cat in categories">
-          <a class="btn btn-default" @click="selectCategory(cat)">
-            {{ $t('category.' + cat.code + '.default') }}
-          </a>
-        </li>
-      </ul>
-    </transition>
+    <ul class="list-inline" v-if="categories != null">
+      <li v-for="cat in categories" :key="cat.id">
+        <a class="btn btn-default" @click="selectCategory(cat)">
+          {{ $t('category.' + cat.code + '.default') }}
+        </a>
+      </li>
+    </ul>
   
-    <transition name="fade-down">
-      <ul class="list-inline" v-if="filters.category != null">
-        <li v-for="branch in branches">
-          <a class="btn btn-default">
-            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-          </a>
-        </li>
-      </ul>
-    </transition>
+    <ul class="list-inline" v-if="filters.category != null">
+      <li v-for="branch in branches" :key="branch.id">
+        <a class="btn btn-default">
+          {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+        </a>
+      </li>
+    </ul>
   
     <div class="row">
       <div class="explore-container">
