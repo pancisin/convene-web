@@ -21,8 +21,8 @@
           <span v-if="follows">Unfollow</span>
           <span v-else>Follow</span>
         </a>
-  
-        <div class="card-box" v-if="services.length > 0">
+
+        <div class="card-box" v-if="services && services.length > 0">
           <h4 class="text-dark  header-title m-t-0">Services</h4>
   
           <table class="table">

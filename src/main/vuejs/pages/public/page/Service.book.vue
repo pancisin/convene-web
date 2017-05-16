@@ -6,6 +6,8 @@
       <label class="control-label">Units: </label>
       <input class="form-control required" v-model="bookRequest.units" type="text">
     </div>
+
+    <date-picker v-model="bookRequest.date" placeholder="Date" />
     <hr>
   
     <div class="text-center">
@@ -24,10 +26,14 @@
 </template>
 
 <script>
+import DatePicker from '../../../elements/DatePicker.vue'
 export default {
   name: "service-book",
   props: {
     service: Object,
+  },
+  components: {
+    DatePicker
   },
   data() {
     return {

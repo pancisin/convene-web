@@ -1,10 +1,10 @@
 <template>
-  <li class="dropdown hidden-xs" v-click-outside="closeNotifications">
+  <li class="dropdown hidden-xs" :class="{ 'open' : display }" v-click-outside="closeNotifications">
     <a @click="display = !display" class="dropdown-toggle waves-effect waves-light">
       <i class="fa fa-bell-o"></i>
       <span class="badge badge-xs" v-text="notifications.length"></span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-lg" v-show="display">
+    <ul class="dropdown-menu dropdown-menu-lg">
       <li class="text-center notifi-title">Notification</li>
       <li class="list-group notification-list">
   
@@ -40,8 +40,8 @@
 
 <script>
 export default {
-  name: 'notifications',  
-   data: function () {
+  name: 'notifications',
+  data: function () {
     return {
       display: false
     }
@@ -52,7 +52,7 @@ export default {
     }
   },
   methods: {
-     markAsSeen: function (notification) {
+    markAsSeen: function (notification) {
       var url = ['api/notification', notification.id, 'toggle-seen'].join('/');
 
       this.$http.patch(url).then(response => {

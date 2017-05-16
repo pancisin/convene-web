@@ -29,7 +29,7 @@ public class Branch {
 	private Category category;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "branch")
 	private List<Page> pages;
 
 	@Column

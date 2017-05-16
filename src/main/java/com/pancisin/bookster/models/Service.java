@@ -1,11 +1,14 @@
 package com.pancisin.bookster.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,6 +36,10 @@ public class Service {
 
 	@Column
 	private String unit;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "service")
+	private List<BookRequest> requests;
 	
 	public Long getId() {
 		return id;
@@ -80,5 +87,9 @@ public class Service {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public List<BookRequest> getRequests() {
+		return requests;
 	}
 }

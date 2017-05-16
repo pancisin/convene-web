@@ -18,6 +18,10 @@
           Services
           <span class="label label-info pull-right">Pro</span>
         </router-link>
+        <router-link to="requests" class="list-group-item">
+          Requests
+          <span class="label label-info pull-right">Pro</span>
+        </router-link>
         <!--<router-link to="followers" class="list-group-item">Followers</router-link>-->
       </div>
     </div>

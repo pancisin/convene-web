@@ -147,6 +147,10 @@ export default new VueRouter({
             {
               path: 'services',
               component: resolve => require(['../pages/page/Services.vue'], resolve)
+            },
+            {
+              path: 'requests',
+              component: resolve => require(['../pages/page/Requests.vue'], resolve)
             }
           ]
         },

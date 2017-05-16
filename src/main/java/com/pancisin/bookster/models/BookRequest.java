@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "book_requests")
 public class BookRequest {
@@ -18,6 +20,7 @@ public class BookRequest {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonIgnore
 	@ManyToOne
 	private User user;
 	
@@ -32,6 +35,10 @@ public class BookRequest {
 
 	@Column
 	private Boolean approved;
+	
+	public String getEmail() {
+		return getUser().getEmail();
+	}
 	
 	public Long getId() {
 		return id;

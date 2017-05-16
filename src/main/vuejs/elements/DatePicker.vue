@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
-    <input type="text" ref="input" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input type="text" ref="input" :placeholder="placeholder" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
       <div class="date-picker" v-show="displayDatePicker">
@@ -46,6 +46,7 @@ export default {
       displayDatePicker: false,
       selected: null,
       focus: false,
+      placeholder: null,
     }
   },
   computed: {

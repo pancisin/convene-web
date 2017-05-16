@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
+import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Service;
@@ -63,7 +65,7 @@ public class PageController {
 	public ResponseEntity<?> putPage(@PathVariable Long page_id, @RequestBody Page page) {
 		Page stored = pageRepository.findOne(page_id);
 		stored.setName(page.getName());
-		stored.setCategory(page.getCategory());
+		stored.setBranch(page.getBranch());
 		stored.setSummary(page.getSummary());
 
 		if (page.getBannerUrl() != null && storageService.isBinary(page.getBannerUrl())) {
@@ -132,11 +134,22 @@ public class PageController {
 		service.setPage(stored);
 		return ResponseEntity.ok(serviceRepository.save(service));
 	}
-	
+
 	@GetMapping("/followers")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> getFollowers(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		return ResponseEntity.ok(stored.getFollowers());
+	}
+
+	@GetMapping("/requests")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> getRequests(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+
+		List<BookRequest> requests = stored.getServices().stream().flatMap(s -> s.getRequests().stream())
+				.collect(Collectors.toList());
+
+		return ResponseEntity.ok(requests);
 	}
 }

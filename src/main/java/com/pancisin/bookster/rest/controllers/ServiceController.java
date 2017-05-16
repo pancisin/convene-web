@@ -79,4 +79,11 @@ public class ServiceController {
 
 		return ResponseEntity.ok(bookRequestRepository.save(request));
 	}
+	
+	@GetMapping("/request")
+	@PreAuthorize("hasPermission(#service_id, 'service', 'read')")
+	public ResponseEntity<?> getRequests(@PathVariable Long service_id) {
+		Service service = serviceRepository.findOne(service_id);
+		return ResponseEntity.ok(service.getRequests());
+	}
 }

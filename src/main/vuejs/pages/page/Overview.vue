@@ -1,7 +1,13 @@
 <template>
   <div class="card-box" v-if="page != null">
     <h4 class="text-dark  header-title m-t-0">Overview</h4>
-    <div class="row" v-if="edit">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label">Name: </label>
+          <input class="form-control required" v-model="page.name" type="text">
+        </div>
+      </div>
       <div class="col-md-6">
         <img :src="page.bannerUrl" class="img-thumbnail" />
         <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
@@ -11,15 +17,17 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label class="control-label">Name: </label>
-          <input class="form-control required" v-model="page.name" type="text">
+          <label class="control-label">Category: </label>
+          <select v-model="page.category" class="form-control">
+            <option v-for="cat in categories" v-text="cat.name" :value="cat"></option>
+          </select>
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label class="control-label">Category: </label>
-          <select v-model="page.category" class="form-control">
-            <option v-for="cat in categories" v-text="cat.name" :value="cat"></option>
+          <label class="control-label">Branch: </label>
+          <select v-model="page.branch" class="form-control">
+            <option v-for="branch in branches" v-text="branch.name" :value="branch"></option>
           </select>
         </div>
       </div>
@@ -58,6 +66,7 @@ export default {
   data() {
     return {
       categories: [],
+      branches: []
     }
   },
   components: {
@@ -65,6 +74,9 @@ export default {
   },
   created() {
     this.getCategories();
+  },
+  watch: {
+    'page.category': 'getBranches'
   },
   methods: {
     submit() {
@@ -113,6 +125,12 @@ export default {
       };
 
       reader.readAsDataURL(file);
+    },
+    getBranches() {
+      var url = ['api/categories', this.page.category.id, 'branches'].join('/');
+      this.$http.get(url).then(response => {
+        this.branches = response.body;
+      })
     }
   }
 }

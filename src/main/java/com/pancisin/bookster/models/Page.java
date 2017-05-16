@@ -13,8 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
@@ -45,7 +48,7 @@ public class Page {
 	private List<Event> events;
 	
 	@ManyToOne
-	private Branch category;
+	private Branch branch;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -62,6 +65,13 @@ public class Page {
 	@JsonView(Summary.class)
 	public int getFollowersCount() {
 		return this.followers.size();
+	}
+	
+	public Category getCategory() {
+		if (branch != null)
+			return branch.getCategory();
+		
+		return null;
 	}
 	
 	public Long getId() {
@@ -92,12 +102,12 @@ public class Page {
 		return events;
 	}
 
-	public Branch getCategory() {
-		return category;
+	public Branch getBranch() {
+		return branch;
 	}
 
-	public void setCategory(Branch category) {
-		this.category = category;
+	public void setBranch(Branch branch) {
+		this.branch = branch;
 	}
 
 	public List<User> getFollowers() {

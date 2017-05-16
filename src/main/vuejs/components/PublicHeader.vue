@@ -22,6 +22,8 @@
               </form>
             </li>
 
+            <lang-switcher />
+
             <notifications />
 
             <li class="dropdown">
@@ -134,6 +136,7 @@
 require("../assets/less/custom-menu.less")
 import Auth from '../services/auth.js'
 import Notifications from '../elements/Notifications.vue'
+import LangSwitcher from '../elements/LangSwitcher.vue'
 
 export default {
   name: 'header',
@@ -143,7 +146,7 @@ export default {
     }
   },
   components: {
-    Notifications,
+    Notifications, LangSwitcher
   },
   methods: {
     logout: function () {

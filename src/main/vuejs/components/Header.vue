@@ -22,11 +22,7 @@
   
           <ul class="nav navbar-nav navbar-right pull-right">
             <notifications />
-            <li class="hidden-xs">
-              <select class="form-control" v-model="locale">
-                <option v-for="locale in locales" :value="locale" v-text="locale.name"></option>
-              </select>
-            </li>
+            <lang-switcher />
             <li class="hidden-xs">
               <a class="right-bar-toggle waves-effect waves-light">
                 <i class="material-icons">settings</i>
@@ -42,45 +38,18 @@
   
 <script>
 import Auth from '../services/auth.js'
-import moment from "moment"
 import Notifications from '../elements/Notifications.vue'
+import LangSwitcher from '../elements/LangSwitcher.vue'
 
 export default {
   name: 'header',
-  data() {
-    return {
-      locales: [],
-    }
-  },
-  created() {
-    this.getLocales();
-  },
-  computed: {
-    locale: {
-      get() {
-        return this.$store.getters.locale;
-      },
-      set(value) {
-        this.$http.put('api/user/locale', value).then(response => {
-          Auth.updateUserData(this);
-          moment.locale(value.code);
-          this.$i18n.locale = value.code;
-        })
-      }
-    }
-  },
   methods: {
     logout: function () {
       Auth.logout(this, '/login')
     },
-    getLocales() {
-      this.$http.get('api/locales').then(response => {
-        this.locales = response.body;
-      })
-    }
   },
   components: {
-    Notifications,
+    Notifications, LangSwitcher
   },
 }
 </script>
