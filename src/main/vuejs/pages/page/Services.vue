@@ -60,8 +60,12 @@ export default {
   created() {
     this.getServices();
   },
+  watch: {
+    'page' : 'getServices'
+  },
   methods: {
     getServices() {
+      if (this.page.id == null) return;
       var url = ['api/page', this.page.id, 'service'].join('/');
       this.$http.get(url).then(response => {
         this.services = response.body;

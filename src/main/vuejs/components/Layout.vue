@@ -343,9 +343,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (!vm.$store.getters.isAdmin)
-        next({
-          path: '/',
-        })
+        next("/");
     })
   },
   components: {

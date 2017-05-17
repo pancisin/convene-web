@@ -37,6 +37,9 @@ export default {
   watch: {
     'page' : 'getAdministrators'
   },
+  created() {
+    this.getAdministrators();
+  },
   methods: {
     getAdministrators() {
       if (this.page.id == null) return;
