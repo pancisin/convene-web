@@ -110,7 +110,6 @@ public class UserController {
 		return ResponseEntity.ok(eventRepository.getAttending(auth.getId()));
 	}
 	
-	@JsonIgnoreProperties({"summary"})
 	@JsonView(Summary.class)
 	@GetMapping("/page")
 	public ResponseEntity<?> getPage() {

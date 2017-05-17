@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.Role;
+import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
+import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
 
@@ -47,6 +52,9 @@ public class PageController {
 	@Autowired
 	private Notifier notifier;
 
+	@Autowired
+	private PageAdministratorRepository paRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -151,5 +159,24 @@ public class PageController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(requests);
+	}
+
+	@GetMapping("/administrator")
+	@JsonView(Summary.class)
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> getAdministrators(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(stored.getPageAdministrators());
+	}
+
+	@PostMapping("/administrator")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> postAdministrator(@PathVariable Long page_id, @RequestBody User user) {
+		Page stored = pageRepository.findOne(page_id);
+
+		PageAdministrator pa = new PageAdministrator(stored, user, false);
+		pa.setRole(Role.ROLE_ADMINISTRATOR);
+		
+		return ResponseEntity.ok(paRepository.save(pa));
 	}
 }

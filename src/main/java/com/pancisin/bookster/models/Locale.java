@@ -11,18 +11,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Compact;
+import com.pancisin.bookster.models.views.Summary;
+
 @Entity
 @Table(name = "locales")
 public class Locale {
 
 	@Id
+	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@Column
+	@JsonView(Summary.class)
 	private String name;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String code;
 	
 	@Column

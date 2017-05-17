@@ -26,6 +26,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.views.Compact;
+import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
@@ -35,19 +37,23 @@ public class User implements UserDetails, Principal {
 	private static final long serialVersionUID = -2205856327940777873L;
 
 	@Id
+	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
+	@JsonView(Summary.class)
 	@Column(name = "first_name")
 	private String firstName;
 
 	@NotNull
+	@JsonView(Summary.class)
 	@Column(name = "last_name")
 	private String lastName;
 
 	@NotNull
 	@Email
+	@JsonView(Compact.class)
 	@Column(unique = true)
 	private String email;
 
@@ -104,6 +110,7 @@ public class User implements UserDetails, Principal {
 	private List<Conference> conferences;
 
 	@ManyToOne
+	@JsonView(Summary.class)
 	private Locale locale;
 
 	@Override
