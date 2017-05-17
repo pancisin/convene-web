@@ -35,6 +35,9 @@ const store = new Vuex.Store({
   getters: {
     locale: state => {
       return state.user.locale;
+    },
+    isAdmin: state => {
+      return state.user.role != null && state.user.role.name == "ROLE_ADMINISTRATOR";
     }
   }
 });

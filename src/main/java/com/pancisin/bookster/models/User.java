@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -109,6 +112,11 @@ public class User implements UserDetails, Principal {
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
 
+	@NotNull
+	@JsonView(Summary.class)
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.ROLE_VISITOR;
+	
 	@ManyToOne
 	@JsonView(Summary.class)
 	private Locale locale;
