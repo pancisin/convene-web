@@ -23,11 +23,14 @@ import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Locale;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
+import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
@@ -51,6 +54,9 @@ public class UserController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private PageAdministratorRepository paRepository;
+	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -116,9 +122,13 @@ public class UserController {
 	@PostMapping("/page")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		page.getAdministrators().add(stored);
-		return ResponseEntity.ok(pageRepository.save(page));
+
+		Page stored_page = pageRepository.save(page);
+		PageAdministrator pa = new PageAdministrator(page, auth, true);
+		pa.setRole(Role.ROLE_OWNER);
+		paRepository.save(pa);
+		
+		return ResponseEntity.ok(stored_page);
 	}
 
 	@GetMapping("/conference")

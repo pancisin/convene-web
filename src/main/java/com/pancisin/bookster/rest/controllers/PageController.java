@@ -104,7 +104,7 @@ public class PageController {
 					stored.getFollowers().stream().filter(x -> x.getId() != user.getId()).collect(Collectors.toList()));
 		else {
 			stored.getFollowers().add(user);
-			stored.getAdministrators().stream().forEach(admin -> notifier.notifyUser(admin, "New follower !",
+			stored.getPageAdministrators().stream().forEach(x -> notifier.notifyUser(x.getUser(), "New follower !",
 					user.getEmail() + " has started to following your page."));
 		}
 

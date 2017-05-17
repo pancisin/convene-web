@@ -72,9 +72,9 @@ public class ServiceController {
 
 		String message = "User " + auth.getUsername() + " requested " + request.getUnits() + " units of "
 				+ service.getName();
-		service.getPage().getAdministrators().stream().forEach(u -> {
-			emailService.sendSimpleMessage(u.getEmail(), "Service request", message);
-			notifier.notifyUser(u, "Service request", message);
+		service.getPage().getPageAdministrators().stream().forEach(x -> {
+			emailService.sendSimpleMessage(x.getUser().getEmail(), "Service request", message);
+			notifier.notifyUser(x.getUser(), "Service request", message);
 		});
 
 		return ResponseEntity.ok(bookRequestRepository.save(request));

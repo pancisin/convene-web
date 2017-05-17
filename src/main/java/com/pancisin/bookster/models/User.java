@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +59,7 @@ public class User implements UserDetails, Principal {
 	@JsonIgnore
 	@Column(name = "password")
 	private String hashedPassword;
-	
+
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String passwordConfirm;
@@ -66,21 +67,21 @@ public class User implements UserDetails, Principal {
 	@Transient
 	@JsonProperty(access = Access.READ_ONLY)
 	private String token;
-	
+
 	@JsonIgnore
 	@Column(name = "locked")
 	private boolean locked;
 
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	@Transient
 	private Collection<? extends GrantedAuthority> authorities;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "followers")
 	private List<Page> followed;
-	
+
 	public User(Long id, String email, String token, Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.email = email;
@@ -94,16 +95,17 @@ public class User implements UserDetails, Principal {
 	@JsonIgnore
 	@OneToMany(mappedBy = "owner")
 	private List<Event> events;
-	
-	@ManyToMany(mappedBy = "administrators")
-	private List<Page> pages;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<PageAdministrator> pageAdministrators;
+
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
-	
+
 	@ManyToOne
 	private Locale locale;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -209,7 +211,7 @@ public class User implements UserDetails, Principal {
 	public Calendar getCreated() {
 		return created;
 	}
-	
+
 	public List<Event> getEvents() {
 		return events;
 	}
@@ -220,7 +222,7 @@ public class User implements UserDetails, Principal {
 	}
 
 	public List<Page> getPages() {
-		return pages;
+		return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
 	}
 
 	public List<Conference> getConferences() {
@@ -233,5 +235,13 @@ public class User implements UserDetails, Principal {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+
+	public List<PageAdministrator> getPageAdministrators() {
+		return pageAdministrators;
+	}
+
+	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
+		this.pageAdministrators = pageAdministrators;
 	}
 }

@@ -1,6 +1,6 @@
-import category from './category.en-US.js'
+import category from './category/category.en-US.js'
 export default {
-  category,
+  category: category,
   menu: {
     dashboard: "Dashboard",
     work_management: "Work management",

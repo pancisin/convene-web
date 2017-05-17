@@ -1,6 +1,7 @@
 package com.pancisin.bookster.models;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -32,8 +33,8 @@ public class Page {
 	private Long id;
 	
 	@JsonIgnore
-	@ManyToMany
-	private List<User> administrators = new ArrayList<User>();
+	@OneToMany(mappedBy = "page")
+	private List<PageAdministrator> pageAdministrators;
 	
 	@Column
 	@JsonView(Compact.class)
@@ -67,6 +68,9 @@ public class Page {
 		return this.followers.size();
 	}
 	
+	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	private Calendar created;
+	
 	public Category getCategory() {
 		if (getBranch() != null)
 			return getBranch().getCategory();
@@ -80,14 +84,6 @@ public class Page {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public List<User> getAdministrators() {
-		return administrators;
-	}
-
-	public void setAdministrators(List<User> administrators) {
-		this.administrators = administrators;
 	}
 
 	public String getName() {
@@ -136,5 +132,13 @@ public class Page {
 
 	public void setBannerUrl(String bannerUrl) {
 		this.bannerUrl = bannerUrl;
+	}
+
+	public List<PageAdministrator> getPageAdministrators() {
+		return pageAdministrators;
+	}
+
+	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
+		this.pageAdministrators = pageAdministrators;
 	}
 }
