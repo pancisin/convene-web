@@ -1,6 +1,6 @@
 <template>
   <div class="card-box" v-if="page != null">
-    <h4 class="text-dark  header-title m-t-0">Overview</h4>
+    <h4 class="header-title m-t-0">Overview</h4>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">

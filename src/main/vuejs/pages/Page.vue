@@ -18,6 +18,10 @@
       </div>
   
       <div class="list-group">
+        <router-link to="administrators" class="list-group-item">
+          Administrators
+          <span class="label label-info pull-right">Pro</span>
+        </router-link>
         <router-link to="services" class="list-group-item">
           Services
           <span class="label label-info pull-right">Pro</span>

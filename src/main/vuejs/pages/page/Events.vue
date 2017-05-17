@@ -1,5 +1,7 @@
 <template>
   <div class="card-box">
+    <h4 class="header-title m-t-0">Events</h4>
+  
     <table class="table table-bordered">
       <thead>
         <tr>

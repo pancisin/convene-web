@@ -151,6 +151,10 @@ export default new VueRouter({
             {
               path: 'requests',
               component: resolve => require(['../pages/page/Requests.vue'], resolve)
+            },
+            {
+              path: 'administrators',
+              component: resolve => require(['../pages/page/Administrators.vue'], resolve)
             }
           ]
         },

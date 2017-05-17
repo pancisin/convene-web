@@ -1,6 +1,6 @@
 <template>
   <div class="card-box">
-    <h4 class="text-dark  header-title m-t-0">Overview</h4>
+    <h4 class="header-title m-t-0">Requests</h4>
     
     <table class="table table-bordered">
       <thead>
