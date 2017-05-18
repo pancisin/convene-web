@@ -9,8 +9,8 @@
           <th>Date</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="event in events">
+      <tbody is="transition-group" name="fade">
+        <tr v-for="event in events" :key="event.id">
           <td>
             <router-link :to="'/admin/event/' + event.id" v-text="event.name">
             </router-link>

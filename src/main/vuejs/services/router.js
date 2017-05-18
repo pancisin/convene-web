@@ -110,6 +110,10 @@ export default new VueRouter({
             {
               path: 'programme',
               component: resolve => require(['../pages/event/Programme.vue'], resolve)
+            },
+            {
+              path: 'attendees',
+              component: resolve => require(['../pages/event/Attendees.vue'], resolve)
             }
           ]
         },

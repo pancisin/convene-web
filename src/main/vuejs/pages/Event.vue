@@ -11,9 +11,13 @@
         <router-link to="programme" class="list-group-item">
           Programme
         </router-link>
-        <!--<router-link to="services" class="list-group-item">
-          Invite
-        </router-link>-->
+        <router-link to="attendees" class="list-group-item">
+          Attendees
+        </router-link>
+      </div>
+      <div class="widget-simple-chart text-right card-box">
+        <h3 class="text-primary counter" v-text="event.attendeesCount"></h3>
+        <p class="text-muted text-nowrap">Attender</p>
       </div>
     </div>
     <div class="col-md-9">

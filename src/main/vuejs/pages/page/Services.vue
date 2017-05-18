@@ -12,8 +12,8 @@
           <th class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="service in services">
+      <tbody is="transition-group" name="fade">
+        <tr v-for="service in services" :key="service.id">
           <td v-text="service.name"></td>
           <td v-text="service.detail"></td>
           <td v-text="service.unit"></td>

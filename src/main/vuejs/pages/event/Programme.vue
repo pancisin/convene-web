@@ -10,8 +10,8 @@
           <th class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="programme in event.programme">
+      <tbody is="transition-group" name="fade">
+        <tr v-for="programme in event.programme" :key="programme.id">
           <td v-text="programme.time"></td>
           <td v-text="programme.description"></td>
           <td class="text-center">
@@ -20,7 +20,7 @@
             </a>
           </td>
         </tr>
-        <tr>
+        <tr key="new_programme">
           <td>
             <time-picker v-model="new_programme.time" />
           </td>
@@ -54,6 +54,8 @@ export default {
     submitProgramme: function () {
       var url = ['api/event', this.event.id, 'programme'].join('/');
 
+      if (this.new_programme.description == null || this.new_programme.description == "") return;
+
       this.$http.post(url, this.new_programme).then(response => {
         this.event.programme.push(response.body);
         this.new_programme = {
@@ -64,7 +66,9 @@ export default {
     },
     deleteProgramme(programme) {
       this.$http.delete('api/programme/' + programme.id).then(response => {
-        console.log("deleted");
+        this.event.programme = this.event.programme.filter(p => {
+          return p.id != programme.id
+        });
       })
     }
   }

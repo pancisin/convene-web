@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
@@ -112,5 +114,13 @@ public class EventController {
 		User auth_user = (User) auth.getPrincipal();
 		int attend_count = eventRepository.isAttending(event_id, auth_user.getId());
 		return ResponseEntity.ok(attend_count > 0);
+	}
+	
+	@GetMapping("/attendees")
+	@JsonView(Summary.class)
+	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+	public ResponseEntity<?> getAttendees(@PathVariable Long event_id) {
+		Event stored = eventRepository.findOne(event_id);
+		return ResponseEntity.ok(stored.getAttendees());
 	}
 }

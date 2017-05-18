@@ -79,6 +79,10 @@ public class Event {
 	@JsonView(Summary.class)
 	private String bannerUrl;
 	
+	public int getAttendeesCount() {
+		return this.getAttendees().size();
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -75,17 +75,17 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			Conference conference = conferenceRepository.findOne((Long) targetId);
 
 			if (permission.equals("update"))
-				return stored != null && conference.getOwner().getId() == stored.getId();
+				return checkConferenceOwnership(conference, stored);
 			else
 				return conference.getVisibility() == Visibility.PUBLIC
 						|| conference.getOwner().getId() == stored.getId();
 		case "event":
 			Event event = eventRepository.findOne((Long) targetId);
 
-			if (permission.equals("update"))
-				return stored != null && event.getOwner().getId() == stored.getId();
-			else
-				return event.getVisibility() == Visibility.PUBLIC || event.getOwner().getId() == stored.getId();
+			if (permission.equals("update")) {
+				return checkEventOwnership(event, stored);
+			} else
+				return checkEventVisibility(event, stored);
 		case "license":
 			return true;
 		case "notification":
@@ -94,16 +94,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		case "page":
 			Page page = pageRepository.findOne((Long) targetId);
 			if (permission.equals("update")) {
-				Optional<PageAdministrator> oPa = page.getPageAdministrators().stream()
-						.filter(x -> x.getUser().getId() == stored.getId()).findFirst();
-
-				if (oPa.isPresent()) {
-					PageAdministrator pa = oPa.get();
-					return pa.isActive()
-							&& (pa.getRole() == Role.ROLE_ADMINISTRATOR || pa.getRole() == Role.ROLE_OWNER);
-				}
-
-				return false;
+				return checkPageOwnership(page, stored);
 			} else
 				return true;
 		case "programme":
@@ -120,5 +111,37 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		}
 
 		return false;
+	}
+
+	private boolean checkEventVisibility(Event event, User user) {
+		// TODO : implement invitations;
+		return event.getVisibility() == Visibility.PUBLIC ||  checkEventOwnership(event, user);
+	}
+
+	private boolean checkEventOwnership(Event event, User user) {
+		if (event.getOwner() != null)
+			return event.getOwner().getId() == user.getId();
+		else if (event.getPage() != null)
+			return checkPageOwnership(event.getPage(), user);
+		else if (event.getConference() != null)
+			return checkConferenceOwnership(event.getConference(), user);
+		else
+			return false;
+	}
+
+	private boolean checkPageOwnership(Page page, User user) {
+		Optional<PageAdministrator> oPa = page.getPageAdministrators().stream()
+				.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+
+		if (oPa.isPresent()) {
+			PageAdministrator pa = oPa.get();
+			return pa.isActive() && (pa.getRole() == Role.ROLE_ADMINISTRATOR || pa.getRole() == Role.ROLE_OWNER);
+		}
+
+		return false;
+	}
+
+	private boolean checkConferenceOwnership(Conference conference, User user) {
+		return conference.getOwner().getId() == user.getId();
 	}
 }
