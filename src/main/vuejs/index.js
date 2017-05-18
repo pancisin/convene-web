@@ -7,6 +7,7 @@ import VueWebsocket from './services/websocket.js'
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
 import Modal from './elements/Modal.vue'
+import Panel from './elements/Panel.vue'
 
 require('font-awesome/css/font-awesome.css')
 
@@ -38,6 +39,7 @@ Vue.use(VueWebsocket)
 Vue.use(VueMoment)
 Vue.use(notifier)
 Vue.component('modal', Modal)
+Vue.component('panel', Panel)
 
 // DIRECTIVES
 import clickOutside from './directives/clickOutside.js'

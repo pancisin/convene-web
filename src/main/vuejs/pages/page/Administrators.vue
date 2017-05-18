@@ -1,13 +1,13 @@
 <template>
-  <div class="card-box">
-    <h4 class="header-title m-t-0">Administrators</h4>
-  
-    <table class="table table-bordered">
+  <panel type="table">
+    <span slot="title">Administrators</span>
+    <table class="table">
       <thead>
         <tr>
           <th>User</th>
           <th>Created</th>
           <th>Role</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -19,10 +19,12 @@
           <td>
             {{ $t(admin.role.code) }}
           </td>
+          <td>
+          </td>
         </tr>
       </tbody>
     </table>
-  </div>
+  </panel>
 </template>
 
 <script>
@@ -35,7 +37,7 @@ export default {
     }
   },
   watch: {
-    'page' : 'getAdministrators'
+    'page': 'getAdministrators'
   },
   created() {
     this.getAdministrators();
@@ -51,7 +53,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

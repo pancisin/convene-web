@@ -1,8 +1,8 @@
 <template>
-  <div class="card-box">
-    <h4 class="header-title m-t-0">Requests</h4>
-    
-    <table class="table table-bordered">
+  <panel type="table">
+    <span slot="title">Requests</span>
+
+    <table class="table">
       <thead>
         <tr>
           <th>User</th>
@@ -16,11 +16,8 @@
         </tr>
       </tbody>
     </table>
-
-    <div class="row">
-    
-    </div>
-  </div>
+  
+  </panel>
 </template>
 
 <script>

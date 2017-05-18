@@ -1,6 +1,6 @@
 <template>
-  <div class="card-box" v-if="page != null">
-    <h4 class="header-title m-t-0">Overview</h4>
+  <panel type="primary">
+    <span slot="title">Overview</span>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -27,7 +27,7 @@
         <div class="form-group">
           <label class="control-label">Branch: </label>
           <select v-model="page.branch" class="form-control">
-            <option v-for="branch in branches" :value="branch">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
+            <option v-for="branch in branches" :value="branch" v-if="page.category != null">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
           </select>
         </div>
       </div>
@@ -44,7 +44,7 @@
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ page.name }}</button>
     </div>
-  </div>
+  </panel>
 </template>
 
 <script>
@@ -76,7 +76,8 @@ export default {
     this.getCategories();
   },
   watch: {
-    'page.category': 'getBranches'
+    'page.category': 'getBranches',
+    'page': 'getCategories'
   },
   methods: {
     submit() {
@@ -106,7 +107,6 @@ export default {
     getCategories() {
       this.$http.get('api/categories').then(response => {
         this.categories = response.body;
-        this.getBranches();
       })
     },
     onLogoChange(e) {

@@ -1,8 +1,8 @@
 <template>
-  <div class="card-box" v-if="page != null">
-    <h4 class="header-title m-t-0">Services</h4>
+  <panel type="table">
+    <span slot="title">Services</span>
   
-    <table class="table table-bordered">
+    <table class="table">
       <thead>
         <tr>
           <th>Name</th>
@@ -31,7 +31,7 @@
     </table>
   
     <div class="text-center">
-      <a @click="editService" class="btn btn-rounded btn-success">Create service</a>
+      <a @click="editService" class="btn btn-rounded btn-default">Create service</a>
     </div>
   
     <modal :show.sync="displayEditModal" @close="displayEditModal = false" :full="false">
@@ -40,7 +40,7 @@
         <service-form :service="selectedService" :pageId="page.id" @updated="updatedService" />
       </div>
     </modal>
-  </div>
+  </panel>
 </template>
 
 <script>
@@ -61,7 +61,7 @@ export default {
     this.getServices();
   },
   watch: {
-    'page' : 'getServices'
+    'page': 'getServices'
   },
   methods: {
     getServices() {
@@ -82,7 +82,7 @@ export default {
       this.selectedService = service ? service : new Object();
       this.displayEditModal = true;
     },
-    updatedService: function(service) {
+    updatedService: function (service) {
       this.services = this.services.filter(s => {
         return s.id != service.id;
       });

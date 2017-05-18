@@ -1,8 +1,8 @@
 <template>
-  <div class="card-box">
-    <h4 class="header-title m-t-0">Events</h4>
+  <panel type="table">
+    <span slot="title">Events</span>
   
-    <table class="table table-bordered">
+    <table class="table">
       <thead>
         <tr>
           <th>Name</th>
@@ -21,11 +21,11 @@
     </table>
   
     <div class="text-center">
-      <router-link to="create-event" class="btn btn-primary btn-rounded text-center">
+      <router-link to="create-event" class="btn btn-default btn-rounded text-center">
         Create event
       </router-link>
     </div>
-  </div>
+  </panel>
 </template>
 
 <script>

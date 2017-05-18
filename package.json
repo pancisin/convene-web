@@ -24,7 +24,6 @@
     "vue-moment": "^2.0.2",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.1",
-    "vue-select": "^2.2.0",
     "vue-template-compiler": "^2.2.6",
     "vuex": "^2.2.1",
     "webstomp-client": "^1.0.6"
