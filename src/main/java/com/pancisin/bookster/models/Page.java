@@ -28,53 +28,53 @@ public class Page {
 	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<PageAdministrator> pageAdministrators;
-	
+
 	@Column
 	@JsonView(Compact.class)
 	private String name;
-	
+
 	@Lob
 	@Column
 	private String summary;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Event> events;
-	
+
 	@ManyToOne
 	private Branch branch;
-	
+
 	@JsonIgnore
 	@ManyToMany
 	private List<User> followers = new ArrayList<User>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Service> services;
-	
+
 	@Column
 	@JsonView(Summary.class)
 	private String bannerUrl;
-	
+
 	@JsonView(Summary.class)
 	public int getFollowersCount() {
 		return this.followers.size();
 	}
-	
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	public Category getCategory() {
 		if (getBranch() != null)
 			return getBranch().getCategory();
-		
+
 		return null;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

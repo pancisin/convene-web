@@ -1,5 +1,6 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -33,17 +34,17 @@ public class Event {
 	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column
 	@NotEmpty
 	@JsonView(Compact.class)
 	private String name;
-	
+
 	@Column
 	@NotNull
 	@JsonView(Summary.class)
 	private Calendar date;
-	
+
 	@JsonIgnore
 	@ManyToOne
 	private User owner;
@@ -51,38 +52,38 @@ public class Event {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@JsonView(Summary.class)
-    private Visibility visibility;
-	
+	private Visibility visibility;
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	@OneToMany(mappedBy = "event")
 	private List<Programme> programme;
 
 	@JsonIgnore
 	@ManyToOne
 	private Conference conference;
-	
+
 	@ManyToOne
 	@JsonView(Summary.class)
 	private Page page;
-	
+
 	@Lob
 	@Column
 	private String summary;
-	
+
 	@JsonIgnore
 	@ManyToMany
-	private List<User> attendees;
-	
+	private List<User> attendees = new ArrayList<User>();
+
 	@Column
 	@JsonView(Summary.class)
 	private String bannerUrl;
-	
+
 	public int getAttendeesCount() {
-		return this.getAttendees().size();
+		return this.attendees.size();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -175,4 +176,3 @@ public class Event {
 		this.bannerUrl = bannerUrl;
 	}
 }
-
