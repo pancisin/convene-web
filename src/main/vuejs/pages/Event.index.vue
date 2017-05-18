@@ -1,39 +1,26 @@
-  <template>
-  <div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">My events</h3>
-      </div>
-      <div class="panel-body">
-        <table class="table">
-          <thead>
-            <tr>
-            <th>name</th>
-            <th class="text-center">date</th>
-            <!--<th>programme</th>-->
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="event in events">
-              <td>
-                <router-link :to="'event/' + event.id">
-                  {{ event.name }}
-                </router-link>
-              </td>
-              <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
-              <!--<td>
-                <ul>
-                  <li v-for="p in event.programme">
-                    {{ p.time }} - {{ p.description }}
-                  </li>
-                </ul>
-              </td>-->
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+<template>
+  <panel type="table">
+    <span slot="title">My events</span>
+  
+    <table class="table">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th class="text-center">date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="event in events">
+          <td>
+            <router-link :to="'event/' + event.id">
+              {{ event.name }}
+            </router-link>
+          </td>
+          <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </panel>
 </template>
 
 <script>
