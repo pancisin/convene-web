@@ -8,9 +8,9 @@
         <router-link to="overview" class="list-group-item">
           Overview
         </router-link>
-        <router-link to="calendar" class="list-group-item">
-          Event calendar
-        </router-link>
+        <!--<router-link to="calendar" class="list-group-item">
+              Event calendar
+            </router-link>-->
         <router-link to="events" class="list-group-item">
           Events
         </router-link>
@@ -30,6 +30,11 @@
           Requests
           <span class="label label-info pull-right">Pro</span>
         </router-link>
+      </div>
+  
+      <div class="widget-simple-chart text-right card-box">
+        <h3 class="text-primary counter" v-text="page.followersCount"></h3>
+        <p class="text-muted text-nowrap">Followers</p>
       </div>
     </div>
     <div class="col-md-9">
