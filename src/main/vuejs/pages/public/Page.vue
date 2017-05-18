@@ -3,10 +3,11 @@
   
     <div class="row">
       <div class="col-md-8">
+  
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img :src="page.bannerUrl" class="img" />
-            
+  
             <h3 class="panel-title">{{ page.name }}
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
             </h3>
@@ -21,9 +22,9 @@
           <span v-if="follows">Unfollow</span>
           <span v-else>Follow</span>
         </a>
-
-        <div class="card-box" v-if="services && services.length > 0">
-          <h4 class="text-dark  header-title m-t-0">Services</h4>
+  
+        <panel type="table" v-if="services && services.length > 0">
+          <span slot="title">Services</span>
   
           <table class="table">
             <tbody>
@@ -35,10 +36,10 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="card-box" v-if="events.length > 0">
-          <h4 class="text-dark  header-title m-t-0">Events</h4>
+        </panel>
   
+        <panel type="table">
+          <span slot="title">Events</span>
           <table class="table">
             <thead>
               <tr>
@@ -56,7 +57,8 @@
               </tr>
             </tbody>
           </table>
-        </div>
+        </panel>
+  
       </div>
     </div>
   

@@ -77,10 +77,10 @@
                 <i class="material-icons">home</i> Home
               </router-link>
             </li>
-            <li>
+            <!--<li>
               <router-link to="/event">
                 <i class="material-icons">event</i> My events</router-link>
-            </li>
+            </li>-->
             <li>
               <router-link to="/explore">
                 <i class="material-icons">explore</i> Explore pages</router-link>
