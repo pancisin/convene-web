@@ -26,7 +26,7 @@
         <panel type="table" v-if="services && services.length > 0">
           <span slot="title">Services</span>
   
-          <table class="table">
+          <table class="table table-striped">
             <tbody>
               <tr v-for="service in services">
                 <td v-text="service.name"></td>
@@ -38,7 +38,7 @@
           </table>
         </panel>
   
-        <panel type="table">
+        <panel type="table table-striped">
           <span slot="title">Events</span>
           <table class="table">
             <thead>
@@ -54,6 +54,9 @@
                   </router-link>
                 </td>
                 <td>{{ event.date | moment('DD.MM.YYYY') }}</td>
+              </tr>
+              <tr v-if="events.length == 0">
+                <td colspan="2" class="text-center">There's nothing to display.</td>
               </tr>
             </tbody>
           </table>

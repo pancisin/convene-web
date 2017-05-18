@@ -1,14 +1,16 @@
 <template>
   <panel type="default">
-    <span slot="title">Overview</span>
+    <span slot="title">
+      {{ edit ? "Overview" : "Create page" }}
+    </span>
     <div class="row">
-      <div class="col-md-6">
+      <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
         <div class="form-group">
           <label class="control-label">Name: </label>
           <input class="form-control required" v-model="page.name" type="text">
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" v-if="edit">
         <img :src="page.bannerUrl" class="img-thumbnail" />
         <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
       </div>
@@ -39,7 +41,7 @@
     </div>
   
     <div class="text-center">
-      <button class="btn btn-rounded btn-danger" @click="deletePage">Delete</button>
+      <button class="btn btn-rounded btn-danger" @click="deletePage" v-if="edit">Delete</button>
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ page.name }}</button>
@@ -55,7 +57,12 @@ export default {
     page: {
       type: Object,
       default() {
-        return new Object();
+        return {
+          name: null,
+          category: null,
+          branch: null,
+          summary: null
+        };
       }
     },
     edit: {
