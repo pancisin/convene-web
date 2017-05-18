@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -80,6 +81,9 @@ public class Event {
 	@JsonView(Summary.class)
 	private String bannerUrl;
 
+	@OneToOne
+	private Place place;
+	
 	public int getAttendeesCount() {
 		return this.attendees.size();
 	}
@@ -174,5 +178,17 @@ public class Event {
 
 	public void setBannerUrl(String bannerUrl) {
 		this.bannerUrl = bannerUrl;
+	}
+
+	public void setProgramme(List<Programme> programme) {
+		this.programme = programme;
+	}
+
+	public Place getPlace() {
+		return place;
+	}
+
+	public void setPlace(Place place) {
+		this.place = place;
 	}
 }

@@ -9,20 +9,24 @@
           Overview
         </router-link>
         <!--<router-link to="calendar" class="list-group-item">
-                  Event calendar
-                </router-link>-->
+                          Event calendar
+                        </router-link>-->
         <router-link to="events" class="list-group-item">
           Events
+        </router-link>
+        <router-link to="places" class="list-group-item">
+          Places
         </router-link>
         <!--<router-link to="followers" class="list-group-item">Followers</router-link>-->
       </div>
   
       <div class="list-group">
-        <div class="list-group-item text-primary">
-          <h4>
-            Advanced
+        <div class="list-group-item">
+          <h4 class="header-title">
+            <b>Advanced</b>
             <span class="label label-info pull-right">Pro</span>
           </h4>
+  
         </div>
         <router-link to="administrators" class="list-group-item">
           Administrators

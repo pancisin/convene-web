@@ -68,6 +68,10 @@ public class Page {
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
+	@JsonIgnore
+	@OneToMany
+	private List<Place> places;
+	
 	public Category getCategory() {
 		if (getBranch() != null)
 			return getBranch().getCategory();
@@ -137,5 +141,13 @@ public class Page {
 
 	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
 		this.pageAdministrators = pageAdministrators;
+	}
+
+	public List<Place> getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(List<Place> places) {
+		this.places = places;
 	}
 }

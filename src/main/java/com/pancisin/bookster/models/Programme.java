@@ -24,6 +24,9 @@ public class Programme {
 	private Time time;
 
 	@Column
+	private Time duration;
+	
+	@Column
 	private String name;
 	
 	@Column
@@ -71,5 +74,13 @@ public class Programme {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Time getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Time duration) {
+		this.duration = duration;
 	}
 }

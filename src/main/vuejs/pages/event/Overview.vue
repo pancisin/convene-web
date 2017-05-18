@@ -18,6 +18,12 @@
             <option :value="option" v-for="option in visibility_options" v-text="option"></option>
           </select>
         </div>
+          <div class="form-group" :class="{ 'has-error' : errors.place }"> 
+          <label class="control-label">Place</label>
+          <select v-model="event.place" class="form-control">
+            <option :value="place" v-for="place in places" v-text="place.name"></option>
+          </select>
+        </div>
       </div>
       <div class="col-md-6" v-if="edit">
         <img :src="event.bannerUrl" class="img-thumbnail" />
@@ -72,7 +78,14 @@ export default {
   data() {
     return {
       errors: new Object(),
+      places: [],
     }
+  },
+  created() {
+    this.getPlaces();
+  },
+  watch: {
+    'event': 'getPlaces'
   },
   methods: {
     submit: function () {
@@ -128,6 +141,14 @@ export default {
       };
 
       reader.readAsDataURL(file);
+    },
+    getPlaces() {
+      if (this.event.page == null) return;
+
+      var url = ['api/page', this.event.page.id, 'place'].join('/');
+      this.$http.get(url).then(response => {
+        this.places = response.body;
+      })
     }
   }
 }

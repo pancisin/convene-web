@@ -16,6 +16,15 @@
             <div class="row">
               <div class="col-md-8 m-b-10">
                 <div v-html="event.summary"></div>
+  
+                <address v-if="event.place != null">
+                  <strong v-text="event.place.name"></strong>
+                  <br> {{ event.place.address.street + " " + event.place.address.number }}
+                  <br> {{ event.place.address.zip + " " + event.place.address.city }}
+                  <br> {{ event.place.address.state }}
+                  <hr/>
+                </address>
+  
               </div>
               <div class="col-md-4">
                 <a class="btn btn-primary btn-block" :class="{ 'btn-danger' : attending }" @click="attend">

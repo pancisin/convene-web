@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Role;
@@ -31,6 +33,7 @@ import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
+import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
 
 @RestController
@@ -54,6 +57,9 @@ public class PageController {
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
+
+	@Autowired
+	private PlaceRepository placeRepository;
 	
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
@@ -176,7 +182,29 @@ public class PageController {
 
 		PageAdministrator pa = new PageAdministrator(stored, user, false);
 		pa.setRole(Role.ROLE_ADMINISTRATOR);
-		
+
 		return ResponseEntity.ok(paRepository.save(pa));
+	}
+
+	@GetMapping("/place")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> getPlaces(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(stored.getPlaces());
+	}
+
+	@PostMapping("/place")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
+		Page stored = pageRepository.findOne(page_id);
+
+		if (stored.getPlaces() == null) 
+			stored.setPlaces(new ArrayList<Place>());
+		
+		placeRepository.save(place);
+		stored.getPlaces().add(place);
+		pageRepository.save(stored);
+		
+		return ResponseEntity.ok(place);
 	}
 }

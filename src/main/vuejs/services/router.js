@@ -159,6 +159,20 @@ export default new VueRouter({
             {
               path: 'administrators',
               component: resolve => require(['../pages/page/Administrators.vue'], resolve)
+            },
+            {
+              path: 'places',
+              component: resolve => require(['../pages/page/Places.vue'], resolve)
+            },
+            {
+              path: 'create-place',
+              component: resolve => require(['../pages/place/Overview.vue'], resolve),
+              props: (route) => (
+                {
+                  page_id: route.params.id,
+                  edit: false
+                }
+              )
             }
           ]
         },

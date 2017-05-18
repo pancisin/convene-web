@@ -61,6 +61,7 @@ public class EventController {
 		stored.setSummary(event.getSummary());
 		stored.setVisibility(event.getVisibility());
 		stored.setDate(event.getDate());
+		stored.setPlace(event.getPlace());
 		
 		if (event.getBannerUrl() != null && storageService.isBinary(event.getBannerUrl())) {
 			String url = "banners/events/" + stored.getId();
