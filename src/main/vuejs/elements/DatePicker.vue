@@ -38,7 +38,7 @@
 <script>
 import moment from "moment"
 export default {
-  props: ['value'],
+  props: ['value', 'placeholder'],
   data: function () {
     return {
       weeks: [],
@@ -46,7 +46,6 @@ export default {
       displayDatePicker: false,
       selected: null,
       focus: false,
-      placeholder: null,
     }
   },
   computed: {

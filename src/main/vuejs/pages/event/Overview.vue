@@ -1,7 +1,7 @@
 <template>
-  <div class="card-box">
-    <h4 class="text-dark  header-title m-t-0">Overview</h4>
-  
+  <panel type="default">
+    <span slot="title">Overview</span>
+
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
         <div class="form-group" :class="{ 'has-error' : errors.name }">
@@ -35,7 +35,7 @@
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ event.name }}</button>
     </div>
-  </div>
+  </panel>
 </template>
 
 <script>

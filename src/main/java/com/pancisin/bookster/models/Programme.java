@@ -1,5 +1,7 @@
 package com.pancisin.bookster.models;
 
+import java.sql.Time;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ public class Programme {
 	private Long id;
 	
 	@Column
-	private String time;
+	private Time time;
 
 	@Column
 	private String name;
@@ -39,11 +41,11 @@ public class Programme {
 		this.id = id;
 	}
 
-	public String getTime() {
+	public Time getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(Time time) {
 		this.time = time;
 	}
 

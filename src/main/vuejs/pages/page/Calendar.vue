@@ -1,7 +1,8 @@
 <template>
-  <div class="card-box">
+  <panel type="default">
+    <span slot="title">Calendar</span>
     <calendar></calendar>
-  </div>
+  </panel>
 </template>
 
 <script>

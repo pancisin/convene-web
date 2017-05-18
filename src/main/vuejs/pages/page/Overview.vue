@@ -1,5 +1,5 @@
 <template>
-  <panel type="primary">
+  <panel type="default">
     <span slot="title">Overview</span>
     <div class="row">
       <div class="col-md-6">

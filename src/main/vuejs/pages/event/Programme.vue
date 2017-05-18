@@ -1,62 +1,72 @@
 <template>
-  <div class="card-box">
-    <h4 class="text-dark  header-title m-t-0">Programme</h4>
+  <panel type="table">
+    <span slot="title">Programme</span>
   
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>time</th>
           <th>Description</th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="programme in event.programme">
           <td v-text="programme.time"></td>
           <td v-text="programme.description"></td>
+          <td class="text-center">
+            <a @click="deleteProgramme(programme)" class="btn btn-rounded btn-xs btn-danger">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
         </tr>
         <tr>
           <td>
-            <input type="text" v-model="new_programme.time" class="form-control" />
+            <time-picker v-model="new_programme.time" />
           </td>
           <td>
             <input type="text" v-model="new_programme.description" class="form-control" />
-            <a @click="submitProgramme" class="btn bnt-link">
+          </td>
+          <td class="text-center">
+            <a @click="submitProgramme" class="btn btn-rounded btn-xs btn-success">
               <i class="fa fa-save" />
             </a>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
+  </panel>
 </template>
 
 <script>
+import TimePicker from '../../elements/TimePicker.vue'
 export default {
   props: ['event'],
   data() {
     return {
-       new_programme: {
-        time: null,
-        description: null
-      }
+      new_programme: new Object(),
     }
+  },
+  components: {
+    TimePicker
   },
   methods: {
     submitProgramme: function () {
-    var url = ['api/event', this.event.id, 'programme'].join('/');
+      var url = ['api/event', this.event.id, 'programme'].join('/');
 
-    this.$http.post(url, this.new_programme).then(response => {
-      this.event.programme.push(response.body);
-      this.new_programme = {
-        time: null,
-        description: null
-      }
-    })
-  }
+      this.$http.post(url, this.new_programme).then(response => {
+        this.event.programme.push(response.body);
+        this.new_programme = {
+          time: null,
+          description: null
+        }
+      })
+    },
+    deleteProgramme(programme) {
+      this.$http.delete('api/programme/' + programme.id).then(response => {
+        console.log("deleted");
+      })
+    }
   }
 }
 </script>
-
-<style>
-
-</style>
