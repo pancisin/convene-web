@@ -2,7 +2,7 @@
   <panel type="table">
     <span slot="title">Services</span>
   
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
@@ -26,6 +26,9 @@
               <i class="fa fa-pencil"></i>
             </a>
           </td>
+        </tr>
+        <tr v-if="services.length == 0" :key="0">
+          <td colspan="5" class="text-center">There's nothing to display.</td>
         </tr>
       </tbody>
     </table>

@@ -9,8 +9,8 @@
           Overview
         </router-link>
         <!--<router-link to="calendar" class="list-group-item">
-              Event calendar
-            </router-link>-->
+                  Event calendar
+                </router-link>-->
         <router-link to="events" class="list-group-item">
           Events
         </router-link>
@@ -18,17 +18,20 @@
       </div>
   
       <div class="list-group">
+        <div class="list-group-item text-primary">
+          <h4>
+            Advanced
+            <span class="label label-info pull-right">Pro</span>
+          </h4>
+        </div>
         <router-link to="administrators" class="list-group-item">
           Administrators
-          <span class="label label-info pull-right">Pro</span>
         </router-link>
         <router-link to="services" class="list-group-item">
           Services
-          <span class="label label-info pull-right">Pro</span>
         </router-link>
         <router-link to="requests" class="list-group-item">
           Requests
-          <span class="label label-info pull-right">Pro</span>
         </router-link>
       </div>
   

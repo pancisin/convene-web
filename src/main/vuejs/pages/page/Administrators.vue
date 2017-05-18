@@ -1,7 +1,7 @@
 <template>
   <panel type="table">
     <span slot="title">Administrators</span>
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>User</th>

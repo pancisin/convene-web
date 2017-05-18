@@ -2,7 +2,7 @@
   <panel type="table">
     <span slot="title">Requests</span>
 
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>User</th>
@@ -13,6 +13,9 @@
         <tr v-for="request in requests">
           <td v-text="request.email"></td>
           <td>{{ request.date | moment($store.getters.locale.dateFormat) }}</td>
+        </tr>
+        <tr v-if="requests.length == 0">
+          <td colspan="2" class="text-center">There's nothing to display.</td>
         </tr>
       </tbody>
     </table>

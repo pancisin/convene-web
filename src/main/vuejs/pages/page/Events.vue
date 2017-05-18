@@ -2,11 +2,12 @@
   <panel type="table">
     <span slot="title">Events</span>
   
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Name</th>
           <th>Date</th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
@@ -16,6 +17,11 @@
             </router-link>
           </td>
           <td>{{ event.date | moment('DD.MM.YYYY') }}</td>
+          <td class="text-center">
+            <a @click="deleteEvent(event)" class="btn btn-rounded btn-xs btn-danger">
+              <i class="fa fa-trash"></i>
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -50,8 +56,12 @@ export default {
         this.events = response.body;
       });
     },
-    createEvent() {
-
+    deleteEvent(event) {
+      this.$http.delete('api/event/' + event.id).then(response => {
+        this.events = this.events.filter(e => {
+          return event.id != e.id;
+        })
+      })
     }
   }
 }

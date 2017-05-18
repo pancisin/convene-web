@@ -18,20 +18,11 @@
           <li>
             <router-link to="/admin/event" class="waves-effect waves-primary">
               <i class="material-icons">event</i>
-              <span>My events</span>
+              <span>Events</span>
             </router-link>
           </li>
   
-          <li>
-            <router-link to="/admin/event/create" class="waves-effect waves-primary">
-              <i class="material-icons">add</i>
-              <span>Create event</span>
-            </router-link>
-          </li>
-  
-          <li class="menu-title">Pages
-            <span class="label label-info pull-right">Pro</span>
-          </li>
+          <li class="menu-title">Pages</li>
   
           <li v-for="page in  $store.state.user.pages">
             <router-link :to="'/admin/page/' + page.id" class="waves-effect waves-primary">
