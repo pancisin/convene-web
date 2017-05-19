@@ -3,7 +3,7 @@
   
     <ul class="list-inline" v-if="categories != null">
       <li v-for="cat in categories" :key="cat.id">
-        <a class="btn btn-default" @click="selectCategory(cat)">
+        <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
           {{ $t('category.' + cat.code + '.default') }}
         </a>
       </li>

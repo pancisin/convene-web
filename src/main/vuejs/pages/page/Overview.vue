@@ -1,12 +1,12 @@
 <template>
   <panel type="default">
     <span slot="title">
-      {{ edit ? "Overview" : "Create page" }}
+      {{ edit ? $t('admin.page.overview') :  $t('admin.menu.page_create') }}
     </span>
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
         <div class="form-group">
-          <label class="control-label">Name: </label>
+          <label class="control-label">{{ $t('page.name') }}</label>
           <input class="form-control required" v-model="page.name" type="text">
         </div>
       </div>
@@ -19,7 +19,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label class="control-label">Category: </label>
+          <label class="control-label">{{ $t('page.category') }}</label>
           <select v-model="page.category" class="form-control">
             <option v-for="cat in categories" :value="cat">{{ $t('category.' + cat.code + '.default') }}</option>
           </select>
@@ -27,7 +27,7 @@
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label class="control-label">Branch: </label>
+          <label class="control-label">{{ $t('page.branch') }}</label>
           <select v-model="page.branch" class="form-control">
             <option v-for="branch in branches" :value="branch" v-if="page.category != null">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
           </select>
@@ -36,7 +36,7 @@
     </div>
   
     <div class="form-group">
-      <label class="control-label">Summary: </label>
+      <label class="control-label">{{ $t('page.summary') }}</label>
       <text-editor v-model="page.summary"></text-editor>
     </div>
   

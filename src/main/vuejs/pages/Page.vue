@@ -5,37 +5,36 @@
     </div>
     <div class="col-md-3">
       <div class="list-group">
-        <router-link to="overview" class="list-group-item">
-          Overview
+        <router-link to="overview" class="list-group-item waves-effect">
+          {{ $t('admin.page.overview') }}
         </router-link>
         <!--<router-link to="calendar" class="list-group-item">
-                          Event calendar
-                        </router-link>-->
-        <router-link to="events" class="list-group-item">
-          Events
+                            Event calendar
+                          </router-link>-->
+        <router-link to="events" class="list-group-item waves-effect">
+          {{ $t('admin.page.events') }}
         </router-link>
-        <router-link to="places" class="list-group-item">
-          Places
+        <router-link to="places" class="list-group-item waves-effect">
+          {{ $t('admin.page.places') }}
         </router-link>
-        <!--<router-link to="followers" class="list-group-item">Followers</router-link>-->
       </div>
   
       <div class="list-group">
         <div class="list-group-item">
           <h4 class="header-title">
-            <b>Advanced</b>
+            <b>{{ $t('admin.page.advanced') }}</b>
             <span class="label label-info pull-right">Pro</span>
           </h4>
   
         </div>
-        <router-link to="administrators" class="list-group-item">
-          Administrators
+        <router-link to="administrators" class="list-group-item waves-effect">
+          {{ $t('admin.page.administrators') }}
         </router-link>
-        <router-link to="services" class="list-group-item">
-          Services
+        <router-link to="services" class="list-group-item waves-effect">
+          {{ $t('admin.page.services') }}
         </router-link>
-        <router-link to="requests" class="list-group-item">
-          Requests
+        <router-link to="requests" class="list-group-item waves-effect">
+          {{ $t('admin.page.requests') }}
         </router-link>
       </div>
   

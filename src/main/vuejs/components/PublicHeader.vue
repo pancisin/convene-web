@@ -73,7 +73,7 @@
         <div id="navigation" class="active">
           <ul class="navigation-menu">
             <li>
-              <router-link to="/">
+              <router-link to="/" class="waves-effect">
                 <i class="material-icons">home</i> Home
               </router-link>
             </li>
@@ -82,7 +82,7 @@
                 <i class="material-icons">event</i> My events</router-link>
             </li>-->
             <li>
-              <router-link to="/explore">
+              <router-link to="/explore" class="waves-effect">
                 <i class="material-icons">explore</i> Explore pages</router-link>
             </li>
             <!--<li>

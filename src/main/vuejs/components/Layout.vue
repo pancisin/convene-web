@@ -6,80 +6,80 @@
     <div class="left side-menu">
       <div id="sidebar-menu">
         <ul>
-          <li class="menu-title">Main</li>
+          <li class="menu-title">{{ $t('admin.menu.main') }}</li>
   
           <li>
-            <router-link to="/admin/dashboard" class="waves-effect waves-primary">
+            <router-link to="/admin/dashboard" class="waves-effect">
               <i class="material-icons">dashboard</i>
-              <span>{{ $t('menu.dashboard') }}</span>
+              <span>{{ $t('admin.menu.dashboard') }}</span>
             </router-link>
           </li>
   
           <li>
-            <router-link to="/admin/event" class="waves-effect waves-primary">
+            <router-link to="/admin/event" class="waves-effect">
               <i class="material-icons">event</i>
-              <span>Events</span>
+              <span>{{ $t('admin.menu.events') }}</span>
             </router-link>
           </li>
   
-          <li class="menu-title">Pages</li>
+          <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
           <li v-for="page in  $store.state.user.pages">
-            <router-link :to="'/admin/page/' + page.id" class="waves-effect waves-primary">
+            <router-link :to="'/admin/page/' + page.id" class="waves-effect">
               <i class="material-icons">work</i>
               <span v-text="page.name"></span>
             </router-link>
           </li>
   
           <li>
-            <router-link to="/admin/page/create" class="waves-effect waves-primary text-muted">
+            <router-link to="/admin/page/create" class="waves-effect text-muted">
               <i class="material-icons">add</i>
-              <span>Create page</span>
+              <span>{{ $t('admin.menu.page_create') }}</span>
             </router-link>
           </li>
   
-          <li class="menu-title">Conferences
+          <li class="menu-title">{{ $t('admin.menu.conferences') }}
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
   
           <li v-for="conference in  $store.state.user.conferences">
-            <router-link :to="'/admin/conference/' +conference.id" class="waves-effect waves-primary">
+            <router-link :to="'/admin/conference/' +conference.id" class="waves-effect">
               <i class="material-icons">work</i>
               <span v-text="conference.name"></span>
             </router-link>
           </li>
   
           <li>
-            <router-link to="/admin/conference/create" class="waves-effect waves-primary text-muted">
+            <router-link to="/admin/conference/create" class="waves-effect text-muted">
               <i class="material-icons">add</i>
-              <span>Create conference</span>
+              <span>{{ $t('admin.menu.conference_create') }}</span>
             </router-link>
           </li>
   
-          <li class="menu-title">About Bookster</li>
+          <li class="menu-title">{{ $t('admin.menu.about') }}</li>
   
           <li>
-            <router-link to="/faq" class="waves-effect waves-primary">
+            <router-link to="/faq" class="waves-effect">
               <i class="fa fa-question" aria-hidden="true"></i>
-              <span>FAQ</span>
+              <span>{{ $t('admin.menu.faq') }}</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/terms" class="waves-effect waves-primary">
+            <router-link to="/terms" class="waves-effect">
               <i class="material-icons">lock</i>
-              <span>Terms & Conditions</span>
+              <span>{{ $t('admin.menu.terms') }}</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/privacy-policy" class="waves-effect waves-primary">
+            <router-link to="/privacy-policy" class="waves-effect">
               <i class="material-icons">lock</i>
-              <span>Privacy policy</span>
+              <span>{{ $t('admin.menu.privacy') }}</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/contact" class="waves-effect waves-primary">
+            <router-link to="/contact" class="waves-effect">
               <i class="material-icons">business</i>
-              <span>Contact</span>
+              <span>{{ $t('admin.menu.contact') }}</span>
             </router-link>
           </li>
   

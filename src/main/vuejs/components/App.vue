@@ -26,6 +26,7 @@ export default {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
           this.$store.commit('addNotification', notification);
+          this.$info(notification.title, notification.message);
         });
       })
     },

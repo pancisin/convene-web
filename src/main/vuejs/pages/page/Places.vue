@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <panel type="table">
-        <span slot="title">Places</span>
+        <span slot="title">{{ $t('admin.page.places') }}</span>
   
         <table class="table table-striped">
           <thead>

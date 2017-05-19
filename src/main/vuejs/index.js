@@ -19,14 +19,15 @@ import notifier from './services/notifier.js'
 
 // LOAD STYLES
 require("bootstrap")
-require("node-waves")
+import Waves from 'node-waves'
+Waves.init();
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 require("./assets/less/core.less")
+require("node-waves/src/less/waves.less")
 require("./assets/less/components.less")
 require("./assets/less/menu.less")
-// require("./assets/less/pages.less")
 require("./assets/less/responsive.less")
 
 // TRANSLATIONS

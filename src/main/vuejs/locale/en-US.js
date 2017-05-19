@@ -1,9 +1,16 @@
-import category from './category/category.en-US.js'
+import category from './en-US/category.js'
+import admin from './en-US/admin.js'
 export default {
-  category: category,
+  category, admin,
   role: {
     owner: "Owner",
     administrator: "Administrator",
     reporter: "Reporter"
   },
+  page: {
+    name: 'Name',
+    category: 'Category',
+    branch: 'Branch',
+    summary: 'Summary'
+  }
 }

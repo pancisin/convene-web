@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-md-4">
-        <a class="btn btn-block m-b-20" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
+        <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
           <span v-if="follows">Unfollow</span>
           <span v-else>Follow</span>
         </a>

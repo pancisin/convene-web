@@ -1,9 +1,16 @@
-import category from './category/category.sk-SK.js'
+import category from './sk-SK/category.js'
+import admin from './sk-SK/admin.js'
 export default {
-  category: category,
+  category, admin,
   role: {
     owner: "Vlastník",
     administrator: "Administrátor",
     reporter: "Prispievateľ"
   },
+  page: {
+    name: 'Názov',
+    category: 'Kategória',
+    branch: 'Vetva',
+    summary: 'Popis'
+  }
 }

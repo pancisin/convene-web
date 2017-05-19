@@ -5,10 +5,10 @@
     </div>
     <div class="col-md-3">
       <div class="list-group">
-        <router-link to="overview" class="list-group-item">
+        <router-link to="overview" class="list-group-item waves-effect">
           Overview
         </router-link>
-        <router-link to="events" class="list-group-item">
+        <router-link to="events" class="list-group-item waves-effect">
           Events
         </router-link>
         <!--<router-link to="followers" class="list-group-item">

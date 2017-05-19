@@ -1,6 +1,6 @@
 <template>
   <panel type="table">
-    <span slot="title">Events</span>
+    <span slot="title">{{ $t('admin.page.events') }}</span>
   
     <table class="table table-striped">
       <thead>

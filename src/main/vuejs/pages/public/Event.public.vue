@@ -27,7 +27,7 @@
   
               </div>
               <div class="col-md-4">
-                <a class="btn btn-primary btn-block" :class="{ 'btn-danger' : attending }" @click="attend">
+                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="attend">
                   <span v-if="attending">Cancel</span>
                   <span v-else>Attend</span>
                 </a>
