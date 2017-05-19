@@ -6,4 +6,5 @@ import com.pancisin.bookster.models.Locale;
 
 public interface LocaleRepository extends JpaRepository<Locale, Long> {
 
+	public Locale findByCode(String code);
 }

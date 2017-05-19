@@ -21,6 +21,6 @@ public class EventsController {
 	@GetMapping("/{page}/{limit}")
 	public ResponseEntity<?> getPublic(@PathVariable int page, @PathVariable int limit) {
 		return ResponseEntity
-				.ok(eventRepository.getPublic(new PageRequest(page, limit, new Sort(Sort.Direction.DESC, "date"))));
+				.ok(eventRepository.getPublic(new PageRequest(page, limit)));
 	}
 }

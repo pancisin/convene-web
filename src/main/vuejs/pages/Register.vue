@@ -38,20 +38,6 @@
   
       <div class="form-group">
         <div class="col-xs-12">
-          <input v-model="user.company.name" class="form-control" type="text" required="" placeholder="Company name">
-          <i class="md md-account-circle form-control-feedback l-h-34"></i>
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <div class="col-xs-12">
-          <input v-model="user.company.ico" class="form-control" type="text" required="" placeholder="ICO">
-          <i class="md md-account-circle form-control-feedback l-h-34"></i>
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <div class="col-xs-12">
           <div class="checkbox checkbox-primary">
             <input id="checkbox-signup" type="checkbox" checked="checked">
             <label for="checkbox-signup">

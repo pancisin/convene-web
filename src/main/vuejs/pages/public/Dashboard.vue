@@ -3,10 +3,8 @@
     <div class="row">
       <div class="col-md-4">
   
-        <div class="card-box">
-          <h4 class="text-dark m-t-0 m-b-30 header-title">
-            Where am I going
-          </h4>
+        <panel type="primary">
+          <span slot="title">Where am i going</span>
   
           <div class="inbox-widget mx-box">
             <router-link :to="'event/' + event.id" v-for="event in attending" :key="event.id">
@@ -20,15 +18,13 @@
               </div>
             </router-link>
           </div>
-        </div>
+        </panel>
+  
       </div>
   
       <div class="col-md-4">
-  
-        <div class="card-box">
-          <h4 class="text-dark m-t-0 m-b-30 header-title">
-            <b>Newest events</b>
-          </h4>
+        <panel type="primary">
+          <span slot="title">Latest events</span>
   
           <div class="inbox-widget mx-box">
             <router-link :to="'event/' + event.id" v-for="event in events" :key="event.id">
@@ -42,23 +38,16 @@
               </div>
             </router-link>
           </div>
-        </div>
+        </panel>
       </div>
   
       <div class="col-md-4">
-        <div class="card-box">
-          <h4 class="text-dark  header-title m-t-0 m-b-30">Most popular events</h4>
-  
-          <ul class="list-unstyled">
-            <li>
-              Event
-              <hr>
-            </li>
-          </ul>
-        </div>
-  
-        <div class="card-box">
-          <h4 class="text-dark  header-title m-t-0 m-b-30">Suggested pages</h4>
+        <panel type="default">
+          <span slot="title">Most popular events</span>
+          There's nothing to display.
+        </panel>
+        <panel type="default">
+          <span slot="title">Suggested pages</span>
   
           <div class="inbox-widget">
             <router-link :to="'page/' + page.id" v-for="page in pages" :key="page.id">
@@ -73,18 +62,7 @@
               </div>
             </router-link>
           </div>
-        </div>
-  
-        <div class="card-box">
-          <h4 class="text-dark  header-title m-t-0 m-b-30">Opened conferences</h4>
-  
-          <ul class="list-unstyled">
-            <li>
-              page
-              <hr>
-            </li>
-          </ul>
-        </div>
+        </panel>
   
       </div>
     </div>

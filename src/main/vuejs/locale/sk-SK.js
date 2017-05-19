@@ -1,7 +1,8 @@
 import category from './sk-SK/category.js'
 import admin from './sk-SK/admin.js'
+import client from './sk-SK/client.js'
 export default {
-  category, admin,
+  category, admin, client,
   role: {
     owner: "Vlastník",
     administrator: "Administrátor",

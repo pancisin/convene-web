@@ -237,7 +237,9 @@ public class User implements UserDetails, Principal {
 	}
 
 	public List<Page> getPages() {
-		return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
+		if (this.pageAdministrators != null)
+			return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
+		else return null;
 	}
 
 	public List<Conference> getConferences() {
