@@ -13,7 +13,7 @@
                   <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-if="event.summary != null">{{ event.summary.substr(0, 100) }}</p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
                 <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
               </div>
             </router-link>
@@ -33,7 +33,7 @@
                   <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-if="event.summary != null">{{ event.summary.substr(0, 100) }}</p>
+                <p class="inbox-item-text"  v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
                 <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
               </div>
             </router-link>
