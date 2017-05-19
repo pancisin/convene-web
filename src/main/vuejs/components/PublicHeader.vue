@@ -113,7 +113,9 @@
                 <li>
                   <ul>
                     <li>
-                      <a href="pages-login.html">FAQ</a>
+                      <router-link to="faq">
+                        FAQ
+                      </router-link>
                     </li>
                     <li>
                       <a href="pages-register.html">Terms & Agreements</a>

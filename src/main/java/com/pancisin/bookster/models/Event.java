@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -59,6 +60,7 @@ public class Event {
 	private Calendar created;
 
 	@OneToMany(mappedBy = "event")
+	@OrderBy("time")
 	private List<Programme> programme;
 
 	@JsonIgnore

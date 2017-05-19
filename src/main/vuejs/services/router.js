@@ -40,21 +40,25 @@ export default new VueRouter({
           component: resolve => require(['../pages/Event.index.vue'], resolve)
         },
         {
-          path: '/event/:id',
+          path: 'event/:id',
           component: resolve => require(['../pages/public/Event.public.vue'], resolve),
         },
         {
-          path: '/conference',
+          path: 'conference',
           component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
         },
         {
-          path: '/explore',
+          path: 'explore',
           component: resolve => require(['../pages/public/Page.index.vue'], resolve)
         },
         {
-          path: '/page/:id',
+          path: 'page/:id',
           component: resolve => require(['../pages/public/Page.vue'], resolve),
-        }
+        },
+        {
+          path: 'faq',
+          component: resolve => require(['../pages/static/faq.vue'], resolve)
+        },
       ]
     },
     {
@@ -178,6 +182,7 @@ export default new VueRouter({
         },
 
 
+
         {
           path: 'chat',
           component: resolve => require(['../pages/Chat.vue'], resolve)
@@ -220,6 +225,6 @@ export default new VueRouter({
       path: '/register',
       component: resolve => require(['../pages/Register.vue'], resolve),
       beforeEnter: afterAuth
-    }
+    },
   ],
 })

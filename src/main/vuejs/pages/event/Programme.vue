@@ -25,7 +25,7 @@
             <time-picker v-model="new_programme.time" />
           </td>
           <td>
-            <input type="text" v-model="new_programme.description" class="form-control" />
+            <input type="text" v-model="new_programme.description" class="form-control" @keyup.enter="submitProgramme"/>
           </td>
           <td class="text-center">
             <a @click="submitProgramme" class="btn btn-rounded btn-xs btn-success">
@@ -61,7 +61,10 @@ export default {
         this.new_programme = {
           time: null,
           description: null
-        }
+        };
+        this.event.programme.sort((a, b) => {
+          return a.time > b.time;
+        })
       })
     },
     deleteProgramme(programme) {

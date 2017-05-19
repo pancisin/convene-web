@@ -99,7 +99,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				return true;
 		case "programme":
 			Programme programme = programmeRepository.findOne((Long) targetId);
-			return programme.getEvent().getOwner().getId() == stored.getId();
+			return checkEventOwnership(programme.getEvent(), stored);
 		case "service":
 			Service service = serviceRepository.findOne((Long) targetId);
 

@@ -38,15 +38,9 @@
           </table>
         </panel>
   
-        <panel type="table table-striped">
+        <panel type="table">
           <span slot="title">Events</span>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date</th>
-              </tr>
-            </thead>
+          <table class="table table-striped">
             <tbody>
               <tr v-for="event in events">
                 <td>

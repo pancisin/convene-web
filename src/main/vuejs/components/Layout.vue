@@ -331,6 +331,11 @@ import ToastContainer from '../elements/ToastContainer.vue'
 
 export default {
   name: 'app',
+  data() {
+    return {
+
+    }
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (!vm.$store.getters.isAdmin)

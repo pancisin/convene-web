@@ -15,22 +15,24 @@
           </a>
         </div>
   
-        <table>
-          <thead>
-            <tr>
-              <th v-for="weekday in weekdays">
-                <span>{{ weekday.substr(0, 2) }}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(week, index) in weeks" :key="index">
-              <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
-                <a class="monthday" v-text="day.day" @click="select(day)"></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="date-picker-body">
+          <table>
+            <thead>
+              <tr>
+                <th v-for="weekday in weekdays">
+                  <span>{{ weekday.substr(0, 2) }}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(week, index) in weeks" :key="index">
+                <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
+                  <a class="monthday" v-text="day.day" @click="select(day)"></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </transition>
   </div>
@@ -122,18 +124,26 @@ export default {
     justify-content: space-between;
     align-items: center;
     text-transform: uppercase;
+    background-color: #343c49;
+    padding: 10px;
+
+    a,
+    h4 {
+      color: #fff;
+    }
+  }
+
+  .date-picker-body {
+    padding: 10px;
   }
 
   .date-picker {
-    position: absolute; // top: 0;
+    position: absolute;
     left: 0;
     background: #fff;
     z-index: 2;
     border: 1px solid #ccc;
-    padding: 10px;
     overflow: hidden;
-    width: 100%;
-
     table {
       width: 100%;
 
@@ -145,11 +155,16 @@ export default {
       }
 
       td {
-        padding: 10px;
-        text-align: center;
-
         a {
+          text-align: center;
           color: #000;
+          display: block;
+          padding: 10px 15px;
+          transition: backgroud-color .3s ease;
+
+          &:hover {
+            background-color: #eee;
+          }
         }
 
         &.disabled a {
