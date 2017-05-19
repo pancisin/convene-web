@@ -4,14 +4,18 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pancisin.bookster.models.enums.Unit;
 
 @Entity
 @Table(name="services")
@@ -34,8 +38,9 @@ public class Service {
 	@Column
 	private String detail;
 
-	@Column
-	private String unit;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Unit unit;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "service")
@@ -81,11 +86,11 @@ public class Service {
 		this.detail = detail;
 	}
 
-	public String getUnit() {
+	public Unit getUnit() {
 		return unit;
 	}
 
-	public void setUnit(String unit) {
+	public void setUnit(Unit unit) {
 		this.unit = unit;
 	}
 

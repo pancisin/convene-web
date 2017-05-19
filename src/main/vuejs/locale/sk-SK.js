@@ -13,5 +13,11 @@ export default {
     category: 'Kategória',
     branch: 'Vetva',
     summary: 'Popis'
+  },
+  unit: {
+    hour: 'Hodina',
+    minute: 'Minúta',
+    squared_meter: 'Štvorcový meter',
+    piece: 'Kus'
   }
 }

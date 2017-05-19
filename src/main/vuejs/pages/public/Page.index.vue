@@ -9,30 +9,41 @@
       </li>
     </ul>
   
-    <ul class="list-inline" v-if="filters.category != null">
-      <li v-for="branch in branches" :key="branch.id">
-        <a class="btn btn-default">
-          {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-        </a>
-      </li>
-    </ul>
+    <!--<ul class="list-inline" v-if="filters.category != null">
+        <li v-for="branch in branches" :key="branch.id">
+          <a class="btn btn-default">
+            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+          </a>
+        </li>
+      </ul>-->
   
     <div class="row">
-      <div class="explore-container">
-        <div class="page-panel" v-for="page in pages">
-          <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
-          <img v-else src="/bookster_logo.png" style="min-width:auto" />
+      <div class="col-md-3">
+        <div class="list-group m-t-10">
+          <a v-for="branch in branches" :key="branch.id" class="list-group-item waves-effect">
+            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+          </a>
+        </div>
+      </div>
   
-          <div class="title">
-            <router-link :to="'page/' + page.id">
-              <h4 v-text="page.name"></h4>
-            </router-link>
-            <small class="text-muted" v-if="page.category != null">
-              {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-            </small>
+      <div class="col-md-9">
+        <div class="explore-container">
+          <div class="page-panel" v-for="page in pages">
+            <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
+            <img v-else src="/bookster_logo.png" style="min-width:auto" />
+  
+            <div class="title">
+              <router-link :to="'page/' + page.id">
+                <h4 v-text="page.name"></h4>
+              </router-link>
+              <small class="text-muted" v-if="page.category != null">
+                {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+              </small>
+            </div>
           </div>
         </div>
       </div>
+  
     </div>
   
   </div>

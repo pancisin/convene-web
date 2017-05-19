@@ -21,5 +21,12 @@ export default {
     administrators: 'Administrators',
     services: 'Services',
     requests: 'Requests'
+  },
+  service: {
+    name: 'Name',
+    detail: 'Detail',
+    unit: 'Unit',
+    price_per_unit: 'Price per unit',
+    create: 'Create service'
   }
 }

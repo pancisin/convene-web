@@ -21,5 +21,12 @@ export default {
     administrators: 'Správcovia',
     services: 'Služby',
     requests: 'Žiadosti'
+  },
+  service: {
+    name: 'Názov',
+    detail: 'Detail',
+    unit: 'Jednotka',
+    price_per_unit: 'Cena za jednotku',
+    create: 'Vytvoriť službu'
   }
 }

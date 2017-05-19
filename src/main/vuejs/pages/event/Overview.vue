@@ -1,7 +1,7 @@
 <template>
   <panel type="default">
     <span slot="title">Overview</span>
-
+  
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
         <div class="form-group" :class="{ 'has-error' : errors.name }">
@@ -12,13 +12,13 @@
           <label class="control-label">Date</label>
           <date-picker v-model="event.date" />
         </div>
-        <div class="form-group" :class="{ 'has-error' : errors.visibility }"> 
+        <div class="form-group" :class="{ 'has-error' : errors.visibility }">
           <label class="control-label">Visibility</label>
           <select v-model="event.visibility" class="form-control">
             <option :value="option" v-for="option in visibility_options" v-text="option"></option>
           </select>
         </div>
-          <div class="form-group" :class="{ 'has-error' : errors.place }"> 
+        <div class="form-group" :class="{ 'has-error' : errors.place }">
           <label class="control-label">Place</label>
           <select v-model="event.place" class="form-control">
             <option :value="place" v-for="place in places" v-text="place.name"></option>
@@ -26,8 +26,10 @@
         </div>
       </div>
       <div class="col-md-6" v-if="edit">
-        <img :src="event.bannerUrl" class="img-thumbnail" />
-        <input type="file" @change="onLogoChange" class="form-control" placeholder="Banner logo">
+        <div class="fileupload waves-effect">
+          <img :src="event.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
+          <input type="file" class="upload" @change="onLogoChange">
+        </div>
       </div>
     </div>
   

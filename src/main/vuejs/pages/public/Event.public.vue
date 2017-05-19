@@ -15,7 +15,6 @@
             <hr>
             <div class="row">
               <div class="col-md-8 m-b-10">
-                <div v-html="event.summary"></div>
   
                 <address v-if="event.place != null">
                   <strong v-text="event.place.name"></strong>
@@ -25,6 +24,7 @@
                   <hr/>
                 </address>
   
+                <div v-html="event.summary"></div>
               </div>
               <div class="col-md-4">
                 <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="attend">

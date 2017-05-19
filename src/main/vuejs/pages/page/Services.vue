@@ -5,19 +5,19 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Detail</th>
-          <th>Unit</th>
-          <th>Price per unit</th>
-          <th class="text-center">Action</th>
+          <th>{{ $t('admin.service.name') }}</th>
+          <th>{{ $t('admin.service.detail') }}</th>
+          <th>{{ $t('admin.service.unit') }}</th>
+          <th class="text-center">{{ $t('admin.service.price_per_unit') }}</th>
+          <th class="text-center"></th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
         <tr v-for="service in services" :key="service.id">
           <td v-text="service.name"></td>
           <td v-text="service.detail"></td>
-          <td v-text="service.unit"></td>
-          <td v-text="service.pricePerUnit"></td>
+          <td><span v-if="service.unit">{{ $t(service.unit.code) }}</span></td>
+          <td class="text-center">{{ service.pricePerUnit }} <i class="fa fa-euro"></i></td>
           <td class="text-center">
             <a @click="deleteService(service)" class="btn btn-rounded btn-xs btn-danger">
               <i class="fa fa-trash"></i>
@@ -34,11 +34,11 @@
     </table>
   
     <div class="text-center">
-      <a @click="editService" class="btn btn-rounded btn-default">Create service</a>
+      <a @click="editService(null)" class="btn btn-rounded btn-default">{{ $t('admin.service.create') }}</a>
     </div>
   
     <modal :show.sync="displayEditModal" @close="displayEditModal = false" :full="false">
-      <h4 slot="header">Create service</h4>
+      <h4 slot="header">{{ $t('admin.service.create') }}</h4>
       <div slot="body">
         <service-form :service="selectedService" :pageId="page.id" @updated="updatedService" />
       </div>
@@ -67,25 +67,25 @@ export default {
     'page': 'getServices'
   },
   methods: {
-    getServices() {
+    getServices () {
       if (this.page.id == null) return;
       var url = ['api/page', this.page.id, 'service'].join('/');
       this.$http.get(url).then(response => {
         this.services = response.body;
       })
     },
-    deleteService(service) {
+    deleteService (service) {
       this.$http.delete('api/service/' + service.id).then(response => {
         this.services = this.services.filter(s => {
           return s.id != service.id;
         })
       })
     },
-    editService(service) {
+    editService (service) {
       this.selectedService = service ? service : new Object();
       this.displayEditModal = true;
     },
-    updatedService: function (service) {
+    updatedService (service) {
       this.services = this.services.filter(s => {
         return s.id != service.id;
       });

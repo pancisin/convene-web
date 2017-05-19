@@ -13,5 +13,11 @@ export default {
     category: 'Category',
     branch: 'Branch',
     summary: 'Summary'
+  },
+  unit: {
+    hour: 'Hour',
+    minute: 'Minute',
+    squared_meter: 'Squared meter',
+    piece: 'Piece'
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="card-box">
-    <h4 class="text-dark  header-title m-t-0">Events</h4>
-  </div>
+  <panel type="default">
+    <span slot="title">Events</span>
+  </panel>
 </template>
 
 <script>
