@@ -5,7 +5,7 @@
       <div class="text-center">
         <router-link to="/" class="logo">
           <i class="fa fa-book"></i>
-          <span>Bookster</span>
+          <span>Bookster</span> <small class="text-muted" v-text="$store.state.user.license.subscription.name" v-if="$store.state.user.license != null"></small>
         </router-link>
       </div>
     </div>

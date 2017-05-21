@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
+import store from './store.js'
 import Auth from './auth.js';
 
 const require_auth = (to, from, next) => {
@@ -89,7 +90,14 @@ export default new VueRouter({
         },
         {
           path: 'conference/create',
-          component: resolve => require(['../pages/conference/Overview.vue'], resolve)
+          component: resolve => require(['../pages/conference/Overview.vue'], resolve),
+          beforeEnter: (to, from, next) => {
+            var license = store.getters.license;
+            if (license && license.subscription.conferenceLimit > store.state.user.conferences.length)
+              next();
+            else
+              next('/pricing');
+          }
         },
         {
           path: 'conference/:id',
@@ -135,7 +143,14 @@ export default new VueRouter({
         },
         {
           path: 'page/create',
-          component: resolve => require(['../pages/page/Overview.vue'], resolve)
+          component: resolve => require(['../pages/page/Overview.vue'], resolve),
+          beforeEnter: (to, from, next) => {
+            var license = store.getters.license;
+            if (license && license.subscription.pageLimit > store.state.user.pages.length)
+              next();
+            else
+              next('/pricing');
+          }
         },
         {
           path: 'page/:id',

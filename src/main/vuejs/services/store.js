@@ -38,6 +38,11 @@ const store = new Vuex.Store({
     },
     isAdmin: state => {
       return state.user.role != null && state.user.role.name == "ROLE_ADMINISTRATOR";
+    },
+    license: state => {
+      if (state.user.license)
+        return state.user.license;
+      else null;
     }
   }
 });

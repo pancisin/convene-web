@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
@@ -56,7 +57,7 @@ public class UserController {
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +86,7 @@ public class UserController {
 
 	@Autowired
 	private EventRepository eventRepository;
-	
+
 	@GetMapping("/event")
 	public ResponseEntity<?> getEvents() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -93,6 +94,7 @@ public class UserController {
 	}
 
 	@PostMapping("/event")
+	@PreAuthorize("hasPermission('event', 'create')")
 	public ResponseEntity<?> postEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -109,7 +111,7 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(eventRepository.getAttending(auth.getId()));
 	}
-	
+
 	@JsonView(Summary.class)
 	@GetMapping("/page")
 	public ResponseEntity<?> getPage() {
@@ -119,6 +121,7 @@ public class UserController {
 	}
 
 	@PostMapping("/page")
+	@PreAuthorize("hasPermission('page', 'create')")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -126,7 +129,7 @@ public class UserController {
 		PageAdministrator pa = new PageAdministrator(page, auth, true);
 		pa.setRole(Role.ROLE_OWNER);
 		paRepository.save(pa);
-		
+
 		return ResponseEntity.ok(stored_page);
 	}
 
@@ -136,7 +139,7 @@ public class UserController {
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getConferences());
 	}
-	
+
 	@PostMapping("/conference")
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

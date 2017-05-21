@@ -1,9 +1,11 @@
 package com.pancisin.bookster.models;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.Column;
@@ -29,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Role;
+import com.pancisin.bookster.models.enums.Subscription;
+import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -109,6 +113,10 @@ public class User implements UserDetails, Principal {
 	@OneToMany(mappedBy = "user")
 	private List<PageAdministrator> pageAdministrators;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
+	
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
 
@@ -121,6 +129,20 @@ public class User implements UserDetails, Principal {
 	@JsonView(Summary.class)
 	private Locale locale;
 
+	@Transient
+	public UserSubscription getLicense() {
+		Optional<UserSubscription> subscription = subscriptions.stream().filter(s -> s.getState() == SubscriptionState.ACTIVE).findFirst();
+		
+		if (subscription.isPresent()) 
+			return subscription.get();
+		else {
+			UserSubscription free = new UserSubscription();
+			free.setSubscription(Subscription.FREE);
+			free.setState(SubscriptionState.ACTIVE);
+			return free;
+		}
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -260,5 +282,9 @@ public class User implements UserDetails, Principal {
 
 	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
 		this.pageAdministrators = pageAdministrators;
+	}
+
+	public List<UserSubscription> getSubscriptions() {
+		return subscriptions;
 	}
 }
