@@ -59,29 +59,29 @@
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
   
           <li>
-            <router-link to="/faq" class="waves-effect">
+            <router-link to="/admin/faq" class="waves-effect">
               <i class="fa fa-question" aria-hidden="true"></i>
               <span>{{ $t('admin.menu.faq') }}</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/terms" class="waves-effect">
+            <router-link to="/admin/terms" class="waves-effect">
               <i class="material-icons">lock</i>
               <span>{{ $t('admin.menu.terms') }}</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/privacy-policy" class="waves-effect">
+            <router-link to="/admin/privacy-policy" class="waves-effect">
               <i class="material-icons">lock</i>
               <span>{{ $t('admin.menu.privacy') }}</span>
             </router-link>
           </li>
-          <li>
+          <!--<li>
             <router-link to="/contact" class="waves-effect">
               <i class="material-icons">business</i>
               <span>{{ $t('admin.menu.contact') }}</span>
             </router-link>
-          </li>
+          </li>-->
   
         </ul>
         <div class="clearfix"></div>

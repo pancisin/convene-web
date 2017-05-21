@@ -78,38 +78,37 @@
               </router-link>
             </li>
             <!--<li>
-                <router-link to="/event">
-                  <i class="material-icons">event</i> My events</router-link>
-              </li>-->
+                          <router-link to="/event">
+                            <i class="material-icons">event</i> My events</router-link>
+                        </li>-->
             <li>
               <router-link to="/explore" class="waves-effect">
                 <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
             </li>
             <!--<li>
-                <router-link to="/conference">
-                  <i class="material-icons">people</i> Conferences</router-link>
-              </li>-->
+                          <router-link to="/conference">
+                            <i class="material-icons">people</i> Conferences</router-link>
+                        </li>-->
             <li class="has-submenu">
               <a>
                 <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
               <ul class="submenu megamenu">
                 <li>
                   <ul>
+                    <!--<li>
+                        <a href="pages-blank.html">About</a>
+                      </li>
+                      <li>
+                        <a>Developers</a>
+                      </li>-->
                     <li>
-                      <a href="pages-blank.html">About</a>
-                    </li>
-                    <li>
-                      <a>Developers</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <ul>
-                    <li>
-                      <a>Pricing</a>
+                      <router-link to="pricing">
+                        Pricing
+                      </router-link>
                     </li>
                   </ul>
                 </li>
+  
                 <li>
                   <ul>
                     <li>
@@ -118,10 +117,14 @@
                       </router-link>
                     </li>
                     <li>
-                      <a href="pages-register.html">Terms & Agreements</a>
+                      <router-link to="terms">
+                        Terms & Conditions
+                      </router-link>
                     </li>
                     <li>
-                      <a href="pages-recoverpw.html">Contact</a>
+                      <router-link to="privacy-policy">
+                        Privacy policy
+                      </router-link>
                     </li>
                   </ul>
                 </li>

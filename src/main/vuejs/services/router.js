@@ -59,6 +59,18 @@ export default new VueRouter({
           path: 'faq',
           component: resolve => require(['../pages/static/faq.vue'], resolve)
         },
+        {
+          path: 'terms',
+          component: resolve => require(['../pages/static/Terms.vue'], resolve)
+        },
+        {
+          path: 'privacy-policy',
+          component: resolve => require(['../pages/static/Privacy.vue'], resolve)
+        },
+        {
+          path: 'pricing',
+          component: resolve => require(['../pages/static/Pricing.vue'], resolve)
+        }
       ]
     },
     {
@@ -177,10 +189,22 @@ export default new VueRouter({
                   edit: false
                 }
               )
-            }
+            },
+
           ]
         },
-
+        {
+          path: 'faq',
+          component: resolve => require(['../pages/static/faq.vue'], resolve)
+        },
+        {
+          path: 'terms',
+          component: resolve => require(['../pages/static/Terms.vue'], resolve)
+        },
+        {
+          path: 'privacy-policy',
+          component: resolve => require(['../pages/static/Privacy.vue'], resolve)
+        },
 
 
         {
