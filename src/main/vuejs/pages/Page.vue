@@ -46,7 +46,7 @@
     <div class="col-md-9">
       <transition name="fade-up" mode="out-in">
         <keep-alive>
-          <router-view :page="page" :edit="edit"></router-view>
+          <router-view :page="page" :edit="edit" @update="pageUpdated"></router-view>
         </keep-alive>
       </transition>
     </div>
@@ -83,7 +83,9 @@ export default {
       } else {
         this.page = new Object();
       }
-
+    },
+    pageUpdated(page) {
+      this.page = page;
     }
   }
 }

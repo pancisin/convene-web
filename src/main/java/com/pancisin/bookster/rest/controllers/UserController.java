@@ -4,10 +4,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -155,4 +158,17 @@ public class UserController {
 		stored.setLocale(locale);
 		return ResponseEntity.ok(userRepository.save(stored));
 	}
+
+	@GetMapping("/subscription")
+	public ResponseEntity<?> getSubscriptions() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		return ResponseEntity.ok(stored.getSubscriptions());
+	}
+	
+	@ExceptionHandler
+	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
+	public void handle(HttpMessageNotReadableException e) {
+	    System.err.println(e);
+	}	
 }

@@ -19,6 +19,16 @@
 .fileupload {
     overflow: hidden;
     position: relative;
+    width: 100%;
+
+    &:after {
+      content: "click to upload file";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
 }
 
 .fileupload input.upload {

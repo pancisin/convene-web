@@ -25,6 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 
@@ -68,7 +69,7 @@ public class Event {
 	private Conference conference;
 
 	@ManyToOne
-	@JsonView(Summary.class)
+	@JsonIgnore
 	private Page page;
 
 	@Lob
@@ -85,7 +86,16 @@ public class Event {
 
 	@OneToOne
 	private Place place;
-	
+
+	public IAuthor getAuthor() {
+		if (conference != null)
+			return conference;
+		else if (page != null) 
+			return page;
+		
+		return owner;
+	}
+
 	public int getAttendeesCount() {
 		return this.attendees.size();
 	}

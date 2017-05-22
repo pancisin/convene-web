@@ -24,7 +24,7 @@
   
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
-          <li v-for="page in  $store.state.user.pages">
+          <li v-for="page in pages">
             <router-link :to="'/admin/page/' + page.id" class="waves-effect">
               <i class="material-icons">work</i>
               <span v-text="page.name"></span>
@@ -42,7 +42,7 @@
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
   
-          <li v-for="conference in  $store.state.user.conferences">
+          <li v-for="conference in conferences">
             <router-link :to="'/admin/conference/' +conference.id" class="waves-effect">
               <i class="material-icons">work</i>
               <span v-text="conference.name"></span>
@@ -331,10 +331,18 @@ import ToastContainer from '../elements/ToastContainer.vue'
 
 export default {
   name: 'app',
-  data() {
-    return {
-
+  computed: {
+    pages() {
+      return this.$store.state.pages;
+    },
+    conferences() {
+      return this.$store.state.conferences;
     }
+  },
+  created() {
+    this.$http.get('api/user/page').then(response => {
+      this.$store.dispatch('initPages', response.body);
+    })
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

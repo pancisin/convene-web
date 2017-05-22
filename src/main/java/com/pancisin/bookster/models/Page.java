@@ -17,13 +17,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "pages")
-public class Page {
+public class Page implements IAuthor {
 
 	@Id
 	@JsonView(Compact.class)
@@ -40,8 +42,8 @@ public class Page {
 
 	@Lob
 	@Column
-	private String summary;
-
+	private String summary = "";
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Event> events;
@@ -150,5 +152,10 @@ public class Page {
 
 	public void setPlaces(List<Place> places) {
 		this.places = places;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return this.getName();
 	}
 }

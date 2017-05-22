@@ -88,25 +88,23 @@ export default {
     submit() {
       if (this.edit) {
         this.$http.put('api/page/' + this.page.id, this.page).then(response => {
-          this.page = response.body;
+          this.$emit('updated', response.body);
           this.$success('Success !', 'Page ' + this.page.name + ' has been updated.')
         });
       } else {
         this.$http.post('api/user/page', this.page).then(response => {
+          var page = response.body;
           this.edit = true;
-          this.page = response.body;
-          this.$store.state.user.pages.push(this.page);
-          this.$success('Success !', 'Page ' + this.page.name + ' has been created.');
-          this.$router.push('/admin/page/' + this.page.id);
+          this.$store.commit('addPage', page);
+          this.$success('Success !', 'Page ' + page.name + ' has been created.');
+          this.$router.push('/admin/page/' + page.id);
         });
       }
     },
     deletePage() {
       this.$http.delete('api/page/' + this.page.id).then(response => {
         this.$router.push('/admin');
-        this.$store.state.user.pages = this.$store.state.user.pages.filter(p => {
-          return p.id != this.page.id;
-        })
+        this.$store.commit('removePage', this.page);
       })
     },
     getCategories() {

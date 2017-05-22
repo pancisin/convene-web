@@ -7,6 +7,8 @@ const store = new Vuex.Store({
     user: null,
     notifications: [],
     toasts: [],
+    pages: [],
+    conferences: []
   },
   mutations: {
     setUser(state, { user }) {
@@ -22,14 +24,28 @@ const store = new Vuex.Store({
       }, 5000)
     },
     removeNotification(state, notification) {
-      state.notifications.push(state.notifications.filter(n => {
+      state.notifications = state.notifications.filter(n => {
         return n.id != notification.id;
-      }));
+      });
+    },
+    addPage(state, page) {
+      state.pages.push(page);
+    },
+    removePage(state, page) {
+      state.pages = state.pages.filter(p => {
+        return page.id != p.id;
+      });
     }
   },
   actions: {
     initNotifications({ commit, state }, notifications) {
       state.notifications = notifications;
+    },
+    initPages({ commit, state }, pages) {
+      state.pages = pages;
+    },
+    initConferences({ commit, state }, conferences) {
+      state.conferences = conferences;
     }
   },
   getters: {

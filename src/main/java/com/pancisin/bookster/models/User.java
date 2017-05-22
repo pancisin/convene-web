@@ -33,13 +33,14 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
+import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails, Principal {
+public class User implements UserDetails, Principal, IAuthor {
 
 	private static final long serialVersionUID = -2205856327940777873L;
 
@@ -117,6 +118,7 @@ public class User implements UserDetails, Principal {
 	@OneToMany(mappedBy = "user")
 	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
 
@@ -258,6 +260,7 @@ public class User implements UserDetails, Principal {
 		return this.email;
 	}
 
+	@JsonIgnore
 	public List<Page> getPages() {
 		if (this.pageAdministrators != null)
 			return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
@@ -286,5 +289,10 @@ public class User implements UserDetails, Principal {
 
 	public List<UserSubscription> getSubscriptions() {
 		return subscriptions;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return this.firstName + " " + this.lastName;
 	}
 }

@@ -92,6 +92,7 @@ public class PageController {
 	}
 
 	@GetMapping("/event")
+	@JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getEvents(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);

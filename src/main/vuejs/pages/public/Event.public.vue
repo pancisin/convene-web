@@ -9,7 +9,7 @@
           <div class="panel-heading">
             <img :src="event.bannerUrl" />
             <h3 class="panel-title">{{ event.name }}</h3>
-            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YY') }}</p>
+            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YY') }} <br> {{ event.author.displayName }}</p>
           </div>
           <div class="panel-body">
             <hr>

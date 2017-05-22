@@ -93,7 +93,7 @@ export default new VueRouter({
           component: resolve => require(['../pages/conference/Overview.vue'], resolve),
           beforeEnter: (to, from, next) => {
             var license = store.getters.license;
-            if (license && license.subscription.conferenceLimit > store.state.user.conferences.length)
+            if (license && license.subscription.conferenceLimit > store.state.conferences.length)
               next();
             else
               next('/pricing');
@@ -146,7 +146,7 @@ export default new VueRouter({
           component: resolve => require(['../pages/page/Overview.vue'], resolve),
           beforeEnter: (to, from, next) => {
             var license = store.getters.license;
-            if (license && license.subscription.pageLimit > store.state.user.pages.length)
+            if (license && license.subscription.pageLimit > store.state.pages.length)
               next();
             else
               next('/pricing');

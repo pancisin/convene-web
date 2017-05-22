@@ -16,10 +16,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.models.interfaces.IAuthor;
 
 @Entity
 @Table(name = "conferences")
-public class Conference {
+public class Conference implements IAuthor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -85,5 +86,10 @@ public class Conference {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	@Override
+	public String getDisplayName() {
+		return this.name;
 	}
 }
