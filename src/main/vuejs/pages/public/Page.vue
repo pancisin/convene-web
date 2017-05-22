@@ -70,6 +70,7 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue'
+import Auth from '../../services/auth.js'
 export default {
   name: 'page',
   data() {
@@ -95,12 +96,19 @@ export default {
     getPage() {
       var page_id = this.$route.params.id;
       if (page_id != null) {
-        this.$http.get('api/page/' + page_id).then(response => {
-          this.page = response.body;
-          this.checkFollow();
-          this.getServices();
-          this.getEvents();
-        })
+        if (Auth.user.authenticated)
+          this.$http.get('api/page/' + page_id).then(response => {
+            this.page = response.body;
+            this.checkFollow();
+            this.getServices('api');
+            this.getEvents('api');
+          });
+        else
+          this.$http.get('public/page/' + page_id).then(response => {
+            this.page = response.body;
+            this.getServices('public');
+            this.getEvents('public');
+          })
       }
     },
     checkFollow() {
@@ -109,13 +117,13 @@ export default {
         this.follows = response.body;
       })
     },
-    getServices() {
-      this.$http.get('api/page/' + this.page.id + '/service').then(response => {
+    getServices(context) {
+      this.$http.get(context + '/page/' + this.page.id + '/service').then(response => {
         this.services = response.body;
       });
     },
-    getEvents() {
-      this.$http.get('api/page/' + this.page.id + '/event').then(response => {
+    getEvents(context) {
+      this.$http.get(context + '/page/' + this.page.id + '/event').then(response => {
         this.events = response.body;
       })
     },

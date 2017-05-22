@@ -69,18 +69,18 @@ export default {
   },
   methods: {
     getPages() {
-      this.$http.get('api/pages/0/100').then(response => {
+      this.$http.get('public/pages/0/100').then(response => {
         this.pages = response.body.content;
       })
     },
     getCategories() {
-      this.$http.get('api/categories').then(response => {
+      this.$http.get('public/categories').then(response => {
         this.categories = response.body;
       })
     },
     selectCategory(category) {
       this.filters.category = category;
-      var url = ['api/categories', category.id, 'branches'].join('/');
+      var url = ['public/categories', category.id, 'branches'].join('/');
       this.$http.get(url).then(response => {
         this.branches = response.body;
       })

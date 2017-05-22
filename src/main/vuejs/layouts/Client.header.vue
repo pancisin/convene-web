@@ -24,9 +24,9 @@
   
             <lang-switcher />
   
-            <notifications />
+            <notifications v-if="auth.user.authenticated" />
   
-            <li class="dropdown">
+            <li class="dropdown" v-if="auth.user.authenticated">
               <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
                 <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="user-img" class="img-circle">
               </a>
@@ -53,6 +53,14 @@
                 </li>
               </ul>
             </li>
+            <template v-else>
+              <li>
+                <router-link to="login" class="waves-effect">Login</router-link>
+              </li>
+              <li>
+                <router-link to="register" class="waves-effect">Register</router-link>
+              </li>
+            </template>
           </ul>
   
           <div class="menu-item">
@@ -78,17 +86,17 @@
               </router-link>
             </li>
             <!--<li>
-                          <router-link to="/event">
-                            <i class="material-icons">event</i> My events</router-link>
-                        </li>-->
+                                  <router-link to="/event">
+                                    <i class="material-icons">event</i> My events</router-link>
+                                </li>-->
             <li>
               <router-link to="/explore" class="waves-effect">
                 <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
             </li>
             <!--<li>
-                          <router-link to="/conference">
-                            <i class="material-icons">people</i> Conferences</router-link>
-                        </li>-->
+                                  <router-link to="/conference">
+                                    <i class="material-icons">people</i> Conferences</router-link>
+                                </li>-->
             <li class="has-submenu">
               <a>
                 <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
@@ -96,11 +104,11 @@
                 <li>
                   <ul>
                     <!--<li>
-                        <a href="pages-blank.html">About</a>
-                      </li>
-                      <li>
-                        <a>Developers</a>
-                      </li>-->
+                                <a href="pages-blank.html">About</a>
+                              </li>
+                              <li>
+                                <a>Developers</a>
+                              </li>-->
                     <li>
                       <router-link to="pricing">
                         Pricing

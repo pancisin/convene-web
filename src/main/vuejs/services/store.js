@@ -11,9 +11,6 @@ const store = new Vuex.Store({
     conferences: []
   },
   mutations: {
-    setUser(state, { user }) {
-      state.user = user;
-    },
     addNotification(state, notification) {
       state.notifications.push(notification);
     },
@@ -35,9 +32,12 @@ const store = new Vuex.Store({
       state.pages = state.pages.filter(p => {
         return page.id != p.id;
       });
-    }
+    },
   },
   actions: {
+    setUser({ commit, state }, { user }) {
+      state.user = user;
+    },
     initNotifications({ commit, state }, notifications) {
       state.notifications = notifications;
     },

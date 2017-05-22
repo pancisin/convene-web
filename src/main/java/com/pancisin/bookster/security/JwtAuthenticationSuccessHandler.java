@@ -11,7 +11,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-  @Override
-  public void onAuthenticationSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2) throws IOException, ServletException {
-  }
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication arg2)
+			throws IOException, ServletException {
+	}
 }

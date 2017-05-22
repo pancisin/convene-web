@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-4" v-if="authenticated">
   
         <panel type="primary">
           <span slot="title">Where am i going</span>
@@ -22,7 +22,7 @@
   
       </div>
   
-      <div class="col-md-4">
+      <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
         <panel type="primary">
           <span slot="title">Latest events</span>
   
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import Auth from '../../services/auth.js'
 export default {
   name: 'dashboard',
   data() {
@@ -81,13 +82,21 @@ export default {
     }
   },
   created() {
+    if (Auth.user.authenticated) {
+      this.getAttending();
+    }
+
     this.getEvents();
-    this.getAttending();
     this.getPages();
+  },
+  computed: {
+    authenticated() {
+      return Auth.user.authenticated;
+    }
   },
   methods: {
     getEvents() {
-      var url = ['api/events', this.page, 10].join('/');
+      var url = ['public/events', this.page, 10].join('/');
       this.$http.get(url).then(response => {
         this.events = response.body.content;
       })
@@ -98,7 +107,7 @@ export default {
       })
     },
     getPages() {
-      var url = ['api/pages', this.page, 10].join('/');
+      var url = ['public/pages', this.page, 10].join('/');
       this.$http.get(url).then(response => {
         this.pages = response.body.content;
       })

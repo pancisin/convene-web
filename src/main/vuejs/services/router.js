@@ -30,7 +30,6 @@ export default new VueRouter({
     {
       path: '/',
       component: resolve => require(['../layouts/Client.vue'], resolve),
-      beforeEnter: require_auth,
       children: [
         {
           path: '',
@@ -44,10 +43,10 @@ export default new VueRouter({
           path: 'event/:id',
           component: resolve => require(['../pages/public/Event.public.vue'], resolve),
         },
-        {
-          path: 'conference',
-          component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
-        },
+        // {
+        //   path: 'conference',
+        //   component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
+        // },
         {
           path: 'explore',
           component: resolve => require(['../pages/public/Page.index.vue'], resolve)

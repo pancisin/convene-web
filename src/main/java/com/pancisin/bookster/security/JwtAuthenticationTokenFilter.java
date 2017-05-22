@@ -22,7 +22,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 	public JwtAuthenticationTokenFilter() {
 		super("/api/**");
 	}
-
+	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		String header = request.getHeader(this.tokenHeader);

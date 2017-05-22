@@ -11,14 +11,15 @@ import moment from "moment"
 export default {
   name: 'app-root',
   created() {
-    if (Auth.user.authenticated)
+    if (Auth.user.authenticated) {
       Auth.updateUserData(this).then(user => {
         moment.locale(user.locale.code);
         this.$i18n.locale = user.locale.code;
       });
 
-    this.initializeStomp();
-    this.fetchNotifications();
+      this.initializeStomp();
+      this.fetchNotifications();
+    }
   },
   methods: {
     initializeStomp() {

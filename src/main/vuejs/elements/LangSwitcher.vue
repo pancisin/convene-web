@@ -28,20 +28,25 @@ export default {
   computed: {
     locale: {
       get() {
-        return this.$store.getters.locale;
+        return Auth.user.authenticated ? this.$store.getters.locale : this.$i18n.locale;
       },
       set(value) {
-        this.$http.put('api/user/locale', value).then(response => {
-          Auth.updateUserData(this);
+        if (Auth.user.authenticated)
+          this.$http.put('api/user/locale', value).then(response => {
+            Auth.updateUserData(this);
+            moment.locale(value.code);
+            this.$i18n.locale = value.code;
+          })
+        else {
           moment.locale(value.code);
           this.$i18n.locale = value.code;
-        })
+        }
       }
     }
   },
   methods: {
     getLocales() {
-      this.$http.get('api/locales').then(response => {
+      this.$http.get('public/locales').then(response => {
         this.locales = response.body;
       })
     },
