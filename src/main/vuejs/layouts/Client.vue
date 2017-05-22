@@ -13,7 +13,7 @@
 </template>
 
 <script> 
-import HeaderComponent from './PublicHeader.vue'
+import HeaderComponent from './Client.header.vue'
 import FooterComponent from './Footer.vue'
 
 export default {

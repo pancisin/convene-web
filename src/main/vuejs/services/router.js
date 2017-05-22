@@ -29,7 +29,7 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: resolve => require(['../components/Public.vue'], resolve),
+      component: resolve => require(['../layouts/Client.vue'], resolve),
       beforeEnter: require_auth,
       children: [
         {
@@ -76,7 +76,7 @@ export default new VueRouter({
     },
     {
       path: '/admin',
-      component: resolve => require(['../components/Layout.vue'], resolve),
+      component: resolve => require(['../layouts/Admin.vue'], resolve),
       beforeEnter: require_auth,
       redirect: '/admin/dashboard',
       children: [

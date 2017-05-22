@@ -325,7 +325,7 @@
 </template>
 
 <script> 
-import HeaderComponent from './Header.vue'
+import HeaderComponent from './Admin.header.vue'
 import FooterComponent from './Footer.vue'
 import ToastContainer from '../elements/ToastContainer.vue'
 
