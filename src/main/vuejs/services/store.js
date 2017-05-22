@@ -20,7 +20,7 @@ const store = new Vuex.Store({
     addToast(state, notification) {
       state.toasts.push(notification);
       setTimeout(() => {
-        state.toasts.splice(state.toasts.indexOf(toast), 1);
+        state.toasts.splice(state.toasts.indexOf(notification), 1);
       }, 5000)
     },
     removeNotification(state, notification) {

@@ -108,6 +108,7 @@ export default {
       })
     },
     getCategories() {
+      this.branches = [],
       this.$http.get('api/categories').then(response => {
         this.categories = response.body;
       })

@@ -46,6 +46,9 @@ public class Service {
 	@OneToMany(mappedBy = "service")
 	private List<BookRequest> requests;
 	
+	@OneToMany(mappedBy = "service")
+	private List<Discount> discounts;
+	
 	public Long getId() {
 		return id;
 	}
@@ -96,5 +99,9 @@ public class Service {
 
 	public List<BookRequest> getRequests() {
 		return requests;
+	}
+
+	public List<Discount> getDiscounts() {
+		return discounts;
 	}
 }
