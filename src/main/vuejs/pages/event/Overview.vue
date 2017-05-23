@@ -145,12 +145,18 @@ export default {
       reader.readAsDataURL(file);
     },
     getPlaces() {
-      if (this.event.page == null) return;
+      if (this.event.author == null) return;
 
-      var url = ['api/page', this.event.page.id, 'place'].join('/');
-      this.$http.get(url).then(response => {
-        this.places = response.body;
-      })
+      switch (this.event.author.type) {
+        case "page":
+          var url = ['api/page', this.event.author.id, 'place'].join('/');
+          this.$http.get(url).then(response => {
+            this.places = response.body;
+          })
+          break;
+        case "user":
+          break;
+      }
     }
   }
 }

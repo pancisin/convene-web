@@ -117,10 +117,10 @@ export default {
     },
     'value'(newVal, oldVal) {
       if (this.quill) {
-        if (newVal && newVal !== this._content) {
+        if (newVal !== this._content) {
           this._content = newVal
           this.quill.pasteHTML(newVal)
-        } else {
+        } else if (!newVal) {
           this.quill.setText('')
         }
       }

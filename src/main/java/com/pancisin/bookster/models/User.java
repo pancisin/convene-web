@@ -29,6 +29,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
@@ -294,5 +296,10 @@ public class User implements UserDetails, Principal, IAuthor {
 	@Override
 	public String getDisplayName() {
 		return this.firstName + " " + this.lastName;
+	}
+
+	@Override
+	public String getType() {
+		return "user";
 	}
 }

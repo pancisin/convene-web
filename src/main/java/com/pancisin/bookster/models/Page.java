@@ -16,9 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
@@ -153,5 +156,10 @@ public class Page implements IAuthor {
 	@Override
 	public String getDisplayName() {
 		return this.getName();
+	}
+
+	@Override
+	public String getType() {
+		return "page";
 	}
 }
