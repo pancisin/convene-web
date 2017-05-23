@@ -26,17 +26,21 @@
         <panel type="primary">
           <span slot="title">Latest events</span>
   
-          <div class="inbox-widget mx-box">
-            <router-link :to="'event/' + event.id" v-for="event in events" :key="event.id">
+          <div class="inbox-widget">
+            <router-link :to="'event/' + event.id" v-for="event in eventsPaginator.content" :key="event.id">
               <div class="inbox-item">
                 <div class="inbox-item-img" v-if="event.bannerUrl != null">
                   <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text"  v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
                 <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
               </div>
             </router-link>
+
+            <div class="text-center">
+              <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
+            </div>
           </div>
         </panel>
       </div>
@@ -50,7 +54,7 @@
           <span slot="title">Suggested pages</span>
   
           <div class="inbox-widget">
-            <router-link :to="'page/' + page.id" v-for="page in pages" :key="page.id">
+            <router-link :to="'page/' + page.id" v-for="page in pagesPaginator.content" :key="page.id">
               <div class="inbox-item">
                 <div class="inbox-item-img" v-if="page.bannerUrl != null">
                   <img :src="page.bannerUrl" class="img-circle">
@@ -61,6 +65,10 @@
                 </p>
               </div>
             </router-link>
+  
+            <div class="text-center">
+              <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+            </div>
           </div>
         </panel>
   
@@ -71,14 +79,15 @@
 
 <script>
 import Auth from '../../services/auth.js'
+import Paginator from '../../elements/Paginator.vue'
 export default {
   name: 'dashboard',
   data() {
     return {
-      page: 0,
       events: [],
       attending: [],
-      pages: []
+      pagesPaginator: {},
+      eventsPaginator: {},
     }
   },
   created() {
@@ -86,8 +95,11 @@ export default {
       this.getAttending();
     }
 
-    this.getEvents();
-    this.getPages();
+    this.getEvents(0);
+    this.getPages(0);
+  },
+  components: {
+    Paginator
   },
   computed: {
     authenticated() {
@@ -95,10 +107,10 @@ export default {
     }
   },
   methods: {
-    getEvents() {
-      var url = ['public/events', this.page, 10].join('/');
+    getEvents(page) {
+      var url = ['public/events', page, 5].join('/');
       this.$http.get(url).then(response => {
-        this.events = response.body.content;
+        this.eventsPaginator = response.body;
       })
     },
     getAttending() {
@@ -106,11 +118,25 @@ export default {
         this.attending = response.body;
       })
     },
-    getPages() {
-      var url = ['public/pages', this.page, 10].join('/');
+    getPages(page) {
+      var url = ['public/pages', page, 5].join('/');
       this.$http.get(url).then(response => {
-        this.pages = response.body.content;
+        this.pagesPaginator = response.body;
       })
+    },
+    pagesPaginatorNavigate(e) {
+      if (e.direction != null) {
+        this.getPages(this.pagesPaginator.number + e.direction);
+      } else if (e.page != null) {
+        this.getPages(e.page);
+      }
+    },
+    eventsPaginatorNavigate(e) {
+       if (e.direction != null) {
+        this.getEvents(this.eventsPaginator.number + e.direction);
+      } else if (e.page != null) {
+        this.getEvents(e.page);
+      }
     }
   }
 }

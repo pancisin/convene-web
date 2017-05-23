@@ -19,11 +19,6 @@
 <script>
 export default {
   props: ['paginator'],
-  data() {
-    return {
-
-    }
-  },
   methods: {
     paginatorNavigate(direction, page) {
       this.$emit('navigate', {
