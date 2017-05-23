@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-4">
       <panel type="table">
-        <span slot="title">My events</span>
+        <span slot="title" @click="">My events</span>
   
         <table class="table table-striped">
           <thead>

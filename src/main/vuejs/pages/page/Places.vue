@@ -17,7 +17,7 @@
           <tbody>
             <tr v-for="place in places">
               <td>
-                <router-link to="create-place" v-text="place.name">
+                <router-link :to="{ name: 'place', params: { id: place.id }}" v-text="place.name">
                 </router-link>
               </td>
               <td v-text="place.capacity"></td>

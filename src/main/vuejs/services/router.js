@@ -208,6 +208,18 @@ export default new VueRouter({
           ]
         },
         {
+          path: 'place/:id',
+          component: resolve => require(['../pages/Place.vue'], resolve),
+          redirect: '/admin/place/:id/overview',
+          name: 'place',
+          children: [
+            {
+              path: 'overview',
+              component: resolve => require(['../pages/place/Overview.vue'], resolve)
+            },
+          ]
+        },
+        {
           path: 'faq',
           component: resolve => require(['../pages/static/faq.vue'], resolve)
         },

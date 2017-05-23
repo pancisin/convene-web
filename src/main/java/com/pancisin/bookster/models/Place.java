@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,6 +30,9 @@ public class Place {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 
+	@ManyToOne
+	private Page page;
+	
 	public String getName() {
 		return name;
 	}
@@ -64,6 +68,12 @@ public class Place {
 	public Long getId() {
 		return id;
 	}
-	
-	
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
 }

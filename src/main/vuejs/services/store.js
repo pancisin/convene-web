@@ -11,6 +11,9 @@ const store = new Vuex.Store({
     conferences: []
   },
   mutations: {
+     setUser(state, { user }) {
+      state.user = user;
+    },
     addNotification(state, notification) {
       state.notifications.push(notification);
     },
@@ -35,9 +38,6 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    setUser({ commit, state }, { user }) {
-      state.user = user;
-    },
     initNotifications({ commit, state }, notifications) {
       state.notifications = notifications;
     },

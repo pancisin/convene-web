@@ -72,7 +72,7 @@ public class Page implements IAuthor {
 	private Calendar created;
 
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "page")
 	private List<Place> places;
 	
 	public Category getCategory() {
@@ -148,10 +148,6 @@ public class Page implements IAuthor {
 
 	public List<Place> getPlaces() {
 		return places;
-	}
-
-	public void setPlaces(List<Place> places) {
-		this.places = places;
 	}
 
 	@Override

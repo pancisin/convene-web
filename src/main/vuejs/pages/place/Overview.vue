@@ -20,7 +20,7 @@
         </div>
   
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" v-if="place.address != null">
         <div class="form-group" :class="{ 'has-error' : errors.name }">
           <label class="control-label">City</label>
           <input class="form-control required" v-model="place.address.city" type="text">
@@ -66,7 +66,7 @@ export default {
       type: Object,
       default() {
         return {
-          address: {},  
+          address: {},
         };
       }
     },
@@ -81,14 +81,26 @@ export default {
     return {
       errors: [],
     }
-  }, 
+  },
   methods: {
     submit() {
-      var url = ['api/page', this.page_id, 'place'].join('/');
+      if (this.edit) {
+        this.$http.put('api/place/' + this.place.id, this.place).then(response => {
+          this.$emit('updated', response.body);
+        })
+      } else {
+        var url = ['api/page', this.page_id, 'place'].join('/');
 
-      this.$http.post(url, this.place).then(response => {
-        this.place = response.body;
-      })
+        this.$http.post(url, this.place).then(response => {
+          this.place = response.body;
+          this.$router.push({
+            name: 'place',
+            params: {
+              id: this.place.id,
+            }
+          })
+        })
+      }
     }
   }
 }

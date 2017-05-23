@@ -50,16 +50,13 @@ export default {
       if (this.event.id != null && this.event.id == event_id)
         return;
 
-      this.event = new Object();
       if (event_id != null) {
         this.$http.get('api/event/' + event_id).then(response => {
           this.event = response.body;
           this.edit = true;
         })
-      } else {
+      } else
         this.event = new Object();
-      }
-
     }
   }
 }

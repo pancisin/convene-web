@@ -198,14 +198,7 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
 		Page stored = pageRepository.findOne(page_id);
-
-		if (stored.getPlaces() == null) 
-			stored.setPlaces(new ArrayList<Place>());
-		
-		placeRepository.save(place);
-		stored.getPlaces().add(place);
-		pageRepository.save(stored);
-		
-		return ResponseEntity.ok(place);
+		place.setPage(stored);
+		return ResponseEntity.ok(placeRepository.save(place));
 	}
 }
