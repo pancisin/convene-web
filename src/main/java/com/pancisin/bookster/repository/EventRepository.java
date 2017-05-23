@@ -17,8 +17,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event WHERE event.visibility = com.pancisin.bookster.models.enums.Visibility.PUBLIC AND event.date >= CURDATE() ORDER BY event.date ASC")
 	public Page<Event> getPublic(Pageable pageable);
 
-	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL ORDER BY date ASC")
-	public List<Event> getOwned(@Param("user_id") Long user_id);
+	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL")
+	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable);
 	
 	@Query("SELECT count(event.id) FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.id = :event_id")
 	public int isAttending(@Param("event_id") Long event_id, @Param("user_id") Long user_id);

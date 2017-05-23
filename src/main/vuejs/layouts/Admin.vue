@@ -77,11 +77,11 @@
             </router-link>
           </li>
           <!--<li>
-            <router-link to="/contact" class="waves-effect">
-              <i class="material-icons">business</i>
-              <span>{{ $t('admin.menu.contact') }}</span>
-            </router-link>
-          </li>-->
+              <router-link to="/contact" class="waves-effect">
+                <i class="material-icons">business</i>
+                <span>{{ $t('admin.menu.contact') }}</span>
+              </router-link>
+            </li>-->
   
         </ul>
         <div class="clearfix"></div>
@@ -129,7 +129,7 @@
     <div class="content-page">
       <div class="content">
         <transition name="fade-down" mode="out-in">
-          <router-view></router-view>
+          <router-view></router-view> 
         </transition>
         <footer-component></footer-component>
       </div>
@@ -342,6 +342,9 @@ export default {
   created() {
     this.$http.get('api/user/page').then(response => {
       this.$store.dispatch('initPages', response.body);
+    })
+    this.$http.get('api/user/conference').then(response => {
+      this.$store.dispatch('initConferences', response.body);
     })
   },
   beforeRouteEnter(to, from, next) {

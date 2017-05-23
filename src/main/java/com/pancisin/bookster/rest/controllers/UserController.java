@@ -3,6 +3,9 @@ package com.pancisin.bookster.rest.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -90,10 +94,10 @@ public class UserController {
 	@Autowired
 	private EventRepository eventRepository;
 
-	@GetMapping("/event")
-	public ResponseEntity<?> getEvents() {
+	@GetMapping("/event/{page}/{size}")
+	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(eventRepository.getOwned(auth.getId()));
+		return ResponseEntity.ok(eventRepository.getOwned(auth.getId(), new PageRequest(page, size)));
 	}
 
 	@PostMapping("/event")

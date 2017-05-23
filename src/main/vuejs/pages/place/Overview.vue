@@ -86,6 +86,7 @@ export default {
     submit() {
       if (this.edit) {
         this.$http.put('api/place/' + this.place.id, this.place).then(response => {
+          this.$success('Success !', 'Place ' + this.place.name + ' has been updated.');
           this.$emit('updated', response.body);
         })
       } else {
@@ -93,6 +94,7 @@ export default {
 
         this.$http.post(url, this.place).then(response => {
           this.place = response.body;
+          this.$success('Success !', 'Place ' + this.place.name + ' has been created.');
           this.$router.push({
             name: 'place',
             params: {
