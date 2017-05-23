@@ -11,8 +11,8 @@
               <th class="text-center">date</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="event in paginator.content">
+          <tbody is="transition-group" name="fade">
+            <tr v-for="event in paginator.content" :key="event.id">
               <td>
                 <router-link :to="'event/' + event.id">
                   {{ event.name }}
@@ -20,28 +20,14 @@
               </td>
               <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
             </tr>
-            <tr v-if="paginator.content.length == 0">
+            <tr v-if="paginator.content != null && paginator.content.length == 0">
               <td colspan="2" class="text-center">There's nothing to display.</td>
             </tr>
           </tbody>
         </table>
   
         <div class="text-center">
-          <ul class="pagination">
-            <li v-if="!paginator.first">
-              <a @click="paginatorNavigate(-1)">
-                <i class="fa fa-angle-left"></i>
-              </a>
-            </li>
-            <li v-for="(page, index) in paginator.totalPages" :class="{'active' : paginator.number == index}">
-              <a v-text="page" @click="getEvents(index)"></a>
-            </li>
-            <li v-if="!paginator.last">
-              <a @click="paginatorNavigate(1)">
-                <i class="fa fa-angle-right"></i>
-              </a>
-            </li>
-          </ul>
+          <Paginator :paginator="paginator" @navigate="paginatorNavigate" />
         </div>
   
         <div class="text-center">
@@ -55,6 +41,7 @@
 </template>
 
 <script>
+import Paginator from '../elements/Paginator.vue'
 export default {
   name: 'event-index',
   data() {
@@ -65,6 +52,9 @@ export default {
   created: function () {
     this.getEvents(0);
   },
+  components: {
+    Paginator
+  },
   methods: {
     getEvents(page) {
       var size = 5;
@@ -74,8 +64,12 @@ export default {
         this.events = response.body.content
       })
     },
-    paginatorNavigate(direction) {
-      this.getEvents(this.paginator.number + direction)
+    paginatorNavigate(e) {
+      if (e.direction != null) {
+        this.getEvents(this.paginator.number + e.direction)
+      } else if (e.page != null) {
+        this.getEvents(e.page);
+      }
     }
   }
 }
