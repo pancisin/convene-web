@@ -44,6 +44,13 @@ spring:
   datasource: 
     username: root
     password: 
+  jpa:
+    properties:
+      hibernate:
+        search: 
+          default:
+            directory_provider: filesystem
+            indexBase: /files/lucene/indexes
 server: 
   port: 8180
 storage:
@@ -56,6 +63,13 @@ spring:
   datasource:
     username: bookster_db
     password: FMDg3bjHvBg87Oxw
+  jpa:
+    properties:
+      hibernate:
+        search: 
+          default:
+            directory_provider: filesystem
+            indexBase: /uploads/lucene/indexes
 server: 
   port: 8080
 storage:

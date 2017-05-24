@@ -22,6 +22,7 @@ import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
+import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
@@ -53,6 +54,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	@Autowired
 	private ServiceRepository serviceRepository;
 
+	@Autowired
+	private PageAdministratorRepository paRepository;
+	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
 		String targetType = (String) targetDomainObject;
@@ -122,6 +126,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 						.anyMatch(x -> x.getUser().getId() == stored.getId());
 			else
 				return true;
+		case "page-administrator":
+			return true;
 		}
 
 		return false;
@@ -149,7 +155,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		if (oPa.isPresent()) {
 			PageAdministrator pa = oPa.get();
-			return pa.isActive() && (pa.getRole() == Role.ROLE_ADMINISTRATOR || pa.getRole() == Role.ROLE_OWNER);
+			return pa.getActive() && (pa.getRole() == Role.ROLE_ADMINISTRATOR || pa.getRole() == Role.ROLE_OWNER);
 		}
 
 		return false;

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class PageAdministrator {
 	private Long id;
 
 	@JsonView(Summary.class)
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private User user;
 
 	@JsonIgnore
@@ -77,7 +78,7 @@ public class PageAdministrator {
 		this.page = page;
 	}
 
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 

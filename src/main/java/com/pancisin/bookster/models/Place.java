@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "places")
 public class Place {
@@ -30,8 +32,13 @@ public class Place {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 
+	@JsonIgnore
 	@ManyToOne
 	private Page page;
+
+	@JsonIgnore
+	@ManyToOne
+	private User user;
 	
 	public String getName() {
 		return name;
@@ -75,5 +82,13 @@ public class Place {
 
 	public void setPage(Page page) {
 		this.page = page;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

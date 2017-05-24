@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -35,6 +38,7 @@ import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
+import com.pancisin.bookster.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/page/{page_id}")
@@ -184,7 +188,8 @@ public class PageController {
 		PageAdministrator pa = new PageAdministrator(stored, user, false);
 		pa.setRole(Role.ROLE_ADMINISTRATOR);
 
-		return ResponseEntity.ok(paRepository.save(pa));
+		paRepository.save(pa);
+		return ResponseEntity.ok(pa);
 	}
 
 	@GetMapping("/place")
@@ -201,4 +206,10 @@ public class PageController {
 		place.setPage(stored);
 		return ResponseEntity.ok(placeRepository.save(place));
 	}
+	
+	@ExceptionHandler
+	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
+	public void handle(HttpMessageNotReadableException e) {
+	    System.err.println(e);
+	}	
 }

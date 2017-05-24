@@ -54,6 +54,13 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-mail</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search-orm</artifactId>
+      <version>5.6.1.Final</version>
+    </dependency>
+
+
 
     <dependency>
       <groupId>mysql</groupId>
@@ -64,16 +71,6 @@
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt</artifactId>
       <version>0.6.0</version>
-    </dependency>
-    <dependency>
-      <groupId>com.itextpdf</groupId>
-      <artifactId>itextpdf</artifactId>
-      <version>5.0.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.quartz-scheduler</groupId>
-      <artifactId>quartz</artifactId>
-      <version>2.2.2</version>
     </dependency>
   </dependencies>
 

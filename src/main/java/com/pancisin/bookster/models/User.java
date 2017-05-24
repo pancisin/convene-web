@@ -23,14 +23,14 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
@@ -41,6 +41,7 @@ import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
+@Indexed
 @Table(name = "users")
 public class User implements UserDetails, Principal, IAuthor {
 
@@ -52,17 +53,20 @@ public class User implements UserDetails, Principal, IAuthor {
 	private Long id;
 
 	@NotNull
+	@Field
 	@JsonView(Summary.class)
 	@Column(name = "first_name")
 	private String firstName;
 
 	@NotNull
+	@Field
 	@JsonView(Summary.class)
 	@Column(name = "last_name")
 	private String lastName;
 
 	@NotNull
 	@Email
+	@Field
 	@JsonView(Compact.class)
 	@Column(unique = true)
 	private String email;
@@ -133,6 +137,10 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonView(Summary.class)
 	private Locale locale;
 
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Place> places;
+	
 	@Transient
 	public UserSubscription getLicense() {
 		Optional<UserSubscription> subscription = subscriptions.stream().filter(s -> s.getState() == SubscriptionState.ACTIVE).findFirst();
@@ -301,5 +309,9 @@ public class User implements UserDetails, Principal, IAuthor {
 	@Override
 	public String getType() {
 		return "user";
+	}
+
+	public List<Place> getPlaces() {
+		return places;
 	}
 }

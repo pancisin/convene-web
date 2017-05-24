@@ -6,7 +6,12 @@ export default {
   role: {
     owner: "Owner",
     administrator: "Administrator",
-    reporter: "Reporter"
+    reporter: "Reporter",
+    visitor: "Visitor"
+  },
+  administrator: {
+    active: "Active",
+    inactive: "Inactive"
   },
   page: {
     name: 'Name',

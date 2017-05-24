@@ -1,11 +1,11 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,17 +14,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.models.Conference;
@@ -32,6 +30,7 @@ import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Locale;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.views.Summary;
@@ -40,7 +39,9 @@ import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
+import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.repository.UserSearchRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -64,6 +65,12 @@ public class UserController {
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
+
+	@Autowired
+	private PlaceRepository placeRepository;
+
+	@Autowired
+	private UserSearchRepository userSearchRepository;
 
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
@@ -169,10 +176,38 @@ public class UserController {
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getSubscriptions());
 	}
-	
+
+	@PostMapping("/place")
+	public ResponseEntity<?> postPlace(@RequestBody Place place) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		place.setUser(auth);
+		return ResponseEntity.ok(placeRepository.save(place));
+	}
+
+	@GetMapping("/place")
+	public ResponseEntity<?> getPlace() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		return ResponseEntity.ok(stored.getPlaces());
+	}
+
+	@JsonView(Summary.class)
+	@GetMapping("/search")
+	public ResponseEntity<?> searchUser(@RequestParam String q) {
+		List result = null;
+
+		try {
+			result = userSearchRepository.search(q);
+		} catch (Exception ex) {
+			System.err.println(ex);
+		}
+
+		return ResponseEntity.ok(result);
+	}
+
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
-	    System.err.println(e);
-	}	
+		System.err.println(e);
+	}
 }

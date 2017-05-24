@@ -6,7 +6,12 @@ export default {
   role: {
     owner: "Vlastník",
     administrator: "Administrátor",
-    reporter: "Prispievateľ"
+    reporter: "Prispievateľ",
+    visitor: "Navštevník"
+  },
+  administrator: {
+    active: "Aktívny",
+    inactive: "Neaktívny"
   },
   page: {
     name: 'Názov',
