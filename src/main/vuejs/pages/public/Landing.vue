@@ -17,6 +17,37 @@
       </div>
     </section>
   
+    <section class="section bg-gray">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+  
+            <div class="text-center">
+              <h2 class="title">Still don't know what to do today ? </h2>
+              <p class="sub-title">Bookster is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
+            </div>
+  
+            <div class="inbox-widget">
+              <router-link :to="'event/' + event.id" v-for="event in eventsPaginator.content" :key="event.id">
+                <div class="inbox-item">
+                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                    <img :src="event.bannerUrl" class="img-circle" alt="">
+                  </div>
+                  <p class="inbox-item-author" v-text="event.name"></p>
+                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
+                </div>
+              </router-link>
+  
+              <div class="text-center">
+                <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
     <section class="section" id="how-it-work">
       <div class="container">
         <div class="row">
@@ -53,7 +84,7 @@
                   <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
                   <div class="service-detail">
                     <h4>Manage attendants</h4>
-                    <p>With bookster it is ease to see who is going to take place on your event. And even you can notify attendants about programme changes.</p>
+                    <p>With bookster it is easy to see who is going to take place on your event. And even you can notify attendants about programme changes and updates.</p>
                   </div>
                 </div>
               </div>
@@ -154,10 +185,34 @@
 
 <script>
 import Pricing from '../static/Pricing.vue'
+import Paginator from '../../elements/Paginator.vue'
 export default {
   name: 'landing',
   components: {
-    Pricing
+    Pricing, Paginator
+  },
+  data() {
+    return {
+      eventsPaginator: {},
+    }
+  },
+  created() {
+    this.getEvents(0);
+  },
+  methods: {
+    getEvents(page) {
+      var url = ['public/events', page, 5].join('/');
+      this.$http.get(url).then(response => {
+        this.eventsPaginator = response.body;
+      })
+    },
+    eventsPaginatorNavigate(e) {
+      if (e.direction != null) {
+        this.getEvents(this.eventsPaginator.number + e.direction);
+      } else if (e.page != null) {
+        this.getEvents(e.page);
+      }
+    }
   }
 }
 </script>
@@ -204,7 +259,7 @@ export default {
 }
 
 .bg-img-1 {
-  background: url(https://cdn.pixabay.com/photo/2016/04/06/17/08/notepad-1312280_960_720.jpg);
+  background: url(http://www.dolcemexico.com/restaurant/wp-content/uploads/2015/01/contacto1.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
 }

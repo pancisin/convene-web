@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 text-center">
-        <h1 class="title zoomIn animated wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">Simple Pricing</h1>
-        <p class="sub-title zoomIn animated wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: zoomIn;">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
+        <h1 class="title">Bookster pricing</h1>
+        <p class="sub-title">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
           <br> text of the printing and typesetting industry. </p>
       </div>
     </div>
@@ -12,12 +12,12 @@
         <div class="row">
   
           <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="pricing-item animated fadeInLeft wow animated" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+            <div class="pricing-item">
               <div class="pricing-item-inner">
                 <div class="pricing-wrap">
   
                   <div class="pricing-num pricing-num-pink">
-                    <sup>$</sup>99
+                    <sup><i class="fa fa-euro"></i></sup>9
                   </div>
                   <div class="pr-per">
                     per month
@@ -38,7 +38,7 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                    <a href="" class="btn btn-primary btn-rounded">Buy Now</a>
                   </div>
                 </div>
               </div>
@@ -54,14 +54,14 @@
                 <div class="pricing-wrap">
   
                   <div class="pricing-num">
-                    <sup>$</sup>199
+                    <sup><i class="fa fa-euro"></i></sup>29
                   </div>
                   <div class="pr-per">
                     per month
                   </div>
   
                   <div class="pricing-title">
-                    Professional Pack
+                    Premium Pack
                   </div>
   
                   <div class="pricing-features">
@@ -75,7 +75,7 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                    <a href="" class="btn btn-primary btn-rounded">Buy Now</a>
                   </div>
                 </div>
               </div>
@@ -88,7 +88,7 @@
                 <div class="pricing-wrap">
   
                   <div class="pricing-num pricing-num-yellow">
-                    <sup>$</sup>299
+                    <sup><i class="fa fa-euro"></i></sup>89
                   </div>
                   <div class="pr-per">
                     per month
@@ -109,7 +109,7 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                    <a href="" class="btn btn-primary btn-rounded disabled"><s>Buy Now</s></a>
                   </div>
                 </div>
               </div>
