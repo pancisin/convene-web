@@ -92,4 +92,9 @@ public class Conference implements IAuthor {
 	public String getDisplayName() {
 		return this.name;
 	}
+
+	@Override
+	public String getType() {
+		return "conference";
+	}
 }

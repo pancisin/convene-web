@@ -81,7 +81,7 @@
         <div id="navigation" class="active">
           <ul class="navigation-menu">
             <li>
-              <router-link to="/" class="waves-effect">
+              <router-link to="/" class="waves-effect" exact>
                 <i class="material-icons">home</i> {{ $t('client.menu.home') }}
               </router-link>
             </li>
