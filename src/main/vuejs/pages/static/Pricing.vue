@@ -1,98 +1,120 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 m-b-20">
-        <div class="text-center">
-          <h3 class="font-600">Pricing</h3>
-          <p class="text-muted"> Please select a package that fits to your bussiness or try free version.</p>
-        </div>
+      <div class="col-sm-12 text-center">
+        <h1 class="title zoomIn animated wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">Simple Pricing</h1>
+        <p class="sub-title zoomIn animated wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: zoomIn;">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
+          <br> text of the printing and typesetting industry. </p>
       </div>
-  
-      <div class="col-lg-9 center-page">
+    </div>
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
         <div class="row">
-          <article class="pricing-column col-lg-4 col-md-4">
-            <div class="inner-box card-box">
-              <div class="plan-header text-center">
-                <h3 class="plan-title">Starter Pack</h3>
-                <h2 class="plan-price">$9</h2>
-                <div class="plan-duration">Per Month</div>
-              </div>
-              <ul class="plan-stats list-unstyled text-center">
-                <li>
-                  <i class="ti-cloud text-success"></i> 20 events per month
-                </li>
-                <li>
-                  <i class="ti-briefcase text-success"></i> 1 dedicated page
-                </li>
-                <li>
-                  <i class="ti-briefcase text-success"></i> 3 services per page
-                </li>
-              </ul>
   
-              <div class="text-center">
-                <a href="#" class="btn btn-danger btn-bordred btn-rounded waves-effect waves-light">Signup Now</a>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="pricing-item animated fadeInLeft wow animated" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+              <div class="pricing-item-inner">
+                <div class="pricing-wrap">
+  
+                  <div class="pricing-num pricing-num-pink">
+                    <sup>$</sup>99
+                  </div>
+                  <div class="pr-per">
+                    per month
+                  </div>
+  
+                  <div class="pricing-title">
+                    Starter Pack
+                  </div>
+  
+                  <div class="pricing-features">
+                    <ul class="sf-list pr-list">
+                      <li>5 Projects</li>
+                      <li>1 GB Storage</li>
+                      <li>No Domain</li>
+                      <li>1 User</li>
+                      <li>Free Support</li>
+                    </ul>
+                  </div>
+  
+                  <div class="pr-button">
+                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                  </div>
+                </div>
               </div>
             </div>
-          </article>
+          </div>
   
-          <article class="pricing-column col-lg-4 col-md-4">
-            <div class="ribbon">
-              <span>POPULAR</span>
-            </div>
-            <div class="inner-box card-box">
-              <div class="plan-header text-center">
-                <h3 class="plan-title">Professional Pack</h3>
-                <h2 class="plan-price">$29</h2>
-                <div class="plan-duration">Per Month</div>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="pricing-item main animated fadeInLeft wow animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+              <div class="ribbon">
+                <span>POPULAR</span>
               </div>
-              <ul class="plan-stats list-unstyled text-center">
-                <li>
-                  <i class="ti-cloud text-success"></i> Unlimited events
-                </li>
-                <li>
-                  <i class="ti-briefcase text-success"></i> 10 dedicated pages
-                </li>
-                <li>
-                  <i class="ti-wand text-success"></i> 1 conference per year
-                </li>
-              </ul>
+              <div class="pricing-item-inner">
+                <div class="pricing-wrap">
   
-              <div class="text-center">
-                <a href="#" class="btn btn-danger btn-bordred btn-rounded waves-effect waves-light">Signup Now</a>
-              </div>
-            </div>
-          </article>
+                  <div class="pricing-num">
+                    <sup>$</sup>199
+                  </div>
+                  <div class="pr-per">
+                    per month
+                  </div>
   
-          <article class="pricing-column col-lg-4 col-md-4">
-            <div class="inner-box card-box">
-              <div class="plan-header text-center">
-                <h3 class="plan-title">Enterprise Pack</h3>
-                <h2 class="plan-price">$89</h2>
-                <div class="plan-duration">Per Month</div>
-              </div>
-              <ul class="plan-stats list-unstyled text-center">
-                <li>
-                  <i class="ti-wand text-success"></i> Unlimited events
-                </li>
-                <li>
-                  <i class="ti-cloud text-success"></i> Unlimited pages
-                </li>
-                <li>
-                  <i class="ti-cloud text-success"></i> Unlimited services
-                </li>
-                <li>
-                  <i class="ti-briefcase text-success"></i> Unlimited conferences
-                </li>
-                <li>
-                  <i class="ti-headphone-alt text-success"></i> 24x7 Support
-                </li>
-              </ul>
+                  <div class="pricing-title">
+                    Professional Pack
+                  </div>
   
-              <div class="text-center">
-                <button disabled class="btn btn-danger btn-bordred btn-rounded waves-effect waves-light btn-disabled">Signup Now</button>
+                  <div class="pricing-features">
+                    <ul class="sf-list pr-list">
+                      <li>5 Projects</li>
+                      <li>1 GB Storage</li>
+                      <li>No Domain</li>
+                      <li>1 User</li>
+                      <li>Free Support</li>
+                    </ul>
+                  </div>
+  
+                  <div class="pr-button">
+                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                  </div>
+                </div>
               </div>
             </div>
-          </article>
+          </div>
+  
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <div class="pricing-item animated fadeInLeft wow animated" data-wow-delay=".7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+              <div class="pricing-item-inner">
+                <div class="pricing-wrap">
+  
+                  <div class="pricing-num pricing-num-yellow">
+                    <sup>$</sup>299
+                  </div>
+                  <div class="pr-per">
+                    per month
+                  </div>
+  
+                  <div class="pricing-title">
+                    Enterprise Pack
+                  </div>
+  
+                  <div class="pricing-features">
+                    <ul class="sf-list pr-list">
+                      <li>5 Projects</li>
+                      <li>1 GB Storage</li>
+                      <li>No Domain</li>
+                      <li>1 User</li>
+                      <li>Free Support</li>
+                    </ul>
+                  </div>
+  
+                  <div class="pr-button">
+                    <a href="" class="btn btn-primary btn-rnd">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

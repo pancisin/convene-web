@@ -11,7 +11,7 @@ const store = new Vuex.Store({
     conferences: []
   },
   mutations: {
-     setUser(state, { user }) {
+    setUser(state, { user }) {
       state.user = user;
     },
     addNotification(state, notification) {
