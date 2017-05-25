@@ -15,26 +15,26 @@
     <div class="container">
   
       <!--<ul class="list-inline" v-if="categories != null">
-                <li v-for="cat in categories" :key="cat.id">
-                  <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
-                    {{ $t('category.' + cat.code + '.default') }}
-                  </a>
-                </li>
-              </ul>
-          -->
+                    <li v-for="cat in categories" :key="cat.id">
+                      <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
+                        {{ $t('category.' + cat.code + '.default') }}
+                      </a>
+                    </li>
+                  </ul>
+              -->
       <!--<ul class="list-inline" v-if="filters.category != null">
-                        <li v-for="branch in branches" :key="branch.id">
-                          <a class="btn btn-default">
-                            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-                          </a>
-                        </li>
-                      </ul>-->
+                            <li v-for="branch in branches" :key="branch.id">
+                              <a class="btn btn-default">
+                                {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+                              </a>
+                            </li>
+                          </ul>-->
   
       <div class="row">
         <div class="col-md-3">
           <div class="list-group m-t-10">
-            <stagger-transition :delay="50">
-              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :data-index="index">
+            <stagger-transition>
+              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :data-index="index" @click="filters.branch = branch">
                 {{ $t('category.' + filters.category.code + '.' + branch.code) }}
               </a>
             </stagger-transition>
@@ -75,12 +75,21 @@ export default {
       branches: [],
 
       filters: {
-        category: null,
+        category: 0,
+        branch: 0,
       }
     }
   },
   components: {
     StaggerTransition
+  },
+  watch: {
+    filters: {
+      handler() {
+        this.getPages();
+      },
+      deep: true
+    }
   },
   created() {
     this.getCategories();
@@ -88,7 +97,12 @@ export default {
   },
   methods: {
     getPages() {
-      this.$http.get('public/pages/0/100').then(response => {
+      this.$http.get('public/pages/0/100', {
+        params: {
+          categoryId: this.filters.category ? this.filters.category.id : null,
+          branchId: this.filters.branch ? this.filters.branch.id : null,
+        }
+      }).then(response => {
         this.pages = response.body.content;
       })
     },
@@ -102,7 +116,8 @@ export default {
     },
     selectCategory(category) {
       if (this.filters.category != null && this.filters.category.id == category.id) return;
-      
+
+      this.filters.branch = 0;
       this.filters.category = category;
       var url = ['public/categories', category.id, 'branches'].join('/');
       this.$http.get(url).then(response => {
@@ -128,6 +143,7 @@ export default {
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: #3bafda;
   text-align: center;
+  max-width: 350px;
 
   img {
     min-width: 100%;
