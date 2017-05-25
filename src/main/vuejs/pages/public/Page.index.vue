@@ -1,55 +1,71 @@
 <template>
-  <div class="container">
-  
-    <ul class="list-inline" v-if="categories != null">
-      <li v-for="cat in categories" :key="cat.id">
-        <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
-          {{ $t('category.' + cat.code + '.default') }}
-        </a>
-      </li>
-    </ul>
-  
-    <!--<ul class="list-inline" v-if="filters.category != null">
-        <li v-for="branch in branches" :key="branch.id">
-          <a class="btn btn-default">
-            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-          </a>
-        </li>
-      </ul>-->
-  
-    <div class="row">
-      <div class="col-md-3">
-        <div class="list-group m-t-10">
-          <a v-for="branch in branches" :key="branch.id" class="list-group-item waves-effect">
-            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-          </a>
-        </div>
+  <div>
+    <div class="categories-nav">
+      <div class="container">
+        <ul class="list-inline" v-if="categories != null">
+          <li v-for="cat in categories" :key="cat.id">
+            <a class="waves-effect" @click="selectCategory(cat)" :class="{ 'active' : filters.category.id == cat.id }">
+              {{ $t('category.' + cat.code + '.default') }}
+            </a>
+          </li>
+        </ul>
       </div>
+    </div>
   
-      <div class="col-md-9">
-        <div class="explore-container">
-          <div class="page-panel" v-for="page in pages">
-            <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
-            <img v-else src="/bookster_logo.png" style="min-width:auto" />
+    <div class="container">
   
-            <div class="title">
-              <router-link :to="'page/' + page.id">
-                <h4 v-text="page.name"></h4>
-              </router-link>
-              <small class="text-muted" v-if="page.category != null">
-                {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-              </small>
+      <!--<ul class="list-inline" v-if="categories != null">
+                <li v-for="cat in categories" :key="cat.id">
+                  <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
+                    {{ $t('category.' + cat.code + '.default') }}
+                  </a>
+                </li>
+              </ul>
+          -->
+      <!--<ul class="list-inline" v-if="filters.category != null">
+                        <li v-for="branch in branches" :key="branch.id">
+                          <a class="btn btn-default">
+                            {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+                          </a>
+                        </li>
+                      </ul>-->
+  
+      <div class="row">
+        <div class="col-md-3">
+          <div class="list-group m-t-10">
+            <stagger-transition :delay="50">
+              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :data-index="index">
+                {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+              </a>
+            </stagger-transition>
+          </div>
+        </div>
+  
+        <div class="col-md-9">
+          <div class="explore-container">
+            <div class="page-panel" v-for="page in pages">
+              <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
+              <img v-else src="/bookster_logo.png" style="min-width:auto" />
+  
+              <div class="title">
+                <router-link :to="'page/' + page.id">
+                  <h4 v-text="page.name"></h4>
+                </router-link>
+                <small class="text-muted" v-if="page.category != null">
+                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                </small>
+              </div>
             </div>
           </div>
         </div>
+  
       </div>
-  
     </div>
-  
   </div>
 </template>
 
 <script>
+import StaggerTransition from '../../functional/StaggerTransition.vue'
 export default {
   name: 'page-explore',
   data() {
@@ -62,6 +78,9 @@ export default {
         category: null,
       }
     }
+  },
+  components: {
+    StaggerTransition
   },
   created() {
     this.getCategories();
@@ -76,9 +95,12 @@ export default {
     getCategories() {
       this.$http.get('public/categories').then(response => {
         this.categories = response.body;
+        this.selectCategory(this.categories[0])
       })
     },
     selectCategory(category) {
+      if (this.filters.category != null && this.filters.category.id == category.id) return;
+      
       this.filters.category = category;
       var url = ['public/categories', category.id, 'branches'].join('/');
       this.$http.get(url).then(response => {
@@ -124,6 +146,35 @@ export default {
   &:hover {
     img {
       transform: scale(1.1);
+    }
+  }
+}
+
+.categories-nav {
+  background: #fff;
+  margin-top: -15px;
+  margin-bottom: 10px;
+
+  ul {
+    margin: 0;
+
+    li {
+      padding: 0;
+
+      a {
+        padding: 20px;
+        color: #2a3142;
+        font-weight: 500;
+
+        &.active {
+          background-color: #f5f5f5;
+          color: #3bafda;
+        }
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
     }
   }
 }

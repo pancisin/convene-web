@@ -14,6 +14,8 @@
 </head>
 <body class="fixed-left">
   <div id="application"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+
   {% for (var chunk in o.htmlWebpackPlugin.files.chunks) { %}
   <script src="{%=o.htmlWebpackPlugin.files.chunks[chunk].entry %}"></script>
   {% } %}

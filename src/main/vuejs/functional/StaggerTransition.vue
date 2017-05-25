@@ -2,6 +2,12 @@
 // import Velocity from 'velocityjs'
 export default {
   functional: true,
+  props: {
+    delay: {
+      type: Number,
+      default: 150
+    }
+  },
   render: function (createElement, context) {
     var data = {
       props: {
@@ -16,7 +22,7 @@ export default {
           el.style.display = "block"
         },
         enter: function (el, done) {
-          var delay = el.dataset.index * 150
+          var delay = el.dataset.index * context.delay
           setTimeout(function () {
             Velocity(el, {
               opacity: 1,
@@ -28,7 +34,7 @@ export default {
           }, delay)
         },
         leave: function (el, done) {
-          var delay = el.dataset.index * 150
+          var delay = el.dataset.index * context.delay
           setTimeout(function () {
             Velocity(el, {
               opacity: 0,

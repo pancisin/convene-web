@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 text-center">
-        <h1 class="title">Bookster pricing</h1>
+        <h1 class="title">Pricing for authors</h1>
         <p class="sub-title">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
           <br> text of the printing and typesetting industry. </p>
       </div>
