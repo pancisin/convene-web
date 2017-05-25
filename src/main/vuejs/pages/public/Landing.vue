@@ -17,38 +17,7 @@
       </div>
     </section>
   
-    <section class="section bg-gray">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4 col-md-offset-4">
-  
-            <div class="text-center">
-              <h2 class="title">Still don't know what to do today ? </h2>
-              <p class="sub-title">Bookster is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
-            </div>
-  
-            <div class="inbox-widget">
-              <router-link :to="'event/' + event.id" v-for="event in eventsPaginator.content" :key="event.id">
-                <div class="inbox-item">
-                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                    <img :src="event.bannerUrl" class="img-circle" alt="">
-                  </div>
-                  <p class="inbox-item-author" v-text="event.name"></p>
-                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
-                </div>
-              </router-link>
-  
-              <div class="text-center">
-                <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  
-    <section class="section" id="how-it-work">
+    <section class="section bg-gray" id="how-it-work">
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
@@ -94,6 +63,42 @@
   
       </div>
     </section>
+  
+    <section class="section events">
+      <div class="bg-overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 content bg-gray">
+  
+            <div class="text-center">
+              <h2 class="title">Still don't know what to do today ? </h2>
+              <p class="sub-title">Bookster is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
+            </div>
+  
+            <div class="inbox-widget">
+              <stagger-transition tag="span">
+                <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index">
+                  <div class="inbox-item">
+                    <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                      <img :src="event.bannerUrl" class="img-circle" alt="">
+                    </div>
+                    <p class="inbox-item-author" v-text="event.name"></p>
+                    <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
+                    <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
+                  </div>
+                </router-link>
+              </stagger-transition>
+  
+            </div>
+  
+            <div class="text-center">
+              <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
     <section class="section bg-gray" id="features">
       <div class="container">
   
@@ -120,8 +125,8 @@
             </div>
           </div>
   
-          <div class="col-sm-6 col-md-4">
-            <img src="https://us.123rf.com/450wm/WaD/WaD1508/WaD150800036/44047236-flat-vector-document-icon-flat-design-long-shadow-isolated.jpg?ver=6" class="img-responsive">
+          <div class="col-sm-6 col-md-4 text-center">
+            <img src="/notepad_flat.png">
           </div>
   
         </div>
@@ -186,10 +191,11 @@
 <script>
 import Pricing from '../static/Pricing.vue'
 import Paginator from '../../elements/Paginator.vue'
+import StaggerTransition from '../../functional/StaggerTransition.vue'
 export default {
   name: 'landing',
   components: {
-    Pricing, Paginator
+    Pricing, Paginator, StaggerTransition
   },
   data() {
     return {
@@ -368,7 +374,6 @@ export default {
   }
 }
 
-
 .question {
   color: #444;
   font-weight: 400;
@@ -378,5 +383,26 @@ export default {
 .answer {
   color: #97a0af;
   margin-bottom: 30px;
+}
+
+.events {
+  padding: 0;
+  background: url(http://www.citi.io/wp-content/uploads/2015/08/1168-00-06.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  position: relative;
+
+  .content {
+    background: #fff;
+  }
+}
+
+@media (min-width: 992px) {
+  .events .content {
+    padding: 120px;
+    .inbox-widget {
+      min-height: 380px;
+    }
+  }
 }
 </style>

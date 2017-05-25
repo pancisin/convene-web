@@ -33,7 +33,7 @@ export default new VueRouter({
       children: [
         {
           path: '',
-          component: resolve => require(['../pages/public/Landing.vue'], resolve),
+          component: resolve => require(['../pages/public/Home.vue'], resolve),
         },
         {
           path: 'event',
