@@ -13,6 +13,7 @@ import com.pancisin.bookster.models.Category;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.LocaleRepository;
@@ -34,6 +35,9 @@ public class PublicRestController {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Autowired
+	private BranchRepository branchRepository;
+	
 	@GetMapping("/events/{page}/{limit}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit) {
 		return ResponseEntity.ok(eventRepository.getPublic(new PageRequest(page, limit)));
@@ -72,13 +76,12 @@ public class PublicRestController {
 
 	@GetMapping("/categories")
 	public ResponseEntity<?> getCategories() {
-		return ResponseEntity.ok(categoryRepository.findAll());
+		return ResponseEntity.ok(categoryRepository.getUsed());
 	}
 
 	@GetMapping("/categories/{category_id}/branches")
 	public ResponseEntity<?> getBraches(@PathVariable Long category_id) {
-		Category stored = categoryRepository.findOne(category_id);
-		return ResponseEntity.ok(stored.getBranches());
+		return ResponseEntity.ok(branchRepository.getUsed(category_id));
 	}
 
 	@GetMapping("/locales")

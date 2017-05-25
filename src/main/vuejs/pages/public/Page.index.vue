@@ -94,7 +94,9 @@ export default {
     },
     getCategories() {
       this.$http.get('public/categories').then(response => {
-        this.categories = response.body;
+        this.categories = response.body.filter(c => {
+          return c != null;
+        });
         this.selectCategory(this.categories[0])
       })
     },
