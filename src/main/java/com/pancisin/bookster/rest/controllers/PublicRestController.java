@@ -62,11 +62,12 @@ public class PublicRestController {
 
 	@GetMapping("/pages/{page}/{limit}")
 	public ResponseEntity<?> getPages(@PathVariable int page, @PathVariable int limit,
-			@RequestParam(name = "categoryId") Long categoryId, @RequestParam(name = "branchId") Long branchId) {
-		
+			@RequestParam(name = "categoryId", required = false) Long categoryId,
+			@RequestParam(name = "branchId", required = false) Long branchId) {
+
 		org.springframework.data.domain.Page<Page> pages = null;
 		Pageable pageable = new PageRequest(page, limit, new Sort(Sort.Direction.ASC, "name"));
-		
+
 		if (branchId != null) {
 			pages = pageRepository.findByBranch(branchId, pageable);
 		} else if (categoryId != null) {
@@ -74,7 +75,7 @@ public class PublicRestController {
 		} else {
 			pages = pageRepository.findAll(pageable);
 		}
-		
+
 		return ResponseEntity.ok(pages);
 	}
 
@@ -107,7 +108,7 @@ public class PublicRestController {
 	public ResponseEntity<?> getPublic() {
 		return ResponseEntity.ok(localeRepository.findAll());
 	}
-	
+
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {

@@ -20,7 +20,7 @@ export default {
   name: 'layout',
   components: {
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
   },
 }
 </script>

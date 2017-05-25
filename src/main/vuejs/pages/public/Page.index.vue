@@ -4,7 +4,7 @@
       <div class="container">
         <ul class="list-inline" v-if="categories != null">
           <li v-for="cat in categories" :key="cat.id">
-            <a class="waves-effect" @click="selectCategory(cat)" :class="{ 'active' : filters.category.id == cat.id }">
+            <a class="waves-effect" @click="selectCategory(cat.id)" :class="{ 'active' : filters.categoryId == cat.id }">
               {{ $t('category.' + cat.code + '.default') }}
             </a>
           </li>
@@ -13,29 +13,13 @@
     </div>
   
     <div class="container">
-  
-      <!--<ul class="list-inline" v-if="categories != null">
-                    <li v-for="cat in categories" :key="cat.id">
-                      <a class="btn btn-default waves-effect" @click="selectCategory(cat)">
-                        {{ $t('category.' + cat.code + '.default') }}
-                      </a>
-                    </li>
-                  </ul>
-              -->
-      <!--<ul class="list-inline" v-if="filters.category != null">
-                            <li v-for="branch in branches" :key="branch.id">
-                              <a class="btn btn-default">
-                                {{ $t('category.' + filters.category.code + '.' + branch.code) }}
-                              </a>
-                            </li>
-                          </ul>-->
-  
       <div class="row">
         <div class="col-md-3">
           <div class="list-group m-t-10">
             <stagger-transition>
-              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :data-index="index" @click="filters.branch = branch">
-                {{ $t('category.' + filters.category.code + '.' + branch.code) }}
+              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :class="{ 'active' : filters.branchId == branch.id }" :data-index="index" @click="selectBranch(branch.id)">
+                <!--{{ $t('category.' + filters.category.code + '.' + branch.code) }}-->
+                {{ branch.code }}
               </a>
             </stagger-transition>
           </div>
@@ -43,7 +27,7 @@
   
         <div class="col-md-9">
           <div class="explore-container">
-            <div class="page-panel" v-for="page in pages">
+            <div class="page-panel" v-for="page in pagesPaginator.content">
               <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
               <img v-else src="/bookster_logo.png" style="min-width:auto" />
   
@@ -57,15 +41,22 @@
               </div>
             </div>
           </div>
-        </div>
   
+          <div class="row">
+            <div class="col-xs-12 text-center">
+              <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+            </div>
+          </div>
+        </div>
       </div>
+  
     </div>
   </div>
 </template>
 
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue'
+import Paginator from '../../elements/Paginator.vue'
 export default {
   name: 'page-explore',
   data() {
@@ -74,36 +65,27 @@ export default {
       categories: [],
       branches: [],
 
-      filters: {
-        category: 0,
-        branch: 0,
-      }
+      pagesPaginator: {},
+      filters: null,
     }
   },
   components: {
-    StaggerTransition
-  },
-  watch: {
-    filters: {
-      handler() {
-        this.getPages();
-      },
-      deep: true
-    }
+    StaggerTransition, Paginator
   },
   created() {
+    this.filters = {
+      branchId: this.$route.query.branchId,
+      categoryId: this.$route.query.categoryId
+    }
+
     this.getCategories();
-    this.getPages();
+    this.getPages(0);
   },
   methods: {
-    getPages() {
-      this.$http.get('public/pages/0/100', {
-        params: {
-          categoryId: this.filters.category ? this.filters.category.id : null,
-          branchId: this.filters.branch ? this.filters.branch.id : null,
-        }
-      }).then(response => {
-        this.pages = response.body.content;
+    getPages(page) {
+      var url = ['public/pages', page, 10].join('/');
+      this.$http.get(url, { params: this.filters }).then(response => {
+        this.pagesPaginator = response.body;
       })
     },
     getCategories() {
@@ -111,18 +93,49 @@ export default {
         this.categories = response.body.filter(c => {
           return c != null;
         });
-        this.selectCategory(this.categories[0])
+
+        if (this.filters.categoryId == null) {
+          this.filters.categoryId = this.categories[0].id;
+        }
+
+        this.getBranches(this.filters.categoryId);
       })
     },
-    selectCategory(category) {
-      if (this.filters.category != null && this.filters.category.id == category.id) return;
-
-      this.filters.branch = 0;
-      this.filters.category = category;
-      var url = ['public/categories', category.id, 'branches'].join('/');
+    getBranches(category_id) {
+      var url = ['public/categories', category_id, 'branches'].join('/');
       this.$http.get(url).then(response => {
         this.branches = response.body;
       })
+    },
+    selectCategory(category_id) {
+      if (this.filters.categoryId == category_id) return;
+
+      this.filters = {
+        branchId: null,
+        categoryId: category_id
+      }
+
+      this.getBranches(category_id);
+      this.getPages(0);
+      this.$router.replace({ query: this.filters })
+    },
+    selectBranch(branch_id) {
+      if (this.filters.branchId == branch_id) return;
+
+      this.filters = {
+        branchId: branch_id,
+        categoryId: this.filters.categoryId
+      }
+
+      this.getPages(0);
+      this.$router.replace({ query: this.filters })
+    },
+    pagesPaginatorNavigate(e) {
+      if (e.direction != null) {
+        this.getPages(this.pagesPaginator.number + e.direction);
+      } else if (e.page != null) {
+        this.getPages(e.page);
+      }
     },
   }
 }
