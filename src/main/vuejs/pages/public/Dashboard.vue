@@ -7,16 +7,18 @@
           <span slot="title">Where am i going</span>
   
           <div class="inbox-widget mx-box">
-            <router-link :to="'event/' + event.id" v-for="event in attending" :key="event.id">
-              <div class="inbox-item">
-                <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                  <img :src="event.bannerUrl" class="img-circle" alt="">
+            <stagger-transition>
+              <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index">
+                <div class="inbox-item">
+                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                    <img :src="event.bannerUrl" class="img-circle" alt="">
+                  </div>
+                  <p class="inbox-item-author" v-text="event.name"></p>
+                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
                 </div>
-                <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
-              </div>
-            </router-link>
+              </router-link>
+            </stagger-transition>
           </div>
         </panel>
   
@@ -27,17 +29,19 @@
           <span slot="title">Latest events</span>
   
           <div class="inbox-widget">
-            <router-link :to="'event/' + event.id" v-for="event in eventsPaginator.content" :key="event.id">
-              <div class="inbox-item">
-                <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                  <img :src="event.bannerUrl" class="img-circle" alt="">
+            <stagger-transition>
+              <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index">
+                <div class="inbox-item">
+                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                    <img :src="event.bannerUrl" class="img-circle" alt="">
+                  </div>
+                  <p class="inbox-item-author" v-text="event.name"></p>
+                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
                 </div>
-                <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
-              </div>
-            </router-link>
-
+              </router-link>
+            </stagger-transition>
+  
             <div class="text-center">
               <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
             </div>
@@ -54,17 +58,19 @@
           <span slot="title">Suggested pages</span>
   
           <div class="inbox-widget">
-            <router-link :to="'page/' + page.id" v-for="page in pagesPaginator.content" :key="page.id">
-              <div class="inbox-item">
-                <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                  <img :src="page.bannerUrl" class="img-circle">
+            <stagger-transition>
+              <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index">
+                <div class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                    <img :src="page.bannerUrl" class="img-circle">
+                  </div>
+                  <p class="inbox-item-author" v-text="page.name"></p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
                 </div>
-                <p class="inbox-item-author" v-text="page.name"></p>
-                <p class="inbox-item-text" v-if="page.category != null">
-                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                </p>
-              </div>
-            </router-link>
+              </router-link>
+            </stagger-transition>
   
             <div class="text-center">
               <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
@@ -80,6 +86,8 @@
 <script>
 import Auth from '../../services/auth.js'
 import Paginator from '../../elements/Paginator.vue'
+import StaggerTransition from '../../functional/StaggerTransition.vue'
+
 export default {
   name: 'dashboard',
   data() {
@@ -99,7 +107,7 @@ export default {
     this.getPages(0);
   },
   components: {
-    Paginator
+    Paginator, StaggerTransition
   },
   computed: {
     authenticated() {
@@ -132,7 +140,7 @@ export default {
       }
     },
     eventsPaginatorNavigate(e) {
-       if (e.direction != null) {
+      if (e.direction != null) {
         this.getEvents(this.eventsPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
