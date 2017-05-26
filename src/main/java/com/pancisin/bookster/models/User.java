@@ -123,7 +123,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "owner")
 	private List<Conference> conferences;
@@ -132,7 +132,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.ROLE_VISITOR;
-	
+
 	@ManyToOne
 	@JsonView(Summary.class)
 	private Locale locale;
@@ -140,12 +140,14 @@ public class User implements UserDetails, Principal, IAuthor {
 	@OneToMany(mappedBy = "user")
 	@JsonIgnore
 	private List<Place> places;
-	
+
 	@Transient
 	public UserSubscription getLicense() {
-		Optional<UserSubscription> subscription = subscriptions.stream().filter(s -> s.getState() == SubscriptionState.ACTIVE).findFirst();
-		
-		if (subscription.isPresent()) 
+		Optional<UserSubscription> subscription = subscriptions.stream()
+				.filter(s -> s.getState() == SubscriptionState.ACTIVE || s.getState() == SubscriptionState.NEW)
+				.findFirst();
+
+		if (subscription.isPresent())
 			return subscription.get();
 		else {
 			UserSubscription free = new UserSubscription();
@@ -154,7 +156,7 @@ public class User implements UserDetails, Principal, IAuthor {
 			return free;
 		}
 	}
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -274,7 +276,8 @@ public class User implements UserDetails, Principal, IAuthor {
 	public List<Page> getPages() {
 		if (this.pageAdministrators != null)
 			return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
-		else return null;
+		else
+			return null;
 	}
 
 	public List<Conference> getConferences() {
@@ -313,5 +316,13 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	public List<Place> getPlaces() {
 		return places;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 }

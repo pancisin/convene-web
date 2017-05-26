@@ -1,71 +1,63 @@
 <template>
-  <div class="card card-mini">
-    <div class="card-header">
-      <div class="card-title">Billing</div>
-      <ul class="card-action">
-        <li>
-          <a @click="getLicenses()">
-            <i class="fa fa-refresh"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="card-body no-padding table-responsive">
-      <table class="table card-table">
-        <thead>
-          <tr>
-            <th>Products</th>
-            <th class="right">Expires</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="license in licenses">
-            <td>Basic license</td>
-            <td class="right">{{ license.expires | moment("dddd, MMMM Do YYYY") }}</td>
-            <td>
-              <span class="badge badge-info badge-icon"
-                    v-if="license.status == 'NEW'">
-                        <i class="fa fa-credit-card" aria-hidden="true"></i>
-                        <span>Payment required</span>
-              </span>
-              <span class="badge badge-success badge-icon"
-                    v-if="license.status == 'ACTIVE'">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                        <span>Paid & active</span>
-              </span>
-              <span class="badge badge-danger badge-icon"
-                    v-if="license.status == 'EXPIRED'">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                        <span>Expired</span>
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <panel type="table">
+    <span slot="title">License</span>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>License</th>
+          <th>Price</th>
+          <th>Acquired</th>
+          <th>Expires</th>
+          <th>State</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(sub, index) in subscriptions" :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }">
+          <td v-text="index"></td>
+          <td>
+            {{ $t(sub.subscription.code) }}
+          </td>
+          <td>
+            <b>{{ sub.subscription.price }}</b>
+            <i class="fa fa-euro"></i>
+          </td>
+          <td>{{ sub.acquired | moment($store.getters.locale.dateFormat) }}</td>
+          <td>{{ sub.expires | moment($store.getters.locale.dateFormat) }}</td>
+          <td>{{ $t(sub.state.code) }}</td>
+          <td>
+            <a class="btn btn-rounded btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
+              {{ $t('subscription.pay') }}
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </panel>
 </template>
-  
-  <script>
-  export default {
-    name: 'licenses',
-    data: function () {
-      return {
-        licenses: [],
-      }
-    },
-    created: function () {
-      this.getLicenses();
-    },
-    methods: {
-      getLicenses: function () {
-        var url = ['api/company', this.$store.getters.company_id, 'licenses'].join('/');
 
-        this.$http.get(url).then(response => {
-          this.licenses = response.body;
-        });
-      }
+<script>
+export default {
+  name: 'licenses',
+  data() {
+    return {
+      subscriptions: [],
+    }
+  },
+  created() {
+    this.getSubscriptions();
+  },
+  methods: {
+    getSubscriptions() {
+      this.$http.get('api/user/subscription').then(response => {
+        this.subscriptions = response.body;
+      })
     }
   }
-  </script>
+}
+</script>
+
+<style>
+
+</style>

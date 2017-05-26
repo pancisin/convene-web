@@ -24,5 +24,18 @@ export default {
     minute: 'Minute',
     squared_meter: 'Squared meter',
     piece: 'Piece'
+  },
+  subscription: {
+    starter: 'Starter',
+    professional: 'Premium',
+    enterprise: 'Enterprise',
+
+    state: {
+      new: 'New',
+      active: 'Active',
+      expired: 'Expired',
+      unpaid: 'Unpaid'
+    },
+    pay: 'Pay'
   }
 }

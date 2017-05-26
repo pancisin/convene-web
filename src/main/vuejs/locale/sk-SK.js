@@ -24,5 +24,17 @@ export default {
     minute: 'Minúta',
     squared_meter: 'Štvorcový meter',
     piece: 'Kus'
+  },
+  subscription: {
+    starter: 'Jednoduchá',
+    professional: 'Prémium',
+    enterprise: 'Firemná',
+    state: {
+      new: 'Nová',
+      active: 'Aktívna',
+      expired: 'Ukončená',
+      unpaid: 'Nevyplatená'
+    },
+    pay: 'Vyplatiť'
   }
 }

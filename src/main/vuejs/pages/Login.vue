@@ -3,7 +3,8 @@
   
     <div class="text-center">
       <router-link to="/" class="logo-lg">
-        <i class="fa fa-book"></i> <span>Bookster</span>
+        <i class="fa fa-book"></i>
+        <span>Bookster</span>
       </router-link>
     </div>
   
@@ -43,7 +44,8 @@
   
       <div class="form-group m-t-30">
         <div class="col-sm-7">
-          <a class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+          <a class="text-muted">
+            <i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
         </div>
         <div class="col-sm-5 text-right">
           <router-link to="/register" class="text-muted">
@@ -69,7 +71,9 @@ export default {
   methods: {
     submit: function () {
       this.fieldErrors = [];
-      Auth.login(this, this.user, '/');
+
+      var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+      Auth.login(this, this.user, redirect);
     }
   }
 };

@@ -6,6 +6,7 @@ import store from './store.js'
 import Auth from './auth.js';
 
 const require_auth = (to, from, next) => {
+  console.log(from);
   if (!Auth.user.authenticated) {
     next({
       path: '/login',
@@ -231,37 +232,15 @@ export default new VueRouter({
           path: 'privacy-policy',
           component: resolve => require(['../pages/static/Privacy.vue'], resolve)
         },
-
-
         {
-          path: 'chat',
-          component: resolve => require(['../pages/Chat.vue'], resolve)
-        },
-        {
-          path: '/settings',
-          component: resolve => require(['../pages/settings/Settings.layout.vue'], resolve),
-          redirect: '/settings/account',
+          path: 'settings',
+          component: resolve => require(['../pages/Settings.vue'], resolve),
+          redirect: '/admin/settings/license',
           children: [
-            {
-              path: 'account',
-              component: resolve => require(['../pages/settings/Account.vue'], resolve)
-            },
-            {
-              path: 'company',
-              component: resolve => require(['../pages/settings/Company.vue'], resolve)
-            },
             {
               path: 'license',
               component: resolve => require(['../pages/settings/License.vue'], resolve)
             },
-            {
-              path: 'task',
-              component: resolve => require(['../pages/settings/Tasks.vue'], resolve)
-            },
-            {
-              path: 'users',
-              component: resolve => require(['../pages/settings/Users.vue'], resolve)
-            }
           ]
         }
       ]

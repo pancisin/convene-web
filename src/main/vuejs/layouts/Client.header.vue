@@ -32,7 +32,7 @@
               </a>
               <ul class="dropdown-menu" v-if="auth.user.authenticated">
                 <li>
-                  <router-link to="/admin">
+                  <router-link to="/admin" v-if="$store.getters.isAdmin">
                     <i class="ti-user m-r-5"></i> Admin</router-link>
                 </li>
                 <li>
@@ -86,17 +86,17 @@
               </router-link>
             </li>
             <!--<li>
-                                  <router-link to="/event">
-                                    <i class="material-icons">event</i> My events</router-link>
-                                </li>-->
+                                    <router-link to="/event">
+                                      <i class="material-icons">event</i> My events</router-link>
+                                  </li>-->
             <li>
               <router-link to="/explore" class="waves-effect">
                 <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
             </li>
             <!--<li>
-                                  <router-link to="/conference">
-                                    <i class="material-icons">people</i> Conferences</router-link>
-                                </li>-->
+                                    <router-link to="/conference">
+                                      <i class="material-icons">people</i> Conferences</router-link>
+                                  </li>-->
             <li class="has-submenu">
               <a>
                 <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
@@ -104,11 +104,11 @@
                 <li>
                   <ul>
                     <!--<li>
-                                <a href="pages-blank.html">About</a>
-                              </li>
-                              <li>
-                                <a>Developers</a>
-                              </li>-->
+                                  <a href="pages-blank.html">About</a>
+                                </li>
+                                <li>
+                                  <a>Developers</a>
+                                </li>-->
                     <li>
                       <router-link to="pricing">
                         Pricing
