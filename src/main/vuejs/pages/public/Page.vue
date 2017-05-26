@@ -95,6 +95,16 @@ export default {
   methods: {
     getPage() {
       var page_id = this.$route.params.id;
+
+      if (page_id == null) {
+        var reg = new RegExp("www|bookster|localhost:3000");
+        var parts = window.location.host.split(".");
+
+        if (!reg.test(parts[0])) {
+          page_id = parts[0];
+        }
+      }
+
       if (page_id != null) {
         if (Auth.user.authenticated)
           this.$http.get('api/page/' + page_id).then(response => {

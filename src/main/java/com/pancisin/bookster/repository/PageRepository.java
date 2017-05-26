@@ -18,4 +18,6 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
 	@Query("SELECT page FROM Page page JOIN page.branch branch WHERE branch.id = :branch_id")
 	public org.springframework.data.domain.Page<Page> findByBranch(@Param("branch_id") Long branch_id, Pageable pageable);
+
+	public Page findBySlug(String slug);
 }

@@ -29,11 +29,15 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: resolve => require(['../layouts/Client.vue'], resolve),
+      component: resolve => {
+        var reg = new RegExp("www|bookster|localhost:3000");
+        var parts = window.location.host.split(".");
+        return reg.test(parts[0]) ? require(['../layouts/Client.vue'], resolve) : require(['../pages/public/Page.standalone.vue'], resolve);
+      },
       children: [
         {
           path: '',
-          component: resolve => require(['../pages/public/Home.vue'], resolve),
+          component: resolve => require(['../pages/public/Home.vue'], resolve)
         },
         {
           path: 'event',
@@ -43,10 +47,6 @@ export default new VueRouter({
           path: 'event/:id',
           component: resolve => require(['../pages/public/Event.public.vue'], resolve),
         },
-        // {
-        //   path: 'conference',
-        //   component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
-        // },
         {
           path: 'explore',
           component: resolve => require(['../pages/public/Page.index.vue'], resolve)

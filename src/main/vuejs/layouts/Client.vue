@@ -3,9 +3,11 @@
     <header-component></header-component>
   
     <div class="content">
-      <transition name="fade-down" mode="out-in">
-        <router-view></router-view>
-      </transition>
+      <keep-alive>
+        <transition name="fade-down" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </keep-alive>
     </div>
   
     <footer-component></footer-component>

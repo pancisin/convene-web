@@ -79,9 +79,14 @@ public class PublicRestController {
 		return ResponseEntity.ok(pages);
 	}
 
-	@GetMapping("/page/{page_id}")
-	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
-		return ResponseEntity.ok(pageRepository.findOne(page_id));
+	@GetMapping("/page/{page_identifier}")
+	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
+		try {
+			Long page_id = Long.parseLong((String)page_identifier);
+			return ResponseEntity.ok(pageRepository.findOne(page_id));
+		} catch (NumberFormatException ex) {
+			return ResponseEntity.ok(pageRepository.findBySlug((String)page_identifier));
+		}
 	}
 
 	@GetMapping("/page/{page_id}/service")

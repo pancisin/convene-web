@@ -18,16 +18,15 @@
           <div class="list-group m-t-10">
             <stagger-transition>
               <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :class="{ 'active' : filters.branchId == branch.id }" :data-index="index" @click="selectBranch(branch.id)">
-                <!--{{ $t('category.' + filters.category.code + '.' + branch.code) }}-->
-                {{ branch.code }}
+                {{ $t('category.' + currentCategory.code + '.' + branch.code) }} {{ branch.code }}
               </a>
             </stagger-transition>
           </div>
         </div>
   
         <div class="col-md-9">
-          <div class="explore-container">
-            <div class="page-panel" v-for="page in pagesPaginator.content">
+          <explorer-transition tag="div" class="explore-container">
+            <div class="page-panel" v-for="(page, index) in pagesPaginator.content" :data-index="index" :key="page.id">
               <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
               <img v-else src="/bookster_logo.png" style="min-width:auto" />
   
@@ -40,7 +39,7 @@
                 </small>
               </div>
             </div>
-          </div>
+          </explorer-transition>
   
           <div class="row">
             <div class="col-xs-12 text-center">
@@ -49,13 +48,13 @@
           </div>
         </div>
       </div>
-  
     </div>
   </div>
 </template>
 
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue'
+import ExplorerTransition from '../../functional/ExplorerTransition.vue'
 import Paginator from '../../elements/Paginator.vue'
 export default {
   name: 'page-explore',
@@ -64,13 +63,12 @@ export default {
       pages: [],
       categories: [],
       branches: [],
-
       pagesPaginator: {},
       filters: null,
     }
   },
   components: {
-    StaggerTransition, Paginator
+    StaggerTransition, Paginator, ExplorerTransition
   },
   created() {
     this.filters = {
@@ -80,6 +78,13 @@ export default {
 
     this.getCategories();
     this.getPages(0);
+  },
+  computed: {
+    currentCategory() {
+      return this.categories.filter(x => {
+        return x.id == this.filters.categoryId;
+      })[0];
+    }
   },
   methods: {
     getPages(page) {

@@ -43,6 +43,9 @@ public class Page implements IAuthor {
 	@JsonView(Compact.class)
 	private String name;
 
+	@JsonView(Compact.class)
+	private String slug;
+	
 	@Lob
 	@Column
 	private String summary = "";
@@ -161,5 +164,13 @@ public class Page implements IAuthor {
 	@Override
 	public String getType() {
 		return "page";
+	}
+
+	public String getSlug() {
+		return slug;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 }
