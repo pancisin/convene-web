@@ -36,6 +36,7 @@ import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.UserSubscription;
 import com.pancisin.bookster.models.enums.Role;
+import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -88,7 +89,7 @@ public class UserController {
 		return ResponseEntity.ok(stored);
 	}
 
-	@PutMapping("/me")
+	@PutMapping
 	public ResponseEntity<User> updateMe(@RequestBody User user) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -191,7 +192,7 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 
-		if (stored.getLicense() == null) {
+		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
 			if (stored.getRole() != Role.ROLE_ADMINISTRATOR) {
 				stored.setRole(Role.ROLE_ADMINISTRATOR);
 				userRepository.save(stored);

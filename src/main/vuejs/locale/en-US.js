@@ -37,5 +37,22 @@ export default {
       unpaid: 'Unpaid'
     },
     pay: 'Pay'
+  },
+  settings: {
+    default: 'Settings',
+    account: 'Account',
+    notifications: 'Notifications',
+    license: {
+      default: 'License',
+      price: 'Price',
+      acquired: 'Acquired',
+      expires: 'Expires',
+      state: 'State'
+    }
+  },
+  user: {
+    email: 'Email address',
+    firstName: 'First name',
+    lastName: 'Last name'
   }
 }

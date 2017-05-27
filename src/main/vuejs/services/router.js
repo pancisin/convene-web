@@ -235,11 +235,19 @@ export default new VueRouter({
         {
           path: 'settings',
           component: resolve => require(['../pages/Settings.vue'], resolve),
-          redirect: '/admin/settings/license',
+          redirect: '/admin/settings/account',
           children: [
+            {
+              path: 'account',
+              component: resolve => require(['../pages/settings/Account.vue'], resolve)
+            },
             {
               path: 'license',
               component: resolve => require(['../pages/settings/License.vue'], resolve)
+            },
+            {
+              path: 'notifications',
+              component: resolve => require(['../pages/settings/Notifications.vue'], resolve)
             },
           ]
         }

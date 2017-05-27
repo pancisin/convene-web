@@ -36,5 +36,22 @@ export default {
       unpaid: 'Nevyplatená'
     },
     pay: 'Vyplatiť'
+  },
+  settings: {
+    default: 'Nastavenia',
+    account: 'Účet',
+    notifications: 'Oznámenia',
+    license: {
+      default: 'Licencia',
+      price: 'Cena',
+      acquired: 'Získaná',
+      expires: 'Končí',
+      state: 'Stav'
+    }
+  },
+  user: {
+    email: 'Emailová adresa',
+    firstName: 'Krstné meno',
+    lastName: 'Priezvisko'
   }
 }

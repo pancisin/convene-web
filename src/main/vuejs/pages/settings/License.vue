@@ -1,21 +1,21 @@
 <template>
   <panel type="table">
-    <span slot="title">License</span>
+    <span slot="title">{{ $t('settings.license.default') }}</span>
     <table class="table">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>License</th>
-          <th>Price</th>
-          <th>Acquired</th>
-          <th>Expires</th>
-          <th>State</th>
+          <th>#</th>
+          <th>{{ $t('settings.license.default') }}</th>
+          <th>{{ $t('settings.license.price') }}</th>
+          <th>{{ $t('settings.license.acquired') }}</th>
+          <th>{{ $t('settings.license.expires') }}</th>
+          <th>{{ $t('settings.license.state') }}</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(sub, index) in subscriptions" :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }">
-          <td v-text="index"></td>
+          <td v-text="sub.id"></td>
           <td>
             {{ $t(sub.subscription.code) }}
           </td>

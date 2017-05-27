@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
@@ -21,9 +23,11 @@ import com.pancisin.bookster.models.enums.SubscriptionState;
 public class UserSubscription {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
+	@GenericGenerator(name = "invoice_number_generator", strategy = "com.pancisin.bookster.utils.InvoiceNumberGenerator")
+	@GeneratedValue(generator = "invoice_number_generator")  
+	@Column(updatable = false, nullable = false)
+	private String id;
+	
 	@JsonIgnore
 	@ManyToOne(optional = false)
 	private User user;
@@ -39,7 +43,7 @@ public class UserSubscription {
 
 	@Enumerated(EnumType.STRING)
 	private SubscriptionState state = SubscriptionState.NEW;
-
+	
 	public User getUser() {
 		return user;
 	}
@@ -72,11 +76,11 @@ public class UserSubscription {
 		this.state = state;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
 	public Calendar getAcquired() {
 		return acquired;
+	}
+
+	public String getId() {
+		return id;
 	}
 }
