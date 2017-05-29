@@ -23,7 +23,7 @@ public class LicenseService {
 	private UserSubscriptionRepository usRepository;
 
 	// @Scheduled(cron = "0 3 * * * *")
-	@Scheduled(fixedRate = 10000)
+//	@Scheduled(fixedRate = 10000)
 	@Transactional
 	public void checkLicenses() {
 		List<UserSubscription> newSubs = new ArrayList<UserSubscription>();

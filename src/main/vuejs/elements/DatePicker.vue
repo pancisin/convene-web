@@ -3,7 +3,7 @@
     <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
-      <div class="date-picker" v-show="displayDatePicker || inline">
+      <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">
   
         <div class="date-picker-header">
           <a class="btn btn-link" @click="moveCursor(-1)">
@@ -144,6 +144,11 @@ export default {
     z-index: 2;
     border: 1px solid #ccc;
     overflow: hidden;
+
+    &.date-picker-inline {
+      position: relative;
+    }
+
     table {
       width: 100%;
 
@@ -155,7 +160,7 @@ export default {
       }
 
       td {
-        transition: background-color 0.5s ease;
+        transition: background-color 0.2s ease;
 
         a {
           text-align: center;

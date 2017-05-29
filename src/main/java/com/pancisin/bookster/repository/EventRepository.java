@@ -1,5 +1,6 @@
 package com.pancisin.bookster.repository;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,11 +20,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL")
 	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable);
-	
+
 	@Query("SELECT count(event.id) FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.id = :event_id")
 	public int isAttending(@Param("event_id") Long event_id, @Param("user_id") Long user_id);
-	
+
 	@Query("SELECT event FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.date >= CURDATE() ORDER BY event.date ASC")
 	public List<Event> getAttending(@Param("user_id") Long user_id);
 
+	@Query("SELECT event FROM Event event WHERE event.visibility = com.pancisin.bookster.models.enums.Visibility.PUBLIC AND event.date = :date")
+	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
 }

@@ -1,8 +1,10 @@
 package com.pancisin.bookster.models;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +25,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.interfaces.IAuthor;
@@ -87,12 +91,27 @@ public class Event {
 	@OneToOne
 	private Place place;
 
+	@JsonProperty(required = false)
+	public Time getStartsAt() {
+		if (this.programme != null && this.programme.size() > 0) {
+			Optional<Programme> first = this.programme.stream().min((p1, p2) -> {
+				return p2.getTime().compareTo(p1.getTime());
+			});
+
+			if (first.isPresent()) {
+				return first.get().getTime();
+			}
+		}
+
+		return null;
+	}
+
 	public IAuthor getAuthor() {
 		if (conference != null)
 			return conference;
-		else if (page != null) 
+		else if (page != null)
 			return page;
-		
+
 		return owner;
 	}
 

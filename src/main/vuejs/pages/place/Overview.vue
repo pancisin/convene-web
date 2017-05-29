@@ -49,7 +49,9 @@
       </div>
     </div>
   
-    <div class="text-center">
+    <g-map :address="place.address" :lat="place.address.latitude" :lng="place.address.longitude" @updated="mapUpdated"></g-map>
+  
+    <div class="text-center m-t-20">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
         <span v-else>Submit</span> {{ place.name }}</button>
@@ -58,6 +60,7 @@
 </template>
 
 <script>
+import GMap from '../../elements/GMap.vue'
 export default {
   name: 'place-overview',
   props:
@@ -76,6 +79,9 @@ export default {
     },
     page_id: String,
     conference_id: String
+  },
+  components: {
+    GMap
   },
   data() {
     return {
@@ -103,6 +109,10 @@ export default {
           })
         })
       }
+    },
+    mapUpdated(location) {
+      this.place.address.latitude = location.lat;
+      this.place.address.longitude = location.lng;
     }
   }
 }

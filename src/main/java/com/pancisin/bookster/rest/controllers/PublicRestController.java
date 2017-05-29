@@ -1,11 +1,14 @@
 package com.pancisin.bookster.rest.controllers;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Category;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Visibility;
@@ -46,8 +48,15 @@ public class PublicRestController {
 	private BranchRepository branchRepository;
 
 	@GetMapping("/events/{page}/{limit}")
-	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit) {
-		return ResponseEntity.ok(eventRepository.getPublic(new PageRequest(page, limit)));
+	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
+			@RequestParam(name = "timestamp", required = false) String timestamp) {
+
+		Date date = new Date(Long.parseLong(timestamp));
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		return ResponseEntity.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/event/{event_id}")
@@ -82,10 +91,10 @@ public class PublicRestController {
 	@GetMapping("/page/{page_identifier}")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
 		try {
-			Long page_id = Long.parseLong((String)page_identifier);
+			Long page_id = Long.parseLong((String) page_identifier);
 			return ResponseEntity.ok(pageRepository.findOne(page_id));
 		} catch (NumberFormatException ex) {
-			return ResponseEntity.ok(pageRepository.findBySlug((String)page_identifier));
+			return ResponseEntity.ok(pageRepository.findBySlug((String) page_identifier));
 		}
 	}
 

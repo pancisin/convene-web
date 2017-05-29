@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
-        <router-link to="/event/create" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
-        <date-picker inline="true"></date-picker>
+        <router-link to="/" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
+        <date-picker v-model="filters.timestamp" inline="true"></date-picker>
       </div>
       <div class="col-md-9">
         <div class="events-list">
@@ -16,6 +16,9 @@
   
               <span class="date">
                 {{ event.date | moment($store.getters.locale.dateFormat) }}
+                <span class="time" v-if="event.startsAt != null">
+                  at {{ event.startsAt }}
+                </span>
               </span>
               <!--<p v-strip="event.summary"></p>-->
             </div>
@@ -38,17 +41,30 @@ export default {
   data() {
     return {
       eventsPaginator: {},
+      filters: {
+        timestamp: Date.now()
+      }
     }
   },
   components: {
     Paginator, DatePicker
+  },
+  watch: {
+    filters: {
+      handler() {
+        this.getEvents(this.eventsPaginator.number);
+      },
+      deep: true
+    }
   },
   created() {
     this.getEvents(0);
   },
   methods: {
     getEvents(page) {
-      this.$http.get('public/events/' + page + '/5').then(response => {
+      this.$http.get('public/events/' + page + '/5', {
+        params: this.filters
+      }).then(response => {
         this.eventsPaginator = response.body;
       })
     },
@@ -58,7 +74,7 @@ export default {
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
-    }
+    },
   }
 }
 </script>
@@ -79,6 +95,7 @@ export default {
     overflow: hidden;
     display: flex;
     transition: 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    color: #000;
 
     .content {
       display: inline-block;
