@@ -26,7 +26,7 @@
   
       <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
         <panel type="primary">
-          <span slot="title">Latest events</span>
+          <span slot="title">Events near you</span>
   
           <div class="inbox-widget">
             <stagger-transition>
@@ -116,10 +116,18 @@ export default {
   },
   methods: {
     getEvents(page) {
-      var url = ['public/events', page, 5].join('/');
-      this.$http.get(url).then(response => {
-        this.eventsPaginator = response.body;
-      })
+      console.log(navigator.geolocation.getCurrentPosition(position => {
+        var url = ['public/near-events', page, 5].join('/');
+        this.$http.get(url, {
+          params: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            distance: 20,
+          }
+        }).then(response => {
+          this.eventsPaginator = response.body;
+        })
+      }))
     },
     getAttending() {
       this.$http.get('api/user/event/attending').then(response => {

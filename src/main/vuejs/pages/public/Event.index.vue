@@ -13,6 +13,8 @@
             <div class="content">
               <h4 v-text="event.name"></h4>
               <small>By {{ event.author.displayName }}</small>
+              <br>
+              <small v-if="event.place != null" v-text="event.place.address.formatted"></small>
   
               <span class="date">
                 {{ event.date | moment($store.getters.locale.dateFormat) }}

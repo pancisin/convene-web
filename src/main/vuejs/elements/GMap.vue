@@ -1,5 +1,11 @@
 <template>
-  <div id="map-canvas" class="map-canvas">
+  <div>
+    <div id="map-canvas" class="map-canvas">
+    </div>
+  
+    <modal>
+  
+    </modal>
   </div>
 </template>
 
@@ -28,14 +34,6 @@ export default {
       return this._uid;
     }
   },
-  watch: {
-    address: {
-      handler() {
-        debounce(this.geocodeAddress, 3000)();
-      },
-      deep: true
-    }
-  },
   created() {
     GoogleMapsApiLoader({
       apiKey: 'AIzaSyBKua_eTxYYK4hJf7sRKeH666HdcH3UlAg'
@@ -46,6 +44,9 @@ export default {
         this.initializeMap();
       else {
         this.geocodeAddress();
+        this.$watch('address', debounce(this.geocodeAddress, 2000), {
+          deep: true
+        })
       }
     }, err => {
       console.error(err);
@@ -68,13 +69,18 @@ export default {
       var geocoder = new google.maps.Geocoder();
       console.error('geocoding');
       geocoder.geocode({
-        address: this.address.street + " " + this.address.number,
+        address: this.address.street + " " + this.address.number + ", " + this.address.state,
       }, (result, status) => {
+        console.log(result)
+        if (status != 'OK') return;
+
         var location = result[0].geometry.location;
         this.$emit('updated', {
           lat: location.lat(),
-          lng: location.lng()
-        })
+          lng: location.lng(),
+          address: result[0].formatted_address
+        });
+
         this.initializeMap();
       })
     }

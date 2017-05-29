@@ -33,6 +33,9 @@ public class Address {
 	@Column
 	private String zip;
 	
+	@Column
+	private String formatted;
+	
 	@OneToOne(mappedBy = "address")
 	private Place place;
 
@@ -100,5 +103,13 @@ public class Address {
 
 	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
+	}
+
+	public String getFormatted() {
+		return formatted;
+	}
+
+	public void setFormatted(String formatted) {
+		this.formatted = formatted;
 	}
 }

@@ -49,6 +49,7 @@
       </div>
     </div>
   
+    <label>Please verify that map points to the correct place</label>
     <g-map :address="place.address" :lat="place.address.latitude" :lng="place.address.longitude" @updated="mapUpdated"></g-map>
   
     <div class="text-center m-t-20">
@@ -113,6 +114,7 @@ export default {
     mapUpdated(location) {
       this.place.address.latitude = location.lat;
       this.place.address.longitude = location.lng;
+      this.place.address.formatted = location.address;
     }
   }
 }

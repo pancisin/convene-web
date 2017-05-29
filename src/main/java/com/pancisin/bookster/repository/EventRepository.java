@@ -1,5 +1,6 @@
 package com.pancisin.bookster.repository;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,4 +30,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	@Query("SELECT event FROM Event event WHERE event.visibility = com.pancisin.bookster.models.enums.Visibility.PUBLIC AND event.date = :date")
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
+	
+	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
+	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude, @Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 }

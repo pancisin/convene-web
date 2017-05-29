@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,8 +56,18 @@ public class PublicRestController {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		
-		return ResponseEntity.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+
+		return ResponseEntity.ok(
+				eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+	}
+
+	@GetMapping("/near-events/{page}/{limit}")
+	public ResponseEntity<?> getNearEvents(@PathVariable int page, @PathVariable int limit,
+			@RequestParam(name = "lat") BigDecimal lat, @RequestParam(name = "lng") BigDecimal lng,
+			@RequestParam(name = "distance") Double distance) {
+
+		return ResponseEntity.ok(eventRepository.getEventsByDistance(lat, lng, distance,
+				new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/event/{event_id}")
