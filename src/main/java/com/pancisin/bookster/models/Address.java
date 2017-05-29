@@ -1,10 +1,13 @@
 package com.pancisin.bookster.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,9 +33,15 @@ public class Address {
 	@Column
 	private String zip;
 	
-//	@OneToOne(mappedBy = "address")
-//	private Place place;
+	@OneToOne(mappedBy = "address")
+	private Place place;
 
+	@Column(precision = 10, scale = 8)
+	private BigDecimal latitude;
+	
+	@Column(precision = 10, scale = 8)
+	private BigDecimal longitude;
+	
 	public String getState() {
 		return state;
 	}
@@ -75,5 +84,21 @@ public class Address {
 
 	public Long getId() {
 		return id;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
 	}
 }

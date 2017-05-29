@@ -1,9 +1,9 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
-    <input type="text" ref="input" :placeholder="placeholder" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :value="selected | moment($store.getters.locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
-      <div class="date-picker" v-show="displayDatePicker">
+      <div class="date-picker" v-show="displayDatePicker || inline">
   
         <div class="date-picker-header">
           <a class="btn btn-link" @click="moveCursor(-1)">
@@ -26,7 +26,7 @@
             </thead>
             <tbody>
               <tr v-for="(week, index) in weeks" :key="index">
-                <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
+                <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month, 'current' : selected == day.timestamp }">
                   <a class="monthday" v-text="day.day" @click="select(day)"></a>
                 </td>
               </tr>
@@ -40,7 +40,7 @@
 <script>
 import moment from "moment"
 export default {
-  props: ['value', 'placeholder'],
+  props: ['value', 'placeholder', 'inline'],
   data: function () {
     return {
       weeks: [],
@@ -155,16 +155,18 @@ export default {
       }
 
       td {
+        transition: background-color 0.5s ease;
+
         a {
           text-align: center;
           color: #000;
           display: block;
           padding: 10px 15px;
-          transition: backgroud-color .3s ease;
+          transition: color .5s ease;
+        }
 
-          &:hover {
-            background-color: #eee;
-          }
+        &:hover {
+          background-color: #eee;
         }
 
         &.disabled a {
@@ -172,8 +174,12 @@ export default {
         }
 
         &.current {
-          background-color: greenyellow;
+          background-color: #4c5667 !important;
           font-weight: bold;
+
+          a {
+            color: #fff;
+          }
         }
       }
     }

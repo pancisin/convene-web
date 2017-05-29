@@ -71,6 +71,10 @@ export default new VueRouter({
         {
           path: 'pricing',
           component: resolve => require(['../pages/static/Pricing.vue'], resolve)
+        },
+        {
+          path: 'events',
+          component: resolve => require(['../pages/public/Event.index.vue'], resolve)
         }
       ]
     },
@@ -250,6 +254,10 @@ export default new VueRouter({
               component: resolve => require(['../pages/settings/Notifications.vue'], resolve)
             },
           ]
+        },
+        {
+          path: 'invoice/:invoice_id',
+          component: resolve => require(['../pages/Invoice.vue'], resolve)
         }
       ]
     },

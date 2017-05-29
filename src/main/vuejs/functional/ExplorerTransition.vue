@@ -1,18 +1,14 @@
 <script>
-// import Velocity from 'velocityjs'
 export default {
   functional: true,
-  mounted() {
-    console.log(this);
-  },
   render(createElement, context) {
     context.data.on = {
-      beforeEnter: function (el) {
+      beforeEnter(el) {
         el.style.opacity = 0
       },
-      enter: function (el, done) {
+      enter(el, done) {
         var delay = el.dataset.index * 150
-        setTimeout(function () {
+        setTimeout(() => {
           Velocity(el, {
             opacity: 1,
           }, {
@@ -21,9 +17,9 @@ export default {
           )
         }, delay)
       },
-      leave: function (el, done) {
+      leave(el, done) {
         var delay = el.dataset.index * 150
-        setTimeout(function () {
+        setTimeout(() => {
           Velocity(el, {
             opacity: 0,
           }, {

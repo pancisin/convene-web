@@ -16,14 +16,16 @@
             <hr>
             <div class="row">
               <div class="col-md-8 m-b-10">
+                <div v-if="event.place != null" class="map-container">
+                  <address class="event-address">
+                    <strong v-text="event.place.name"></strong>
+                    <br> {{ event.place.address.street + " " + event.place.address.number }}
+                    <br> {{ event.place.address.zip + " " + event.place.address.city }}
+                    <br> {{ event.place.address.state }}
+                  </address>
   
-                <address v-if="event.place != null">
-                  <strong v-text="event.place.name"></strong>
-                  <br> {{ event.place.address.street + " " + event.place.address.number }}
-                  <br> {{ event.place.address.zip + " " + event.place.address.city }}
-                  <br> {{ event.place.address.state }}
-                  <hr/>
-                </address>
+                  <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
+                </div>
   
                 <div v-html="event.summary"></div>
               </div>
@@ -46,17 +48,17 @@
                 </div>
               </div>
             </div>
-  
           </div>
         </div>
       </div>
     </div>
-  
   </div>
 </template>
 
 <script>
 import Auth from '../../services/auth.js'
+import GMap from '../../elements/GMap.vue'
+
 export default {
   name: 'public-event',
   data() {
@@ -64,6 +66,9 @@ export default {
       event: null,
       attending: false,
     }
+  },
+  components: {
+    GMap
   },
   created() {
     var event_id = this.$route.params.id;
@@ -96,3 +101,19 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+.event-address {
+  position: absolute;
+  padding: 20px;
+  z-index: 1;
+  background-color: #fff;
+  height: 100%;
+}
+
+.map-container {
+  border: 1px solid #ccc;
+  position: relative;
+  margin-bottom: 20px;
+}
+</style>

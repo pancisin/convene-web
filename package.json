@@ -12,6 +12,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "google-maps-api-loader": "^0.3.0",
     "jquery": "^3.2.1",
     "later": "RickCarlino/later",
     "moment": "^2.18.0",

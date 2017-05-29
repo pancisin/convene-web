@@ -85,30 +85,22 @@
                 <i class="material-icons">home</i> {{ $t('client.menu.home') }}
               </router-link>
             </li>
-            <!--<li>
-                                    <router-link to="/event">
-                                      <i class="material-icons">event</i> My events</router-link>
-                                  </li>-->
+            <li>
+              <router-link to="/events" class="waves-effect">
+                <i class="material-icons">event</i> Events
+              </router-link>
+            </li>
             <li>
               <router-link to="/explore" class="waves-effect">
                 <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
             </li>
-            <!--<li>
-                                    <router-link to="/conference">
-                                      <i class="material-icons">people</i> Conferences</router-link>
-                                  </li>-->
+            <!--<li><router-link to="/conference"><i class="material-icons">people</i> Conferences</router-link></li>-->
             <li class="has-submenu">
               <a>
                 <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
               <ul class="submenu megamenu">
                 <li>
                   <ul>
-                    <!--<li>
-                                  <a href="pages-blank.html">About</a>
-                                </li>
-                                <li>
-                                  <a>Developers</a>
-                                </li>-->
                     <li>
                       <router-link to="pricing">
                         Pricing

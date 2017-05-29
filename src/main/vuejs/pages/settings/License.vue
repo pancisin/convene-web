@@ -15,7 +15,10 @@
       </thead>
       <tbody>
         <tr v-for="(sub, index) in subscriptions" :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }">
-          <td v-text="sub.id"></td>
+          <td>
+            <router-link :to="'/admin/invoice/' + sub.id" v-text="sub.id">
+            </router-link>
+          </td>
           <td>
             {{ $t(sub.subscription.code) }}
           </td>

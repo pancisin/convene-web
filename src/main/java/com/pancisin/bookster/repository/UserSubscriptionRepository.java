@@ -11,4 +11,6 @@ public interface UserSubscriptionRepository extends JpaRepository<UserSubscripti
 
 	@Query("SELECT us FROM UserSubscription us WHERE (us.state = 'ACTIVE' OR us.state = 'NEW') AND us.expires < NOW()")
 	public List<UserSubscription> findExpirations();
+	
+	public UserSubscription findById(String id);
 }
