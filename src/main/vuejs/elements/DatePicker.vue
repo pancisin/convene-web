@@ -161,6 +161,7 @@ export default {
 
       td {
         transition: background-color 0.2s ease;
+        position: relative;
 
         a {
           text-align: center;
@@ -170,8 +171,25 @@ export default {
           transition: color .5s ease;
         }
 
-        &:hover {
+        &:before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 0;
+          height: 0;
+          border-radius: 15px;
+
+          transition: all .2s ease-out, border-radius .2s ease-in;
+        }
+
+        &:hover:before {
           background-color: #eee;
+          height: 100%;
+          width: 100%;
+          border-radius: 0;
+          z-index: -1;
         }
 
         &.disabled a {
@@ -179,11 +197,17 @@ export default {
         }
 
         &.current {
-          background-color: #4c5667 !important;
-          font-weight: bold;
-
           a {
+            font-weight: bold;
             color: #fff;
+          }
+
+          &:before {
+            background-color: #4c5667 !important;
+            height: 100%;
+            width: 100%;
+            border-radius: 0;
+            z-index: -1;
           }
         }
       }

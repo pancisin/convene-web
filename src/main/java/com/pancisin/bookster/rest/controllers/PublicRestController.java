@@ -1,7 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
