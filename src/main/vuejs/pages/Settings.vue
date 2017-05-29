@@ -11,14 +11,17 @@
         </transition>
       </div>
       <div class="col-md-3">
-        <div class="list-group">
+        <div class="list-group mail-list">
           <router-link to="account" class="list-group-item waves-effect">
+            <i class="fa fa-user-o"></i>
             {{ $t('settings.account') }}
           </router-link>
           <router-link to="license" class="list-group-item waves-effect">
+            <i class="fa fa-file-text-o"></i>
             {{ $t('settings.license.default') }}
           </router-link>
           <router-link to="notifications" class="list-group-item waves-effect">
+            <i class="fa fa-bell-o"></i>
             {{ $t('settings.notifications') }}
           </router-link>
         </div>

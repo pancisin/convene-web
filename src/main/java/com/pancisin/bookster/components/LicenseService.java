@@ -22,6 +22,9 @@ public class LicenseService {
 	@Autowired
 	private UserSubscriptionRepository usRepository;
 
+	@Autowired
+	private EmailService emailService;
+	
 	// @Scheduled(cron = "0 3 * * * *")
 //	@Scheduled(fixedRate = 10000)
 	@Transactional
@@ -34,6 +37,7 @@ public class LicenseService {
 			if (s.getState() == SubscriptionState.ACTIVE) {
 				s.setState(SubscriptionState.EXPIRED);
 				newSubs.add(createNew(s));
+				emailService.sendSimpleMessage(s.getUser().getEmail(), "There is new invoice prepared", "Invoice : " + s.getId());
 			} else if (s.getState() == SubscriptionState.NEW) {
 				s.setState(SubscriptionState.UNPAID);
 			}

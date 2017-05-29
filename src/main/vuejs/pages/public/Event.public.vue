@@ -1,19 +1,18 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-md-3" v-if="event.bannerUrl">
-        <img :src="event.bannerUrl" class="img-thumbnail" style="width: 100%" />
+      <div class="col-sm-3" v-if="event.bannerUrl">
+        <img :src="event.bannerUrl" class="img-poster" />
       </div>
-      <div :class="{ 'col-md-9' : event.bannerUrl }">
+      <div :class="{ 'col-sm-9' : event.bannerUrl }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img :src="event.bannerUrl" />
             <h3 class="panel-title">{{ event.name }}</h3>
-            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YY') }}
+            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YYYY') }} {{ event.startsAt }}
               <br> {{ event.author.displayName }}</p>
           </div>
           <div class="panel-body">
-            <hr>
             <div class="row">
               <div class="col-md-8 m-b-10">
                 <div v-if="event.place != null" class="map-container">
@@ -115,5 +114,10 @@ export default {
   border: 1px solid #ccc;
   position: relative;
   margin-bottom: 20px;
+}
+
+.img-poster {
+  width: 100%;
+  border: 1px solid #ccc;
 }
 </style>

@@ -167,7 +167,7 @@ export default {
           text-align: center;
           color: #000;
           display: block;
-          padding: 10px 15px;
+          padding: 10px 0px;
           transition: color .5s ease;
         }
 
