@@ -74,6 +74,8 @@ export default {
         this.$http.post('api/page/' + this.pageId + '/service', this.service).then(response => {
           this.service = response.body;
           this.$emit('updated', this.service);
+        }, response => {
+          this.$error(response.statusText, response.bodyText);
         });
       }
     },

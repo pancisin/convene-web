@@ -119,10 +119,12 @@ export default {
           this.$success('Success !', 'Event ' + this.event.name + ' has been created.')
           this.edit = true;
         }, response => {
-          response.body.fieldErrors.forEach((e) => {
-            this.$set(this.errors, e.field, e);
-          });
-          this.$error('Error !', 'Problem in saving event.');
+          if (response.body != null) {
+            response.body.fieldErrors.forEach((e) => {
+              this.$set(this.errors, e.field, e);
+            });
+            this.$error('Error !', 'Problem in saving event.');
+          } else this.$error(response.statusText, response.bodyText)
         })
       }
     },

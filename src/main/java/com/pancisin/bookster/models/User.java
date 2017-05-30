@@ -280,6 +280,15 @@ public class User implements UserDetails, Principal, IAuthor {
 			return null;
 	}
 
+	@JsonIgnore
+	public List<Page> getOwningPages() {
+		if (this.pageAdministrators != null)
+			return this.pageAdministrators.stream().filter(x -> x.getRole() == Role.ROLE_OWNER).map(x -> x.getPage())
+					.collect(Collectors.toList());
+		else
+			return null;
+	}
+
 	public List<Conference> getConferences() {
 		return conferences;
 	}

@@ -3,6 +3,7 @@ package com.pancisin.bookster.rest.controllers;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
+import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Locale;
@@ -82,7 +84,7 @@ public class UserController {
 	private UserSubscriptionRepository usRepository;
 
 	@GetMapping("/me")
-	public ResponseEntity<User> getMe() {
+	public ResponseEntity<User> getMe(HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
 		User stored = userRepository.findOne(auth_user.getId());
@@ -117,7 +119,7 @@ public class UserController {
 	}
 
 	@PostMapping("/event")
-	@PreAuthorize("hasPermission('event', 'create')")
+	@LicenseLimit(entity = "event")
 	public ResponseEntity<?> postEvent(@Valid @RequestBody Event event, BindingResult bindingResult) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -145,6 +147,7 @@ public class UserController {
 
 	@PostMapping("/page")
 	@PreAuthorize("hasPermission('page', 'create')")
+	@LicenseLimit(entity = "page")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

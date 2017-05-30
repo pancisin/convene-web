@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
@@ -104,8 +105,9 @@ public class PageController {
 	}
 
 	@PostMapping("/event")
+	@LicenseLimit(entity = "event", parent = "page", parentId = "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
-	public ResponseEntity<?> postEvent(@PathVariable Long page_id, @RequestBody Event event) {
+	public ResponseEntity<?> postEvent(@PathVariable("page_id") Long page_id, @RequestBody Event event) {
 		Page stored = pageRepository.findOne(page_id);
 		event.setPage(stored);
 		return ResponseEntity.ok(eventRepository.save(event));
@@ -147,8 +149,9 @@ public class PageController {
 	}
 
 	@PostMapping("/service")
+	@LicenseLimit(entity = "service", parent = "page", parentId = "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
-	public ResponseEntity<?> postService(@PathVariable Long page_id, @RequestBody Service service) {
+	public ResponseEntity<?> postService(@PathVariable("page_id") Long page_id, @RequestBody Service service) {
 		Page stored = pageRepository.findOne(page_id);
 		service.setPage(stored);
 		return ResponseEntity.ok(serviceRepository.save(service));

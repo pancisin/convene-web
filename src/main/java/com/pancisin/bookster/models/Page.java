@@ -3,6 +3,7 @@ package com.pancisin.bookster.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
@@ -80,6 +82,16 @@ public class Page implements IAuthor {
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Place> places;
+	
+	@JsonIgnore
+	public User getOwner() {
+		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == Role.ROLE_OWNER).findFirst();
+	
+		if (owner.isPresent())
+			return owner.get().getUser();
+		
+		return null;
+	}
 	
 	public Category getCategory() {
 		if (getBranch() != null)

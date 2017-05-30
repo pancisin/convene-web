@@ -59,20 +59,20 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		String targetType = (String) targetDomainObject;
-
-		User user = (User) authentication.getPrincipal();
-		final User stored = userRepository.findOne(user.getId());
-
-		switch (targetType) {
-		case "event":
-			if ("create".equals(permission))
-				return stored.getEvents().size() < stored.getLicense().getSubscription().getEventLimit();
-		case "page":
-			if ("create".equals(permission))
-				return stored.getPages().size() < stored.getLicense().getSubscription().getPageLimit();
-
-		}
+//		String targetType = (String) targetDomainObject;
+//
+//		User user = (User) authentication.getPrincipal();
+//		final User stored = userRepository.findOne(user.getId());
+//
+//		switch (targetType) {
+//		case "event":
+//			if ("create".equals(permission))
+//				return stored.getEvents().size() < stored.getLicense().getSubscription().getEventLimit();
+//		case "page":
+//			if ("create".equals(permission))
+//				return stored.getPages().size() < stored.getLicense().getSubscription().getPageLimit();
+//
+//		}
 
 		return false;
 	}
