@@ -7,26 +7,22 @@ export default {
         el.style.opacity = 0
       },
       enter(el, done) {
-        var delay = el.dataset.index * 150
-        setTimeout(() => {
-          Velocity(el, {
-            opacity: 1,
-          }, {
-              complete: done
-            }
-          )
-        }, delay)
+        Velocity(el, {
+          opacity: 1,
+        }, {
+            delay: el.dataset.index * 150,
+            complete: done
+          }
+        )
       },
       leave(el, done) {
-        var delay = el.dataset.index * 150
-        setTimeout(() => {
-          Velocity(el, {
-            opacity: 0,
-          }, {
-              complete: done
-            }
-          )
-        }, delay)
+        Velocity(el, {
+          opacity: 0,
+        }, {
+            delay: el.dataset.index * 150,
+            complete: done
+          }
+        )
       }
     }
 

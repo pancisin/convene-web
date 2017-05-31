@@ -1,26 +1,29 @@
 <script>
 export default {
   functional: true,
-  render: function (createElement, context) {
-    var data = {
-      props: {
-        name: 'slide-transition',
-        mode: 'out-in'
+  render(createElement, context) {
+    console.log(context.children.height)
+    context.data.on = {
+      beforeEnter(el) {
       },
-      on: {
-        enter: function (el, insert, timeout) {
-          $(el).hide();
-          insert();
-          $(el).slideDown(500, 'easeOutExpo');
-        },
-        leave: function (el, remove, timeout) {
-          $(el).slideUp(500, 'easeOutExpo', function () {
-            remove();
-          });
-        }
+      enter(el, done) {
+        Velocity(el, 'slideDown', {
+          duration: 250,
+          easing: 'ease-in-out',
+          complete: done,
+        })
+      },
+      leave(el, done) {
+        Velocity(el, 'slideUp', {
+          duration: 250,
+          easing: 'ease-in-out',
+          complete: done,
+        })
       }
     }
-    return createElement('transition', data, context.children)
+
+    context.data.css = false;
+    return createElement('transition', context.data, context.children)
   }
 }
 </script>

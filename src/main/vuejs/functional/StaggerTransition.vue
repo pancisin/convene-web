@@ -1,5 +1,4 @@
 <script>
-// import Velocity from 'velocityjs'
 export default {
   functional: true,
   props: {
@@ -16,34 +15,30 @@ export default {
         css: false
       },
       on: {
-        beforeEnter: function (el) {
+        beforeEnter(el) {
           el.style.opacity = 0
           el.style.height = 0
           el.style.display = "block"
         },
-        enter: function (el, done) {
-          var delay = el.dataset.index * context.delay
-          setTimeout(function () {
-            Velocity(el, {
-              opacity: 1,
-              height: '100%'
-            }, {
-                complete: done
-              }
-            )
-          }, delay)
+        enter(el, done) {
+          Velocity(el, {
+            opacity: 1,
+            height: '100%'
+          }, {
+              delay: el.dataset.index * context.delay,
+              complete: done
+            }
+          )
         },
-        leave: function (el, done) {
-          var delay = el.dataset.index * context.delay
-          setTimeout(function () {
-            Velocity(el, {
-              opacity: 0,
-              height: 0
-            }, {
-                complete: done
-              }
-            )
-          }, delay)
+        leave(el, done) {
+          Velocity(el, {
+            opacity: 0,
+            height: 0
+          }, {
+              delay: el.dataset.index * context.delay,
+              complete: done
+            }
+          )
         }
       }
     }

@@ -3,48 +3,8 @@
     <div class="col-xs-12">
       <h3 v-text="page.name" class="page-title"></h3>
     </div>
-    <div class="col-md-3">
-      <div class="list-group">
-        <router-link to="overview" class="list-group-item waves-effect">
-          {{ $t('admin.page.overview') }}
-        </router-link>
-        <!--<router-link to="calendar" class="list-group-item">
-                            Event calendar
-                          </router-link>-->
-        <router-link to="events" class="list-group-item waves-effect">
-          {{ $t('admin.page.events') }}
-        </router-link>
-        <router-link to="places" class="list-group-item waves-effect">
-          {{ $t('admin.page.places') }}
-        </router-link>
-      </div>
-  
-      <div class="list-group">
-        <div class="list-group-item">
-          <h4 class="header-title">
-            <b>{{ $t('admin.page.advanced') }}</b>
-            <span class="label label-info pull-right">Pro</span>
-          </h4>
-  
-        </div>
-        <router-link to="administrators" class="list-group-item waves-effect">
-          {{ $t('admin.page.administrators') }}
-        </router-link>
-        <router-link to="services" class="list-group-item waves-effect">
-          {{ $t('admin.page.services') }}
-        </router-link>
-        <router-link to="requests" class="list-group-item waves-effect">
-          {{ $t('admin.page.requests') }}
-        </router-link>
-      </div>
-  
-      <div class="widget-simple-chart text-right card-box">
-        <h3 class="text-primary counter" v-text="page.followersCount"></h3>
-        <p class="text-muted text-nowrap">Followers</p>
-      </div>
-    </div>
-    <div class="col-md-9">
-      <transition name="fade-up" mode="out-in">
+    <div class="col-xs-12">
+      <transition name="fade-down" mode="out-in">
         <keep-alive>
           <router-view :page="page" :edit="edit" @update="pageUpdated"></router-view>
         </keep-alive>

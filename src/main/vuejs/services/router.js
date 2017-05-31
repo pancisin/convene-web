@@ -110,6 +110,7 @@ export default new VueRouter({
           children: [
             {
               path: 'overview',
+              name: 'conference.overview',
               component: resolve => require(['../pages/conference/Overview.vue'], resolve)
             },
             {
@@ -163,10 +164,12 @@ export default new VueRouter({
           children: [
             {
               path: 'overview',
+              name: 'page.overview',
               component: resolve => require(['../pages/page/Overview.vue'], resolve)
             },
             {
               path: 'events',
+              name: 'page.events',
               component: resolve => require(['../pages/page/Events.vue'], resolve)
             },
             {
@@ -185,18 +188,22 @@ export default new VueRouter({
             },
             {
               path: 'services',
+              name: 'page.services',
               component: resolve => require(['../pages/page/Services.vue'], resolve)
             },
             {
               path: 'requests',
+              name: 'page.requests',
               component: resolve => require(['../pages/page/Requests.vue'], resolve)
             },
             {
               path: 'administrators',
+              name: 'page.administrators',
               component: resolve => require(['../pages/page/Administrators.vue'], resolve)
             },
             {
               path: 'places',
+              name: 'page.places',
               component: resolve => require(['../pages/page/Places.vue'], resolve)
             },
             {
