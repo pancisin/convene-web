@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
@@ -33,6 +34,7 @@ import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Role;
+import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
@@ -65,7 +67,7 @@ public class PageController {
 
 	@Autowired
 	private PlaceRepository placeRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -184,6 +186,7 @@ public class PageController {
 	}
 
 	@PostMapping("/administrator")
+	@License(value = Subscription.PROFESSIONAL, parent = "page", parentId = "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long page_id, @RequestBody User user) {
 		Page stored = pageRepository.findOne(page_id);
@@ -209,10 +212,10 @@ public class PageController {
 		place.setPage(stored);
 		return ResponseEntity.ok(placeRepository.save(place));
 	}
-	
+
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
-	    System.err.println(e);
-	}	
+		System.err.println(e);
+	}
 }

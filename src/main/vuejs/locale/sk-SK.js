@@ -26,6 +26,7 @@ export default {
     piece: 'Kus'
   },
   subscription: {
+    free: 'Zdarma',
     starter: 'Jednoduchá',
     professional: 'Prémium',
     enterprise: 'Firemná',

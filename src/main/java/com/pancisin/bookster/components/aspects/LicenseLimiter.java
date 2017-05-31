@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
@@ -96,5 +97,32 @@ public class LicenseLimiter {
 		}
 
 		throw new Exception("Invalid argument");
+	}
+
+	@Around("@annotation(com.pancisin.bookster.components.annotations.License)")
+	public Object licenseCheck(ProceedingJoinPoint pjp) throws Throwable {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User auth_user = (User) auth.getPrincipal();
+		User stored = userRepository.findOne(auth_user.getId());
+
+		MethodSignature signature = (MethodSignature) pjp.getSignature();
+		Method method = signature.getMethod();
+
+		License subscription = method.getAnnotation(License.class);
+
+		if (subscription.parent().equals("") || subscription.parent().equals("user")) {
+			if (stored.getLicense().getSubscription() == subscription.value()) {
+				return pjp.proceed();
+			}
+		} else if (subscription.parent().equals("page")) {
+			Page page = pageRepository
+					.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
+
+			if (page.getOwner().getLicense().getSubscription() == subscription.value()) {
+				return pjp.proceed();
+			}
+		}
+
+		return new ResponseEntity<String>("Your current subscription do not allows this.", HttpStatus.PAYMENT_REQUIRED);
 	}
 }

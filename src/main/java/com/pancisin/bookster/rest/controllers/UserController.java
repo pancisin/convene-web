@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
+import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
@@ -146,7 +147,6 @@ public class UserController {
 	}
 
 	@PostMapping("/page")
-	@PreAuthorize("hasPermission('page', 'create')")
 	@LicenseLimit(entity = "page")
 	public ResponseEntity<?> postPage(@RequestBody Page page) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -167,6 +167,7 @@ public class UserController {
 	}
 
 	@PostMapping("/conference")
+	@LicenseLimit(entity = "conference")
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());

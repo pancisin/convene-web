@@ -26,6 +26,7 @@ export default {
     piece: 'Piece'
   },
   subscription: {
+    free: 'Free',
     starter: 'Starter',
     professional: 'Premium',
     enterprise: 'Enterprise',
