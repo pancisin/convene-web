@@ -32,18 +32,6 @@ public class LicenseLimiter {
 	@Autowired
 	private PageRepository pageRepository;
 
-	@Around("@annotation(com.pancisin.bookster.components.annotations.ActiveLicenseCheck)")
-	public Object checkActiveLicense(ProceedingJoinPoint pjp) throws Throwable {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-
-		if (stored.getOwningPages().size() > stored.getLicense().getSubscription().getPageLimit()) {
-			return new ResponseEntity<String>("You've reached your resources limit.", HttpStatus.PAYMENT_REQUIRED);
-		}
-
-		return pjp.proceed();
-	}
-
 	@Around("@annotation(com.pancisin.bookster.components.annotations.LicenseLimit)")
 	public Object limitUserResources(ProceedingJoinPoint pjp) throws Throwable {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
