@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <chat-container />
     <toast-container />
     <header-component />
   
@@ -173,6 +174,7 @@ import HeaderComponent from './Admin.header.vue'
 import FooterComponent from './Footer.vue'
 import ToastContainer from '../elements/ToastContainer.vue'
 import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue'
+import ChatContainer from '../elements/ChatContainer.vue'
 
 export default {
   name: 'app',
@@ -203,6 +205,7 @@ export default {
     FooterComponent,
     ToastContainer,
     DropDown: VerticalMenuDrop,
+    ChatContainer
   },
 }
 </script>
