@@ -1,50 +1,54 @@
 <template>
-  <panel type="default">
-    <span slot="title">
-      {{ edit ? $t('admin.page.overview') : $t('admin.menu.page_create') }}
-    </span>
-    <div class="row">
-      <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
-        <div class="form-group">
-          <label class="control-label">{{ $t('page.name') }}</label>
-          <input class="form-control required" v-model="page.name" type="text">
+  <div class="row">
+    <div class="col-md-8">
+      <panel type="default">
+        <span slot="title">
+          {{ edit ? $t('admin.page.overview') : $t('admin.menu.page_create') }}
+        </span>
+        <div class="row">
+          <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
+            <div class="form-group">
+              <label class="control-label">{{ $t('page.name') }}</label>
+              <input class="form-control required" v-model="page.name" type="text">
+            </div>
+          </div>
+          <div class="col-md-6" v-if="edit">
+            <div class="form-group">
+              <label class="control-label">{{ $t('page.category') }}</label>
+              <select v-model="page.category" class="form-control">
+                <option v-for="cat in categories" :value="cat">{{ $t('category.' + cat.code + '.default') }}</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label class="control-label">{{ $t('page.branch') }}</label>
+              <select v-model="page.branch" class="form-control">
+                <option v-for="branch in branches" :value="branch" v-if="page.category != null">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
+              </select>
+            </div>
+          </div>
         </div>
   
         <div class="form-group">
-          <label class="control-label">{{ $t('page.category') }}</label>
-          <select v-model="page.category" class="form-control">
-            <option v-for="cat in categories" :value="cat">{{ $t('category.' + cat.code + '.default') }}</option>
-          </select>
+          <label class="control-label">{{ $t('page.summary') }}</label>
+          <text-editor v-model="page.summary"></text-editor>
         </div>
   
-        <div class="form-group">
-          <label class="control-label">{{ $t('page.branch') }}</label>
-          <select v-model="page.branch" class="form-control">
-            <option v-for="branch in branches" :value="branch" v-if="page.category != null">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
-          </select>
+        <div class="text-center">
+          <button class="btn btn-rounded btn-danger" @click="deletePage" v-if="edit">Delete</button>
+          <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
+            <span v-if="edit">Save</span>
+            <span v-else>Submit</span> {{ page.name }}</button>
         </div>
-  
+      </panel>
+    </div>
+    <div class="col-md-4">
+      <div class="fileupload waves-effect">
+        <img :src="page.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
+        <input type="file" class="upload" @change="onLogoChange">
       </div>
-      <div class="col-md-6" v-if="edit">
-        <div class="fileupload waves-effect">
-          <img :src="page.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
-          <input type="file" class="upload" @change="onLogoChange">
-        </div>
-      </div>
     </div>
-  
-    <div class="form-group">
-      <label class="control-label">{{ $t('page.summary') }}</label>
-      <text-editor v-model="page.summary"></text-editor>
-    </div>
-  
-    <div class="text-center">
-      <button class="btn btn-rounded btn-danger" @click="deletePage" v-if="edit">Delete</button>
-      <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-        <span v-if="edit">Save</span>
-        <span v-else>Submit</span> {{ page.name }}</button>
-    </div>
-  </panel>
+  </div>
 </template>
 
 <script>
@@ -109,9 +113,9 @@ export default {
     },
     getCategories() {
       this.branches = [],
-      this.$http.get('api/categories').then(response => {
-        this.categories = response.body;
-      })
+        this.$http.get('api/categories').then(response => {
+          this.categories = response.body;
+        })
     },
     onLogoChange(e) {
       var self = this;

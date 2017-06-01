@@ -51,10 +51,20 @@ public class PublicRestController {
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
 			@RequestParam(name = "timestamp", required = false) String timestamp) {
 
-		Date date = new Date(Long.parseLong(timestamp));
+		Date date = null;
+		try {
+			date = new Date(Long.parseLong(timestamp));
+		} catch (NumberFormatException ex) {
+			date = new Date();
+		}
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
+		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
 
 		return ResponseEntity.ok(
 				eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));

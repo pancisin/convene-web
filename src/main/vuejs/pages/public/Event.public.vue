@@ -81,7 +81,7 @@
 <script>
 import Auth from '../../services/auth.js'
 import GMap from '../../elements/GMap.vue'
-
+import StaggerTransition from '../../functional/StaggerTransition.vue'
 export default {
   name: 'public-event',
   data() {
@@ -92,7 +92,7 @@ export default {
     }
   },
   components: {
-    GMap
+    GMap, StaggerTransition
   },
   created() {
     this.getEvent();

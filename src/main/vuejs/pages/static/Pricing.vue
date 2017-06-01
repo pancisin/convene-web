@@ -17,7 +17,9 @@
                 <div class="pricing-wrap">
   
                   <div class="pricing-num pricing-num-pink">
-                    <sup><i class="fa fa-euro"></i></sup>9
+                    <sup>
+                      <i class="fa fa-euro"></i>
+                    </sup>9
                   </div>
                   <div class="pr-per">
                     per month
@@ -29,11 +31,8 @@
   
                   <div class="pricing-features">
                     <ul class="sf-list pr-list">
-                      <li>5 Projects</li>
-                      <li>1 GB Storage</li>
-                      <li>No Domain</li>
-                      <li>1 User</li>
-                      <li>Free Support</li>
+                      <li>5 events / month</li>
+                      <li>1 page</li>
                     </ul>
                   </div>
   
@@ -54,7 +53,9 @@
                 <div class="pricing-wrap">
   
                   <div class="pricing-num">
-                    <sup><i class="fa fa-euro"></i></sup>29
+                    <sup>
+                      <i class="fa fa-euro"></i>
+                    </sup>29
                   </div>
                   <div class="pr-per">
                     per month
@@ -66,11 +67,11 @@
   
                   <div class="pricing-features">
                     <ul class="sf-list pr-list">
-                      <li>5 Projects</li>
-                      <li>1 GB Storage</li>
-                      <li>No Domain</li>
-                      <li>1 User</li>
-                      <li>Free Support</li>
+                      <li>Unlimited events</li>
+                      <li>5 pages</li>
+                      <li>5 team members</li>
+                      <li>Limited customers chat</li>
+                      <li>Free support</li>
                     </ul>
                   </div>
   
@@ -88,7 +89,9 @@
                 <div class="pricing-wrap">
   
                   <div class="pricing-num pricing-num-yellow">
-                    <sup><i class="fa fa-euro"></i></sup>89
+                    <sup>
+                      <i class="fa fa-euro"></i>
+                    </sup>119
                   </div>
                   <div class="pr-per">
                     per month
@@ -100,16 +103,19 @@
   
                   <div class="pricing-features">
                     <ul class="sf-list pr-list">
-                      <li>5 Projects</li>
-                      <li>1 GB Storage</li>
-                      <li>No Domain</li>
-                      <li>1 User</li>
+                      <li>Unlimited pages & events</li>
+                      <li>Unlimited conferences</li>
+                      <li>Unlimited team members</li>
+                      <li>Customers chat</li>
+                      <li>Team chat / task board</li>
                       <li>Free Support</li>
                     </ul>
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rounded disabled"><s>Buy Now</s></a>
+                    <a href="" class="btn btn-primary btn-rounded disabled">
+                      <s>Buy Now</s>
+                    </a>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,7 @@
   <footer class="footer text-right">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 text-muted">
           2017 © Patrik Pancisin.
         </div>
       </div>
