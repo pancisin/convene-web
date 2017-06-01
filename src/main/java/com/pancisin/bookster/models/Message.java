@@ -10,22 +10,30 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Compact;
+
 @Entity
 @Table(name = "messages")
 public class Message {
 
 	@Id
+	@JsonView(Compact.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@ManyToOne
+	@JsonView(Compact.class)
 	private User sender;
 
 	@ManyToOne
+	@JsonView(Compact.class)
 	private User recipient;
 
+	@JsonView(Compact.class)
 	private String content;
 
+	@JsonView(Compact.class)
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 

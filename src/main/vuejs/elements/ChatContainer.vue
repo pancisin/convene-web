@@ -38,7 +38,7 @@ export default {
     return {
       collapsed: true,
       currentView: 'contacts-list',
-      user: {},
+      user: null,
     }
   },
   components: {

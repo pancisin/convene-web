@@ -117,6 +117,11 @@ public class PublicRestController {
 	public ResponseEntity<?> getPageEvents(@PathVariable Long page_id) {
 		return ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
 	}
+	
+	@GetMapping("/user/{user_id}/event")
+	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id) {
+		return ResponseEntity.ok(eventRepository.getEventsByUser(user_id));
+	}
 
 	@GetMapping("/categories")
 	public ResponseEntity<?> getCategories() {

@@ -4,14 +4,17 @@
       <h3 v-text="event.name" class="page-title"></h3>
     </div>
     <div class="col-md-3">
-      <div class="list-group">
+      <div class="list-group mail-list">
         <router-link to="overview" class="list-group-item waves-effect">
+          <i class="fa fa-dashboard"></i>
           Overview
         </router-link>
         <router-link to="programme" class="list-group-item waves-effect">
+          <i class="fa fa-list" aria-hidden="true"></i>
           Programme
         </router-link>
         <router-link to="attendees" class="list-group-item waves-effect">
+          <i class="fa fa-users" aria-hidden="true"></i>
           Attendees
         </router-link>
       </div>

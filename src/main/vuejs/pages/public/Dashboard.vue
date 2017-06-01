@@ -50,10 +50,10 @@
       </div>
   
       <div class="col-md-4">
-        <panel type="default">
+        <!--<panel type="default">
           <span slot="title">Most popular events</span>
           There's nothing to display.
-        </panel>
+        </panel>-->
         <panel type="default">
           <span slot="title">Suggested pages</span>
   

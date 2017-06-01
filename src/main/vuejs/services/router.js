@@ -229,6 +229,10 @@ export default new VueRouter({
               path: 'overview',
               component: resolve => require(['../pages/place/Overview.vue'], resolve)
             },
+            {
+              path: 'gallery',
+              component: resolve => require(['../pages/place/Gallery.vue'], resolve)
+            }
           ]
         },
         {

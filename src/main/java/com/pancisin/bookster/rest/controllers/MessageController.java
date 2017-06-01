@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.repository.MessageRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
@@ -26,9 +28,7 @@ public class MessageController {
 	@Autowired
 	private MessageRepository messageRepository;
 
-	@Autowired
-	private UserRepository userRepository;
-
+	@JsonView(Compact.class)
 	@GetMapping("/user/{user_id}/{page}")
 	public ResponseEntity<?> getPrivateConversation(@PathVariable Long user_id, @PathVariable int page) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -33,4 +33,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	
 	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude, @Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
+
+	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.visibility = 'PUBLIC' AND event.conference IS NULL AND event.page IS NULL")
+	public List<Event> getEventsByUser(@Param("user_id") Long user_id);
 }

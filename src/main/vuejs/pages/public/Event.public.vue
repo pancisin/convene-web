@@ -1,16 +1,13 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-3" v-if="event.bannerUrl">
-        <img :src="event.bannerUrl" class="img-poster" />
-      </div>
-      <div :class="{ 'col-sm-9' : event.bannerUrl }">
+      <div class="col-sm-9" :class="{ 'col-sm-9' : event.bannerUrl }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img :src="event.bannerUrl" />
             <h3 class="panel-title">{{ event.name }}</h3>
             <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YYYY') }} {{ event.startsAt }}
-              <br> {{ event.author.displayName }}</p>
+              <br>Usporiadatel : {{ event.author.displayName }}</p>
           </div>
           <div class="panel-body">
             <div class="row">
@@ -29,6 +26,11 @@
                 <div v-html="event.summary"></div>
               </div>
               <div class="col-md-4">
+                <div class="widget-simple text-center card-box">
+                  <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
+                  <p class="text-muted">Attendees</p>
+                </div>
+  
                 <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="attend">
                   <span v-if="attending">Cancel</span>
                   <span v-else>Attend</span>
@@ -50,6 +52,28 @@
           </div>
         </div>
       </div>
+      <div class="col-sm-3">
+        <panel type="default">
+          <span slot="title">Also created by {{ event.author.displayName }}</span>
+  
+          <div class="inbox-widget">
+            <stagger-transition>
+              <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id">
+                <div class="inbox-item">
+                  <div class="inbox-item-img" v-if="related.bannerUrl != null">
+                    <img :src="related.bannerUrl" class="img-circle" alt="">
+                  </div>
+                  <p class="inbox-item-author" v-text="related.name"></p>
+                  <p class="inbox-item-text">
+                    {{ related.date | moment('DD.MM.YYYY') }}
+                    {{ related.startsAt }}
+                    </p>
+                </div>
+              </router-link>
+            </stagger-transition>
+          </div>
+        </panel>
+      </div>
     </div>
   </div>
 </template>
@@ -64,37 +88,48 @@ export default {
     return {
       event: null,
       attending: false,
+      relatedEvents: [],
     }
   },
   components: {
     GMap
   },
   created() {
-    var event_id = this.$route.params.id;
-    if (event_id != null) {
-      if (Auth.user.authenticated)
-        this.$http.get('api/event/' + event_id).then(response => {
-          this.event = response.body;
-          this.checkAttendance();
-        })
-      else
-        this.$http.get('public/event/' + event_id).then(response => {
-          this.event = response.body;
-        })
-    }
+    this.getEvent();
+  },
+  watch: {
+    '$route': 'getEvent',
   },
   methods: {
+    getEvent() {
+      var event_id = this.$route.params.id;
+      if (event_id != null) {
+        this.$http.get('public/event/' + event_id).then(response => {
+          this.event = response.body;
+          this.getRelated();
+
+          if (Auth.user.authenticated)
+            this.checkAttendance();
+        });
+      }
+    },
     attend() {
       var url = ['api/event', this.event.id, 'toggle-attend'].join('/');
       this.$http.patch(url).then(response => {
         this.attending = response.body;
+        this.event.attendeesCount += this.attending ? 1 : -1;
       });
     },
     checkAttendance() {
       var url = ['api/event', this.event.id, 'attend-status'].join('/');
-
       this.$http.get(url).then(response => {
         this.attending = response.body;
+      })
+    },
+    getRelated() {
+      var url = ['public', this.event.author.type, this.event.author.id, 'event'].join('/');
+      this.$http.get(url).then(response => {
+        this.relatedEvents = response.body;
       })
     }
   }

@@ -17,7 +17,7 @@
               <small v-if="event.place != null" v-text="event.place.address.formatted"></small>
   
               <span class="date">
-                {{ event.date | moment($store.getters.locale.dateFormat) }}
+                {{ event.date | moment('DD.MM.YYYY') }}
                 <span class="time" v-if="event.startsAt != null">
                   at {{ event.startsAt }}
                 </span>

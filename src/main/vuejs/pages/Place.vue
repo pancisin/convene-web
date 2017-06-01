@@ -4,11 +4,11 @@
       <h3 v-text="place.name" class="page-title"></h3>
     </div>
     <div class="col-md-3">
-      <div class="list-group">
+      <div class="list-group mail-list">
         <router-link to="overview" class="list-group-item waves-effect">
           Overview
         </router-link>
-        <router-link to="programme" class="list-group-item waves-effect">
+        <router-link to="gallery" class="list-group-item waves-effect">
           Gallery
         </router-link>
       </div>
@@ -30,7 +30,7 @@ export default {
       edit: false,
     }
   },
-    watch: {
+  watch: {
     '$route': 'getPlace'
   },
   created() {
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     getPlace() {
-       var place_id = this.$route.params.id;
+      var place_id = this.$route.params.id;
 
       if (this.place.id != null && this.place.id == place_id)
         return;
@@ -48,11 +48,10 @@ export default {
           this.place = response.body;
           this.edit = true;
         })
-      } else 
+      } else
         this.place = {};
     },
     placeUpdated(place) {
-      console.warn(place);
       this.place = place;
     }
   }

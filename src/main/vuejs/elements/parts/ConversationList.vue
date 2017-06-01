@@ -1,54 +1,15 @@
 <template>
   <div>
     <ul class="conversation-list">
-      <li class="clearfix">
+      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == $store.state.user.id }">
         <div class="chat-avatar">
           <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-          <i>10:00</i>
+          <i>{{ message.created | moment('HH:mm') }}</i>
         </div>
         <div class="conversation-text">
           <div class="ctext-wrap">
-            <p>
+            <p v-text="message.content">
               Hello!
-            </p>
-          </div>
-        </div>
-      </li>
-      <li class="clearfix odd">
-        <div class="chat-avatar">
-          <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="Female">
-          <i>10:01</i>
-        </div>
-        <div class="conversation-text">
-          <div class="ctext-wrap">
-            <p>
-              Hi, How are you? What about our next meeting?
-            </p>
-          </div>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="chat-avatar">
-          <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-          <i>10:01</i>
-        </div>
-        <div class="conversation-text">
-          <div class="ctext-wrap">
-            <p>
-              Yeah everything is fine
-            </p>
-          </div>
-        </div>
-      </li>
-      <li class="clearfix odd">
-        <div class="chat-avatar">
-          <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-          <i>10:02</i>
-        </div>
-        <div class="conversation-text">
-          <div class="ctext-wrap">
-            <p>
-              Wow that's great
             </p>
           </div>
         </div>
@@ -66,12 +27,33 @@
 
 <script>
 export default {
-
+  name: 'conversation',
+  props: {
+    user: Object,
+  },
+  data() {
+    return {
+      messages: [],
+    }
+  },
+  watch: {
+    'user': 'getMessages',
+  },
+  methods: {
+    getMessages() {
+      this.$http.get('api/message/user/' + this.user.id + '/0').then(response => {
+        this.messages = response.body;
+      })
+    }
+  }
 }
 </script>
 
 <style lang="less">
 .conversation-list {
+  max-height: 380px;
+  min-height: 380px;
+
   overflow-y: auto;
   padding: 10px;
   margin-bottom: 0;
