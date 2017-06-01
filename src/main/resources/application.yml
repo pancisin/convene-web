@@ -51,6 +51,7 @@ spring:
           default:
             directory_provider: filesystem
             indexBase: /files/lucene/indexes
+    show-sql: true
 server: 
   port: 8180
 storage:

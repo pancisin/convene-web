@@ -3,76 +3,22 @@
     <transition name="fade-up" mode="out-in">
       <div class="chat-conversation" v-if="!collapsed">
         <div class="chat-header">
-          <a class="">
+          <a @click="navigateBack" v-if="currentView == 'conversation-list'">
             <i class="fa fa-angle-left fa-lg m-r-15"></i>
           </a>
-          John Doe
+  
+          {{ user != null ? user.displayName : "Conversations" }}
           <a @click="collapsed = true" class="pull-right">
             <i class="fa fa-times"></i>
           </a>
         </div>
   
-        <ul class="conversation-list">
-          <li class="clearfix">
-            <div class="chat-avatar">
-              <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-              <i>10:00</i>
-            </div>
-            <div class="conversation-text">
-              <div class="ctext-wrap">
-                <p>
-                  Hello!
-                </p>
-              </div>
-            </div>
-          </li>
-          <li class="clearfix odd">
-            <div class="chat-avatar">
-              <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="Female">
-              <i>10:01</i>
-            </div>
-            <div class="conversation-text">
-              <div class="ctext-wrap">
-                <p>
-                  Hi, How are you? What about our next meeting?
-                </p>
-              </div>
-            </div>
-          </li>
-          <li class="clearfix">
-            <div class="chat-avatar">
-              <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-              <i>10:01</i>
-            </div>
-            <div class="conversation-text">
-              <div class="ctext-wrap">
-                <p>
-                  Yeah everything is fine
-                </p>
-              </div>
-            </div>
-          </li>
-          <li class="clearfix odd">
-            <div class="chat-avatar">
-              <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
-              <i>10:02</i>
-            </div>
-            <div class="conversation-text">
-              <div class="ctext-wrap">
-                <p>
-                  Wow that's great
-                </p>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <div class="row">
-          <div class="col-sm-9 chat-inputbar">
-            <input type="text" class="form-control chat-input" placeholder="Enter your text">
-          </div>
-          <div class="col-sm-3 chat-send">
-            <button type="submit" class="btn btn-md btn-primary btn-block waves-effect waves-light">Send</button>
-          </div>
+        <div class="chat-wrapper">
+          <transition name="fade-down" mode="out-in">
+            <keep-alive>
+              <component :is="currentView" :user="user" @selected="userSelected"></component>
+            </keep-alive>
+          </transition>
         </div>
       </div>
       <a class="btn btn-primary btn-rounded btn-chat pull-right waves-effect" @click="collapsed = !collapsed" v-else>
@@ -83,18 +29,31 @@
 </template>
 
 <script>
+import ContactsList from './parts/ContactsList.vue'
+import ConversationList from './parts/ConversationList.vue'
+
 export default {
   name: 'conversation-container',
   data() {
     return {
       collapsed: true,
+      currentView: 'contacts-list',
+      user: {},
     }
   },
-  created() {
-
+  components: {
+    ContactsList,
+    ConversationList
   },
   methods: {
-
+    userSelected(user) {
+      this.user = user;
+      this.currentView = 'conversation-list'
+    },
+    navigateBack() {
+      this.currentView = 'contacts-list'
+      this.user = null;
+    }
   }
 }
 </script>
@@ -109,18 +68,6 @@ export default {
 
   width: 320px;
 
-  .chat-inputbar {
-    padding-left: 10px;
-
-    input {
-      border: 1px solid #ccc;
-    }
-  }
-
-  .chat-send {
-    padding-right: 10px;
-  }
-
   .chat-header {
     padding: 15px;
     background: #039cfd;
@@ -132,16 +79,14 @@ export default {
     }
   }
 
-  .conversation-list {
-    // box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+  .chat-wrapper {
     border: 1px solid #ccc;
     border-radius: 2px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 
     background: white;
-    overflow-y: auto;
-    padding: 10px;
+    overflow: hidden;
   }
 }
 

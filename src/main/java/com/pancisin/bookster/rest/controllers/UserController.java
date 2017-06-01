@@ -248,4 +248,11 @@ public class UserController {
 	public void handle(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
+	
+	@GetMapping("/contacts")
+	@JsonView(Summary.class)
+	public ResponseEntity<?> getContacts() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ResponseEntity.ok(paRepository.getContacts(auth.getId()));
+	}
 }
