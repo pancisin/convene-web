@@ -1,43 +1,54 @@
  <template>
-  <div class="topbar">
-  
-    <div class="topbar-left">
-      <div class="text-center">
-        <router-link to="/" class="logo">
-          <i class="fa fa-book"></i>
-          <span>Bookster</span>
-          <sup class="text-muted" v-if="$store.state.user.license != null">
-            {{ $t($store.state.user.license.subscription.code) }}
-          </sup>
-        </router-link>
-      </div>
-    </div>
-  
-    <div class="navbar navbar-default" role="navigation">
+  <header id="topnav">
+    <div class="topbar-main">
       <div class="container">
-        <div class="">
-          <div class="pull-left">
-            <button class="button-menu-mobile open-left waves-effect">
-              <i class="md md-menu"></i>
-            </button>
-            <span class="clearfix"></span>
-          </div>
   
+        <div class="logo">
+          <router-link to="/" class="logo">
+            <i class="fa fa-book"></i>
+            <span>Bookster</span>
+            <sup v-if="$store.state.user.license != null">
+              {{ $t($store.state.user.license.subscription.code) }}
+            </sup>
+          </router-link>
+        </div>
+  
+        <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
-            <notifications />
             <lang-switcher />
+            <notifications />
   
-            <li class="hidden-xs">
-              <router-link to="/admin/settings" class="waves-effect waves-light">
-                <i class="material-icons">settings</i>
-              </router-link>
-              <!--<a class="right-bar-toggle waves-effect waves-light"></a>-->
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
+                <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="user-img" class="img-circle">
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <router-link to="/admin/settings" class="waves-effect waves-light">
+                    <i class="fa fa-cog m-r-10"></i> Settings
+                  </router-link>
+                </li>
+                <li>
+                  <a @click="logout">
+                    <i class="fa fa-power-off m-r-10"></i> Logout</a>
+                </li>
+              </ul>
             </li>
           </ul>
+  
+          <div class="menu-item">
+            <a class="navbar-toggle">
+              <div class="lines">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>
   
 <script>

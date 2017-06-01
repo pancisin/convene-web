@@ -27,7 +27,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 require("./assets/less/core.less")
 require("node-waves/src/less/waves.less")
 require("./assets/less/components.less")
-require("./assets/less/menu.less")
 require("./assets/less/responsive.less")
 
 // TRANSLATIONS

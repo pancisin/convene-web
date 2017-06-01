@@ -8,7 +8,6 @@
             <i class="fa fa-book"></i>
             <span>Bookster</span>
           </router-link>
-  
         </div>
   
         <div class="menu-extras">
@@ -138,7 +137,7 @@
 </template>
 
 <script>
-require("../assets/less/custom-menu.less")
+// require("../assets/less/custom-menu.less")
 import Auth from '../services/auth.js'
 import Notifications from '../elements/Notifications.vue'
 import LangSwitcher from '../elements/LangSwitcher.vue'

@@ -37,8 +37,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-.inbox-widget {
+<style lang="less" scoped>
+.conversation-container .inbox-widget {
   max-height: 380px;
   min-height: 380px;
 

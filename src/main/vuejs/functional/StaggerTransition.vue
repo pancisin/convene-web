@@ -5,13 +5,17 @@ export default {
     delay: {
       type: Number,
       default: 150
+    },
+    tag: {
+      type: String,
+      default: 'div'
     }
   },
-  render: function (createElement, context) {
+  render(createElement, context) {
     var data = {
       props: {
         name: 'staggered-fade',
-        tag: 'div',
+        tag: context.props.tag,
         css: false
       },
       on: {
@@ -25,7 +29,7 @@ export default {
             opacity: 1,
             height: '100%'
           }, {
-              delay: el.dataset.index * context.delay,
+              delay: el.dataset.index * context.props.delay,
               complete: done
             }
           )
@@ -35,7 +39,7 @@ export default {
             opacity: 0,
             height: 0
           }, {
-              delay: el.dataset.index * context.delay,
+              delay: el.dataset.index * context.props.delay,
               complete: done
             }
           )
