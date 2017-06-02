@@ -199,11 +199,13 @@ public class UserController {
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
 			if (stored.getRole() != Role.ROLE_ADMINISTRATOR) {
 				stored.setRole(Role.ROLE_ADMINISTRATOR);
-				userRepository.save(stored);
 			}
 
+			stored.setAddress(su.getUser().getAddress());
+			userRepository.save(stored);
+
 			su.setState(SubscriptionState.ACTIVE);
-			su.setUser(auth);
+			su.setUser(stored);
 
 			Calendar expiration = Calendar.getInstance();
 			expiration.add(Calendar.MONTH, 1);

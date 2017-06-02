@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 
@@ -28,7 +30,7 @@ public class UserSubscription {
 	@Column(updatable = false, nullable = false)
 	private String id;
 	
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne(optional = false)
 	private User user;
 

@@ -6,7 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
@@ -19,20 +21,20 @@ public class UserSearchRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List search(String text) {
+	public List<User> search(String text) {
 		FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search
 				.getFullTextEntityManager(entityManager);
 
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(User.class)
 				.get();
 
-		org.apache.lucene.search.Query query = queryBuilder.keyword().onFields("firstName", "lastName", "email")
+		Query query = queryBuilder.keyword().onFields("firstName", "lastName", "email")
 				.matching(text).createQuery();
 
-		org.hibernate.search.jpa.FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(query, User.class);
+		FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(query, User.class);
 
 		@SuppressWarnings("unchecked")
-		List results = jpaQuery.getResultList();
+		List<User> results = jpaQuery.getResultList();
 
 		return results;
 	}

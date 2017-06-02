@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
@@ -146,6 +147,11 @@ public class PublicRestController {
 	@GetMapping("/locales")
 	public ResponseEntity<?> getPublic() {
 		return ResponseEntity.ok(localeRepository.findAll());
+	}
+	
+	@GetMapping("/subscriptions")
+	public ResponseEntity<?> getSubscriptions() {
+		return ResponseEntity.ok(Subscription.values());
 	}
 
 	@ExceptionHandler

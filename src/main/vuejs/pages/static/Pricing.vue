@@ -37,7 +37,9 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rounded">Buy Now</a>
+                    <router-link :to="{ name: 'sub.signup', params: { subscription: 'STARTER' } }" class="btn btn-primary btn-rounded">
+                      Sign up now !
+                    </router-link>
                   </div>
                 </div>
               </div>
@@ -76,7 +78,9 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rounded">Buy Now</a>
+                    <router-link :to="{ name: 'sub.signup' }" class="btn btn-primary btn-rounded">
+                      Sign up now !
+                    </router-link>
                   </div>
                 </div>
               </div>
@@ -129,6 +133,6 @@
 
 <script>
 export default {
-  name: 'pricing'
+  name: 'pricing',
 }
 </script>

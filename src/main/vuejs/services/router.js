@@ -75,6 +75,11 @@ export default new VueRouter({
         {
           path: 'events',
           component: resolve => require(['../pages/public/Event.index.vue'], resolve)
+        }, 
+        {
+          path: 'subscription-sign-up',
+          name: 'sub.signup',
+          component: resolve => require(['../pages/public/Subscribe.vue'], resolve)
         }
       ]
     },
@@ -115,7 +120,18 @@ export default new VueRouter({
             },
             {
               path: 'events',
+              name: 'conference.events',
               component: resolve => require(['../pages/conference/Events.vue'], resolve)
+            },
+            {
+              path: 'create-event',
+              component: resolve => require(['../pages/event/Overview.vue'], resolve),
+              props: (route) => (
+                {
+                  conference_id: route.params.id,
+                  edit: false
+                }
+              )
             }
           ]
         },

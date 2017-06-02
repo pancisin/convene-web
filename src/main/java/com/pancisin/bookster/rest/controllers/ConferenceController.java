@@ -42,7 +42,7 @@ public class ConferenceController {
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
 	
-	@GetMapping("/events")
+	@GetMapping("/event")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getEvents(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(conferenceRepository.findOne(conference_id).getEvents());

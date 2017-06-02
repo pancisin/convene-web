@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -157,6 +158,9 @@ public class User implements UserDetails, Principal, IAuthor {
 		}
 	}
 
+	@OneToOne(optional = true)
+	private Address address;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -333,5 +337,13 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 }
