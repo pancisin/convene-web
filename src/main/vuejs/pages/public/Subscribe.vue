@@ -59,6 +59,8 @@
           </div>
         </div>
   
+        <hr>
+  
         <div class="text-center">
           <a class="btn btn-rounded btn-success" @click="submit">Submit</a>
         </div>
@@ -68,6 +70,7 @@
 </template>
 
 <script>
+import Auth from '../../services/auth.js'
 export default {
   name: 'subscription-signup',
   data() {
@@ -81,7 +84,11 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.state.user;
+      var u = this.$store.state.user;
+      if (u.address == null)
+        u.address = {};
+
+      return u;
     },
   },
   methods: {
@@ -107,6 +114,7 @@ export default {
 
       data.user.role = data.user.role.name;
       this.$http.post('api/user/subscription', data).then(response => {
+        Auth.updateUserData(this);
         console.log('FINE !')
       })
     }

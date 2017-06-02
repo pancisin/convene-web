@@ -57,6 +57,9 @@ export default {
       if (this.new_programme.description == null || this.new_programme.description == "") return;
 
       this.$http.post(url, this.new_programme).then(response => {
+        if (this.event.programme == null)
+          this.event.programme = [];
+          
         this.event.programme.push(response.body);
         this.new_programme = {
           time: null,

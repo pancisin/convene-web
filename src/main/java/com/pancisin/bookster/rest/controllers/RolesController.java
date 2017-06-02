@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 
 @RestController
@@ -13,6 +14,6 @@ public class RolesController {
 
 	@GetMapping
 	public ResponseEntity<?> getRoles() {
-		return ResponseEntity.ok(Role.values());
+		return ResponseEntity.ok(PageRole.values());
 	}
 }

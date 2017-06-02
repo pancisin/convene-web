@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,12 +21,15 @@ public class Programme {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
 	@Column
 	private Time time;
 
 	@Column
-	private Time duration;
+	private 
+	Time duration;
 	
+	@NotNull
 	@Column
 	private String name;
 	

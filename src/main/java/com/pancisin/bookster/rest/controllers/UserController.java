@@ -38,6 +38,7 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
@@ -153,7 +154,7 @@ public class UserController {
 
 		Page stored_page = pageRepository.save(page);
 		PageAdministrator pa = new PageAdministrator(page, auth, true);
-		pa.setRole(Role.ROLE_OWNER);
+		pa.setRole(PageRole.ROLE_OWNER);
 		paRepository.save(pa);
 
 		return ResponseEntity.ok(stored_page);
@@ -197,8 +198,8 @@ public class UserController {
 		User stored = userRepository.findOne(auth.getId());
 
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
-			if (stored.getRole() != Role.ROLE_ADMINISTRATOR) {
-				stored.setRole(Role.ROLE_ADMINISTRATOR);
+			if (stored.getRole() != Role.ROLE_AUTHOR) {
+				stored.setRole(Role.ROLE_AUTHOR);
 			}
 
 			stored.setAddress(su.getUser().getAddress());

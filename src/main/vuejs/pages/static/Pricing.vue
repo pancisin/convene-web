@@ -1,10 +1,11 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-12 text-center">
+      <div class="col-sm-12 text-center m-b-10">
         <h1 class="title">Pricing for authors</h1>
-        <p class="sub-title">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
-          <br> text of the printing and typesetting industry. </p>
+        <p class="sub-title">Select subscription that fits your business. We care about you so
+          <b>first month is on us !</b>
+        </p>
       </div>
     </div>
     <div class="row">
@@ -37,7 +38,7 @@
                   </div>
   
                   <div class="pr-button">
-                    <router-link :to="{ name: 'sub.signup', params: { subscription: 'STARTER' } }" class="btn btn-primary btn-rounded">
+                    <router-link :to="{ name: 'sub.signup', params: { subscription: 'STARTER' } }" class="btn btn-primary btn-rounded" v-if="cur_sub.name != 'STARTER'">
                       Sign up now !
                     </router-link>
                   </div>
@@ -47,7 +48,7 @@
           </div>
   
           <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="pricing-item main animated fadeInLeft wow animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+            <div class="pricing-item main">
               <div class="ribbon">
                 <span>POPULAR</span>
               </div>
@@ -78,7 +79,7 @@
                   </div>
   
                   <div class="pr-button">
-                    <router-link :to="{ name: 'sub.signup' }" class="btn btn-primary btn-rounded">
+                    <router-link :to="{ name: 'sub.signup', params: { subscription: 'PROFESSIONAL' } }" class="btn btn-primary btn-rounded" v-if="cur_sub.name != 'PROFESSIONAL'">
                       Sign up now !
                     </router-link>
                   </div>
@@ -88,7 +89,7 @@
           </div>
   
           <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="pricing-item animated fadeInLeft wow animated" data-wow-delay=".7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+            <div class="pricing-item">
               <div class="pricing-item-inner">
                 <div class="pricing-wrap">
   
@@ -117,9 +118,9 @@
                   </div>
   
                   <div class="pr-button">
-                    <a href="" class="btn btn-primary btn-rounded disabled">
-                      <s>Buy Now</s>
-                    </a>
+                    <router-link :to="{ name: 'sub.signup', params: { subscription: 'ENTERPRISE' } }" class="btn btn-primary btn-rounded disabled" v-if="cur_sub.name != 'ENTERPRISE'">
+                      Sign up now !
+                    </router-link>
                   </div>
                 </div>
               </div>
@@ -134,5 +135,12 @@
 <script>
 export default {
   name: 'pricing',
+  computed: {
+    cur_sub() {
+      if (this.$store.state.user != null)
+        return this.$store.state.user.license.subscription;
+      return {};
+    }
+  }
 }
 </script>

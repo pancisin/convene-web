@@ -16,6 +16,7 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BookRequestRepository;
@@ -155,7 +156,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		if (oPa.isPresent()) {
 			PageAdministrator pa = oPa.get();
-			return pa.getActive() && (pa.getRole() == Role.ROLE_ADMINISTRATOR || pa.getRole() == Role.ROLE_OWNER);
+			return pa.getActive() && (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
 		}
 
 		return false;

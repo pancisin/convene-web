@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
@@ -50,7 +51,7 @@ public class PageAdministrator {
 	@NotNull
 	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
-	private Role role = Role.ROLE_ADMINISTRATOR;
+	private PageRole role = PageRole.ROLE_ADMINISTRATOR;
 
 	public PageAdministrator() {
 
@@ -94,11 +95,11 @@ public class PageAdministrator {
 		return created;
 	}
 
-	public Role getRole() {
+	public PageRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(PageRole role) {
 		this.role = role;
 	}
 }

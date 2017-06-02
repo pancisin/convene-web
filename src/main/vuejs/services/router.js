@@ -75,11 +75,16 @@ export default new VueRouter({
         {
           path: 'events',
           component: resolve => require(['../pages/public/Event.index.vue'], resolve)
-        }, 
+        },
+        {
+          path: 'create-event',
+          component: resolve => require(['../pages/public/Event.create.vue'], resolve)
+        },
         {
           path: 'subscription-sign-up',
           name: 'sub.signup',
-          component: resolve => require(['../pages/public/Subscribe.vue'], resolve)
+          component: resolve => require(['../pages/public/Subscribe.vue'], resolve),
+          beforeEnter: require_auth,
         }
       ]
     },

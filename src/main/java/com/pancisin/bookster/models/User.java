@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,6 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
@@ -158,8 +160,8 @@ public class User implements UserDetails, Principal, IAuthor {
 		}
 	}
 
-	@OneToOne(optional = true)
-	private Address address;
+	@OneToOne(optional = true, cascade = CascadeType.ALL)
+	private Address address = new Address();
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -287,7 +289,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	public List<Page> getOwningPages() {
 		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().filter(x -> x.getRole() == Role.ROLE_OWNER).map(x -> x.getPage())
+			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).map(x -> x.getPage())
 					.collect(Collectors.toList());
 		else
 			return null;

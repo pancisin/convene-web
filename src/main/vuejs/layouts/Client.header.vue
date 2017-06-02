@@ -63,7 +63,7 @@
           </ul>
   
           <div class="menu-item">
-            <a class="navbar-toggle">
+            <a class="navbar-toggle waves-effect" @click="collapsed = !collapsed">
               <div class="lines">
                 <span></span>
                 <span></span>
@@ -77,60 +77,62 @@
   
     <div class="navbar-custom active">
       <div class="container">
-        <div id="navigation" class="active">
-          <ul class="navigation-menu">
-            <li>
-              <router-link to="/" class="waves-effect" exact>
-                <i class="material-icons">home</i> {{ $t('client.menu.home') }}
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/events" class="waves-effect">
-                <i class="material-icons">event</i> Events
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/explore" class="waves-effect">
-                <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
-            </li>
-            <!--<li><router-link to="/conference"><i class="material-icons">people</i> Conferences</router-link></li>-->
-            <li class="has-submenu">
-              <a>
-                <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
-              <ul class="submenu megamenu">
-                <li>
-                  <ul>
-                    <li>
-                      <router-link to="pricing">
-                        Pricing
-                      </router-link>
-                    </li>
-                  </ul>
-                </li>
+        <slide-transition>
+          <div id="navigation" class="active" v-show="!collapsed">
+            <ul class="navigation-menu">
+              <li>
+                <router-link to="/" class="waves-effect" exact>
+                  <i class="material-icons">home</i> {{ $t('client.menu.home') }}
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/events" class="waves-effect">
+                  <i class="material-icons">event</i> Events
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/explore" class="waves-effect">
+                  <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
+              </li>
+              <!--<li><router-link to="/conference"><i class="material-icons">people</i> Conferences</router-link></li>-->
+              <li class="has-submenu">
+                <a>
+                  <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
+                <ul class="submenu megamenu">
+                  <li>
+                    <ul>
+                      <li>
+                        <router-link to="pricing">
+                          Pricing
+                        </router-link>
+                      </li>
+                    </ul>
+                  </li>
   
-                <li>
-                  <ul>
-                    <li>
-                      <router-link to="faq">
-                        FAQ
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="terms">
-                        Terms & Conditions
-                      </router-link>
-                    </li>
-                    <li>
-                      <router-link to="privacy-policy">
-                        Privacy policy
-                      </router-link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+                  <li>
+                    <ul>
+                      <li>
+                        <router-link to="faq">
+                          FAQ
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link to="terms">
+                          Terms & Conditions
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link to="privacy-policy">
+                          Privacy policy
+                        </router-link>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </slide-transition>
       </div>
     </div>
   </header>
@@ -141,21 +143,33 @@
 import Auth from '../services/auth.js'
 import Notifications from '../elements/Notifications.vue'
 import LangSwitcher from '../elements/LangSwitcher.vue'
+import SlideTransition from '../functional/SlideTransition'
 
 export default {
   name: 'header',
+  data() {
+    return {
+      collapsed: true,
+    }
+  },
+  watch: {
+    '$route': 'closeNavbar',
+  },
   computed: {
     auth() {
       return Auth;
     }
   },
   components: {
-    Notifications, LangSwitcher
+    Notifications, LangSwitcher, SlideTransition
   },
   methods: {
-    logout: function () {
+    logout() {
       Auth.logout(this, '/login')
     },
+    closeNavbar() {
+      this.collapsed = true;
+    }
   }
 }
 </script>

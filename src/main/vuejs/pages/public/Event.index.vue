@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3">
-        <router-link to="/" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
+        <router-link to="/create-event" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
         <date-picker v-model="filters.timestamp" inline="true"></date-picker>
       </div>
       <div class="col-md-9">

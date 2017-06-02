@@ -1,5 +1,6 @@
 <template>
   <div id="wrapper">
+    <toast-container />
     <header-component></header-component>
   
     <div class="content">
@@ -17,18 +18,28 @@
 <script> 
 import HeaderComponent from './Client.header.vue'
 import FooterComponent from './Footer.vue'
+import ToastContainer from '../elements/ToastContainer.vue'
 
 export default {
   name: 'layout',
   components: {
     HeaderComponent,
     FooterComponent,
+    ToastContainer,
   },
 }
 </script>
 
 <style lang="less" scoped>
-.content {
-  margin-top: 145px;
+@media(max-width: 992px) {
+  .content {
+    margin-top: 75px;
+  }
+}
+
+@media(min-width: 992px) {
+  .content {
+    margin-top: 145px;
+  }
 }
 </style>

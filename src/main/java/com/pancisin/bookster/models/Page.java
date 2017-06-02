@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
@@ -85,7 +86,7 @@ public class Page implements IAuthor {
 	
 	@JsonIgnore
 	public User getOwner() {
-		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == Role.ROLE_OWNER).findFirst();
+		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).findFirst();
 	
 		if (owner.isPresent())
 			return owner.get().getUser();

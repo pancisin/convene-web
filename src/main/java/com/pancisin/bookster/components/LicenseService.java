@@ -24,9 +24,8 @@ public class LicenseService {
 
 	@Autowired
 	private EmailService emailService;
-	
-	// @Scheduled(cron = "0 3 * * * *")
-//	@Scheduled(fixedRate = 10000)
+
+	@Scheduled(cron = "0 0 3 * * *")
 	@Transactional
 	public void checkLicenses() {
 		List<UserSubscription> newSubs = new ArrayList<UserSubscription>();
@@ -37,7 +36,8 @@ public class LicenseService {
 			if (s.getState() == SubscriptionState.ACTIVE) {
 				s.setState(SubscriptionState.EXPIRED);
 				newSubs.add(createNew(s));
-				emailService.sendSimpleMessage(s.getUser().getEmail(), "There is new invoice prepared", "Invoice : " + s.getId());
+				emailService.sendSimpleMessage(s.getUser().getEmail(), "There is new invoice prepared",
+						"Invoice : " + s.getId());
 			} else if (s.getState() == SubscriptionState.NEW) {
 				s.setState(SubscriptionState.UNPAID);
 			}

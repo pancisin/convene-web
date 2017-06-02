@@ -33,6 +33,7 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
@@ -192,7 +193,7 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 
 		PageAdministrator pa = new PageAdministrator(stored, user, false);
-		pa.setRole(Role.ROLE_ADMINISTRATOR);
+		pa.setRole(PageRole.ROLE_ADMINISTRATOR);
 
 		paRepository.save(pa);
 		return ResponseEntity.ok(pa);
