@@ -94,4 +94,12 @@ export default {
   padding: 15px 16px;
   border-radius: 30px;
 }
+
+@media(max-width: 768px) {
+  .conversation-container {
+    left: 0;
+    width: auto;
+    z-index: 9999;
+  }
+}
 </style>

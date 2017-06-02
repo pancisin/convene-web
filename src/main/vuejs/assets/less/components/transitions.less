@@ -41,6 +41,17 @@ a {
     transform: translateY(50px);
 }
 
+.fade-left-enter-active,
+.fade-left-leave-active {
+    transition: all 0.3s ease-in-out;
+}
+
+.fade-left-enter,
+.fade-left-leave-to {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+
 
 
 
@@ -58,3 +69,4 @@ a {
     height:0;
     opacity: 0;
 }
+

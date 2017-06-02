@@ -2,8 +2,8 @@
   <div id="wrapper">
     <chat-container />
     <toast-container />
-    <header-component />
-    <sidebar-component />
+    <header-component @hamburgerClicked="toggleSidebar" />
+    <sidebar-component :collapsed="sidebarCollapsed" />
   
     <div class="content-page">
       <div class="content">
@@ -31,6 +31,14 @@ export default {
         next("/");
     })
   },
+  data() {
+    return {
+      sidebarCollapsed: true,
+    }
+  },
+  watch: {
+    '$route': 'closeSidebar'
+  },
   components: {
     HeaderComponent,
     FooterComponent,
@@ -38,5 +46,13 @@ export default {
     ChatContainer,
     SidebarComponent
   },
+  methods: {
+    toggleSidebar() {
+      this.sidebarCollapsed = !this.sidebarCollapsed;
+    },
+    closeSidebar() {
+      this.sidebarCollapsed = true;
+    }
+  }
 }
 </script>

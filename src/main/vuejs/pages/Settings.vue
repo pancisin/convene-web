@@ -3,14 +3,7 @@
     <h3 class="page-title">{{ $t('settings.default') }}</h3>
   
     <div class="row">
-      <div class="col-md-9">
-        <transition name="fade-up" mode="out-in">
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
-        </transition>
-      </div>
-      <div class="col-md-3">
+      <div class="col-md-3 col-md-push-9">
         <div class="list-group mail-list">
           <router-link to="account" class="list-group-item waves-effect">
             <i class="fa fa-user-o"></i>
@@ -26,7 +19,13 @@
           </router-link>
         </div>
       </div>
-  
+      <div class="col-md-9 col-md-pull-3">
+        <transition name="fade-up" mode="out-in">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
+      </div>
     </div>
   </div>
 </template>

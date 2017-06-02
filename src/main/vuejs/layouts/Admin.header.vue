@@ -2,14 +2,20 @@
   <header id="topnav">
     <div class="topbar-main">
       <div class="container">
+        <div class="menu-item">
+          <a class="navbar-toggle waves-effect" @click="hamburgerClicked">
+            <div class="lines">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </a>
+        </div>
   
         <div class="logo">
           <router-link to="/" class="logo">
             <i class="fa fa-book"></i>
             <span>Bookster</span>
-            <sup v-if="$store.state.user.license != null">
-              {{ $t($store.state.user.license.subscription.code) }}
-            </sup>
           </router-link>
         </div>
   
@@ -36,15 +42,6 @@
             </li>
           </ul>
   
-          <div class="menu-item">
-            <a class="navbar-toggle">
-              <div class="lines">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </a>
-          </div>
         </div>
       </div>
     </div>
@@ -62,9 +59,19 @@ export default {
     logout: function () {
       Auth.logout(this, '/login')
     },
+    hamburgerClicked() {
+      this.$emit('hamburgerClicked');
+    }
   },
   components: {
     Notifications, LangSwitcher
   },
 }
 </script>
+F
+<style lang="less" scoped>
+#topnav .navbar-toggle {
+  float: left;
+  margin-right: 10px;
+}
+</style>
