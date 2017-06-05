@@ -2,7 +2,6 @@
 export default {
   functional: true,
   render(createElement, context) {
-    console.log(context.children.height)
     context.data.on = {
       beforeEnter(el) {
       },

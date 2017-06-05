@@ -7,7 +7,7 @@
       </div>
       <div class="col-md-9">
         <div class="events-list">
-          <router-link :to="'/event/' + event.id" class="event-item clearfix" v-for="event in eventsPaginator.content">
+          <router-link :to="'/event/' + event.id" class="event-item clearfix" v-for="event in eventsPaginator.content" :key="event.id">
             <img v-if="event.bannerUrl != null" :src="event.bannerUrl" />
   
             <div class="content">

@@ -1,21 +1,11 @@
 <template>
   <div class="container">
-    <h1>
-      About
-    </h1>
+    About
   </div>
 </template>
 
 <script>
 export default {
-  name: 'about',
-  data() {
-    return {
-
-    }
-  },
-  methods: {
-
-  }
+  name: 'about'
 }
 </script>
