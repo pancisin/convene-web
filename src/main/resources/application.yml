@@ -20,21 +20,7 @@ spring:
             mode: none
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: pancisin.patrick@gmail.com
-    password: Papancisin1
-    properties:
-      mail:
-        smtp:
-          auth: true,
-          starttls:
-            enable: true
-#  jackson:
-#    mapper: 
-#      default-view-inclusion: true
-
+        
 jwt: 
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
@@ -52,12 +38,15 @@ spring:
             directory_provider: filesystem
             indexBase: /files/lucene/indexes
     show-sql: true
+  mail:
+    host: localhost
+    port: 25
 server: 
   port: 8180
 storage:
   path: /files/
 mailing:
-  enabled: false
+  enabled: true
 ---
 spring: 
   profiles: production
@@ -71,6 +60,17 @@ spring:
           default:
             directory_provider: filesystem
             indexBase: /uploads/lucene/indexes
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pancisin.patrick@gmail.com
+    password: Papancisin1
+    properties:
+      mail:
+        smtp:
+          auth: true,
+          starttls:
+            enable: true
 server: 
   port: 8080
 storage:

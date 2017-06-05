@@ -26,6 +26,7 @@ public class LicenseService {
 	private EmailService emailService;
 
 	@Scheduled(cron = "0 0 3 * * *")
+//	@Scheduled(fixedDelay = 10000)
 	@Transactional
 	public void checkLicenses() {
 		List<UserSubscription> newSubs = new ArrayList<UserSubscription>();
@@ -36,14 +37,16 @@ public class LicenseService {
 			if (s.getState() == SubscriptionState.ACTIVE) {
 				s.setState(SubscriptionState.EXPIRED);
 				newSubs.add(createNew(s));
-				emailService.sendSimpleMessage(s.getUser().getEmail(), "There is new invoice prepared",
-						"Invoice : " + s.getId());
 			} else if (s.getState() == SubscriptionState.NEW) {
 				s.setState(SubscriptionState.UNPAID);
 			}
 		});
 
 		usRepository.save(newSubs);
+		newSubs.stream().forEach(us -> {
+			emailService.sendInvoiceEmail(us);
+		});
+		
 		usRepository.save(expired);
 	}
 
