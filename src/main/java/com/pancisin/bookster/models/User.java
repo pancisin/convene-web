@@ -144,6 +144,9 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	private List<Place> places;
 
+	@Column
+	private boolean verified = false;
+	
 	@Transient
 	public UserSubscription getLicense() {
 		Optional<UserSubscription> subscription = subscriptions.stream()
@@ -347,5 +350,13 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public boolean isVerified() {
+		return verified;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 }

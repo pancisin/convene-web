@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.UserSubscription;
 
 @Service
@@ -28,5 +29,12 @@ public class MailContentBuilder {
 		Context context = new Context();
 		context.setVariable("us", us);
 		return templateEngine.process("invoiceEmailTemplate", context);
+	}
+	
+	public String buildVerification(User user, String url) {
+		Context context = new Context();
+		context.setVariable("user", user);
+		context.setVariable("url", url);
+		return templateEngine.process("verificationEmailTemplate", context);
 	}
 }

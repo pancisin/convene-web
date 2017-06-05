@@ -37,7 +37,8 @@ public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken 
 	public static String generateToken(User u, String secret) {
 		Claims claims = Jwts.claims().setSubject(u.getUsername());
 		claims.put("userId", u.getId() + "");
-		// claims.put("role", u.getRole());
+		claims.put("role", u.getRole().getName());
+
 		return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 }

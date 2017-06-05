@@ -24,6 +24,7 @@ spring:
 jwt: 
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
+  verificationSecret: 123456789
 ---
 spring:
   profiles: local
