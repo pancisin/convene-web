@@ -6,7 +6,7 @@
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>
-          <router-view :page="page" :edit="edit" @update="pageUpdated"></router-view>
+          <router-view :page="page" :edit="edit" @updated="pageUpdated"></router-view>
         </keep-alive>
       </transition>
     </div>

@@ -35,10 +35,13 @@
         </div>
   
         <div class="text-center">
-          <button class="btn btn-rounded btn-danger" @click="deletePage" v-if="edit">Delete</button>
+          <button class="btn btn-rounded btn-danger" @click="deactivatePage" v-if="edit && page.state == 'PUBLISHED'">Deactivate</button>
           <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
             <span v-if="edit">Save</span>
             <span v-else>Submit</span> {{ page.name }}</button>
+          <a class="btn btn-rounded btn-success" @click="publishPage" v-if="edit && page.state == 'DEACTIVATED'">
+            Publish
+          </a>
         </div>
       </panel>
     </div>
@@ -140,6 +143,16 @@ export default {
       var url = ['api/categories', this.page.category.id, 'branches'].join('/');
       this.$http.get(url).then(response => {
         this.branches = response.body;
+      })
+    },
+    publishPage() {
+      this.$http.patch('api/page/' + this.page.id + '/publish').then(response => {
+        this.$emit('updated', response.body);
+      })
+    },
+    deactivatePage() {
+      this.$http.patch('api/page/' + this.page.id + '/deactivate').then(response => {
+        this.$emit('updated', response.body);
       })
     }
   }

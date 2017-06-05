@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
@@ -93,6 +96,9 @@ public class Page implements IAuthor {
 		
 		return null;
 	}
+	
+	@Enumerated(EnumType.STRING)
+	private PageState state = PageState.DEACTIVATED;
 	
 	public Category getCategory() {
 		if (getBranch() != null)
@@ -185,5 +191,13 @@ public class Page implements IAuthor {
 
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	public PageState getState() {
+		return state;
+	}
+
+	public void setState(PageState state) {
+		this.state = state;
 	}
 }

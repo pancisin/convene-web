@@ -13,11 +13,14 @@ import com.pancisin.bookster.models.Page;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 
-	@Query("SELECT page FROM Page page JOIN page.branch branch JOIN branch.category category WHERE category.id = :category_id")
+	@Query("SELECT page FROM Page page JOIN page.branch branch JOIN branch.category category WHERE category.id = :category_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public org.springframework.data.domain.Page<Page> findByCategory(@Param("category_id") Long category_id, Pageable pageable);
 
-	@Query("SELECT page FROM Page page JOIN page.branch branch WHERE branch.id = :branch_id")
+	@Query("SELECT page FROM Page page JOIN page.branch branch WHERE branch.id = :branch_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public org.springframework.data.domain.Page<Page> findByBranch(@Param("branch_id") Long branch_id, Pageable pageable);
 
+	@Query("SELECT page FROM Page page WHERE page.state = 'PUBLISHED' OR page.state = 'BLOCKED'")
+	public org.springframework.data.domain.Page<Page> findAllVisible(Pageable pageable);
+	
 	public Page findBySlug(String slug);
 }

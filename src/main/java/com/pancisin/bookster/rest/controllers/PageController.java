@@ -33,6 +33,7 @@ import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
@@ -211,6 +212,22 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 		place.setPage(stored);
 		return ResponseEntity.ok(placeRepository.save(place));
+	}
+
+	@PatchMapping("/publish")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> publishPage(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		stored.setState(PageState.PUBLISHED);
+		return ResponseEntity.ok(pageRepository.save(stored));
+	}
+	
+	@PatchMapping("/deactivate")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> deactivatePage(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		stored.setState(PageState.DEACTIVATED);
+		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 
 	@ExceptionHandler

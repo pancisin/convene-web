@@ -103,7 +103,7 @@ public class PublicRestController {
 		} else if (categoryId != null) {
 			pages = pageRepository.findByCategory(categoryId, pageable);
 		} else {
-			pages = pageRepository.findAll(pageable);
+			pages = pageRepository.findAllVisible(pageable);
 		}
 
 		return ResponseEntity.ok(pages);
