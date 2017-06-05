@@ -93,7 +93,7 @@ public class AuthController {
 		}
 	}
 
-	@PutMapping(name = "/verify")
+	@PutMapping(value = "/verify")
 	private ResponseEntity<?> verifyEmail(@RequestBody String token) {
 		User user = null;
 		try {
