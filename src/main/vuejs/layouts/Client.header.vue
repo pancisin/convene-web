@@ -85,10 +85,22 @@
                   <i class="material-icons">home</i> {{ $t('client.menu.home') }}
                 </router-link>
               </li>
-              <li>
+              <li class="has-submenu">
                 <router-link to="/events" class="waves-effect">
                   <i class="material-icons">event</i> Events
                 </router-link>
+                <ul class="submenu">
+                  <li>
+                    <router-link to="/events" class="waves-effect">
+                      Explore
+                    </router-link>
+                  </li>
+                  <li>
+                    <router-link to="/my-events" class="waves-effect">
+                      My events
+                    </router-link>
+                  </li>
+                </ul>
               </li>
               <li>
                 <router-link to="/explore" class="waves-effect">
@@ -96,14 +108,20 @@
               </li>
               <!--<li><router-link to="/conference"><i class="material-icons">people</i> Conferences</router-link></li>-->
               <li class="has-submenu">
-                <a>
-                  <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}</a>
+                <router-link to="/about">
+                  <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}
+                </router-link>
                 <ul class="submenu megamenu">
                   <li>
                     <ul>
                       <li>
                         <router-link to="pricing">
                           Pricing
+                        </router-link>
+                      </li>
+                      <li>
+                        <router-link to="/about">
+                          About
                         </router-link>
                       </li>
                     </ul>

@@ -41,8 +41,8 @@ export default new VueRouter({
           component: resolve => require(['../pages/public/Home.vue'], resolve)
         },
         {
-          path: 'event',
-          component: resolve => require(['../pages/Event.index.vue'], resolve)
+          path: 'my-events',
+          component: resolve => require(['../pages/public/Event.my.vue'], resolve)
         },
         {
           path: 'event/:id',
@@ -78,7 +78,8 @@ export default new VueRouter({
         },
         {
           path: 'create-event',
-          component: resolve => require(['../pages/public/Event.create.vue'], resolve)
+          component: resolve => require(['../pages/public/Event.create.vue'], resolve),
+          beforeEnter: require_auth
         },
         {
           path: 'subscription-sign-up',
@@ -267,6 +268,10 @@ export default new VueRouter({
         {
           path: 'privacy-policy',
           component: resolve => require(['../pages/static/Privacy.vue'], resolve)
+        },
+        {
+          path: 'about',
+          component: resolve => require(['../pages/static/About.vue'], resolve)
         },
         {
           path: 'settings',
