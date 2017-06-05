@@ -299,6 +299,10 @@ export default new VueRouter({
       ]
     },
     {
+      path: '/confirm-email',
+      component: resolve => require(['../pages/EmailVerify.vue'], resolve)
+    },
+    {
       path: '/login',
       component: resolve => require(['../pages/Login.vue'], resolve),
       beforeEnter: afterAuth
