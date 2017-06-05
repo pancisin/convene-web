@@ -33,7 +33,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 		claims.setExpiration(calculateExpiration());
 
 		String token = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, verificationSecret).compact();
-		String confirmationUrl = event.getAppUrl() + "/#/email-confirm?token=" + token;
+		String confirmationUrl = event.getAppUrl() + "/#/confirm-email?token=" + token;
 		
 		emailService.sendVerificationEmail(user, confirmationUrl);
 	}
