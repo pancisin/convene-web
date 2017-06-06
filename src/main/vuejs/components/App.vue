@@ -8,6 +8,8 @@
 <script>
 import Auth from '../services/auth.js'
 import moment from "moment"
+import { mapActions } from 'vuex'
+
 export default {
   name: 'app-root',
   created() {
@@ -18,24 +20,23 @@ export default {
       });
 
       this.initializeStomp();
-      this.fetchNotifications();
+      this.initializeNotifications();
     }
   },
   methods: {
+    ...mapActions([
+      'initializeNotifications',
+      'addNotification'
+    ]),
     initializeStomp() {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
-          this.$store.commit('addNotification', notification);
+          this.addNotification(notification);
           this.$info(notification.title, notification.message);
         });
       })
     },
-    fetchNotifications() {
-      this.$http.get('api/user/notification').then(response => {
-        this.$store.dispatch('initNotifications', response.body)
-      });
-    }
   }
 };
 </script>

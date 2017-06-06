@@ -30,17 +30,21 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'account',
   created() {
 
   },
   computed: {
-    user() {
-      return this.$store.state.user;
-    }
+    ...mapGetters({
+      user: 'getUser'
+    }),
   },
   methods: {
+    ...mapActions([
+      'updateUser'
+    ]),
     submit() {
       var data = {
         firstName: this.user.firstName,
@@ -49,15 +53,10 @@ export default {
 
       this.$http.put('api/user', data).then(response => {
         var user = response.body;
-        this.$store.commit('setUser', { user });
-
+        this.updateUser(user);
         this.$success('Success !','User account information has been updated.')
       })
     }
   }
 }
 </script>
-
-<style>
-
-</style>

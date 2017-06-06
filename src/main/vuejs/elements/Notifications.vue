@@ -1,10 +1,10 @@
 <template>
   <li class="dropdown hidden-xs" :class="{ 'open' : display }" v-click-outside="closeNotifications">
     <a @click="display = !display" class="dropdown-toggle waves-effect waves-light">
-       <i class="material-icons">notifications</i>
+      <i class="material-icons">notifications</i>
       <span class="badge badge-xs" v-text="notifications.length"></span>
     </a>
-
+  
     <ul class="dropdown-menu dropdown-menu-lg">
       <li class="text-center notifi-title">Notification</li>
       <li class="list-group notification-list">
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'notifications',
   data: function () {
@@ -48,9 +49,9 @@ export default {
     }
   },
   computed: {
-    notifications() {
-      return this.$store.state.notifications;
-    }
+    ...mapGetters({
+      notifications: 'getNotifications'
+    }),
   },
   methods: {
     markAsSeen: function (notification) {

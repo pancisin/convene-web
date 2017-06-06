@@ -6,7 +6,7 @@
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>
-          <router-view :conference="conference" :edit="edit"></router-view>
+          <router-view :conference="conference" :edit="edit" @updated="conferenceUpdated"></router-view>
         </keep-alive>
       </transition>
     </div>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'conference',
   data() {
@@ -29,6 +30,9 @@ export default {
     this.getConference();
   },
   methods: {
+    ...mapActions([
+      'updateConference'
+    ]),
     getConference() {
       this.conference = new Object();
       this.edit = false;
@@ -41,6 +45,10 @@ export default {
         })
       }
     },
+    conferenceUpdated(conference) {
+      this.conference = conference;
+      this.updateConference(conference);
+    }
   }
 }
 </script>

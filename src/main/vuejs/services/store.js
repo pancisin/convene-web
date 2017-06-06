@@ -2,72 +2,60 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
+import user from './store/user.module.js';
+
+import UserApi from './api/user.api.js'
+
 const store = new Vuex.Store({
   state: {
-    user: null,
     notifications: [],
     toasts: [],
-    pages: [],
     conferences: []
   },
+  modules: {
+    user,
+  },
+  getters: {
+    getNotifications: state => state.notifications,
+    getToasts: state => state.toasts,
+  },
   mutations: {
-    setUser(state, { user }) {
-      state.user = user;
+    setNotifications: (state, { notifications }) => {
+      state.notifications = notifications;
     },
-    addNotification(state, notification) {
-      state.notifications.push(notification);
-    },
-    addToast(state, notification) {
-      state.toasts.push(notification);
-      setTimeout(() => {
-        state.toasts.splice(state.toasts.indexOf(notification), 1);
-      }, 5000)
-    },
-    removeNotification(state, notification) {
+    removeNotification: (state, { notification }) => {
       state.notifications = state.notifications.filter(n => {
         return n.id != notification.id;
       });
     },
-    addPage(state, page) {
-      state.pages.push(page);
+    addNotification: (state, { notification }) => {
+      state.notifications.push(notification);
     },
-    removePage(state, page) {
-      state.pages = state.pages.filter(p => {
-        return page.id != p.id;
-      });
+    addToast: (state, { toast }) => {
+      state.toasts.push(toast);
     },
-    updatePage(state, page) {
-      var index = null;
-      state.pages.forEach((e, i) => {
-        if (e.id == page.id)
-          index = i;
-      })
-
-      state.pages.splice(index, 1, page);
+    removeToast: (state, { toast }) => {
+      state.toasts.splice(state.toasts.indexOf(toast), 1);
     }
   },
   actions: {
-    initNotifications({ commit, state }, notifications) {
-      state.notifications = notifications;
+    initializeNotifications({ commit }) {
+      UserApi.getNotifications((notifications) => {
+        commit('setNotifications', { notifications });
+      })
     },
-    initPages({ commit, state }, pages) {
-      state.pages = pages;
+    addNotification({ commit }, notification) {
+      commit('addNotification', { notification });
     },
-    initConferences({ commit, state }, conferences) {
-      state.conferences = conferences;
-    }
-  },
-  getters: {
-    locale: state => {
-      return state.user.locale;
+    removeNotification({ commit }, notification) {
+      commit('removeNotification', { notification });
     },
-    isAdmin: state => {
-      return state.user.role != null && state.user.role.level >= 40;
-    },
-    license: state => {
-      if (state.user.license)
-        return state.user.license;
-      else null;
+    addToast({ commit }, toast) {
+      commit('addToast', { toast });
+
+      setTimeout(() => {
+        commit('removeToast', { toast });
+      }, 5000)
     }
   }
 });

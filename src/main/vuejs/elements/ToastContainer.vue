@@ -1,27 +1,28 @@
 <template>
   <div class="notification-container" is="transition-group" name="fade-up">
-    <notification v-for="(notification, index) in notifications" :notification="notification" @close-notification="removeNotification" :key="index">
-    </notification>
+    <toast v-for="(toast, index) in toasts" :notification="toast" @close-notification="removeToast" :key="index">
+    </toast>
   </div>
 </template>
 
 <script>
-import Notification from './Toast.vue'
+import Toast from './Toast.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'notification-container',
   components: {
-    Notification
+    Toast
   },
   computed: {
-    notifications() {
-      return this.$store.state.toasts;
-    }
+    ...mapGetters({
+      toasts: 'getToasts'
+    })
   },
   methods: {
-    removeNotification: function (notification) {
-      this.$store.commit('removeNotification', notification); 
-    }
+    ...mapActions([
+      'removeToast'
+    ])
   }
 }
 </script>

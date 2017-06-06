@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'page',
   data() {
@@ -29,6 +31,9 @@ export default {
     this.getPage();
   },
   methods: {
+    ...mapActions([
+      'updatePage',
+    ]),
     getPage() {
       var page_id = this.$route.params.id;
 
@@ -46,7 +51,7 @@ export default {
     },
     pageUpdated(page) {
       this.page = page;
-      this.$store.commit('updatePage', page);
+      this.updatePage(page);
     }
   }
 }

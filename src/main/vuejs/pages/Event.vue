@@ -25,7 +25,7 @@
     </div>
     <div class="col-md-9">
       <transition name="fade-up" mode="out-in">
-        <router-view :event="event" :edit="edit"></router-view>
+        <router-view :event="event" :edit="edit" @updated="eventUpdated"></router-view>
       </transition>
     </div>
   </div>
@@ -60,6 +60,9 @@ export default {
         })
       } else
         this.event = new Object();
+    },
+    eventUpdated(event) {
+      this.event = event;
     }
   }
 }

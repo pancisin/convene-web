@@ -1,7 +1,7 @@
 <template>
   <panel type="table">
     <span slot="title">{{ $t('admin.page.administrators') }}</span>
-    <table class="table table-striped" v-if="current != null">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>User</th>
@@ -51,6 +51,8 @@
 
 <script>
 import VSelect from 'vue-select'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'page-administrators',
   props: ['page'],
@@ -58,7 +60,6 @@ export default {
     return {
       administrators: [],
       roles: [],
-      current: null,
       users: [],
       user: null,
     }
@@ -68,6 +69,11 @@ export default {
   },
   watch: {
     'page': 'getAdministrators',
+  },
+  computed: {
+    ...mapGetters({
+      current: 'getUser',
+    })
   },
   created() {
     this.getAdministrators();
@@ -83,11 +89,6 @@ export default {
           return a.role.level < b.role.level;
         });
 
-        var user = this.administrators.filter(a => {
-          return a.user.id == this.$store.state.user.id;
-        })
-
-        this.current = user[0];
         this.getRoles();
       })
     },

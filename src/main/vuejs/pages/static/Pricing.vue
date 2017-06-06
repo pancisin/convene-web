@@ -133,12 +133,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'pricing',
   computed: {
+    ...mapGetters({
+      user: 'getUser',
+    }),
     cur_sub() {
-      if (this.$store.state.user != null)
-        return this.$store.state.user.license.subscription;
+      if (this.user != null)
+        return this.user.license.subscription;
       return {};
     }
   }

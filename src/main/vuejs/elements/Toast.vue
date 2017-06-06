@@ -13,19 +13,8 @@
 <script>
 export default {
   props: ['notification'],
-  data() {
-  	return { 
-      timer: null 
-    }
-	},
-  created() {
-    this.timer = setTimeout(function () {
-      this.triggerClose(this.notification)
-    }.bind(this), 5000)
-  },
   methods: {
     triggerClose() {
-    	clearTimeout(this.timer)
       this.$emit('close-notification', this.notification)
     }
   }

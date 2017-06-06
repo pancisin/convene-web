@@ -1,7 +1,7 @@
 <template>
   <panel type="table">
     <span slot="title">{{ $t('admin.page.requests') }}</span>
-
+  
     <table class="table table-striped">
       <thead>
         <tr>
@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="request in requests">
           <td v-text="request.email"></td>
-          <td>{{ request.date | moment($store.getters.locale.dateFormat) }}</td>
+          <td>{{ request.date | moment(locale.dateFormat) }}</td>
         </tr>
         <tr v-if="requests.length == 0">
           <td colspan="2" class="text-center">There's nothing to display.</td>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'page-requests',
   props: ['page'],
@@ -34,6 +35,11 @@ export default {
   },
   watch: {
     'page': 'getRequests'
+  },
+  computed: {
+    ...mapGetters({
+      locale: 'getLocale'
+    })
   },
   created() {
     this.getRequests();

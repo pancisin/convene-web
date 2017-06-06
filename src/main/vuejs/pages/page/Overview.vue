@@ -56,6 +56,8 @@
 
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'page-overview',
   props: {
@@ -92,6 +94,9 @@ export default {
     'page': 'getCategories'
   },
   methods: {
+    ...mapActions([
+      'addPage', 'removePage'
+    ]),
     submit() {
       if (this.edit) {
         this.$http.put('api/page/' + this.page.id, this.page).then(response => {
@@ -102,7 +107,7 @@ export default {
         this.$http.post('api/user/page', this.page).then(response => {
           var page = response.body;
           this.edit = true;
-          this.$store.commit('addPage', page);
+          this.addPage(page);
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
           this.$router.push('/admin/page/' + page.id);
         });
@@ -111,7 +116,7 @@ export default {
     deletePage() {
       this.$http.delete('api/page/' + this.page.id).then(response => {
         this.$router.push('/admin');
-        this.$store.commit('removePage', this.page);
+        this.removePage(this.page);
       })
     },
     getCategories() {

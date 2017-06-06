@@ -26,8 +26,8 @@
             <b>{{ sub.subscription.price }}</b>
             <i class="fa fa-euro"></i>
           </td>
-          <td>{{ sub.acquired | moment($store.getters.locale.dateFormat) }}</td>
-          <td>{{ sub.expires | moment($store.getters.locale.dateFormat) }}</td>
+          <td>{{ sub.acquired | moment(locale.dateFormat) }}</td>
+          <td>{{ sub.expires | moment(locale.dateFormat) }}</td>
           <td>{{ $t(sub.state.code) }}</td>
           <td>
             <a class="btn btn-rounded btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'licenses',
   data() {
@@ -51,6 +52,11 @@ export default {
   created() {
     this.getSubscriptions();
   },
+  computed: {
+    ...mapGetters({
+      locale: 'getLocale'
+    })
+  },
   methods: {
     getSubscriptions() {
       this.$http.get('api/user/subscription').then(response => {
@@ -60,7 +66,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

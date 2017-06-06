@@ -71,6 +71,7 @@
 
 <script>
 import Auth from '../../services/auth.js'
+import { mapGetters } from 'vuex'
 export default {
   name: 'subscription-signup',
   data() {
@@ -83,13 +84,9 @@ export default {
     this.getSubscriptions();
   },
   computed: {
-    user() {
-      var u = this.$store.state.user;
-      if (u.address == null)
-        u.address = {};
-
-      return u;
-    },
+    ...mapGetters({
+      user: 'getUser'
+    })
   },
   methods: {
     getSubscriptions() {

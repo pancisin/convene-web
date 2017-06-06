@@ -123,6 +123,8 @@
 
 <script>
 import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'sidebar',
   props: {
@@ -132,24 +134,23 @@ export default {
     }
   },
   computed: {
-    pages() {
-      return this.$store.state.pages;
-    },
-    conferences() {
-      return this.$store.state.conferences;
-    }
+    ...mapGetters({
+      pages: 'getPages', 
+      conferences: 'getConferences'
+    })
   },
   components: {
     DropDown: VerticalMenuDrop,
   },
   created() {
-    this.$http.get('api/user/page').then(response => {
-      this.$store.dispatch('initPages', response.body);
-    })
-    this.$http.get('api/user/conference').then(response => {
-      this.$store.dispatch('initConferences', response.body);
-    })
+    this.initializePages();
+    this.initializeConferences();
   },
+  methods: {
+    ...mapActions([
+      'initializePages', 'initializeConferences'
+    ])
+  }
 }
 </script>
 

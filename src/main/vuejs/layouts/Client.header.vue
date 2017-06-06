@@ -31,7 +31,7 @@
               </a>
               <ul class="dropdown-menu" v-if="auth.user.authenticated">
                 <li>
-                  <router-link to="/admin" v-if="$store.getters.isAdmin">
+                  <router-link to="/admin" v-if="isAdmin">
                     <i class="ti-user m-r-5"></i> Admin</router-link>
                 </li>
                 <li>
@@ -162,6 +162,7 @@ import Auth from '../services/auth.js'
 import Notifications from '../elements/Notifications.vue'
 import LangSwitcher from '../elements/LangSwitcher.vue'
 import SlideTransition from '../functional/SlideTransition'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'header',
@@ -174,6 +175,9 @@ export default {
     '$route': 'closeNavbar',
   },
   computed: {
+    ...mapGetters({
+      isAdmin: 'isAdmin'
+    }),
     auth() {
       return Auth;
     }

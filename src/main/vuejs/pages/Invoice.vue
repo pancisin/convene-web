@@ -28,7 +28,7 @@
           </div>
           <div class="pull-right m-t-30">
             <p>
-              <strong>Order Date: </strong> {{ invoice.acquired | moment(this.$store.getters.locale.dateFormat) }}</p>
+              <strong>Order Date: </strong> {{ invoice.acquired | moment(locale.dateFormat) }}</p>
             <p class="m-t-10">
               <strong>Order Status: </strong>
               {{ $t(invoice.state.code) }}
@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'invoice',
   data() {
@@ -111,6 +112,11 @@ export default {
       invoice: {},
       tax: 19.0,
     }
+  },
+  computed: {
+    ...mapGetters({
+      locale: 'getLocale'
+    })
   },
   created() {
     this.getInvoice();

@@ -34,6 +34,7 @@
 
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
+import { mapActions } from 'vuex'
 export default {
   props:
   {
@@ -65,14 +66,13 @@ export default {
       if (this.edit) {
         var url = ['api/conference', this.conference.id].join('/');
         this.$http.put(url, this.conference).then(response => {
-          this.conference = response.body;
+          this.$emit('updated', response.body);
           this.$success('Success !', this.conference.name + ' has been updated.');
         })
       } else {
         this.$http.post('api/user/conference', this.conference).then(response => {
           this.edit = true;
-          this.conference = response.body;
-          this.$store.state.user.conferences.push(this.conference);
+          this.addConference(this.conference);
           this.$router.push('/admin/conference/' + this.conference.id);
         })
       }
@@ -81,9 +81,9 @@ export default {
       this.selectedEvent = new Object();
       this.display.modalEvent = true;
     },
-    eventUpdated: function (event) {
-      this.conference.events.push(event);
-    }
+    ...mapActions([
+      'addConference'
+    ])
   }
 }
 </script>

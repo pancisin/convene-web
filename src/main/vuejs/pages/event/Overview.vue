@@ -95,7 +95,7 @@ export default {
       if (this.edit) {
         var url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
-          this.event = response.body;
+          this.$emit('updated', response.body);
           this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
         }, response => {
           response.body.fieldErrors.forEach((e) => {
@@ -114,10 +114,9 @@ export default {
         }
 
         this.$http.post(url, this.event).then(response => {
-          this.event = response.body;
-          this.$router.push('/admin/event/' + this.event.id);
-          this.$success('Success !', 'Event ' + this.event.name + ' has been created.')
-          this.edit = true;
+          var event = response.body;
+          this.$success('Success !', 'Event ' + event.name + ' has been created.')
+          this.$router.push('/admin/event/' + event.id);
         }, response => {
           if (response.body != null) {
             response.body.fieldErrors.forEach((e) => {

@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Auth from './auth.js';
 Vue.use(VueRouter);
 
-import store from './store.js'
-import Auth from './auth.js';
+import publicRoutes from './routes.public.js'
+import adminRoutes from './routes.admin.js'
 
 const require_auth = (to, from, next) => {
   console.log(from);
@@ -24,9 +25,6 @@ const afterAuth = (_to, from, next) => {
     next()
   }
 }
-
-import publicRoutes from './routes.public.js'
-import adminRoutes from './routes.admin.js'
 
 export default new VueRouter({
   linkActiveClass: 'active',

@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="conversation-list">
-      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == $store.state.user.id }">
+      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == current.id }">
         <div class="chat-avatar">
           <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
           <i>{{ message.created | moment('HH:mm') }}</i>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'conversation',
   props: {
@@ -35,6 +36,11 @@ export default {
     return {
       messages: [],
     }
+  },
+  computed: {
+    ...mapGetters({
+      current: 'getUser'
+    }),
   },
   watch: {
     'user': 'getMessages',
