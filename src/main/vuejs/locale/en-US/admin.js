@@ -15,6 +15,7 @@ export default {
   },
   page: {
     overview: 'Overview',
+    settings: 'Settings',
     events: 'Events',
     places: 'Places',
     advanced: 'Advanced',

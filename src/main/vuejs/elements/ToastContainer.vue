@@ -33,6 +33,6 @@ export default {
   right: 10px;
   bottom: 10px;
   width: 350px;
-  z-index: 1;
+  z-index: 9999;
 }
 </style>

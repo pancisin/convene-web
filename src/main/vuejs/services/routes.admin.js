@@ -1,3 +1,4 @@
+import store from './store.js'
 export default [
   {
     path: 'dashboard',
@@ -11,8 +12,8 @@ export default [
     path: 'conference/create',
     component: resolve => require(['../pages/conference/Overview.vue'], resolve),
     beforeEnter: (to, from, next) => {
-      var license = store.getters.license;
-      if (license && license.subscription.conferenceLimit > store.state.conferences.length)
+      var license = store.getters.getLicense;
+      if (license && license.subscription.conferenceLimit > store.getters.getConferences.length)
         next();
       else
         next('/pricing');
@@ -70,10 +71,10 @@ export default [
   },
   {
     path: 'page/create',
-    component: resolve => require(['../pages/page/Overview.vue'], resolve),
+    component: resolve => require(['../pages/page/Compose.vue'], resolve),
     beforeEnter: (to, from, next) => {
-      var license = store.getters.license;
-      if (license && license.subscription.pageLimit > store.state.pages.length)
+      var license = store.getters.getLicense;
+      if (license && license.subscription.pageLimit > store.getters.getPages.length)
         next();
       else
         next('/pricing');
@@ -88,6 +89,11 @@ export default [
         path: 'overview',
         name: 'page.overview',
         component: resolve => require(['../pages/page/Overview.vue'], resolve)
+      },
+      {
+        path: 'settings',
+        name: 'page.settings',
+        component: resolve => require(['../pages/page/Compose.vue'], resolve),
       },
       {
         path: 'events',

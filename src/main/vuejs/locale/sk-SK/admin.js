@@ -15,6 +15,7 @@ export default {
   },
   page: {
     overview: 'Prehľad',
+    settings: 'Nastavenia',
     events: 'Podujatia',
     places: 'Miesta',
     advanced: 'Pokročilé',

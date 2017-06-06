@@ -57,6 +57,11 @@
                 {{ $t('admin.page.requests') }}
               </router-link>
             </li>
+            <li slot="item">
+              <router-link :to="{ name: 'page.settings', params: { id : page.id }}" class="list-group-item waves-effect">
+                {{ $t('admin.page.settings') }}
+              </router-link>
+            </li>
           </drop-down>
   
           <li>
@@ -135,7 +140,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pages: 'getPages', 
+      pages: 'getPages',
       conferences: 'getConferences'
     })
   },
