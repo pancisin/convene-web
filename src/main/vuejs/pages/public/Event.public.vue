@@ -53,6 +53,8 @@
         </div>
       </div>
       <div class="col-sm-3">
+        <img class="img-poster m-b-20" :src="event.bannerUrl" />
+  
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
   
@@ -65,9 +67,8 @@
                   </div>
                   <p class="inbox-item-author" v-text="related.name"></p>
                   <p class="inbox-item-text">
-                    {{ related.date | moment('DD.MM.YYYY') }}
-                    {{ related.startsAt }}
-                    </p>
+                    {{ related.date | moment('DD.MM.YYYY') }} {{ related.startsAt }}
+                  </p>
                 </div>
               </router-link>
             </stagger-transition>

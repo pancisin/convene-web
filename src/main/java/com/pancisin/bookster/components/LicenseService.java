@@ -2,9 +2,7 @@ package com.pancisin.bookster.components;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
 
@@ -26,7 +25,7 @@ public class LicenseService {
 	private EmailService emailService;
 
 	@Scheduled(cron = "0 0 3 * * *")
-//	@Scheduled(fixedDelay = 10000)
+	// @Scheduled(fixedDelay = 10000)
 	@Transactional
 	public void checkLicenses() {
 		List<UserSubscription> newSubs = new ArrayList<UserSubscription>();
@@ -39,6 +38,7 @@ public class LicenseService {
 				newSubs.add(createNew(s));
 			} else if (s.getState() == SubscriptionState.NEW) {
 				s.setState(SubscriptionState.UNPAID);
+				s.getUser().getOwningPages().stream().forEach(p -> p.setState(PageState.BLOCKED));
 			}
 		});
 
@@ -46,7 +46,7 @@ public class LicenseService {
 		newSubs.stream().forEach(us -> {
 			emailService.sendInvoiceEmail(us);
 		});
-		
+
 		usRepository.save(expired);
 	}
 

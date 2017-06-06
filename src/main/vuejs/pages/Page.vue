@@ -46,6 +46,7 @@ export default {
     },
     pageUpdated(page) {
       this.page = page;
+      this.$store.commit('updatePage', page);
     }
   }
 }

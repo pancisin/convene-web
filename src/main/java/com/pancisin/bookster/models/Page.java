@@ -97,6 +97,7 @@ public class Page implements IAuthor {
 		return null;
 	}
 	
+	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
 	private PageState state = PageState.DEACTIVATED;
 	

@@ -22,7 +22,10 @@
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
           <drop-down v-for="page in pages" :key="page.id">
-            <i class="material-icons" slot="title">work</i>
+            <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
+            <i class="material-icons" slot="title" v-else-if="page.state == 'DEACTIVATED'">visibility_off</i>
+            <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
+  
             <span v-text="page.name" slot="title"></span>
             <li slot="item">
               <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">

@@ -36,6 +36,15 @@ const store = new Vuex.Store({
         return page.id != p.id;
       });
     },
+    updatePage(state, page) {
+      var index = null;
+      state.pages.forEach((e, i) => {
+        if (e.id == page.id)
+          index = i;
+      })
+
+      state.pages.splice(index, 1, page);
+    }
   },
   actions: {
     initNotifications({ commit, state }, notifications) {
@@ -53,7 +62,7 @@ const store = new Vuex.Store({
       return state.user.locale;
     },
     isAdmin: state => {
-      return state.user.role != null && state.user.role.name == "ROLE_ADMINISTRATOR";
+      return state.user.role != null && state.user.role.level >= 40;
     },
     license: state => {
       if (state.user.license)
