@@ -36,12 +36,12 @@
   
         <div class="text-center">
           <button class="btn btn-rounded btn-danger" @click="deactivatePage" v-if="edit && page.state == 'PUBLISHED'">Deactivate</button>
-          <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-            <span v-if="edit">Save</span>
-            <span v-else>Submit</span> {{ page.name }}</button>
           <a class="btn btn-rounded btn-success" @click="publishPage" v-if="edit && page.state == 'DEACTIVATED'">
             Publish
           </a>
+          <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
+            <span v-if="edit">Save</span>
+            <span v-else>Submit</span> {{ page.name }}</button>
         </div>
       </panel>
     </div>
