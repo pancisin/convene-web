@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.EventRepository;
-import com.pancisin.bookster.repository.LocaleRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
 @RestController
@@ -38,9 +38,6 @@ public class PublicRestController {
 
 	@Autowired
 	private PageRepository pageRepository;
-
-	@Autowired
-	private LocaleRepository localeRepository;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -146,7 +143,7 @@ public class PublicRestController {
 
 	@GetMapping("/locales")
 	public ResponseEntity<?> getPublic() {
-		return ResponseEntity.ok(localeRepository.findAll());
+		return ResponseEntity.ok(Locale.values());
 	}
 	
 	@GetMapping("/subscriptions")

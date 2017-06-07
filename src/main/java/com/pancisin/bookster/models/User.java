@@ -17,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,6 +33,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
@@ -136,7 +136,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.ROLE_VISITOR;
 
-	@ManyToOne
+	@Enumerated(EnumType.STRING)
 	@JsonView(Summary.class)
 	private Locale locale;
 

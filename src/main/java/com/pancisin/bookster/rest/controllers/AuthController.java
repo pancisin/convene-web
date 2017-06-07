@@ -2,7 +2,6 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,7 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.repository.LocaleRepository;
+import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
@@ -43,9 +42,6 @@ public class AuthController {
 	
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private LocaleRepository localeRepository;
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
@@ -69,13 +65,13 @@ public class AuthController {
 		if (bindingResult.hasErrors())
 			throw new InvalidRequestException("Invalid data", bindingResult);
 
-		Locale locale = LocaleContextHolder.getLocale();
-		com.pancisin.bookster.models.Locale l = localeRepository.findByCode(locale.toLanguageTag());
-
+		java.util.Locale locale = LocaleContextHolder.getLocale();
+		Locale l = Locale.valueOf(locale.toLanguageTag());
+		
 		if (l != null)
 			user.setLocale(l);
 		else
-			user.setLocale(localeRepository.findByCode("en"));
+			user.setLocale(Locale.en);
 
 		if (userRepository.findByEmail(user.getEmail()) != null) {
 			bindingResult.rejectValue("email", "Duplicate.user.email");
