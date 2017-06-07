@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -53,10 +55,23 @@ import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.repository.UserSearchRepository;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
+import com.paylane.client.PayLaneClientBuilder;
+import com.paylane.client.api.models.Address;
+import com.paylane.client.api.models.Card;
+import com.paylane.client.api.models.CardSale;
+import com.paylane.client.api.models.CardSaleResult;
+import com.paylane.client.api.models.Customer;
+import com.paylane.client.api.models.wrappers.CardSaleWrapper;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
+	@Value("${paylane.api_key}")
+	private String api_key;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -197,6 +212,20 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 
+		CardSale sale = new CardSale(20.00d, "EUR", "testing client");
+		Customer customer = new Customer(stored.getEmail(), "127.0.0.1", new Address("1600 Pennsylvania Avenue Northwest", "Washington", "20500", "US"));
+		Card card = new Card("4200000000000000", "09", "2017", "PATRIK PANCISIN", "205");
+
+		Call<CardSaleResult> result = PayLaneClientBuilder.createService("pancisin", "pru3cu6j")
+				.cardsSale(new CardSaleWrapper(sale, customer, card));
+		try {
+			Response<CardSaleResult> test = result.execute();
+			System.out.println(test.code());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
 			if (stored.getRole() != Role.ROLE_AUTHOR) {
 				stored.setRole(Role.ROLE_AUTHOR);
@@ -214,7 +243,7 @@ public class UserController {
 			su.setExpires(expiration);
 
 			return ResponseEntity.ok(usRepository.save(su));
-		} else 
+		} else
 			return null;
 	}
 
@@ -251,7 +280,7 @@ public class UserController {
 	public void handle(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
-	
+
 	@GetMapping("/contacts")
 	@JsonView(Summary.class)
 	public ResponseEntity<?> getContacts() {

@@ -110,6 +110,7 @@ export default {
       }
 
       data.user.role = data.user.role.name;
+      data.user.locale = data.user.locale.code;
       this.$http.post('api/user/subscription', data).then(response => {
         Auth.updateUserData(this);
         console.log('FINE !')

@@ -25,6 +25,9 @@ jwt:
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
   verificationSecret: 123456789
+  
+paylane:
+  api_key: 45e4f38452d71554195c13f0acee84962fb82a13
 ---
 spring:
   profiles: local
