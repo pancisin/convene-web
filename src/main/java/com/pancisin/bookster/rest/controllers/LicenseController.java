@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +41,7 @@ public class LicenseController {
 		return ResponseEntity.ok(usRepository.findById(license_id));
 	}
 
-	@PostMapping("/pay")
+	@PostMapping("/payment")
 	public ResponseEntity<?> payLicense(@PathVariable String license_id, @RequestBody Card card,
 			HttpServletRequest request) throws Exception {
 		UserSubscription us = usRepository.findById(license_id);
@@ -56,16 +57,19 @@ public class LicenseController {
 		try {
 			Response<CardSaleResult> result = call.execute();
 
-			if (result.isSuccessful()) {
+			if (result.body().isSuccess()) {
 				us.setState(SubscriptionState.ACTIVE);
+				us.setIdSale(result.body().getIdSale());
 				usRepository.save(us);
-			}
+				return ResponseEntity.ok(result);
+			} else
+				return new ResponseEntity<String>("Payment failed please check your card information.",
+						HttpStatus.BAD_REQUEST);
 
-			return ResponseEntity.ok(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		return null;
+		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
 }

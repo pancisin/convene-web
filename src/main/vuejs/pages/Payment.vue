@@ -66,7 +66,7 @@ export default {
       })
     },
     submitPayment() {
-      var url = ['api/license', this.license.id, 'pay'].join('/');
+      var url = ['api/license', this.license.id, 'payment'].join('/');
       this.$http.post(url, this.card).then(response => {
         if (response.body.successful === true) {
           this.$router.push('/admin/invoice/' + this.license.id);

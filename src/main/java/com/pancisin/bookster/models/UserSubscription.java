@@ -26,10 +26,10 @@ public class UserSubscription {
 
 	@Id
 	@GenericGenerator(name = "invoice_number_generator", strategy = "com.pancisin.bookster.utils.InvoiceNumberGenerator")
-	@GeneratedValue(generator = "invoice_number_generator")  
+	@GeneratedValue(generator = "invoice_number_generator")
 	@Column(updatable = false, nullable = false)
 	private String id;
-	
+
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne(optional = false)
 	private User user;
@@ -45,7 +45,9 @@ public class UserSubscription {
 
 	@Enumerated(EnumType.STRING)
 	private SubscriptionState state = SubscriptionState.NEW;
-	
+
+	private Long idSale;
+
 	public User getUser() {
 		return user;
 	}
@@ -84,5 +86,13 @@ public class UserSubscription {
 
 	public String getId() {
 		return id;
+	}
+
+	public Long getIdSale() {
+		return idSale;
+	}
+
+	public void setIdSale(Long idSale) {
+		this.idSale = idSale;
 	}
 }
