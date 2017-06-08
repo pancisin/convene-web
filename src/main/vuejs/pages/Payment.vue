@@ -66,6 +66,10 @@ export default {
       })
     },
     submitPayment() {
+      // var res = this.$resource('api/license/{license_id}/payment');
+      // res.save({ license_id: this.license.id}, this.card).then(response => {
+      // })
+
       var url = ['api/license', this.license.id, 'payment'].join('/');
       this.$http.post(url, this.card).then(response => {
         if (response.body.successful === true) {

@@ -32,7 +32,7 @@ export default {
       },
       set(value) {
         if (Auth.user.authenticated)
-          this.$http.put('api/user/locale', value).then(response => {
+          this.$http.put('api/user/locale', JSON.stringify(value.code)).then(response => {
             Auth.updateUserData(this);
             moment.locale(value.code);
             this.$i18n.locale = value.code;

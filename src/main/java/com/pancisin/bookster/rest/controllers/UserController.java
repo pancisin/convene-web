@@ -1,6 +1,5 @@
 package com.pancisin.bookster.rest.controllers;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,9 +10,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
@@ -30,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
-import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
@@ -55,16 +53,6 @@ import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.repository.UserSearchRepository;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
-import com.paylane.client.PayLaneClientBuilder;
-import com.paylane.client.api.models.Address;
-import com.paylane.client.api.models.Card;
-import com.paylane.client.api.models.CardSale;
-import com.paylane.client.api.models.CardSaleResult;
-import com.paylane.client.api.models.Customer;
-import com.paylane.client.api.models.wrappers.CardSaleWrapper;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 @RestController
 @RequestMapping("/api/user")
@@ -192,6 +180,7 @@ public class UserController {
 	}
 
 	@PutMapping("/locale")
+	@JsonView(Summary.class)
 	public ResponseEntity<?> changeLocale(@RequestBody Locale locale) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -264,6 +253,12 @@ public class UserController {
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
+		System.err.println(e);
+	}
+	
+	@ExceptionHandler
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR )
+	public void handleISE(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
 
