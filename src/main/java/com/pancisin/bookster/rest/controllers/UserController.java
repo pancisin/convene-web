@@ -212,20 +212,6 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 
-		CardSale sale = new CardSale(20.00d, "EUR", "testing client");
-		Customer customer = new Customer(stored.getEmail(), "127.0.0.1", new Address("1600 Pennsylvania Avenue Northwest", "Washington", "20500", "US"));
-		Card card = new Card("4200000000000000", "09", "2017", "PATRIK PANCISIN", "205");
-
-		Call<CardSaleResult> result = PayLaneClientBuilder.createService("pancisin", "pru3cu6j")
-				.cardsSale(new CardSaleWrapper(sale, customer, card));
-		try {
-			Response<CardSaleResult> test = result.execute();
-			System.out.println(test.code());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
 			if (stored.getRole() != Role.ROLE_AUTHOR) {
 				stored.setRole(Role.ROLE_AUTHOR);

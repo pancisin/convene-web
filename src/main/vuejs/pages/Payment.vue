@@ -1,0 +1,86 @@
+<template>
+  <panel class="col-md-6 col-md-offset-3">
+    <div class="form-group">
+      <label class="control-label">Card number</label>
+      <input class="form-control required" v-model="card.card_number" type="text">
+    </div>
+  
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="control-label">Card code</label>
+          <input class="form-control required" v-model="card.card_code" type="text">
+        </div>
+      </div>
+  
+      <div class="col-sm-4">
+      </div>
+  
+      <div class="col-sm-5">
+        <div class="form-group">
+          <label class="control-label">Expiration</label>
+          <div class="input-daterange input-group" id="date-range">
+            <input type="text" class="form-control" name="MM" v-model="card.expiration_month">
+            <span class="input-group-addon bg-primary b-0 text-white">/</span>
+            <input type="text" class="form-control" name="YYYY" v-model="card.expiration_year">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-group">
+      <label class="control-label">Name on card</label>
+      <input class="form-control required" v-model="card.name_on_card" type="text">
+    </div>
+  
+    <div class="text-center">
+      <a class="btn btn-success btn-rounded" @click="submitPayment">Submit payment</a>
+    </div>
+  </panel>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  name: 'invoice',
+  data() {
+    return {
+      license: {},
+      card: {}
+    }
+  },
+  computed: {
+    ...mapGetters({
+      locale: 'getLocale'
+    })
+  },
+  created() {
+    this.getLicense();
+  },
+  methods: {
+    getLicense() {
+      var invoice_id = this.$route.params.invoice_id;
+
+      this.$http.get('api/license/' + invoice_id).then(response => {
+        this.license = response.body;
+      })
+    },
+    submitPayment() {
+      var url = ['api/license', this.license.id, 'pay'].join('/');
+      this.$http.post(url, this.card).then(response => {
+        if (response.body.successful === true) {
+          this.$router.push('/admin/invoice/' + this.license.id);
+        }
+
+        console.log(response);
+      }, response => {
+        console.error(response);
+      })
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>

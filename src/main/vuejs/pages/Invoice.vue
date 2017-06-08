@@ -129,7 +129,6 @@ export default {
         this.invoice = response.body;
       })
     }
-
   }
 }
 </script>

@@ -17,36 +17,41 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column
 	private String state;
-	
+
 	@Column
 	private String city;
-	
+
 	@Column
 	private String street;
-	
+
 	@Column
 	private String number;
-	
+
 	@Column
 	private String zip;
-	
+
 	@Column
 	private String formatted;
-	
+
 	@OneToOne(mappedBy = "address")
 	private Place place;
 
 	@Column(precision = 10, scale = 8)
 	private BigDecimal latitude;
-	
+
 	@Column(precision = 10, scale = 8)
 	private BigDecimal longitude;
-	
+
 	public String getState() {
 		return state;
+	}
+
+	public com.paylane.client.api.models.Address getPaylaneAddress() {
+		return new com.paylane.client.api.models.Address(this.street + " " + this.number, this.city, this.state,
+				this.zip, "SK");
 	}
 
 	public void setState(String state) {

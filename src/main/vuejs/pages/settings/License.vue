@@ -30,9 +30,9 @@
           <td>{{ sub.expires | moment(locale.dateFormat) }}</td>
           <td>{{ $t(sub.state.code) }}</td>
           <td>
-            <a class="btn btn-rounded btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
+            <router-link :to="{ name: 'invoice.payment', params: { invoice_id : sub.id }}" class="btn btn-rounded btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
               {{ $t('subscription.pay') }}
-            </a>
+            </router-link>
           </td>
         </tr>
       </tbody>
