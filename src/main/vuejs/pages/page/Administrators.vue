@@ -1,5 +1,5 @@
 <template>
-  <panel type="table">
+  <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.administrators') }}</span>
     <table class="table table-striped">
       <thead>
@@ -62,6 +62,7 @@ export default {
       roles: [],
       users: [],
       user: null,
+      loading: false,
     }
   },
   components: {
@@ -81,6 +82,7 @@ export default {
   methods: {
     getAdministrators() {
       if (this.page.id == null) return;
+      this.loading = true;
       var url = ['api/page', this.page.id, 'administrator'].join('/');
       this.$http.get(url).then(response => {
         this.administrators = response.body;
@@ -97,6 +99,8 @@ export default {
         this.roles = response.body.filter(r => {
           return r.level < this.current.role.level;
         })
+
+        this.loading = false;
       })
     },
     toggleActive(admin) {

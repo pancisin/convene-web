@@ -1,5 +1,5 @@
 <template>
-  <panel type="table">
+  <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.events') }}</span>
   
     <table class="table table-striped">
@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       events: [],
+      loading: false,
     }
   },
   watch: {
@@ -52,8 +53,10 @@ export default {
   methods: {
     getEvents() {
       if (this.page.id == null) return;
+      this.loading = true;
       this.$http.get('api/page/' + this.page.id + '/event').then(response => {
         this.events = response.body;
+        this.loading = false;
       });
     },
     deleteEvent(event) {

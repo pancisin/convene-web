@@ -44,8 +44,10 @@ Vue.component('panel', Panel)
 // DIRECTIVES
 import clickOutside from './directives/clickOutside.js'
 import stripTags from './directives/stripTags.js'
+import loading from './directives/loading.js'
 Vue.directive('click-outside', clickOutside);
 Vue.directive('strip', stripTags);
+Vue.directive('loading', loading)
 
 Vue.config.devtools = true;
 

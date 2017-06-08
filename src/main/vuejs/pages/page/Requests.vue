@@ -1,5 +1,5 @@
 <template>
-  <panel type="table">
+  <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.requests') }}</span>
   
     <table class="table table-striped">
@@ -30,7 +30,8 @@ export default {
   props: ['page'],
   data() {
     return {
-      requests: []
+      requests: [],
+      loading: false
     }
   },
   watch: {
@@ -46,10 +47,13 @@ export default {
   },
   methods: {
     getRequests() {
-      if (!this.page.id) retun();
+      if (!this.page.id) return;
+
+      this.loading = true;
       var url = ['api/page', this.page.id, 'requests'].join('/');
       this.$http.get(url).then(response => {
         this.requests = response.body;
+        this.loading = false;
       })
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <panel type="table">
+      <panel type="table" v-loading="loading">
         <span slot="title">{{ $t('admin.page.places') }}</span>
   
         <table class="table table-striped">
@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       places: [],
+      loading: false,
     }
   },
   watch: {
@@ -61,9 +62,11 @@ export default {
     getPlaces() {
       if (this.page.id == null) return;
 
+      this.loading = true;
       var url = ['api/page', this.page.id, 'place'].join('/');
       this.$http.get(url).then(response => {
         this.places = response.body;
+        this.loading = false;
       })
     },
     deletePlace(place) {
@@ -76,7 +79,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

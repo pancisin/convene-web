@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-4">
-      <panel type="table">
+      <panel type="table" v-loading="loading">
         <span slot="title">My events</span>
   
         <table class="table table-striped">
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       paginator: {},
+      loading: false,
     }
   },
   created: function () {
@@ -57,9 +58,11 @@ export default {
   },
   methods: {
     getEvents(page) {
+      this.loading = true;
       var size = 5;
       var url = ['api/user/event', page, size].join('/');
       this.$http.get(url).then(response => {
+        this.loading = false;
         this.paginator = response.body;
         this.events = response.body.content
       })

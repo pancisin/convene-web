@@ -1,5 +1,5 @@
 <template>
-  <panel type="table">
+  <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.services') }}</span>
   
     <table class="table table-striped">
@@ -16,8 +16,12 @@
         <tr v-for="service in services" :key="service.id">
           <td v-text="service.name"></td>
           <td v-text="service.detail"></td>
-          <td><span v-if="service.unit">{{ $t(service.unit.code) }}</span></td>
-          <td class="text-center">{{ service.pricePerUnit }} <i class="fa fa-euro"></i></td>
+          <td>
+            <span v-if="service.unit">{{ $t(service.unit.code) }}</span>
+          </td>
+          <td class="text-center">{{ service.pricePerUnit }}
+            <i class="fa fa-euro"></i>
+          </td>
           <td class="text-center">
             <a @click="deleteService(service)" class="btn btn-rounded btn-xs btn-danger">
               <i class="fa fa-trash"></i>
@@ -54,7 +58,8 @@ export default {
     return {
       services: [],
       displayEditModal: false,
-      selectedService: new Object()
+      selectedService: new Object(),
+      loading: false,
     }
   },
   components: {
@@ -67,25 +72,28 @@ export default {
     'page': 'getServices'
   },
   methods: {
-    getServices () {
+    getServices() {
       if (this.page.id == null) return;
+
+      this.loading = true;
       var url = ['api/page', this.page.id, 'service'].join('/');
       this.$http.get(url).then(response => {
         this.services = response.body;
+        this.loading = false;
       })
     },
-    deleteService (service) {
+    deleteService(service) {
       this.$http.delete('api/service/' + service.id).then(response => {
         this.services = this.services.filter(s => {
           return s.id != service.id;
         })
       })
     },
-    editService (service) {
+    editService(service) {
       this.selectedService = service ? service : new Object();
       this.displayEditModal = true;
     },
-    updatedService (service) {
+    updatedService(service) {
       this.services = this.services.filter(s => {
         return s.id != service.id;
       });

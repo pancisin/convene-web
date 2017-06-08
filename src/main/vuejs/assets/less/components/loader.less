@@ -1,0 +1,45 @@
+._loading {
+    pointer-events: none;
+    .loader {
+        opacity: 1;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(245, 245, 245, 0.46);
+        top: 0;
+    }
+}
+
+.loader {
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: opacity .4s linear;
+    opacity: 0;
+    .spinner {
+        margin: auto;
+        border-radius: 100%;
+        border: 4px solid #4d4646;
+        border-top: 4px solid #039cfd;
+        width: 50px;
+        height: 50px;
+        animation: spinner-spin 1s linear infinite;
+        box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.45);
+    }
+}
+
+@keyframes spinner-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
