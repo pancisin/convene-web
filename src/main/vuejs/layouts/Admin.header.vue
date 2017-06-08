@@ -26,7 +26,7 @@
   
             <li class="dropdown">
               <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
-                <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="user-img" class="img-circle">
+                <img :src="avatar" alt="user-img" class="img-circle">
               </a>
               <ul class="dropdown-menu">
                 <li>
@@ -52,6 +52,8 @@
 import Auth from '../services/auth.js'
 import Notifications from '../elements/Notifications.vue'
 import LangSwitcher from '../elements/LangSwitcher.vue'
+import { mapGetters } from 'vuex'
+import gravatar from 'gravatar'
 
 export default {
   name: 'header',
@@ -63,12 +65,23 @@ export default {
       this.$emit('hamburgerClicked');
     }
   },
+  computed: {
+    ...mapGetters({
+      user: 'getUser'
+    }),
+    avatar() {
+      return gravatar.url(this.user.email, {
+        protocol: 'https',
+        size: 36
+      });
+    }
+  },
   components: {
     Notifications, LangSwitcher
   },
 }
 </script>
-F
+
 <style lang="less" scoped>
 #topnav .navbar-toggle {
   float: left;
