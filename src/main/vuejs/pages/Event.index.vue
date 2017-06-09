@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-xs-12">
       <panel type="table" v-loading="loading">
         <span slot="title">My events</span>
   
@@ -12,19 +12,47 @@
             </tr>
           </thead>
           <tbody is="transition-group" name="fade">
-            <tr v-for="event in paginator.content" :key="event.id">
+            <tr v-for="ev in paginator.content" :key="ev.id" @contextmenu.prevent="$refs.menu.open($event, ev)">
               <td>
-                <router-link :to="'event/' + event.id">
-                  {{ event.name }}
+                <router-link :to="'event/' + ev.id">
+                  {{ ev.name }}
                 </router-link>
               </td>
-              <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
+              <td class="text-center">{{ ev.date | moment('DD.MM.YYYY') }}</td>
             </tr>
             <tr v-if="paginator.content != null && paginator.content.length == 0">
               <td colspan="2" class="text-center">There's nothing to display.</td>
             </tr>
           </tbody>
         </table>
+  
+        <context-menu ref="menu">
+          <template scope="props">
+            <ul>
+              <li>
+                <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
+                  Go to event page
+                </router-link>
+              </li>
+              <li class="separator"></li>
+              <li>
+                <router-link :to="{ name: 'event.overview', params: { id: props.data.id } }">
+                  Overview
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'event.programme', params: { id: props.data.id } }">
+                  Programme
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'event.attendees', params: { id: props.data.id } }">
+                  Attendees
+                </router-link>
+              </li>
+            </ul>
+          </template>
+        </context-menu>
   
         <div class="text-center">
           <Paginator :paginator="paginator" @navigate="paginatorNavigate" />

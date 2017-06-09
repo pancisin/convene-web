@@ -9,6 +9,7 @@ export default [
   },
   {
     path: 'event/:id',
+    name: 'event.public',
     component: resolve => require(['../pages/public/Event.public.vue'], resolve),
   },
   {

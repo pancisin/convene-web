@@ -5,7 +5,7 @@
       <thead>
         <tr>
           <th class="text-center">
-            id
+            #id
           </th>
           <th>
             Title
@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="not in paginator.content">
+        <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)">
           <td v-text="not.id" class="text-center"></td>
           <td v-text="not.title"></td>
           <td v-text="not.message"></td>
@@ -34,6 +34,18 @@
         </tr>
       </tbody>
     </table>
+  
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li>
+            <a @click="toggleSeen(props.data)">
+              Toggle seen
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
   
     <div class="text-center">
       <paginator :paginator="paginator" @navigate="paginatorNavigate" />

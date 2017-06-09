@@ -57,14 +57,17 @@ export default [
     children: [
       {
         path: 'overview',
+        name: 'event.overview',
         component: resolve => require(['../pages/event/Overview.vue'], resolve)
       },
       {
         path: 'programme',
+        name: 'event.programme',
         component: resolve => require(['../pages/event/Programme.vue'], resolve)
       },
       {
         path: 'attendees',
+        name: 'event.attendees',
         component: resolve => require(['../pages/event/Attendees.vue'], resolve)
       }
     ]

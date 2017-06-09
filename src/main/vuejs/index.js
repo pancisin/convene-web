@@ -8,6 +8,7 @@ import VueWebsocket from './services/websocket.js'
 import VueMoment from 'vue-moment'
 import Modal from './elements/Modal.vue'
 import Panel from './elements/Panel.vue'
+import ContextMenu from './elements/ContextMenu.vue'
 
 require('font-awesome/css/font-awesome.css')
 
@@ -40,6 +41,7 @@ Vue.use(VueMoment)
 Vue.use(notifier)
 Vue.component('modal', Modal)
 Vue.component('panel', Panel)
+Vue.component('context-menu', ContextMenu)
 
 // DIRECTIVES
 import clickOutside from './directives/clickOutside.js'

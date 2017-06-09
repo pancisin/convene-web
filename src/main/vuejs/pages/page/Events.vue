@@ -7,24 +7,52 @@
         <tr>
           <th>Name</th>
           <th>Date</th>
-          <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
-        <tr v-for="event in events" :key="event.id">
+        <tr v-for="ev in events" :key="ev.id" @contextmenu.prevent="$refs.menu.open($event, ev)">
           <td>
-            <router-link :to="'/admin/event/' + event.id" v-text="event.name">
+            <router-link :to="'/admin/event/' + ev.id" v-text="ev.name">
             </router-link>
           </td>
-          <td>{{ event.date | moment('DD.MM.YYYY') }}</td>
-          <td class="text-center">
-            <a @click="deleteEvent(event)" class="btn btn-rounded btn-xs btn-danger">
-              <i class="fa fa-trash"></i>
-            </a>
-          </td>
+          <td>{{ ev.date | moment('DD.MM.YYYY') }}</td>
         </tr>
       </tbody>
     </table>
+  
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
+              Go to event page
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li>
+            <router-link :to="{ name: 'event.overview', params: { id: props.data.id } }">
+              Overview
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'event.programme', params: { id: props.data.id } }">
+              Programme
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'event.attendees', params: { id: props.data.id } }">
+              Attendees
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li>
+            <a @click="deleteEvent(props.data)">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
   
     <div class="text-center">
       <router-link to="create-event" class="btn btn-default btn-rounded text-center">

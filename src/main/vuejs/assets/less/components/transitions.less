@@ -52,11 +52,6 @@ a {
     transform: translateX(-50px);
 }
 
-
-
-
-
-
 .slide-down-enter-active,
 .slide-down-leave-active {
     transition: all .3s ease-in-out;
@@ -70,3 +65,15 @@ a {
     opacity: 0;
 }
 
+
+.zoom-in-enter-active,
+.zoom-in-leave-active {
+    transition: all .2s ease-in-out;
+    opacity: 1;
+}
+
+.zoom-in-enter,
+.zoom-in-leave-to {
+    transform: scale(0);
+    opacity: .2;
+}
