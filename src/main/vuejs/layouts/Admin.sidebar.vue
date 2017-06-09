@@ -21,7 +21,7 @@
   
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
-          <drop-down v-for="page in pages" :key="page.id">
+          <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
             <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'DEACTIVATED'">visibility_off</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
@@ -75,7 +75,7 @@
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
   
-          <drop-down v-for="conference in conferences" :key="conference.id">
+          <drop-down v-for="conference in conferences" :key="conference.id" ref="items" @opened="closeDropdowns">
             <i class="material-icons" slot="title">work</i>
             <span v-text="conference.name" slot="title"></span>
             <li slot="item">
@@ -118,6 +118,7 @@
             </router-link>
           </li>
         </ul>
+  
         <div class="clearfix"></div>
       </div>
   
@@ -154,7 +155,14 @@ export default {
   methods: {
     ...mapActions([
       'initializePages', 'initializeConferences'
-    ])
+    ]),
+    closeDropdowns(except) {
+      if (!except.collapsed)
+        this.$refs.items.forEach(item => {
+          if (item != except && !item.collapsed)
+            item.toggleCollapse();
+        })
+    }
   }
 }
 </script>
