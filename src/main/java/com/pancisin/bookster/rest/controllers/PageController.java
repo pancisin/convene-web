@@ -1,9 +1,12 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -100,6 +103,15 @@ public class PageController {
 		}
 
 		return ResponseEntity.ok(pageRepository.save(stored));
+	}
+
+	@GetMapping("/event")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
+	public ResponseEntity<?> getEventsCurrent(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		List<Event> events = stored.getEvents().stream().filter(x -> x.getDate().compareTo(Calendar.getInstance()) > 1)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(stored.getEvents());
 	}
 
 	@GetMapping("/event/{page}/{size}")
