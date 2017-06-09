@@ -55,6 +55,7 @@ export default {
   z-index: 999;
   box-shadow: 0 0 10px 3px rgba(128, 128, 128, 0.19);
   font-size: 12px;
+  min-width: 250px;
 
   ul {
     list-style-type: none;

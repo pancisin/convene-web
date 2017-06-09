@@ -25,7 +25,7 @@
         <ul>
           <li>
             <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
-              Go to event page
+              Go to event
             </router-link>
           </li>
           <li class="separator"></li>
