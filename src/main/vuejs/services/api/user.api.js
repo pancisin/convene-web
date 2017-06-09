@@ -17,8 +17,8 @@ export default {
     })
   },
   getNotifications(success) {
-    Vue.http.get('api/user/notification').then(response => {
-      success(response.body);
+    Vue.http.get('api/user/notification/0/5').then(response => {
+      success(response.body.content);
     })
   }
 }

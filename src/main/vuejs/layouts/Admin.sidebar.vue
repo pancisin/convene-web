@@ -19,6 +19,13 @@
             </router-link>
           </li>
   
+          <li>
+            <router-link to="/admin/notifications" class="waves-effect">
+              <i class="material-icons">notifications_none</i>
+              <span>{{ $t('admin.menu.notifications') }}</span>
+            </router-link>
+          </li>
+  
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
           <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">

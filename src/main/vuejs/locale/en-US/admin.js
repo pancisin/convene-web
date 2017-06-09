@@ -3,6 +3,7 @@ export default {
     main: 'Main',
     dashboard: 'Dashboard',
     events: 'Events',
+    notifications: 'Notifications',
     pages: 'Pages',
     page_create: 'Create page',
     conferences: 'Conferences',

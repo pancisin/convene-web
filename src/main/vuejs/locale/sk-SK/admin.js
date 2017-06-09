@@ -3,6 +3,7 @@ export default {
     main: 'Hlavné',
     dashboard: 'Prehľad',
     events: 'Podujatia',
+    notifications: 'Oznámenia',
     pages: 'Stránky',
     page_create: 'Vytvoriť stránku',
     conferences: 'Konferencie',

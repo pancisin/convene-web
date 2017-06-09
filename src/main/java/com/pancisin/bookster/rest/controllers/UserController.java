@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -108,10 +110,11 @@ public class UserController {
 		return ResponseEntity.ok(stored);
 	}
 
-	@GetMapping("/notification")
-	public ResponseEntity<?> getNotifications() {
+	@GetMapping("/notification/{page}/{size}")
+	public ResponseEntity<?> getNotifications(@PathVariable int page, @PathVariable int size) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(notificationRepository.getUserNotifications(auth.getId()));
+		return ResponseEntity.ok(notificationRepository.getUserNotifications(auth.getId(),
+				new PageRequest(page, size, new Sort(Direction.DESC, "created"))));
 	}
 
 	@Autowired
@@ -255,9 +258,9 @@ public class UserController {
 	public void handle(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
-	
+
 	@ExceptionHandler
-	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR )
+	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public void handleISE(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
