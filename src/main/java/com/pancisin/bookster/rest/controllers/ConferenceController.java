@@ -1,6 +1,9 @@
 package com.pancisin.bookster.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +25,16 @@ public class ConferenceController {
 
 	@Autowired
 	private ConferenceRepository conferenceRepository;
-	
+
 	@Autowired
 	private EventRepository eventRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(conferenceRepository.findOne(conference_id));
 	}
-	
+
 	@PutMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> putConference(@PathVariable Long conference_id, @RequestBody Conference conference) {
@@ -41,13 +44,15 @@ public class ConferenceController {
 		stored.setVisibility(conference.getVisibility());
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
-	
-	@GetMapping("/event")
+
+	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
-	public ResponseEntity<?> getEvents(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(conferenceRepository.findOne(conference_id).getEvents());
+	public ResponseEntity<?> getEvents(@PathVariable Long conference_id, @PathVariable int page,
+			@PathVariable int size) {
+		return ResponseEntity.ok(eventRepository.getByConference(conference_id,
+				new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
 	}
-	
+
 	@PostMapping("/event")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postEvent(@PathVariable Long conference_id, @RequestBody Event event) {

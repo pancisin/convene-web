@@ -36,4 +36,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.visibility = 'PUBLIC' AND event.conference IS NULL AND event.page IS NULL")
 	public List<Event> getEventsByUser(@Param("user_id") Long user_id);
+	
+	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id")
+	public Page<Event> getByPage(@Param("page_id") Long page_id, Pageable pageable);
+
+	@Query("SELECT event FROM Event event JOIN event.conference conference WHERE conference.id = :conference_id")
+	public Page<Event> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
 }

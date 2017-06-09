@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -99,12 +102,11 @@ public class PageController {
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 
-	@GetMapping("/event")
-	@JsonView(Summary.class)
+	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-	public ResponseEntity<?> getEvents(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
-		return ResponseEntity.ok(stored.getEvents());
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity
+				.ok(eventRepository.getByPage(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
 	}
 
 	@PostMapping("/event")
@@ -221,7 +223,7 @@ public class PageController {
 		stored.setState(PageState.PUBLISHED);
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
-	
+
 	@PatchMapping("/deactivate")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> deactivatePage(@PathVariable Long page_id) {
