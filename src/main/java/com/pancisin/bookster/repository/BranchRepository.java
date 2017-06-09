@@ -10,6 +10,6 @@ import com.pancisin.bookster.models.Branch;
 
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
-	@Query("SELECT DISTINCT branch FROM Branch branch JOIN branch.category category RIGHT JOIN branch.pages page WHERE page IS NOT NULL AND category.id = :category_id")
+	@Query("SELECT DISTINCT branch FROM Branch branch JOIN branch.category category RIGHT JOIN branch.pages page WHERE page IS NOT NULL AND category.id = :category_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public List<Branch> getUsed(@Param("category_id") Long category_id);
 }

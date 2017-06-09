@@ -35,7 +35,7 @@ export default [
         component: resolve => require(['../pages/conference/Events.vue'], resolve)
       },
       {
-        path: 'create-event',
+        path: 'events/create',
         component: resolve => require(['../pages/event/Overview.vue'], resolve),
         props: (route) => (
           {
@@ -47,7 +47,7 @@ export default [
     ]
   },
   {
-    path: 'event/create',
+    path: 'events/create',
     component: resolve => require(['../pages/event/Overview.vue'], resolve)
   },
   {
@@ -104,7 +104,7 @@ export default [
         component: resolve => require(['../pages/page/Events.vue'], resolve)
       },
       {
-        path: 'create-event',
+        path: 'events/create',
         component: resolve => require(['../pages/event/Overview.vue'], resolve),
         props: (route) => (
           {

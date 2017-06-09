@@ -1,8 +1,11 @@
 <template>
   <div class="row">
-    <div class="col-xs-12">
-      <h3 v-text="event.name" class="page-title"></h3>
+    <div class="col-sm-12">
+      <div class="page-title-box">
+        <h4 class="page-title" v-text="event.name"></h4>
+      </div>
     </div>
+    
     <div class="col-md-3">
       <div class="list-group mail-list">
         <router-link to="overview" class="list-group-item waves-effect">

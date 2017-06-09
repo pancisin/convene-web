@@ -1,8 +1,8 @@
 <script>
-import Events from '../templates/Events.vue'
+import EventsTemplate from '../templates/Events.vue'
 export default {
-  extends: Events,
   name: 'events-impl',
+  extends: EventsTemplate,
   props: ['page'],
   watch: {
     page() {

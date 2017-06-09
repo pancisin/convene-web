@@ -1,8 +1,11 @@
 <template>
   <div class="row">
-    <div class="col-xs-12">
-      <h3 v-text="conference.name" class="page-title"></h3>
+    <div class="col-sm-12">
+      <div class="page-title-box">
+        <h4 class="page-title" v-text="conference.name"></h4>
+      </div>
     </div>
+  
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>

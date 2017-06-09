@@ -2,13 +2,14 @@
   <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.events') }}</span>
   
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th>Name</th>
           <th>Date</th>
           <th>Created</th>
           <th>Place</th>
+          <th class="text-center">Attendees</th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
@@ -17,12 +18,13 @@
             <router-link :to="'/admin/event/' + ev.id" v-text="ev.name">
             </router-link>
           </td>
-          <td>{{ ev.date | moment('DD.MM.YYYY') }}</td>
+          <td>{{ ev.date | moment('DD.MM.YYYY') }} {{ ev.startsAt }}</td>
           <td>{{ ev.created | moment('DD.MM.YYYY') }}</td>
           <td>
             <span v-if="ev.place != null" v-text="ev.place.name">
             </span>
           </td>
+          <td v-text="ev.attendeesCount" class="text-center"></td>
         </tr>
       </tbody>
     </table>
@@ -53,6 +55,12 @@
           </li>
           <li class="separator"></li>
           <li>
+            <router-link to="events/create">
+              Create event
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li>
             <a @click="deleteEvent(props.data)">
               Delete
             </a>
@@ -62,7 +70,11 @@
     </context-menu>
   
     <div class="text-center">
-      <router-link to="create-event" class="btn btn-default btn-rounded text-center">
+      <paginator :paginator="paginator" @navigate="paginatorNavigate" />
+    </div>
+  
+    <div class="text-center">
+      <router-link to="events/create" class="btn btn-default btn-rounded text-center">
         Create event
       </router-link>
     </div>

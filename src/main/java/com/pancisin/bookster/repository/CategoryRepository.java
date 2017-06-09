@@ -11,6 +11,6 @@ import com.pancisin.bookster.models.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-	@Query("SELECT DISTINCT category FROM Category category JOIN category.branches branch RIGHT JOIN branch.pages page WHERE page IS NOT NULL")
+	@Query("SELECT DISTINCT category FROM Category category JOIN category.branches branch RIGHT JOIN branch.pages page WHERE page IS NOT NULL AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public List<Category> getUsed();
 }

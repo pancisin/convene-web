@@ -15,14 +15,14 @@ export default {
 
       this.loading = true;
       var size = 8;
-      
+
       var url = ['api/conference', this.conference.id, 'event', page, size].join('/');
 
       this.$http.get(url).then(response => {
         this.paginator = response.body;
         this.loading = false;
-      })
-    }
+      });
+    },
   }
 }
 </script>
