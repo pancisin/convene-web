@@ -12,7 +12,7 @@
           <th class="text-center">Attendees</th>
         </tr>
       </thead>
-      <tbody is="transition-group" name="fade">
+      <tbody>
         <tr v-for="ev in paginator.content" :key="ev.id" @contextmenu.prevent="$refs.menu.open($event, ev)">
           <td>
             <router-link :to="'/admin/event/' + ev.id" v-text="ev.name">
