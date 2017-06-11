@@ -359,4 +359,8 @@ public class User implements UserDetails, Principal, IAuthor {
 	public void setVerified(boolean verified) {
 		this.verified = verified;
 	}
+
+	public List<Page> getFollowed() {
+		return followed;
+	}
 }

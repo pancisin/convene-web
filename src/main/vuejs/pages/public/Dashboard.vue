@@ -4,7 +4,7 @@
       <div class="col-md-4" v-if="authenticated">
   
         <panel type="primary">
-          <span slot="title">Where am i going</span>
+          <span slot="title">{{ $t('client.dashboard.attending') }}</span>
   
           <div class="inbox-widget mx-box">
             <stagger-transition>
@@ -21,12 +21,11 @@
             </stagger-transition>
           </div>
         </panel>
-  
       </div>
   
       <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
         <panel type="primary">
-          <span slot="title">Events near you</span>
+          <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
   
           <div class="inbox-widget">
             <stagger-transition>
@@ -50,34 +49,51 @@
       </div>
   
       <div class="col-md-4">
-        <!--<panel type="default">
-          <span slot="title">Most popular events</span>
-          There's nothing to display.
-        </panel>-->
-        <panel type="default">
-          <span slot="title">Suggested pages</span>
-  
-          <div class="inbox-widget">
-            <stagger-transition>
-              <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index">
-                <div class="inbox-item">
-                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                    <img :src="page.bannerUrl" class="img-circle">
+        <!--<div class="page-title-box">
+          <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+        </div>-->
+        <tab-container>
+          <tab :title="$t('client.dashboard.suggested')">
+            <div class="inbox-widget">
+              <stagger-transition>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index">
+                  <div class="inbox-item">
+                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                      <img :src="page.bannerUrl" class="img-circle">
+                    </div>
+                    <p class="inbox-item-author" v-text="page.name"></p>
+                    <p class="inbox-item-text" v-if="page.category != null">
+                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                    </p>
                   </div>
-                  <p class="inbox-item-author" v-text="page.name"></p>
-                  <p class="inbox-item-text" v-if="page.category != null">
-                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                  </p>
-                </div>
-              </router-link>
-            </stagger-transition>
+                </router-link>
+              </stagger-transition>
   
-            <div class="text-center">
-              <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+              <div class="text-center">
+                <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+              </div>
             </div>
-          </div>
-        </panel>
-  
+          </tab>
+          <tab :title="$t('client.dashboard.followed')">
+            <div class="inbox-widget">
+              <stagger-transition>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index">
+                  <div class="inbox-item">
+                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                      <img :src="page.bannerUrl" class="img-circle">
+                    </div>
+                    <p class="inbox-item-author" v-text="page.name"></p>
+                    <p class="inbox-item-text" v-if="page.category != null">
+                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                    </p>
+                  </div>
+                </router-link>
+              </stagger-transition>
+            </div>
+          </tab>
+          <tab :title="$t('client.dashboard.popular')">
+          </tab>
+        </tab-container>
       </div>
     </div>
   </div>
@@ -87,6 +103,8 @@
 import Auth from '../../services/auth.js'
 import Paginator from '../../elements/Paginator.vue'
 import StaggerTransition from '../../functional/StaggerTransition.vue'
+import TabContainer from '../../elements/TabContainer.vue'
+import Tab from '../../elements/Tab.vue'
 
 export default {
   name: 'dashboard',
@@ -96,18 +114,20 @@ export default {
       attending: [],
       pagesPaginator: {},
       eventsPaginator: {},
+      followed: [],
     }
   },
   created() {
     if (Auth.user.authenticated) {
       this.getAttending();
+      this.getFollowedPages();
     }
 
     this.getEvents(0);
     this.getPages(0);
   },
   components: {
-    Paginator, StaggerTransition
+    Paginator, StaggerTransition, TabContainer, Tab
   },
   computed: {
     authenticated() {
@@ -153,6 +173,11 @@ export default {
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
+    },
+    getFollowedPages() {
+      this.$http.get('api/user/followed-pages').then(response => {
+        this.followed = response.body;
+      })
     }
   }
 }

@@ -271,4 +271,12 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(paRepository.getContacts(auth.getId()));
 	}
+	
+	@GetMapping("/followed-pages")
+	@JsonView(Summary.class) 
+	public ResponseEntity<?> getFollowedPages() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		return ResponseEntity.ok(stored.getFollowed());
+	}
 }
