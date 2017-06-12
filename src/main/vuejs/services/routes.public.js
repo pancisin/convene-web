@@ -49,4 +49,28 @@ export default [
     path: 'events',
     component: resolve => require(['../pages/public/Event.index.vue'], resolve)
   },
+  {
+    path: 'settings',
+    name: 'settings',
+    alias: 'admin/settings',
+    component: resolve => require(['../pages/Settings.vue'], resolve),
+    redirect: '/admin/settings/account',
+    children: [
+      {
+        path: 'account',
+        name: 'settings.account',
+        component: resolve => require(['../pages/settings/Account.vue'], resolve)
+      },
+      {
+        path: 'license',
+        name: 'settings.license',
+        component: resolve => require(['../pages/settings/License.vue'], resolve)
+      },
+      {
+        path: 'notifications',
+        name: 'settings.notifications',
+        component: resolve => require(['../pages/settings/Notifications.vue'], resolve)
+      },
+    ]
+  },
 ]

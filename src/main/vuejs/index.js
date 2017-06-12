@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 import VueI18n from 'vue-i18n'
 import VueWebsocket from './services/websocket.js'
+import VueAnalytics from 'vue-analytics'
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment'
@@ -39,6 +40,10 @@ Vue.use(VueI18n)
 Vue.use(VueWebsocket)
 Vue.use(VueMoment)
 Vue.use(notifier)
+Vue.use(VueAnalytics, {
+  id: 'UA-100879912-1',
+  router
+})
 Vue.component('modal', Modal)
 Vue.component('panel', Panel)
 Vue.component('context-menu', ContextMenu)

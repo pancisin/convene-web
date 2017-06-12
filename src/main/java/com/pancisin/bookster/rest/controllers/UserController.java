@@ -105,7 +105,8 @@ public class UserController {
 
 		stored.setFirstName(user.getFirstName());
 		stored.setLastName(user.getLastName());
-
+		stored.setAddress(user.getAddress());
+		
 		userRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}

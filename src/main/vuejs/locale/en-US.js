@@ -54,6 +54,13 @@ export default {
   user: {
     email: 'Email address',
     firstName: 'First name',
-    lastName: 'Last name'
+    lastName: 'Last name',
+    address: {
+      street: 'Street',
+      number: 'Number',
+      zip: 'ZIP',
+      city: 'City',
+      state: 'State'
+    }
   }
 }

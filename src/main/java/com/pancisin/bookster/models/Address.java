@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -49,6 +51,7 @@ public class Address {
 		return state;
 	}
 
+	@JsonIgnore
 	public com.paylane.client.api.models.Address getPaylaneAddress() {
 		return new com.paylane.client.api.models.Address(this.street + " " + this.number, this.city, this.state,
 				this.zip, "SK");

@@ -30,7 +30,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <router-link to="/admin/settings" class="waves-effect waves-light">
+                  <router-link :to="{ name: 'settings' }" class="waves-effect waves-light">
                     <i class="fa fa-cog m-r-10"></i> Settings
                   </router-link>
                 </li>

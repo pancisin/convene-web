@@ -31,12 +31,13 @@
               </a>
               <ul class="dropdown-menu" v-if="auth.user.authenticated">
                 <li>
-                  <router-link to="/admin" v-if="isAdmin">
-                    <i class="ti-user m-r-5"></i> Admin</router-link>
+                  <router-link :to="{ name : 'settings' }" class="waves-effect waves-light">
+                    <i class="fa fa-cog m-r-10"></i> Settings
+                  </router-link>
                 </li>
                 <li>
                   <a @click="logout">
-                    <i class="ti-power-off m-r-5"></i> Logout</a>
+                    <i class="fa fa-power-off m-r-10"></i> Logout</a>
                 </li>
               </ul>
               <ul class="dropdown-menu" v-else>
@@ -147,6 +148,10 @@
                     </ul>
                   </li>
                 </ul>
+              </li>
+              <li>
+                <router-link to="/admin" v-if="isAdmin">
+                  <i class="material-icons">dashboard</i> Admin</router-link>
               </li>
             </ul>
           </div>

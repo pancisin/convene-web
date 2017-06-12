@@ -53,6 +53,13 @@ export default {
   user: {
     email: 'Emailová adresa',
     firstName: 'Krstné meno',
-    lastName: 'Priezvisko'
+    lastName: 'Priezvisko',
+    address: {
+      street: 'Ulica',
+      number: 'Číslo',
+      zip: 'PSČ',
+      city: 'Mesto',
+      state: 'Štát'
+    }
   }
 }
