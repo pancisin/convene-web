@@ -15,7 +15,7 @@ const getters = {
     return state.user;
   },
   getLocale: state => state.user.locale,
-  isAdmin: state => state.user.role != null && state.user.role.level >= 40,
+  isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
   getLicense: state => state.user.license ? state.user.license : null,
 }
 
