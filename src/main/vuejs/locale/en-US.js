@@ -62,5 +62,9 @@ export default {
       city: 'City',
       state: 'State'
     }
+  },
+  locale: {
+    en: 'English',
+    sk: 'Slovak'
   }
 }

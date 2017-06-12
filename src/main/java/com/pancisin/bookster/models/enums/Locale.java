@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Locale {
-	sk("SLOVAK", "sk", "DD.MM.YYYY", "HH:mm"), en("ENGLISH", "en", "MM/DD/YYYY", "H mm a");
+	sk("sk", "locale.sk", "DD.MM.YYYY", "HH:mm"), en("en", "locale.en", "MM/DD/YYYY", "H mm a");
 
 	Locale(String name, String code, String dateFormat, String timeFormat) {
 		this.name = name;

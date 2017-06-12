@@ -52,9 +52,8 @@ export default [
   {
     path: 'settings',
     name: 'settings',
-    alias: 'admin/settings',
     component: resolve => require(['../pages/Settings.vue'], resolve),
-    redirect: '/admin/settings/account',
+    redirect: '/settings/account',
     children: [
       {
         path: 'account',

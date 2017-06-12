@@ -5,7 +5,9 @@
     </a>
     <ul class="dropdown-menu">
       <li v-for="loc in locales">
-        <a @click="locale = loc; closeLanguage()" v-text="loc.name"></a>
+        <a @click="locale = loc; closeLanguage()">
+          {{ $t(loc.code) }}
+        </a>
       </li>
     </ul>
   </li>
@@ -32,14 +34,14 @@ export default {
       },
       set(value) {
         if (Auth.user.authenticated)
-          this.$http.put('api/user/locale', JSON.stringify(value.code)).then(response => {
+          this.$http.put('api/user/locale', JSON.stringify(value.name)).then(response => {
             Auth.updateUserData(this);
-            moment.locale(value.code);
-            this.$i18n.locale = value.code;
+            moment.locale(value.name);
+            this.$i18n.locale = value.name;
           })
         else {
-          moment.locale(value.code);
-          this.$i18n.locale = value.code;
+          moment.locale(value.name);
+          this.$i18n.locale = value.name;
         }
       }
     }

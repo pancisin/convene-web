@@ -5,7 +5,22 @@
         <span slot="title">Information</span>
         <div class="form-group">
           <label>{{ $t('user.email') }}</label>
-          <input type="email" v-model="user.email" class="form-control" placeholder="Enter email" disabled>
+  
+          <div class="input-group" :class="{ 'has-error' : !user.verified }">
+            <span class="input-group-addon">
+              @
+            </span>
+            <input type="email" v-model="user.email" class="form-control" placeholder="Username" disabled>
+            <span class="input-group-btn" v-if="!user.verified">
+              <a class="btn waves-effect btn-danger">Verify</a>
+            </span>
+            <span class="input-group-btn" v-else>
+              <a class="btn btn-success">
+                <i class="fa fa-check"></i>
+              </a>
+            </span>
+          </div>
+
         </div>
         <div class="form-group">
           <label>{{ $t('user.firstName') }}</label>
@@ -48,7 +63,7 @@
       </panel>
     </div>
   
-    <div class="text-center">
+    <div class="text-center col-xs-12">
       <a class="btn btn-rounded btn-primary" @click="submit">Update</a>
     </div>
   </div>

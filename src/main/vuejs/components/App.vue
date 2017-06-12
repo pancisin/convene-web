@@ -15,8 +15,8 @@ export default {
   created() {
     if (Auth.user.authenticated) {
       Auth.updateUserData(this).then(user => {
-        moment.locale(user.locale.code);
-        this.$i18n.locale = user.locale.code;
+        moment.locale(user.locale.name);
+        this.$i18n.locale = user.locale.name;
         this.$ga.set('userId', user.id);
       });
 
