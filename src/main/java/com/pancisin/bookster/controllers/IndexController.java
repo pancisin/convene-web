@@ -18,7 +18,7 @@ public class IndexController {
 	EnviromentProvider environmentProvider;
 
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping("/")
+	@RequestMapping(value = "/")
 	public ModelAndView mainPage() {
 		if (environmentProvider.isProduction()) {
 			return new ModelAndView("forward://dist/index.html");
