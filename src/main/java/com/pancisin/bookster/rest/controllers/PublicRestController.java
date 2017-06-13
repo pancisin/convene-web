@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Locale;
@@ -28,6 +29,8 @@ import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
+
+import facebook4j.FacebookException;
 
 @RestController
 @RequestMapping("/public")
@@ -149,6 +152,14 @@ public class PublicRestController {
 	@GetMapping("/subscriptions")
 	public ResponseEntity<?> getSubscriptions() {
 		return ResponseEntity.ok(Subscription.values());
+	}
+	
+	@Autowired
+	private EventBotService eventBot;
+	
+	@GetMapping("/test")
+	public ResponseEntity<?> getTest() throws FacebookException {
+		return ResponseEntity.ok(eventBot.fetchPageEvents("tabackafanpage"));
 	}
 
 	@ExceptionHandler
