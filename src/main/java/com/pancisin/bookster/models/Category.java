@@ -11,12 +11,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "categories")
 public class Category {
 	
 	@Id
+	@JsonView(Summary.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
@@ -28,6 +31,7 @@ public class Category {
 	private List<Branch> branches;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String code;
 	
 	public Long getId() {

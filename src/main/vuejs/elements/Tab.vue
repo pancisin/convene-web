@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-pane" v-show="display">
+  <div class="tab-pane" v-show="display" v-loading="loading">
     <slot></slot>
   </div>
 </template>
@@ -14,11 +14,20 @@ export default {
     return {
       display: false,
       id: null,
+      loading: false,
     }
   },
-  mounted() {
-    console.log(this.id);
-  }
+  watch: {
+    display: 'navigationChanged'
+  },
+  methods: {
+    navigationChanged(value) {
+      if (value)
+        this.$emit('navigated', this.id, (value) => {
+          this.loading = value;
+        });
+    },
+  },
 }
 </script>
 

@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -56,6 +57,7 @@ public class Page implements IAuthor {
 	private List<Event> events;
 
 	@ManyToOne
+	@JsonView(Summary.class)
 	private Branch branch;
 
 	@JsonIgnore
@@ -96,6 +98,7 @@ public class Page implements IAuthor {
 	@Enumerated(EnumType.STRING)
 	private PageState state = PageState.DEACTIVATED;
 	
+	@JsonView(Summary.class)
 	public Category getCategory() {
 		if (getBranch() != null)
 			return getBranch().getCategory();

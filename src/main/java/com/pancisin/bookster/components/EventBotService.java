@@ -7,13 +7,12 @@ import java.util.List;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.Address;
 import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Place;
-import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventRepository;
@@ -39,6 +38,7 @@ public class EventBotService {
 	@Autowired
 	private EventRepository eventRepository;
 
+	@Scheduled(cron = "0 0 1 * * *")
 	public ResponseList<Event> run() {
 		List<EventBot> bots = eventBotRepository.findAll();
 
@@ -69,7 +69,7 @@ public class EventBotService {
 					}
 
 					try {
-//						eventRepository.save(event);
+						eventRepository.save(event);
 					} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
 						ex.printStackTrace();
 					}
