@@ -20,6 +20,9 @@ public class Place {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column(unique = true)
+	private String facebookId;
+	
 	@Column
 	private String name;
 	

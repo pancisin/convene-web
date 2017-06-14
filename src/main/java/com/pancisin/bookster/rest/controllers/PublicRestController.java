@@ -158,8 +158,8 @@ public class PublicRestController {
 	private EventBotService eventBot;
 	
 	@GetMapping("/test")
-	public ResponseEntity<?> getTest() throws FacebookException {
-		return ResponseEntity.ok(eventBot.fetchPageEvents("tabackafanpage"));
+	public ResponseEntity<?> getTest() {
+		return ResponseEntity.ok(eventBot.run());
 	}
 
 	@ExceptionHandler
