@@ -22,6 +22,7 @@ import facebook4j.Event;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.PictureSize;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
 import facebook4j.Venue;
@@ -56,7 +57,7 @@ public class EventBotService {
 				for (int j = 0; j < events.size(); j++) {
 					Event ev = events.get(j);
 					com.pancisin.bookster.models.Event event = buildEvent(ev);
-					event.setBannerUrl(fb.getEventPictureURL(ev.getId()).toString());
+					event.setBannerUrl(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString());
 					event.setPage(bot.getPage());
 					event.setOwner(bot.getAlias());
 

@@ -6,7 +6,7 @@
         <panel type="primary">
           <span slot="title">{{ $t('client.dashboard.attending') }}</span>
   
-          <div class="inbox-widget mx-box">
+          <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index">
                 <div class="inbox-item">

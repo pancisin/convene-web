@@ -28,7 +28,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.date >= CURDATE() ORDER BY event.date ASC")
 	public List<Event> getAttending(@Param("user_id") Long user_id);
 
-	@Query("SELECT event FROM Event event WHERE event.visibility = com.pancisin.bookster.models.enums.Visibility.PUBLIC AND event.date = :date")
+	@Query("SELECT event FROM Event event WHERE event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date)")
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
 	
 	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
