@@ -109,6 +109,9 @@ public class Event {
 
 		return null;
 	}
+	
+	@OneToMany(mappedBy = "event")
+	private List<Invitation> invitations;
 
 	public IAuthor getAuthor() {
 		if (conference != null)
@@ -233,5 +236,9 @@ public class Event {
 
 	public void setFacebookId(String facebookId) {
 		this.facebookId = facebookId;
+	}
+
+	public List<Invitation> getInvitations() {
+		return invitations;
 	}
 }

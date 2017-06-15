@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
+import com.pancisin.bookster.repository.InvitationRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
@@ -42,6 +44,9 @@ public class EventController {
 
 	@Autowired
 	private StorageServiceImpl storageService;
+	
+	@Autowired
+	private InvitationRepository invitationRepository;
 	
 	@GetMapping
 	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
@@ -123,5 +128,18 @@ public class EventController {
 	public ResponseEntity<?> getAttendees(@PathVariable Long event_id) {
 		Event stored = eventRepository.findOne(event_id);
 		return ResponseEntity.ok(stored.getAttendees());
+	}
+	
+	@PostMapping("/invitation")
+	public ResponseEntity<?> postInvitation(@PathVariable Long event_id, @RequestBody Invitation invitation) {
+		Event stored = eventRepository.findOne(event_id);
+		invitation.setEvent(stored);
+		return ResponseEntity.ok(invitationRepository.save(invitation));
+	}
+	
+	@GetMapping("/invitation")
+	public ResponseEntity<?> getInvitations(@PathVariable Long event_id) {
+		Event stored = eventRepository.findOne(event_id);
+		return ResponseEntity.ok(stored.getInvitations());
 	}
 }
