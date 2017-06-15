@@ -62,11 +62,6 @@ public class PublicRestController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
-
 		return ResponseEntity.ok(
 				eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
 	}
@@ -142,7 +137,6 @@ public class PublicRestController {
 
 	@GetMapping("/user/{user_id}/event")
 	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id) {
-//		return ResponseEntity.ok(eventRepository.getEventsByUser(user_id));
 		return ResponseEntity.ok(eventRepository.getByUser(user_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
 	}
 
