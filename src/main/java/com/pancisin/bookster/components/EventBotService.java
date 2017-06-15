@@ -39,7 +39,7 @@ public class EventBotService {
 	@Autowired
 	private EventRepository eventRepository;
 
-	@Scheduled(cron = "0 0 1 * * *")
+	@Scheduled(cron = "0 0 14 * * *")
 	public ResponseList<Event> run() {
 		List<EventBot> bots = eventBotRepository.findAll();
 

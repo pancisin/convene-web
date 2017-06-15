@@ -34,12 +34,15 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude, @Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 
-	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.visibility = 'PUBLIC' AND event.conference IS NULL AND event.page IS NULL")
-	public List<Event> getEventsByUser(@Param("user_id") Long user_id);
+	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.visibility = 'PUBLIC' AND event.conference IS NULL AND event.page IS NULL AND DATE(event.date) >= CURDATE()")
+	public Page<Event> getByUser(@Param("user_id") Long user_id, Pageable pageable);
 	
-	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id")
+	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id AND DATE(event.date) >= CURDATE()")
 	public Page<Event> getByPage(@Param("page_id") Long page_id, Pageable pageable);
 
 	@Query("SELECT event FROM Event event JOIN event.conference conference WHERE conference.id = :conference_id")
 	public Page<Event> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
+
+	@Query("SELECT event FROM Event event JOIN event.page page WHERE event.id != :event_id AND page.id = (SELECT event.page.id FROM Event event WHERE event.id = :event_id) AND DATE(event.date) >= CURDATE()")
+	public Page<Event> getRelated(@Param("event_id") Long event_id, Pageable pageable);
 }

@@ -6,7 +6,7 @@
     <div class="content">
       <keep-alive>
         <transition name="fade-down" mode="out-in">
-          <router-view></router-view>
+          <router-view :key="$route.fullPath"></router-view>
         </transition>
       </keep-alive>
     </div>
