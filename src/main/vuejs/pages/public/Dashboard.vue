@@ -6,7 +6,7 @@
         <panel type="primary">
           <span slot="title">{{ $t('client.dashboard.attending') }}</span>
   
-          <div class="inbox-widget mx-box">
+          <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index">
                 <div class="inbox-item">
@@ -50,8 +50,8 @@
   
       <div class="col-md-4">
         <!--<div class="page-title-box">
-          <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-        </div>-->
+                    <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+                  </div>-->
         <tab-container>
           <tab :title="$t('client.dashboard.suggested')">
             <div class="inbox-widget">
@@ -74,7 +74,7 @@
               </div>
             </div>
           </tab>
-          <tab :title="$t('client.dashboard.followed')">
+          <tab :title="$t('client.dashboard.followed')" @navigated="tabNavigation">
             <div class="inbox-widget">
               <stagger-transition>
                 <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index">
@@ -91,7 +91,25 @@
               </stagger-transition>
             </div>
           </tab>
-          <tab :title="$t('client.dashboard.popular')">
+          <tab :title="$t('client.dashboard.popular')" @navigated="tabNavigation">
+            <div class="inbox-widget">
+              <stagger-transition>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index">
+                  <div class="inbox-item">
+                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                      <img :src="page.bannerUrl" class="img-circle">
+                    </div>
+                    <p class="inbox-item-author">
+                      {{ page.name }}
+                      <span class="pull-right badge badge-primary">{{ page.followersCount }} followers</span>
+                    </p>
+                    <p class="inbox-item-text" v-if="page.category != null">
+                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                    </p>
+                  </div>
+                </router-link>
+              </stagger-transition>
+            </div>
           </tab>
         </tab-container>
       </div>
@@ -115,12 +133,12 @@ export default {
       pagesPaginator: {},
       eventsPaginator: {},
       followed: [],
+      popular: [],
     }
   },
   created() {
     if (Auth.user.authenticated) {
       this.getAttending();
-      this.getFollowedPages();
     }
 
     this.getEvents(0);
@@ -174,10 +192,22 @@ export default {
         this.getEvents(e.page);
       }
     },
-    getFollowedPages() {
-      this.$http.get('api/user/followed-pages').then(response => {
-        this.followed = response.body;
-      })
+    tabNavigation(id, loading) {
+      if (id === 2 && (this.popular == null || this.popular.length == 0)) {
+        loading(true);
+        this.$http.get('public/popular-pages/0/5').then(response => {
+          this.popular = response.body.content;
+          loading(false);
+        })
+      }
+
+      if (id == 1 && Auth.user.authenticated && (this.followed == null || this.followed.length == 0)) {
+        loading(true);
+        this.$http.get('api/user/followed-pages').then(response => {
+          this.followed = response.body;
+          loading(false);
+        })
+      }
     }
   }
 }

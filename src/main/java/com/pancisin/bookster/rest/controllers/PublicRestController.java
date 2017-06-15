@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Locale;
@@ -28,6 +29,8 @@ import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
+
+import facebook4j.FacebookException;
 
 @RestController
 @RequestMapping("/public")
@@ -58,11 +61,6 @@ public class PublicRestController {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		
-		cal.set(Calendar.HOUR_OF_DAY, 0);
-		cal.set(Calendar.MINUTE, 0);
-		cal.set(Calendar.SECOND, 0);
-		cal.set(Calendar.MILLISECOND, 0);
 
 		return ResponseEntity.ok(
 				eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
@@ -86,6 +84,11 @@ public class PublicRestController {
 		else
 			return null;
 	}
+	
+	@GetMapping("/event/{event_id}/related")
+	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
+		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
+	}
 
 	@GetMapping("/pages/{page}/{limit}")
 	public ResponseEntity<?> getPages(@PathVariable int page, @PathVariable int limit,
@@ -106,6 +109,11 @@ public class PublicRestController {
 		return ResponseEntity.ok(pages);
 	}
 
+	@GetMapping("/popular-pages/{page}/{limit}")
+	public ResponseEntity<?> getPopularPages(@PathVariable int page, @PathVariable int limit) {
+		return ResponseEntity.ok(pageRepository.getPopular(new PageRequest(page, limit)));
+	}
+
 	@GetMapping("/page/{page_identifier}")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
 		try {
@@ -123,12 +131,13 @@ public class PublicRestController {
 
 	@GetMapping("/page/{page_id}/event")
 	public ResponseEntity<?> getPageEvents(@PathVariable Long page_id) {
-		return ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
+//		return ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
+		return ResponseEntity.ok(eventRepository.getByPage(page_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
 	}
-	
+
 	@GetMapping("/user/{user_id}/event")
 	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id) {
-		return ResponseEntity.ok(eventRepository.getEventsByUser(user_id));
+		return ResponseEntity.ok(eventRepository.getByUser(user_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/categories")
@@ -145,11 +154,14 @@ public class PublicRestController {
 	public ResponseEntity<?> getPublic() {
 		return ResponseEntity.ok(Locale.values());
 	}
-	
+
 	@GetMapping("/subscriptions")
 	public ResponseEntity<?> getSubscriptions() {
 		return ResponseEntity.ok(Subscription.values());
 	}
+
+	@Autowired
+	private EventBotService eventBot;
 
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)

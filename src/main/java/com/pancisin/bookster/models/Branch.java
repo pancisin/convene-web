@@ -12,12 +12,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "branches")
 public class Branch {
 
 	@Id
+	@JsonView(Summary.class)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
@@ -32,6 +35,7 @@ public class Branch {
 	@OneToMany(mappedBy = "branch")
 	private List<Page> pages;
 
+	@JsonView(Summary.class)
 	@Column
 	private String code;
 	

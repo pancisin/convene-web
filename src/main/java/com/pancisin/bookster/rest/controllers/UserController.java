@@ -274,7 +274,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/followed-pages")
-	@JsonView(Summary.class) 
+	@JsonView(Summary.class)
 	public ResponseEntity<?> getFollowedPages() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());

@@ -66,7 +66,7 @@
                     <img :src="related.bannerUrl" class="img-circle" alt="">
                   </div>
                   <p class="inbox-item-author" v-text="related.name"></p>
-                  <p class="inbox-item-text">
+                  <p class="inbox-item-text pull-right">
                     {{ related.date | moment('DD.MM.YYYY') }} {{ related.startsAt }}
                   </p>
                 </div>
@@ -130,7 +130,7 @@ export default {
     getRelated() {
       var url = ['public', this.event.author.type, this.event.author.id, 'event'].join('/');
       this.$http.get(url).then(response => {
-        this.relatedEvents = response.body;
+        this.relatedEvents = response.body.content;
       })
     }
   }

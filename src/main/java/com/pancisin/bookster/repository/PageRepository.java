@@ -23,4 +23,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 	public org.springframework.data.domain.Page<Page> findAllVisible(Pageable pageable);
 	
 	public Page findBySlug(String slug);
+
+	@Query("SELECT page FROM Page page LEFT JOIN page.followers followers GROUP BY page ORDER BY count(followers) DESC, page.name ASC")
+	public org.springframework.data.domain.Page<Page> getPopular(Pageable pageable);
 }

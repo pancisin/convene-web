@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -80,6 +81,9 @@ public class Event {
 	@Column
 	private String summary;
 
+	@Column(unique = true)
+	private String facebookId;
+	
 	@JsonIgnore
 	@ManyToMany
 	private List<User> attendees = new ArrayList<User>();
@@ -221,5 +225,13 @@ public class Event {
 
 	public void setPlace(Place place) {
 		this.place = place;
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
 	}
 }
