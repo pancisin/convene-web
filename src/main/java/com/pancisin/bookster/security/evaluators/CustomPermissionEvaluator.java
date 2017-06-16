@@ -129,6 +129,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				return true;
 		case "page-administrator":
 			return true;
+		case "invitation":
+			return true;
 		}
 
 		return false;

@@ -17,7 +17,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Email</th>
+              <th>User</th>
               <th></th>
               <th></th>
             </tr>
@@ -30,13 +30,13 @@
               </td>
               <td class="text-right">{{ inv.created | moment('DD.MM.YYYY') }}</td>
               <th>
-                <a class="text-danger btn btn-link btn-xs">
+                <a class="text-danger btn btn-link btn-xs" @click="cancel(inv.id)">
                   Cancel
                 </a>
               </th>
             </tr>
             <tr v-if="invitations.length == 0">
-              <td class="text-center">
+              <td class="text-center" colspan="3">
                 There's nothing to display.
               </td>
             </tr>
@@ -137,6 +137,13 @@ export default {
         loading(false)
       })
     },
+    cancel(invitation_id) {
+      this.$http.delete('api/invitation/' + invitation_id).then(response => {
+        this.invitations = this.invitations.filter(x => {
+          return x.id != invitation_id;
+        })
+      })
+    }
   }
 }
 </script>
