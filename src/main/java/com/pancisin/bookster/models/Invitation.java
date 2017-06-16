@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.views.Compact;
 
 @Entity
-@Table(name = "invitations")
+@Table(name = "invitations", uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "event_id" }) })
 public class Invitation {
 
 	@Id
@@ -39,6 +40,15 @@ public class Invitation {
 	@ManyToOne(optional = true)
 	private Event event;
 
+	public Invitation() {
+		
+	}
+	
+	public Invitation(Event event, String email) {
+		this.event = event;
+		this.email = email;
+	}
+	
 	public String getEmail() {
 		return email;
 	}

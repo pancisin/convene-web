@@ -110,6 +110,7 @@ public class Event {
 		return null;
 	}
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "event")
 	private List<Invitation> invitations;
 
