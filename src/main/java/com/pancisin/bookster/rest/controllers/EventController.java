@@ -156,7 +156,7 @@ public class EventController {
 
 		return ResponseEntity.ok(inv);
 	}
-	
+
 	@GetMapping("/invitation")
 	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> getInvitations(@PathVariable Long event_id) {
