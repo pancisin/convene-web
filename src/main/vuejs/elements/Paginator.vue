@@ -18,9 +18,20 @@
 
 <script>
 export default {
-  props: ['paginator'],
+  props: ['paginator', 'history'],
+  created() {
+    if (this.$route.query.page)
+      this.paginatorNavigate(null, this.$route.query.page);
+  },
   methods: {
     paginatorNavigate(direction, page) {
+      if (this.history)
+        this.$router.replace({
+          query: {
+            page: page,
+          }
+        })
+
       this.$emit('navigate', {
         direction: direction,
         page: page

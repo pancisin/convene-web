@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-md-3">
           <router-link to="/admin/page/create" class="btn btn-block btn-rounded btn-success">Create page</router-link>
-
+  
           <div class="list-group m-t-10">
             <stagger-transition>
               <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :class="{ 'active' : filters.branchId == branch.id }" :data-index="index" @click="selectBranch(branch.id)">
@@ -45,7 +45,7 @@
   
           <div class="row">
             <div class="col-xs-12 text-center">
-              <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+              <paginator :history="true" :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
             </div>
           </div>
         </div>

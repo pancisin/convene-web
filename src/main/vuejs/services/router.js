@@ -7,7 +7,6 @@ import publicRoutes from './routes.public.js'
 import adminRoutes from './routes.admin.js'
 
 const require_auth = (to, from, next) => {
-  console.log(from);
   if (!Auth.user.authenticated) {
     next({
       path: '/login',
