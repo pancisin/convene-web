@@ -1,6 +1,10 @@
 <template>
-  <div class="suggest-input">
+  <div class="suggest-input" :class="{ '_loading' : loading }">
     <input class="form-control" @keyup="search($event); update($event.target.value)" v-model="selected" @focus="collapsed = false" @blur="collapsed = true" />
+  
+    <div class="loader">
+      <div class="spinner"></div>
+    </div>
   
     <transition name="fade-up">
       <div class="suggest-box" v-show="!collapsed">
@@ -73,6 +77,18 @@ export default {
 <style lang="less">
 .suggest-input {
   position: relative;
+
+  .loader {
+    z-index: 3;
+    right: 5px;
+    width: auto;
+    margin: 5px;
+
+    .spinner {
+      width: 25px;
+      height: 25px;
+    }
+  }
 
   .suggest-box {
     position: absolute;

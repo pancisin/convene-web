@@ -47,7 +47,7 @@
                   <router-link :to="'/event/' + event.id" v-text="event.name">
                   </router-link>
                 </td>
-                <td>{{ event.date | moment('DD.MM.YYYY') }}</td>
+                <td>{{ event.date | moment('L') }}</td>
               </tr>
               <tr v-if="events.length == 0">
                 <td colspan="2" class="text-center">There's nothing to display.</td>

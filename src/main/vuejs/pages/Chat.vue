@@ -47,7 +47,7 @@
           <li class="line"
               v-if="messages[0] != null"
               :key="-1">
-            <div class="title">{{ messages[0].created | moment("dddd, DD.MM.YYYY") }}</div>
+            <div class="title">{{ messages[0].created | moment("llll") }}</div>
           </li>
           <li v-for="(mes, index) in messages"
               :class="{ 'right' : mes.sender.id == user.id }"
@@ -55,7 +55,7 @@
             <div class="message"
                  v-text="mes.content"></div>
             <div class="info">
-              <div class="datetime">{{ mes.created | moment("DD.MM.YYYY HH:mm") }}</div>
+              <div class="datetime">{{ mes.created | moment("L LT") }}</div>
               <div class="status"
                    v-if="recipient != null && recipient.id != mes.sender.id && mes.sender.id != user.id"
                    v-text="mes.sender.name"></div>

@@ -10,8 +10,9 @@ const getters = {
   getPages: state => state.pages,
   getConferences: state => state.conferences,
   getUser: state => {
-    if (!state.user.address)
-      state.user.address = {};
+    if (state.user)
+      if (!state.user.address)
+        state.user.address = {};
     return state.user;
   },
   getLocale: state => state.user.locale,

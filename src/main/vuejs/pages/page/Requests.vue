@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="request in requests">
           <td v-text="request.email"></td>
-          <td>{{ request.date | moment(locale.dateFormat) }}</td>
+          <td>{{ request.date | moment('L') }}</td>
         </tr>
         <tr v-if="requests.length == 0">
           <td colspan="2" class="text-center">There's nothing to display.</td>

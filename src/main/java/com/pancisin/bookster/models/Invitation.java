@@ -14,6 +14,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.views.Compact;
 
@@ -37,8 +38,13 @@ public class Invitation {
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
+	@JsonIgnore
 	@ManyToOne(optional = true)
 	private Event event;
+	
+	@JsonIgnore
+	@ManyToOne(optional = true)
+	private Conference conference;
 
 	public Invitation() {
 		
@@ -46,6 +52,11 @@ public class Invitation {
 	
 	public Invitation(Event event, String email) {
 		this.event = event;
+		this.email = email;
+	}
+	
+	public Invitation(Conference conference, String email) {
+		this.conference = conference;
 		this.email = email;
 	}
 	
@@ -79,5 +90,13 @@ public class Invitation {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public Conference getConference() {
+		return conference;
+	}
+
+	public void setConference(Conference conference) {
+		this.conference = conference;
 	}
 }

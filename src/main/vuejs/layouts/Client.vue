@@ -6,7 +6,7 @@
     <div class="content">
       <keep-alive>
         <transition name="fade-down" mode="out-in">
-          <router-view :key="$route.fullPath"></router-view>
+          <router-view :key="$route.path"></router-view>
         </transition>
       </keep-alive>
     </div>
@@ -26,7 +26,7 @@ export default {
     HeaderComponent,
     FooterComponent,
     ToastContainer,
-  },
+  }
 }
 </script>
 

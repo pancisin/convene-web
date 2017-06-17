@@ -95,6 +95,11 @@
                 {{ $t('admin.page.events') }}
               </router-link>
             </li>
+            <li slot="item">
+              <router-link :to="{ name: 'conference.attendees', params: { id : conference.id }}" class="list-group-item waves-effect">
+                Attendees
+              </router-link>
+            </li>
           </drop-down>
   
           <li>

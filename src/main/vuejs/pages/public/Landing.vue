@@ -84,7 +84,7 @@
                     </div>
                     <p class="inbox-item-author" v-text="event.name"></p>
                     <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
-                    <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
+                    <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
                   </div>
                 </router-link>
               </stagger-transition>

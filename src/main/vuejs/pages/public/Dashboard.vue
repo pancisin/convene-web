@@ -15,7 +15,7 @@
                   </div>
                   <p class="inbox-item-author" v-text="event.name"></p>
                   <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
+                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
                 </div>
               </router-link>
             </stagger-transition>
@@ -36,7 +36,7 @@
                   </div>
                   <p class="inbox-item-author" v-text="event.name"></p>
                   <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('DD.MM.YYYY') }}</p>
+                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
                 </div>
               </router-link>
             </stagger-transition>

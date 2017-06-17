@@ -6,7 +6,7 @@
           <div class="panel-heading">
             <img :src="event.bannerUrl" />
             <h3 class="panel-title">{{ event.name }}</h3>
-            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('dddd, DD. MMMM YYYY') }} {{ event.startsAt }}
+            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('LL') }} {{ event.startsAt }}
               <br>Usporiadatel : {{ event.author.displayName }}</p>
           </div>
           <div class="panel-body">
@@ -67,7 +67,7 @@
                   </div>
                   <p class="inbox-item-author" v-text="related.name"></p>
                   <p class="inbox-item-text pull-right">
-                    {{ related.date | moment('DD.MM.YYYY') }} {{ related.startsAt }}
+                    {{ related.date | moment('L') }} {{ related.startsAt }}
                   </p>
                 </div>
               </router-link>

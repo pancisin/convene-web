@@ -8,6 +8,9 @@
             #id
           </th>
           <th>
+            Created
+          </th>
+          <th>
             Title
           </th>
           <th>
@@ -21,6 +24,7 @@
       <tbody>
         <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)">
           <td v-text="not.id" class="text-center"></td>
+          <td>{{ not.created | moment('from') }}</td>
           <td v-text="not.title"></td>
           <td v-text="not.message"></td>
           <td class="text-center">

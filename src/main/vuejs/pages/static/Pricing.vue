@@ -143,7 +143,9 @@ export default {
     cur_sub() {
       if (this.user != null)
         return this.user.license.subscription;
-      return {};
+      return {
+        name: 'NOTHING',
+      };
     }
   }
 }

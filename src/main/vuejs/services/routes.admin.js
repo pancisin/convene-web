@@ -35,6 +35,11 @@ export default [
         component: resolve => require(['../pages/conference/Events.vue'], resolve)
       },
       {
+        path: 'attendees',
+        name: 'conference.attendees',
+        component: resolve => require(['../pages/conference/Attendees.vue'], resolve)
+      },
+      {
         path: 'events/create',
         component: resolve => require(['../pages/event/Overview.vue'], resolve),
         props: (route) => (
@@ -165,16 +170,6 @@ export default [
         component: resolve => require(['../pages/place/Gallery.vue'], resolve)
       }
     ]
-  },
-  {
-    path: 'invoice/:invoice_id',
-    name: 'invoice',
-    component: resolve => require(['../pages/Invoice.vue'], resolve)
-  },
-  {
-    path: 'invoice/:invoice_id/payment',
-    name: 'invoice.payment',
-    component: resolve => require(['../pages/Payment.vue'], resolve)
   },
   {
     path: 'notifications',

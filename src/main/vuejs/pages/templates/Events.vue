@@ -18,8 +18,8 @@
             <router-link :to="'/admin/event/' + ev.id" v-text="ev.name">
             </router-link>
           </td>
-          <td>{{ ev.date | moment('DD.MM.YYYY') }} {{ ev.startsAt }}</td>
-          <td>{{ ev.created | moment('DD.MM.YYYY') }}</td>
+          <td>{{ ev.date | moment('L') }} {{ ev.startsAt }}</td>
+          <td>{{ ev.created | moment('L') }}</td>
           <td>
             <span v-if="ev.place != null" v-text="ev.place.name">
             </span>

@@ -20,7 +20,7 @@
                     {{ event.name }}
                   </router-link>
                 </td>
-                <td class="text-center">{{ event.date | moment('DD.MM.YYYY') }}</td>
+                <td class="text-center">{{ event.date | moment('L') }}</td>
                 <td class="text-center">
                   <router-link :to="'/create-event/' + event.id" class="btn btn-xs btn-warning btn-rounded">
                     <i class="fa fa-pencil"></i>

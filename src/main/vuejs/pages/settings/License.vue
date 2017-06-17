@@ -16,7 +16,7 @@
       <tbody>
         <tr v-for="(sub, index) in subscriptions" :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }">
           <td>
-            <router-link :to="'/admin/invoice/' + sub.id" v-text="sub.id">
+            <router-link :to="{ name: 'invoice', params: { invoice_id : sub.id }}" v-text="sub.id">
             </router-link>
           </td>
           <td>
@@ -26,8 +26,8 @@
             <b>{{ sub.subscription.price }}</b>
             <i class="fa fa-euro"></i>
           </td>
-          <td>{{ sub.acquired | moment(locale.dateFormat) }}</td>
-          <td>{{ sub.expires | moment(locale.dateFormat) }}</td>
+          <td>{{ sub.acquired | moment('L') }}</td>
+          <td>{{ sub.expires | moment('L') }}</td>
           <td>{{ $t(sub.state.code) }}</td>
           <td>
             <router-link :to="{ name: 'invoice.payment', params: { invoice_id : sub.id }}" class="btn btn-rounded btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">

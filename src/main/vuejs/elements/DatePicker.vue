@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
-    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :value="selected | moment(locale.dateFormat)" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :value="selected | moment('L')" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
       <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">

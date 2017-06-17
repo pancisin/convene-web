@@ -16,7 +16,7 @@
           <td>
             {{ admin.user.firstName + ' ' + admin.user.lastName }}
           </td>
-          <td>{{ admin.created | moment('DD.MM.YYYY') }}</td>
+          <td>{{ admin.created | moment('L') }}</td>
           <td class="text-center">
             <select v-model="admin.role" class="form-control" @change="putAdministrator(admin)" v-if="hasPermission(admin)">
               <option v-for="role in roles" :value="role">{{ $t(role.code) }}</option>

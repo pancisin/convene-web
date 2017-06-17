@@ -4,7 +4,7 @@
       <panel type="table">
         <span slot="title">Invitations</span>
   
-        <form class="form" @submit.prevent="invite">
+        <form class="form" @submit.prconference="invite">
           <div class="input-group" style="margin: 0px 20px 20px 20px">
             <suggest-input v-model="invitation.email" :options="users" @search="searchUsers"></suggest-input>
             <!--<input type="email" v-model="invitation.email" class="form-control" placeholder="Email">-->
@@ -76,8 +76,8 @@
 import SuggestInput from '../../elements/UserSuggestInput.vue'
 
 export default {
-  name: 'event-attendees',
-  props: ['event'],
+  name: 'conference-attendees',
+  props: ['conference'],
   components: {
     SuggestInput
   },
@@ -93,7 +93,7 @@ export default {
     this.initialize();
   },
   watch: {
-    'event': 'initialize'
+    'conference': 'initialize'
   },
   methods: {
     initialize() {
@@ -101,23 +101,23 @@ export default {
       this.getInvitations();
     },
     getAttendees() {
-      if (this.event.id == null) return;
+      if (this.conference.id == null) return;
 
-      var url = ['api/event', this.event.id, 'attendees'].join('/');
+      var url = ['api/conference', this.conference.id, 'attendees'].join('/');
       this.$http.get(url).then(response => {
         this.attendees = response.body;
       })
     },
     getInvitations() {
-      if (this.event.id == null) return;
+      if (this.conference.id == null) return;
 
-      var url = ['api/event', this.event.id, 'invitation'].join('/');
+      var url = ['api/conference', this.conference.id, 'invitation'].join('/');
       this.$http.get(url).then(response => {
         this.invitations = response.body;
       })
     },
     invite() {
-      var url = ['api/event', this.event.id, 'invite'].join('/');
+      var url = ['api/conference', this.conference.id, 'invite'].join('/');
 
       this.$http.post(url, this.invitation).then(response => {
         this.invitations.push(response.body);

@@ -44,6 +44,10 @@ public class Conference implements IAuthor {
 	@Column
 	private String summary;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "conference")
+	private List<Invitation> invitations;
+	
 	public Long getId() {
 		return id;
 	}
@@ -96,5 +100,9 @@ public class Conference implements IAuthor {
 	@Override
 	public String getType() {
 		return "conference";
+	}
+
+	public List<Invitation> getInvitations() {
+		return invitations;
 	}
 }
