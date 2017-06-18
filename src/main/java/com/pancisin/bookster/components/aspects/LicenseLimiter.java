@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
+import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.Subscription;
+import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
@@ -31,6 +34,9 @@ public class LicenseLimiter {
 
 	@Autowired
 	private PageRepository pageRepository;
+
+	@Autowired
+	private ConferenceRepository conferenceRepository;
 
 	@Around("@annotation(com.pancisin.bookster.components.annotations.LicenseLimit)")
 	public Object limitUserResources(ProceedingJoinPoint pjp) throws Throwable {
@@ -107,6 +113,13 @@ public class LicenseLimiter {
 					.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
 
 			if (page.getOwner().getLicense().getSubscription() == subscription.value()) {
+				return pjp.proceed();
+			}
+		} else if (subscription.parent().equals("conference")) {
+			Conference conference = conferenceRepository
+					.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
+			
+			if (conference.getOwner().getLicense().getSubscription() == subscription.value()) {
 				return pjp.proceed();
 			}
 		}

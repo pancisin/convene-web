@@ -3,14 +3,12 @@
     <ul class="conversation-list">
       <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == current.id }">
         <div class="chat-avatar">
-          <img src="https://static1.squarespace.com/static/56ba4348b09f95db7f71a726/t/58d7f267ff7c50b172895560/1490547315597/justin.jpg" alt="male">
+          <img :src="getAvatar(message.sender)" alt="male">
           <i>{{ message.created | moment('LT') }}</i>
         </div>
         <div class="conversation-text">
           <div class="ctext-wrap">
-            <p v-text="message.content">
-              Hello!
-            </p>
+            <p v-text="message.content"></p>
           </div>
         </div>
       </li>
@@ -27,6 +25,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import gravatar from 'gravatar'
 export default {
   name: 'conversation',
   props: {
@@ -50,6 +49,12 @@ export default {
       this.$http.get('api/message/user/' + this.user.id + '/0').then(response => {
         this.messages = response.body;
       })
+    },
+    getAvatar(user) {
+      return gravatar.url(user.email, {
+        protocol: 'https',
+        size: 30
+      });
     }
   }
 }

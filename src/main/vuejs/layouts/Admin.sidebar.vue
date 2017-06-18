@@ -34,11 +34,11 @@
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
   
             <span v-text="page.name" slot="title"></span>
-            <li slot="item">
-              <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.overview') }}
-              </router-link>
-            </li>
+            <!--<li slot="item">
+                <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
+                  {{ $t('admin.page.overview') }}
+                </router-link>
+              </li>-->
             <li slot="item">
               <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
@@ -93,6 +93,11 @@
             <li slot="item">
               <router-link :to="{ name: 'conference.events', params: { id : conference.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
+              </router-link>
+            </li>
+            <li slot="item">
+              <router-link :to="{ name: 'conference.administrators', params: { id: conference.id }}" class="list-group-item waves-effect">
+                {{ $t('admin.page.administrators') }}
               </router-link>
             </li>
             <li slot="item">

@@ -1,7 +1,9 @@
 package com.pancisin.bookster.models;
 
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,39 +17,51 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 
 @Entity
 @Table(name = "conferences")
 public class Conference implements IAuthor {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "conference", cascade = CascadeType.REMOVE)
+	private List<ConferenceAdministrator> conferenceAdministrators;
+
 	@Column
 	private String name;
-	
-	@JsonIgnore
-	@ManyToOne
-	private User owner;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Event> events;
 
 	@Enumerated(EnumType.STRING)
-    private Visibility visibility;
-	
+	private Visibility visibility;
+
 	@Lob
 	@Column
 	private String summary;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Invitation> invitations;
-	
+
+	@JsonIgnore
+	public User getOwner() {
+		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
+				.filter(x -> x.getRole() == PageRole.ROLE_OWNER).findFirst();
+
+		if (owner.isPresent())
+			return owner.get().getUser();
+
+		return null;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -62,14 +76,6 @@ public class Conference implements IAuthor {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
 	}
 
 	public List<Event> getEvents() {
@@ -104,5 +110,9 @@ public class Conference implements IAuthor {
 
 	public List<Invitation> getInvitations() {
 		return invitations;
+	}
+
+	public List<ConferenceAdministrator> getConferenceAdministrators() {
+		return conferenceAdministrators;
 	}
 }

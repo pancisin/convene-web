@@ -26,6 +26,11 @@
           </td>
           <td v-text="ev.attendeesCount" class="text-center"></td>
         </tr>
+        <tr v-if="paginator && paginator.content.length == 0">
+          <td colspan="5" class="text-center">
+            There's nothing to display
+          </td>
+        </tr>
       </tbody>
     </table>
   

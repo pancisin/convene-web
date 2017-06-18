@@ -125,11 +125,11 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
-	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
+	private List<ConferenceAdministrator> conferenceAdministrators;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "owner")
-	private List<Conference> conferences;
+	@OneToMany(mappedBy = "user")
+	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
 
 	@NotNull
 	@JsonView(Summary.class)
@@ -146,7 +146,7 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@Column
 	private boolean verified = false;
-	
+
 	@Transient
 	public UserSubscription getLicense() {
 		Optional<UserSubscription> subscription = subscriptions.stream()
@@ -165,7 +165,7 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@OneToOne(optional = true, cascade = CascadeType.ALL)
 	private Address address = new Address();
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -292,14 +292,27 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	public List<Page> getOwningPages() {
 		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).map(x -> x.getPage())
-					.collect(Collectors.toList());
+			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
+					.map(x -> x.getPage()).collect(Collectors.toList());
 		else
 			return null;
 	}
 
+	@JsonIgnore
 	public List<Conference> getConferences() {
-		return conferences;
+		if (this.conferenceAdministrators != null)
+			return this.conferenceAdministrators.stream().map(x -> x.getConference()).collect(Collectors.toList());
+		else
+			return null;
+	}
+
+	@JsonIgnore
+	public List<Conference> getOwningConferences() {
+		if (this.conferenceAdministrators != null)
+			return this.conferenceAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
+					.map(x -> x.getConference()).collect(Collectors.toList());
+		else
+			return null;
 	}
 
 	public Locale getLocale() {

@@ -40,6 +40,11 @@ export default [
         component: resolve => require(['../pages/conference/Attendees.vue'], resolve)
       },
       {
+        path: 'administrators',
+        name: 'conference.administrators',
+        component: resolve => require(['../pages/conference/Administrators.vue'], resolve)
+      },
+      {
         path: 'events/create',
         component: resolve => require(['../pages/event/Overview.vue'], resolve),
         props: (route) => (

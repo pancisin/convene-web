@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.models.Conference;
+import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
@@ -45,6 +46,7 @@ import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
@@ -90,6 +92,9 @@ public class UserController {
 	@Autowired
 	private UserSubscriptionRepository usRepository;
 
+	@Autowired
+	private ConferenceAdministratorRepository caRepository;
+	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe(HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -173,14 +178,20 @@ public class UserController {
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getConferences());
 	}
-
+	
 	@PostMapping("/conference")
 	@LicenseLimit(entity = "conference")
+	@Transactional
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		conference.setOwner(stored);
-		return ResponseEntity.ok(conferenceRepository.save(conference));
+		
+		Conference stored_conference = conferenceRepository.save(conference);
+		
+		ConferenceAdministrator ca = new ConferenceAdministrator(stored_conference, auth, true);
+		ca.setRole(PageRole.ROLE_OWNER);
+		caRepository.save(ca);
+		
+		return ResponseEntity.ok(stored_conference);
 	}
 
 	@PutMapping("/locale")

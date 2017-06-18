@@ -131,6 +131,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			return true;
 		case "invitation":
 			return true;
+		case "conference-administrator":
+			return true;
 		}
 
 		return false;

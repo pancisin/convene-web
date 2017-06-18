@@ -16,11 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
+import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
+import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -45,6 +53,9 @@ public class ConferenceController {
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 
+	@Autowired
+	private ConferenceAdministratorRepository caRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -107,5 +118,26 @@ public class ConferenceController {
 	public ResponseEntity<?> getInvitations(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(conference.getInvitations());
+	}
+	
+	@GetMapping("/administrator")
+	@JsonView(Summary.class)
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	public ResponseEntity<?> getAdministrators(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(stored.getConferenceAdministrators());
+	}
+	
+	@PostMapping("/administrator")
+//	@License(value = Subscription.ENTERPRISE, parent = "conference", parentId = "conference_id")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	public ResponseEntity<?> postAdministrator(@PathVariable Long conference_id, @RequestBody User user) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+
+		ConferenceAdministrator pa = new ConferenceAdministrator(stored, user, false);
+		pa.setRole(PageRole.ROLE_ADMINISTRATOR);
+
+		caRepository.save(pa);
+		return ResponseEntity.ok(pa);
 	}
 }
