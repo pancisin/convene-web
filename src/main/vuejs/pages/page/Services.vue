@@ -52,8 +52,11 @@
 
 <script>
 import ServiceForm from './Service.form.vue'
+import ServiceApi from '../../services/api/service.api.js'
+
 export default {
   props: ['page'],
+  inject: ['api'],
   data() {
     return {
       services: [],
@@ -76,14 +79,13 @@ export default {
       if (this.page.id == null) return;
 
       this.loading = true;
-      var url = ['api/page', this.page.id, 'service'].join('/');
-      this.$http.get(url).then(response => {
-        this.services = response.body;
+      this.api.getServices(this.page.id, true, services => {
+        this.services = services;
         this.loading = false;
       })
     },
     deleteService(service) {
-      this.$http.delete('api/service/' + service.id).then(response => {
+      ServiceApi.deleteService(service.id, result => {
         this.services = this.services.filter(s => {
           return s.id != service.id;
         })

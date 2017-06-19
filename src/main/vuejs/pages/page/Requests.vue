@@ -28,6 +28,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'page-requests',
   props: ['page'],
+  inject: ['api'],
   data() {
     return {
       requests: [],
@@ -37,11 +38,6 @@ export default {
   watch: {
     'page': 'getRequests'
   },
-  computed: {
-    ...mapGetters({
-      locale: 'getLocale'
-    })
-  },
   created() {
     this.getRequests();
   },
@@ -50,9 +46,8 @@ export default {
       if (!this.page.id) return;
 
       this.loading = true;
-      var url = ['api/page', this.page.id, 'requests'].join('/');
-      this.$http.get(url).then(response => {
-        this.requests = response.body;
+      this.api.getRequests(this.page.id, requests => {
+        this.requests = requests;
         this.loading = false;
       })
     }

@@ -71,6 +71,11 @@ export default {
       success(response.body);
     });
   },
+  postService(id, service, success) {
+    Vue.http.post('api/page/' + id + '/service', service).then(response => {
+      success(response.body);
+    });
+  },
   getFollowStatus(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
@@ -86,5 +91,17 @@ export default {
     Vue.http.patch(url).then(response => {
       success(response.body);
     })
-  }
+  },
+  getPlaces(id, success) {
+    var url = ['api/page', id, 'place'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  getRequests(id, success) {
+    var url = ['api/page', id, 'requests'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
 }

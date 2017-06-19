@@ -30,5 +30,23 @@ export default {
     Vue.http.patch(url).then(response => {
       success(response.body);
     });
+  },
+  getInvitations(id, success) {
+    var url = ['api/event', id, 'invitation'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  getAttendees(id, success) {
+    var url = ['api/event', id, 'attendees'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postInvitation(id, invitation, success) {
+    var url = ['api/event', id, 'invite'].join('/');
+    Vue.http.post(url, invitation).then(response => {
+      success(response.body);
+    })
   }
 }

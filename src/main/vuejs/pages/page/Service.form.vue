@@ -32,8 +32,10 @@
 
 <script>
 import vSelect from '../../elements/Select.vue'
+import ServiceApi from '../../services/api/service.api.js'
 export default {
   name: 'service-form',
+  inject: ['api'],
   props: {
     service: {
       type: Object,
@@ -66,17 +68,13 @@ export default {
   methods: {
     submit() {
       if (this.edit) {
-        this.$http.put('api/service/' + this.service.id, this.service).then(response => {
-          this.service = response.body;
-          this.$emit('updated', this.service);
-        });
+        ServiceApi.putService(this.service, service => {
+          this.$emit('updated', service);
+        })
       } else {
-        this.$http.post('api/page/' + this.pageId + '/service', this.service).then(response => {
-          this.service = response.body;
-          this.$emit('updated', this.service);
-        }, response => {
-          this.$error(response.statusText, response.bodyText);
-        });
+        this.api.postService(this.pageId, this.service, service => {
+          this.$emit('updated', service);
+        })
       }
     },
     changeUnit(e) {

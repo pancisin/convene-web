@@ -43,9 +43,11 @@
 </template>
 
 <script>
+import PlaceApi from '../../services/api/place.api.js'
 export default {
   name: 'places',
   props: ['page'],
+  inject: ['api'],
   data() {
     return {
       places: [],
@@ -63,14 +65,14 @@ export default {
       if (this.page.id == null) return;
 
       this.loading = true;
-      var url = ['api/page', this.page.id, 'place'].join('/');
-      this.$http.get(url).then(response => {
-        this.places = response.body;
+
+      this.api.getPlaces(this.page.id, places => {
+        this.places = places;
         this.loading = false;
       })
     },
     deletePlace(place) {
-      this.$http.delete('api/place/' + place.id).then(response => {
+      PlaceApi.deletePlace(place.id, result => {
         this.places = this.places.filter(p => {
           return p.id != place.id;
         })

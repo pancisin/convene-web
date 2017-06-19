@@ -44,6 +44,11 @@ export default {
       edit: false,
     }
   },
+  provide() {
+    return {
+      api: EventApi,
+    }
+  },
   watch: {
     '$route': 'getEvent'
   },
