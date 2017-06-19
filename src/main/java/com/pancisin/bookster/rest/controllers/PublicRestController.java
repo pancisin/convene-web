@@ -160,6 +160,11 @@ public class PublicRestController {
 		return ResponseEntity.ok(Subscription.values());
 	}
 
+	@GetMapping("/conferences")
+	public ResponseEntity<?> getConferences() {
+		return null;
+	}	
+	
 	@Autowired
 	private EventBotService eventBot;
 

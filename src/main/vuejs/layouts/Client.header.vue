@@ -107,7 +107,10 @@
                 <router-link to="/explore" class="waves-effect">
                   <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
               </li>
-              <!--<li><router-link to="/conference"><i class="material-icons">people</i> Conferences</router-link></li>-->
+              <li>
+                <router-link to="/conferences">
+                  <i class="material-icons">people</i> Conferences</router-link>
+              </li>
               <li class="has-submenu">
                 <router-link to="/about">
                   <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}

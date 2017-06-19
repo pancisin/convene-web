@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Conference;
+import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Notification;
 import com.pancisin.bookster.models.Page;
@@ -167,6 +168,14 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean checkConferenceOwnership(Conference conference, User user) {
-		return conference.getOwner().getId() == user.getId();
+		Optional<ConferenceAdministrator> oCa = conference.getConferenceAdministrators().stream()
+				.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+
+		if (oCa.isPresent()) {
+			ConferenceAdministrator ca = oCa.get();
+			return ca.isActive() && (ca.getRole().getLevel() >= 60);
+		}
+
+		return false;
 	}
 }

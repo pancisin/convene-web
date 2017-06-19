@@ -21,9 +21,6 @@ export default {
           this.invitations = invitations;
         })
       }
-
-      this.getAttendees();
-      this.getInvitations();
     },
     invite() {
       this.api.postInvitation(this.event.id, this.invitation, invitation => {
