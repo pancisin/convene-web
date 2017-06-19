@@ -57,11 +57,11 @@
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
 import { mapActions } from 'vuex'
-import PageApi from '../../services/api/page.api.js'
 import PublicApi from '../../services/api/public.api.js'
 
 export default {
   name: 'page-compose',
+  inject: ['api'],
   props: {
     page: {
       type: Object,
@@ -79,7 +79,6 @@ export default {
       default: false
     }
   },
-  inject: ['api'],
   data() {
     return {
       categories: [],
@@ -102,7 +101,7 @@ export default {
     ]),
     submit() {
       if (this.edit) {
-        PageApi.putPage(this.page, page => {
+        this.api.putPage(this.page, page => {
           this.$emit('updated', page);
           this.$success('Success !', 'Page ' + page.name + ' has been updated.')
         })
@@ -145,12 +144,12 @@ export default {
       })
     },
     publishPage() {
-      this.api.publishPage(this.page.id, page => {
+      this.api.publishPage(page => {
         this.$emit('updated', page);
       })
     },
     deactivatePage() {
-      this.api.deactivatePage(this.page.id, page => {
+      this.api.deactivatePage(page => {
         this.$emit('updated', page);
       })
     }

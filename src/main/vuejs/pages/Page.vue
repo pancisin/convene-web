@@ -18,7 +18,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import PageApi from '../services/api/page.api.js'
+import PageInjector from '../services/injectors/page.injector.js'
 
 export default {
   name: 'page',
@@ -30,7 +30,13 @@ export default {
   },
   provide() {
     return {
-      api: PageApi,
+      api: this.api,
+    }
+  },
+  computed: {
+    api() {
+      var page_id = this.$route.params.id;
+      return new PageInjector(page_id);
     }
   },
   watch: {
@@ -45,18 +51,12 @@ export default {
     ]),
     getPage() {
       var page_id = this.$route.params.id;
-
-      if (this.page.id != null && this.page.id == page_id)
+      if (this.$route.params.id != null && this.page.id == page_id)
         return;
-      this.page = new Object();
-      if (page_id != null) {
-        PageApi.getPage(page_id, true, page => {
-          this.page = page;
-          this.edit = true;
-        })
-      } else {
-        this.page = new Object();
-      }
+
+      this.api.getPage(true, page => {
+        this.page = page;
+      });
     },
     pageUpdated(page) {
       this.page = page;

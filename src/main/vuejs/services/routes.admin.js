@@ -111,7 +111,7 @@ export default [
       {
         path: 'events',
         name: 'page.events',
-        component: resolve => require(['../pages/page/Events.vue'], resolve)
+        component: resolve => require(['../pages/templates/Events.injected.vue'], resolve)
       },
       {
         path: 'events/create',
