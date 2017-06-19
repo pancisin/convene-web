@@ -36,7 +36,7 @@
         </tr>
         <tr :key="0">
           <td colspan="2">
-            <v-select v-model="user" :debounce="2000" :on-search="searchUsers" :options="users" placeholder="Search users" label="email"></v-select>
+            <user-search v-model="user.email" :options="users" @search="searchUsers" />
           </td>
           <td>
             <a @click="grantAccess" class="btn btn-success btn-rounded">Grant access</a>
@@ -50,8 +50,9 @@
 </template>
 
 <script>
-import VSelect from 'vue-select'
 import { mapGetters } from 'vuex'
+import UserSearch from '../../elements/UserSuggestInput.vue'
+import UserApi from '../../services/api/user.api.js'
 
 export default {
   name: 'conference-administrators',
@@ -61,12 +62,12 @@ export default {
       administrators: [],
       roles: [],
       users: [],
-      user: null,
+      user: {},
       loading: false,
     }
   },
   components: {
-    VSelect
+    UserSearch
   },
   watch: {
     'conference': 'getAdministrators',
@@ -129,13 +130,9 @@ export default {
     },
     searchUsers(search, loading) {
       loading(true);
-      this.$http.get('api/user/search', {
-        params: {
-          q: search
-        }
-      }).then(response => {
-        this.users = response.body
-        loading(false)
+      UserApi.searchUsers(search, users => {
+        this.users = users;
+        loading(false);
       })
     },
     grantAccess() {

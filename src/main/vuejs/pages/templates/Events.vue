@@ -101,7 +101,11 @@ export default {
     Paginator
   },
   created() {
-    this.getEvents(0);
+    try {
+      this.getEvents(0);
+    } catch (ex) {
+      
+    }
   },
   methods: {
     deleteEvent(event) {

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-export default { 
+export default {
   getUser(success) {
     Vue.http.get('api/me').then(response => {
       success(response.body);
@@ -20,5 +20,22 @@ export default {
     Vue.http.get('api/user/notification/0/5').then(response => {
       success(response.body.content);
     })
-  }
+  },
+  searchUsers(key, success) {
+    Vue.http.get('api/user/search', {
+      params: {
+        q: key
+      }
+    }).then(response => {
+      success(response.body);
+    }, response => {
+      console.error(response);
+    })
+  },
+  getEvents(page, size, success) {
+    var url = ['api/user/event', page, size].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
 }

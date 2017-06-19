@@ -1,28 +1,24 @@
 <script>
 import EventsTemplate from '../templates/Events.vue'
 export default {
-  name: 'events-impl',
+  name: 'user-events',
   extends: EventsTemplate,
   props: ['page'],
+  inject: ['api'],
   watch: {
     page() {
+      console.warn('watched page');
       this.getEvents(0);
     }
   },
   methods: {
     getEvents(page) {
-      if (this.page.id == null) return;
-
       this.loading = true;
-      var size = 8;
-
-      var url = ['api/page', this.page.id, 'event', page, size].join('/');
-
-      this.$http.get(url).then(response => {
-        this.paginator = response.body;
+      this.api.getEvents(this.page.id, page, 8, paginator => {
+        this.paginator = paginator;
         this.loading = false;
-      });
-    },
+      })
+    }
   }
 }
 </script>

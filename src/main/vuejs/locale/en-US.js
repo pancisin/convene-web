@@ -7,7 +7,8 @@ export default {
     owner: "Owner",
     administrator: "Administrator",
     reporter: "Reporter",
-    visitor: "Visitor"
+    visitor: "Visitor",
+    moderator: "Moderator",
   },
   administrator: {
     active: "Active",

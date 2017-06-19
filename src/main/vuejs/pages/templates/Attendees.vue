@@ -74,6 +74,7 @@
 
 <script>
 import SuggestInput from '../../elements/UserSuggestInput.vue'
+import UserApi from '../../services/api/user.api.js'
 
 export default {
   name: 'event-attendees',
@@ -90,16 +91,10 @@ export default {
   },
   methods: {
     searchUsers(search, loading) {
-      console.warn(search);
-
       loading(true);
-      this.$http.get('api/user/search', {
-        params: {
-          q: search
-        }
-      }).then(response => {
-        this.users = response.body
-        loading(false)
+      UserApi.searchUsers(search, users => {
+        this.users = users;
+        loading(false);
       })
     },
     cancel(invitation_id) {

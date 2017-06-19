@@ -18,6 +18,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import PageApi from '../services/api/page.api.js'
 
 export default {
   name: 'page',
@@ -25,6 +26,11 @@ export default {
     return {
       page: new Object(),
       edit: false,
+    }
+  },
+  provide() {
+    return {
+      api: PageApi,
     }
   },
   watch: {
@@ -44,8 +50,8 @@ export default {
         return;
       this.page = new Object();
       if (page_id != null) {
-        this.$http.get('api/page/' + page_id).then(response => {
-          this.page = response.body;
+        PageApi.getPage(page_id, page => {
+          this.page = page;
           this.edit = true;
         })
       } else {

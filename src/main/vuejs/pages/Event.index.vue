@@ -1,21 +1,23 @@
 <script>
 import EventsTemplate from './templates/Events.vue'
+import UserApi from '../services/api/user.api.js'
 
 export default {
   name: 'event-index',
   extends: EventsTemplate,
+  provide() {
+    return {
+      api: UserApi
+    }
+  },
   methods: {
     getEvents(page) {
       this.loading = true;
-      var size = 8;
-
-      var url = ['api/user/event', page, size].join('/');
-      
-      this.$http.get(url).then(response => {
+      UserApi.getEvents(0, 8, paginator => {
+        this.paginator = paginator;
         this.loading = false;
-        this.paginator = response.body;
       })
-    },
+    }
   }
 }
 </script>

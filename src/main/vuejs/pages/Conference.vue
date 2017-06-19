@@ -18,12 +18,19 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ConferenceApi from '../services/api/conference.api.js'
+
 export default {
   name: 'conference',
   data() {
     return {
       conference: new Object(),
       edit: false
+    }
+  },
+  provide() {
+    return {
+      api: ConferenceApi
     }
   },
   watch: {
@@ -43,8 +50,8 @@ export default {
       var conference_id = this.$route.params.id;
       if (conference_id != null) {
         this.edit = true;
-        this.$http.get('api/conference/' + conference_id).then(response => {
-          this.conference = response.body;
+        ConferenceApi.getConference(conference_id, conference => {
+          this.conference = conference;
         })
       }
     },

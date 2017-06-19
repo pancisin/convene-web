@@ -4,6 +4,7 @@ export default {
   name: 'conference-events',
   extends: EventsTemplate,
   props: ['conference'],
+  inject: ['api'],
   watch: {
     conference() {
       this.getEvents(0);
@@ -11,18 +12,12 @@ export default {
   },
   methods: {
     getEvents(page) {
-      if (this.conference.id == null) return;
-
       this.loading = true;
-      var size = 8;
-
-      var url = ['api/conference', this.conference.id, 'event', page, size].join('/');
-
-      this.$http.get(url).then(response => {
-        this.paginator = response.body;
+      this.api.getEvents(this.conference.id, page, 8, paginator => {
+        this.paginator = paginator;
         this.loading = false;
-      });
-    },
+      })
+    }
   }
 }
 </script>

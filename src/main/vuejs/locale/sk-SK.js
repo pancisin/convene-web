@@ -7,7 +7,8 @@ export default {
     owner: "Vlastník",
     administrator: "Administrátor",
     reporter: "Prispievateľ",
-    visitor: "Navštevník"
+    visitor: "Navštevník",
+    moderator: "Moderátor"
   },
   administrator: {
     active: "Aktívny",
