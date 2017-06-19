@@ -50,7 +50,7 @@ export default {
         return;
       this.page = new Object();
       if (page_id != null) {
-        PageApi.getPage(page_id, page => {
+        PageApi.getPage(page_id, true, page => {
           this.page = page;
           this.edit = true;
         })

@@ -5,7 +5,7 @@
         <h4 class="page-title" v-text="event.name"></h4>
       </div>
     </div>
-    
+  
     <div class="col-md-3">
       <div class="list-group mail-list">
         <router-link to="overview" class="list-group-item waves-effect">
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import EventApi from '../services/api/event.api.js'
 export default {
   name: 'event',
   data() {
@@ -57,8 +58,8 @@ export default {
         return;
 
       if (event_id != null) {
-        this.$http.get('api/event/' + event_id).then(response => {
-          this.event = response.body;
+        EventApi.getEvent(event_id, true, event => {
+          this.event = event;
           this.edit = true;
         })
       } else

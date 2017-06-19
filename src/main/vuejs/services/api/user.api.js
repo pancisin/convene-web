@@ -11,6 +11,11 @@ export default {
       success(response.body);
     })
   },
+  postPage(page, success) {
+    Vue.http.post('api/user/page', this.page).then(response => {
+      success(response.body);
+    });
+  },
   getConferences(success) {
     Vue.http.get('api/user/conference').then(response => {
       success(response.body);
@@ -38,4 +43,14 @@ export default {
       success(response.body);
     })
   },
+  getAttendingEvents(success) {
+    Vue.http.get('api/user/event/attending').then(response => {
+      success(response.body);
+    })
+  },
+  getFollowedPages(success) {
+    Vue.http.get('api/user/followed-pages').then(response => {
+      success(response.body);
+    })
+  }
 }

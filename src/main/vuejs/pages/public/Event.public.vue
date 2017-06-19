@@ -84,6 +84,7 @@ import Auth from '../../services/auth.js'
 import GMap from '../../elements/GMap.vue'
 import StaggerTransition from '../../functional/StaggerTransition.vue'
 import VSelect from 'vue-select'
+import EventApi from '../../services/api/event.api.js'
 
 export default {
   name: 'public-event',
@@ -106,34 +107,25 @@ export default {
   methods: {
     getEvent() {
       var event_id = this.$route.params.id;
-      if (event_id != null) {
-        this.$http.get('public/event/' + event_id).then(response => {
-          this.event = response.body;
-          this.getRelated();
+      if (event_id != null)
+        EventApi.getEvent(event_id, false, event => {
+          this.event = event;
+
+          EventApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
+            this.relatedEvents = paginator.content;
+          });
 
           if (Auth.user.authenticated)
-            this.checkAttendance();
-        });
-      }
+            EventApi.getAttendanceStatus(event_id, status => {
+              this.attending = status;
+            });
+        })
     },
     attend() {
-      var url = ['api/event', this.event.id, 'toggle-attend'].join('/');
-      this.$http.patch(url).then(response => {
-        this.attending = response.body;
-        this.event.attendeesCount += this.attending ? 1 : -1;
+      EventApi.toggleAttendanceStatus(this.event.id, status => {
+        this.attending = status;
+        this.event.attendeesCount += status ? 1 : -1;
       });
-    },
-    checkAttendance() {
-      var url = ['api/event', this.event.id, 'attend-status'].join('/');
-      this.$http.get(url).then(response => {
-        this.attending = response.body;
-      })
-    },
-    getRelated() {
-      var url = ['public', this.event.author.type, this.event.author.id, 'event'].join('/');
-      this.$http.get(url).then(response => {
-        this.relatedEvents = response.body.content;
-      })
     }
   }
 }

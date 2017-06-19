@@ -50,8 +50,8 @@
   
       <div class="col-md-4">
         <!--<div class="page-title-box">
-                    <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-                  </div>-->
+                        <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+                      </div>-->
         <tab-container>
           <tab :title="$t('client.dashboard.suggested')">
             <div class="inbox-widget">
@@ -123,6 +123,7 @@ import Paginator from '../../elements/Paginator.vue'
 import StaggerTransition from '../../functional/StaggerTransition.vue'
 import TabContainer from '../../elements/TabContainer.vue'
 import Tab from '../../elements/Tab.vue'
+import UserApi from '../../services/api/user.api.js'
 
 export default {
   name: 'dashboard',
@@ -138,7 +139,9 @@ export default {
   },
   created() {
     if (Auth.user.authenticated) {
-      this.getAttending();
+      UserApi.getAttendingEvents(events => {
+        this.attending = events;
+      })
     }
 
     this.getEvents(0);
@@ -166,11 +169,6 @@ export default {
           this.eventsPaginator = response.body;
         })
       }))
-    },
-    getAttending() {
-      this.$http.get('api/user/event/attending').then(response => {
-        this.attending = response.body;
-      })
     },
     getPages(page) {
       var url = ['public/pages', page, 5].join('/');
@@ -203,9 +201,9 @@ export default {
 
       if (id == 1 && Auth.user.authenticated && (this.followed == null || this.followed.length == 0)) {
         loading(true);
-        this.$http.get('api/user/followed-pages').then(response => {
-          this.followed = response.body;
+        UserApi.getFollowedPages(pages => {
           loading(false);
+          this.followed = pages;
         })
       }
     }

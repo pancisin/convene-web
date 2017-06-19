@@ -7,7 +7,6 @@ export default {
   inject: ['api'],
   watch: {
     page() {
-      console.warn('watched page');
       this.getEvents(0);
     }
   },

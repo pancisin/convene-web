@@ -57,6 +57,8 @@
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
 import { mapActions } from 'vuex'
+import PageApi from '../../services/api/page.api.js'
+import PublicApi from '../../services/api/public.api.js'
 
 export default {
   name: 'page-compose',
@@ -77,6 +79,7 @@ export default {
       default: false
     }
   },
+  inject: ['api'],
   data() {
     return {
       categories: [],
@@ -99,30 +102,23 @@ export default {
     ]),
     submit() {
       if (this.edit) {
-        this.$http.put('api/page/' + this.page.id, this.page).then(response => {
-          this.$emit('updated', response.body);
-          this.$success('Success !', 'Page ' + this.page.name + ' has been updated.')
-        });
+        PageApi.putPage(this.page, page => {
+          this.$emit('updated', page);
+          this.$success('Success !', 'Page ' + page.name + ' has been updated.')
+        })
       } else {
-        this.$http.post('api/user/page', this.page).then(response => {
-          var page = response.body;
+        this.api.postPage(this.page, page => {
           this.addPage(page);
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
-          this.$router.push({ name: 'page.settings', params: { id : page.id }});
-        });
+          this.$router.push({ name: 'page.settings', params: { id: page.id } });
+        })
       }
     },
-    deletePage() {
-      this.$http.delete('api/page/' + this.page.id).then(response => {
-        this.$router.push('/admin');
-        this.removePage(this.page);
-      })
-    },
     getCategories() {
-      this.branches = [],
-        this.$http.get('api/categories').then(response => {
-          this.categories = response.body;
-        })
+      this.branches = [];
+      PublicApi.getCategories(categories => {
+        this.categories = categories;
+      })
     },
     onLogoChange(e) {
       var self = this;
@@ -144,19 +140,18 @@ export default {
     },
     getBranches() {
       if (this.page.category == null) return;
-      var url = ['api/categories', this.page.category.id, 'branches'].join('/');
-      this.$http.get(url).then(response => {
-        this.branches = response.body;
+      PublicApi.getBranches(this.page.category.id, branches => {
+        this.branches = branches;
       })
     },
     publishPage() {
-      this.$http.patch('api/page/' + this.page.id + '/publish').then(response => {
-        this.$emit('updated', response.body);
+      this.api.publishPage(this.page.id, page => {
+        this.$emit('updated', page);
       })
     },
     deactivatePage() {
-      this.$http.patch('api/page/' + this.page.id + '/deactivate').then(response => {
-        this.$emit('updated', response.body);
+      this.api.deactivatePage(this.page.id, page => {
+        this.$emit('updated', page);
       })
     }
   }
