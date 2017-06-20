@@ -5,6 +5,7 @@ export default {
   name: 'conference-attendees',
   props: ['conference'],
   extends: AttendeesTemplate,
+  inject: ['api'],
   created() {
     this.initialize();
   },
@@ -13,29 +14,16 @@ export default {
   },
   methods: {
     initialize() {
-      this.getAttendees();
-      this.getInvitations();
-    },
-    getAttendees() {
-      if (this.conference.id == null) return;
+      this.api.getAttendees(this.conference.id, attendees => {
+        this.attendees = attendees;
+      });
 
-      var url = ['api/conference', this.conference.id, 'attendees'].join('/');
-      this.$http.get(url).then(response => {
-        this.attendees = response.body;
-      })
-    },
-    getInvitations() {
-      if (this.conference.id == null) return;
-
-      var url = ['api/conference', this.conference.id, 'invitation'].join('/');
-      this.$http.get(url).then(response => {
-        this.invitations = response.body;
-      })
+      this.api.getInvitations(this.conference.id, invitations => {
+        this.invitations = invitations;
+      });
     },
     invite() {
-      var url = ['api/conference', this.conference.id, 'invite'].join('/');
-
-      this.$http.post(url, this.invitation).then(response => {
+      this.api.postInvitation(this.conference.id, this.invitations, invitation => {
         this.invitations.push(response.body);
         this.invitation = {};
       })

@@ -8,10 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,6 +39,10 @@ public class Conference implements IAuthor {
 	private String name;
 
 	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conference")
+	private List<ConferenceMetaField> metaFields;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Event> events;
 
@@ -51,6 +57,10 @@ public class Conference implements IAuthor {
 	@OneToMany(mappedBy = "conference")
 	private List<Invitation> invitations;
 
+	@JsonIgnore
+	@ManyToMany
+	private List<User> attendees;
+	
 	@JsonIgnore
 	public User getOwner() {
 		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
@@ -114,5 +124,13 @@ public class Conference implements IAuthor {
 
 	public List<ConferenceAdministrator> getConferenceAdministrators() {
 		return conferenceAdministrators;
+	}
+
+	public List<User> getAttendees() {
+		return attendees;
+	}
+
+	public void setAttendees(List<User> attendees) {
+		this.attendees = attendees;
 	}
 }

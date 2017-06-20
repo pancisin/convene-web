@@ -1,5 +1,8 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +23,7 @@ import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
+import com.pancisin.bookster.models.ConferenceMetaValue;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Page;
@@ -27,8 +31,11 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Subscription;
+import com.pancisin.bookster.models.json.ConferenceUserWrapper;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
+import com.pancisin.bookster.repository.ConferenceMetaFieldRepository;
+import com.pancisin.bookster.repository.ConferenceMetaValueRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -55,7 +62,13 @@ public class ConferenceController {
 
 	@Autowired
 	private ConferenceAdministratorRepository caRepository;
+
+	@Autowired
+	private ConferenceMetaFieldRepository cmfRepository;
 	
+	@Autowired
+	private ConferenceMetaValueRepository cmvRepository;
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -89,12 +102,24 @@ public class ConferenceController {
 	}
 
 	@GetMapping("/attendees")
-	@JsonView(Summary.class)
+	// @JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long conference_id) {
-//		Conference conference = conferenceRepository.findOne(conference_id);
-//		return ResponseEntity.ok(conference.getAttendees());
-		return null;
+		Conference conference = conferenceRepository.findOne(conference_id);
+		List<ConferenceMetaValue> meta = cmvRepository.getByConference(conference_id);
+
+		List<ConferenceUserWrapper> users = conference.getAttendees().stream().map(x -> {
+			List<ConferenceMetaValue> values = meta.stream().filter(m -> m.getUser().getId() == x.getId())
+					.collect(Collectors.toList());
+			return new ConferenceUserWrapper(x, values);
+		}).collect(Collectors.toList());
+
+		return ResponseEntity.ok(users);
+	}
+	
+	@GetMapping("/meta-fields")
+	public ResponseEntity<?> getMetaFields(@PathVariable Long conference_id) {
+		return ResponseEntity.ok(cmfRepository.findByConferenceId(conference_id));
 	}
 
 	@PostMapping("/invite")
@@ -119,7 +144,7 @@ public class ConferenceController {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(conference.getInvitations());
 	}
-	
+
 	@GetMapping("/administrator")
 	@JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
@@ -127,9 +152,10 @@ public class ConferenceController {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(stored.getConferenceAdministrators());
 	}
-	
+
 	@PostMapping("/administrator")
-//	@License(value = Subscription.ENTERPRISE, parent = "conference", parentId = "conference_id")
+	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId
+	// = "conference_id")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long conference_id, @RequestBody User user) {
 		Conference stored = conferenceRepository.findOne(conference_id);

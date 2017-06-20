@@ -165,7 +165,7 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@OneToOne(optional = true, cascade = CascadeType.ALL)
 	private Address address = new Address();
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;

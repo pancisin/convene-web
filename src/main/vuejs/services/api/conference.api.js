@@ -13,5 +13,37 @@ export default {
     Vue.http.get(url).then(response => {
       success(response.body);
     })
+  },
+  getInvitations(id, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'invitation'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  getAttendees(id, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'attendees'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postInvitation(id, invitation, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'invite'].join('/');
+    Vue.http.post(url, invitation).then(response => {
+      return response.body;
+    })
+  },
+  getMetaFields(id, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'meta-fields'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
   }
 }
