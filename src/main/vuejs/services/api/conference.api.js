@@ -13,7 +13,7 @@ export default {
   },
   putConference(conference, success) {
     var url = ['api/conference', conference.id].join('/');
-    Vue.http.put(url, this.conference).then(response => {
+    Vue.http.put(url, conference).then(response => {
       success(response.body);
     })
   },

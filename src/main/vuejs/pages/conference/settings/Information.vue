@@ -26,8 +26,8 @@
   
     <div class="text-center">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-        <span v-if="edit">Save</span>
-        <span v-else>Submit</span> {{ conference.name }}</button>
+        <span>Save</span>
+      </button>
     </div>
   </panel>
 </template>
@@ -44,10 +44,6 @@ export default {
         return new Object();
       }
     },
-    edit: {
-      type: Boolean,
-      default: false
-    }
   },
   computed: {
     visibility_options: {
@@ -64,17 +60,10 @@ export default {
   },
   methods: {
     submit() {
-      if (this.edit) {
-        this.api.putConference(this.conference, conference => {
-          this.$emit('updated', conference);
-          this.$success('Success !', conference.name + ' has been updated.');
-        });
-      } else {
-        this.api.postConference(this.conference, conference => {
-          this.addConference(conference);
-          this.$router.push('/admin/conference/' + conference.id);
-        });
-      }
+      this.api.putConference(this.conference, conference => {
+        this.$emit('updated', conference);
+        this.$success('Success !', conference.name + ' has been updated.');
+      });
     },
     ...mapActions([
       'addConference'

@@ -19,6 +19,7 @@
 <script>
 import { mapActions } from 'vuex'
 import ConferenceApi from '../services/api/conference.api.js'
+import ConferenceInjector from '../services/injectors/conference.injector.js'
 
 export default {
   name: 'conference',
@@ -30,11 +31,8 @@ export default {
   },
   provide() {
     return {
-      api: ConferenceApi
+      api: new ConferenceInjector(this.$route.params.id)
     }
-  },
-  watch: {
-    '$route': 'getConference'
   },
   created() {
     this.getConference();
@@ -44,16 +42,11 @@ export default {
       'updateConference'
     ]),
     getConference() {
-      this.conference = new Object();
-      this.edit = false;
-
-      var conference_id = this.$route.params.id;
-      if (conference_id != null) {
-        this.edit = true;
-        ConferenceApi.getConference(conference_id, conference => {
-          this.conference = conference;
-        })
-      }
+      var injector = new ConferenceInjector(this.$route.params.id);
+      injector.getConference(conference => {
+        this.conference = conference;
+        this.edit = conference.id != null;
+      });
     },
     conferenceUpdated(conference) {
       this.conference = conference;

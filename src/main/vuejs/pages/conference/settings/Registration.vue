@@ -5,7 +5,7 @@
         <ul class="data-list">
           <li :class="{ 'active': selected && selected.id == null }">
             <a @click="selected = {}">
-              <i class="fa fa-plus"></i> Create new
+              + Create new
             </a>
           </li>
           <li v-for="field in metaFields" :class="{ 'active' : selected && selected.id == field.id }">

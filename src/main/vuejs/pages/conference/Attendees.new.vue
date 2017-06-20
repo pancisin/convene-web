@@ -56,11 +56,11 @@ export default {
   },
   methods: {
     initialize() {
-      this.api.getAttendees(this.conference.id, attendees => {
+      this.api.getAttendees(attendees => {
         this.attendees = attendees;
       });
 
-      this.api.getMetaFields(this.conference.id, metaFields => {
+      this.api.getMetaFields(metaFields => {
         this.metaFields = metaFields;
       })
     },

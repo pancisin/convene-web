@@ -13,7 +13,7 @@ export default {
   methods: {
     getEvents(page) {
       this.loading = true;
-      this.api.getEvents(this.conference.id, page, 8, paginator => {
+      this.api.getEvents(page, 8, paginator => {
         this.paginator = paginator;
         this.loading = false;
       })
