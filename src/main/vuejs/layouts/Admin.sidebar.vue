@@ -35,10 +35,10 @@
   
             <span v-text="page.name" slot="title"></span>
             <!--<li slot="item">
-                <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                  {{ $t('admin.page.overview') }}
-                </router-link>
-              </li>-->
+                  <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
+                    {{ $t('admin.page.overview') }}
+                  </router-link>
+                </li>-->
             <li slot="item">
               <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
@@ -103,6 +103,11 @@
             <li slot="item">
               <router-link :to="{ name: 'conference.attendees', params: { id : conference.id }}" class="list-group-item waves-effect">
                 Attendees
+              </router-link>
+            </li>
+            <li slot="item">
+              <router-link :to="{ name: 'conference.settings', params: { id : conference.id }}" class="list-group-item waves-effect">
+                Settings
               </router-link>
             </li>
           </drop-down>

@@ -6,6 +6,17 @@ export default {
       success(response.body);
     })
   },
+  postConference(conference, success) {
+    Vue.http.post('api/user/conference', conference).then(response => {
+      success(response.body);
+    })
+  },
+  putConference(conference, success) {
+    var url = ['api/conference', conference.id].join('/');
+    Vue.http.put(url, this.conference).then(response => {
+      success(response.body);
+    })
+  },
   getEvents(id, page, size, success) {
     if (id == null || id == '') throw 'missing entity id';
 
@@ -41,8 +52,16 @@ export default {
   getMetaFields(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'meta-fields'].join('/');
+    var url = ['api/conference', id, 'meta-field'].join('/');
     Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postMetaField(id, field, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'meta-field'].join('/');
+    Vue.http.post(url, field).then(response => {
       success(response.body);
     })
   }

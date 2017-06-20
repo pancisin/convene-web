@@ -58,6 +58,22 @@ export default [
             edit: false
           }
         )
+      },
+      {
+        path: 'settings',
+        name: 'conference.settings',
+        component: resolve => require(['../pages/conference/Settings.vue'], resolve),
+        redirect: '/admin/conference/:id/settings/information',
+        children: [
+          {
+            path: 'information',
+            component: resolve => require(['../pages/conference/settings/Information.vue'], resolve),
+          },
+          {
+            path: 'registration',
+            component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
+          }
+        ]
       }
     ]
   },

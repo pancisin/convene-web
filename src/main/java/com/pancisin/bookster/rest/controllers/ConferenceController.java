@@ -23,6 +23,7 @@ import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
+import com.pancisin.bookster.models.ConferenceMetaField;
 import com.pancisin.bookster.models.ConferenceMetaValue;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
@@ -65,7 +66,7 @@ public class ConferenceController {
 
 	@Autowired
 	private ConferenceMetaFieldRepository cmfRepository;
-	
+
 	@Autowired
 	private ConferenceMetaValueRepository cmvRepository;
 
@@ -116,10 +117,17 @@ public class ConferenceController {
 
 		return ResponseEntity.ok(users);
 	}
-	
-	@GetMapping("/meta-fields")
+
+	@GetMapping("/meta-field")
 	public ResponseEntity<?> getMetaFields(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(cmfRepository.findByConferenceId(conference_id));
+	}
+
+	@PostMapping("/meta-field")
+	public ResponseEntity<?> postMetaField(@PathVariable Long conference_id, @RequestBody ConferenceMetaField field) {
+		Conference conference = conferenceRepository.findOne(conference_id);
+		field.setConference(conference);
+		return ResponseEntity.ok(cmfRepository.save(field));
 	}
 
 	@PostMapping("/invite")
