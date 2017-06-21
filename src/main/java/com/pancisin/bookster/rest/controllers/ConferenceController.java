@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,7 @@ import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
+import com.pancisin.bookster.models.ConferenceAttendee;
 import com.pancisin.bookster.models.ConferenceMetaField;
 import com.pancisin.bookster.models.ConferenceMetaValue;
 import com.pancisin.bookster.models.Event;
@@ -110,16 +113,17 @@ public class ConferenceController {
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
-		
-//		List<ConferenceMetaValue> meta = cmvRepository.getByConference(conference_id);
-
-//		List<ConferenceUserWrapper> users = conference.getAttendees().stream().map(x -> {
-//			List<ConferenceMetaValue> values = meta.stream().filter(m -> m.getUser().getId() == x.getId())
-//					.collect(Collectors.toList());
-//			return new ConferenceUserWrapper(x, values);
-//		}).collect(Collectors.toList());
-
 		return ResponseEntity.ok(caattendeeRepository.findByConference(conference_id));
+	}
+	
+	@PostMapping("/attend")
+	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<ConferenceMetaValue> meta) {
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Conference conference = conferenceRepository.findOne(conference_id);
+		
+		ConferenceAttendee attendee = new ConferenceAttendee(user, conference, meta);
+		
+		return ResponseEntity.ok(caattendeeRepository.save(attendee));
 	}
 
 	@GetMapping("/meta-field")
