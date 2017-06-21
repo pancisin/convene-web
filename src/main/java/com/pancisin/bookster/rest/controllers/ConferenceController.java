@@ -107,7 +107,7 @@ public class ConferenceController {
 
 	@Autowired
 	private ConferenceAttendeeRepository caattendeeRepository;
-	
+
 	@GetMapping("/attendees")
 	// @JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
@@ -115,30 +115,53 @@ public class ConferenceController {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(caattendeeRepository.findByConference(conference_id));
 	}
-	
+
 	@PostMapping("/attend")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<ConferenceMetaValue> meta) {
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Conference conference = conferenceRepository.findOne(conference_id);
-		
 		ConferenceAttendee attendee = new ConferenceAttendee(user, conference, meta);
-		
 		return ResponseEntity.ok(caattendeeRepository.save(attendee));
 	}
 
+	@PutMapping("/cancel-attend")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
+	public ResponseEntity<?> cancelAttend(@PathVariable Long conference_id) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ConferenceAttendee attendee = caattendeeRepository.findByAttendance(conference_id, user.getId());
+
+		attendee.setActive(false);
+		return ResponseEntity.ok(caattendeeRepository.save(attendee));
+	}
+
+	@GetMapping("/attend-status")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
+	public ResponseEntity<?> getAttendStatus(@PathVariable Long conference_id) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ConferenceAttendee attendee = caattendeeRepository.findByAttendance(conference_id, user.getId());
+
+		if (attendee == null)
+			return ResponseEntity.ok("INACTIVE");
+
+		return ResponseEntity.ok(attendee.isActive() ? "ACTIVE" : "CANCELED");
+	}
+
 	@GetMapping("/meta-field")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getMetaFields(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(cmfRepository.findByConferenceId(conference_id));
 	}
 
 	@PostMapping("/meta-field")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postMetaField(@PathVariable Long conference_id, @RequestBody ConferenceMetaField field) {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		field.setConference(conference);
 		return ResponseEntity.ok(cmfRepository.save(field));
 	}
 
-	@PostMapping("/invite")
+	@PostMapping("/invitation")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postInvitation(@PathVariable Long conference_id, @RequestBody Invitation invitation) {
 		Conference conference = conferenceRepository.findOne(conference_id);
