@@ -51,4 +51,8 @@ export default class PageInjector {
   postService(service, success) {
     PageApi.postService(this.page_id, service, success);
   }
+
+  getFollowStatus(success) {
+    PageApi.getFollowStatus(this.page_id, success);
+  }
 }

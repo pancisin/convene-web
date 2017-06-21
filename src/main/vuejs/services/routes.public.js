@@ -25,6 +25,11 @@ export default [
     component: resolve => require(['../pages/public/Conference.index.vue'], resolve),
   },
   {
+    path: 'conference/:id',
+    name: 'conference',
+    component: resolve => require(['../pages/public/Conference.vue'], resolve),
+  },
+  {
     path: 'about',
     alias: 'admin/about',
     component: resolve => require(['../pages/static/About.vue'], resolve)

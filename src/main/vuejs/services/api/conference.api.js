@@ -80,5 +80,23 @@ export default {
     Vue.http.post(url, { id: administrator.id }).then(response => {
       success(response.body);
     })
-  }
+  },
+  getAttendStatus(id, success) {
+    var url = ['api/conference', id, 'attend-status'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postAttend(id, meta, success) {
+    var url = ['api/conference', id, 'attend'].join('/');
+    Vue.http.post(url, meta).then(response => {
+      success(response.body);
+    })
+  },
+  putCancelAttend(id, success) {
+    var url = ['api/conference', id, 'cancel-attend'].join('/');
+    Vue.http.put(url).then(response => {
+      success(response.body);
+    })
+  },
 }

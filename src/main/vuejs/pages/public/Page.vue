@@ -73,8 +73,15 @@ import ServiceBook from './page/Service.book.vue'
 import Auth from '../../services/auth.js'
 import PageApi from '../../services/api/page.api.js'
 
+import PageInjector from '../../services/injectors/page.injector.js'
+
 export default {
   name: 'page',
+  provide() {
+    return {
+      api: new PageInjector(this.$route.params.id)
+    }
+  },
   data() {
     return {
       follows: false,
@@ -105,9 +112,7 @@ export default {
         if (!reg.test(parts[0])) {
           page_id = parts[0];
         }
-      }
-
-      if (page_id != null) {
+      } else {
         var auth = Auth.user.authenticated;
         PageApi.getPage(page_id, auth, page => {
           this.page = page;

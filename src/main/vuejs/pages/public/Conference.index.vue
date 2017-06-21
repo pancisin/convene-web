@@ -2,7 +2,9 @@
   <div class="container">
     <ul>
       <li v-for="conf in conferences">
-        {{ conf.name }}
+        <router-link :to="{ name: 'conference', params: { id: conf.id } }">
+          {{ conf.name }}
+        </router-link>
       </li>
     </ul>
   </div>

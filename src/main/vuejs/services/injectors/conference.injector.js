@@ -1,8 +1,15 @@
 import ConferenceApi from '../api/conference.api.js'
 
 export default class ConferenceInjector {
-  constructor(conference_id) {
+
+  /**
+   * 
+   * @param {*} conference_id 
+   * @param {*} auth 
+   */
+  constructor(conference_id, auth) {
     this.conference_id = conference_id;
+    this.auth = auth;
   }
 
   getConference(success) {
@@ -50,5 +57,17 @@ export default class ConferenceInjector {
 
   postAdministrator(administrator, success) {
     ConferenceApi.postAdministrator(this.conference_id, administrator, success);
+  }
+
+  getAttendStatus(success) {
+    ConferenceApi.getAttendStatus(this.conference_id, success);
+  }
+
+  postAttend(meta, success) {
+    ConferenceApi.postAttend(this.conference_id, meta, success);
+  }
+
+  putCancelAttend(success) {
+    ConferenceApi.putCancelAttend(this.conference_id, success);
   }
 }

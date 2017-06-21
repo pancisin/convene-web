@@ -18,7 +18,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import ConferenceApi from '../services/api/conference.api.js'
 import ConferenceInjector from '../services/injectors/conference.injector.js'
 
 export default {

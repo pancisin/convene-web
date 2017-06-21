@@ -1,6 +1,7 @@
 package com.pancisin.bookster.models;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +43,7 @@ public class ConferenceMetaField {
 	private List<ConferenceMetaValue> values;
 
 	@Column
-	private String options;
+	private Map<String, String> options;
 
 	@Column
 	private boolean optional;
@@ -76,11 +77,11 @@ public class ConferenceMetaField {
 		this.description = description;
 	}
 
-	public String getOptions() {
+	public Map<String, String> getOptions() {
 		return options;
 	}
 
-	public void setOptions(String options) {
+	public void setOptions(Map<String, String> options) {
 		this.options = options;
 	}
 
