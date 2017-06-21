@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 public class EnviromentProvider implements EnvironmentAware {
 	private static Environment environment;
 
-	@Cacheable("EnvironmentProvider.isProduction")
+	@Cacheable("enviroment")
 	public Boolean isProduction() {
 		return environment.acceptsProfiles("production");
 	}
 
-	@Cacheable("EnvironmentProvider.isDevelopment")
+	@Cacheable("enviroment")
 	public Boolean isDevelopment() {
 		return environment.acceptsProfiles("local");
 	}

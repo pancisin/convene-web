@@ -23,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	Event findOne(Long id);
 
 	@Override
-	@CacheEvict(value = "events", key = "#p0.event.id")
+	@CacheEvict(value = "events", key = "#p0.id")
 	<S extends Event> S save(S entity);
 	
 	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL")

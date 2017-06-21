@@ -94,7 +94,7 @@ public class UserController {
 
 	@Autowired
 	private ConferenceAdministratorRepository caRepository;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe(HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -111,7 +111,7 @@ public class UserController {
 		stored.setFirstName(user.getFirstName());
 		stored.setLastName(user.getLastName());
 		stored.setAddress(user.getAddress());
-		
+
 		userRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}
@@ -119,7 +119,7 @@ public class UserController {
 	@GetMapping("/notification/{page}/{size}")
 	public ResponseEntity<?> getNotifications(@PathVariable int page, @PathVariable int size) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(notificationRepository.getUserNotifications(auth.getId(),
+		return ResponseEntity.ok(notificationRepository.findByRecipientId(auth.getId(),
 				new PageRequest(page, size, new Sort(Direction.DESC, "created"))));
 	}
 
@@ -178,19 +178,19 @@ public class UserController {
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getConferences());
 	}
-	
+
 	@PostMapping("/conference")
 	@LicenseLimit(entity = "conference")
 	@Transactional
 	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		Conference stored_conference = conferenceRepository.save(conference);
-		
+
 		ConferenceAdministrator ca = new ConferenceAdministrator(stored_conference, auth, true);
 		ca.setRole(PageRole.ROLE_OWNER);
 		caRepository.save(ca);
-		
+
 		return ResponseEntity.ok(stored_conference);
 	}
 
@@ -283,7 +283,7 @@ public class UserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(paRepository.getContacts(auth.getId()));
 	}
-	
+
 	@GetMapping("/followed-pages")
 	@JsonView(Summary.class)
 	public ResponseEntity<?> getFollowedPages() {

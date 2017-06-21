@@ -11,13 +11,13 @@ import com.pancisin.bookster.models.Page;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 
-	@Override
-	@Cacheable("pages")
-	Page findOne(Long id);
-
-	@Override
-	@CacheEvict(value = "pages", key = "#p0.page.id")
-	<S extends Page> S save(S entity);
+//	@Override
+//	@Cacheable("pages")
+//	Page findOne(Long id);
+//
+//	@Override
+//	@CacheEvict(value = "pages", key = "#p0.page.id")
+//	<S extends Page> S save(S entity);
 
 	@Query("SELECT page FROM Page page JOIN page.branch branch JOIN branch.category category WHERE category.id = :category_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public org.springframework.data.domain.Page<Page> findByCategory(@Param("category_id") Long category_id,
