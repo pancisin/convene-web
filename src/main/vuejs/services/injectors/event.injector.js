@@ -11,4 +11,20 @@ export default class PageInjector {
 
     EventApi.getEvent(this.event_id, auth, success);
   }
+
+  postEvent(event, success) {
+
+  }
+
+  putEvent(event, success) {
+    
+  }
+
+  getAttendess(success) {
+    EventApi.getAttendees(this.event_id, success);
+  }
+
+  getInvitations(success) {
+    EventApi.getInvitations(this.event_id, success);
+  }
 }

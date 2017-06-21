@@ -200,5 +200,13 @@ export default [
   {
     path: 'notifications',
     component: resolve => require(['../pages/Notifications.vue'], resolve)
+  },
+  {
+    path: 'notifications',
+    component: resolve => require(['../pages/Notifications.vue'], resolve)
+  },
+  {
+    path: '*',
+    component: resolve => require(['../pages/error/404.vue'], resolve)
   }
 ]

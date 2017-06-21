@@ -58,8 +58,8 @@ public class Conference implements IAuthor {
 	private List<Invitation> invitations;
 
 	@JsonIgnore
-	@ManyToMany
-	private List<User> attendees;
+	@OneToMany(mappedBy = "conference")
+	private List<ConferenceAttendee> attendees;
 	
 	@JsonIgnore
 	public User getOwner() {
@@ -126,11 +126,7 @@ public class Conference implements IAuthor {
 		return conferenceAdministrators;
 	}
 
-	public List<User> getAttendees() {
+	public List<ConferenceAttendee> getAttendees() {
 		return attendees;
-	}
-
-	public void setAttendees(List<User> attendees) {
-		this.attendees = attendees;
 	}
 }

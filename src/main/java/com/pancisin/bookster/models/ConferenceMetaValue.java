@@ -19,24 +19,16 @@ public class ConferenceMetaValue {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonIgnore
-	@ManyToOne
-	private User user;
-	
 	@ManyToOne
 	@JsonRawValue
 	private ConferenceMetaField field;
 	
+	@JsonIgnore
+	@ManyToOne
+	private ConferenceAttendee attendee;
+	
 	@Column
 	private String value;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public ConferenceMetaField getField() {
 		return field;

@@ -32,9 +32,9 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Subscription;
-import com.pancisin.bookster.models.json.ConferenceUserWrapper;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
+import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
 import com.pancisin.bookster.repository.ConferenceMetaFieldRepository;
 import com.pancisin.bookster.repository.ConferenceMetaValueRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -102,20 +102,24 @@ public class ConferenceController {
 		return ResponseEntity.ok(eventRepository.save(event));
 	}
 
+	@Autowired
+	private ConferenceAttendeeRepository caattendeeRepository;
+	
 	@GetMapping("/attendees")
 	// @JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
-		List<ConferenceMetaValue> meta = cmvRepository.getByConference(conference_id);
+		
+//		List<ConferenceMetaValue> meta = cmvRepository.getByConference(conference_id);
 
-		List<ConferenceUserWrapper> users = conference.getAttendees().stream().map(x -> {
-			List<ConferenceMetaValue> values = meta.stream().filter(m -> m.getUser().getId() == x.getId())
-					.collect(Collectors.toList());
-			return new ConferenceUserWrapper(x, values);
-		}).collect(Collectors.toList());
+//		List<ConferenceUserWrapper> users = conference.getAttendees().stream().map(x -> {
+//			List<ConferenceMetaValue> values = meta.stream().filter(m -> m.getUser().getId() == x.getId())
+//					.collect(Collectors.toList());
+//			return new ConferenceUserWrapper(x, values);
+//		}).collect(Collectors.toList());
 
-		return ResponseEntity.ok(users);
+		return ResponseEntity.ok(caattendeeRepository.findByConference(conference_id));
 	}
 
 	@GetMapping("/meta-field")

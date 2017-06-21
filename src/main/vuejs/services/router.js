@@ -69,6 +69,6 @@ export default new VueRouter({
       path: '/register',
       component: resolve => require(['../pages/Register.vue'], resolve),
       beforeEnter: afterAuth
-    },
+    }
   ],
 })

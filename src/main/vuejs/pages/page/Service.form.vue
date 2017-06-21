@@ -33,6 +33,7 @@
 <script>
 import vSelect from '../../elements/Select.vue'
 import ServiceApi from '../../services/api/service.api.js'
+
 export default {
   name: 'service-form',
   inject: ['api'],

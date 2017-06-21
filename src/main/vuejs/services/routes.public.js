@@ -85,5 +85,5 @@ export default [
     path: 'invoice/:invoice_id/payment',
     name: 'invoice.payment',
     component: resolve => require(['../pages/Payment.vue'], resolve)
-  },
+  }
 ]
