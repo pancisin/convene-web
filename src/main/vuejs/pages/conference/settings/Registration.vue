@@ -55,13 +55,13 @@ export default {
   },
   methods: {
     initialize() {
-      this.api.getMetaFields(this.conference.id, metaFields => {
+      this.api.getMetaFields(metaFields => {
         this.metaFields = metaFields;
       })
     },
     submit() {
       if (this.selected.id == null) {
-        this.api.postMetaField(this.conference.id, this.selected, field => {
+        this.api.postMetaField(this.selected, field => {
           this.metaFields.push(field);
         });
       } else {

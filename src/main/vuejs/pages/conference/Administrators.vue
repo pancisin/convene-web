@@ -56,7 +56,7 @@ import UserApi from '../../services/api/user.api.js'
 
 export default {
   name: 'conference-administrators',
-  props: ['conference'],
+  inject: ['api'],
   data() {
     return {
       administrators: [],
@@ -69,9 +69,6 @@ export default {
   components: {
     UserSearch
   },
-  watch: {
-    'conference': 'getAdministrators',
-  },
   computed: {
     ...mapGetters({
       current: 'getUser',
@@ -82,11 +79,9 @@ export default {
   },
   methods: {
     getAdministrators() {
-      if (this.conference.id == null) return;
       this.loading = true;
-      var url = ['api/conference', this.conference.id, 'administrator'].join('/');
-      this.$http.get(url).then(response => {
-        this.administrators = response.body;
+      this.api.getAdministrators(administrators => {
+        this.administrators = administrators;
 
         this.administrators.sort((a, b) => {
           return a.role.level < b.role.level;
@@ -136,9 +131,8 @@ export default {
       })
     },
     grantAccess() {
-      var url = ['api/conference', this.conference.id, 'administrator'].join('/');
-      this.$http.post(url, { id: this.user.id }).then(response => {
-        this.administrators.push(response.body);
+      this.api.postAdministrator(this.user, administrator => {
+        this.administrators.push(administrator);
       })
     }
   }

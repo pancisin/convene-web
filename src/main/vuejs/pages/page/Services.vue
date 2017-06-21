@@ -44,7 +44,7 @@
     <modal :show.sync="displayEditModal" @close="displayEditModal = false" :full="false">
       <h4 slot="header">{{ $t('admin.service.create') }}</h4>
       <div slot="body">
-        <service-form :service="selectedService" :pageId="page.id" @updated="updatedService" />
+        <service-form :service="selectedService" @updated="updatedService" />
       </div>
     </modal>
   </panel>
@@ -55,7 +55,6 @@ import ServiceForm from './Service.form.vue'
 import ServiceApi from '../../services/api/service.api.js'
 
 export default {
-  props: ['page'],
   inject: ['api'],
   data() {
     return {
@@ -76,10 +75,8 @@ export default {
   },
   methods: {
     getServices() {
-      if (this.page.id == null) return;
-
       this.loading = true;
-      this.api.getServices(this.page.id, true, services => {
+      this.api.getServices(true, services => {
         this.services = services;
         this.loading = false;
       })

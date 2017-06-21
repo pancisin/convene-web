@@ -57,7 +57,6 @@
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
 import { mapActions } from 'vuex'
-import PageApi from '../../services/api/page.api.js'
 import PublicApi from '../../services/api/public.api.js'
 
 export default {
@@ -102,12 +101,12 @@ export default {
     ]),
     submit() {
       if (this.edit) {
-        PageApi.putPage(this.page, page => {
+        this.api.putPage(page => {
           this.$emit('updated', page);
           this.$success('Success !', 'Page ' + page.name + ' has been updated.')
         })
       } else {
-        this.api.postPage(this.page, page => {
+        this.api.postPage(page => {
           this.addPage(page);
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
           this.$router.push({ name: 'page.settings', params: { id: page.id } });
@@ -145,12 +144,12 @@ export default {
       })
     },
     publishPage() {
-      this.api.publishPage(this.page.id, page => {
+      this.api.publishPage(page => {
         this.$emit('updated', page);
       })
     },
     deactivatePage() {
-      this.api.deactivatePage(this.page.id, page => {
+      this.api.deactivatePage(page => {
         this.$emit('updated', page);
       })
     }

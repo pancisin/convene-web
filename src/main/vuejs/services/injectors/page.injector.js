@@ -39,4 +39,16 @@ export default class PageInjector {
   deactivatePage(success) {
     return PageApi.deactivatePage(this.page_id, success);
   }
+
+  getRequests(success) {
+    PageApi.getRequests(this.page_id, success);
+  }
+
+  getServices(auth, success) {
+    PageApi.getServices(this.page_id, auth, success);
+  }
+
+  postService(service, success) {
+    PageApi.postService(this.page_id, service, success);
+  }
 }

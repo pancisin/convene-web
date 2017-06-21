@@ -31,4 +31,24 @@ export default class ConferenceInjector {
   getEvents(page, size, success) {
     ConferenceApi.getEvents(this.conference_id, page, size, success);
   }
+
+  getInvitations(success) {
+    ConferenceApi.getInvitations(this.conference_id, success);
+  }
+
+  postInvitation(invitation, success) {
+    ConferenceApi.postInvitation(this.conference_id, invitation, success);
+  }
+
+  postMetaField(field, success) {
+    ConferenceApi.postMetaField(this.conference_id, field, success);
+  }
+
+  getAdministrators(success) {
+    ConferenceApi.getAdministrators(this.conference_id, success);
+  }
+
+  postAdministrator(administrator, success) {
+    ConferenceApi.postAdministrator(this.conference_id, administrator, success);
+  }
 }

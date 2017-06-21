@@ -91,6 +91,7 @@ import Paginator from '../../elements/Paginator.vue'
 
 export default {
   name: 'events',
+  inject: ['api'],
   data() {
     return {
       paginator: {},
@@ -104,7 +105,7 @@ export default {
     try {
       this.getEvents(0);
     } catch (ex) {
-      
+
     }
   },
   methods: {
@@ -122,6 +123,13 @@ export default {
         this.getEvents(e.page);
       }
     },
+    getEvents(page) {
+      this.loading = true;
+      this.api.getEvents(page, 8, paginator => {
+        this.paginator = paginator;
+        this.loading = false;
+      })
+    }
   }
 }
 </script>

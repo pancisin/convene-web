@@ -32,7 +32,7 @@ export default [
       {
         path: 'events',
         name: 'conference.events',
-        component: resolve => require(['../pages/conference/Events.vue'], resolve)
+        component: resolve => require(['../pages/templates/Events.vue'], resolve)
       },
       {
         path: 'attendees_old',
@@ -132,7 +132,7 @@ export default [
       {
         path: 'events',
         name: 'page.events',
-        component: resolve => require(['../pages/page/Events.vue'], resolve)
+        component: resolve => require(['../pages/templates/Events.vue'], resolve)
       },
       {
         path: 'events/create',

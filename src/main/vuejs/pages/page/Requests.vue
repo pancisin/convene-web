@@ -27,7 +27,6 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'page-requests',
-  props: ['page'],
   inject: ['api'],
   data() {
     return {
@@ -35,18 +34,13 @@ export default {
       loading: false
     }
   },
-  watch: {
-    'page': 'getRequests'
-  },
   created() {
     this.getRequests();
   },
   methods: {
     getRequests() {
-      if (!this.page.id) return;
-
       this.loading = true;
-      this.api.getRequests(this.page.id, requests => {
+      this.api.getRequests(requests => {
         this.requests = requests;
         this.loading = false;
       })

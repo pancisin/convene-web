@@ -64,5 +64,21 @@ export default {
     Vue.http.post(url, field).then(response => {
       success(response.body);
     })
+  },
+  getAdministrators(id, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'administrator'].join('/');
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postAdministrator(id, administrator, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = ['api/conference', id, 'administrator'].join('/');
+    Vue.http.post(url, { id: administrator.id }).then(response => {
+      success(response.body);
+    })
   }
 }

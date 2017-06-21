@@ -33,7 +33,6 @@
 <script>
 export default {
   name: 'conference-attendees-new',
-  props: ['conference'],
   inject: ['api'],
   data() {
     return {
@@ -50,9 +49,6 @@ export default {
         return x.user;
       })
     }
-  },
-  watch: {
-    'conference': 'initialize'
   },
   methods: {
     initialize() {

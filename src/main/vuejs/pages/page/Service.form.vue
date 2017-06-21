@@ -48,7 +48,6 @@ export default {
         };
       }
     },
-    pageId: Number,
   },
   components: {
     vSelect
@@ -72,7 +71,7 @@ export default {
           this.$emit('updated', service);
         })
       } else {
-        this.api.postService(this.pageId, this.service, service => {
+        this.api.postService(this.service, service => {
           this.$emit('updated', service);
         })
       }
