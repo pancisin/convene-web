@@ -4,12 +4,7 @@ export default {
   getPage(id, auth, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = '';
-    if (auth)
-      url = ['api/page', id].join('/');
-    else
-      url = ['public/page', id].join('/');
-
+    var url = `${auth ? 'api' : 'public'}/page/${id}`
     Vue.http.get(url).then(response => {
       success(response.body);
     })

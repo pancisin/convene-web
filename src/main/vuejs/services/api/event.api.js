@@ -4,7 +4,7 @@ export default {
   getEvent(id, auth, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = [auth ? 'api' : 'public', 'event', id].join('/');
+    var url = `${ auth ? 'api' : 'public' }/event/${id}`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -44,7 +44,7 @@ export default {
     })
   },
   postInvitation(id, invitation, success) {
-    var url = ['api/event', id, 'invite'].join('/');
+    var url = `api/event/${id}/invite`;
     Vue.http.post(url, invitation).then(response => {
       success(response.body);
     })

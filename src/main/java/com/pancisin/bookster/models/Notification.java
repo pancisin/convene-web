@@ -36,6 +36,12 @@ public class Notification {
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
+	@Column
+	private String routeName;
+	
+	@Column
+	private String routeParam;
+	
 	public Notification() {
 
 	}
@@ -91,5 +97,21 @@ public class Notification {
 
 	public void setCreated(Calendar created) {
 		this.created = created;
+	}
+
+	public String getRouteName() {
+		return routeName;
+	}
+
+	public void setRouteName(String routeName) {
+		this.routeName = routeName;
+	}
+
+	public String getRouteParam() {
+		return routeParam;
+	}
+
+	public void setRouteParam(String routeParam) {
+		this.routeParam = routeParam;
 	}
 }

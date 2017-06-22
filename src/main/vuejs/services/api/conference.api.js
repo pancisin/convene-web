@@ -1,8 +1,12 @@
 import Vue from 'vue';
 
 export default {
+  base_url: 'api/conference',
   getConference(id, success) {
-    Vue.http.get('api/conference/' + id).then(response => {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}`;
+    Vue.http.get(url).then(response => {
       success(response.body);
     })
   },
@@ -12,7 +16,7 @@ export default {
     })
   },
   putConference(conference, success) {
-    var url = ['api/conference', conference.id].join('/');
+    var url = `${this.base_url}/${conference.id}`;
     Vue.http.put(url, conference).then(response => {
       success(response.body);
     })
@@ -20,7 +24,7 @@ export default {
   getEvents(id, page, size, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'event', page, size].join('/');
+    var url = `${this.base_url}/${id}/event/${page}/${size}`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -28,7 +32,7 @@ export default {
   getInvitations(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'invitation'].join('/');
+    var url = `${this.base_url}/${id}/invitation`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -36,7 +40,7 @@ export default {
   getAttendees(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'attendees'].join('/');
+    var url = `${this.base_url}/${id}/attendees`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -44,7 +48,7 @@ export default {
   postInvitation(id, invitation, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'invite'].join('/');
+    var url = `${this.base_url}/${id}/invite`;
     Vue.http.post(url, invitation).then(response => {
       return response.body;
     })
@@ -52,7 +56,7 @@ export default {
   getMetaFields(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'meta-field'].join('/');
+    var url = `${this.base_url}/${id}/meta-field`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -60,7 +64,7 @@ export default {
   postMetaField(id, field, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'meta-field'].join('/');
+    var url = `${this.base_url}/${id}/meta-field`;
     Vue.http.post(url, field).then(response => {
       success(response.body);
     })
@@ -68,7 +72,7 @@ export default {
   getAdministrators(id, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'administrator'].join('/');
+    var url = `${this.base_url}/${id}/administrator`;
     Vue.http.get(url).then(response => {
       success(response.body);
     })
@@ -76,25 +80,31 @@ export default {
   postAdministrator(id, administrator, success) {
     if (id == null || id == '') throw 'missing entity id';
 
-    var url = ['api/conference', id, 'administrator'].join('/');
+    var url = `${this.base_url}/${id}/administrator`;
     Vue.http.post(url, { id: administrator.id }).then(response => {
       success(response.body);
     })
   },
   getAttendStatus(id, success) {
-    var url = ['api/conference', id, 'attend-status'].join('/');
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}/attend-status`;
     Vue.http.get(url).then(response => {
       success(response.bodyText);
     })
   },
   postAttend(id, meta, success) {
-    var url = ['api/conference', id, 'attend'].join('/');
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}/attend`;
     Vue.http.post(url, meta).then(response => {
       success(response.bodyText);
     })
   },
   putCancelAttend(id, success) {
-    var url = ['api/conference', id, 'cancel-attend'].join('/');
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}/cancel-attend`;
     Vue.http.put(url).then(response => {
       success(response.body);
     })

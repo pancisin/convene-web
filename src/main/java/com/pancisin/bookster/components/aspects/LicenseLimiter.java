@@ -56,9 +56,12 @@ public class LicenseLimiter {
 					return pjp.proceed();
 				break;
 			case "page":
-				if (stored.getLicense().getSubscription().getPageLimit() > stored.getPages().size())
+				if (stored.getLicense().getSubscription().getPageLimit() > stored.getOwningPages().size())
 					return pjp.proceed();
 				break;
+			case "conference":
+				if (stored.getLicense().getSubscription().getConferenceLimit() > stored.getOwningConferences().size())
+					return pjp.proceed();
 			}
 		} else if (limit.parent().equals("page")) {
 			try {

@@ -7,12 +7,14 @@ export default {
     })
   },
   putMetaField(field, success) {
-    Vue.http.put('api/meta-field/' + field.id, field).then(response => {
+    var url = `api/meta-field/${field.id}`;
+    Vue.http.put(url, field).then(response => {
       success(response.body);
     })
   },
   deleteMetaField(id, success) {
-    Vue.http.delete('api/meta-field/' + id).then(response => {
+    var url = `api/meta-field/${id}`;
+    Vue.http.delete(url).then(response => {
       success(response.body);
     })
   }
