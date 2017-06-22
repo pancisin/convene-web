@@ -4,12 +4,14 @@
   
     <div class="row">
       <div class="col-md-6">
+        <image-upload v-model="conference.bannerUrl" />
+      </div>
+  
+      <div class="col-md-6">
         <div class="form-group">
           <label class="control-label">Name: </label>
           <input class="form-control required" v-model="conference.name" type="text">
         </div>
-      </div>
-      <div class="col-md-6">
         <div class="form-group">
           <label class="control-label">Visibility: </label>
           <select v-model="conference.visibility" class="form-control">
@@ -19,7 +21,7 @@
       </div>
     </div>
   
-    <div class="form-group">
+    <div class="form-group m-t-20">
       <label class="control-label">Summary: </label>
       <text-editor v-model="conference.summary"></text-editor>
     </div>
@@ -34,6 +36,7 @@
 
 <script>
 import TextEditor from '../../../elements/TextEditor.vue'
+import ImageUpload from '../../../elements/ImageUpload.vue'
 import { mapActions } from 'vuex'
 export default {
   props:
@@ -56,7 +59,7 @@ export default {
   },
   inject: ['api'],
   components: {
-    TextEditor
+    TextEditor, ImageUpload
   },
   methods: {
     submit() {

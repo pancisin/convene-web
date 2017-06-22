@@ -62,6 +62,9 @@ public class Conference implements IAuthor {
 	@OneToMany(mappedBy = "conference")
 	private List<ConferenceAttendee> attendees;
 	
+	@Column
+	private String bannerUrl;
+
 	@JsonIgnore
 	public User getOwner() {
 		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
@@ -72,7 +75,7 @@ public class Conference implements IAuthor {
 
 		return null;
 	}
-
+	
 	public void addMetaField(MetaField field) {
 		if (this.metaFields == null)
 			this.metaFields = new ArrayList<MetaField>();
@@ -140,5 +143,13 @@ public class Conference implements IAuthor {
 
 	public List<MetaField> getMetaFields() {
 		return metaFields;
+	}
+
+	public String getBannerUrl() {
+		return bannerUrl;
+	}
+
+	public void setBannerUrl(String bannerUrl) {
+		this.bannerUrl = bannerUrl;
 	}
 }

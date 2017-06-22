@@ -84,13 +84,13 @@ export default {
   getAttendStatus(id, success) {
     var url = ['api/conference', id, 'attend-status'].join('/');
     Vue.http.get(url).then(response => {
-      success(response.body);
+      success(response.bodyText);
     })
   },
   postAttend(id, meta, success) {
     var url = ['api/conference', id, 'attend'].join('/');
     Vue.http.post(url, meta).then(response => {
-      success(response.body);
+      success(response.bodyText);
     })
   },
   putCancelAttend(id, success) {

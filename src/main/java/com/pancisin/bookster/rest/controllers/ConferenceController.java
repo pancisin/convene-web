@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.License;
+import com.pancisin.bookster.components.storage.StorageService;
+import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
@@ -75,6 +77,9 @@ public class ConferenceController {
 	@Autowired
 	private MetaValueRepository cmvRepository;
 
+	@Autowired
+	private StorageServiceImpl storageService;
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -88,6 +93,13 @@ public class ConferenceController {
 		stored.setName(conference.getName());
 		stored.setSummary(conference.getSummary());
 		stored.setVisibility(conference.getVisibility());
+
+		if (conference.getBannerUrl() != null && storageService.isBinary(conference.getBannerUrl())) {
+			String url = "banners/conferences/" + stored.getId();
+			storageService.storeBinary(conference.getBannerUrl(), url);
+			stored.setBannerUrl("/files/" + url + ".jpg");
+		}
+
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
 
@@ -126,7 +138,8 @@ public class ConferenceController {
 
 		ConferenceAttendee attendee = new ConferenceAttendee(user, conference, meta);
 		attendee.setMeta(meta);
-		return ResponseEntity.ok(caattendeeRepository.save(attendee));
+		caattendeeRepository.save(attendee);
+		return ResponseEntity.ok("ACTIVE");
 	}
 
 	@PutMapping("/cancel-attend")

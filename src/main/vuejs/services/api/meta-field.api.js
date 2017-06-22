@@ -10,5 +10,10 @@ export default {
     Vue.http.put('api/meta-field/' + field.id, field).then(response => {
       success(response.body);
     })
+  },
+  deleteMetaField(id, success) {
+    Vue.http.delete('api/meta-field/' + id).then(response => {
+      success(response.body);
+    })
   }
 } 

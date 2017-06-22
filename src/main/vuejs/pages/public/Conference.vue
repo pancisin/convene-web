@@ -1,23 +1,24 @@
 <template>
   <div class="container">
-    <h2 v-if="conference != null">
+    <h3 v-if="conference != null">
       {{conference.name}}
-    </h2>
+    </h3>
   
     <div class="row">
       <div class="col-md-3">
+        <img :src="conference.bannerUrl" class="img-poster" />
       </div>
   
       <div class="col-md-6">
         <panel>
-          <div v-html="conference.summary"></div>
+          <div v-html="conference.summary" v-if="conference != null"></div>
         </panel>
       </div>
   
       <div class="col-md-3">
-        <panel v-if="attend_status != 'ACTIVE'">
-          <span slot="title">Register</span>
-          <attend-form />
+        <panel v-if="attend_status != 'ACTIVE'" type="success">
+          <span slot="title">Join conference</span>
+          <attend-form @statusChanged="statusChanged" />
         </panel>
         <panel v-else>
           <span slot="title">Details</span>
@@ -59,11 +60,17 @@ export default {
     })
   },
   methods: {
-
+    statusChanged(status) {
+      this.attend_status = status;
+    }
   }
 }
 </script>
 
 <style>
-
+.img-poster {
+  width: 100%;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
 </style>
