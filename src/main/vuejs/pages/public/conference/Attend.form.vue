@@ -12,6 +12,15 @@
       <select v-else-if="field.type == 'SELECT'" v-model="meta_values[index].value" class="form-control">
         <option v-for="option in field.options" :value="option">{{ option }}</option>
       </select>
+      <div v-else-if="field.type == 'RADIO'">
+        <div class="radio radio-primary" v-for="(option, i) in field.options">
+          <input :id="'radio-' + i" type="radio" :value="option" v-model="meta_values[index].value">
+          <label :for="'radio-' + i">
+            {{ option }}
+          </label>
+        </div>
+      </div>
+      <date-picker v-else-if="field.type == 'DATE'" v-model="meta_values[index].value" />
       <input v-else="field.type == 'TEXT'" v-model="meta_values[index].value" type="text" class="form-control" />
     </div>
   
@@ -22,6 +31,7 @@
 </template>
 
 <script>
+import DatePicker from '../../../elements/DatePicker.vue'
 export default {
   name: 'conference-application',
   inject: ['api'],
@@ -30,6 +40,9 @@ export default {
       meta_fields: [],
       meta_values: []
     }
+  },
+  components: {
+    DatePicker,
   },
   created() {
     this.api.getMetaFields(fields => {

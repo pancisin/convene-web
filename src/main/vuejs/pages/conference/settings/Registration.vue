@@ -29,8 +29,8 @@
   
           <div class="form-group">
             <div class="checkbox checkbox-primary">
-              <input type="checkbox" v-model="selected.optional">
-              <label>
+              <input id="optional-checkbox" type="checkbox" v-model="selected.optional">
+              <label for="optional-checkbox">
                 Optional
               </label>
             </div>
@@ -44,7 +44,7 @@
             </select>
           </div>
   
-          <div class="form-group" v-if="selected.type == 'SELECT'">
+          <div class="form-group" v-if="selected.type == 'SELECT' || selected.type == 'RADIO'">
             <label class="control-label">Options: </label>
   
             <ul class="options-list">
