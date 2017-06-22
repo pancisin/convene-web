@@ -23,8 +23,46 @@
           </div>
   
           <div class="form-group">
+            <label class="control-label">Description: </label>
+            <input class="form-control" v-model="selected.description" type="text">
+          </div>
+  
+          <div class="form-group">
+            <div class="checkbox checkbox-primary">
+              <input type="checkbox" v-model="selected.optional">
+              <label>
+                Optional
+              </label>
+            </div>
+          </div>
+  
+          <div class="form-group">
             <label class="control-label">Type: </label>
-            <input class="form-control required" v-model="selected.type" type="text">
+  
+            <select class="form-control" v-model="selected.type">
+              <option v-for="mtype in metaTypes" v-text="mtype"></option>
+            </select>
+          </div>
+  
+          <div class="form-group" v-if="selected.type == 'SELECT'">
+            <label class="control-label">Options: </label>
+  
+            <ul class="options-list">
+              <li v-for="option in selected.options">
+                {{ option }}
+                <a class="pull-right" @click="deleteOption(option)">
+                  <i class="fa fa-times text-danger"></i>
+                </a>
+              </li>
+              <li>
+                <div class="form-group">
+                  <div class="input-daterange input-group" id="date-range">
+                    <input type="text" class="form-control" v-model="new_option">
+                    <a class="input-group-addon btn btn-primary" @click="addOption">Add</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
   
           <div class="text-center">
@@ -37,6 +75,7 @@
 </template>
 
 <script>
+import MetaFieldApi from '../../../services/api/meta-field.api.js'
 export default {
   name: 'registration-settings',
   props: ['conference'],
@@ -44,7 +83,9 @@ export default {
   data() {
     return {
       metaFields: [],
+      metaTypes: [],
       selected: null,
+      new_option: null,
     }
   },
   created() {
@@ -58,16 +99,35 @@ export default {
       this.api.getMetaFields(metaFields => {
         this.metaFields = metaFields;
       })
+
+      MetaFieldApi.getMetaTypes(metaTypes => {
+        this.metaTypes = metaTypes;
+      })
     },
     submit() {
       if (this.selected.id == null) {
         this.api.postMetaField(this.selected, field => {
           this.metaFields.push(field);
+          this.$success("Success", "Meta field has been saved.")
         });
       } else {
-        // put
+        MetaFieldApi.putConferenceMetaField(this.selected, field => {
+          this.selected = field;
+          this.$success("Success", "Meta field has been saved.")
+        })
       }
     },
+    deleteOption(option) {
+      this.selected.options = this.selected.options.filter(o => {
+        return o != option;
+      })
+    },
+    addOption() {
+      if (this.new_option != null && this.new_option.trim() != "") {
+        this.selected.options.push(this.new_option);
+        this.new_option = null;
+      }
+    }
   }
 }
 </script>
@@ -95,6 +155,17 @@ export default {
         color: #3bafda;
       }
     }
+  }
+}
+
+.options-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+
+  li {
+    padding: 10px;
   }
 }
 </style>

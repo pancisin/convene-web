@@ -2,6 +2,11 @@
   <form class="form" @submit.prevent="submit">
     <div class="form-group" v-for="(field, index) in meta_fields">
       <label v-text="field.name"></label>
+      <p v-if="field.description">
+        <small v-text="field.description"></small>
+        <br>
+        <br>
+      </p>
   
       <input v-if="field.type == 'NUMBER'" v-model="meta_values[index].value" type="number" class="form-control" />
       <select v-else-if="field.type == 'SELECT'" v-model="meta_values[index].value" class="form-control">

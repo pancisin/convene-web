@@ -15,13 +15,13 @@
       </div>
   
       <div class="col-md-3">
-        <panel v-if="attend_status == 'INACTIVE'">
+        <panel v-if="attend_status != 'ACTIVE'">
           <span slot="title">Register</span>
           <attend-form />
         </panel>
         <panel v-else>
           <span slot="title">Details</span>
-
+  
         </panel>
       </div>
     </div>

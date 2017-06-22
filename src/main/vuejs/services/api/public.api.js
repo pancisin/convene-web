@@ -16,5 +16,5 @@ export default {
     Vue.http.get(url).then(response => {
       success(response.body);
     })
-  }
+  },
 }

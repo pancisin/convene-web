@@ -23,6 +23,7 @@ import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Locale;
+import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BranchRepository;
@@ -158,6 +159,11 @@ public class PublicRestController {
 	@GetMapping("/subscriptions")
 	public ResponseEntity<?> getSubscriptions() {
 		return ResponseEntity.ok(Subscription.values());
+	}
+	
+	@GetMapping("/meta-types")
+	public ResponseEntity<?> getMetaTypes() {
+		return ResponseEntity.ok(MetaType.values());
 	}
 
 	@GetMapping("/conferences")
