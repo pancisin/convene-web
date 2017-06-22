@@ -1,16 +1,16 @@
 <template>
-  <panel type="default">
+  <panel>
     <div class="row">
       <div class="col-md-4">
         <ul class="data-list">
-          <li :class="{ 'active': selected && selected.id == null }">
-            <a @click="selected = {}">
-              + Create new
-            </a>
-          </li>
           <li v-for="field in metaFields" :class="{ 'active' : selected && selected.id == field.id }">
             <a @click="selected = field" class="waves-effect">
               {{ field.name }}
+            </a>
+          </li>
+          <li :class="{ 'active': selected && selected.id == null }">
+            <a @click="selected = {}">
+              + Create new
             </a>
           </li>
         </ul>
