@@ -18,16 +18,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.bookster.models.enums.MetaType;
 
 @Entity
-@Table(name = "conference_meta_fields")
-public class ConferenceMetaField {
+@Table(name = "meta_fields")
+public class MetaField {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	@JsonIgnore
-	@ManyToOne(optional = false)
-	private Conference conference;
 
 	@Column
 	private String name;
@@ -40,7 +36,7 @@ public class ConferenceMetaField {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "field")
-	private List<ConferenceMetaValue> values;
+	private List<MetaValue> values;
 
 	@ElementCollection
 	@Column
@@ -52,14 +48,6 @@ public class ConferenceMetaField {
 	@Override
 	public String toString() {
 		return this.id.toString();
-	}
-
-	public Conference getConference() {
-		return conference;
-	}
-
-	public void setConference(Conference conference) {
-		this.conference = conference;
 	}
 
 	public String getName() {
@@ -106,7 +94,7 @@ public class ConferenceMetaField {
 		this.type = type;
 	}
 
-	public List<ConferenceMetaValue> getValues() {
+	public List<MetaValue> getValues() {
 		return values;
 	}
 }

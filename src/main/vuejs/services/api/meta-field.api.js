@@ -6,8 +6,8 @@ export default {
       success(response.body);
     })
   },
-  putConferenceMetaField(field, success) {
-    Vue.http.put('api/conference-meta-field/' + field.id, field).then(response => {
+  putMetaField(field, success) {
+    Vue.http.put('api/meta-field/' + field.id, field).then(response => {
       success(response.body);
     })
   }

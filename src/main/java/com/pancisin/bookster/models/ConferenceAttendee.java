@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.views.Compact;
 
 @Entity
-@Table(name = "conference_attendees", uniqueConstraints = {
+@Table(name = "conferences_attendees", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "conference_id", "user_id" }) })
 public class ConferenceAttendee {
 
@@ -34,8 +34,8 @@ public class ConferenceAttendee {
 	@ManyToOne
 	private Conference conference;
 
-	@OneToMany(mappedBy = "attendee", cascade = CascadeType.ALL)
-	private List<ConferenceMetaValue> meta;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<MetaValue> meta;
 
 	@Column
 	private boolean active = true;
@@ -51,7 +51,7 @@ public class ConferenceAttendee {
 
 	}
 
-	public ConferenceAttendee(User user, Conference conference, List<ConferenceMetaValue> meta) {
+	public ConferenceAttendee(User user, Conference conference, List<MetaValue> meta) {
 		this.user = user;
 		this.conference = conference;
 		this.meta = meta;
@@ -85,7 +85,7 @@ public class ConferenceAttendee {
 		return id;
 	}
 
-	public List<ConferenceMetaValue> getMeta() {
+	public List<MetaValue> getMeta() {
 		return meta;
 	}
 
@@ -99,5 +99,9 @@ public class ConferenceAttendee {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public void setMeta(List<MetaValue> meta) {
+		this.meta = meta;
 	}
 }

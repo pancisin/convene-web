@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
 @Entity
-@Table(name = "conference_meta_values")
-public class ConferenceMetaValue {
+@Table(name = "meta_values")
+public class MetaValue {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,20 +21,16 @@ public class ConferenceMetaValue {
 
 	@ManyToOne
 	@JsonRawValue
-	private ConferenceMetaField field;
-	
-	@JsonIgnore
-	@ManyToOne
-	private ConferenceAttendee attendee;
+	private MetaField field;
 	
 	@Column
 	private String value;
 
-	public ConferenceMetaField getField() {
+	public MetaField getField() {
 		return field;
 	}
 
-	public void setField(ConferenceMetaField field) {
+	public void setField(MetaField field) {
 		this.field = field;
 	}
 
@@ -48,13 +44,5 @@ public class ConferenceMetaValue {
 
 	public Long getId() {
 		return id;
-	}
-
-	public ConferenceAttendee getAttendee() {
-		return attendee;
-	}
-
-	public void setAttendee(ConferenceAttendee attendee) {
-		this.attendee = attendee;
 	}
 }

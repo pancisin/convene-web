@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pancisin.bookster.models.ConferenceMetaValue;
+import com.pancisin.bookster.models.MetaValue;
 
 @Repository
-public interface ConferenceMetaValueRepository extends JpaRepository<ConferenceMetaValue, Long> {
+public interface MetaValueRepository extends JpaRepository<MetaValue, Long> {
 	
 //	@Query("SELECT value FROM ConferenceMetaValue value JOIN value.field field JOIN field.conference conf WHERE conf.id = :conference_id AND value.user.id = :user_id")
 //	public List<ConferenceMetaValue> getByConference(@Param("user_id") Long user_id, @Param("conference_id") Long conference_id);

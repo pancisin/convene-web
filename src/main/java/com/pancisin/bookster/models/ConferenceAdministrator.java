@@ -22,7 +22,7 @@ import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 
 @Entity
-@Table(name = "conference_administrators", uniqueConstraints = {
+@Table(name = "conferences_administrators", uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "conference_id", "user_id" }) })
 public class ConferenceAdministrator {
 

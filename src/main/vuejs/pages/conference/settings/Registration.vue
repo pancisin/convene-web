@@ -111,7 +111,7 @@ export default {
           this.$success("Success", "Meta field has been saved.")
         });
       } else {
-        MetaFieldApi.putConferenceMetaField(this.selected, field => {
+        MetaFieldApi.putMetaField(this.selected, field => {
           this.selected = field;
           this.$success("Success", "Meta field has been saved.")
         })
@@ -123,6 +123,9 @@ export default {
       })
     },
     addOption() {
+      if (this.selected.options == null)
+        this.selected.options = [];
+      
       if (this.new_option != null && this.new_option.trim() != "") {
         this.selected.options.push(this.new_option);
         this.new_option = null;

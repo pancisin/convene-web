@@ -28,8 +28,8 @@ import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.ConferenceAttendee;
-import com.pancisin.bookster.models.ConferenceMetaField;
-import com.pancisin.bookster.models.ConferenceMetaValue;
+import com.pancisin.bookster.models.MetaField;
+import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Page;
@@ -40,8 +40,8 @@ import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
-import com.pancisin.bookster.repository.ConferenceMetaFieldRepository;
-import com.pancisin.bookster.repository.ConferenceMetaValueRepository;
+import com.pancisin.bookster.repository.MetaFieldRepository;
+import com.pancisin.bookster.repository.MetaValueRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -70,10 +70,10 @@ public class ConferenceController {
 	private ConferenceAdministratorRepository caRepository;
 
 	@Autowired
-	private ConferenceMetaFieldRepository cmfRepository;
+	private MetaFieldRepository cmfRepository;
 
 	@Autowired
-	private ConferenceMetaValueRepository cmvRepository;
+	private MetaValueRepository cmvRepository;
 
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
@@ -114,23 +114,19 @@ public class ConferenceController {
 	// @JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long conference_id) {
-		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(caattendeeRepository.findByConference(conference_id));
 	}
 
 	@PostMapping("/attend")
 	@Transactional
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
-	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<ConferenceMetaValue> meta) {
+	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<MetaValue> meta) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Conference conference = conferenceRepository.findOne(conference_id);
+
 		ConferenceAttendee attendee = new ConferenceAttendee(user, conference, meta);
-		final ConferenceAttendee att = caattendeeRepository.save(attendee);
-		
-		meta.stream().forEach(x -> x.setAttendee(att));
-		cmvRepository.save(meta);
-		
-		return ResponseEntity.ok(attendee);
+		attendee.setMeta(meta);
+		return ResponseEntity.ok(caattendeeRepository.save(attendee));
 	}
 
 	@PutMapping("/cancel-attend")
@@ -158,15 +154,18 @@ public class ConferenceController {
 	@GetMapping("/meta-field")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> getMetaFields(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(cmfRepository.findByConferenceId(conference_id));
+		Conference conference = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(conference.getMetaFields());
 	}
 
 	@PostMapping("/meta-field")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
-	public ResponseEntity<?> postMetaField(@PathVariable Long conference_id, @RequestBody ConferenceMetaField field) {
+	public ResponseEntity<?> postMetaField(@PathVariable Long conference_id, @RequestBody MetaField field) {
 		Conference conference = conferenceRepository.findOne(conference_id);
-		field.setConference(conference);
-		return ResponseEntity.ok(cmfRepository.save(field));
+		field = cmfRepository.save(field);
+		conference.addMetaField(field);
+		conferenceRepository.save(conference);
+		return ResponseEntity.ok(field);
 	}
 
 	@PostMapping("/invitation")

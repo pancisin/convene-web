@@ -1,5 +1,6 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +40,8 @@ public class Conference implements IAuthor {
 	private String name;
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "conference")
-	private List<ConferenceMetaField> metaFields;
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<MetaField> metaFields;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
@@ -72,6 +73,13 @@ public class Conference implements IAuthor {
 		return null;
 	}
 
+	public void addMetaField(MetaField field) {
+		if (this.metaFields == null)
+			this.metaFields = new ArrayList<MetaField>();
+		
+		this.metaFields.add(field);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -128,5 +136,9 @@ public class Conference implements IAuthor {
 
 	public List<ConferenceAttendee> getAttendees() {
 		return attendees;
+	}
+
+	public List<MetaField> getMetaFields() {
+		return metaFields;
 	}
 }

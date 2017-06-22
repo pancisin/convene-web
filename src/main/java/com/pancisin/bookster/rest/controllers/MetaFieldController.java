@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.ConferenceMetaField;
-import com.pancisin.bookster.repository.ConferenceMetaFieldRepository;
+import com.pancisin.bookster.models.MetaField;
+import com.pancisin.bookster.repository.MetaFieldRepository;
 
 @RestController
-@RequestMapping("/api/conference-meta-field/{field_id}")
-public class ConferenceMetaFieldController {
+@RequestMapping("/api/meta-field/{field_id}")
+public class MetaFieldController {
 
 	@Autowired
-	private ConferenceMetaFieldRepository cmfRepository;
+	private MetaFieldRepository cmfRepository;
 
 	@GetMapping
 	public ResponseEntity<?> getField(@PathVariable Long field_id) {
@@ -26,9 +26,8 @@ public class ConferenceMetaFieldController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> putField(@PathVariable Long field_id, @RequestBody ConferenceMetaField field) {
-		ConferenceMetaField stored = cmfRepository.findOne(field_id);
-		field.setConference(stored.getConference());
+	public ResponseEntity<?> putField(@PathVariable Long field_id, @RequestBody MetaField field) {
+		MetaField stored = cmfRepository.findOne(field_id);
 		return ResponseEntity.ok(cmfRepository.save(field));
 	}
 
