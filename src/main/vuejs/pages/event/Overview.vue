@@ -26,10 +26,7 @@
         </div>
       </div>
       <div class="col-md-6" v-if="edit">
-        <div class="fileupload waves-effect">
-          <img :src="event.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
-          <input type="file" class="upload" @change="onLogoChange">
-        </div>
+        <image-upload v-model="event.bannerUrl" />
       </div>
     </div>
   
@@ -49,6 +46,8 @@
 <script>
 import TextEditor from '../../elements/TextEditor.vue'
 import DatePicker from '../../elements/DatePicker.vue'
+import ImageUpload from '../../elements/ImageUpload.vue'
+
 export default {
   props:
   {
@@ -75,7 +74,7 @@ export default {
     }
   },
   components: {
-    TextEditor, DatePicker
+    TextEditor, DatePicker, ImageUpload
   },
   data() {
     return {
@@ -126,24 +125,6 @@ export default {
           } else this.$error(response.statusText, response.bodyText)
         })
       }
-    },
-    onLogoChange(e) {
-      var self = this;
-
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-
-      var file = files[0];
-
-      var image = new Image();
-      var reader = new FileReader();
-
-      reader.onload = (e) => {
-        self.event.bannerUrl = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
     },
     getPlaces() {
       if (this.event.author == null) return;

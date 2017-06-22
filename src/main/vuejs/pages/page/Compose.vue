@@ -46,10 +46,7 @@
       </panel>
     </div>
     <div class="col-md-4" v-if="edit">
-      <div class="fileupload waves-effect">
-        <img :src="page.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
-        <input type="file" class="upload" @change="onLogoChange">
-      </div>
+      <image-upload v-model="page.bannerUrl" />
     </div>
   </div>
 </template>
@@ -58,6 +55,7 @@
 import TextEditor from '../../elements/TextEditor.vue'
 import { mapActions } from 'vuex'
 import PublicApi from '../../services/api/public.api.js'
+import ImageUpload from '../../elements/ImageUpload.vue'
 
 export default {
   name: 'page-compose',
@@ -86,7 +84,7 @@ export default {
     }
   },
   components: {
-    TextEditor
+    TextEditor, ImageUpload
   },
   created() {
     this.getCategories();
@@ -101,12 +99,12 @@ export default {
     ]),
     submit() {
       if (this.edit) {
-        this.api.putPage(page => {
+        this.api.putPage(this.page, page => {
           this.$emit('updated', page);
           this.$success('Success !', 'Page ' + page.name + ' has been updated.')
         })
       } else {
-        this.api.postPage(page => {
+        this.api.postPage(this.page, page => {
           this.addPage(page);
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
           this.$router.push({ name: 'page.settings', params: { id: page.id } });
@@ -118,24 +116,6 @@ export default {
       PublicApi.getCategories(categories => {
         this.categories = categories;
       })
-    },
-    onLogoChange(e) {
-      var self = this;
-
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
-        return;
-
-      var file = files[0];
-
-      var image = new Image();
-      var reader = new FileReader();
-
-      reader.onload = (e) => {
-        self.page.bannerUrl = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
     },
     getBranches() {
       if (this.page.category == null) return;
