@@ -1,9 +1,9 @@
 package com.pancisin.bookster.models;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,8 +42,9 @@ public class ConferenceMetaField {
 	@OneToMany(mappedBy = "field")
 	private List<ConferenceMetaValue> values;
 
+	@ElementCollection
 	@Column
-	private Map<String, String> options;
+	private List<String> options;
 
 	@Column
 	private boolean optional;
@@ -77,11 +78,11 @@ public class ConferenceMetaField {
 		this.description = description;
 	}
 
-	public Map<String, String> getOptions() {
+	public List<String> getOptions() {
 		return options;
 	}
 
-	public void setOptions(Map<String, String> options) {
+	public void setOptions(List<String> options) {
 		this.options = options;
 	}
 

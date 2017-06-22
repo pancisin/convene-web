@@ -1,12 +1,28 @@
 <template>
   <div class="container">
-    <h1 v-if="conference != null">
+    <h2 v-if="conference != null">
       {{conference.name}}
-    </h1>
+    </h2>
   
     <div class="row">
-      <div class="col-md-4 col-md-offset-4">
-        <attend-form />
+      <div class="col-md-3">
+      </div>
+  
+      <div class="col-md-6">
+        <panel>
+          <div v-html="conference.summary"></div>
+        </panel>
+      </div>
+  
+      <div class="col-md-3">
+        <panel v-if="attend_status == 'INACTIVE'">
+          <span slot="title">Register</span>
+          <attend-form />
+        </panel>
+        <panel v-else>
+          <span slot="title">Details</span>
+
+        </panel>
       </div>
     </div>
   </div>
@@ -29,12 +45,17 @@ export default {
   data() {
     return {
       conference: null,
+      attend_status: false,
     }
   },
   created() {
     var injector = new ConferenceInjector(this.$route.params.id);
     injector.getConference(conference => {
       this.conference = conference;
+    })
+
+    injector.getAttendStatus(status => {
+      this.attend_status = status;
     })
   },
   methods: {

@@ -4,10 +4,15 @@
       <label v-text="field.name"></label>
   
       <input v-if="field.type == 'NUMBER'" v-model="meta_values[index].value" type="number" class="form-control" />
+      <select v-else-if="field.type == 'SELECT'" v-model="meta_values[index].value" class="form-control">
+        <option v-for="option in field.options" :value="option">{{ option }}</option>
+      </select>
       <input v-else="field.type == 'TEXT'" v-model="meta_values[index].value" type="text" class="form-control" />
     </div>
   
-    <input type="submit" class="btn btn-primary btn-rounded" />
+    <div class="text-center">
+      <input type="submit" class="btn btn-primary btn-rounded" />
+    </div>
   </form>
 </template>
 

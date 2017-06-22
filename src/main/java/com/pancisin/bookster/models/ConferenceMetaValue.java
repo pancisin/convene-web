@@ -49,4 +49,12 @@ public class ConferenceMetaValue {
 	public Long getId() {
 		return id;
 	}
+
+	public ConferenceAttendee getAttendee() {
+		return attendee;
+	}
+
+	public void setAttendee(ConferenceAttendee attendee) {
+		this.attendee = attendee;
+	}
 }

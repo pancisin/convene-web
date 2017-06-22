@@ -3,6 +3,8 @@ package com.pancisin.bookster.rest.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
@@ -117,12 +119,18 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/attend")
+	@Transactional
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<ConferenceMetaValue> meta) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Conference conference = conferenceRepository.findOne(conference_id);
 		ConferenceAttendee attendee = new ConferenceAttendee(user, conference, meta);
-		return ResponseEntity.ok(caattendeeRepository.save(attendee));
+		final ConferenceAttendee att = caattendeeRepository.save(attendee);
+		
+		meta.stream().forEach(x -> x.setAttendee(att));
+		cmvRepository.save(meta);
+		
+		return ResponseEntity.ok(attendee);
 	}
 
 	@PutMapping("/cancel-attend")
