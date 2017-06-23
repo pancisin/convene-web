@@ -4,7 +4,7 @@
       <div class="col-sm-9" :class="{ 'col-sm-9' : event.bannerUrl }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
-            <img :src="event.bannerUrl" />
+            <img :src="event.bannerUrl">
             <h3 class="panel-title">{{ event.name }}</h3>
             <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('LL') }} {{ event.startsAt }}
               <br>Usporiadatel : {{ event.author.displayName }}</p>
@@ -37,7 +37,7 @@
                 </a>
   
                 <div class="timeline-2 m-t-20">
-                  <div class="time-item" v-for="p in event.programme">
+                  <div class="time-item" v-for="p in event.programme" :key="p.id">
                     <div class="item-info">
                       <small class="text-muted" v-text="p.time"></small>
                       <p>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <img class="img-poster m-b-20" :src="event.bannerUrl" />
+        <img class="img-poster m-b-20" :src="event.bannerUrl">
   
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
@@ -76,6 +76,10 @@
         </panel>
       </div>
     </div>
+  </div>
+  <div v-else>
+
+
   </div>
 </template>
 

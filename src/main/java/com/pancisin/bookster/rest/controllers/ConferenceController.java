@@ -27,6 +27,7 @@ import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.storage.StorageService;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
+import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.ConferenceAttendee;
@@ -224,5 +225,21 @@ public class ConferenceController {
 
 		caRepository.save(pa);
 		return ResponseEntity.ok(pa);
+	}
+	
+	@PostMapping("/article")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	public ResponseEntity<?> postArticle(@PathVariable Long conference_id, @RequestBody Article article) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		stored.addArticle(article);
+		conferenceRepository.save(stored);
+		return ResponseEntity.ok(article);
+	}
+	
+	@GetMapping("/article")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
+	public ResponseEntity<?> getArticles(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(stored.getArticles());
 	}
 }

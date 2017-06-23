@@ -66,6 +66,10 @@ public class Conference implements IAuthor {
 	private String bannerUrl;
 
 	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Article> articles;
+	
+	@JsonIgnore
 	public User getOwner() {
 		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
 				.filter(x -> x.getRole() == PageRole.ROLE_OWNER).findFirst();
@@ -74,6 +78,13 @@ public class Conference implements IAuthor {
 			return owner.get().getUser();
 
 		return null;
+	}
+	
+	public void addArticle(Article article) {
+		if (this.articles == null)
+			this.articles = new ArrayList<Article>();
+		
+		this.articles.add(article);
 	}
 	
 	public void addMetaField(MetaField field) {
@@ -151,5 +162,13 @@ public class Conference implements IAuthor {
 
 	public void setBannerUrl(String bannerUrl) {
 		this.bannerUrl = bannerUrl;
+	}
+
+	public List<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
 	}
 }

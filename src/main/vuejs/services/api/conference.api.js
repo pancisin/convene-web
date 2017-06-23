@@ -109,4 +109,20 @@ export default {
       success(response.body);
     })
   },
+  getArticles(id, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}/article`;
+    Vue.http.get(url).then(response => {
+      success(response.body);
+    })
+  },
+  postArticle(id, article, success) {
+    if (id == null || id == '') throw 'missing entity id';
+
+    var url = `${this.base_url}/${id}/article`;
+    Vue.http.post(url, article).then(response => {
+      success(response.body);
+    })
+  }
 }

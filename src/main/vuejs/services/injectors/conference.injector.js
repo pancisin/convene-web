@@ -70,4 +70,12 @@ export default class ConferenceInjector {
   putCancelAttend(success) {
     ConferenceApi.putCancelAttend(this.conference_id, success);
   }
+
+  getArticles(success) {
+    ConferenceApi.getArticles(this.conference_id, success);
+  }
+
+  postArticle(article, success) {
+    ConferenceApi.postArticle(this.conference_id, article, success);
+  }
 }

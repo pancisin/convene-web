@@ -96,6 +96,11 @@
               </router-link>
             </li>
             <li slot="item">
+              <router-link :to="{ name: 'conference.articles', params: { id : conference.id }}" class="list-group-item waves-effect">
+                {{ $t('admin.page.articles') }}
+              </router-link>
+            </li>
+            <li slot="item">
               <router-link :to="{ name: 'conference.administrators', params: { id: conference.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.administrators') }}
               </router-link>

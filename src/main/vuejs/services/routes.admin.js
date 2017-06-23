@@ -74,6 +74,11 @@ export default [
             component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
           }
         ]
+      },
+      {
+        path: 'articles',
+        name: 'conference.articles',
+        component: resolve => require(['../pages/templates/Articles.vue'], resolve)
       }
     ]
   },
@@ -102,6 +107,11 @@ export default [
         component: resolve => require(['../pages/event/Attendees.vue'], resolve)
       }
     ]
+  },
+  {
+    path: 'article/:id',
+    name: 'article',
+    component: resolve => require(['../pages/Article.vue'], resolve)
   },
   {
     path: 'page/create',

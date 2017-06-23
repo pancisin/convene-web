@@ -10,12 +10,12 @@
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.date }">
           <label class="control-label">Date</label>
-          <date-picker v-model="event.date" />
+          <date-picker v-model="event.date"></date-picker>
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.visibility }">
           <label class="control-label">Visibility</label>
           <select v-model="event.visibility" class="form-control">
-            <option :value="option" v-for="option in visibility_options" v-text="option"></option>
+            <option :value="option" v-for="(option, index) in visibility_options" v-text="option" :key="index"></option>
           </select>
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.place }">

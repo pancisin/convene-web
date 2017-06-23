@@ -195,6 +195,11 @@ public class User implements UserDetails, Principal, IAuthor {
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return this.firstName + " " + this.lastName;
+	}
 
 	public Long getId() {
 		return id;

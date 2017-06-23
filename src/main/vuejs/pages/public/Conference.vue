@@ -5,20 +5,30 @@
     </h3>
   
     <div class="row">
-      <div class="col-md-3">
-        <img :src="conference.bannerUrl" class="img-poster" />
-      </div>
+      <div class="col-md-9">
   
-      <div class="col-md-6">
-        <panel>
-          <div v-html="conference.summary" v-if="conference != null"></div>
+        <div class="row">
+          <div class="col-md-4">
+            <img :src="conference.bannerUrl" class="img-poster">
+          </div>
+          <div class="col-md-8">
+            <panel>
+              <div v-html="conference.summary" v-if="conference != null"></div>
+            </panel>
+          </div>
+        </div>
+  
+        <panel type="primary">
+          <span slot="title">News</span>
+  
+          <articles-list></articles-list>
         </panel>
       </div>
   
       <div class="col-md-3">
         <panel v-if="attend_status != 'ACTIVE'" type="success">
           <span slot="title">Join conference</span>
-          <attend-form @statusChanged="statusChanged" />
+          <attend-form @statusChanged="statusChanged"></attend-form>
         </panel>
         <panel v-else>
           <span slot="title">Details</span>
@@ -32,6 +42,7 @@
 <script>
 import ConferenceInjector from '../../services/injectors/conference.injector.js'
 import AttendForm from './conference/Attend.form.vue'
+import ArticlesList from '../../elements/ArticlesList.vue'
 
 export default {
   name: 'conference',
@@ -41,7 +52,7 @@ export default {
     }
   },
   components: {
-    AttendForm
+    AttendForm, ArticlesList
   },
   data() {
     return {
