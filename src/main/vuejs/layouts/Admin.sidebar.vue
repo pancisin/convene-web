@@ -35,10 +35,10 @@
   
             <span v-text="page.name" slot="title"></span>
             <!--<li slot="item">
-                  <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                    {{ $t('admin.page.overview') }}
-                  </router-link>
-                </li>-->
+                    <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
+                      {{ $t('admin.page.overview') }}
+                    </router-link>
+                  </li>-->
             <li slot="item">
               <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
@@ -87,32 +87,32 @@
             <span v-text="conference.name" slot="title"></span>
             <li slot="item">
               <router-link :to="{ name: 'conference.overview', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.overview') }}
+                {{ $t('admin.conference.overview') }}
               </router-link>
             </li>
             <li slot="item">
               <router-link :to="{ name: 'conference.events', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.events') }}
+                {{ $t('admin.conference.events') }}
               </router-link>
             </li>
             <li slot="item">
               <router-link :to="{ name: 'conference.articles', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.articles') }}
+                {{ $t('admin.conference.articles') }}
               </router-link>
             </li>
             <li slot="item">
               <router-link :to="{ name: 'conference.administrators', params: { id: conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.administrators') }}
+                {{ $t('admin.conference.administrators') }}
               </router-link>
             </li>
             <li slot="item">
               <router-link :to="{ name: 'conference.attendees', params: { id : conference.id }}" class="list-group-item waves-effect">
-                Attendees
+                {{ $t('admin.conference.attendees') }}
               </router-link>
             </li>
             <li slot="item">
               <router-link :to="{ name: 'conference.settings', params: { id : conference.id }}" class="list-group-item waves-effect">
-                Settings
+                {{ $t('admin.conference.settings') }}
               </router-link>
             </li>
           </drop-down>

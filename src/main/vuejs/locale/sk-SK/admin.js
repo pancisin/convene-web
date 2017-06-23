@@ -24,6 +24,15 @@ export default {
     services: 'Služby',
     requests: 'Žiadosti'
   },
+  conference: {
+    overview: 'Prehľad',
+    events: 'Podujatia',
+    articles: 'Články',
+    settings: 'Nastavenia',
+    places: 'Miesta',
+    attendees: 'Hostia',
+    administrators: 'Správcovia',
+  },
   service: {
     name: 'Názov',
     detail: 'Detail',

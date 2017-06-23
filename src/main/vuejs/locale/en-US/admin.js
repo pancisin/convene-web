@@ -24,6 +24,15 @@ export default {
     services: 'Services',
     requests: 'Requests'
   },
+  conference: {
+    overview: 'Overview',
+    events: 'Events',
+    articles: 'Articles',
+    settings: 'Settings',
+    places: 'Places',
+    attendees: 'Attendees',
+    administrators: 'Administrators',
+  },
   service: {
     name: 'Name',
     detail: 'Detail',
