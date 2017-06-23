@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
@@ -21,28 +23,33 @@ public class Article {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	@Column
 	private String title;
-	
+
 	@Lob
 	@Column
 	private String content;
-	
+
 	@Column
 	private String bannerUrl;
-	
+
 	@ManyToOne
-//	@JsonRawValue(true)
+	// @JsonRawValue(true)
 	@JsonIgnore
 	private User author;
 
 	@Column
 	private boolean published;
-	
+
+	@JsonIgnore
+	@ManyToOne
+	@JoinTable(name = "conferences_articles", joinColumns = @JoinColumn(name = "articles_id"), inverseJoinColumns = @JoinColumn(name = "conference_id"))
+	private Conference conference;
+
 	public String getTitle() {
 		return title;
 	}
@@ -89,5 +96,13 @@ public class Article {
 
 	public void setPublished(boolean published) {
 		this.published = published;
+	}
+
+	public Conference getConference() {
+		return conference;
+	}
+
+	public void setConference(Conference conference) {
+		this.conference = conference;
 	}
 }

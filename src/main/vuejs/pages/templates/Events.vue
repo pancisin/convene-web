@@ -75,7 +75,7 @@
     </context-menu>
   
     <div class="text-center">
-      <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate" />
+      <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate"></paginator>
     </div>
   
     <div class="text-center">

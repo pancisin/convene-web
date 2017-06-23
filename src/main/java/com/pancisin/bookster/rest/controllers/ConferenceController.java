@@ -41,6 +41,7 @@ import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
 import com.pancisin.bookster.repository.MetaFieldRepository;
@@ -81,6 +82,9 @@ public class ConferenceController {
 	@Autowired
 	private StorageServiceImpl storageService;
 
+	@Autowired
+	private ArticleRepository articleRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -226,17 +230,14 @@ public class ConferenceController {
 		caRepository.save(pa);
 		return ResponseEntity.ok(pa);
 	}
-	
+
 	@PostMapping("/article")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postArticle(@PathVariable Long conference_id, @RequestBody Article article) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		
 		article.setPublished(false);
-		
-		stored.addArticle(article);
-		conferenceRepository.save(stored);
-		return ResponseEntity.ok(article);
+		article.setConference(stored);
+		return ResponseEntity.ok(articleRepository.save(article));
 	}
 	
 	@GetMapping("/article")

@@ -16,17 +16,18 @@
             <label class="control-label">Content</label>
             <text-editor v-model="article.content"></text-editor>
           </div>
-  
         </div>
   
-        <div class="col-md-4">
+        <div class="col-md-4" v-if="edit">
           <image-upload v-model="article.bannerUrl"></image-upload>
         </div>
       </div>
   
       <div class="text-center m-t-20">
-        <a v-if="article.published" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
-        <a v-else class="btn btn-success btn-rounded" @click="togglePublished">Publish</a>
+        <span v-if="edit">
+          <a v-if="article.published" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
+          <a v-else class="btn btn-success btn-rounded" @click="togglePublished">Publish</a>
+        </span>
         <a class="btn btn-primary btn-rounded" @click="submit">Submit</a>
       </div>
     </panel>

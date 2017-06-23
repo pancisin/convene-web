@@ -18,5 +18,10 @@ export default {
     Vue.http.patch(`api/article/${id}/toggle-published`).then(response => {
       success(response.body);
     })
+  },
+  deleteArticle(id, success) {
+    Vue.http.delete(`api/article/${id}`).then(response => {
+      success(response.body);
+    })
   }
 }

@@ -51,7 +51,7 @@ public class ArticleController {
 		articleRepository.delete(article_id);
 		return ResponseEntity.ok("success");
 	}
-	
+
 	@PatchMapping("/toggle-published")
 	public ResponseEntity<?> togglePublished(@PathVariable Long article_id) {
 		Article stored = articleRepository.findOne(article_id);

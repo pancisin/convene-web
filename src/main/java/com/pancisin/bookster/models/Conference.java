@@ -66,7 +66,7 @@ public class Conference implements IAuthor {
 	private String bannerUrl;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "conference")
 	private List<Article> articles;
 	
 	@JsonIgnore

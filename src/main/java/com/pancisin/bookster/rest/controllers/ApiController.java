@@ -18,7 +18,7 @@ public class ApiController {
 
 	@Autowired
 	private ConferenceRepository conferenceRepository;
-	
+
 	@GetMapping("/events/{page}/{size}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
