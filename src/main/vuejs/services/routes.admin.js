@@ -79,6 +79,11 @@ export default [
         path: 'articles',
         name: 'conference.articles',
         component: resolve => require(['../pages/templates/Articles.vue'], resolve)
+      },
+      {
+        path: 'create-article',
+        name: 'conference.article.create',
+        component: resolve => require(['../pages/Article.vue'], resolve)
       }
     ]
   },
@@ -109,7 +114,7 @@ export default [
     ]
   },
   {
-    path: 'article/:id',
+    path: 'article/:article_id',
     name: 'article',
     component: resolve => require(['../pages/Article.vue'], resolve)
   },

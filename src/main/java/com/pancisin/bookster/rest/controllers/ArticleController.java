@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +50,12 @@ public class ArticleController {
 	public ResponseEntity<?> deleteArticle(@PathVariable Long article_id) {
 		articleRepository.delete(article_id);
 		return ResponseEntity.ok("success");
+	}
+	
+	@PatchMapping("/toggle-published")
+	public ResponseEntity<?> togglePublished(@PathVariable Long article_id) {
+		Article stored = articleRepository.findOne(article_id);
+		stored.setPublished(!stored.isPublished());
+		return ResponseEntity.ok(articleRepository.save(stored));
 	}
 }

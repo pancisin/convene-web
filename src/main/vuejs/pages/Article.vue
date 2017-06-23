@@ -25,6 +25,8 @@
       </div>
   
       <div class="text-center m-t-20">
+        <a v-if="article.published" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
+        <a v-else class="btn btn-success btn-rounded" @click="togglePublished">Publish</a>
         <a class="btn btn-primary btn-rounded" @click="submit">Submit</a>
       </div>
     </panel>
@@ -38,6 +40,7 @@ import TextEditor from '../elements/TextEditor.vue'
 
 export default {
   name: 'article',
+  inject: ['api'],
   data() {
     return {
       article: {},
@@ -48,7 +51,7 @@ export default {
     ImageUpload, TextEditor
   },
   created() {
-    ArticleApi.getArticle(this.$route.params.id, article => {
+    ArticleApi.getArticle(this.$route.params.article_id, article => {
       this.article = article;
       this.edit = article.id != null;
     })
@@ -60,7 +63,17 @@ export default {
           this.article = article;
           this.$success('Success', `Article ${article.title} has been save !`);
         })
+      } else {
+        this.api.postArticle(this.article, article => {
+          this.$router.push({ name: 'article', params: { article_id: article.id } })
+          this.$success('Success', `Article ${article.title} has been created !`);
+        })
       }
+    },
+    togglePublished() {
+      ArticleApi.togglePublished(this.article.id, article => {
+        this.article.published = article.published;
+      })
     }
   }
 }

@@ -40,6 +40,9 @@ public class Article {
 	@JsonIgnore
 	private User author;
 
+	@Column
+	private boolean published;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -78,5 +81,13 @@ public class Article {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
 }

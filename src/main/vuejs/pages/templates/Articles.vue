@@ -16,7 +16,7 @@
       <tbody>
         <tr v-for="article in articles" :key="article.id">
           <td>
-            <router-link :to="{ name: 'article', params: { id: article.id } }">
+            <router-link :to="{ name: 'article', params: { article_id: article.id } }">
               {{ article.title }}
             </router-link>
           </td>
@@ -24,6 +24,12 @@
         </tr>
       </tbody>
     </table>
+  
+    <div class="text-center">
+      <router-link :to="{ name: 'conference.article.create' }" class="btn btn-primary btn-rounded">
+        Create article
+      </router-link>
+    </div>
   </panel>
 </template>
 

@@ -231,6 +231,9 @@ public class ConferenceController {
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postArticle(@PathVariable Long conference_id, @RequestBody Article article) {
 		Conference stored = conferenceRepository.findOne(conference_id);
+		
+		article.setPublished(false);
+		
 		stored.addArticle(article);
 		conferenceRepository.save(stored);
 		return ResponseEntity.ok(article);
