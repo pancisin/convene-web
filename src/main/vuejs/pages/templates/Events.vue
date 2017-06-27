@@ -103,12 +103,18 @@ export default {
   },
   created() {
     try {
-      this.getEvents(0);
+      this.initialize();
     } catch (ex) {
 
     }
   },
+  watch: {
+    '$route': 'initialize'
+  },
   methods: {
+    initialize() {
+      this.getEvents(0);
+    },
     deleteEvent(event) {
       this.$http.delete('api/event/' + event.id).then(response => {
         this.paginator.content = this.paginator.content.filter(e => {

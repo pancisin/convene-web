@@ -33,6 +33,9 @@ export default {
       api: new PageInjector(this.$route.params.id),
     }
   },
+  watch: {
+    '$route.params.id': 'getPage'
+  },
   created() {
     this.getPage();
   },

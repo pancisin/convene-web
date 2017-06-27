@@ -67,6 +67,7 @@ public class Event {
 
 	@OneToMany(mappedBy = "event")
 	@OrderBy("time")
+	@JsonIgnore
 	private List<Programme> programme;
 
 	@JsonIgnore

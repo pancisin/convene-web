@@ -15,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="place in places">
+            <tr v-for="place in places" :key="place.id">
               <td>
                 <router-link :to="{ name: 'place', params: { id: place.id }}" v-text="place.name">
                 </router-link>

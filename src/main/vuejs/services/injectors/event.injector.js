@@ -17,14 +17,34 @@ export default class PageInjector {
   }
 
   putEvent(event, success) {
-    
+    EventApi.putEvent(this.event_id, event, success);
   }
 
-  getAttendess(success) {
+  getAttendanceStatus(success) {
+    EventApi.getAttendanceStatus(this.event_id, success);
+  }
+
+  toggleAttendanceStatus(success) {
+    EventApi.toggleAttendanceStatus(this.event_id, success);
+  }
+
+  getAttendees(success) {
     EventApi.getAttendees(this.event_id, success);
   }
 
   getInvitations(success) {
     EventApi.getInvitations(this.event_id, success);
+  }
+
+  postInvitation(invitation, success) {
+    EventApi.postInvitation(this.event_id, invitation, success);
+  }
+
+  getProgramme(success) {
+    EventApi.getProgramme(this.event_id, success);
+  }
+
+  postProgramme(programme, success) {
+    EventApi.postProgramme(this.event_id, programme, success);
   }
 }

@@ -58,23 +58,25 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
-	
+
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-//		String targetType = (String) targetDomainObject;
-//
-//		User user = (User) authentication.getPrincipal();
-//		final User stored = userRepository.findOne(user.getId());
-//
-//		switch (targetType) {
-//		case "event":
-//			if ("create".equals(permission))
-//				return stored.getEvents().size() < stored.getLicense().getSubscription().getEventLimit();
-//		case "page":
-//			if ("create".equals(permission))
-//				return stored.getPages().size() < stored.getLicense().getSubscription().getPageLimit();
-//
-//		}
+		// String targetType = (String) targetDomainObject;
+		//
+		// User user = (User) authentication.getPrincipal();
+		// final User stored = userRepository.findOne(user.getId());
+		//
+		// switch (targetType) {
+		// case "event":
+		// if ("create".equals(permission))
+		// return stored.getEvents().size() <
+		// stored.getLicense().getSubscription().getEventLimit();
+		// case "page":
+		// if ("create".equals(permission))
+		// return stored.getPages().size() <
+		// stored.getLicense().getSubscription().getPageLimit();
+		//
+		// }
 
 		return false;
 	}
@@ -140,8 +142,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean checkEventVisibility(Event event, User user) {
-		// TODO : implement invitations;
-		return event.getVisibility() == Visibility.PUBLIC || checkEventOwnership(event, user);
+		return event.getVisibility() == Visibility.PUBLIC || checkEventOwnership(event, user)
+				|| event.getInvitations().stream().anyMatch(x -> x.getUser().getId() == user.getId());
 	}
 
 	private boolean checkEventOwnership(Event event, User user) {
@@ -161,7 +163,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		if (oPa.isPresent()) {
 			PageAdministrator pa = oPa.get();
-			return pa.getActive() && (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
+			return pa.getActive()
+					&& (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
 		}
 
 		return false;

@@ -21,12 +21,12 @@
         <div class="form-group" :class="{ 'has-error' : errors.place }">
           <label class="control-label">Place</label>
           <select v-model="event.place" class="form-control">
-            <option :value="place" v-for="place in places" v-text="place.name"></option>
+            <option :value="place" v-for="place in places" v-text="place.name" :key="place.id"></option>
           </select>
         </div>
       </div>
       <div class="col-md-6" v-if="edit">
-        <image-upload v-model="event.bannerUrl" />
+        <image-upload v-model="event.bannerUrl"></image-upload>
       </div>
     </div>
   

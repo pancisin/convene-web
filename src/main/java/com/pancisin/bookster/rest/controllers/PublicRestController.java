@@ -28,6 +28,7 @@ import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
+import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
@@ -48,6 +49,9 @@ public class PublicRestController {
 
 	@Autowired
 	private BranchRepository branchRepository;
+
+	@Autowired
+	private ConferenceRepository conferenceRepository;
 
 	@GetMapping("/events/{page}/{limit}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
@@ -85,7 +89,7 @@ public class PublicRestController {
 		else
 			return null;
 	}
-	
+
 	@GetMapping("/event/{event_id}/related")
 	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
@@ -132,13 +136,16 @@ public class PublicRestController {
 
 	@GetMapping("/page/{page_id}/event")
 	public ResponseEntity<?> getPageEvents(@PathVariable Long page_id) {
-//		return ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
-		return ResponseEntity.ok(eventRepository.getByPage(page_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
+		// return
+		// ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
+		return ResponseEntity
+				.ok(eventRepository.getByPage(page_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/user/{user_id}/event")
 	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id) {
-		return ResponseEntity.ok(eventRepository.getByUser(user_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
+		return ResponseEntity
+				.ok(eventRepository.getByUser(user_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/categories")
@@ -160,19 +167,16 @@ public class PublicRestController {
 	public ResponseEntity<?> getSubscriptions() {
 		return ResponseEntity.ok(Subscription.values());
 	}
-	
+
 	@GetMapping("/meta-types")
 	public ResponseEntity<?> getMetaTypes() {
 		return ResponseEntity.ok(MetaType.values());
 	}
 
-	@GetMapping("/conferences")
-	public ResponseEntity<?> getConferences() {
-		return null;
-	}	
-	
-	@Autowired
-	private EventBotService eventBot;
+	@GetMapping("/conferences/{page}/{size}")
+	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
+	}
 
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)

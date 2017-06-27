@@ -181,7 +181,7 @@ export default [
       {
         path: 'places',
         name: 'page.places',
-        component: resolve => require(['../pages/page/Places.vue'], resolve)
+        component: resolve => require(['../pages/templates/Places.vue'], resolve)
       },
       {
         path: 'create-place',

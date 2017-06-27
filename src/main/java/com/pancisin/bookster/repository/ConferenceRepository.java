@@ -12,4 +12,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
 	@Query("SELECT DISTINCT conference FROM Conference conference LEFT JOIN conference.invitations invitation LEFT JOIN conference.conferenceAdministrators administrator WHERE (conference.visibility = 'PUBLIC' OR invitation.user.id = :user_id OR administrator.user.id = :user_id)")
 	public Page<Conference> getForUser(@Param("user_id") Long user_id, Pageable pageable);
+
+	@Query("SELECT conference FROM Conference conference WHERE conference.visibility = 'PUBLIC'")
+	public Page<Conference> getPublic(Pageable pageable);
 }

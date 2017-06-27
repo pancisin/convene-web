@@ -2,7 +2,6 @@
 import AttendeesTemplate from '../templates/Attendees.vue'
 export default {
   name: 'event-attendees',
-  props: ['event'],
   extends: AttendeesTemplate,
   inject: ['api'],
   created() {
@@ -13,17 +12,15 @@ export default {
   },
   methods: {
     initialize() {
-      if (this.event.id != null) {
-        this.api.getAttendees(this.event.id, attendees => {
-          this.attendees = attendees;
-        })
-        this.api.getInvitations(this.event.id, invitations => {
-          this.invitations = invitations;
-        })
-      }
+      this.api.getAttendees(attendees => {
+        this.attendees = attendees;
+      })
+      this.api.getInvitations(invitations => {
+        this.invitations = invitations;
+      })
     },
     invite() {
-      this.api.postInvitation(this.event.id, this.invitation, invitation => {
+      this.api.postInvitation(this.invitation, invitation => {
         this.invitations.push(invitation);
         this.invitation = {};
       })

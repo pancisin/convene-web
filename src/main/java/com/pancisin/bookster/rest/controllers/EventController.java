@@ -95,6 +95,12 @@ public class EventController {
 		return ResponseEntity.ok("success");
 	}
 
+	@GetMapping("/programme")
+	public ResponseEntity<?> getProgramme(@PathVariable Long event_id) {
+		Event event = eventRepository.findOne(event_id);
+		return ResponseEntity.ok(event.getProgramme());
+	}
+	
 	@PostMapping("/programme")
 	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> postProgramme(@PathVariable Long event_id, @RequestBody Programme programme) {

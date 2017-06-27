@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import EventApi from '../services/api/event.api.js'
+import EventInjector from '../services/injectors/event.injector.js'
+
 export default {
   name: 'event',
   data() {
@@ -46,7 +47,7 @@ export default {
   },
   provide() {
     return {
-      api: EventApi,
+      api: new EventInjector(this.$route.params.id),
     }
   },
   watch: {
@@ -57,18 +58,12 @@ export default {
   },
   methods: {
     getEvent() {
-      var event_id = this.$route.params.id;
+      var injector = new EventInjector(this.$route.params.id);
 
-      if (this.event.id != null && this.event.id == event_id)
-        return;
-
-      if (event_id != null) {
-        EventApi.getEvent(event_id, true, event => {
-          this.event = event;
-          this.edit = true;
-        })
-      } else
-        this.event = new Object();
+      injector.getEvent(true, event => {
+        this.event = event;
+        this.edit = event.id != null;
+      })
     },
     eventUpdated(event) {
       this.event = event;

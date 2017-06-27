@@ -38,7 +38,7 @@ public class Page implements IAuthor {
 	private Long id;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "page", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "page", fetch = FetchType.EAGER)
 	private List<PageAdministrator> pageAdministrators;
 
 	@Column

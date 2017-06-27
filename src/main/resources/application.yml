@@ -29,6 +29,10 @@ jwt:
   
 paylane:
   api_key: 45e4f38452d71554195c13f0acee84962fb82a13
+  
+mailjet: 
+  username: 80c51a39aa13ea96c2ecc26bdeb11baf
+  password: 3ec24bb92abc4709089069778f2f18b8
 ---
 spring:
   profiles: local
@@ -66,10 +70,10 @@ spring:
             directory_provider: filesystem
             indexBase: /uploads/lucene/indexes
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: pancisin.patrick@gmail.com
-    password: Papancisin1
+    host: in-v3.mailjet.com
+    port: 465
+    username: 80c51a39aa13ea96c2ecc26bdeb11baf
+    password: 3ec24bb92abc4709089069778f2f18b8
     properties:
       mail:
         smtp:

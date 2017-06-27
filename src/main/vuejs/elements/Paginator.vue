@@ -5,7 +5,7 @@
         <i class="fa fa-angle-left"></i>
       </a>
     </li>
-    <li v-for="(page, index) in paginator.totalPages" :class="{'active' : paginator.number == index}">
+    <li v-for="(page, index) in paginator.totalPages" :class="{'active' : paginator.number == index}" :key="index">
       <a v-text="page" @click="paginatorNavigate(null, index)"></a>
     </li>
     <li v-if="!paginator.last">
