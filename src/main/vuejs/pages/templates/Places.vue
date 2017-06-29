@@ -46,7 +46,7 @@
 import PlaceApi from '../../services/api/place.api.js'
 export default {
   name: 'places',
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       places: [],
@@ -55,6 +55,14 @@ export default {
   },
   created() {
     this.getPlaces();
+  },
+  computed: {
+    api() {
+      return this.provider.api;
+    }
+  },
+  watch: {
+    '$route': 'getPlaces'
   },
   methods: {
     getPlaces() {

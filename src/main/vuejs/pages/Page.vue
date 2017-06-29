@@ -26,12 +26,17 @@ export default {
     return {
       page: new Object(),
       edit: false,
+      injector: null,
     }
   },
   provide() {
-    return {
-      api: new PageInjector(this.$route.params.id),
-    }
+    const provider = {};
+
+    Object.defineProperty(provider, 'api', {
+      get: () => this.injector
+    });
+
+    return { provider };
   },
   watch: {
     '$route.params.id': 'getPage'
@@ -44,8 +49,8 @@ export default {
       'updatePage',
     ]),
     getPage() {
-      var injector = new PageInjector(this.$route.params.id);
-      injector.getPage(true, page => {
+      this.injector = new PageInjector(this.$route.params.id)
+      this.injector.getPage(true, page => {
         this.page = page;
         this.edit = true;
       })

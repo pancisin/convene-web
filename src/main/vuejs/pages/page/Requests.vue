@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="request in requests">
+        <tr v-for="request in requests" :key="request.id">
           <td v-text="request.email"></td>
           <td>{{ request.date | moment('L') }}</td>
         </tr>
@@ -27,7 +27,7 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'page-requests',
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       requests: [],
@@ -37,10 +37,13 @@ export default {
   created() {
     this.getRequests();
   },
+  watch: {
+    '$route': 'getRequests'
+  },
   methods: {
     getRequests() {
       this.loading = true;
-      this.api.getRequests(requests => {
+      this.provider.api.getRequests(requests => {
         this.requests = requests;
         this.loading = false;
       })

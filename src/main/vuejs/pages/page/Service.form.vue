@@ -36,7 +36,7 @@ import ServiceApi from '../../services/api/service.api.js'
 
 export default {
   name: 'service-form',
-  inject: ['api'],
+  inject: ['provider'],
   props: {
     service: {
       type: Object,
@@ -72,7 +72,7 @@ export default {
           this.$emit('updated', service);
         })
       } else {
-        this.api.postService(this.service, service => {
+        this.provider.api.postService(this.service, service => {
           this.$emit('updated', service);
         })
       }
