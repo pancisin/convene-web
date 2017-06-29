@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-4">
         <ul class="data-list">
-          <li v-for="field in metaFields" :class="{ 'active' : selected && selected.id == field.id }">
+          <li v-for="field in metaFields" :class="{ 'active' : selected && selected.id == field.id }" :key="field.id">
             <a @click="selected = field" class="waves-effect">
               {{ field.name }}
             </a>
@@ -40,7 +40,7 @@
             <label class="control-label">Type: </label>
   
             <select class="form-control" v-model="selected.type">
-              <option v-for="mtype in metaTypes" v-text="mtype"></option>
+              <option v-for="mtype in metaTypes" v-text="mtype" :key="mtype"></option>
             </select>
           </div>
   
@@ -48,7 +48,7 @@
             <label class="control-label">Options: </label>
   
             <ul class="options-list">
-              <li v-for="option in selected.options">
+              <li v-for="option in selected.options" :key="option">
                 {{ option }}
                 <a class="pull-right" @click="deleteOption(option)">
                   <i class="fa fa-times text-danger"></i>
@@ -79,7 +79,7 @@ import MetaFieldApi from '../../../services/api/meta-field.api.js'
 export default {
   name: 'registration-settings',
   props: ['conference'],
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       metaFields: [],
@@ -93,6 +93,11 @@ export default {
   },
   watch: {
     'conference': 'initialize',
+  },
+  computed: {
+    api() {
+      return this.provider.api;
+    } 
   },
   methods: {
     initialize() {
@@ -125,7 +130,7 @@ export default {
     addOption() {
       if (this.selected.options == null)
         this.selected.options = [];
-      
+
       if (this.new_option != null && this.new_option.trim() != "") {
         this.selected.options.push(this.new_option);
         this.new_option = null;

@@ -4,7 +4,12 @@ import AttendeesTemplate from '../templates/Attendees.vue'
 export default {
   name: 'conference-attendees',
   extends: AttendeesTemplate,
-  inject: ['api'],
+  inject: ['provider'],
+  computed: {
+    api() {
+      return this.provider.api;
+    }
+  },
   created() {
     this.initialize();
   },

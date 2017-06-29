@@ -25,24 +25,32 @@ export default {
   data() {
     return {
       conference: new Object(),
-      edit: false
+      edit: false,
+      injector: null,
     }
   },
   provide() {
-    return {
-      api: new ConferenceInjector(this.$route.params.id)
-    }
+    const provider = {};
+
+    Object.defineProperty(provider, 'api', {
+      get: () => this.injector
+    });
+
+    return { provider };
   },
   created() {
     this.getConference();
+  },
+  watch: {
+    '$route.params.id': 'getConference'
   },
   methods: {
     ...mapActions([
       'updateConference'
     ]),
     getConference() {
-      var injector = new ConferenceInjector(this.$route.params.id);
-      injector.getConference(conference => {
+      this.injector = new ConferenceInjector(this.$route.params.id);
+      this.injector.getConference(conference => {
         this.conference = conference;
         this.edit = conference.id != null;
       });

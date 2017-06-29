@@ -56,7 +56,7 @@ import UserApi from '../../services/api/user.api.js'
 
 export default {
   name: 'conference-administrators',
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       administrators: [],
@@ -72,7 +72,10 @@ export default {
   computed: {
     ...mapGetters({
       current: 'getUser',
-    })
+    }),
+    api() {
+      return this.provider.api;
+    }
   },
   created() {
     this.getAdministrators();

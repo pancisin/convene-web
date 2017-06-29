@@ -66,10 +66,15 @@
 import ArticleApi from '../../services/api/article.api.js'
 export default {
   name: 'articles-template',
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       articles: [],
+    }
+  },
+  computed: {
+    api() {
+      return this.provider.api;
     }
   },
   created() {

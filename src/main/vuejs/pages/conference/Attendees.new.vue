@@ -33,7 +33,7 @@
 <script>
 export default {
   name: 'conference-attendees-new',
-  inject: ['api'],
+  inject: ['provider'],
   data() {
     return {
       attendees: [],
@@ -48,6 +48,9 @@ export default {
       return this.attendees.map(x => {
         return x.user;
       })
+    },
+    api() {
+      return this.provider.api;
     }
   },
   methods: {
