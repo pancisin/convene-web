@@ -18,11 +18,23 @@
           </div>
         </div>
   
-        <panel type="primary">
-          <span slot="title">News</span>
+        <div class="row">
+          <div class="col-md-6">
+            <panel>
+              <span slot="title">Events</span>
   
-          <articles-list></articles-list>
-        </panel>
+              <events-list></events-list>
+            </panel>
+          </div>
+          <div class="col-md-6">
+            <panel>
+              <span slot="title">News</span>
+  
+              <articles-list></articles-list>
+            </panel>
+          </div>
+        </div>
+  
       </div>
   
       <div class="col-md-3">
@@ -43,6 +55,7 @@
 import ConferenceInjector from '../../services/injectors/conference.injector.js'
 import AttendForm from './conference/Attend.form.vue'
 import ArticlesList from '../../elements/ArticlesList.vue'
+import EventsList from './conference/Events.list.vue'
 
 export default {
   name: 'conference',
@@ -52,7 +65,7 @@ export default {
     }
   },
   components: {
-    AttendForm, ArticlesList
+    AttendForm, ArticlesList, EventsList
   },
   data() {
     return {

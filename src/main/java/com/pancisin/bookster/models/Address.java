@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -38,6 +39,7 @@ public class Address {
 	@Column
 	private String formatted;
 
+	@JsonBackReference
 	@OneToOne(mappedBy = "address")
 	private Place place;
 

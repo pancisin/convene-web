@@ -33,6 +33,12 @@ paylane:
 mailjet: 
   username: 80c51a39aa13ea96c2ecc26bdeb11baf
   password: 3ec24bb92abc4709089069778f2f18b8
+  
+jsondoc:
+  version: 1.0
+  packages:
+  - com.pancisin.bookster.rest.controllers
+  - com.pancisin.bookster.models
 ---
 spring:
   profiles: local

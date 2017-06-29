@@ -7,7 +7,9 @@
   
       <h4 v-text="article.title"></h4>
       <!--<small>{{ article.created | moment('L') }}</small>-->
-      <p v-strip="article.content.substring(0, 250)"></p>
+      <p v-if="article.content != null" v-strip="article.content.substring(0, 250)"></p>
+
+      <a class="btn btn-link btn-xs pull-right">Read more <i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 </template>

@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "places")
@@ -32,6 +33,7 @@ public class Place {
 	@Column
 	private String description;
 	
+	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 

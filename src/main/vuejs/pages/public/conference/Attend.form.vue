@@ -61,7 +61,7 @@ export default {
   methods: {
     submit() {
       this.api.postAttend(this.meta_values, status => {
-          this.$emit('status-changed', status);
+          this.$emit('statusChanged', status);
       })
     }
   }
