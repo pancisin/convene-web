@@ -1,4 +1,4 @@
-import store from './store.js'
+import store from './store.js';
 export default [
   {
     path: 'dashboard',
@@ -13,10 +13,11 @@ export default [
     component: resolve => require(['../pages/conference/Overview.vue'], resolve),
     beforeEnter: (to, from, next) => {
       var license = store.getters.getLicense;
-      if (license && license.subscription.conferenceLimit > store.getters.getConferences.length)
+      if (license && license.subscription.conferenceLimit > store.getters.getConferences.length) {
         next();
-      else
+      } else {
         next('/pricing');
+      }
     }
   },
   {
@@ -67,11 +68,11 @@ export default [
         children: [
           {
             path: 'information',
-            component: resolve => require(['../pages/conference/settings/Information.vue'], resolve),
+            component: resolve => require(['../pages/conference/settings/Information.vue'], resolve)
           },
           {
             path: 'registration',
-            component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
+            component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve)
           }
         ]
       },
@@ -123,10 +124,11 @@ export default [
     component: resolve => require(['../pages/page/Compose.vue'], resolve),
     beforeEnter: (to, from, next) => {
       var license = store.getters.getLicense;
-      if (license && license.subscription.pageLimit > store.getters.getPages.length)
+      if (license && license.subscription.pageLimit > store.getters.getPages.length) {
         next();
-      else
+      } else {
         next('/pricing');
+      }
     }
   },
   {
@@ -142,7 +144,7 @@ export default [
       {
         path: 'settings',
         name: 'page.settings',
-        component: resolve => require(['../pages/page/Compose.vue'], resolve),
+        component: resolve => require(['../pages/page/Compose.vue'], resolve)
       },
       {
         path: 'events',
@@ -192,8 +194,7 @@ export default [
             edit: false
           }
         )
-      },
-
+      }
     ]
   },
   {
@@ -224,4 +225,4 @@ export default [
     path: '*',
     component: resolve => require(['../pages/error/404.vue'], resolve)
   }
-]
+];

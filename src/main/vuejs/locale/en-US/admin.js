@@ -31,7 +31,7 @@ export default {
     settings: 'Settings',
     places: 'Places',
     attendees: 'Attendees',
-    administrators: 'Administrators',
+    administrators: 'Administrators'
   },
   service: {
     name: 'Name',
@@ -40,4 +40,4 @@ export default {
     price_per_unit: 'Price per unit',
     create: 'Create service'
   }
-}
+};

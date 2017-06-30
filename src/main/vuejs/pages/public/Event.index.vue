@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 m-b-10">
         <router-link to="/create-event" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
         <date-picker v-model="filters.timestamp" inline="true"></date-picker>
       </div>
       <div class="col-md-9">
         <div class="events-list">
-          <router-link :to="'/event/' + event.id" class="event-item clearfix" v-for="event in eventsPaginator.content" :key="event.id">
-            <img v-if="event.bannerUrl != null" :src="event.bannerUrl" />
+          <router-link v-for="event in eventsPaginator.content" :to="'/event/' + event.id" class="event-item clearfix" :key="event.id">
+            <img v-if="event.bannerUrl != null" :src="event.bannerUrl">
   
             <div class="content">
               <h4 v-text="event.name"></h4>
@@ -30,7 +30,7 @@
     </div>
   
     <div class="text-center">
-      <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
+      <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate"></paginator>
     </div>
   </div>
 </template>
@@ -88,7 +88,7 @@ export default {
 
   .event-item {
     clear: both;
-    flex: 49% 1 0;
+    flex: 370px 1 0;
     margin: .5%;
     background: #fff;
     border: 1px solid #ccc;

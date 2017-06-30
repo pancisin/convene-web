@@ -3,27 +3,27 @@ import VueRouter from 'vue-router';
 import Auth from './auth.js';
 Vue.use(VueRouter);
 
-import publicRoutes from './routes.public.js'
-import adminRoutes from './routes.admin.js'
+import publicRoutes from './routes.public.js';
+import adminRoutes from './routes.admin.js';
 
 const require_auth = (to, from, next) => {
   if (!Auth.user.authenticated) {
     next({
       path: '/login',
       query: { redirect: to.fullPath }
-    })
+    });
   } else {
     next();
   }
-}
+};
 
 const afterAuth = (_to, from, next) => {
   if (Auth.user.authenticated) {
-    next(from.path)
+    next(from.path);
   } else {
-    next()
+    next();
   }
-}
+};
 
 export default new VueRouter({
   linkActiveClass: 'active',
@@ -31,8 +31,8 @@ export default new VueRouter({
     {
       path: '/',
       component: resolve => {
-        var reg = new RegExp("www|bookster|localhost:3000");
-        var parts = window.location.host.split(".");
+        var reg = new RegExp('www|bookster|localhost:3000');
+        var parts = window.location.host.split('.');
         return reg.test(parts[0]) ? require(['../layouts/Client.vue'], resolve) : require(['../pages/public/Page.standalone.vue'], resolve);
       },
       children: publicRoutes.concat([
@@ -45,7 +45,7 @@ export default new VueRouter({
           path: 'subscription-sign-up',
           name: 'sub.signup',
           component: resolve => require(['../pages/public/Subscribe.vue'], resolve),
-          beforeEnter: require_auth,
+          beforeEnter: require_auth
         }
       ])
     },
@@ -70,5 +70,5 @@ export default new VueRouter({
       component: resolve => require(['../pages/Register.vue'], resolve),
       beforeEnter: afterAuth
     }
-  ],
-})
+  ]
+});

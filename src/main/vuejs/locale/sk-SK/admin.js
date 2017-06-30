@@ -31,7 +31,7 @@ export default {
     settings: 'Nastavenia',
     places: 'Miesta',
     attendees: 'Hostia',
-    administrators: 'Správcovia',
+    administrators: 'Správcovia'
   },
   service: {
     name: 'Názov',
@@ -40,4 +40,4 @@ export default {
     price_per_unit: 'Cena za jednotku',
     create: 'Vytvoriť službu'
   }
-}
+};

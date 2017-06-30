@@ -10,7 +10,7 @@ export default [
   {
     path: 'event/:id',
     name: 'event.public',
-    component: resolve => require(['../pages/public/Event.public.vue'], resolve),
+    component: resolve => require(['../pages/public/Event.public.vue'], resolve)
   },
   {
     path: 'explore',
@@ -18,16 +18,16 @@ export default [
   },
   {
     path: 'page/:id',
-    component: resolve => require(['../pages/public/Page.vue'], resolve),
+    component: resolve => require(['../pages/public/Page.vue'], resolve)
   },
   {
     path: 'conferences',
-    component: resolve => require(['../pages/public/Conference.index.vue'], resolve),
+    component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
   },
   {
     path: 'conference/:id',
     name: 'conference',
-    component: resolve => require(['../pages/public/Conference.vue'], resolve),
+    component: resolve => require(['../pages/public/Conference.vue'], resolve)
   },
   {
     path: 'about',
@@ -78,7 +78,7 @@ export default [
         path: 'notifications',
         name: 'settings.notifications',
         component: resolve => require(['../pages/settings/Notifications.vue'], resolve)
-      },
+      }
     ]
   },
   {
@@ -91,4 +91,4 @@ export default [
     name: 'invoice.payment',
     component: resolve => require(['../pages/Payment.vue'], resolve)
   }
-]
+];

@@ -1,10 +1,10 @@
-import SockJS from "sockjs-client"
-import Stomp from "webstomp-client"
-import Auth from './auth.js'
+import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
+import Auth from './auth.js';
 
 export default {
-  install(Vue) {
-    const keyPrefix = "_";
+  install (Vue) {
+    const keyPrefix = '_';
     Vue.prototype.keyPrefix = keyPrefix;
     var connecting = null;
 
@@ -23,13 +23,13 @@ export default {
           Vue.prototype.$stompClient = stompClient;
 
           this.$stompClient.connect({
-            'Authorization': 'Bearer ' + Auth.getAuthHeader(),
+            'Authorization': 'Bearer ' + Auth.getAuthHeader()
           }, resolve, reject);
         }
       });
 
       return promise;
-    }
+    };
 
     Vue.prototype.connectWM = connectWM;
 
@@ -43,16 +43,17 @@ export default {
 
     let sendWM = function (target, data) {
       return new Promise((resolve, reject) => {
-        if (typeof data != 'string')
+        if (typeof data !== 'string') {
           data = JSON.stringify(data);
+        }
 
         this.$stompClient.send(target, data, {
           // 'Authorization': 'Bearer ' + Auth.getAuthHeader(),
         });
         resolve();
-      })
-    }
+      });
+    };
 
     Vue.prototype.sendWM = sendWM;
   }
-}
+};

@@ -1,18 +1,18 @@
-import category from './sk-SK/category.js'
-import admin from './sk-SK/admin.js'
-import client from './sk-SK/client.js'
+import category from './sk-SK/category.js';
+import admin from './sk-SK/admin.js';
+import client from './sk-SK/client.js';
 export default {
   category, admin, client,
   role: {
-    owner: "Vlastník",
-    administrator: "Administrátor",
-    reporter: "Prispievateľ",
-    visitor: "Navštevník",
-    moderator: "Moderátor"
+    owner: 'Vlastník',
+    administrator: 'Administrátor',
+    reporter: 'Prispievateľ',
+    visitor: 'Navštevník',
+    moderator: 'Moderátor'
   },
   administrator: {
-    active: "Aktívny",
-    inactive: "Neaktívny"
+    active: 'Aktívny',
+    inactive: 'Neaktívny'
   },
   page: {
     name: 'Názov',
@@ -67,4 +67,4 @@ export default {
     en: 'Anglický',
     sk: 'Slovenský'
   }
-}
+};

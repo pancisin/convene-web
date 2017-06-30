@@ -12,4 +12,4 @@ export default {
     followed: 'Nasledované',
     popular: 'Populárne'
   }
-}
+};

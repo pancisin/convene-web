@@ -12,4 +12,4 @@ export default {
     followed: 'Followed',
     popular: 'Popular'
   }
-}
+};

@@ -1,5 +1,5 @@
 export default {
-  bind(el, binding, node) {
+  bind (el, binding, node) {
     el.style.position = 'relative';
 
     var loader = document.createElement('div');
@@ -11,10 +11,10 @@ export default {
 
     el.appendChild(loader);
   },
-  inserted(el, binding) {
+  inserted (el, binding) {
     el.classList.toggle('_loading', binding.value);
   },
-  update(el, binding, node) {
+  update (el, binding, node) {
     el.classList.toggle('_loading', binding.value);
-  },
-}
+  }
+};

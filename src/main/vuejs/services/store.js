@@ -4,7 +4,7 @@ Vue.use(Vuex);
 
 import user from './store/user.module.js';
 
-import UserApi from './api/user.api.js'
+import UserApi from './api/user.api.js';
 
 const store = new Vuex.Store({
   state: {
@@ -13,11 +13,11 @@ const store = new Vuex.Store({
     conferences: []
   },
   modules: {
-    user,
+    user
   },
   getters: {
     getNotifications: state => state.notifications,
-    getToasts: state => state.toasts,
+    getToasts: state => state.toasts
   },
   mutations: {
     setNotifications: (state, { notifications }) => {
@@ -25,7 +25,7 @@ const store = new Vuex.Store({
     },
     removeNotification: (state, { notification }) => {
       state.notifications = state.notifications.filter(n => {
-        return n.id != notification.id;
+        return n.id !== notification.id;
       });
     },
     addNotification: (state, { notification }) => {
@@ -39,23 +39,23 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    initializeNotifications({ commit }) {
+    initializeNotifications ({ commit }) {
       UserApi.getNotifications((notifications) => {
         commit('setNotifications', { notifications });
-      })
+      });
     },
-    addNotification({ commit }, notification) {
+    addNotification ({ commit }, notification) {
       commit('addNotification', { notification });
     },
-    removeNotification({ commit }, notification) {
+    removeNotification ({ commit }, notification) {
       commit('removeNotification', { notification });
     },
-    addToast({ commit }, toast) {
+    addToast ({ commit }, toast) {
       commit('addToast', { toast });
 
       setTimeout(() => {
         commit('removeToast', { toast });
-      }, 5000)
+      }, 5000);
     }
   }
 });

@@ -29,8 +29,8 @@
         <div class="col-md-9">
           <explorer-transition tag="div" class="explore-container">
             <div class="page-panel" v-for="(page, index) in pagesPaginator.content" :data-index="index" :key="page.id">
-              <img v-if="page.bannerUrl != null" :src="page.bannerUrl" />
-              <img v-else src="/bookster_logo.png" style="min-width:auto" />
+              <img v-if="page.bannerUrl != null" :src="page.bannerUrl">
+              <img v-else src="/bookster_logo.png" style="min-width:auto">
   
               <div class="title">
                 <router-link :to="'page/' + page.id">
@@ -45,7 +45,7 @@
   
           <div class="row">
             <div class="col-xs-12 text-center">
-              <paginator :history="true" :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+              <paginator :history="true" :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate"></paginator>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default {
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: #3bafda;
   text-align: center;
-  max-width: 350px;
+  // max-width: 350px;
 
   img {
     min-width: 100%;
