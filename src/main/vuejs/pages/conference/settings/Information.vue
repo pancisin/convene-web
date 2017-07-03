@@ -4,7 +4,7 @@
   
     <div class="row">
       <div class="col-md-6">
-        <image-upload v-model="conference.bannerUrl" />
+        <image-upload v-model="conference.bannerUrl"></image-upload>
       </div>
   
       <div class="col-md-6">
@@ -15,7 +15,7 @@
         <div class="form-group">
           <label class="control-label">Visibility: </label>
           <select v-model="conference.visibility" class="form-control">
-            <option :value="option" v-for="option in visibility_options" v-text="option"></option>
+            <option :value="option" v-for="option in visibility_options" v-text="option" :key="option"></option>
           </select>
         </div>
       </div>

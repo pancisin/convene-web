@@ -10,18 +10,18 @@
           <th>
             Email
           </th>
-          <th v-for="field in metaFields">
+          <th v-for="field in metaFields" :key="field.id">
             {{ field.name }}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users">
+        <tr v-for="user in users" :key="user.id">
           <td v-text="user.displayName"></td>
           <td>
             {{ user.email }}
           </td>
-          <td v-for="field in metaFields">
+          <td v-for="field in metaFields" :key="field.id">
             {{ getUserMetaValue(user.id, field.id) }}
           </td>
         </tr>
