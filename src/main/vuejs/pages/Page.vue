@@ -22,14 +22,14 @@ import PageInjector from '../services/injectors/page.injector.js'
 
 export default {
   name: 'page',
-  data() {
+  data () {
     return {
       page: new Object(),
       edit: false,
       injector: null,
     }
   },
-  provide() {
+  provide () {
     const provider = {};
 
     Object.defineProperty(provider, 'api', {
@@ -41,21 +41,21 @@ export default {
   watch: {
     '$route.params.id': 'getPage'
   },
-  created() {
+  created () {
     this.getPage();
   },
   methods: {
     ...mapActions([
       'updatePage',
     ]),
-    getPage() {
+    getPage () {
       this.injector = new PageInjector(this.$route.params.id)
       this.injector.getPage(true, page => {
         this.page = page;
         this.edit = true;
       })
     },
-    pageUpdated(page) {
+    pageUpdated (page) {
       this.page = page;
       this.updatePage(page);
     }

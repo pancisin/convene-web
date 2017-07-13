@@ -1,14 +1,11 @@
 <template>
   <div class="app-messaging-container">
-    <div class="app-messaging"
-         id="collapseMessaging">
+    <div class="app-messaging" id="collapseMessaging">
       <div class="chat-group">
         <div class="heading">{{ $t('chat.conversations') }}</div>
         <ul class="group full-height">
           <li class="section">{{ $tc('user.default', 2) }}</li>
-          <li class="message"
-              v-for="user in users"
-              :class="{ 'selected' : recipient != null && recipient.id == user.id }">
+          <li class="message" v-for="user in users" :class="{ 'selected' : recipient != null && recipient.id == user.id }">
             <a @click="recipient = user">
               <!--<span class="badge badge-warning pull-right">10</span>-->
               <div class="message">
@@ -27,11 +24,8 @@
       <div class="messaging">
         <div class="heading">
           <div class="title">
-            <a class="btn-back"
-               @click="recipient = null"
-               v-if="recipient != null">
-              <i class="fa fa-angle-left"
-                 aria-hidden="true"></i>
+            <a class="btn-back" @click="recipient = null" v-if="recipient != null">
+              <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
             <span v-if="recipient != null">{{ recipient.firstName }} {{ recipient.lastName }}</span>
             <span v-else>{{ user.company.name }}</span>
@@ -40,37 +34,25 @@
           </div>
           <div class="action"></div>
         </div>
-        <ul class="chat"
-            ref="chatContainer"
-            is="transition-group"
-            name="fade">
-          <li class="line"
-              v-if="messages[0] != null"
-              :key="-1">
+        <ul class="chat" ref="chatContainer" is="transition-group" name="fade">
+          <li class="line" v-if="messages[0] != null" :key="-1">
             <div class="title">{{ messages[0].created | moment("llll") }}</div>
           </li>
-          <li v-for="(mes, index) in messages"
-              :class="{ 'right' : mes.sender.id == user.id }"
-              :key="index">
-            <div class="message"
-                 v-text="mes.content"></div>
+          <li v-for="(mes, index) in messages" :class="{ 'right' : mes.sender.id == user.id }" :key="index">
+            <div class="message" v-text="mes.content"></div>
             <div class="info">
               <div class="datetime">{{ mes.created | moment("L LT") }}</div>
-              <div class="status"
-                   v-if="recipient != null && recipient.id != mes.sender.id && mes.sender.id != user.id"
-                   v-text="mes.sender.name"></div>
+              <div class="status" v-if="recipient != null && recipient.id != mes.sender.id && mes.sender.id != user.id" v-text="mes.sender.name"></div>
             </div>
           </li>
         </ul>
         <div class="footer">
           <div class="message-box">
-            <textarea :placeholder="$t('chat.placeholder')"
-                      class="form-control"
-                      v-model="message"
-                      @keyup.enter="sendMessage"></textarea>
-            <button class="btn btn-default"
-                    @click="sendMessage"><i class="fa fa-paper-plane"
-                 aria-hidden="true"></i><span>{{ $t('chat.send') }}</span></button>
+            <textarea :placeholder="$t('chat.placeholder')" class="form-control" v-model="message" @keyup.enter="sendMessage"></textarea>
+            <button class="btn btn-default" @click="sendMessage">
+              <i class="fa fa-paper-plane" aria-hidden="true"></i>
+              <span>{{ $t('chat.send') }}</span>
+            </button>
           </div>
         </div>
       </div>

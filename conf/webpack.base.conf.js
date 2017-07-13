@@ -10,13 +10,13 @@ module.exports = {
     filename: '[name].js'
   },
   resolve: {
-    extensions: [ '', '.js', '.vue' ],
+    extensions: ['', '.js', '.vue'],
     alias: {
       'src': path.resolve(__dirname, '../src')
     }
   },
   module: {
-    loaders: [ {
+    loaders: [{
       test: /\.vue$/,
       loader: 'vue'
     }, {
@@ -25,7 +25,7 @@ module.exports = {
       exclude: /node_modules/
     }, {
       test: /\.less$/,
-      loaders: [ 'style', 'css', 'less' ]
+      loaders: ['style', 'css', 'less']
     }, {
       test: /\.(png|jpg|gif|svg)/,
       loader: 'url',
@@ -36,18 +36,18 @@ module.exports = {
     }, {
       test: /\.css$/,
       include: /node_modules/,
-      loader: "style-loader!css-loader"
+      loader: 'style-loader!css-loader'
     }, {
       test: /\.(woff|eot|ttf|woff(2)?|otf)/i,
       loader: 'file-loader?[name].[ext]?[hash]'
-    } ]
+    }]
   },
   vue: {
     loaders: {
       js: 'babel-loader'
     },
     autoprefixer: {
-      browsers: [ 'last 2 versions' ]
+      browsers: ['last 2 versions']
     }
   },
   eslint: {
@@ -55,8 +55,8 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      $: 'jquery',
+      jQuery: 'jquery'
     })
   ]
 };

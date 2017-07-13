@@ -18,8 +18,8 @@ var SOURCE_MAP = true;
 config.devtool = SOURCE_MAP ? 'source-map' : false;
 
 // generate loader string to be used with extract text plugin
-function generateExtractLoaders(loaders) {
-  return loaders.map(function(loader) {
+function generateExtractLoaders (loaders) {
+  return loaders.map(function (loader) {
     return loader + '-loader' + (SOURCE_MAP ? '?sourceMap' : '');
   }).join('!');
 }
@@ -27,31 +27,31 @@ function generateExtractLoaders(loaders) {
 config.vue.loaders = {
   js: 'babel!eslint',
   // http://vuejs.github.io/vue-loader/configurations/extract-css.html
-  css: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders([ 'css' ])),
-  less: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders([ 'css', 'less' ])),
-  sass: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders([ 'css', 'sass' ])),
-  stylus: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders([ 'css', 'stylus' ]))
+  css: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders(['css'])),
+  less: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders(['css', 'less'])),
+  sass: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders(['css', 'sass'])),
+  stylus: ExtractTextPlugin.extract('vue-style-loader', generateExtractLoaders(['css', 'stylus']))
 };
 
 config.plugins = (config.plugins || []).concat([
-// http://vuejs.github.io/vue-loader/workflow/production.html
-new webpack.DefinePlugin({
-  'process.env': {
-    NODE_ENV: '"production"'
-  }
-}), new webpack.optimize.UglifyJsPlugin({
-  compress: {
-    warnings: false
-  }
-}), new webpack.optimize.OccurenceOrderPlugin(),
-// extract css into its own file
-new ExtractTextPlugin('[name].[contenthash].css'),
-// generate dist index.html with correct asset hash for caching.
-// you can customize output by editing /build/index.template.html
-// see https://github.com/ampedandwired/html-webpack-plugin
-new HtmlWebpackPlugin({
-  filename: 'index.html',
-  template: 'conf/index.template.html'
-}) ]);
+  // http://vuejs.github.io/vue-loader/workflow/production.html
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: '"production"'
+    }
+  }), new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    }
+  }), new webpack.optimize.OccurenceOrderPlugin(),
+  // extract css into its own file
+  new ExtractTextPlugin('[name].[contenthash].css'),
+  // generate dist index.html with correct asset hash for caching.
+  // you can customize output by editing /build/index.template.html
+  // see https://github.com/ampedandwired/html-webpack-plugin
+  new HtmlWebpackPlugin({
+    filename: 'index.html',
+    template: 'conf/index.template.html'
+  })]);
 
 module.exports = config;
