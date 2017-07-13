@@ -36,7 +36,7 @@
         </tr>
         <tr :key="0">
           <td colspan="2">
-            <v-select v-model="user" :debounce="2000" :on-search="searchUsers" :options="users" placeholder="Search users" label="email"></v-select>
+            <!--<v-select v-model="user" :debounce="2000" :on-search="searchUsers" :options="users" placeholder="Search users" label="email"></v-select>-->
           </td>
           <td>
             <a @click="grantAccess" class="btn btn-success btn-rounded">Grant access</a>
@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import VSelect from 'vue-select'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -64,9 +63,6 @@ export default {
       user: null,
       loading: false,
     }
-  },
-  components: {
-    VSelect
   },
   watch: {
     'page': 'getAdministrators',

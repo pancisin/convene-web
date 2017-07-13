@@ -87,7 +87,6 @@
 import Auth from '../../services/auth.js'
 import GMap from '../../elements/GMap.vue'
 import StaggerTransition from '../../functional/StaggerTransition.vue'
-import VSelect from 'vue-select'
 import EventApi from '../../services/api/event.api.js'
 
 export default {

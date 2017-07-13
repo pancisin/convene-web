@@ -4,6 +4,7 @@ import VueResource from 'vue-resource';
 import VueI18n from 'vue-i18n';
 import VueWebsocket from './services/websocket.js';
 import VueAnalytics from 'vue-analytics';
+import VeeValidate from 'vee-validate';
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment';
@@ -44,6 +45,7 @@ Vue.use(VueAnalytics, {
   id: 'UA-100879912-1',
   router
 });
+Vue.use(VeeValidate);
 Vue.component('modal', Modal);
 Vue.component('panel', Panel);
 Vue.component('context-menu', ContextMenu);

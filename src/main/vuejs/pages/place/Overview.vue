@@ -64,11 +64,10 @@
 import GMap from '../../elements/GMap.vue'
 export default {
   name: 'place-overview',
-  props:
-  {
+  props: {
     place: {
       type: Object,
-      default() {
+      default () {
         return {
           address: {},
         };
@@ -84,13 +83,13 @@ export default {
   components: {
     GMap
   },
-  data() {
+  data () {
     return {
       errors: [],
     }
   },
   methods: {
-    submit() {
+    submit () {
       if (this.edit) {
         this.$http.put('api/place/' + this.place.id, this.place).then(response => {
           this.$success('Success !', 'Place ' + this.place.name + ' has been updated.');
@@ -111,7 +110,7 @@ export default {
         })
       }
     },
-    mapUpdated(location) {
+    mapUpdated (location) {
       this.place.address.latitude = location.lat;
       this.place.address.longitude = location.lng;
       this.place.address.formatted = location.address;

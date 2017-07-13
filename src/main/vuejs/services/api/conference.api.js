@@ -1,9 +1,13 @@
 import Vue from 'vue';
 
+function checkId (id) {
+  if (id == null || id === '') throw new Error('missing entity id');
+}
+
 export default {
   base_url: 'api/conference',
   getConference (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}`;
     Vue.http.get(url).then(response => {
@@ -22,7 +26,7 @@ export default {
     });
   },
   getEvents (id, page, size, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/event/${page}/${size}`;
     Vue.http.get(url).then(response => {
@@ -30,7 +34,7 @@ export default {
     });
   },
   getInvitations (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/invitation`;
     Vue.http.get(url).then(response => {
@@ -38,7 +42,7 @@ export default {
     });
   },
   getAttendees (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/attendees`;
     Vue.http.get(url).then(response => {
@@ -46,7 +50,7 @@ export default {
     });
   },
   postInvitation (id, invitation, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/invite`;
     Vue.http.post(url, invitation).then(response => {
@@ -54,7 +58,7 @@ export default {
     });
   },
   getMetaFields (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/meta-field`;
     Vue.http.get(url).then(response => {
@@ -62,7 +66,7 @@ export default {
     });
   },
   postMetaField (id, field, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/meta-field`;
     Vue.http.post(url, field).then(response => {
@@ -70,7 +74,7 @@ export default {
     });
   },
   getAdministrators (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/administrator`;
     Vue.http.get(url).then(response => {
@@ -78,7 +82,7 @@ export default {
     });
   },
   postAdministrator (id, administrator, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/administrator`;
     Vue.http.post(url, { id: administrator.id }).then(response => {
@@ -86,7 +90,7 @@ export default {
     });
   },
   getAttendStatus (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/attend-status`;
     Vue.http.get(url).then(response => {
@@ -94,7 +98,7 @@ export default {
     });
   },
   postAttend (id, meta, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/attend`;
     Vue.http.post(url, meta).then(response => {
@@ -102,7 +106,7 @@ export default {
     });
   },
   putCancelAttend (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/cancel-attend`;
     Vue.http.put(url).then(response => {
@@ -110,7 +114,7 @@ export default {
     });
   },
   getArticles (id, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/article`;
     Vue.http.get(url).then(response => {
@@ -118,7 +122,7 @@ export default {
     });
   },
   postArticle (id, article, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
+    checkId(id);
 
     var url = `${this.base_url}/${id}/article`;
     Vue.http.post(url, article).then(response => {
