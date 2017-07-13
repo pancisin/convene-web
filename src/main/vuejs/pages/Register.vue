@@ -35,7 +35,7 @@
   
       <div class="form-group" :class="{'has-error': errors.has('password') }">
         <div class="col-xs-12">
-          <input v-model="user.password" class="form-control" type="password" placeholder="Password" name="password" v-validate data-vv-rules="required">
+          <input v-model="user.password" class="form-control" type="password" placeholder="Password" name="password" v-validate data-vv-rules="required|min:6">
           <i class="fa fa-key form-control-feedback l-h-34"></i>
           <span class="text-danger" v-if="errors.has('password')">{{ errors.first('password') }}</span>
         </div>
@@ -43,7 +43,7 @@
   
       <div class="form-group" :class="{'has-error': errors.has('confirmPassword') }">
         <div class="col-xs-12">
-          <input class="form-control" type="password" placeholder="Confirm password" name="confirmPassword" v-validate data-vv-rules="required|confirmed:password" data-vv-as="password">
+          <input class="form-control" type="password" placeholder="Confirm password" name="confirmPassword" v-validate data-vv-rules="required|confirmed:password">
           <span class="text-danger" v-if="errors.has('confirmPassword')">{{ errors.first('confirmPassword') }}</span>
         </div>
       </div>
