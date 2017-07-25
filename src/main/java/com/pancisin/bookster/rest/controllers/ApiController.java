@@ -3,6 +3,7 @@ package com.pancisin.bookster.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,9 @@ public class ApiController {
 
 	@GetMapping("/events/{page}/{size}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size) {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		return null;
 	}

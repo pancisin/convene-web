@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -71,7 +70,7 @@ public class EventBotService {
 
 					try {
 						eventRepository.save(event);
-					} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+					} catch (ConstraintViolationException ex) {
 						ex.printStackTrace();
 					}
 				}

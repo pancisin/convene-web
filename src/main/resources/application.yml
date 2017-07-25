@@ -21,12 +21,17 @@ spring:
             mode: none
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
-        
-jwt: 
-  header: Authorization
-  secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
-  verificationSecret: 123456789
-  
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: SampleClientId
+      clientSecret: secret
+      accessTokenUri: http://104.251.219.31:8080/bookster-auth/oauth/token
+      userAuthorizationUri: http://104.251.219.31:8080/bookster-auth/oauth/authorize
+    resource:
+      userInfoUri: http://104.251.219.31:8080/bookster-auth/user/me
 paylane:
   api_key: 45e4f38452d71554195c13f0acee84962fb82a13
   
@@ -39,6 +44,17 @@ jsondoc:
   packages:
   - com.pancisin.bookster.rest.controllers
   - com.pancisin.bookster.models
+
+jwt: 
+  header: Authorization
+  secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
+  verificationSecret: 123456789
+
+zuul:
+  routes:
+    user:
+      path: /user/**
+      url: http://104.251.219.31:8080/bookster-auth/user
 ---
 spring:
   profiles: local

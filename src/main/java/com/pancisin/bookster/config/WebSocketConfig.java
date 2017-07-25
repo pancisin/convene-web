@@ -19,7 +19,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.security.utils.JwtUtil;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -28,8 +27,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 	@Value("${jwt.header}")
 	private String tokenHeader;
 
-	@Autowired
-	private JwtUtil jwtUtil;
+//	@Autowired
+//	private JwtUtil jwtUtil;
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -53,9 +52,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 				if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 					List<String> headers = accessor.getNativeHeader(tokenHeader);
 					String token = headers.get(0);
-					User user = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
+//					User user = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
 
-					accessor.setUser((Principal) user);
+//					accessor.setUser((Principal) user);
 				}
 
 				return message;
