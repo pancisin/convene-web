@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --config conf/webpack.dev.conf.js",
-    "build": "rimraf src/main/resources/static/dist && webpack --progress --hide-modules --config conf/webpack.prod.conf.js"
+    "build": "rimraf src/main/resources/static/dist && webpack --progress --hide-modules --config conf/webpack.prod.conf.js",
+    "lint": "eslint --ext .js,.vue src/main/vuejs/."
   },
   "private": true,
   "author": "Patrik Pancisin",
