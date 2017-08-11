@@ -23,20 +23,20 @@ export default {
   data () {
     return {
       articles: [],
-      loading: false,
-    }
+      loading: false
+    };
   },
   created () {
     this.loading = true;
     this.api.getArticles(articles => {
       this.articles = articles;
       this.loading = false;
-    })
+    });
   },
   methods: {
 
   }
-}
+};
 </script>
 
 <style lang="less">

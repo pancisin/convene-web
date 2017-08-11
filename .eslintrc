@@ -31,6 +31,10 @@
     "window.Tether": true
   },
 
+  "plugins": [
+      "html"
+  ],
+
   "rules": {
     "accessor-pairs": 2,
     "array-bracket-spacing": 0,

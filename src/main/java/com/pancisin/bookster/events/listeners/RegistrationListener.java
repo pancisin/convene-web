@@ -1,4 +1,4 @@
-package com.pancisin.bookster.events;
+package com.pancisin.bookster.events.listeners;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.components.EmailService;
+import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.models.User;
 
 import io.jsonwebtoken.Claims;

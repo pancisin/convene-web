@@ -1,13 +1,14 @@
 package com.pancisin.bookster.repository;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.enums.PageState;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 

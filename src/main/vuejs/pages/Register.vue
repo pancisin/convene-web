@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
+import Auth from '../services/auth.js';
 export default {
   data: function () {
     return {
@@ -91,9 +91,9 @@ export default {
         firstName: null,
         lastName: null,
         email: null,
-        password: null,
-      },
-    }
+        password: null
+      }
+    };
   },
   methods: {
     submit: function () {
@@ -109,8 +109,8 @@ export default {
         }
       }).catch(e => {
         console.error(e);
-      })
+      });
     }
   }
-}
+};
 </script>

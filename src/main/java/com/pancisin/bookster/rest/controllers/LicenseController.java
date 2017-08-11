@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.events.OnPaymentEvent;
+import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
+import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
 import com.pancisin.bookster.models.UserSubscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
@@ -36,6 +40,9 @@ public class LicenseController {
 	@Autowired
 	private UserSubscriptionRepository usRepository;
 
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
+	
 	@GetMapping
 	public ResponseEntity<?> getLicense(@PathVariable String license_id) {
 		return ResponseEntity.ok(usRepository.findById(license_id));
@@ -61,10 +68,15 @@ public class LicenseController {
 				us.setState(SubscriptionState.ACTIVE);
 				us.setIdSale(result.body().getIdSale());
 				usRepository.save(us);
+				
+				eventPublisher.publishEvent(new OnPaymentEvent(us, PaymentState.SUCCESS));
+				
 				return ResponseEntity.ok(result);
-			} else
+			} else {
+				eventPublisher.publishEvent(new OnPaymentEvent(us, PaymentState.ERROR));
 				return new ResponseEntity<String>("Payment failed please check your card information.",
 						HttpStatus.BAD_REQUEST);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();

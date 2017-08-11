@@ -1,4 +1,4 @@
-package com.pancisin.bookster.events;
+package com.pancisin.bookster.events.listeners;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.events.OnInviteEvent;
 
 @Component
 public class InvitationListener implements ApplicationListener<OnInviteEvent> {
