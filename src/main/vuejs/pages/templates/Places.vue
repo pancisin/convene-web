@@ -43,21 +43,21 @@
 </template>
 
 <script>
-import PlaceApi from '../../services/api/place.api.js'
+import PlaceApi from '../../services/api/place.api.js';
 export default {
   name: 'places',
   inject: ['provider'],
-  data() {
+  data () {
     return {
       places: [],
-      loading: false,
-    }
+      loading: false
+    };
   },
-  created() {
+  created () {
     this.getPlaces();
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },
@@ -65,20 +65,20 @@ export default {
     '$route': 'getPlaces'
   },
   methods: {
-    getPlaces() {
+    getPlaces () {
       this.loading = true;
       this.api.getPlaces(places => {
         this.places = places;
         this.loading = false;
-      })
+      });
     },
-    deletePlace(place) {
+    deletePlace (place) {
       PlaceApi.deletePlace(place.id, result => {
         this.places = this.places.filter(p => {
-          return p.id != place.id;
-        })
-      })
+          return p.id !== place.id;
+        });
+      });
     }
   }
-}
+};
 </script>

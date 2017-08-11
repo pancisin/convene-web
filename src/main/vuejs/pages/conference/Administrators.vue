@@ -50,38 +50,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import UserSearch from '../../elements/UserSuggestInput.vue'
-import UserApi from '../../services/api/user.api.js'
+import { mapGetters } from 'vuex';
+import UserSearch from '../../elements/UserSuggestInput.vue';
+import UserApi from '../../services/api/user.api.js';
 
 export default {
   name: 'conference-administrators',
   inject: ['provider'],
-  data() {
+  data () {
     return {
       administrators: [],
       roles: [],
       users: [],
       user: {},
-      loading: false,
-    }
+      loading: false
+    };
   },
   components: {
     UserSearch
   },
   computed: {
     ...mapGetters({
-      current: 'getUser',
+      current: 'getUser'
     }),
-    api() {
+    api () {
       return this.provider.api;
     }
   },
-  created() {
+  created () {
     this.getAdministrators();
   },
   methods: {
-    getAdministrators() {
+    getAdministrators () {
       this.loading = true;
       this.api.getAdministrators(administrators => {
         this.administrators = administrators;
@@ -91,53 +91,53 @@ export default {
         });
 
         this.getRoles();
-      })
+      });
     },
-    getRoles() {
+    getRoles () {
       this.$http.get('api/roles').then(response => {
         this.roles = response.body.filter(r => {
           return r.level < this.current.role.level;
-        })
+        });
 
         this.loading = false;
-      })
+      });
     },
-    toggleActive(admin) {
+    toggleActive (admin) {
       admin.active = !admin.active;
       this.putAdministrator(admin);
     },
-    putAdministrator(admin) {
+    putAdministrator (admin) {
       var data = {
         active: admin.active,
         role: admin.role.name
-      }
+      };
 
       this.$http.put('api/conference-administrator/' + admin.id, data).then(response => {
         admin = response.body;
-      })
+      });
     },
-    hasPermission(admin) {
+    hasPermission (admin) {
       return admin.role.level < this.current.role.level;
     },
-    deleteAdministrator(admin) {
+    deleteAdministrator (admin) {
       this.$http.delete('api/conference-administrator/' + admin.id).then(response => {
         this.administrators = this.administrators.filter(a => {
-          return a.id != admin.id;
-        })
-      })
+          return a.id !== admin.id;
+        });
+      });
     },
-    searchUsers(search, loading) {
+    searchUsers (search, loading) {
       loading(true);
       UserApi.searchUsers(search, users => {
         this.users = users;
         loading(false);
-      })
+      });
     },
-    grantAccess() {
+    grantAccess () {
       this.api.postAdministrator(this.user, administrator => {
         this.administrators.push(administrator);
-      })
+      });
     }
   }
-}
+};
 </script>

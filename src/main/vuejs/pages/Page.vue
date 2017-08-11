@@ -17,17 +17,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import PageInjector from '../services/injectors/page.injector.js'
+import { mapActions } from 'vuex';
+import PageInjector from '../services/injectors/page.injector.js';
 
 export default {
   name: 'page',
   data () {
     return {
-      page: new Object(),
+      page: {},
       edit: false,
-      injector: null,
-    }
+      injector: null
+    };
   },
   provide () {
     const provider = {};
@@ -46,19 +46,19 @@ export default {
   },
   methods: {
     ...mapActions([
-      'updatePage',
+      'updatePage'
     ]),
     getPage () {
-      this.injector = new PageInjector(this.$route.params.id)
+      this.injector = new PageInjector(this.$route.params.id);
       this.injector.getPage(true, page => {
         this.page = page;
         this.edit = true;
-      })
+      });
     },
     pageUpdated (page) {
       this.page = page;
       this.updatePage(page);
     }
   }
-}
+};
 </script>

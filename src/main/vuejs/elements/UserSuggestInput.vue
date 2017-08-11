@@ -26,25 +26,25 @@
 </template>
 
 <script>
-import debounce from 'debounce'
-import gravatar from 'gravatar'
+import debounce from 'debounce';
+import gravatar from 'gravatar';
 
 export default {
   props: {
     value: String,
-    options: Array,
+    options: Array
   },
   watch: {
-    value(v) {
+    value (v) {
       this.selected = v;
     }
   },
-  data() {
+  data () {
     return {
       loading: false,
       selected: null,
-      collapsed: true,
-    }
+      collapsed: true
+    };
   },
   methods: {
     search: debounce(function (e) {
@@ -56,22 +56,22 @@ export default {
         }
       );
     }, 500),
-    select(option) {
+    select (option) {
       this.collapsed = true;
       this.selected = option.firstName + ' ' + option.lastName;
       this.update(option.email);
     },
-    update(value) {
-      this.$emit('input', value)
+    update (value) {
+      this.$emit('input', value);
     },
-    getAvatar(user) {
+    getAvatar (user) {
       return gravatar.url(user.email, {
         protocol: 'https',
         size: 30
       });
     }
   }
-}
+};
 </script>
 
 <style lang="less">

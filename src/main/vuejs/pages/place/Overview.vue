@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import GMap from '../../elements/GMap.vue'
+import GMap from '../../elements/GMap.vue';
 export default {
   name: 'place-overview',
   props: {
@@ -69,7 +69,7 @@ export default {
       type: Object,
       default () {
         return {
-          address: {},
+          address: {}
         };
       }
     },
@@ -85,8 +85,8 @@ export default {
   },
   data () {
     return {
-      errors: [],
-    }
+      errors: []
+    };
   },
   methods: {
     submit () {
@@ -94,7 +94,7 @@ export default {
         this.$http.put('api/place/' + this.place.id, this.place).then(response => {
           this.$success('Success !', 'Place ' + this.place.name + ' has been updated.');
           this.$emit('updated', response.body);
-        })
+        });
       } else {
         var url = ['api/page', this.page_id, 'place'].join('/');
 
@@ -104,10 +104,10 @@ export default {
           this.$router.push({
             name: 'place',
             params: {
-              id: this.place.id,
+              id: this.place.id
             }
-          })
-        })
+          });
+        });
       }
     },
     mapUpdated (location) {
@@ -116,5 +116,5 @@ export default {
       this.place.address.formatted = location.address;
     }
   }
-}
+};
 </script>

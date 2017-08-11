@@ -1,12 +1,8 @@
 <template>
   <div class="form-group">
     <label v-text="label"></label>
-    <select class="form-control"
-            @change="updateValue">
-      <option v-for="(opt, index) in options"
-              :value="index"
-              :selected="value == opt"
-              v-text="opt[vval]">
+    <select class="form-control" @change="updateValue">
+      <option v-for="(opt, index) in options" :value="index" :selected="value == opt" v-text="opt[vval]" :key="index">
       </option>
     </select>
   </div>
@@ -22,9 +18,9 @@ export default {
       var value = this.options[index];
 
       if (value != null) {
-        this.$emit('input', [ value ]);
+        this.$emit('input', [value]);
       }
     }
   }
-}
+};
 </script>

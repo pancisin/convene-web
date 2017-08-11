@@ -23,6 +23,6 @@
 <script>
 export default {
   name: 'conference-settings',
-  props: ['conference'],
-}
+  props: ['conference']
+};
 </script>

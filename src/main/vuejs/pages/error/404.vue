@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'error-404'
-}
+};
 </script>
 
 <style>

@@ -5,7 +5,7 @@
         <div class="heading">{{ $t('chat.conversations') }}</div>
         <ul class="group full-height">
           <li class="section">{{ $tc('user.default', 2) }}</li>
-          <li class="message" v-for="user in users" :class="{ 'selected' : recipient != null && recipient.id == user.id }">
+          <li class="message" v-for="user in users" :class="{ 'selected' : recipient != null && recipient.id == user.id }" :key="user.id">
             <a @click="recipient = user">
               <!--<span class="badge badge-warning pull-right">10</span>-->
               <div class="message">
@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
-import moment from "moment"
+import Auth from '../services/auth.js';
+import moment from 'moment';
 
 export default {
   name: 'chat',
@@ -74,13 +74,13 @@ export default {
       users: [],
       user: null,
       loading: false,
-      subscriptions: [],
-    }
+      subscriptions: []
+    };
   },
   watch: {
     recipient: function () {
-      this.messages = [],
-        this.fetchMessages();
+      this.messages = [];
+      this.fetchMessages();
     }
   },
   created: function () {
@@ -93,7 +93,7 @@ export default {
     });
   },
   beforeDestroy: function () {
-    console.log("destroying chat...");
+    console.log('destroying chat...');
     this.subscriptions.forEach(s => s.unsubscribe({}));
   },
   methods: {
@@ -104,11 +104,11 @@ export default {
         );
 
         this.subscriptions.push(
-          this.$stompClient.subscribe("/user/queue/chat.message", response => this.addMessage(JSON.parse(response.body)))
+          this.$stompClient.subscribe('/user/queue/chat.message', response => this.addMessage(JSON.parse(response.body)))
         );
       }, frame => {
         console.log(frame);
-      })
+      });
     },
     fetchCompanyUsers: function () {
       this.$http.get('api/company/' + this.user.company.id + '/users').then(response => {
@@ -116,22 +116,23 @@ export default {
       });
     },
     fetchMessages: function () {
-      if (this.recipient != null)
+      if (this.recipient != null) {
         this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => this.addMessage(response.body.reverse()));
-      else
+      } else {
         this.$http.get('api/message/0').then(response => this.addMessage(response.body.reverse()));
+      }
     },
     sendMessage: function () {
-      if (this.message == null || this.message.trim() == '' || this.message.trim() == '\n') {
+      if (this.message == null || this.message.trim() === '' || this.message.trim() === '\n') {
         this.message = null;
         return;
       }
       var data = {
-        content: this.message,
-      }
+        content: this.message
+      };
 
       var self = this;
-      function completed(result) {
+      function completed (result) {
         var mes = {
           content: self.message,
           sender: self.user,
@@ -146,22 +147,23 @@ export default {
       if (this.recipient == null) {
         this.sendWM('/app/chat', data).then(completed);
       } else {
-        this.sendWM('/app/chat.private.' + this.recipient.email, data).then(completed)
+        this.sendWM('/app/chat.private.' + this.recipient.email, data).then(completed);
       }
     },
     addMessage: function (message) {
-      if (message instanceof Array)
+      if (message instanceof Array) {
         this.messages = message;
-      else
+      } else {
         this.messages.push(message);
+      }
 
       this.$nextTick(() => {
         var container = this.$refs.chatContainer.$el;
         container.scrollTop = container.scrollHeight;
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="less">

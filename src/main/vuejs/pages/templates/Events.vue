@@ -87,26 +87,26 @@
 </template>
 
 <script>
-import Paginator from '../../elements/Paginator.vue'
+import Paginator from '../../elements/Paginator.vue';
 
 export default {
   name: 'events',
   inject: ['provider'],
-  data() {
+  data () {
     return {
       paginator: {},
-      loading: false,
-    }
+      loading: false
+    };
   },
   components: {
     Paginator
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },
-  created() {
+  created () {
     try {
       this.initialize();
     } catch (ex) {
@@ -117,30 +117,30 @@ export default {
     '$route': 'initialize'
   },
   methods: {
-    initialize() {
+    initialize () {
       this.getEvents(0);
     },
-    deleteEvent(event) {
+    deleteEvent (event) {
       this.$http.delete('api/event/' + event.id).then(response => {
         this.paginator.content = this.paginator.content.filter(e => {
-          return e.id != event.id;
-        })
-      })
+          return e.id !== event.id;
+        });
+      });
     },
-    paginatorNavigate(e) {
+    paginatorNavigate (e) {
       if (e.direction != null) {
-        this.getEvents(this.paginator.number + e.direction)
+        this.getEvents(this.paginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
     },
-    getEvents(page) {
+    getEvents (page) {
       this.loading = true;
       this.api.getEvents(page, 8, paginator => {
         this.paginator = paginator;
         this.loading = false;
-      })
+      });
     }
   }
-}
+};
 </script>

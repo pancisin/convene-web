@@ -9,7 +9,7 @@
       <li class="text-center notifi-title">Notification</li>
       <li class="list-group notification-list">
   
-        <a v-for="not in notifications" class="list-group-item">
+        <a v-for="not in notifications" class="list-group-item" :key="not.id">
           <div class="media">
             <div class="pull-left p-r-10">
               <em class="fa fa-diamond noti-primary"></em>
@@ -40,18 +40,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'notifications',
   data: function () {
     return {
       display: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
       notifications: 'getNotifications'
-    }),
+    })
   },
   methods: {
     markAsSeen: function (notification) {
@@ -59,14 +59,15 @@ export default {
 
       this.$http.patch(url).then(response => {
         this.notifications = this.notifications.filter(elem => {
-          return elem.id != notification.id;
-        })
-      })
+          return elem.id !== notification.id;
+        });
+      });
     },
-    closeNotifications(e) {
-      if (this.display)
+    closeNotifications (e) {
+      if (this.display) {
         this.display = false;
+      }
     }
   }
-}
+};
 </script>

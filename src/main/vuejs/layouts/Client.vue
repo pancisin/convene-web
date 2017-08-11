@@ -15,19 +15,19 @@
   </div>
 </template>
 
-<script> 
-import HeaderComponent from './Client.header.vue'
-import FooterComponent from './Footer.vue'
-import ToastContainer from '../elements/ToastContainer.vue'
+<script>
+import HeaderComponent from './Client.header.vue';
+import FooterComponent from './Footer.vue';
+import ToastContainer from '../elements/ToastContainer.vue';
 
 export default {
   name: 'layout',
   components: {
     HeaderComponent,
     FooterComponent,
-    ToastContainer,
+    ToastContainer
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

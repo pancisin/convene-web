@@ -14,9 +14,9 @@
 export default {
   props: ['notification'],
   methods: {
-    triggerClose() {
-      this.$emit('close-notification', this.notification)
+    triggerClose () {
+      this.$emit('close-notification', this.notification);
     }
   }
-}
+};
 </script>

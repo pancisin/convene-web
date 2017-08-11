@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import vSelect from '../../elements/Select.vue'
-import ServiceApi from '../../services/api/service.api.js'
+import vSelect from '../../elements/Select.vue';
+import ServiceApi from '../../services/api/service.api.js';
 
 export default {
   name: 'service-form',
@@ -40,7 +40,7 @@ export default {
   props: {
     service: {
       type: Object,
-      default() {
+      default () {
         return {
           name: null,
           detail: null,
@@ -48,38 +48,38 @@ export default {
           pricePerUnit: null
         };
       }
-    },
+    }
   },
   components: {
     vSelect
   },
-  data() {
+  data () {
     return {
       edit: false,
-      units: [],
-    }
+      units: []
+    };
   },
-  created() {
+  created () {
     this.$http.get('api/enum/unit').then(response => {
       this.units = response.body;
       console.log(this.service);
-    })
+    });
   },
   methods: {
-    submit() {
+    submit () {
       if (this.edit) {
         ServiceApi.putService(this.service, service => {
           this.$emit('updated', service);
-        })
+        });
       } else {
         this.provider.api.postService(this.service, service => {
           this.$emit('updated', service);
-        })
+        });
       }
     },
-    changeUnit(e) {
+    changeUnit (e) {
       this.service.unit = event.target.value;
     }
   }
-}
+};
 </script>

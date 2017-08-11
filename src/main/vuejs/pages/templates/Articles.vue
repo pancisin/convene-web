@@ -63,33 +63,33 @@
 </template>
 
 <script>
-import ArticleApi from '../../services/api/article.api.js'
+import ArticleApi from '../../services/api/article.api.js';
 export default {
   name: 'articles-template',
   inject: ['provider'],
-  data() {
+  data () {
     return {
-      articles: [],
-    }
+      articles: []
+    };
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },
-  created() {
+  created () {
     this.api.getArticles(articles => {
       this.articles = articles;
-    })
+    });
   },
   methods: {
-    deleteArticle(article) {
+    deleteArticle (article) {
       ArticleApi.deleteArticle(article.id, result => {
         this.articles = this.articles.filter(x => {
-          x.id != article.id;
-        })
-      })
+          x.id !== article.id;
+        });
+      });
     }
   }
-}
+};
 </script>

@@ -31,41 +31,41 @@
 </template>
 
 <script>
-import DatePicker from '../../../elements/DatePicker.vue'
+import DatePicker from '../../../elements/DatePicker.vue';
 export default {
   name: 'conference-application',
   inject: ['api'],
-  data() {
+  data () {
     return {
       meta_fields: [],
       meta_values: []
-    }
+    };
   },
   components: {
-    DatePicker,
+    DatePicker
   },
-  created() {
+  created () {
     this.api.getMetaFields(fields => {
       this.meta_fields = fields;
 
       for (var i = 0; i < fields.length; i++) {
         this.meta_values.push({
           field: {
-            id: fields[i].id,
+            id: fields[i].id
           },
-          value: null,
-        })
+          value: null
+        });
       }
-    })
+    });
   },
   methods: {
-    submit() {
+    submit () {
       this.api.postAttend(this.meta_values, status => {
-          this.$emit('statusChanged', status);
-      })
+        this.$emit('statusChanged', status);
+      });
     }
   }
-}
+};
 </script>
 
 <style>

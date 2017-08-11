@@ -18,18 +18,19 @@
 <script>
 export default {
   name: 'confirm-email',
-  created() {
-    if (this.$route.query.token)
+  created () {
+    if (this.$route.query.token) {
       this.verify(this.$route.query.token);
+    }
   },
   methods: {
-    verify(token) {
+    verify (token) {
       this.$http.put('verify', token).then(response => {
         this.$router.push('/');
       }, response => {
         console.error(response);
-      })
+      });
     }
   }
-}
+};
 </script>

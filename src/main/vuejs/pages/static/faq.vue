@@ -34,6 +34,6 @@
 
 <script>
 export default {
-  name: 'faq',
-}
+  name: 'faq'
+};
 </script>

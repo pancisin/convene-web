@@ -51,53 +51,53 @@
 </template>
 
 <script>
-import ServiceForm from './Service.form.vue'
-import ServiceApi from '../../services/api/service.api.js'
+import ServiceForm from './Service.form.vue';
+import ServiceApi from '../../services/api/service.api.js';
 
 export default {
   inject: ['provider'],
-  data() {
+  data () {
     return {
       services: [],
       displayEditModal: false,
-      selectedService: new Object(),
-      loading: false,
-    }
+      selectedService: {},
+      loading: false
+    };
   },
   components: {
     ServiceForm
   },
-  created() {
+  created () {
     this.getServices();
   },
   watch: {
     '$route': 'getServices'
   },
   methods: {
-    getServices() {
+    getServices () {
       this.loading = true;
       this.provider.api.getServices(true, services => {
         this.services = services;
         this.loading = false;
-      })
+      });
     },
-    deleteService(service) {
+    deleteService (service) {
       ServiceApi.deleteService(service.id, result => {
         this.services = this.services.filter(s => {
-          return s.id != service.id;
-        })
-      })
+          return s.id !== service.id;
+        });
+      });
     },
-    editService(service) {
-      this.selectedService = service ? service : new Object();
+    editService (service) {
+      this.selectedService = service ? service : {};
       this.displayEditModal = true;
     },
-    updatedService(service) {
+    updatedService (service) {
       this.services = this.services.filter(s => {
-        return s.id != service.id;
+        return s.id !== service.id;
       });
       this.services.push(service);
     }
   }
-}
+};
 </script>

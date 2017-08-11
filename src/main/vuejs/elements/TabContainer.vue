@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="nav nav-tabs navtab-custom nav-justified">
-      <li class="tab" v-for="tab in tabs" :class="{ 'active' : selected.id == tab.id }">
+      <li class="tab" v-for="tab in tabs" :class="{ 'active' : selected.id == tab.id }" :key="tab.id">
         <a :class="{ 'active' : selected.id == tab.id }" @click="selected = tab">
           <span class="visible-xs">
             <i class="fa fa-home"></i>
@@ -20,14 +20,14 @@
 <script>
 export default {
   name: 'tab-container',
-  data() {
+  data () {
     return {
       selected: null,
-      tabs: [],
-    }
+      tabs: []
+    };
   },
   watch: {
-    selected(val) {
+    selected (val) {
       this.tabs.forEach(tab => {
         this.$set(tab, 'display', false);
       });
@@ -35,15 +35,15 @@ export default {
       this.$set(val, 'display', true);
     }
   },
-  mounted() {
+  mounted () {
     this.tabs = this.$children;
     for (var i = 0; i < this.tabs.length; i++) {
-      this.$set(this.tabs[i], 'id', i)
+      this.$set(this.tabs[i], 'id', i);
     }
 
     this.selected = this.tabs[0];
   }
-}
+};
 </script>
 
 <style lang="less">

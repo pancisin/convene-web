@@ -24,30 +24,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   name: 'page-requests',
   inject: ['provider'],
-  data() {
+  data () {
     return {
       requests: [],
       loading: false
-    }
+    };
   },
-  created() {
+  created () {
     this.getRequests();
   },
   watch: {
     '$route': 'getRequests'
   },
   methods: {
-    getRequests() {
+    getRequests () {
       this.loading = true;
       this.provider.api.getRequests(requests => {
         this.requests = requests;
         this.loading = false;
-      })
+      });
     }
   }
-}
+};
 </script>

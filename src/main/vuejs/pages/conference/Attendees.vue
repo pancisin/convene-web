@@ -1,20 +1,20 @@
 <script>
-import AttendeesTemplate from '../templates/Attendees.vue'
+import AttendeesTemplate from '../templates/Attendees.vue';
 
 export default {
   name: 'conference-attendees',
   extends: AttendeesTemplate,
   inject: ['provider'],
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },
-  created() {
+  created () {
     this.initialize();
   },
   methods: {
-    initialize() {
+    initialize () {
       this.api.getAttendees(attendees => {
         this.attendees = attendees;
       });
@@ -23,12 +23,12 @@ export default {
         this.invitations = invitations;
       });
     },
-    invite() {
+    invite () {
       this.api.postInvitation(this.invitations, invitation => {
-        this.invitations.push(response.body);
+        this.invitations.push(invitation);
         this.invitation = {};
-      })
+      });
     }
   }
-}
+};
 </script>

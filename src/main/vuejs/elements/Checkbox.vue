@@ -17,12 +17,13 @@ export default {
   methods: {
     updateInput: function (value) {
       if (this.value instanceof Array) {
-        if (value)
+        if (value) {
           this.value.push(this.option);
-        else
+        } else {
           this.value = this.value.filter(e => {
-            return e.id != this.option.id;
-          })
+            return e.id !== this.option.id;
+          });
+        }
       } else {
         this.value = value ? this.option : null;
       }
@@ -30,11 +31,12 @@ export default {
       this.$emit('input', this.value);
     }
   },
-  isChecked: function() {
-    if (this.value instanceof Array)
-      return this.value.includes(x => x.id == this.option.id)
-    else 
-      return this.value.id == this.option.id;
+  isChecked: function () {
+    if (this.value instanceof Array) {
+      return this.value.includes(x => x.id === this.option.id);
+    } else {
+      return this.value.id === this.option.id;
+    }
   }
-}
+};
 </script>

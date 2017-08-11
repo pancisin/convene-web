@@ -50,33 +50,33 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'page-administrators',
   props: ['page'],
-  data() {
+  data () {
     return {
       administrators: [],
       roles: [],
       users: [],
       user: null,
-      loading: false,
-    }
+      loading: false
+    };
   },
   watch: {
-    'page': 'getAdministrators',
+    'page': 'getAdministrators'
   },
   computed: {
     ...mapGetters({
-      current: 'getUser',
+      current: 'getUser'
     })
   },
-  created() {
+  created () {
     this.getAdministrators();
   },
   methods: {
-    getAdministrators() {
+    getAdministrators () {
       if (this.page.id == null) return;
       this.loading = true;
       var url = ['api/page', this.page.id, 'administrator'].join('/');
@@ -88,58 +88,58 @@ export default {
         });
 
         this.getRoles();
-      })
+      });
     },
-    getRoles() {
+    getRoles () {
       this.$http.get('api/roles').then(response => {
         this.roles = response.body.filter(r => {
           return r.level < this.current.role.level;
-        })
+        });
 
         this.loading = false;
-      })
+      });
     },
-    toggleActive(admin) {
+    toggleActive (admin) {
       admin.active = !admin.active;
       this.putAdministrator(admin);
     },
-    putAdministrator(admin) {
+    putAdministrator (admin) {
       var data = {
         active: admin.active,
         role: admin.role.name
-      }
+      };
 
       this.$http.put('api/page-administrator/' + admin.id, data).then(response => {
         admin = response.body;
-      })
+      });
     },
-    hasPermission(admin) {
+    hasPermission (admin) {
       return admin.role.level < this.current.role.level;
     },
-    deleteAdministrator(admin) {
+    deleteAdministrator (admin) {
       this.$http.delete('api/page-administrator/' + admin.id).then(response => {
         this.administrators = this.administrators.filter(a => {
-          return a.id != admin.id;
-        })
-      })
+          return a.id !== admin.id;
+        });
+      });
     },
-    searchUsers(search, loading) {
+    searchUsers (search, loading) {
       loading(true);
       this.$http.get('api/user/search', {
         params: {
           q: search
         }
       }).then(response => {
-        this.users = response.body
-        loading(false)
-      })
+        this.users = response.body;
+        loading(false);
+      });
     },
-    grantAccess() {
+    grantAccess () {
       var url = ['api/page', this.page.id, 'administrator'].join('/');
       this.$http.post(url, { id: this.user.id }).then(response => {
         this.administrators.push(response.body);
-      })
+      });
     }
   }
-}
+};
 </script>

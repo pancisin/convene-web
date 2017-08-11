@@ -52,17 +52,17 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue'
-import { mapActions } from 'vuex'
-import PublicApi from '../../services/api/public.api.js'
-import ImageUpload from '../../elements/ImageUpload.vue'
+import TextEditor from '../../elements/TextEditor.vue';
+import { mapActions } from 'vuex';
+import PublicApi from '../../services/api/public.api.js';
+import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {
   name: 'page-compose',
   props: {
     page: {
       type: Object,
-      default() {
+      default () {
         return {
           name: null,
           category: null,
@@ -77,16 +77,16 @@ export default {
     }
   },
   inject: ['api'],
-  data() {
+  data () {
     return {
       categories: [],
       branches: []
-    }
+    };
   },
   components: {
     TextEditor, ImageUpload
   },
-  created() {
+  created () {
     this.getCategories();
   },
   watch: {
@@ -97,42 +97,42 @@ export default {
     ...mapActions([
       'addPage', 'removePage'
     ]),
-    submit() {
+    submit () {
       if (this.edit) {
         this.api.putPage(this.page, page => {
           this.$emit('updated', page);
-          this.$success('Success !', 'Page ' + page.name + ' has been updated.')
-        })
+          this.$success('Success !', 'Page ' + page.name + ' has been updated.');
+        });
       } else {
         this.api.postPage(this.page, page => {
           this.addPage(page);
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
           this.$router.push({ name: 'page.settings', params: { id: page.id } });
-        })
+        });
       }
     },
-    getCategories() {
+    getCategories () {
       this.branches = [];
       PublicApi.getCategories(categories => {
         this.categories = categories;
-      })
+      });
     },
-    getBranches() {
+    getBranches () {
       if (this.page.category == null) return;
       PublicApi.getBranches(this.page.category.id, branches => {
         this.branches = branches;
-      })
+      });
     },
-    publishPage() {
+    publishPage () {
       this.api.publishPage(page => {
         this.$emit('updated', page);
-      })
+      });
     },
-    deactivatePage() {
+    deactivatePage () {
       this.api.deactivatePage(page => {
         this.$emit('updated', page);
-      })
+      });
     }
   }
-}
+};
 </script>

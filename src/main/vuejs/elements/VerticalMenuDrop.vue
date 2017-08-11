@@ -16,25 +16,25 @@
 </template>
 
 <script>
-import SlideTransition from '../functional/SlideTransition.vue'
+import SlideTransition from '../functional/SlideTransition.vue';
 export default {
   name: 'vertical-menu-dropdown',
-  data() {
+  data () {
     return {
       collapsed: true
-    }
+    };
   },
   components: {
-    SlideTransition,
+    SlideTransition
   },
   props: {
-    active: Boolean,
+    active: Boolean
   },
   methods: {
-    toggleCollapse() {
+    toggleCollapse () {
       this.collapsed = !this.collapsed;
       this.$emit('opened', this);
     }
   }
-}
+};
 </script>

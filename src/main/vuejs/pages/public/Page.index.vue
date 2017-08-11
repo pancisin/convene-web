@@ -55,47 +55,47 @@
 </template>
 
 <script>
-import StaggerTransition from '../../functional/StaggerTransition.vue'
-import ExplorerTransition from '../../functional/ExplorerTransition.vue'
-import Paginator from '../../elements/Paginator.vue'
+import StaggerTransition from '../../functional/StaggerTransition.vue';
+import ExplorerTransition from '../../functional/ExplorerTransition.vue';
+import Paginator from '../../elements/Paginator.vue';
 export default {
   name: 'page-explore',
-  data() {
+  data () {
     return {
       pages: [],
       categories: [],
       branches: [],
       pagesPaginator: {},
-      filters: null,
-    }
+      filters: null
+    };
   },
   components: {
     StaggerTransition, Paginator, ExplorerTransition
   },
-  created() {
+  created () {
     this.filters = {
       branchId: this.$route.query.branchId,
       categoryId: this.$route.query.categoryId
-    }
+    };
 
     this.getCategories();
     this.getPages(0);
   },
   computed: {
-    currentCategory() {
+    currentCategory () {
       return this.categories.filter(x => {
-        return x.id == this.filters.categoryId;
+        return x.id === this.filters.categoryId;
       })[0];
     }
   },
   methods: {
-    getPages(page) {
+    getPages (page) {
       var url = ['public/pages', page, 10].join('/');
       this.$http.get(url, { params: this.filters }).then(response => {
         this.pagesPaginator = response.body;
-      })
+      });
     },
-    getCategories() {
+    getCategories () {
       this.$http.get('public/categories').then(response => {
         this.categories = response.body.filter(c => {
           return c != null;
@@ -106,46 +106,46 @@ export default {
         }
 
         this.getBranches(this.filters.categoryId);
-      })
+      });
     },
-    getBranches(category_id) {
+    getBranches (category_id) {
       var url = ['public/categories', category_id, 'branches'].join('/');
       this.$http.get(url).then(response => {
         this.branches = response.body;
-      })
+      });
     },
-    selectCategory(category_id) {
-      if (this.filters.categoryId == category_id) return;
+    selectCategory (category_id) {
+      if (this.filters.categoryId === category_id) return;
 
       this.filters = {
         branchId: null,
         categoryId: category_id
-      }
+      };
 
       this.getBranches(category_id);
       this.getPages(0);
-      this.$router.replace({ query: this.filters })
+      this.$router.replace({ query: this.filters });
     },
-    selectBranch(branch_id) {
-      if (this.filters.branchId == branch_id) return;
+    selectBranch (branch_id) {
+      if (this.filters.branchId === branch_id) return;
 
       this.filters = {
         branchId: branch_id,
         categoryId: this.filters.categoryId
-      }
+      };
 
       this.getPages(0);
-      this.$router.replace({ query: this.filters })
+      this.$router.replace({ query: this.filters });
     },
-    pagesPaginatorNavigate(e) {
+    pagesPaginatorNavigate (e) {
       if (e.direction != null) {
         this.getPages(this.pagesPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getPages(e.page);
       }
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang="less">

@@ -17,19 +17,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import ConferenceInjector from '../services/injectors/conference.injector.js'
+import { mapActions } from 'vuex';
+import ConferenceInjector from '../services/injectors/conference.injector.js';
 
 export default {
   name: 'conference',
-  data() {
+  data () {
     return {
-      conference: new Object(),
+      conference: {},
       edit: false,
-      injector: null,
-    }
+      injector: null
+    };
   },
-  provide() {
+  provide () {
     const provider = {};
 
     Object.defineProperty(provider, 'api', {
@@ -38,7 +38,7 @@ export default {
 
     return { provider };
   },
-  created() {
+  created () {
     this.getConference();
   },
   watch: {
@@ -48,17 +48,17 @@ export default {
     ...mapActions([
       'updateConference'
     ]),
-    getConference() {
+    getConference () {
       this.injector = new ConferenceInjector(this.$route.params.id);
       this.injector.getConference(conference => {
         this.conference = conference;
         this.edit = conference.id != null;
       });
     },
-    conferenceUpdated(conference) {
+    conferenceUpdated (conference) {
       this.conference = conference;
       this.updateConference(conference);
     }
   }
-}
+};
 </script>

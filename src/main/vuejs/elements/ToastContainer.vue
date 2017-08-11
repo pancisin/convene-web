@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Toast from './Toast.vue'
-import { mapGetters, mapActions } from 'vuex'
+import Toast from './Toast.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'notification-container',
@@ -24,7 +24,7 @@ export default {
       'removeToast'
     ])
   }
-}
+};
 </script>
 
 <style>

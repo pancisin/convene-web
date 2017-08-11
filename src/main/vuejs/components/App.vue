@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
-import moment from "moment"
-import { mapActions } from 'vuex'
+import Auth from '../services/auth.js';
+import moment from 'moment';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'app-root',
-  created() {
+  created () {
     if (Auth.user.authenticated) {
       Auth.updateUserData(this).then(user => {
         moment.locale(user.locale.name);
@@ -29,15 +29,15 @@ export default {
       'initializeNotifications',
       'addNotification'
     ]),
-    initializeStomp() {
+    initializeStomp () {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
           this.addNotification(notification);
           this.$info(notification.title, notification.message);
         });
-      })
-    },
+      });
+    }
   }
 };
 </script>

@@ -35,26 +35,26 @@
 </template>
 
 <script>
-import TextEditor from '../../../elements/TextEditor.vue'
-import ImageUpload from '../../../elements/ImageUpload.vue'
-import { mapActions } from 'vuex'
+import TextEditor from '../../../elements/TextEditor.vue';
+import ImageUpload from '../../../elements/ImageUpload.vue';
+import { mapActions } from 'vuex';
 export default {
   inject: ['provider'],
   props:
   {
     conference: {
       type: Object,
-      default() {
-        return new Object();
+      default () {
+        return {};
       }
-    },
+    }
   },
   computed: {
     visibility_options: {
-      get() {
+      get () {
         return [
           'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
-        ]
+        ];
       }
     }
   },
@@ -62,7 +62,7 @@ export default {
     TextEditor, ImageUpload
   },
   methods: {
-    submit() {
+    submit () {
       this.provider.api.putConference(this.conference, conference => {
         this.$emit('updated', conference);
         this.$success('Success !', conference.name + ' has been updated.');
@@ -72,5 +72,5 @@ export default {
       'addConference'
     ])
   }
-}
+};
 </script>

@@ -12,13 +12,13 @@
 <script>
 export default {
   name: 'article',
-  data() {
+  data () {
     return {
-      article: {},
-    }
+      article: {}
+    };
   },
-  created() {
+  created () {
 
   }
-}
+};
 </script>

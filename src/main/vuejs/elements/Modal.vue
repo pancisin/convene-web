@@ -32,18 +32,18 @@ export default {
     }
   },
   methods: {
-    accept() {
+    accept () {
       this.$emit('accept');
     },
-    close() {
+    close () {
       this.$emit('close');
     },
-    outside() {
+    outside () {
       // if (this.show)
       //   this.$emit('close');
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>

@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="inv in invitations">
+            <tr v-for="inv in invitations" :key="inv.id">
               <td v-text="inv.email" v-if="inv.user == null"></td>
               <td v-else>
                 {{ inv.user.firstName }} {{ inv.user.lastName }}
@@ -73,37 +73,37 @@
 </template>
 
 <script>
-import SuggestInput from '../../elements/UserSuggestInput.vue'
-import UserApi from '../../services/api/user.api.js'
+import SuggestInput from '../../elements/UserSuggestInput.vue';
+import UserApi from '../../services/api/user.api.js';
 
 export default {
   name: 'event-attendees',
   components: {
     SuggestInput
   },
-  data() {
+  data () {
     return {
       attendees: [],
       invitations: [],
       invitation: {},
-      users: [],
-    }
+      users: []
+    };
   },
   methods: {
-    searchUsers(search, loading) {
+    searchUsers (search, loading) {
       loading(true);
       UserApi.searchUsers(search, users => {
         this.users = users;
         loading(false);
-      })
+      });
     },
-    cancel(invitation_id) {
+    cancel (invitation_id) {
       this.$http.delete('api/invitation/' + invitation_id).then(response => {
         this.invitations = this.invitations.filter(x => {
-          return x.id != invitation_id;
-        })
-      })
+          return x.id !== invitation_id;
+        });
+      });
     }
   }
-}
+};
 </script>

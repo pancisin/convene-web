@@ -19,5 +19,5 @@
 export default {
   name: 'panel',
   props: ['type']
-}
+};
 </script>

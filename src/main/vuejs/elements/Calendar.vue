@@ -38,15 +38,15 @@
 </template>
 
 <script>
-import moment from "moment"
+import moment from 'moment';
 export default {
   data: function () {
     return {
       weeks: [],
       month: moment().month(),
       dragElem: null,
-      dragSource: null,
-    }
+      dragSource: null
+    };
   },
   computed: {
     weekdays: function () {
@@ -72,13 +72,14 @@ export default {
       while (start.diff(end, 'days') < 1) {
         var week_index = start.week() - first_week;
 
-        if (this.weeks[week_index] == null)
+        if (this.weeks[week_index] == null) {
           this.weeks[week_index] = [];
+        }
 
         this.weeks[week_index].push({
           day: start.date(),
           timestamp: start.valueOf(),
-          month: start.month(),
+          month: start.month()
           // instances: instances.filter(elem => {
           //   return moment(elem.date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD');
           // })
@@ -91,7 +92,7 @@ export default {
       this.updateCalendar();
     },
     isCurrent: function (day, month) {
-      return moment().date() == day && moment().month() == month;
+      return moment().date() === day && moment().month() === month;
     },
     dragstart: function (inst, source_day) {
       this.dragElem = inst;
@@ -100,11 +101,11 @@ export default {
     drop: function (day) {
       var self = this;
       if (day.instances.filter(elem => {
-        return elem.duty.id == self.dragElem.duty.id;
-      }) == 0) {
+        return elem.duty.id === self.dragElem.duty.id;
+      }) === 0) {
         day.instances.push(this.dragElem);
         this.dragSource.instances = this.dragSource.instances.filter(elem => {
-          return elem.duty.id != self.dragElem.duty.id;
+          return elem.duty.id !== self.dragElem.duty.id;
         });
         this.dragElem.loading = true;
 
@@ -124,19 +125,19 @@ export default {
         this.$http.post(url, {
           id: instance.clause != null ? instance.clause.id : null,
           primaryDate: instance.clause != null ? instance.clause.primaryDate : instance.date,
-          alternativeDate: alternative_date,
+          alternativeDate: alternative_date
         }).then(response => {
           resolve(response.body);
         }, response => {
           reject();
         });
-      })
+      });
     },
     editInstance: function (instance) {
       this.$emit('edit-instance', instance);
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

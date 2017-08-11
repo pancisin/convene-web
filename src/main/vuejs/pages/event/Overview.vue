@@ -44,17 +44,17 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue'
-import DatePicker from '../../elements/DatePicker.vue'
-import ImageUpload from '../../elements/ImageUpload.vue'
+import TextEditor from '../../elements/TextEditor.vue';
+import DatePicker from '../../elements/DatePicker.vue';
+import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {
   props:
   {
     event: {
       type: Object,
-      default() {
-        return new Object();
+      default () {
+        return {};
       }
     },
     edit: {
@@ -66,23 +66,23 @@ export default {
   },
   computed: {
     visibility_options: {
-      get() {
+      get () {
         return [
           'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
-        ]
+        ];
       }
     }
   },
   components: {
     TextEditor, DatePicker, ImageUpload
   },
-  data() {
+  data () {
     return {
-      errors: new Object(),
-      places: [],
-    }
+      errors: {},
+      places: []
+    };
   },
-  created() {
+  created () {
     this.getPlaces();
   },
   watch: {
@@ -90,12 +90,12 @@ export default {
   },
   methods: {
     submit: function () {
-      this.errors = new Object();
+      this.errors = {};
       if (this.edit) {
-        var url = ['api/event', this.event.id].join('/');
+        let url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
           this.$emit('updated', response.body);
-          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
+          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
         }, response => {
           response.body.fieldErrors.forEach((e) => {
             this.$set(this.errors, e.field, e);
@@ -103,7 +103,7 @@ export default {
           this.$error('Error !', 'Problem in saving event.');
         });
       } else {
-        var url = null;
+        let url = null;
         if (this.page_id != null) {
           url = ['api/page', this.page_id, 'event'].join('/');
         } else if (this.conference_id != null) {
@@ -114,7 +114,7 @@ export default {
 
         this.$http.post(url, this.event).then(response => {
           var event = response.body;
-          this.$success('Success !', 'Event ' + event.name + ' has been created.')
+          this.$success('Success !', 'Event ' + event.name + ' has been created.');
           this.$router.push('/admin/event/' + event.id);
         }, response => {
           if (response.body != null) {
@@ -122,21 +122,21 @@ export default {
               this.$set(this.errors, e.field, e);
             });
             this.$error('Error !', 'Problem in saving event.');
-          } else this.$error(response.statusText, response.bodyText)
-        })
+          } else this.$error(response.statusText, response.bodyText);
+        });
       }
     },
-    getPlaces() {
+    getPlaces () {
       if (this.event.author == null) return;
 
       switch (this.event.author.type) {
-        case "page":
+        case 'page':
           var url = ['api/page', this.event.author.id, 'place'].join('/');
           this.$http.get(url).then(response => {
             this.places = response.body;
-          })
+          });
           break;
-        case "user":
+        case 'user':
           this.$http.get('api/user/place').then(response => {
             this.places = response.body;
           });
@@ -144,5 +144,5 @@ export default {
       }
     }
   }
-}
+};
 </script>

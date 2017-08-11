@@ -51,33 +51,33 @@
 </template>
 
 <script>
-import DatePicker from '../../elements/DatePicker.vue'
-import TextEditor from '../../elements/TextEditor.vue'
-import ProgrammeEditor from '../event/Programme.vue'
+import DatePicker from '../../elements/DatePicker.vue';
+import TextEditor from '../../elements/TextEditor.vue';
+import ProgrammeEditor from '../event/Programme.vue';
 
 export default {
   name: 'create-event',
-  data() {
+  data () {
     return {
       event: {},
       edit: false,
-      errors: new Object(),
-      places: [],
-    }
+      errors: {},
+      places: []
+    };
   },
   components: {
     DatePicker, TextEditor, ProgrammeEditor
   },
   methods: {
     submit: function () {
-      this.errors = new Object();
+      this.errors = {};
       this.event.visibility = 'PUBLIC';
 
       if (this.edit) {
         var url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
           this.event = response.body;
-          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.')
+          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
         }, response => {
           response.body.fieldErrors.forEach((e) => {
             this.$set(this.errors, e.field, e);
@@ -87,7 +87,7 @@ export default {
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
           this.event = response.body;
-          this.$success('Success !', 'Event ' + this.event.name + ' has been created.')
+          this.$success('Success !', 'Event ' + this.event.name + ' has been created.');
           this.edit = true;
         }, response => {
           if (response.body != null) {
@@ -95,20 +95,20 @@ export default {
               this.$set(this.errors, e.field, e);
             });
             this.$error('Error !', 'Problem in saving event.');
-          } else this.$error(response.statusText, response.bodyText)
-        })
+          } else this.$error(response.statusText, response.bodyText);
+        });
       }
     },
-    onLogoChange(e) {
+    onLogoChange (e) {
       var self = this;
 
       var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
+      if (!files.length) {
         return;
+      }
 
       var file = files[0];
 
-      var image = new Image();
       var reader = new FileReader();
 
       reader.onload = (e) => {
@@ -116,9 +116,9 @@ export default {
       };
 
       reader.readAsDataURL(file);
-    },
+    }
   }
-}
+};
 </script>
 
 <style>

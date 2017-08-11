@@ -9,34 +9,34 @@
 <script>
 export default {
   name: 'context-menu',
-  data() {
+  data () {
     return {
       x: null,
       y: null,
       visible: false,
-      data: {},
-    }
+      data: {}
+    };
   },
   computed: {
-    style() {
+    style () {
       return this.isVisible ? {
         top: this.y - document.body.scrollTop + 'px',
         left: this.x + 'px'
-      } : {}
+      } : {};
     },
-    isVisible() {
-      return this.x !== null && this.y !== null
+    isVisible () {
+      return this.x !== null && this.y !== null;
     }
   },
   methods: {
-    open(evt, data) {
+    open (evt, data) {
       this.data = data;
       this.visible = true;
-      this.x = evt.pageX || evt.clientX
-      this.y = evt.pageY || evt.clientY
-      this.$nextTick(() => this.$el.focus())
+      this.x = evt.pageX || evt.clientX;
+      this.y = evt.pageY || evt.clientY;
+      this.$nextTick(() => this.$el.focus());
     },
-    close(evt) {
+    close (evt) {
       this.visible = false;
       this.data = null;
       // this.x = null
@@ -44,7 +44,7 @@ export default {
       // this.userData = null
     }
   }
-}
+};
 </script>
 
 <style lang="less">

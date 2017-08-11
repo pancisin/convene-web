@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)">
+        <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)" :key="not.id">
           <td v-text="not.id" class="text-center"></td>
           <td>{{ not.created | moment('from') }}</td>
           <td v-text="not.title"></td>
@@ -58,47 +58,47 @@
 </template>
 
 <script>
-import Paginator from '../elements/Paginator.vue'
+import Paginator from '../elements/Paginator.vue';
 export default {
   name: 'notifications',
-  data() {
+  data () {
     return {
       paginator: {},
-      loading: false,
-    }
+      loading: false
+    };
   },
   components: {
     Paginator
   },
-  created() {
+  created () {
     this.getNotifications(0);
   },
   methods: {
-    getNotifications(page) {
+    getNotifications (page) {
       this.loading = true;
       var size = 8;
       var url = ['api/user/notification', page, size].join('/');
       this.$http.get(url).then(response => {
         this.loading = false;
         this.paginator = response.body;
-      })
+      });
     },
-    paginatorNavigate(e) {
+    paginatorNavigate (e) {
       if (e.direction != null) {
-        this.getNotifications(this.paginator.number + e.direction)
+        this.getNotifications(this.paginator.number + e.direction);
       } else if (e.page != null) {
         this.getNotifications(e.page);
       }
     },
-    toggleSeen(notification) {
+    toggleSeen (notification) {
       this.$http.patch('api/notification/' + notification.id + '/toggle-seen').then(response => {
         var index = this.paginator.content.indexOf(notification);
 
         this.paginator.content.splice(index, 1, response.body);
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>

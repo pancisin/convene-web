@@ -35,47 +35,47 @@
 </template>
 
 <script>
-import ArticleApi from '../services/api/article.api.js'
-import ImageUpload from '../elements/ImageUpload.vue'
-import TextEditor from '../elements/TextEditor.vue'
+import ArticleApi from '../services/api/article.api.js';
+import ImageUpload from '../elements/ImageUpload.vue';
+import TextEditor from '../elements/TextEditor.vue';
 
 export default {
   name: 'article',
   inject: ['api'],
-  data() {
+  data () {
     return {
       article: {},
-      edit: false,
-    }
+      edit: false
+    };
   },
   components: {
     ImageUpload, TextEditor
   },
-  created() {
+  created () {
     ArticleApi.getArticle(this.$route.params.article_id, article => {
       this.article = article;
       this.edit = article.id != null;
-    })
+    });
   },
   methods: {
-    submit() {
+    submit () {
       if (this.edit) {
         ArticleApi.putArticle(this.article.id, this.article, article => {
           this.article = article;
           this.$success('Success', `Article ${article.title} has been save !`);
-        })
+        });
       } else {
         this.api.postArticle(this.article, article => {
-          this.$router.push({ name: 'article', params: { article_id: article.id } })
+          this.$router.push({ name: 'article', params: { article_id: article.id } });
           this.$success('Success', `Article ${article.title} has been created !`);
-        })
+        });
       }
     },
-    togglePublished() {
+    togglePublished () {
       ArticleApi.togglePublished(this.article.id, article => {
         this.article.published = article.published;
-      })
+      });
     }
   }
-}
+};
 </script>

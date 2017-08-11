@@ -57,16 +57,16 @@
   </div>
 </template>
 <script>
-import Auth from '../services/auth.js'
+import Auth from '../services/auth.js';
 export default {
   data: function () {
     return {
       user: {
         email: null,
-        password: null,
+        password: null
       },
-      fieldErrors: [],
-    }
+      fieldErrors: []
+    };
   },
   methods: {
     submit: function () {

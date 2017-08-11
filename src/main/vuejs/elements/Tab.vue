@@ -8,27 +8,28 @@
 export default {
   name: 'tab',
   props: {
-    title: String,
+    title: String
   },
-  data() {
+  data () {
     return {
       display: false,
       id: null,
-      loading: false,
-    }
+      loading: false
+    };
   },
   watch: {
     display: 'navigationChanged'
   },
   methods: {
-    navigationChanged(value) {
-      if (value)
+    navigationChanged (value) {
+      if (value) {
         this.$emit('navigated', this.id, (value) => {
           this.loading = value;
         });
-    },
-  },
-}
+      }
+    }
+  }
+};
 </script>
 
 <style lang="less">

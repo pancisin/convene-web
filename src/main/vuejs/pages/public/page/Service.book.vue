@@ -26,28 +26,28 @@
 </template>
 
 <script>
-import DatePicker from '../../../elements/DatePicker.vue'
+import DatePicker from '../../../elements/DatePicker.vue';
 export default {
-  name: "service-book",
+  name: 'service-book',
   props: {
-    service: Object,
+    service: Object
   },
   components: {
     DatePicker
   },
-  data() {
+  data () {
     return {
       bookRequest: {
-        units: 0,
-      },
-    }
+        units: 0
+      }
+    };
   },
   methods: {
-    submit() {
+    submit () {
       this.$http.post('api/service/' + this.service.id + '/request', this.bookRequest).then(response => {
         this.$emit('submitted', response.body);
-      })
+      });
     }
   }
-}
+};
 </script>

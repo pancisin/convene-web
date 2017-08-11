@@ -56,15 +56,14 @@
 </template>
   
 <script>
-import later from 'later'
-import calendar from '../elements/Calendar.vue'
-import TabContainer from '../elements/TabContainer.vue'
-import Tab from '../elements/Tab.vue'
+import calendar from '../elements/Calendar.vue';
+import TabContainer from '../elements/TabContainer.vue';
+import Tab from '../elements/Tab.vue';
 
 export default {
   name: 'dashboard',
   components: {
     calendar, TabContainer, Tab
-  },
-}
+  }
+};
 </script>

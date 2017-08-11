@@ -33,15 +33,15 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue'
-import { mapActions } from 'vuex'
+import TextEditor from '../../elements/TextEditor.vue';
+import { mapActions } from 'vuex';
 export default {
   props:
   {
     conference: {
       type: Object,
-      default() {
-        return new Object();
+      default () {
+        return {};
       }
     },
     edit: {
@@ -51,10 +51,10 @@ export default {
   },
   computed: {
     visibility_options: {
-      get() {
+      get () {
         return [
           'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
-        ]
+        ];
       }
     }
   },
@@ -62,24 +62,24 @@ export default {
     TextEditor
   },
   methods: {
-    submit() {
+    submit () {
       if (this.edit) {
         var url = ['api/conference', this.conference.id].join('/');
         this.$http.put(url, this.conference).then(response => {
           this.$emit('updated', response.body);
           this.$success('Success !', this.conference.name + ' has been updated.');
-        })
+        });
       } else {
         this.$http.post('api/user/conference', this.conference).then(response => {
           this.edit = true;
           this.addConference(this.conference);
           this.$router.push('/admin/conference/' + this.conference.id);
-        })
+        });
       }
     },
     ...mapActions([
       'addConference'
     ])
   }
-}
+};
 </script>

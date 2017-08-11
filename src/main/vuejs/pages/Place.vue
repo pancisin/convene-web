@@ -24,37 +24,39 @@
 <script>
 export default {
   name: 'place-layout',
-  data() {
+  data () {
     return {
       place: {},
-      edit: false,
-    }
+      edit: false
+    };
   },
   watch: {
     '$route': 'getPlace'
   },
-  created() {
+  created () {
     this.getPlace();
   },
   methods: {
-    getPlace() {
+    getPlace () {
       var place_id = this.$route.params.id;
 
-      if (this.place.id != null && this.place.id == place_id)
+      if (this.place.id != null && this.place.id === place_id) {
         return;
+      }
 
       if (place_id != null) {
         this.$http.get('api/place/' + place_id).then(response => {
           this.place = response.body;
           this.edit = true;
-        })
-      } else
+        });
+      } else {
         this.place = {};
+      }
     },
-    placeUpdated(place) {
+    placeUpdated (place) {
       this.place = place;
     }
   }
-}
+};
 </script>
 

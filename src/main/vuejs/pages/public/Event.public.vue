@@ -78,39 +78,38 @@
     </div>
   </div>
   <div v-else>
-
-
+  
   </div>
 </template>
 
 <script>
-import Auth from '../../services/auth.js'
-import GMap from '../../elements/GMap.vue'
-import StaggerTransition from '../../functional/StaggerTransition.vue'
-import EventApi from '../../services/api/event.api.js'
+import Auth from '../../services/auth.js';
+import GMap from '../../elements/GMap.vue';
+import StaggerTransition from '../../functional/StaggerTransition.vue';
+import EventApi from '../../services/api/event.api.js';
 
 export default {
   name: 'public-event',
-  data() {
+  data () {
     return {
       event: null,
       attending: false,
-      relatedEvents: [],
-    }
+      relatedEvents: []
+    };
   },
   components: {
     GMap, StaggerTransition
   },
-  created() {
+  created () {
     this.getEvent();
   },
   watch: {
-    '$route': 'getEvent',
+    '$route': 'getEvent'
   },
   methods: {
-    getEvent() {
+    getEvent () {
       var event_id = this.$route.params.id;
-      if (event_id != null)
+      if (event_id != null) {
         EventApi.getEvent(event_id, false, event => {
           this.event = event;
 
@@ -118,20 +117,22 @@ export default {
             this.relatedEvents = paginator.content;
           });
 
-          if (Auth.user.authenticated)
+          if (Auth.user.authenticated) {
             EventApi.getAttendanceStatus(event_id, status => {
               this.attending = status;
             });
-        })
+          }
+        });
+      }
     },
-    attend() {
+    attend () {
       EventApi.toggleAttendanceStatus(this.event.id, status => {
         this.attending = status;
         this.event.attendeesCount += status ? 1 : -1;
       });
     }
   }
-}
+};
 </script>
 
 <style lang="less">

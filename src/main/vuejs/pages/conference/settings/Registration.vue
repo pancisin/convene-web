@@ -75,69 +75,70 @@
 </template>
 
 <script>
-import MetaFieldApi from '../../../services/api/meta-field.api.js'
+import MetaFieldApi from '../../../services/api/meta-field.api.js';
 export default {
   name: 'registration-settings',
   props: ['conference'],
   inject: ['provider'],
-  data() {
+  data () {
     return {
       metaFields: [],
       metaTypes: [],
       selected: null,
-      new_option: null,
-    }
+      new_option: null
+    };
   },
-  created() {
+  created () {
     this.initialize();
   },
   watch: {
-    'conference': 'initialize',
+    'conference': 'initialize'
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
-    } 
+    }
   },
   methods: {
-    initialize() {
+    initialize () {
       this.api.getMetaFields(metaFields => {
         this.metaFields = metaFields;
-      })
+      });
 
       MetaFieldApi.getMetaTypes(metaTypes => {
         this.metaTypes = metaTypes;
-      })
+      });
     },
-    submit() {
+    submit () {
       if (this.selected.id == null) {
         this.api.postMetaField(this.selected, field => {
           this.metaFields.push(field);
-          this.$success("Success", "Meta field has been saved.")
+          this.$success('Success', 'Meta field has been saved.');
         });
       } else {
         MetaFieldApi.putMetaField(this.selected, field => {
           this.selected = field;
-          this.$success("Success", "Meta field has been saved.")
-        })
+          this.$success('Success', 'Meta field has been saved.');
+        });
       }
     },
-    deleteOption(option) {
+    deleteOption (option) {
       this.selected.options = this.selected.options.filter(o => {
-        return o != option;
-      })
+        return o !== option;
+      });
     },
-    addOption() {
-      if (this.selected.options == null)
+    addOption () {
+      if (this.selected.options == null) {
         this.selected.options = [];
+      }
 
-      if (this.new_option != null && this.new_option.trim() != "") {
+      if (this.new_option != null && this.new_option.trim() !== '') {
         this.selected.options.push(this.new_option);
         this.new_option = null;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less">

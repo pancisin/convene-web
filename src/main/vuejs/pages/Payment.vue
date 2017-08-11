@@ -40,32 +40,32 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'invoice',
-  data() {
+  data () {
     return {
       license: {},
       card: {}
-    }
+    };
   },
   computed: {
     ...mapGetters({
       locale: 'getLocale'
     })
   },
-  created() {
+  created () {
     this.getLicense();
   },
   methods: {
-    getLicense() {
+    getLicense () {
       var invoice_id = this.$route.params.invoice_id;
 
       this.$http.get('api/license/' + invoice_id).then(response => {
         this.license = response.body;
-      })
+      });
     },
-    submitPayment() {
+    submitPayment () {
       // var res = this.$resource('api/license/{license_id}/payment');
       // res.save({ license_id: this.license.id}, this.card).then(response => {
       // })
@@ -79,10 +79,10 @@ export default {
         console.log(response);
       }, response => {
         console.error(response);
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>

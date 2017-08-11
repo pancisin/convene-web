@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul class="conversation-list">
-      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == current.id }">
+      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == current.id }" :key="message.id">
         <div class="chat-avatar">
           <img :src="getAvatar(message.sender)" alt="male">
           <i>{{ message.created | moment('LT') }}</i>
@@ -24,40 +24,40 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import gravatar from 'gravatar'
+import { mapGetters } from 'vuex';
+import gravatar from 'gravatar';
 export default {
   name: 'conversation',
   props: {
-    user: Object,
+    user: Object
   },
-  data() {
+  data () {
     return {
-      messages: [],
-    }
+      messages: []
+    };
   },
   computed: {
     ...mapGetters({
       current: 'getUser'
-    }),
+    })
   },
   watch: {
-    'user': 'getMessages',
+    'user': 'getMessages'
   },
   methods: {
-    getMessages() {
+    getMessages () {
       this.$http.get('api/message/user/' + this.user.id + '/0').then(response => {
         this.messages = response.body;
-      })
+      });
     },
-    getAvatar(user) {
+    getAvatar (user) {
       return gravatar.url(user.email, {
         protocol: 'https',
         size: 30
       });
     }
   }
-}
+};
 </script>
 
 <style lang="less">

@@ -69,28 +69,28 @@
 </template>
 
 <script>
-import ServiceBook from './page/Service.book.vue'
-import Auth from '../../services/auth.js'
-import PageApi from '../../services/api/page.api.js'
+import ServiceBook from './page/Service.book.vue';
+import Auth from '../../services/auth.js';
+import PageApi from '../../services/api/page.api.js';
 
-import PageInjector from '../../services/injectors/page.injector.js'
+import PageInjector from '../../services/injectors/page.injector.js';
 
 export default {
   name: 'page',
-  provide() {
+  provide () {
     return {
       api: new PageInjector(this.$route.params.id)
-    }
+    };
   },
-  data() {
+  data () {
     return {
       follows: false,
       page: null,
       services: [],
       events: [],
       selectedService: null,
-      displayBookModal: false,
-    }
+      displayBookModal: false
+    };
   },
   components: {
     ServiceBook
@@ -98,16 +98,16 @@ export default {
   watch: {
     '$route': 'getPage'
   },
-  created() {
+  created () {
     this.getPage();
   },
   methods: {
-    getPage() {
+    getPage () {
       var page_id = this.$route.params.id;
 
       if (page_id == null) {
-        var reg = new RegExp("www|bookster|localhost:3000");
-        var parts = window.location.host.split(".");
+        var reg = new RegExp('www|bookster|localhost:3000');
+        var parts = window.location.host.split('.');
 
         if (!reg.test(parts[0])) {
           page_id = parts[0];
@@ -120,7 +120,7 @@ export default {
           if (auth) {
             PageApi.getFollowStatus(page.id, status => {
               this.follows = status;
-            })
+            });
           }
 
           PageApi.getServices(page.id, auth, services => {
@@ -128,16 +128,16 @@ export default {
           });
           PageApi.getAllEvents(page.id, auth, events => {
             this.events = events;
-          })
-        })
+          });
+        });
       }
     },
-    toggleFollow() {
+    toggleFollow () {
       PageApi.toggleFollowStatus(this.page.id, status => {
         this.follows = status;
-      })
+      });
     },
-    bookService(service) {
+    bookService (service) {
       this.selectedService = service;
       this.displayBookModal = true;
     },
@@ -145,5 +145,5 @@ export default {
       this.displayBookModal = false;
     }
   }
-}
+};
 </script>

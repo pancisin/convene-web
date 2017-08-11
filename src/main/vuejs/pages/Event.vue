@@ -35,39 +35,39 @@
 </template>
 
 <script>
-import EventInjector from '../services/injectors/event.injector.js'
+import EventInjector from '../services/injectors/event.injector.js';
 
 export default {
   name: 'event',
-  data() {
+  data () {
     return {
-      event: new Object(),
-      edit: false,
-    }
+      event: {},
+      edit: false
+    };
   },
-  provide() {
+  provide () {
     return {
-      api: new EventInjector(this.$route.params.id),
-    }
+      api: new EventInjector(this.$route.params.id)
+    };
   },
   watch: {
     '$route': 'getEvent'
   },
-  created() {
+  created () {
     this.getEvent();
   },
   methods: {
-    getEvent() {
+    getEvent () {
       var injector = new EventInjector(this.$route.params.id);
 
       injector.getEvent(true, event => {
         this.event = event;
         this.edit = event.id != null;
-      })
+      });
     },
-    eventUpdated(event) {
+    eventUpdated (event) {
       this.event = event;
     }
   }
-}
+};
 </script>

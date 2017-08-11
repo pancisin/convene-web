@@ -39,44 +39,44 @@
 </template>
 
 <script>
-import TimePicker from '../../elements/TimePicker.vue'
-import ProgrammeApi from '../../services/api/programme.api.js'
+import TimePicker from '../../elements/TimePicker.vue';
+import ProgrammeApi from '../../services/api/programme.api.js';
 export default {
   inject: ['api'],
-  data() {
+  data () {
     return {
       programme: [],
-      new_programme: new Object(),
-    }
+      new_programme: {}
+    };
   },
   components: {
     TimePicker
   },
-  created() {
+  created () {
     this.api.getProgramme(programme => {
       this.programme = programme;
-    })
+    });
   },
   methods: {
     submitProgramme: function () {
-      if (this.new_programme.description == null || this.new_programme.description == "") return;
+      if (this.new_programme.description == null || this.new_programme.description === '') return;
 
       this.api.postProgramme(this.new_programme, programme => {
         this.programme.push(programme);
 
-        this.new_programme = new Object();
+        this.new_programme = {};
         this.programme.sort((a, b) => {
           return a.time > b.time;
-        })
+        });
       });
     },
-    deleteProgramme(programme) {
+    deleteProgramme (programme) {
       ProgrammeApi.deleteProgramme(programme.id, result => {
         this.programme = this.programme.filter(p => {
-          return p.id != programme.id
+          return p.id !== programme.id;
         });
-      })
+      });
     }
   }
-}
+};
 </script>

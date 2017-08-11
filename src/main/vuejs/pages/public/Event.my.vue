@@ -49,13 +49,13 @@
 </template>
 
 <script>
-import Paginator from '../../elements/Paginator.vue'
+import Paginator from '../../elements/Paginator.vue';
 export default {
   name: 'event-index',
-  data() {
+  data () {
     return {
-      paginator: {},
-    }
+      paginator: {}
+    };
   },
   created: function () {
     this.getEvents(0);
@@ -64,21 +64,21 @@ export default {
     Paginator
   },
   methods: {
-    getEvents(page) {
+    getEvents (page) {
       var size = 5;
       var url = ['api/user/event', page, size].join('/');
       this.$http.get(url).then(response => {
         this.paginator = response.body;
-        this.events = response.body.content
-      })
+        this.events = response.body.content;
+      });
     },
-    paginatorNavigate(e) {
+    paginatorNavigate (e) {
       if (e.direction != null) {
-        this.getEvents(this.paginator.number + e.direction)
+        this.getEvents(this.paginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
     }
   }
-}
+};
 </script>

@@ -12,20 +12,20 @@
 export default {
   name: 'events-list',
   inject: ['api'],
-  data() {
+  data () {
     return {
-      events: [],
-    }
+      events: []
+    };
   },
   created () {
     this.api.getEvents(0, 100, events => {
       this.events = events.content;
-    })
+    });
   },
   methods: {
-    
+
   }
-}
+};
 </script>
 
 <style>

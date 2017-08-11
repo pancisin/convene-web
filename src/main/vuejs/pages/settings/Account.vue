@@ -70,34 +70,34 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'account',
-  created() {
+  created () {
 
   },
   computed: {
     ...mapGetters({
       user: 'getUser'
-    }),
+    })
   },
   methods: {
     ...mapActions([
       'updateUser'
     ]),
-    submit() {
+    submit () {
       var data = {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         address: this.user.address
-      }
+      };
 
       this.$http.put('api/user', data).then(response => {
         var user = response.body;
         this.updateUser(user);
-        this.$success('Success !', 'User account information has been updated.')
-      })
+        this.$success('Success !', 'User account information has been updated.');
+      });
     }
   }
-}
+};
 </script>

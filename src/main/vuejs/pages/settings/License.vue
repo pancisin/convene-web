@@ -41,15 +41,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'licenses',
-  data() {
+  data () {
     return {
-      subscriptions: [],
-    }
+      subscriptions: []
+    };
   },
-  created() {
+  created () {
     this.getSubscriptions();
   },
   computed: {
@@ -58,11 +58,11 @@ export default {
     })
   },
   methods: {
-    getSubscriptions() {
+    getSubscriptions () {
       this.$http.get('api/user/subscription').then(response => {
         this.subscriptions = response.body;
-      })
+      });
     }
   }
-}
+};
 </script>

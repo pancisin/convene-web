@@ -36,49 +36,49 @@
 </template>
 
 <script>
-import Paginator from '../../elements/Paginator.vue'
-import DatePicker from '../../elements/DatePicker.vue'
+import Paginator from '../../elements/Paginator.vue';
+import DatePicker from '../../elements/DatePicker.vue';
 export default {
   name: 'events',
-  data() {
+  data () {
     return {
       eventsPaginator: {},
       filters: {
         timestamp: Date.now()
       }
-    }
+    };
   },
   components: {
     Paginator, DatePicker
   },
   watch: {
     filters: {
-      handler() {
+      handler () {
         this.getEvents(this.eventsPaginator.number);
       },
       deep: true
     }
   },
-  created() {
+  created () {
     this.getEvents(0);
   },
   methods: {
-    getEvents(page) {
+    getEvents (page) {
       this.$http.get('public/events/' + page + '/5', {
         params: this.filters
       }).then(response => {
         this.eventsPaginator = response.body;
-      })
+      });
     },
-    eventsPaginatorNavigate(e) {
+    eventsPaginatorNavigate (e) {
       if (e.direction != null) {
         this.getEvents(this.eventsPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang="less">

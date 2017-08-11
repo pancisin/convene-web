@@ -1,7 +1,7 @@
 <template>
   <div class="contact-list">
     <ul class="list-group contacts-list">
-      <li class="list-group-item" v-for="user in users">
+      <li class="list-group-item" v-for="user in users" :key="user.id">
         <a @click="selectUser(user)">
           <div class="avatar">
             <img :src="getAvatar(user)" alt="">
@@ -16,34 +16,34 @@
 </template>
 
 <script>
-import gravatar from 'gravatar'
+import gravatar from 'gravatar';
 export default {
   name: 'contacts-list',
-  data() {
+  data () {
     return {
-      users: [],
-    }
+      users: []
+    };
   },
-  created() {
+  created () {
     this.getContacts();
   },
   methods: {
-    getContacts() {
+    getContacts () {
       this.$http.get('api/user/contacts').then(response => {
         this.users = response.body;
       });
     },
-    selectUser(user) {
+    selectUser (user) {
       this.$emit('selected', user);
     },
-    getAvatar(user) {
+    getAvatar (user) {
       return gravatar.url(user.email, {
         protocol: 'https',
         size: 30
       });
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

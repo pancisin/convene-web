@@ -155,8 +155,8 @@
 </template>
 
 <script>
-import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue'
-import { mapActions, mapGetters } from 'vuex'
+import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'sidebar',
@@ -173,9 +173,9 @@ export default {
     })
   },
   components: {
-    DropDown: VerticalMenuDrop,
+    DropDown: VerticalMenuDrop
   },
-  created() {
+  created () {
     this.initializePages();
     this.initializeConferences();
   },
@@ -183,15 +183,17 @@ export default {
     ...mapActions([
       'initializePages', 'initializeConferences'
     ]),
-    closeDropdowns(except) {
-      if (!except.collapsed)
+    closeDropdowns (except) {
+      if (!except.collapsed) {
         this.$refs.items.forEach(item => {
-          if (item != except && !item.collapsed)
+          if (item !== except && !item.collapsed) {
             item.toggleCollapse();
-        })
+          }
+        });
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

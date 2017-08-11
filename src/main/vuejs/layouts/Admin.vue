@@ -16,25 +16,26 @@
   </div>
 </template>
 
-<script> 
-import HeaderComponent from './Admin.header.vue'
-import FooterComponent from './Footer.vue'
-import ToastContainer from '../elements/ToastContainer.vue'
-import ChatContainer from '../elements/ChatContainer.vue'
-import SidebarComponent from './Admin.sidebar.vue'
+<script>
+import HeaderComponent from './Admin.header.vue';
+import FooterComponent from './Footer.vue';
+import ToastContainer from '../elements/ToastContainer.vue';
+import ChatContainer from '../elements/ChatContainer.vue';
+import SidebarComponent from './Admin.sidebar.vue';
 
 export default {
   name: 'app',
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next(vm => {
-      if (!vm.$store.getters.isAdmin)
-        next("/");
-    })
+      if (!vm.$store.getters.isAdmin) {
+        next('/');
+      }
+    });
   },
-  data() {
+  data () {
     return {
-      sidebarCollapsed: true,
-    }
+      sidebarCollapsed: true
+    };
   },
   watch: {
     '$route': 'closeSidebar'
@@ -47,12 +48,12 @@ export default {
     SidebarComponent
   },
   methods: {
-    toggleSidebar() {
+    toggleSidebar () {
       this.sidebarCollapsed = !this.sidebarCollapsed;
     },
-    closeSidebar() {
+    closeSidebar () {
       this.sidebarCollapsed = true;
     }
   }
-}
+};
 </script>

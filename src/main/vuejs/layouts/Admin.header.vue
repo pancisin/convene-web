@@ -49,19 +49,19 @@
 </template>
   
 <script>
-import Auth from '../services/auth.js'
-import Notifications from '../elements/Notifications.vue'
-import LangSwitcher from '../elements/LangSwitcher.vue'
-import { mapGetters } from 'vuex'
-import gravatar from 'gravatar'
+import Auth from '../services/auth.js';
+import Notifications from '../elements/Notifications.vue';
+import LangSwitcher from '../elements/LangSwitcher.vue';
+import { mapGetters } from 'vuex';
+import gravatar from 'gravatar';
 
 export default {
   name: 'header',
   methods: {
     logout: function () {
-      Auth.logout(this, '/login')
+      Auth.logout(this, '/login');
     },
-    hamburgerClicked() {
+    hamburgerClicked () {
       this.$emit('hamburgerClicked');
     }
   },
@@ -69,7 +69,7 @@ export default {
     ...mapGetters({
       user: 'getUser'
     }),
-    avatar() {
+    avatar () {
       return gravatar.url(this.user.email, {
         protocol: 'https',
         size: 36
@@ -78,8 +78,8 @@ export default {
   },
   components: {
     Notifications, LangSwitcher
-  },
-}
+  }
+};
 </script>
 
 <style lang="less" scoped>

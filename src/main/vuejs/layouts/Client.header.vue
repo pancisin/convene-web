@@ -166,32 +166,32 @@
 
 <script>
 // require("../assets/less/custom-menu.less")
-import Auth from '../services/auth.js'
-import Notifications from '../elements/Notifications.vue'
-import LangSwitcher from '../elements/LangSwitcher.vue'
-import SlideTransition from '../functional/SlideTransition'
-import { mapGetters } from 'vuex'
-import gravatar from 'gravatar'
+import Auth from '../services/auth.js';
+import Notifications from '../elements/Notifications.vue';
+import LangSwitcher from '../elements/LangSwitcher.vue';
+import SlideTransition from '../functional/SlideTransition';
+import { mapGetters } from 'vuex';
+import gravatar from 'gravatar';
 
 export default {
   name: 'header',
-  data() {
+  data () {
     return {
-      collapsed: true,
-    }
+      collapsed: true
+    };
   },
   watch: {
-    '$route': 'closeNavbar',
+    '$route': 'closeNavbar'
   },
   computed: {
     ...mapGetters({
       isAdmin: 'isAdmin',
       user: 'getUser'
     }),
-    auth() {
+    auth () {
       return Auth;
     },
-    avatar() {
+    avatar () {
       return gravatar.url(this.user.email, {
         protocol: 'https',
         size: 36
@@ -202,12 +202,12 @@ export default {
     Notifications, LangSwitcher, SlideTransition
   },
   methods: {
-    logout() {
-      Auth.logout(this, '/login')
+    logout () {
+      Auth.logout(this, '/login');
     },
-    closeNavbar() {
+    closeNavbar () {
       this.collapsed = true;
     }
   }
-}
+};
 </script>

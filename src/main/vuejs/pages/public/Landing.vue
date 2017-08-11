@@ -189,30 +189,30 @@
 </template>
 
 <script>
-import Pricing from '../static/Pricing.vue'
-import Paginator from '../../elements/Paginator.vue'
-import StaggerTransition from '../../functional/StaggerTransition.vue'
+import Pricing from '../static/Pricing.vue';
+import Paginator from '../../elements/Paginator.vue';
+import StaggerTransition from '../../functional/StaggerTransition.vue';
 export default {
   name: 'landing',
   components: {
     Pricing, Paginator, StaggerTransition
   },
-  data() {
+  data () {
     return {
-      eventsPaginator: {},
-    }
+      eventsPaginator: {}
+    };
   },
-  created() {
+  created () {
     this.getEvents(0);
   },
   methods: {
-    getEvents(page) {
+    getEvents (page) {
       var url = ['public/events', page, 5].join('/');
       this.$http.get(url).then(response => {
         this.eventsPaginator = response.body;
-      })
+      });
     },
-    eventsPaginatorNavigate(e) {
+    eventsPaginatorNavigate (e) {
       if (e.direction != null) {
         this.getEvents(this.eventsPaginator.number + e.direction);
       } else if (e.page != null) {
@@ -220,7 +220,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less">

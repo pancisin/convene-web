@@ -38,8 +38,8 @@
   </div>
 </template>
 <script>
-import moment from "moment"
-import { mapGetters } from 'vuex'
+import moment from 'moment';
+import { mapGetters } from 'vuex';
 
 export default {
   props: ['value', 'placeholder', 'inline'],
@@ -49,8 +49,8 @@ export default {
       month: moment().month(),
       displayDatePicker: false,
       selected: null,
-      focus: false,
-    }
+      focus: false
+    };
   },
   computed: {
     ...mapGetters({
@@ -70,10 +70,10 @@ export default {
     this.updateCalendar();
   },
   watch: {
-    focus(newVal) {
+    focus (newVal) {
       if (newVal) this.displayDatePicker = true;
     },
-    'value'(newVal) {
+    'value' (newVal) {
       this.selected = newVal;
     }
   },
@@ -88,13 +88,14 @@ export default {
       while (start.diff(end, 'days') < 1) {
         var week_index = start.week() - first_week;
 
-        if (this.weeks[week_index] == null)
+        if (this.weeks[week_index] == null) {
           this.weeks[week_index] = [];
+        }
 
         this.weeks[week_index].push({
           day: start.date(),
           timestamp: start.valueOf(),
-          month: start.month(),
+          month: start.month()
         });
         start.add(1, 'days');
       }
@@ -104,12 +105,12 @@ export default {
       this.updateCalendar();
     },
     isCurrent: function (day, month) {
-      return moment().date() == day && moment().month() == month;
+      return moment().date() === day && moment().month() === month;
     },
-    focusChanged(e) {
-      this.focus = e.type == "focus";
+    focusChanged (e) {
+      this.focus = e.type === 'focus';
     },
-    select(day) {
+    select (day) {
       this.selected = day.timestamp;
       this.displayDatePicker = false;
       this.$emit('input', day.timestamp);
@@ -118,7 +119,7 @@ export default {
       if (focus) this.displayDatePicker = false;
     }
   }
-}
+};
 </script>
 <style lang="less">
 .date-picker-container {

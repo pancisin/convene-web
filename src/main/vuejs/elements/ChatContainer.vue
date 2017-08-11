@@ -29,33 +29,33 @@
 </template>
 
 <script>
-import ContactsList from './parts/ContactsList.vue'
-import ConversationList from './parts/ConversationList.vue'
+import ContactsList from './parts/ContactsList.vue';
+import ConversationList from './parts/ConversationList.vue';
 
 export default {
   name: 'conversation-container',
-  data() {
+  data () {
     return {
       collapsed: true,
       currentView: 'contacts-list',
-      user: null,
-    }
+      user: null
+    };
   },
   components: {
     ContactsList,
     ConversationList
   },
   methods: {
-    userSelected(user) {
+    userSelected (user) {
       this.user = user;
-      this.currentView = 'conversation-list'
+      this.currentView = 'conversation-list';
     },
-    navigateBack() {
-      this.currentView = 'contacts-list'
+    navigateBack () {
+      this.currentView = 'contacts-list';
       this.user = null;
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

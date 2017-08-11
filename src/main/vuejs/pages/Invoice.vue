@@ -106,31 +106,31 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'invoice',
-  data() {
+  data () {
     return {
       invoice: {},
-      tax: 19.0,
-    }
+      tax: 19.0
+    };
   },
   computed: {
     ...mapGetters({
       locale: 'getLocale'
     })
   },
-  created() {
+  created () {
     this.getInvoice();
   },
   methods: {
-    getInvoice() {
+    getInvoice () {
       var invoice_id = this.$route.params.invoice_id;
 
       this.$http.get('api/license/' + invoice_id).then(response => {
         this.invoice = response.body;
-      })
+      });
     }
   }
-}
+};
 </script>

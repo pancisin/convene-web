@@ -52,43 +52,43 @@
 </template>
 
 <script>
-import ConferenceInjector from '../../services/injectors/conference.injector.js'
-import AttendForm from './conference/Attend.form.vue'
-import ArticlesList from '../../elements/ArticlesList.vue'
-import EventsList from './conference/Events.list.vue'
+import ConferenceInjector from '../../services/injectors/conference.injector.js';
+import AttendForm from './conference/Attend.form.vue';
+import ArticlesList from '../../elements/ArticlesList.vue';
+import EventsList from './conference/Events.list.vue';
 
 export default {
   name: 'conference',
-  provide() {
+  provide () {
     return {
       api: new ConferenceInjector(this.$route.params.id)
-    }
+    };
   },
   components: {
     AttendForm, ArticlesList, EventsList
   },
-  data() {
+  data () {
     return {
       conference: null,
-      attend_status: false,
-    }
+      attend_status: false
+    };
   },
-  created() {
+  created () {
     var injector = new ConferenceInjector(this.$route.params.id);
     injector.getConference(conference => {
       this.conference = conference;
-    })
+    });
 
     injector.getAttendStatus(status => {
       this.attend_status = status;
-    })
+    });
   },
   methods: {
-    statusChanged(status) {
+    statusChanged (status) {
       this.attend_status = status;
     }
   }
-}
+};
 </script>
 
 <style>

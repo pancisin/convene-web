@@ -70,17 +70,17 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js'
-import { mapGetters } from 'vuex'
+import Auth from '../../services/auth.js';
+import { mapGetters } from 'vuex';
 export default {
   name: 'subscription-signup',
-  data() {
+  data () {
     return {
       subscriptions: [],
-      subscription: null,
-    }
+      subscription: null
+    };
   },
-  created() {
+  created () {
     this.getSubscriptions();
   },
   computed: {
@@ -89,33 +89,34 @@ export default {
     })
   },
   methods: {
-    getSubscriptions() {
+    getSubscriptions () {
       this.$http.get('public/subscriptions').then(response => {
         this.subscriptions = response.body;
 
         this.subscription = this.getByName(this.$route.params.subscription);
-      })
+      });
     },
-    getByName(name) {
-      var filter = this.subscriptions.filter(x => x.name == name);
-      if (filter.length > 0)
+    getByName (name) {
+      var filter = this.subscriptions.filter(x => x.name === name);
+      if (filter.length > 0) {
         return filter[0];
+      }
 
       return null;
     },
-    submit() {
+    submit () {
       var data = {
         user: this.user,
         subscription: this.subscription.name
-      }
+      };
 
       data.user.role = data.user.role.name;
       data.user.locale = data.user.locale.code;
       this.$http.post('api/user/subscription', data).then(response => {
         Auth.updateUserData(this);
-        console.log('FINE !')
-      })
+        console.log('FINE !');
+      });
     }
   }
-}
+};
 </script>

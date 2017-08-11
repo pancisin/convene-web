@@ -31,57 +31,57 @@
 </template>
 
 <script>
-import moment from "moment"
+import moment from 'moment';
 export default {
   name: 'time-picker',
   props: ['value', 'placeholder'],
-  data() {
+  data () {
     return {
       displayTimePicker: false,
       time: {
-        hour: parseInt(moment().format("HH")),
+        hour: parseInt(moment().format('HH')),
         minute: 0,
-        second: 0,
+        second: 0
       },
-      focus: false,
-    }
+      focus: false
+    };
   },
   computed: {
     timeString: {
-      get() {
-        var min = this.time.minute == 0 ? "00" : this.time.minute;
-        return this.time.hour + ":" + min + ":00";
+      get () {
+        var min = this.time.minute === 0 ? '00' : this.time.minute;
+        return this.time.hour + ':' + min + ':00';
       }
     }
   },
-  created() {
-      this.$emit('input', this.timeString);
+  created () {
+    this.$emit('input', this.timeString);
   },
   watch: {
-    focus(newVal) {
+    focus (newVal) {
       if (newVal) this.displayTimePicker = true;
     },
-    'value'(newVal) {
+    'value' (newVal) {
       this.selected = newVal;
     }
   },
   methods: {
-    focusChanged(e) {
-      this.focus = e.type == "focus";
+    focusChanged (e) {
+      this.focus = e.type === 'focus';
     },
     outside: function () {
       if (focus) this.displayTimePicker = false;
     },
-    offsetHour(value) {
+    offsetHour (value) {
       var new_val = this.time.hour + value;
 
       if (new_val >= 0 && new_val < 60) {
         this.time.hour = new_val;
-          this.$emit('input', this.timeString);
+        this.$emit('input', this.timeString);
       }
     },
-    offsetMinute(value) {
-      var new_val = this.time.minute + value
+    offsetMinute (value) {
+      var new_val = this.time.minute + value;
 
       if (new_val >= 0 && new_val < 60) {
         this.time.minute = new_val;
@@ -89,7 +89,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less">

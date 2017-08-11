@@ -15,19 +15,16 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue'
-import { mapActions } from 'vuex'
-
 export default {
   name: 'page-overview',
   props: ['page'],
-  data() {
+  data () {
     return {
 
-    }
+    };
   },
   methods: {
 
   }
-}
+};
 </script>

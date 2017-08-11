@@ -11,24 +11,24 @@
 </template>
 
 <script>
-import RootApi from '../../services/api/api.js'
-import Auth from '../../services/auth.js'
+import RootApi from '../../services/api/api.js';
+import Auth from '../../services/auth.js';
 export default {
   name: 'conference-index',
-  data() {
+  data () {
     return {
-      conferences: [],
-    }
+      conferences: []
+    };
   },
-  created() {
+  created () {
     this.getConferences();
   },
   methods: {
-    getConferences() {
+    getConferences () {
       RootApi.getConferences(0, 10, Auth.user.authenticated, conferences => {
         this.conferences = conferences.content;
-      })
+      });
     }
   }
-}
+};
 </script>

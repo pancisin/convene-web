@@ -118,30 +118,30 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js'
-import Paginator from '../../elements/Paginator.vue'
-import StaggerTransition from '../../functional/StaggerTransition.vue'
-import TabContainer from '../../elements/TabContainer.vue'
-import Tab from '../../elements/Tab.vue'
-import UserApi from '../../services/api/user.api.js'
+import Auth from '../../services/auth.js';
+import Paginator from '../../elements/Paginator.vue';
+import StaggerTransition from '../../functional/StaggerTransition.vue';
+import TabContainer from '../../elements/TabContainer.vue';
+import Tab from '../../elements/Tab.vue';
+import UserApi from '../../services/api/user.api.js';
 
 export default {
   name: 'dashboard',
-  data() {
+  data () {
     return {
       events: [],
       attending: [],
       pagesPaginator: {},
       eventsPaginator: {},
       followed: [],
-      popular: [],
-    }
+      popular: []
+    };
   },
-  created() {
+  created () {
     if (Auth.user.authenticated) {
       UserApi.getAttendingEvents(events => {
         this.attending = events;
-      })
+      });
     }
 
     this.getEvents(0);
@@ -151,62 +151,62 @@ export default {
     Paginator, StaggerTransition, TabContainer, Tab
   },
   computed: {
-    authenticated() {
+    authenticated () {
       return Auth.user.authenticated;
     }
   },
   methods: {
-    getEvents(page) {
+    getEvents (page) {
       console.log(navigator.geolocation.getCurrentPosition(position => {
         var url = ['public/near-events', page, 5].join('/');
         this.$http.get(url, {
           params: {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-            distance: 20,
+            distance: 20
           }
         }).then(response => {
           this.eventsPaginator = response.body;
-        })
-      }))
+        });
+      }));
     },
-    getPages(page) {
+    getPages (page) {
       var url = ['public/pages', page, 5].join('/');
       this.$http.get(url).then(response => {
         this.pagesPaginator = response.body;
-      })
+      });
     },
-    pagesPaginatorNavigate(e) {
+    pagesPaginatorNavigate (e) {
       if (e.direction != null) {
         this.getPages(this.pagesPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getPages(e.page);
       }
     },
-    eventsPaginatorNavigate(e) {
+    eventsPaginatorNavigate (e) {
       if (e.direction != null) {
         this.getEvents(this.eventsPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
       }
     },
-    tabNavigation(id, loading) {
-      if (id === 2 && (this.popular == null || this.popular.length == 0)) {
+    tabNavigation (id, loading) {
+      if (id === 2 && (this.popular == null || this.popular.length === 0)) {
         loading(true);
         this.$http.get('public/popular-pages/0/5').then(response => {
           this.popular = response.body.content;
           loading(false);
-        })
+        });
       }
 
-      if (id == 1 && Auth.user.authenticated && (this.followed == null || this.followed.length == 0)) {
+      if (id === 1 && Auth.user.authenticated && (this.followed == null || this.followed.length === 0)) {
         loading(true);
         UserApi.getFollowedPages(pages => {
           loading(false);
           this.followed = pages;
-        })
+        });
       }
     }
   }
-}
+};
 </script>

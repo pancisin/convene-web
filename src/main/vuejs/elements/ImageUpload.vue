@@ -9,22 +9,19 @@
 export default {
   name: 'image-upload',
   props: ['value'],
-  data() {
+  data () {
     return {
 
-    }
+    };
   },
   methods: {
-    onImageChange(e) {
-      var self = this;
-
+    onImageChange (e) {
       var files = e.target.files || e.dataTransfer.files;
-      if (!files.length)
+      if (!files.length) {
         return;
+      }
 
       var file = files[0];
-
-      var image = new Image();
       var reader = new FileReader();
 
       reader.onload = (e) => {
@@ -32,9 +29,9 @@ export default {
       };
 
       reader.readAsDataURL(file);
-    },
+    }
   }
-}
+};
 </script>
 
 <style>

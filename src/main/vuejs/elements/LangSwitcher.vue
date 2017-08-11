@@ -14,32 +14,32 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js'
-import moment from "moment"
+import Auth from '../services/auth.js';
+import moment from 'moment';
 export default {
   name: 'language-switcher',
-  data() {
+  data () {
     return {
       locales: [],
       display: false
-    }
+    };
   },
-  created() {
+  created () {
     this.getLocales();
   },
   computed: {
     locale: {
-      get() {
+      get () {
         return Auth.user.authenticated ? this.$store.getters.getLocale : this.$i18n.locale;
       },
-      set(value) {
-        if (Auth.user.authenticated)
+      set (value) {
+        if (Auth.user.authenticated) {
           this.$http.put('api/user/locale', JSON.stringify(value.name)).then(response => {
             Auth.updateUserData(this);
             moment.locale(value.name);
             this.$i18n.locale = value.name;
-          })
-        else {
+          });
+        } else {
           moment.locale(value.name);
           this.$i18n.locale = value.name;
         }
@@ -47,15 +47,16 @@ export default {
     }
   },
   methods: {
-    getLocales() {
+    getLocales () {
       this.$http.get('public/locales').then(response => {
         this.locales = response.body;
-      })
+      });
     },
-    closeLanguage(e) {
-      if (this.display)
+    closeLanguage (e) {
+      if (this.display) {
         this.display = false;
+      }
     }
   }
-}
+};
 </script>
