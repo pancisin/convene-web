@@ -26,21 +26,6 @@ export default {
     });
   },
 
-  updateUserData (context) {
-    return new Promise((resolve, reject) => {
-      context.$http.get('api/user/me', { headers: this.getAuthHeader() }).then(response => {
-        var user = response.body;
-        context.user = user;
-        context.$store.commit('SET_USER', { user });
-
-        context.$emit('user-loaded', user.id);
-        resolve(user);
-      }, response => {
-        reject(response);
-      });
-    });
-  },
-
   signup (context, creds, redirect) {
     return new Promise((resolve, reject) => {
       context.$http.post('register', creds).then(response => {

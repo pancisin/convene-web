@@ -24,15 +24,20 @@ const actions = {
     return new Promise((resolve, reject) => {
       UserApi.getUser((user) => {
         commit(types.SET_USER, { user });
-        resolve();
+        resolve(user);
       });
     });
   },
-  setUser ({ commit }, user) {
-    commit(types.SET_USER, { user });
+  clearUser ({ commit }) {
+
   },
   updateUser ({ commit }, user) {
-    commit(types.SET_USER, { user });
+    return new Promise((resolve) => {
+      UserApi.putUser(user, result => {
+        commit(types.SET_USER, { result });
+        resolve(user);
+      });
+    });
   }
 };
 

@@ -73,9 +73,6 @@
 import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'account',
-  created () {
-
-  },
   computed: {
     ...mapGetters(['user'])
   },
@@ -90,9 +87,7 @@ export default {
         address: this.user.address
       };
 
-      this.$http.put('api/user', data).then(response => {
-        var user = response.body;
-        this.updateUser(user);
+      this.updateUser(data).then(user => {
         this.$success('Success !', 'User account information has been updated.');
       });
     }

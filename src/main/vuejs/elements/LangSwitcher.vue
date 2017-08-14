@@ -16,6 +16,8 @@
 <script>
 import Auth from '../services/auth.js';
 import moment from 'moment';
+import { mapActions } from 'vuex';
+
 export default {
   name: 'language-switcher',
   data () {
@@ -35,7 +37,7 @@ export default {
       set (value) {
         if (Auth.user.authenticated) {
           this.$http.put('api/user/locale', JSON.stringify(value.name)).then(response => {
-            Auth.updateUserData(this);
+            this.initializeUser();
             moment.locale(value.name);
             this.$i18n.locale = value.name;
           });
@@ -47,6 +49,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'initializeUser'
+    ]),
     getLocales () {
       this.$http.get('public/locales').then(response => {
         this.locales = response.body;

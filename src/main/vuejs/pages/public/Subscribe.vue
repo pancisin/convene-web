@@ -71,7 +71,7 @@
 
 <script>
 import Auth from '../../services/auth.js';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'subscription-signup',
   data () {
@@ -87,6 +87,9 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
+    ...mapActions([
+      'initializeUser'
+    ]),
     getSubscriptions () {
       this.$http.get('public/subscriptions').then(response => {
         this.subscriptions = response.body;
@@ -111,7 +114,7 @@ export default {
       data.user.role = data.user.role.name;
       data.user.locale = data.user.locale.code;
       this.$http.post('api/user/subscription', data).then(response => {
-        Auth.updateUserData(this);
+        this.initializeUser();
         console.log('FINE !');
       });
     }

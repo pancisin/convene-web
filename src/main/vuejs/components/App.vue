@@ -14,7 +14,7 @@ export default {
   name: 'app-root',
   created () {
     if (Auth.user.authenticated) {
-      Auth.updateUserData(this).then(user => {
+      this.initializeUser().then(user => {
         moment.locale(user.locale.name);
         this.$i18n.locale = user.locale.name;
         this.$ga.set('userId', user.id);
@@ -27,7 +27,8 @@ export default {
   methods: {
     ...mapActions([
       'initializeNotifications',
-      'addNotification'
+      'addNotification',
+      'initializeUser'
     ]),
     initializeStomp () {
       this.connectWM('stomp').then(frame => {

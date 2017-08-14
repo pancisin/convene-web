@@ -1,11 +1,18 @@
 import Vue from 'vue';
 
 export default {
-  getUser (success) {
-    Vue.http.get('api/me').then(response => {
+  putUser (user, success) {
+    Vue.http.put('api/user', user).then(response => {
       success(response.body);
     });
   },
+
+  getUser (success) {
+    Vue.http.get('api/user/me').then(response => {
+      success(response.body);
+    });
+  },
+
   getPages (success) {
     Vue.http.get('api/user/page').then(response => {
       success(response.body);
