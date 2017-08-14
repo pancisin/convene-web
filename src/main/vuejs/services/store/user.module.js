@@ -1,13 +1,12 @@
-import UserApi from '../api/user.api.js';
+import UserApi from '../api/user.api';
+import * as types from './mutation-types';
 
 const state = {
   user: null
 };
 
-const SET_USER = 'SET_USER';
-
 const getters = {
-  getUser: state => {
+  user: state => {
     if (state.user) {
       if (!state.user.address) {
         state.user.address = {};
@@ -15,30 +14,30 @@ const getters = {
     }
     return state.user;
   },
-  getLocale: state => state.user.locale,
+  locale: state => state.user.locale,
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
-  getLicense: state => state.user.license ? state.user.license : null
+  license: state => state.user.license ? state.user.license : null
 };
 
 const actions = {
   initializeUser ({ commit }) {
     return new Promise((resolve, reject) => {
       UserApi.getUser((user) => {
-        commit(SET_USER, { user });
+        commit(types.SET_USER, { user });
         resolve();
       });
     });
   },
   setUser ({ commit }, user) {
-    commit(SET_USER, { user });
+    commit(types.SET_USER, { user });
   },
   updateUser ({ commit }, user) {
-    commit(SET_USER, { user });
+    commit(types.SET_USER, { user });
   }
 };
 
 const mutations = {
-  [SET_USER] (state, { user }) {
+  [types.SET_USER] (state, { user }) {
     state.user = user;
   }
 };

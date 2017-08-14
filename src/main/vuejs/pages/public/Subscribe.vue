@@ -84,9 +84,7 @@ export default {
     this.getSubscriptions();
   },
   computed: {
-    ...mapGetters({
-      user: 'getUser'
-    })
+    ...mapGetters(['user'])
   },
   methods: {
     getSubscriptions () {

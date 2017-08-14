@@ -30,7 +30,7 @@ export default {
   computed: {
     locale: {
       get () {
-        return Auth.user.authenticated ? this.$store.getters.getLocale : this.$i18n.locale;
+        return Auth.user.authenticated ? this.$store.getters.locale : this.$i18n.locale;
       },
       set (value) {
         if (Auth.user.authenticated) {

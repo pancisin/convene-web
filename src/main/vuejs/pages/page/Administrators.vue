@@ -68,9 +68,7 @@ export default {
     'page': 'getAdministrators'
   },
   computed: {
-    ...mapGetters({
-      current: 'getUser'
-    })
+    ...mapGetters(['user'])
   },
   created () {
     this.getAdministrators();

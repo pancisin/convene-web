@@ -53,9 +53,7 @@ export default {
     this.getSubscriptions();
   },
   computed: {
-    ...mapGetters({
-      locale: 'getLocale'
-    })
+    ...mapGetters(['locale'])
   },
   methods: {
     getSubscriptions () {

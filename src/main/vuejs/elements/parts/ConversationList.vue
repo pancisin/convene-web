@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      current: 'getUser'
+      current: 'user'
     })
   },
   watch: {

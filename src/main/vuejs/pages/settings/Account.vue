@@ -77,9 +77,7 @@ export default {
 
   },
   computed: {
-    ...mapGetters({
-      user: 'getUser'
-    })
+    ...mapGetters(['user'])
   },
   methods: {
     ...mapActions([

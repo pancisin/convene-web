@@ -116,9 +116,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      locale: 'getLocale'
-    })
+    ...mapGetters(['locale'])
   },
   created () {
     this.getInvoice();

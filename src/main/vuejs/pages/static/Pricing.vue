@@ -137,9 +137,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'pricing',
   computed: {
-    ...mapGetters({
-      user: 'getUser'
-    }),
+    ...mapGetters(['user']),
     cur_sub () {
       if (this.user != null) {
         return this.user.license.subscription;

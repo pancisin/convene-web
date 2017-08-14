@@ -184,10 +184,7 @@ export default {
     '$route': 'closeNavbar'
   },
   computed: {
-    ...mapGetters({
-      isAdmin: 'isAdmin',
-      user: 'getUser'
-    }),
+    ...mapGetters(['isAdmin', 'user']),
     auth () {
       return Auth;
     },

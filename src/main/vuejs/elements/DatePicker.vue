@@ -53,9 +53,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      locale: 'getLocale'
-    }),
+    ...mapGetters(['locale']),
     weekdays: function () {
       var wkds = moment.weekdays();
       wkds.push(wkds.shift());

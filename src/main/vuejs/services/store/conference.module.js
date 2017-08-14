@@ -1,5 +1,6 @@
 import UserApi from '../api/user.api';
 import ConferenceApi from '../api/conference.api';
+import * as types from './mutation-types';
 
 const state = {
   conferences: [],
@@ -11,62 +12,59 @@ const getters = {
   loadingConferences: state => state.loadingConferences
 };
 
-const SET_CONFERENCES = 'SET_CONFERENCES';
-const LOADING_CONFERENCES = 'LOADING_CONFERENCES';
-const UPDATE_CONFERENCE = 'UPDATE_CONFERENCE';
-const ADD_CONFERENCE = 'ADD_CONFERENCE';
-const REMOVE_CONFERENCE = 'REMOVE_CONFERENCE';
-
 const actions = {
   initializeConferences ({ commit }) {
-    UserApi.getConferences((conferences) => {
-      commit(SET_CONFERENCES, { conferences });
-      commit(LOADING_CONFERENCES, false);
-    });
+    return new Promise((resolve) => {
+      UserApi.getConferences((conferences) => {
+        commit(types.SET_CONFERENCES, { conferences });
+        commit(types.LOADING_CONFERENCES, false);
+        resolve(conferences);
+      });
 
-    commit(LOADING_CONFERENCES, true);
+      commit(types.LOADING_CONFERENCES, true);
+    });
   },
   createConference ({ commit }, page) {
     return new Promise(resolve => {
       UserApi.postConference(page, result => {
-        commit(ADD_CONFERENCE, { page: result });
-        commit(LOADING_CONFERENCES, false);
+        commit(types.ADD_CONFERENCE, { page: result });
+        commit(types.LOADING_CONFERENCES, false);
         resolve(result);
       });
 
-      commit(LOADING_CONFERENCES, true);
+      commit(types.LOADING_CONFERENCES, true);
     });
   },
   deleteConference ({ commit }, page) {
     return new Promise(resolve => {
       UserApi.deleteConference(page.id, () => {
-        commit(REMOVE_CONFERENCE, { page });
-        commit(LOADING_CONFERENCES, false);
+        commit(types.REMOVE_CONFERENCE, { page });
+        commit(types.LOADING_CONFERENCES, false);
         resolve(page);
       });
 
-      commit(LOADING_CONFERENCES, true);
+      commit(types.LOADING_CONFERENCES, true);
     });
   },
   updateConference ({ commit }, page) {
     return new Promise(resolve => {
       ConferenceApi.putConference(page, result => {
-        commit(UPDATE_CONFERENCE, { page: result });
-        commit(LOADING_CONFERENCES, false);
+        commit(types.UPDATE_CONFERENCE, { page: result });
+        commit(types.LOADING_CONFERENCES, false);
         resolve(result);
       });
 
-      commit(LOADING_CONFERENCES, true);
+      commit(types.LOADING_CONFERENCES, true);
     });
   }
 };
 
 const mutations = {
-  [SET_CONFERENCES] (state, { conferences }) {
+  [types.SET_CONFERENCES] (state, { conferences }) {
     state.conferences = conferences;
   },
 
-  [UPDATE_CONFERENCE] (state, { page }) {
+  [types.UPDATE_CONFERENCE] (state, { page }) {
     var index = null;
     state.conferences.forEach((e, i) => {
       if (e.id === page.id) {
@@ -77,17 +75,17 @@ const mutations = {
     state.conferences.splice(index, 1, page);
   },
 
-  [ADD_CONFERENCE] (state, { page }) {
+  [types.ADD_CONFERENCE] (state, { page }) {
     state.conferences.push(page);
   },
 
-  [REMOVE_CONFERENCE] (state, { page }) {
+  [types.REMOVE_CONFERENCE] (state, { page }) {
     state.conferences = state.conferences.filter(p => {
       return page.id !== p.id;
     });
   },
 
-  [LOADING_CONFERENCES] (state, loading_state) {
+  [types.LOADING_CONFERENCES] (state, loading_state) {
     state.loadingConferences = loading_state;
   }
 };

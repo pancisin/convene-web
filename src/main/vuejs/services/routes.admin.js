@@ -12,7 +12,7 @@ export default [
     path: 'conference/create',
     component: resolve => require(['../pages/conference/Overview.vue'], resolve),
     beforeEnter: (to, from, next) => {
-      var license = store.getters.getLicense;
+      var license = store.getters.license;
       if (license && license.subscription.conferenceLimit > store.getters.conferences.length) {
         next();
       } else {
@@ -123,7 +123,7 @@ export default [
     path: 'page/create',
     component: resolve => require(['../pages/page/Compose.vue'], resolve),
     beforeEnter: (to, from, next) => {
-      var license = store.getters.getLicense;
+      var license = store.getters.license;
       if (license && license.subscription.pageLimit > store.getters.getPages.length) {
         next();
       } else {

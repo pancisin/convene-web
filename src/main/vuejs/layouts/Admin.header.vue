@@ -66,9 +66,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      user: 'getUser'
-    }),
+    ...mapGetters(['user']),
     avatar () {
       return gravatar.url(this.user.email, {
         protocol: 'https',

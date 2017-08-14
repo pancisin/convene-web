@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      current: 'getUser'
+      current: 'user'
     }),
     api () {
       return this.provider.api;
