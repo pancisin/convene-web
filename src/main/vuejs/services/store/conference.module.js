@@ -24,10 +24,10 @@ const actions = {
       commit(types.LOADING_CONFERENCES, true);
     });
   },
-  createConference ({ commit }, page) {
+  createConference ({ commit }, conference) {
     return new Promise(resolve => {
-      UserApi.postConference(page, result => {
-        commit(types.ADD_CONFERENCE, { page: result });
+      UserApi.postConference(conference, result => {
+        commit(types.ADD_CONFERENCE, { conference: result });
         commit(types.LOADING_CONFERENCES, false);
         resolve(result);
       });
@@ -35,21 +35,21 @@ const actions = {
       commit(types.LOADING_CONFERENCES, true);
     });
   },
-  deleteConference ({ commit }, page) {
+  deleteConference ({ commit }, conference) {
     return new Promise(resolve => {
-      UserApi.deleteConference(page.id, () => {
-        commit(types.REMOVE_CONFERENCE, { page });
+      UserApi.deleteConference(conference.id, () => {
+        commit(types.REMOVE_CONFERENCE, { conference });
         commit(types.LOADING_CONFERENCES, false);
-        resolve(page);
+        resolve(conference);
       });
 
       commit(types.LOADING_CONFERENCES, true);
     });
   },
-  updateConference ({ commit }, page) {
+  updateConference ({ commit }, conference) {
     return new Promise(resolve => {
-      ConferenceApi.putConference(page, result => {
-        commit(types.UPDATE_CONFERENCE, { page: result });
+      ConferenceApi.putConference(conference, result => {
+        commit(types.UPDATE_CONFERENCE, { conference: result });
         commit(types.LOADING_CONFERENCES, false);
         resolve(result);
       });
@@ -64,24 +64,24 @@ const mutations = {
     state.conferences = conferences;
   },
 
-  [types.UPDATE_CONFERENCE] (state, { page }) {
+  [types.UPDATE_CONFERENCE] (state, { conference }) {
     var index = null;
     state.conferences.forEach((e, i) => {
-      if (e.id === page.id) {
+      if (e.id === conference.id) {
         index = i;
       }
     });
 
-    state.conferences.splice(index, 1, page);
+    state.conferences.splice(index, 1, conference);
   },
 
-  [types.ADD_CONFERENCE] (state, { page }) {
-    state.conferences.push(page);
+  [types.ADD_CONFERENCE] (state, { conference }) {
+    state.conferences.push(conference);
   },
 
-  [types.REMOVE_CONFERENCE] (state, { page }) {
+  [types.REMOVE_CONFERENCE] (state, { conference }) {
     state.conferences = state.conferences.filter(p => {
-      return page.id !== p.id;
+      return conference.id !== p.id;
     });
   },
 

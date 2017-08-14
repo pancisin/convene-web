@@ -74,12 +74,10 @@ export default {
         //   this.$success('Success !', this.conference.name + ' has been updated.');
         // });
       } else {
-        this.createConference(this.conference);
-        // this.$http.post('api/user/conference', this.conference).then(response => {
-        //   this.edit = true;
-        //   this.addConference(this.conference);
-        //   this.$router.push('/admin/conference/' + this.conference.id);
-        // });
+        this.createConference(this.conference).then(conference => {
+          this.edit = true;
+          this.$router.push('/admin/conference/' + conference.id);
+        });
       }
     }
   }

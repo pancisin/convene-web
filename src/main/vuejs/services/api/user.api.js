@@ -35,7 +35,7 @@ export default {
   },
   postConference (conference, success) {
     Vue.http.post('api/user/conference', conference).then(response => {
-      success(conference);
+      success(response.body);
     });
   },
   getNotifications (success) {
