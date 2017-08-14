@@ -9,7 +9,7 @@
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>
-          <router-view :page="page" :edit="edit" @updated="pageUpdated"></router-view>
+          <router-view :page="page" :edit="edit"></router-view>
         </keep-alive>
       </transition>
     </div>
@@ -49,12 +49,12 @@ export default {
 
       if (index !== -1) {
         this.edit = true;
+
+        this.injector = new PageInjector(this.$route.params.id);
+
         return this.pages[index];
       } else return {};
     }
-  },
-  created () {
-    this.injector = new PageInjector(this.$route.params.id);
   }
 };
 </script>

@@ -49,12 +49,10 @@ export default {
 
       if (index !== -1) {
         this.edit = true;
+        this.injector = new ConferenceInjector(this.$route.params.id);
         return this.conferences[index];
       } else return {};
     }
-  },
-  created () {
-    this.injector = new ConferenceInjector(this.$route.params.id);
   }
 };
 </script>
