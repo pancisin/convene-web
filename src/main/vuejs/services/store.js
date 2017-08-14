@@ -3,17 +3,18 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import user from './store/user.module.js';
+import page from './store/page.module.js';
+import conference from './store/conference.module.js';
 
 import UserApi from './api/user.api.js';
 
 const store = new Vuex.Store({
   state: {
     notifications: [],
-    toasts: [],
-    conferences: []
+    toasts: []
   },
   modules: {
-    user
+    user, page, conference
   },
   getters: {
     getNotifications: state => state.notifications,

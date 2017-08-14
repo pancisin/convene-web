@@ -62,24 +62,26 @@ export default {
     TextEditor
   },
   methods: {
+    ...mapActions([
+      'createConference', 'updateConference'
+    ]),
     submit () {
       if (this.edit) {
-        var url = ['api/conference', this.conference.id].join('/');
-        this.$http.put(url, this.conference).then(response => {
-          this.$emit('updated', response.body);
-          this.$success('Success !', this.conference.name + ' has been updated.');
-        });
+        this.updateConference(this.conferences);
+        // var url = ['api/conference', this.conference.id].join('/');
+        // this.$http.put(url, this.conference).then(response => {
+        //   this.$emit('updated', response.body);
+        //   this.$success('Success !', this.conference.name + ' has been updated.');
+        // });
       } else {
-        this.$http.post('api/user/conference', this.conference).then(response => {
-          this.edit = true;
-          this.addConference(this.conference);
-          this.$router.push('/admin/conference/' + this.conference.id);
-        });
+        this.createConference(this.conference);
+        // this.$http.post('api/user/conference', this.conference).then(response => {
+        //   this.edit = true;
+        //   this.addConference(this.conference);
+        //   this.$router.push('/admin/conference/' + this.conference.id);
+        // });
       }
-    },
-    ...mapActions([
-      'addConference'
-    ])
+    }
   }
 };
 </script>

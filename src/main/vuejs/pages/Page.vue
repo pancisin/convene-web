@@ -17,14 +17,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import PageInjector from '../services/injectors/page.injector.js';
 
 export default {
   name: 'page',
   data () {
     return {
-      page: {},
       edit: false,
       injector: null
     };
@@ -38,27 +37,24 @@ export default {
 
     return { provider };
   },
-  watch: {
-    '$route.params.id': 'getPage'
+  computed: {
+    ...mapGetters([
+      'pages'
+    ]),
+    page () {
+      let page_id = Number.parseInt(this.$route.params.id, 10);
+      var index = this.pages.findIndex(p => {
+        return p.id === page_id;
+      });
+
+      if (index !== -1) {
+        this.edit = true;
+        return this.pages[index];
+      } else return {};
+    }
   },
   created () {
-    this.getPage();
-  },
-  methods: {
-    ...mapActions([
-      'updatePage'
-    ]),
-    getPage () {
-      this.injector = new PageInjector(this.$route.params.id);
-      this.injector.getPage(true, page => {
-        this.page = page;
-        this.edit = true;
-      });
-    },
-    pageUpdated (page) {
-      this.page = page;
-      this.updatePage(page);
-    }
+    this.injector = new PageInjector(this.$route.params.id);
   }
 };
 </script>

@@ -11,14 +11,24 @@ export default {
       success(response.body);
     });
   },
+
+  /**
+   * @param {*} page - data for page.
+   * @param {*} success - success callback, newly created page is returned as param.
+   */
   postPage (page, success) {
-    Vue.http.post('api/user/page', this.page).then(response => {
+    Vue.http.post('api/user/page', page).then(response => {
       success(response.body);
     });
   },
   getConferences (success) {
     Vue.http.get('api/user/conference').then(response => {
       success(response.body);
+    });
+  },
+  postConference (conference, success) {
+    Vue.http.post('api/user/conference', conference).then(response => {
+      success(conference);
     });
   },
   getNotifications (success) {

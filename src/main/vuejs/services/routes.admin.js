@@ -13,7 +13,7 @@ export default [
     component: resolve => require(['../pages/conference/Overview.vue'], resolve),
     beforeEnter: (to, from, next) => {
       var license = store.getters.getLicense;
-      if (license && license.subscription.conferenceLimit > store.getters.getConferences.length) {
+      if (license && license.subscription.conferenceLimit > store.getters.conferences.length) {
         next();
       } else {
         next('/pricing');

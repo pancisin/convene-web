@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="page-title-box">
-        <h4 class="page-title" v-text="conference.name"></h4>
+        <h4 class="page-title" v-if="conference != null" v-text="conference.name"></h4>
       </div>
     </div>
   
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>
-          <router-view :conference="conference" :edit="edit" @updated="conferenceUpdated"></router-view>
+          <router-view :conference="conference" :edit="edit"></router-view>
         </keep-alive>
       </transition>
     </div>
@@ -17,14 +17,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import ConferenceInjector from '../services/injectors/conference.injector.js';
 
 export default {
   name: 'conference',
   data () {
     return {
-      conference: {},
       edit: false,
       injector: null
     };
@@ -38,27 +37,24 @@ export default {
 
     return { provider };
   },
-  created () {
-    this.getConference();
-  },
-  watch: {
-    '$route.params.id': 'getConference'
-  },
-  methods: {
-    ...mapActions([
-      'updateConference'
+  computed: {
+    ...mapGetters([
+      'conferences'
     ]),
-    getConference () {
-      this.injector = new ConferenceInjector(this.$route.params.id);
-      this.injector.getConference(conference => {
-        this.conference = conference;
-        this.edit = conference.id != null;
+    conference () {
+      var conference_id = Number.parseInt(this.$route.params.id, 10);
+      let index = this.conferences.findIndex(c => {
+        return c.id === conference_id;
       });
-    },
-    conferenceUpdated (conference) {
-      this.conference = conference;
-      this.updateConference(conference);
+
+      if (index !== -1) {
+        this.edit = true;
+        return this.conferences[index];
+      } else return {};
     }
+  },
+  created () {
+    this.injector = new ConferenceInjector(this.$route.params.id);
   }
 };
 </script>

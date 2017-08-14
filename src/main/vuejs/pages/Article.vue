@@ -41,7 +41,7 @@ import TextEditor from '../elements/TextEditor.vue';
 
 export default {
   name: 'article',
-  inject: ['api'],
+  inject: ['provider'],
   data () {
     return {
       article: {},
@@ -65,7 +65,7 @@ export default {
           this.$success('Success', `Article ${article.title} has been save !`);
         });
       } else {
-        this.api.postArticle(this.article, article => {
+        this.provider.api.postArticle(this.article, article => {
           this.$router.push({ name: 'article', params: { article_id: article.id } });
           this.$success('Success', `Article ${article.title} has been created !`);
         });

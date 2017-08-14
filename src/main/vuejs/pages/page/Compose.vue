@@ -35,8 +35,8 @@
         </div>
   
         <div class="text-center">
-          <button class="btn btn-rounded btn-danger" @click="deactivatePage" v-if="edit && page.state == 'PUBLISHED'">Deactivate</button>
-          <a class="btn btn-rounded btn-success" @click="publishPage" v-if="edit && page.state == 'DEACTIVATED'">
+          <button class="btn btn-rounded btn-danger" @click="deactivatePage(page.id)" v-if="edit && page.state == 'PUBLISHED'">Deactivate</button>
+          <a class="btn btn-rounded btn-success" @click="publishPage(page.id)" v-if="edit && page.state == 'DEACTIVATED'">
             Publish
           </a>
           <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
@@ -76,7 +76,6 @@ export default {
       default: false
     }
   },
-  inject: ['api'],
   data () {
     return {
       categories: [],
@@ -95,17 +94,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'addPage', 'removePage'
+      'createPage', 'removePage', 'updatePage', 'publishPage', 'deactivatePage'
     ]),
     submit () {
       if (this.edit) {
-        this.api.putPage(this.page, page => {
-          this.$emit('updated', page);
+        this.updatePage(this.page).then(page => {
           this.$success('Success !', 'Page ' + page.name + ' has been updated.');
         });
       } else {
-        this.api.postPage(this.page, page => {
-          this.addPage(page);
+        this.createPage(this.page).then(page => {
           this.$success('Success !', 'Page ' + page.name + ' has been created.');
           this.$router.push({ name: 'page.settings', params: { id: page.id } });
         });
@@ -121,16 +118,6 @@ export default {
       if (this.page.category == null) return;
       PublicApi.getBranches(this.page.category.id, branches => {
         this.branches = branches;
-      });
-    },
-    publishPage () {
-      this.api.publishPage(page => {
-        this.$emit('updated', page);
-      });
-    },
-    deactivatePage () {
-      this.api.deactivatePage(page => {
-        this.$emit('updated', page);
       });
     }
   }

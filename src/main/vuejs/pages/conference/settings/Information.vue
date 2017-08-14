@@ -39,7 +39,6 @@ import TextEditor from '../../../elements/TextEditor.vue';
 import ImageUpload from '../../../elements/ImageUpload.vue';
 import { mapActions } from 'vuex';
 export default {
-  inject: ['provider'],
   props:
   {
     conference: {
@@ -63,13 +62,12 @@ export default {
   },
   methods: {
     submit () {
-      this.provider.api.putConference(this.conference, conference => {
-        this.$emit('updated', conference);
+      this.updateConference(this.conference).then(conference => {
         this.$success('Success !', conference.name + ' has been updated.');
       });
     },
     ...mapActions([
-      'addConference'
+      'updateConference'
     ])
   }
 };
