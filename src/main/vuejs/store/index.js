@@ -17,8 +17,8 @@ const store = new Vuex.Store({
     user, page, conference
   },
   getters: {
-    getNotifications: state => state.notifications,
-    getToasts: state => state.toasts
+    notifications: state => state.notifications,
+    toasts: state => state.toasts
   },
   mutations: {
     setNotifications: (state, { notifications }) => {

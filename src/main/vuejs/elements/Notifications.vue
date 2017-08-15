@@ -49,9 +49,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      notifications: 'getNotifications'
-    })
+    ...mapGetters(['notifications'])
   },
   methods: {
     markAsSeen: function (notification) {

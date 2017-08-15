@@ -29,7 +29,8 @@ const actions = {
     });
   },
   clearUser ({ commit }) {
-
+    // might be changed.
+    commit(types.SET_USER, { user: null });
   },
   updateUser ({ commit }, user) {
     return new Promise((resolve) => {

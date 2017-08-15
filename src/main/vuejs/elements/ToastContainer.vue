@@ -15,9 +15,7 @@ export default {
     Toast
   },
   computed: {
-    ...mapGetters({
-      toasts: 'getToasts'
-    })
+    ...mapGetters(['toasts'])
   },
   methods: {
     ...mapActions([
