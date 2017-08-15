@@ -11,3 +11,10 @@ export const ADD_PAGE = 'ADD_PAGE';
 export const REMOVE_PAGE = 'REMOVE_PAGE';
 
 export const SET_USER = 'SET_USER';
+
+export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
+export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION';
+
+export const ADD_TOAST = 'ADD_TOAST';
+export const REMOVE_TOAST = 'REMOVE_TOAST';

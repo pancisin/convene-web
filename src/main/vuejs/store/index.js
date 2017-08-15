@@ -8,6 +8,8 @@ import conference from './modules/conference.js';
 
 import UserApi from 'api/user.api';
 
+import * as types from 'store/mutation-types';
+
 const store = new Vuex.Store({
   state: {
     notifications: [],
@@ -20,43 +22,47 @@ const store = new Vuex.Store({
     notifications: state => state.notifications,
     toasts: state => state.toasts
   },
+  actions: {
+    initializeNotifications ({ commit }) {
+      UserApi.getNotifications((notifications) => {
+        commit(types.SET_NOTIFICATIONS, { notifications });
+      });
+    },
+    addNotification ({ commit }, notification) {
+      commit(types.ADD_NOTIFICATION, { notification });
+    },
+    removeNotification ({ commit }, notification) {
+      commit(types.REMOVE_NOTIFICATION, { notification });
+    },
+    addToast ({ commit }, toast) {
+      commit(types.ADD_TOAST, { toast });
+
+      setTimeout(() => {
+        commit(types.REMOVE_TOAST, { toast });
+      }, 5000);
+    }
+  },
   mutations: {
-    setNotifications: (state, { notifications }) => {
+    [types.SET_NOTIFICATIONS] (state, { notifications }) {
       state.notifications = notifications;
     },
-    removeNotification: (state, { notification }) => {
+
+    [types.REMOVE_NOTIFICATION] (state, { notification }) {
       state.notifications = state.notifications.filter(n => {
         return n.id !== notification.id;
       });
     },
-    addNotification: (state, { notification }) => {
+
+    [types.ADD_NOTIFICATION] (state, { notification }) {
       state.notifications.push(notification);
     },
-    addToast: (state, { toast }) => {
+
+    [types.ADD_TOAST] (state, { toast }) {
       state.toasts.push(toast);
     },
-    removeToast: (state, { toast }) => {
-      state.toasts.splice(state.toasts.indexOf(toast), 1);
-    }
-  },
-  actions: {
-    initializeNotifications ({ commit }) {
-      UserApi.getNotifications((notifications) => {
-        commit('setNotifications', { notifications });
-      });
-    },
-    addNotification ({ commit }, notification) {
-      commit('addNotification', { notification });
-    },
-    removeNotification ({ commit }, notification) {
-      commit('removeNotification', { notification });
-    },
-    addToast ({ commit }, toast) {
-      commit('addToast', { toast });
 
-      setTimeout(() => {
-        commit('removeToast', { toast });
-      }, 5000);
+    [types.REMOVE_TOAST] (state, { toast }) {
+      state.toasts.splice(state.toasts.indexOf(toast), 1);
     }
   }
 });
