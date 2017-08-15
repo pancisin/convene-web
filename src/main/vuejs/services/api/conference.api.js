@@ -1,15 +1,15 @@
 import Vue from 'vue';
 
+const CONFERENCE_API_URL = 'api/conference';
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');
 }
 
 export default {
-  base_url: 'api/conference',
   getConference (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}`;
+    var url = `${CONFERENCE_API_URL}/${id}`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -20,7 +20,7 @@ export default {
     });
   },
   putConference (conference, success) {
-    var url = `${this.base_url}/${conference.id}`;
+    var url = `${CONFERENCE_API_URL}/${conference.id}`;
     Vue.http.put(url, conference).then(response => {
       success(response.body);
     });
@@ -28,7 +28,7 @@ export default {
   getEvents (id, page, size, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/event/${page}/${size}`;
+    var url = `${CONFERENCE_API_URL}/${id}/event/${page}/${size}`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -36,7 +36,7 @@ export default {
   getInvitations (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/invitation`;
+    var url = `${CONFERENCE_API_URL}/${id}/invitation`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -44,7 +44,7 @@ export default {
   getAttendees (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/attendees`;
+    var url = `${CONFERENCE_API_URL}/${id}/attendees`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -52,7 +52,7 @@ export default {
   postInvitation (id, invitation, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/invite`;
+    var url = `${CONFERENCE_API_URL}/${id}/invite`;
     Vue.http.post(url, invitation).then(response => {
       return response.body;
     });
@@ -60,7 +60,7 @@ export default {
   getMetaFields (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/meta-field`;
+    var url = `${CONFERENCE_API_URL}/${id}/meta-field`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -68,7 +68,7 @@ export default {
   postMetaField (id, field, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/meta-field`;
+    var url = `${CONFERENCE_API_URL}/${id}/meta-field`;
     Vue.http.post(url, field).then(response => {
       success(response.body);
     });
@@ -76,7 +76,7 @@ export default {
   getAdministrators (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/administrator`;
+    var url = `${CONFERENCE_API_URL}/${id}/administrator`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -84,7 +84,7 @@ export default {
   postAdministrator (id, administrator, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/administrator`;
+    var url = `${CONFERENCE_API_URL}/${id}/administrator`;
     Vue.http.post(url, { id: administrator.id }).then(response => {
       success(response.body);
     });
@@ -92,7 +92,7 @@ export default {
   getAttendStatus (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/attend-status`;
+    var url = `${CONFERENCE_API_URL}/${id}/attend-status`;
     Vue.http.get(url).then(response => {
       success(response.bodyText);
     });
@@ -100,7 +100,7 @@ export default {
   postAttend (id, meta, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/attend`;
+    var url = `${CONFERENCE_API_URL}/${id}/attend`;
     Vue.http.post(url, meta).then(response => {
       success(response.bodyText);
     });
@@ -108,7 +108,7 @@ export default {
   putCancelAttend (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/cancel-attend`;
+    var url = `${CONFERENCE_API_URL}/${id}/cancel-attend`;
     Vue.http.put(url).then(response => {
       success(response.body);
     });
@@ -116,7 +116,7 @@ export default {
   getArticles (id, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/article`;
+    var url = `${CONFERENCE_API_URL}/${id}/article`;
     Vue.http.get(url).then(response => {
       success(response.body);
     });
@@ -124,7 +124,7 @@ export default {
   postArticle (id, article, success) {
     checkId(id);
 
-    var url = `${this.base_url}/${id}/article`;
+    var url = `${CONFERENCE_API_URL}/${id}/article`;
     Vue.http.post(url, article).then(response => {
       success(response.body);
     });

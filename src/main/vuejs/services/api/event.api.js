@@ -1,8 +1,8 @@
 import Vue from 'vue';
-
+const EVENT_API_URL = 'api/event';
 export default {
   getEvent (id, auth, success) {
-    if (id == null || id === '') throw 'missing entity id';
+    if (id == null || id === '') throw new Error('missing entity id');
 
     var url = `${auth ? 'api' : 'public'}/event/${id}`;
     Vue.http.get(url).then(response => {
@@ -10,7 +10,7 @@ export default {
     });
   },
   putEvent (id, event, success) {
-    Vue.http.put(`api/event/${id}`, event).then(response => {
+    Vue.http.put(`${EVENT_API_URL}/${id}`, event).then(response => {
       success(response.body);
     });
   },
@@ -21,46 +21,41 @@ export default {
     });
   },
   getAttendanceStatus (id, success) {
-    if (id == null || id === '') throw 'missing entity id';
+    if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = ['api/event', id, 'attend-status'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${EVENT_API_URL}/${id}/attend-status`).then(response => {
       success(response.body);
     });
   },
   toggleAttendanceStatus (id, success) {
-    if (id == null || id === '') throw 'missing entity id';
+    if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = ['api/event', id, 'toggle-attend'].join('/');
-    Vue.http.patch(url).then(response => {
+    Vue.http.patch(`${EVENT_API_URL}/${id}/toggle-attend`).then(response => {
       success(response.body);
     });
   },
   getInvitations (id, success) {
-    var url = ['api/event', id, 'invitation'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${EVENT_API_URL}/${id}/invitation`).then(response => {
       success(response.body);
     });
   },
   getAttendees (id, success) {
-    var url = ['api/event', id, 'attendees'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${EVENT_API_URL}/${id}/attendees`).then(response => {
       success(response.body);
     });
   },
   postInvitation (id, invitation, success) {
-    var url = `api/event/${id}/invite`;
-    Vue.http.post(url, invitation).then(response => {
+    Vue.http.post(`${EVENT_API_URL}/${id}/invite`, invitation).then(response => {
       success(response.body);
     });
   },
   getProgramme (id, success) {
-    Vue.http.get(`api/event/${id}/programme`).then(response => {
+    Vue.http.get(`${EVENT_API_URL}/${id}/programme`).then(response => {
       success(response.body);
     });
   },
   postProgramme (id, programme, success) {
-    Vue.http.post(`api/event/${id}/programme`, programme).then(response => {
+    Vue.http.post(`${EVENT_API_URL}/${id}/programme`, programme).then(response => {
       success(response.body);
     });
   }

@@ -1,50 +1,89 @@
 import Vue from 'vue';
 
+const USER_API_URL = 'api/user';
+
 export default {
+
+  /**
+   * Update user data.
+   * @param {Object} user user object
+   * @param {Function} success callback function
+   */
   putUser (user, success) {
-    Vue.http.put('api/user', user).then(response => {
-      success(response.body);
-    });
-  },
-
-  getUser (success) {
-    Vue.http.get('api/user/me').then(response => {
-      success(response.body);
-    });
-  },
-
-  getPages (success) {
-    Vue.http.get('api/user/page').then(response => {
+    Vue.http.put(USER_API_URL, user).then(response => {
       success(response.body);
     });
   },
 
   /**
-   * @param {*} page - data for page.
-   * @param {*} success - success callback, newly created page is returned as param.
+   * Get user data.
+   * @param {Function} success callback function
+   */
+  getUser (success) {
+    Vue.http.get(`${USER_API_URL}/me`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get user owned pages.
+   * @param {Function} success callback function
+   */
+  getPages (success) {
+    Vue.http.get(`${USER_API_URL}/page`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Create new page owned by current user.
+   * @param {Object} page - page object data
+   * @param {Function} success - success callback, newly created page is returned as param.
    */
   postPage (page, success) {
-    Vue.http.post('api/user/page', page).then(response => {
+    Vue.http.post(`${USER_API_URL}/page`, page).then(response => {
       success(response.body);
     });
   },
+
+  /**
+   * Get user owned conferences.
+   * @param {*} success - callback function
+   */
   getConferences (success) {
-    Vue.http.get('api/user/conference').then(response => {
+    Vue.http.get(`${USER_API_URL}/conference`).then(response => {
       success(response.body);
     });
   },
+
+  /**
+   * Create new conference owned by current user.
+   * @param {*} conference - conference object data
+   * @param {*} success - callback function
+   */
   postConference (conference, success) {
-    Vue.http.post('api/user/conference', conference).then(response => {
+    Vue.http.post(`${USER_API_URL}/conference`, conference).then(response => {
       success(response.body);
     });
   },
+
+  /**
+   * Get notifications for current user.
+   * @param {*} success - callback function
+   */
   getNotifications (success) {
-    Vue.http.get('api/user/notification/0/5').then(response => {
+    Vue.http.get(`${USER_API_URL}/notification/0/5`).then(response => {
       success(response.body.content);
     });
   },
+
+  /**
+   * Search users by keyword.
+   * @param {String} key - searched keyword
+   * @param {*} success - callback function
+   */
   searchUsers (key, success) {
-    Vue.http.get('api/user/search', {
+    Vue.http.get(`${USER_API_URL}/search`, {
       params: {
         q: key
       }
@@ -54,19 +93,35 @@ export default {
       console.error(response);
     });
   },
+
+  /**
+   * Get events created by current user.
+   * @param {*} page - paginator page
+   * @param {*} size - paginator size
+   * @param {*} success - callback function
+   */
   getEvents (page, size, success) {
-    var url = ['api/user/event', page, size].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${USER_API_URL}/event/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
+
+  /**
+   * Get events that is current user attending.
+   * @param {*} success - callback function
+   */
   getAttendingEvents (success) {
-    Vue.http.get('api/user/event/attending').then(response => {
+    Vue.http.get(`${USER_API_URL}/event/attending`).then(response => {
       success(response.body);
     });
   },
+
+  /**
+   * Get pages followed by current user.
+   * @param {*} success - callback function
+   */
   getFollowedPages (success) {
-    Vue.http.get('api/user/followed-pages').then(response => {
+    Vue.http.get(`${USER_API_URL}/followed-pages`).then(response => {
       success(response.body);
     });
   }

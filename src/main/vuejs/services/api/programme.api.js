@@ -1,17 +1,18 @@
 import Vue from 'vue';
+const PROGRAMME_API_URL = 'api/programme';
 export default {
   getProgramme (id, success) {
-    Vue.http.get(`api/programme/${id}`).then(response => {
+    Vue.http.get(`${PROGRAMME_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   },
   deleteProgramme (id, success) {
-    Vue.http.delete(`api/programme/${id}`).then(response => {
+    Vue.http.delete(`${PROGRAMME_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   },
   putProgramme (id, programme, success) {
-    Vue.http.put(`api/programme/${id}`, programme).then(response => {
+    Vue.http.put(`${PROGRAMME_API_URL}/${id}`, programme).then(response => {
       success(response.body);
     });
   }

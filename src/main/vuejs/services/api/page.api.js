@@ -1,5 +1,5 @@
 import Vue from 'vue';
-
+const PAGE_API_URL = 'api/page';
 export default {
   getPage (id, auth, success) {
     if (id == null || id === '') throw new Error('missing entity id');
@@ -10,32 +10,31 @@ export default {
     });
   },
   putPage (page, success) {
-    Vue.http.put('api/page/' + page.id, page).then(response => {
+    Vue.http.put(`${PAGE_API_URL}/${page.id}`, page).then(response => {
       success(response.body);
     });
   },
   deletePage (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    Vue.http.delete('api/page/' + this.page.id).then(response => {
+    Vue.http.delete(`${PAGE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   },
   publishPage (id, success) {
-    Vue.http.patch('api/page/' + id + '/publish').then(response => {
+    Vue.http.patch(`${PAGE_API_URL}/${id}/publish`).then(response => {
       success(response.body);
     });
   },
   deactivatePage (id, success) {
-    Vue.http.patch('api/page/' + id + '/deactivate').then(response => {
+    Vue.http.patch(`${PAGE_API_URL}/${id}/deactivate`).then(response => {
       success(response.body);
     });
   },
   getEvents (id, page, size, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = ['api/page', id, 'event', page, size].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
@@ -69,35 +68,31 @@ export default {
     });
   },
   postService (id, service, success) {
-    Vue.http.post('api/page/' + id + '/service', service).then(response => {
+    Vue.http.post(`${PAGE_API_URL}/${id}/service`, service).then(response => {
       success(response.body);
     });
   },
   getFollowStatus (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = ['api/page', id, 'follow-status'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/follow-status`).then(response => {
       success(response.body);
     });
   },
   toggleFollowStatus (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = ['api/page', id, 'toggle-follow'].join('/');
-    Vue.http.patch(url).then(response => {
+    Vue.http.patch(`${PAGE_API_URL}/${id}/toggle-follow`).then(response => {
       success(response.body);
     });
   },
   getPlaces (id, success) {
-    var url = ['api/page', id, 'place'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/place`).then(response => {
       success(response.body);
     });
   },
   getRequests (id, success) {
-    var url = ['api/page', id, 'requests'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/requests`).then(response => {
       success(response.body);
     });
   }
