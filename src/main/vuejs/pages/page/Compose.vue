@@ -54,7 +54,7 @@
 <script>
 import TextEditor from '../../elements/TextEditor.vue';
 import { mapActions } from 'vuex';
-import PublicApi from '../../services/api/public.api.js';
+import PublicApi from 'api/public.api';
 import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {

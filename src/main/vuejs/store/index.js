@@ -6,7 +6,7 @@ import user from './modules/user.js';
 import page from './modules/page.js';
 import conference from './modules/conference.js';
 
-import UserApi from '../api/user.api';
+import UserApi from 'api/user.api';
 
 const store = new Vuex.Store({
   state: {

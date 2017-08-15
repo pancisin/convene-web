@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import ArticleApi from '../../services/api/article.api.js';
+import ArticleApi from 'api/article.api';
 export default {
   name: 'articles-template',
   inject: ['provider'],

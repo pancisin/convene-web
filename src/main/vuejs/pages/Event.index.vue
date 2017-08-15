@@ -1,6 +1,6 @@
 <script>
 import EventsTemplate from './templates/Events.vue';
-import UserApi from '../services/api/user.api.js';
+import UserApi from 'api/user.api';
 
 export default {
   name: 'event-index',

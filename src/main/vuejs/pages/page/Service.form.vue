@@ -32,7 +32,7 @@
 
 <script>
 import vSelect from '../../elements/Select.vue';
-import ServiceApi from '../../services/api/service.api.js';
+import ServiceApi from 'api/service.api';
 
 export default {
   name: 'service-form',

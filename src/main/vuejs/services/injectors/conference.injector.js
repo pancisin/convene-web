@@ -1,4 +1,4 @@
-import ConferenceApi from '../api/conference.api.js';
+import ConferenceApi from 'api/conference.api';
 
 export default class ConferenceInjector {
   constructor (conference_id, auth) {

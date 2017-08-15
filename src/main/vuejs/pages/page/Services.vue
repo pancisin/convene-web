@@ -52,7 +52,7 @@
 
 <script>
 import ServiceForm from './Service.form.vue';
-import ServiceApi from '../../services/api/service.api.js';
+import ServiceApi from 'api/service.api';
 
 export default {
   inject: ['provider'],

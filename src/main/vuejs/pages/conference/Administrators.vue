@@ -52,7 +52,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import UserSearch from '../../elements/UserSuggestInput.vue';
-import UserApi from '../../services/api/user.api.js';
+import UserApi from 'api/user.api';
 
 export default {
   name: 'conference-administrators',

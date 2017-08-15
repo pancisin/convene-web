@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import PlaceApi from '../../services/api/place.api.js';
+import PlaceApi from 'api/place.api';
 export default {
   name: 'places',
   inject: ['provider'],

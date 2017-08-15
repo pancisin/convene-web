@@ -1,4 +1,4 @@
-import PageApi from '../api/page.api.js';
+import PageApi from 'api/page.api';
 
 export default class PageInjector {
   constructor (page_id) {

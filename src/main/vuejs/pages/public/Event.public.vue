@@ -86,7 +86,7 @@
 import Auth from '../../services/auth.js';
 import GMap from '../../elements/GMap.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
-import EventApi from '../../services/api/event.api.js';
+import EventApi from 'api/event.api';
 
 export default {
   name: 'public-event',

@@ -1,4 +1,4 @@
-import EventApi from '../api/event.api.js';
+import EventApi from 'api/event.api';
 
 export default class PageInjector {
   constructor (event_id) {

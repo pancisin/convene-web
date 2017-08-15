@@ -123,7 +123,7 @@ import Paginator from '../../elements/Paginator.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import TabContainer from '../../elements/TabContainer.vue';
 import Tab from '../../elements/Tab.vue';
-import UserApi from '../../services/api/user.api.js';
+import UserApi from 'api/user.api';
 
 export default {
   name: 'dashboard',

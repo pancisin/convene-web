@@ -71,7 +71,7 @@
 <script>
 import ServiceBook from './page/Service.book.vue';
 import Auth from '../../services/auth.js';
-import PageApi from '../../services/api/page.api.js';
+import PageApi from 'api/page.api';
 
 import PageInjector from '../../services/injectors/page.injector.js';
 

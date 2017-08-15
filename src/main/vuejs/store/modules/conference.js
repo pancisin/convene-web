@@ -1,6 +1,6 @@
-import UserApi from '../../api/user.api';
-import ConferenceApi from '../../api/conference.api';
-import * as types from '../mutation-types';
+import UserApi from 'api/user.api';
+import ConferenceApi from 'api/conference.api';
+import * as types from 'store/mutation-types';
 
 const state = {
   conferences: [],

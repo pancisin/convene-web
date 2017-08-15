@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import MetaFieldApi from '../../../services/api/meta-field.api.js';
+import MetaFieldApi from 'api/meta-field.api';
 export default {
   name: 'registration-settings',
   props: ['conference'],

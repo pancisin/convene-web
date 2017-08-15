@@ -40,7 +40,7 @@
 
 <script>
 import TimePicker from '../../elements/TimePicker.vue';
-import ProgrammeApi from '../../services/api/programme.api.js';
+import ProgrammeApi from 'api/programme.api';
 export default {
   inject: ['api'],
   data () {

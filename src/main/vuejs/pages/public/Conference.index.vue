@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import RootApi from '../../services/api/api.js';
+import RootApi from 'api/api';
 import Auth from '../../services/auth.js';
 export default {
   name: 'conference-index',
