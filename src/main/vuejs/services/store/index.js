@@ -2,11 +2,11 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import user from './store/user.module.js';
-import page from './store/page.module.js';
-import conference from './store/conference.module.js';
+import user from './modules/user.js';
+import page from './modules/page.js';
+import conference from './modules/conference.js';
 
-import UserApi from './api/user.api.js';
+import UserApi from '../api/user.api';
 
 const store = new Vuex.Store({
   state: {

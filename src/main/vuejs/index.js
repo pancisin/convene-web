@@ -16,7 +16,7 @@ require('font-awesome/css/font-awesome.css');
 
 // SERVICES
 import Auth from './services/auth.js';
-import store from './services/store.js';
+import store from './services/store/index.js';
 import router from './services/router.js';
 import notifier from './services/notifier.js';
 

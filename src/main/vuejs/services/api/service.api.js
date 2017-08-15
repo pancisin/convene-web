@@ -26,7 +26,7 @@ export default {
    * @param {Function} success - success callback function
    */
   putService (service, success) {
-    Vue.http.put('api/service/' + service.id, service).then(response => {
+    Vue.http.put(`${SERVICE_API_URL}/${service.id}`, service).then(response => {
       success(response.body);
     });
   },
@@ -38,7 +38,7 @@ export default {
    */
   deleteService (id, success) {
     checkId(id);
-    Vue.http.delete('api/service/' + id).then(response => {
+    Vue.http.delete(`${SERVICE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   }

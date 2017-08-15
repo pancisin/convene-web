@@ -1,4 +1,4 @@
-import store from './store.js';
+import store from './store/index';
 export default [
   {
     path: 'dashboard',
