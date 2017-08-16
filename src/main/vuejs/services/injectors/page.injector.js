@@ -56,4 +56,12 @@ export default class PageInjector {
   getFollowStatus (success) {
     PageApi.getFollowStatus(this.page_id, success);
   }
+
+  getAdministrators (success) {
+    PageApi.getAdministrators(this.page_id, success);
+  }
+
+  postAdministrator (administrator, success) {
+    PageApi.postAdministrator(this.page_id, administrator, success);
+  }
 }

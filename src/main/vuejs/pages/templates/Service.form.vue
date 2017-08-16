@@ -59,10 +59,14 @@ export default {
       units: []
     };
   },
+  computed: {
+    api () {
+      return this.provider.api;
+    },
+  },
   created () {
     this.$http.get('api/enum/unit').then(response => {
       this.units = response.body;
-      console.log(this.service);
     });
   },
   methods: {
@@ -72,7 +76,7 @@ export default {
           this.$emit('updated', service);
         });
       } else {
-        this.provider.api.postService(this.service, service => {
+        this.api.postService(this.service, service => {
           this.$emit('updated', service);
         });
       }

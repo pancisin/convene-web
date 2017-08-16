@@ -83,15 +83,17 @@ export default {
   methods: {
     getAdministrators () {
       this.loading = true;
-      this.api.getAdministrators(administrators => {
-        this.administrators = administrators;
-
-        this.administrators.sort((a, b) => {
-          return a.role.level < b.role.level;
+      if (this.api != null) {
+        this.api.getAdministrators(administrators => {
+          this.administrators = administrators;
+  
+          this.administrators.sort((a, b) => {
+            return a.role.level < b.role.level;
+          });
+  
+          this.getRoles();
         });
-
-        this.getRoles();
-      });
+      }
     },
     getRoles () {
       this.$http.get('api/roles').then(response => {

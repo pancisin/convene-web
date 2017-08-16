@@ -25,7 +25,7 @@ const afterAuth = (_to, from, next) => {
   }
 };
 
-export default new VueRouter({
+var router = new VueRouter({
   linkActiveClass: 'active',
   routes: [
     {
@@ -63,12 +63,25 @@ export default new VueRouter({
     {
       path: '/login',
       component: resolve => require(['../pages/Login.vue'], resolve),
-      beforeEnter: afterAuth
+      beforeEnter: afterAuth,
+      meta: {
+        title: 'Login'
+      }
     },
     {
       path: '/register',
       component: resolve => require(['../pages/Register.vue'], resolve),
-      beforeEnter: afterAuth
+      beforeEnter: afterAuth,
+      meta: {
+        title: 'Register'
+      }
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title ? to.meta.title + ' |' : ''}  Bookster`;
+  next();
+});
+
+export default router;

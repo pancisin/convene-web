@@ -26,7 +26,10 @@
             </router-link>
           </li>
   
-          <li class="menu-title" :class="{ 'loading' : loadingPages }">{{ $t('admin.menu.pages') }}</li>
+        </ul>
+  
+        <ul v-loading="loadingPages">
+          <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
   
           <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
             <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
@@ -35,10 +38,10 @@
   
             <span v-text="page.name" slot="title"></span>
             <!--<li slot="item">
-                      <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                        {{ $t('admin.page.overview') }}
-                      </router-link>
-                    </li>-->
+                          <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
+                            {{ $t('admin.page.overview') }}
+                          </router-link>
+                        </li>-->
             <li slot="item">
               <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
@@ -77,8 +80,9 @@
               <span>{{ $t('admin.menu.page_create') }}</span>
             </router-link>
           </li>
-  
-          <li class="menu-title" :class="{ 'loading' : loadingConferences }">{{ $t('admin.menu.conferences') }}
+        </ul>
+        <ul v-loading="loadingConferences">
+          <li class="menu-title">{{ $t('admin.menu.conferences') }}
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
   
@@ -124,6 +128,8 @@
             </router-link>
           </li>
   
+        </ul>
+        <ul>
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
   
           <li>
@@ -174,7 +180,7 @@ export default {
   components: {
     DropDown: VerticalMenuDrop
   },
-  created () {
+  created() {
     this.initializePages();
     this.initializeConferences();
   },
@@ -182,7 +188,7 @@ export default {
     ...mapActions([
       'initializePages', 'initializeConferences'
     ]),
-    closeDropdowns (except) {
+    closeDropdowns(except) {
       if (!except.collapsed) {
         this.$refs.items.forEach(item => {
           if (item !== except && !item.collapsed) {
@@ -196,10 +202,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.menu-title.loading {
-  background-color: red;
-}
-
 @media(min-width: 768px) {
   .side-menu.left {
     display: block !important;

@@ -95,5 +95,15 @@ export default {
     Vue.http.get(`${PAGE_API_URL}/${id}/requests`).then(response => {
       success(response.body);
     });
-  }
+  },
+  getAdministrators (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/administrator`).then(response => {
+      success(response.body);
+    });
+  },
+  postAdministrator (id, administrator, success) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, { id: administrator.id }).then(response => {
+      success(response.body);
+    });
+  },
 };

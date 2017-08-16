@@ -64,6 +64,11 @@ export default {
       loading: false
     };
   },
+  computed: {
+    api() {
+      return this.provider.api;
+    }
+  },
   components: {
     ServiceForm
   },
@@ -71,15 +76,17 @@ export default {
     this.getServices();
   },
   watch: {
-    '$route': 'getServices'
+    'api': 'getServices'
   },
   methods: {
     getServices () {
       this.loading = true;
-      this.provider.api.getServices(true, services => {
-        this.services = services;
-        this.loading = false;
-      });
+      if (this.api != null) {
+        this.api.getServices(true, services => {
+          this.services = services;
+          this.loading = false;
+        });
+      }
     },
     deleteService (service) {
       ServiceApi.deleteService(service.id, result => {

@@ -33,19 +33,26 @@ export default {
       loading: false
     };
   },
+  computed: {
+    api() {
+      return this.provider.api;
+    }
+  },
   created () {
     this.getRequests();
   },
   watch: {
-    '$route': 'getRequests'
+    'api': 'getRequests'
   },
   methods: {
     getRequests () {
       this.loading = true;
-      this.provider.api.getRequests(requests => {
-        this.requests = requests;
-        this.loading = false;
-      });
+      if (this.api != null) {
+        this.api.getRequests(requests => {
+          this.requests = requests;
+          this.loading = false;
+        });
+      }
     }
   }
 };

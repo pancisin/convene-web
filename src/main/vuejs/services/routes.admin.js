@@ -2,11 +2,17 @@ import store from 'store/index';
 export default [
   {
     path: 'dashboard',
-    component: resolve => require(['../pages/Dashboard.vue'], resolve)
+    component: resolve => require(['../pages/Dashboard.vue'], resolve),
+    meta: {
+      title: 'Dashboard'
+    }
   },
   {
     path: 'event',
-    component: resolve => require(['../pages/Event.index.vue'], resolve)
+    component: resolve => require(['../pages/Event.index.vue'], resolve),
+    meta: {
+      title: 'Events'
+    }
   },
   {
     path: 'conference/create',
@@ -18,6 +24,9 @@ export default [
       } else {
         next('/pricing');
       }
+    },
+    meta: {
+      title: 'Create conference'
     }
   },
   {
@@ -28,12 +37,18 @@ export default [
       {
         path: 'overview',
         name: 'conference.overview',
-        component: resolve => require(['../pages/conference/Overview.vue'], resolve)
+        component: resolve => require(['../pages/conference/Overview.vue'], resolve),
+        meta: {
+          title: 'Overview'
+        }
       },
       {
         path: 'events',
         name: 'conference.events',
-        component: resolve => require(['../pages/templates/Events.vue'], resolve)
+        component: resolve => require(['../pages/templates/Events.vue'], resolve),
+        meta: {
+          title: 'Events'
+        }
       },
       {
         path: 'attendees_old',
@@ -43,12 +58,18 @@ export default [
       {
         path: 'attendees',
         name: 'conference.attendees',
-        component: resolve => require(['../pages/conference/Attendees.new.vue'], resolve)
+        component: resolve => require(['../pages/conference/Attendees.new.vue'], resolve),
+        meta: {
+          title: 'Attendees'
+        }
       },
       {
         path: 'administrators',
         name: 'conference.administrators',
-        component: resolve => require(['../pages/conference/Administrators.vue'], resolve)
+        component: resolve => require(['../pages/templates/Administrators.vue'], resolve),
+        meta: {
+          title: 'Administrators'
+        }
       },
       {
         path: 'events/create',
@@ -58,7 +79,10 @@ export default [
             conference_id: route.params.id,
             edit: false
           }
-        )
+        ),
+        meta: {
+          title: 'Create event'
+        }
       },
       {
         path: 'settings',
@@ -68,29 +92,44 @@ export default [
         children: [
           {
             path: 'information',
-            component: resolve => require(['../pages/conference/settings/Information.vue'], resolve)
+            component: resolve => require(['../pages/conference/settings/Information.vue'], resolve),
+            meta: {
+              title: 'Conference information settings'
+            }
           },
           {
             path: 'registration',
-            component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve)
+            component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
+            meta: {
+              title: 'Conference registration settings'
+            }
           }
         ]
       },
       {
         path: 'articles',
         name: 'conference.articles',
-        component: resolve => require(['../pages/templates/Articles.vue'], resolve)
+        component: resolve => require(['../pages/templates/Articles.vue'], resolve),
+        meta: {
+          title: 'Articles'
+        }
       },
       {
         path: 'create-article',
         name: 'conference.article.create',
-        component: resolve => require(['../pages/Article.vue'], resolve)
+        component: resolve => require(['../pages/Article.vue'], resolve),
+        meta: {
+          title: 'Create article'
+        }
       }
     ]
   },
   {
     path: 'events/create',
-    component: resolve => require(['../pages/event/Overview.vue'], resolve)
+    component: resolve => require(['../pages/event/Overview.vue'], resolve),
+    meta: {
+      title: 'Create event'
+    }
   },
   {
     path: 'event/:id',
@@ -168,17 +207,17 @@ export default [
       {
         path: 'services',
         name: 'page.services',
-        component: resolve => require(['../pages/page/Services.vue'], resolve)
+        component: resolve => require(['../pages/templates/Services.vue'], resolve)
       },
       {
         path: 'requests',
         name: 'page.requests',
-        component: resolve => require(['../pages/page/Requests.vue'], resolve)
+        component: resolve => require(['../pages/templates/Requests.vue'], resolve)
       },
       {
         path: 'administrators',
         name: 'page.administrators',
-        component: resolve => require(['../pages/page/Administrators.vue'], resolve)
+        component: resolve => require(['../pages/templates/Administrators.vue'], resolve)
       },
       {
         path: 'places',

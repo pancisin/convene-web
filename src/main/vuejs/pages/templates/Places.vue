@@ -62,15 +62,17 @@ export default {
     }
   },
   watch: {
-    '$route': 'getPlaces'
+    'api': 'getPlaces'
   },
   methods: {
     getPlaces () {
       this.loading = true;
-      this.api.getPlaces(places => {
-        this.places = places;
-        this.loading = false;
-      });
+      if (this.api != null) {
+        this.api.getPlaces(places => {
+          this.places = places;
+          this.loading = false;
+        });
+      }
     },
     deletePlace (place) {
       PlaceApi.deletePlace(place.id, result => {
