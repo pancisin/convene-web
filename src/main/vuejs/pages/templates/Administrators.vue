@@ -77,13 +77,16 @@ export default {
       return this.provider.api;
     }
   },
+  watch: {
+    'api': 'getAdministrators'
+  },
   created () {
     this.getAdministrators();
   },
   methods: {
     getAdministrators () {
-      this.loading = true;
       if (this.api != null) {
+        this.loading = true;
         this.api.getAdministrators(administrators => {
           this.administrators = administrators;
   
