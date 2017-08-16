@@ -5,11 +5,6 @@ import UserApi from 'api/user.api';
 export default {
   name: 'event-index',
   extends: EventsTemplate,
-  provide () {
-    return {
-      api: UserApi
-    };
-  },
   methods: {
     getEvents (page) {
       this.loading = true;
