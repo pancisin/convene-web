@@ -189,10 +189,12 @@ export default {
       return Auth;
     },
     avatar () {
-      return gravatar.url(this.user.email, {
-        protocol: 'https',
-        size: 36
-      });
+      if (this.user != null) {
+        return gravatar.url(this.user.email, {
+          protocol: 'https',
+          size: 36
+        });
+      } else return '';
     }
   },
   components: {

@@ -42,12 +42,17 @@
 import TimePicker from '../../elements/TimePicker.vue';
 import ProgrammeApi from 'api/programme.api';
 export default {
-  inject: ['api'],
+  inject: ['provider'],
   data () {
     return {
       programme: [],
       new_programme: {}
     };
+  },
+  computed: {
+    api() {
+      return this.provider.api;
+    }
   },
   components: {
     TimePicker

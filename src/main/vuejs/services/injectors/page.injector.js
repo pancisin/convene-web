@@ -14,11 +14,11 @@ export default class PageInjector {
   }
 
   postPage (page, success) {
-    PageApi.postPage(page, success);
+    return PageApi.postPage(page, success);
   }
 
   putPage (page, success) {
-    PageApi.putPage(page, success);
+    return PageApi.putPage(page, success);
   }
 
   getEvents (page, size, success) {
@@ -42,26 +42,26 @@ export default class PageInjector {
   }
 
   getRequests (success) {
-    PageApi.getRequests(this.page_id, success);
+    return PageApi.getRequests(this.page_id, success);
   }
 
   getServices (auth, success) {
-    PageApi.getServices(this.page_id, auth, success);
+    return PageApi.getServices(this.page_id, auth, success);
   }
 
   postService (service, success) {
-    PageApi.postService(this.page_id, service, success);
+    return PageApi.postService(this.page_id, service, success);
   }
 
   getFollowStatus (success) {
-    PageApi.getFollowStatus(this.page_id, success);
+    return PageApi.getFollowStatus(this.page_id, success);
   }
 
   getAdministrators (success) {
-    PageApi.getAdministrators(this.page_id, success);
+    return PageApi.getAdministrators(this.page_id, success);
   }
 
   postAdministrator (administrator, success) {
-    PageApi.postAdministrator(this.page_id, administrator, success);
+    return PageApi.postAdministrator(this.page_id, administrator, success);
   }
 }

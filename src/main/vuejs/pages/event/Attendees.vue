@@ -3,21 +3,28 @@ import AttendeesTemplate from '../templates/Attendees.vue';
 export default {
   name: 'event-attendees',
   extends: AttendeesTemplate,
-  inject: ['api'],
+  inject: ['provider'],
   created () {
     this.initialize();
   },
+  computed: {
+    api() {
+      return this.provider.api;
+    },
+  },
   watch: {
-    'event': 'initialize'
+    'api': 'initialize'
   },
   methods: {
     initialize () {
-      this.api.getAttendees(attendees => {
-        this.attendees = attendees;
-      });
-      this.api.getInvitations(invitations => {
-        this.invitations = invitations;
-      });
+      if (this.api != null) {
+        this.api.getAttendees(attendees => {
+          this.attendees = attendees;
+        });
+        this.api.getInvitations(invitations => {
+          this.invitations = invitations;
+        });
+      }
     },
     invite () {
       this.api.postInvitation(this.invitation, invitation => {

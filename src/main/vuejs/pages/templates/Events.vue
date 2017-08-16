@@ -108,15 +108,18 @@ export default {
   },
   created() {
     try {
-      this.getEvents();
+      this.initialize();
     } catch (ex) {
 
     }
   },
   watch: {
-    'api': 'getEvents'
+    'api': 'initialize'
   },
   methods: {
+    initialize() {
+      this.getEvents(0);
+    },
     deleteEvent(event) {
       this.$http.delete('api/event/' + event.id).then(response => {
         this.paginator.content = this.paginator.content.filter(e => {
@@ -134,7 +137,6 @@ export default {
     getEvents(page) {
       if (this.api != null) {
         this.loading = true;
-        page = page != null ? page : 0;
         this.api.getEvents(page, 8, paginator => {
           this.paginator = paginator;
           this.loading = false;

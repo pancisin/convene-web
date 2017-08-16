@@ -1,85 +1,22 @@
-<template>
-  <panel type="default">
-    <span slot="title">Overview</span>
-  
+  <template>
+  <div>
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Name: </label>
-          <input class="form-control required" v-model="conference.name" type="text">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label class="control-label">Visibility: </label>
-          <select v-model="conference.visibility" class="form-control">
-            <option :value="option" v-for="option in visibility_options" v-text="option" :key="option"></option>
-          </select>
+      <div class="col-lg-4 col-lg-offset-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">There's nothing here yet</h3>
+          </div>
+          <div class="panel-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          </div>
         </div>
       </div>
     </div>
-  
-    <div class="form-group">
-      <label class="control-label">Summary: </label>
-      <text-editor v-model="conference.summary"></text-editor>
-    </div>
-  
-    <div class="text-center">
-      <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-        <span v-if="edit">Save</span>
-        <span v-else>Submit</span> {{ conference.name }}</button>
-    </div>
-  </panel>
+  </div>
 </template>
-
+  
 <script>
-import TextEditor from '../../elements/TextEditor.vue';
-import { mapActions } from 'vuex';
 export default {
-  props:
-  {
-    conference: {
-      type: Object,
-      default () {
-        return {};
-      }
-    },
-    edit: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    visibility_options: {
-      get () {
-        return [
-          'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
-        ];
-      }
-    }
-  },
-  components: {
-    TextEditor
-  },
-  methods: {
-    ...mapActions([
-      'createConference', 'updateConference'
-    ]),
-    submit () {
-      if (this.edit) {
-        this.updateConference(this.conferences);
-        // var url = ['api/conference', this.conference.id].join('/');
-        // this.$http.put(url, this.conference).then(response => {
-        //   this.$emit('updated', response.body);
-        //   this.$success('Success !', this.conference.name + ' has been updated.');
-        // });
-      } else {
-        this.createConference(this.conference).then(conference => {
-          this.edit = true;
-          this.$router.push('/admin/conference/' + conference.id);
-        });
-      }
-    }
-  }
+  name: 'dashboard',
 };
 </script>

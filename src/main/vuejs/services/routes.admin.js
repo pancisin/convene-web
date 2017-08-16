@@ -163,7 +163,7 @@ export default [
     component: resolve => require(['../pages/page/Compose.vue'], resolve),
     beforeEnter: (to, from, next) => {
       var license = store.getters.license;
-      if (license && license.subscription.pageLimit > store.getters.getPages.length) {
+      if (license && license.subscription.pageLimit > store.getters.pages.length) {
         next();
       } else {
         next('/pricing');

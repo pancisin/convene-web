@@ -42,13 +42,18 @@ export default {
   data () {
     return {
       event: {},
-      edit: false
+      edit: false,
+      injector: null,
     };
   },
   provide () {
-    return {
-      api: new EventInjector(this.$route.params.id)
-    };
+    const provider = {};
+
+    Object.defineProperty(provider, 'api', {
+      get: () => this.injector
+    });
+
+    return { provider };
   },
   watch: {
     '$route': 'getEvent'
@@ -58,9 +63,9 @@ export default {
   },
   methods: {
     getEvent () {
-      var injector = new EventInjector(this.$route.params.id);
+      this.injector = new EventInjector(this.$route.params.id);
 
-      injector.getEvent(true, event => {
+      this.injector.getEvent(true, event => {
         this.event = event;
         this.edit = event.id != null;
       });

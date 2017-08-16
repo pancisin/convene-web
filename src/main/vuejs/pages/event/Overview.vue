@@ -49,6 +49,7 @@ import DatePicker from '../../elements/DatePicker.vue';
 import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {
+  inject: ['provider'],
   props:
   {
     event: {
@@ -65,6 +66,9 @@ export default {
     conference_id: String
   },
   computed: {
+    api() {
+      return this.provider.api;
+    },
     visibility_options: {
       get () {
         return [
@@ -86,7 +90,7 @@ export default {
     this.getPlaces();
   },
   watch: {
-    'event': 'getPlaces'
+    'api': 'getPlaces'
   },
   methods: {
     submit: function () {
