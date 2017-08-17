@@ -194,7 +194,7 @@ export default {
           protocol: 'https',
           size: 36
         });
-      } else return '';
+      } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
     }
   },
   components: {

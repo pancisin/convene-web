@@ -49,6 +49,7 @@ export default {
   logout (context, redirect) {
     window.localStorage.removeItem('id_token');
     this.user.authenticated = false;
+    context.$store.dispatch('clearUser');
     router.push({ path: redirect });
   },
 

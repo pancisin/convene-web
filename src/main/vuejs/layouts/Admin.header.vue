@@ -68,10 +68,12 @@ export default {
   computed: {
     ...mapGetters(['user']),
     avatar () {
-      return gravatar.url(this.user.email, {
-        protocol: 'https',
-        size: 36
-      });
+      if (this.user.email != null) {
+        return gravatar.url(this.user.email, {
+          protocol: 'https',
+          size: 36
+        });
+      } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
     }
   },
   components: {
