@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -218,17 +219,21 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/administrator")
-	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId
-	// = "conference_id")
+	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId = "conference_id")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long conference_id, @RequestBody User user) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 
-		ConferenceAdministrator pa = new ConferenceAdministrator(stored, user, false);
-		pa.setRole(PageRole.ROLE_ADMINISTRATOR);
-
-		caRepository.save(pa);
-		return ResponseEntity.ok(pa);
+		User existing = userRepository.findByEmail(user.getEmail());
+		if (existing != null) {
+			ConferenceAdministrator pa = new ConferenceAdministrator(stored, existing, false);
+			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
+	
+			caRepository.save(pa);
+			return ResponseEntity.ok(pa);
+		}
+			
+		return new ResponseEntity("User not found by email", HttpStatus.BAD_REQUEST);
 	}
 
 	@PostMapping("/article")

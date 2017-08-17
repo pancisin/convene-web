@@ -1,7 +1,7 @@
 import Vue from 'vue';
 const PAGE_API_URL = 'api/page';
 
-function errorHandler(response) {
+function errorHandler (response) {
   console.error(response);
 }
 
@@ -107,8 +107,18 @@ export default {
     }, errorHandler);
   },
   postAdministrator (id, administrator, success) {
-    Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, { id: administrator.id }).then(response => {
+    Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, { id: administrator.id, email: administrator.email }).then(response => {
       success(response.body);
     }, errorHandler);
   },
+  putAdministrator (administrator_id, administrator, success) {
+    Vue.http.put(`api/page-administrator/${administrator_id}`, administrator).then(response => {
+      success(response.body);
+    }, errorHandler);
+  },
+  deleteAdministrator (administrator_id, success) {
+    Vue.http.delete(`api/page-administrator/${administrator_id}`).then(response => {
+      success(response.body);
+    }, errorHandler);
+  }
 };

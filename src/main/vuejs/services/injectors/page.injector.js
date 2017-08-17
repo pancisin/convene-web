@@ -64,4 +64,12 @@ export default class PageInjector {
   postAdministrator (administrator, success) {
     PageApi.postAdministrator(this.page_id, administrator, success);
   }
+
+  putAdministrator (administrator_id, administrator, success) {
+    PageApi.putAdministrator(administrator_id, administrator, success);
+  }
+
+  deleteAdministrator (administrator_id, success) {
+    PageApi.deleteAdministrator(administrator_id, success);
+  }
 }

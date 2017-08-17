@@ -10,6 +10,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -75,6 +76,9 @@ public class PageController {
 	@Autowired
 	private PlaceRepository placeRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -201,16 +205,21 @@ public class PageController {
 	}
 
 	@PostMapping("/administrator")
-	@License(value = Subscription.PROFESSIONAL, parent = "page", parentId = "page_id")
+//	@License(value = Subscription.PROFESSIONAL, parent = "page", parentId = "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long page_id, @RequestBody User user) {
 		Page stored = pageRepository.findOne(page_id);
 
-		PageAdministrator pa = new PageAdministrator(stored, user, false);
-		pa.setRole(PageRole.ROLE_ADMINISTRATOR);
+		User existing = userRepository.findByEmail(user.getEmail());
+		if (existing != null) {
+			PageAdministrator pa = new PageAdministrator(stored, existing, false);
+			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
+			
+			paRepository.save(pa);
+			return ResponseEntity.ok(pa);
+		}
 
-		paRepository.save(pa);
-		return ResponseEntity.ok(pa);
+		return new ResponseEntity("User not found by email", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/place")

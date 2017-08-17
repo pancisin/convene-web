@@ -54,6 +54,14 @@ export default class ConferenceInjector {
     ConferenceApi.postAdministrator(this.conference_id, administrator, success);
   }
 
+  putAdministrator (administrator_id, administrator, success) {
+    ConferenceApi.putAdministrator(administrator_id, administrator, success);
+  }
+
+  deleteAdministrator (administrator_id, success) {
+    ConferenceApi.deleteAdministrator(administrator_id, success);
+  }
+
   getAttendStatus (success) {
     ConferenceApi.getAttendStatus(this.conference_id, success);
   }

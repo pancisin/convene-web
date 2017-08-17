@@ -36,7 +36,7 @@
         </tr>
         <tr :key="0">
           <td colspan="2">
-            <user-search v-model="user.email" :options="users" @search="searchUsers" />
+            <user-search v-model="selected_user.email" :options="users" @search="searchUsers" />
           </td>
           <td>
             <a @click="grantAccess" class="btn btn-success btn-rounded">Grant access</a>
@@ -62,17 +62,16 @@ export default {
       administrators: [],
       roles: [],
       users: [],
-      user: {},
-      loading: false
+      selected_user: {},
+      loading: false,
+      current_pa: null
     };
   },
   components: {
     UserSearch
   },
   computed: {
-    ...mapGetters({
-      current: 'user'
-    }),
+    ...mapGetters(['user']),
     api () {
       return this.provider.api;
     }
@@ -89,11 +88,15 @@ export default {
         this.loading = true;
         this.api.getAdministrators(administrators => {
           this.administrators = administrators;
-  
+
           this.administrators.sort((a, b) => {
             return a.role.level < b.role.level;
           });
-  
+
+          this.current_pa = this.administrators.filter(a => {
+            return a.user.id === this.user.id;
+          })[0];
+
           this.getRoles();
         });
       }
@@ -101,7 +104,7 @@ export default {
     getRoles () {
       this.$http.get('api/roles').then(response => {
         this.roles = response.body.filter(r => {
-          return r.level < this.current.role.level;
+          return r.level < this.current_pa.role.level;
         });
 
         this.loading = false;
@@ -117,15 +120,15 @@ export default {
         role: admin.role.name
       };
 
-      this.$http.put('api/conference-administrator/' + admin.id, data).then(response => {
-        admin = response.body;
+      this.api.putAdministrator(admin.id, data, administrator => {
+        admin = administrator;
       });
     },
     hasPermission (admin) {
-      return admin.role.level < this.current.role.level;
+      return admin.role.level < this.current_pa.role.level;
     },
     deleteAdministrator (admin) {
-      this.$http.delete('api/conference-administrator/' + admin.id).then(response => {
+      this.api.deleteAdministrator(admin.id, result => {
         this.administrators = this.administrators.filter(a => {
           return a.id !== admin.id;
         });
@@ -139,7 +142,7 @@ export default {
       });
     },
     grantAccess () {
-      this.api.postAdministrator(this.user, administrator => {
+      this.api.postAdministrator(this.selected_user, administrator => {
         this.administrators.push(administrator);
       });
     }
