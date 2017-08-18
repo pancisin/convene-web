@@ -9,7 +9,10 @@ const state = {
 
 const getters = {
   conferences: state => state.conferences,
-  loadingConferences: state => state.loadingConferences
+  loadingConferences: state => state.loadingConferences,
+  getConferenceById: state => id => {
+    return state.conferences.find(conference => conference.id === id);
+  }
 };
 
 const actions = {

@@ -9,7 +9,10 @@ const state = {
 
 const getters = {
   pages: state => state.pages,
-  loadingPages: state => state.loadingPages
+  loadingPages: state => state.loadingPages,
+  getPageById: state => id => {
+    return this.state.pages.find(page => page.id === id);
+  }
 };
 
 const actions = {
