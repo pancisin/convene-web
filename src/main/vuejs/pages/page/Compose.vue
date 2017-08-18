@@ -1,29 +1,29 @@
 <template>
   <div class="row">
-    <div :class="{ 'col-md-8' : edit, 'col-xs-12' : !edit }">
+    <div class="col-md-8">
       <panel type="default">
         <span slot="title">
-          {{ edit ? $t('admin.page.overview') : $t('admin.menu.page_create') }}
+          {{ $t('admin.page.overview') }}
         </span>
         <div class="row">
-          <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
+          <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">{{ $t('page.name') }}</label>
               <input class="form-control required" v-model="page.name" type="text">
             </div>
           </div>
-          <div class="col-md-6" v-if="edit">
+          <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">{{ $t('page.category') }}</label>
               <select v-model="page.category" class="form-control">
-                <option v-for="cat in categories" :value="cat">{{ $t('category.' + cat.code + '.default') }}</option>
+                <option v-for="cat in categories" :value="cat" :key="cat">{{ $t('category.' + cat.code + '.default') }}</option>
               </select>
             </div>
   
-            <div class="form-group">
+            <div class="form-group" v-if="page.category != null">
               <label class="control-label">{{ $t('page.branch') }}</label>
               <select v-model="page.branch" class="form-control">
-                <option v-for="branch in branches" :value="branch" v-if="page.category != null">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
+                <option v-for="branch in branches" :value="branch" :key="branch">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
               </select>
             </div>
           </div>
@@ -35,17 +35,17 @@
         </div>
   
         <div class="text-center">
-          <button class="btn btn-rounded btn-danger" @click="deactivatePage(page.id)" v-if="edit && page.state == 'PUBLISHED'">Deactivate</button>
-          <a class="btn btn-rounded btn-success" @click="publishPage(page.id)" v-if="edit && page.state == 'DEACTIVATED'">
+          <button class="btn btn-rounded btn-danger" @click="deactivatePage(page.id)" v-if="page.state == 'PUBLISHED'">Deactivate</button>
+          <a class="btn btn-rounded btn-success" @click="publishPage(page.id)" v-if="page.state == 'DEACTIVATED'">
             Publish
           </a>
           <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-            <span v-if="edit">Save</span>
-            <span v-else>Submit</span> {{ page.name }}</button>
+            Save
+          </button>
         </div>
       </panel>
     </div>
-    <div class="col-md-4" v-if="edit">
+    <div class="col-md-4">
       <image-upload v-model="page.bannerUrl" />
     </div>
   </div>
@@ -60,21 +60,7 @@ import ImageUpload from '../../elements/ImageUpload.vue';
 export default {
   name: 'page-compose',
   props: {
-    page: {
-      type: Object,
-      default () {
-        return {
-          name: null,
-          category: null,
-          branch: null,
-          summary: null
-        };
-      }
-    },
-    edit: {
-      type: Boolean,
-      default: false
-    }
+    page: Object
   },
   data () {
     return {
@@ -94,19 +80,12 @@ export default {
   },
   methods: {
     ...mapActions([
-      'createPage', 'removePage', 'updatePage', 'publishPage', 'deactivatePage'
+      'removePage', 'updatePage', 'publishPage', 'deactivatePage'
     ]),
     submit () {
-      if (this.edit) {
-        this.updatePage(this.page).then(page => {
-          this.$success('Success !', 'Page ' + page.name + ' has been updated.');
-        });
-      } else {
-        this.createPage(this.page).then(page => {
-          this.$success('Success !', 'Page ' + page.name + ' has been created.');
-          this.$router.push({ name: 'page.settings', params: { id: page.id } });
-        });
-      }
+      this.updatePage(this.page).then(page => {
+        this.$success('Success !', 'Page ' + page.name + ' has been updated.');
+      });
     },
     getCategories () {
       this.branches = [];
