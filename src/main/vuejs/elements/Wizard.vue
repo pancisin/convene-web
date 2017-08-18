@@ -19,12 +19,11 @@
   
       <div class="col-md-12">
         <slot>
-  
         </slot>
   
-        <div class="wizard-navigation-buttons clearfix m-b-10">
-          <a class="btn btn-primary btn-rounded" @click="navigateTo(activePage - 1)" v-if="hasIndex(activePage - 1)">Previous</a>
-          <a class="btn btn-primary btn-rounded pull-right" @click="navigateTo(activePage + 1)" v-if="hasIndex(activePage + 1)">Next</a>
+        <div class="wizard-navigation-buttons clearfix m-b-10 m-t-10">
+          <a class="btn btn-primary btn-rounded" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
+          <a class="btn btn-primary btn-rounded pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
   
           <a class="btn btn-success btn-rounded pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
         </div>
@@ -50,7 +49,6 @@ export default {
       };
     },
     progress () {
-      // return ((this.activePage + 1) / this.pages.length) * 100;
       if (this.activePage > 0) {
         return (1 / (this.pages.length * 2) * 100) * ((this.activePage * 2) + 1);
       } else return 1 / (this.pages.length * 2) * 100;
@@ -59,20 +57,27 @@ export default {
   methods: {
     addPage (page_component) {
       this.pages.push(page_component);
+
+      if (this.pages.length === 1) {
+        this.navigateTo(0);
+      }
     },
     navigateTo (index) {
-      this.activePage = index;
-      this.pages.forEach(page => {
-        page.active = false;
-      });
+      if (this.pages[this.activePage].valid || index < this.activePage) {
+        this.activePage = index;
 
-      this.pages[index].active = true;
+        this.pages.forEach(page => {
+          page.active = false;
+        });
+
+        this.pages[index].active = true;
+      }
     },
     movePage (direction) {
       this.navigateTo(this.activePage + direction);
     },
-    hasIndex (index) {
-      if (index === -1) return false;
+    canNavigate (index) {
+      if ((this.pages.length > 0 && !this.pages[this.activePage].valid && index > this.activePage) || index === -1) return false;
       return this.pages.length - index > 0;
     },
     complete () {

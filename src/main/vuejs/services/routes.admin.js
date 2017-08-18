@@ -16,7 +16,7 @@ export default [
   },
   {
     path: 'conference/create',
-    component: resolve => require(['../pages/conference/CreateConference.vue'], resolve),
+    component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {
       var license = store.getters.license;
       if (license && license.subscription.conferenceLimit > store.getters.conferences.length) {

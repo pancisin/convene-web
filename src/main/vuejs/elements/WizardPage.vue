@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  props: ['title', 'icon'],
+  props: ['title', 'icon', 'valid'],
   data () {
     return {
       active: false
