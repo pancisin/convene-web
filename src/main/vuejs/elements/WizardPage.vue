@@ -1,6 +1,7 @@
 <template>
   <div class="" v-show="active">
-    <h3 v-text="title"></h3>
+    <h4 v-text="title"></h4>
+    <hr />
     <slot>
     </slot>
   </div>

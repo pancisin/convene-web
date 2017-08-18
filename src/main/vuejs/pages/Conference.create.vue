@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container conference-bg">
     <div class="row">
       <div class="col-lg-6 col-lg-offset-2">
         <wizard @finish="submit">
@@ -81,7 +81,3 @@ export default {
   }
 };
 </script>
-
-<style>
-
-</style>

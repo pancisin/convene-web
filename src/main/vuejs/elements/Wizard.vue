@@ -1,7 +1,7 @@
 <template>
   <div class="wizard">
     <div class="wizard-navigation">
-      <a class="wizard-navigation-step" v-for="(page, index) in pages" :key="page.title" @click="navigateTo(index)" :class="{ 'active' : index == activePage }">
+      <a class="wizard-navigation-step" :class="{ 'disabled' : !canNavigate(index) && index > activePage, 'active' : index == activePage }" v-for="(page, index) in pages" :key="page.title" @click="navigateTo(index)">
         <div class="number-circle">
           <i class="fa " :class="'fa-' + page.icon" v-if="page.icon"></i>
           <span v-else>
@@ -78,7 +78,7 @@ export default {
     },
     canNavigate (index) {
       if ((this.pages.length > 0 && !this.pages[this.activePage].valid && index > this.activePage) || index === -1) return false;
-      return this.pages.length - index > 0;
+      return this.pages.length - index > 0 && this.activePage + 1 === index;
     },
     complete () {
       this.$emit('finish');
@@ -124,6 +124,19 @@ export default {
         .number-circle {
           background-color: #3bafda;
           color: #fff;
+        }
+      }
+
+      &.disabled {
+        pointer-events: none;
+        cursor: default;
+
+        h5 {
+          color: lightgray;
+        }
+
+        .number-circle {
+          color: lightgray;
         }
       }
     }
