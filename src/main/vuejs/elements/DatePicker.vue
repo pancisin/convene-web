@@ -1,6 +1,6 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
-    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :value="selected | moment('L')" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :name="name" :value="selected | moment('L')" class="form-control" @focus="focusChanged" @blur="focusChanged">
   
     <transition name="slide-down">
       <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">
@@ -19,14 +19,14 @@
           <table>
             <thead>
               <tr>
-                <th v-for="weekday in weekdays">
+                <th v-for="weekday in weekdays" :key="weekday">
                   <span>{{ weekday.substr(0, 2) }}</span>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(week, index) in weeks" :key="index">
-                <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month, 'current' : selected == day.timestamp }">
+                <td v-for="(day, i) in week" :key="i" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month, 'current' : selected == day.timestamp }">
                   <a class="monthday" v-text="day.day" @click="select(day)"></a>
                 </td>
               </tr>
@@ -42,7 +42,7 @@ import moment from 'moment';
 import { mapGetters } from 'vuex';
 
 export default {
-  props: ['value', 'placeholder', 'inline'],
+  props: ['value', 'placeholder', 'inline', 'name'],
   data: function () {
     return {
       weeks: [],
