@@ -2,7 +2,8 @@ import UserApi from 'api/user.api';
 import * as types from 'store/mutation-types';
 
 const state = {
-  user: null
+  user: null,
+  notifications: []
 };
 
 const getters = {
@@ -16,7 +17,8 @@ const getters = {
   },
   locale: state => state.user.locale,
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
-  license: state => state.user.license ? state.user.license : null
+  license: state => state.user.license ? state.user.license : null,
+  notifications: state => state.notifications
 };
 
 const actions = {
@@ -29,7 +31,6 @@ const actions = {
     });
   },
   clearUser ({ commit }) {
-    // might be changed.
     commit(types.SET_USER, { user: null });
   },
   updateUser ({ commit }, user) {
@@ -39,12 +40,37 @@ const actions = {
         resolve(user);
       });
     });
+  },
+  initializeNotifications ({ commit }) {
+    UserApi.getNotifications((notifications) => {
+      commit(types.SET_NOTIFICATIONS, { notifications });
+    });
+  },
+  addNotification ({ commit }, notification) {
+    commit(types.ADD_NOTIFICATION, { notification });
+  },
+  removeNotification ({ commit }, notification) {
+    commit(types.REMOVE_NOTIFICATION, { notification });
   }
 };
 
 const mutations = {
   [types.SET_USER] (state, { user }) {
     state.user = user;
+  },
+
+  [types.SET_NOTIFICATIONS] (state, { notifications }) {
+    state.notifications = notifications;
+  },
+
+  [types.REMOVE_NOTIFICATION] (state, { notification }) {
+    state.notifications = state.notifications.filter(n => {
+      return n.id !== notification.id;
+    });
+  },
+
+  [types.ADD_NOTIFICATION] (state, { notification }) {
+    state.notifications.push(notification);
   }
 };
 

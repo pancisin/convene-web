@@ -1,5 +1,7 @@
 import router from './router.js';
 
+import AuthApi from 'api/auth.api';
+
 export default {
   user: {
     authenticated: window.localStorage.getItem('id_token')
@@ -7,41 +9,38 @@ export default {
 
   login (context, creds, redirect) {
     return new Promise((resolve, reject) => {
-      context.$http.post('login', creds).then(response => {
-        var user = response.body;
+      AuthApi.login(creds, user => {
         window.localStorage.setItem('id_token', user.token);
 
         context.$store.commit('SET_USER', { user });
 
         this.user.authenticated = true;
-        resolve(response.body.token);
+        resolve(user.token);
 
         if (redirect) {
           router.push({ path: redirect });
         }
-      }, response => {
-        reject();
-        // context.fieldErrors = response.responseJSON.fieldErrors;
+      }, errors => {
+        reject(errors);
       });
     });
   },
 
   signup (context, creds, redirect) {
     return new Promise((resolve, reject) => {
-      context.$http.post('register', creds).then(response => {
-        var user = response.body;
+      AuthApi.register(creds, user => {
         window.localStorage.setItem('id_token', user.token);
 
         context.$store.commit('SET_USER', { user });
         this.user.authenticated = true;
 
-        resolve(response.body.token);
+        resolve(user.token);
         if (redirect) {
           router.push({ path: redirect });
         }
-      }, response => {
-        context.fieldErrors = response.body.fieldErrors;
-        reject(response);
+      }, errors => {
+        context.fieldErrors = errors;
+        reject(errors);
       });
     });
   },
