@@ -1,6 +1,8 @@
 <template>
-  <component :is="currentView">
-  </component>
+  <dashboard v-if="authenticated">
+  </dashboard>
+  <landing v-else>
+  </landing>
 </template>
 
 <script>
@@ -10,21 +12,11 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'home',
-  data () {
-    return {
-      currentView: 'landing'
-    };
-  },
   components: {
     Dashboard, Landing
   },
   computed: {
     ...mapGetters(['authenticated'])
-  },
-  created () {
-    if (this.authenticated) {
-      this.currentView = 'dashboard';
-    }
   }
 };
 </script>

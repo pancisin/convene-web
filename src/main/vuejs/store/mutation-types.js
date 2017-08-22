@@ -11,6 +11,7 @@ export const ADD_PAGE = 'ADD_PAGE';
 export const REMOVE_PAGE = 'REMOVE_PAGE';
 
 export const SET_USER = 'SET_USER';
+export const LOADING_USER = 'LOADING_USER';
 
 export const SET_NOTIFICATIONS = 'SET_NOTIFICATIONS';
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';

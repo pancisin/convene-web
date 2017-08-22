@@ -4,6 +4,7 @@ import * as types from 'store/mutation-types';
 
 const state = {
   user: null,
+  loadingUser: false,
   notifications: []
 };
 
@@ -22,31 +23,41 @@ const getters = {
   notifications: state => state.notifications,
   authenticated: state => {
     return state.user != null && state.user.id != null && window.localStorage.getItem('id_token');
-  }
+  },
+  loadingUser: state => state.loadingUser
 };
 
 const actions = {
   initializeUser ({ commit }) {
     return new Promise((resolve, reject) => {
+      commit(types.LOADING_USER, true);
+
       UserApi.getUser((user) => {
         commit(types.SET_USER, { user });
+        commit(types.LOADING_USER, false);
         resolve(user);
       });
     });
   },
   updateUser ({ commit }, user) {
     return new Promise((resolve) => {
+      commit(types.LOADING_USER, true);
+
       UserApi.putUser(user, result => {
         commit(types.SET_USER, { result });
+        commit(types.LOADING_USER, false);
         resolve(user);
       });
     });
   },
   login ({ commit }, credentials) {
     return new Promise((resolve, reject) => {
+      commit(types.LOADING_USER, true);
+
       AuthApi.login(credentials, user => {
         window.localStorage.setItem('id_token', user.token);
         commit(types.SET_USER, { user });
+        commit(types.LOADING_USER, false);
         resolve(user);
       }, response => {
         reject(response.fieldErrors);
@@ -55,9 +66,12 @@ const actions = {
   },
   register ({ commit }, user_data) {
     return new Promise((resolve, reject) => {
+      commit(types.LOADING_USER, true);
+
       AuthApi.register(user_data, user => {
         window.localStorage.setItem('id_token', user.token);
         commit(types.SET_USER, { user });
+        commit(types.LOADING_USER, false);
         resolve(user);
       }, response => {
         reject(response.fieldErrors);
@@ -65,9 +79,12 @@ const actions = {
     });
   },
   logout ({ commit }) {
+    commit(types.LOADING_USER, true);
+
     return new Promise((resolve) => {
       window.localStorage.removeItem('id_token');
       commit(types.SET_USER, { user: null });
+      commit(types.LOADING_USER, false);
       resolve();
     });
   },
@@ -101,6 +118,10 @@ const mutations = {
 
   [types.ADD_NOTIFICATION] (state, { notification }) {
     state.notifications.push(notification);
+  },
+
+  [types.LOADING_USER] (state, { loading_state }) {
+    state.loadingUser = loading_state;
   }
 };
 
