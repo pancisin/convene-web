@@ -65,7 +65,7 @@ ul.conference-list {
     background-color: #fff;
 
     .banner {
-      max-height: 150px;
+      height: 150px;
       overflow: hidden;
     }
 

@@ -103,7 +103,8 @@ export default {
   },
   computed: {
     api() {
-      return this.provider.api;
+      if (this.provider != null)
+        return this.provider.api;
     }
   },
   created() {

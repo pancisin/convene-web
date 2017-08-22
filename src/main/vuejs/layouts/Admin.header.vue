@@ -35,7 +35,7 @@
                   </router-link>
                 </li>
                 <li>
-                  <a @click="logout">
+                  <a @click="logoutUser">
                     <i class="fa fa-power-off m-r-10"></i> Logout</a>
                 </li>
               </ul>
@@ -71,6 +71,11 @@ export default {
           size: 36
         });
       } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
+    },
+    logoutUser () {
+      this.logout().then(response => {
+        this.$router.push({ path: '/' });
+      })
     }
   },
   components: {

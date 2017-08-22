@@ -36,7 +36,7 @@
                   </router-link>
                 </li>
                 <li>
-                  <a @click="logout">
+                  <a @click="logoutUser">
                     <i class="fa fa-power-off m-r-10"></i> Logout</a>
                 </li>
               </ul>
@@ -200,6 +200,11 @@ export default {
     ...mapActions(['logout']),
     closeNavbar () {
       this.collapsed = true;
+    },
+    logoutUser () {
+      this.logout().then(response => {
+        this.$router.push({ path: '/' });
+      })
     }
   }
 };

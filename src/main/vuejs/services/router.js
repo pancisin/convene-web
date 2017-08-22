@@ -7,7 +7,7 @@ import publicRoutes from './routes.public.js';
 import adminRoutes from './routes.admin.js';
 
 const require_auth = (to, from, next) => {
-  if (!window.localStorage.getItem('id_token')) {
+  if (!store.getters.authenticated) {
     next({
       path: '/login',
       query: { redirect: to.fullPath }

@@ -10,19 +10,18 @@ const state = {
 
 const getters = {
   user: state => {
-    if (state.user) {
-      if (!state.user.address) {
-        state.user.address = {};
-      }
+    if (state.user && !state.user.address) {
+      state.user.address = {};
     }
+
     return state.user;
   },
-  locale: state => state.user.locale,
+  locale: state => state.user ? state.user.locale : null,
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
-  license: state => state.user.license ? state.user.license : null,
+  license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
   authenticated: state => {
-    return state.user != null && state.user.id != null && window.localStorage.getItem('id_token');
+    return window.localStorage.getItem('id_token') != null && state.user != null;
   },
   loadingUser: state => state.loadingUser
 };
@@ -120,7 +119,7 @@ const mutations = {
     state.notifications.push(notification);
   },
 
-  [types.LOADING_USER] (state, { loading_state }) {
+  [types.LOADING_USER] (state, loading_state) {
     state.loadingUser = loading_state;
   }
 };

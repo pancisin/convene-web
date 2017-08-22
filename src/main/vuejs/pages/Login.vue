@@ -10,19 +10,19 @@
 
     <form class="form-horizontal m-t-20" @submit.prevent="submit">
 
-      <div class="form-group" :class="{ 'has-error' : errors.email }">
+      <div class="form-group" :class="{ 'has-error' : fieldErrors.email }">
         <div class="col-xs-12">
           <input class="form-control" type="text" required="" placeholder="Email" v-model="user.email">
           <i class="fa fa-user form-control-feedback l-h-34"></i>
-          <span class="text-danger" v-if="errors.name">{{ $t(errors.name.code) }}</span>
+          <span class="text-danger" v-if="fieldErrors.name">{{ $t(fieldErrors.name.code) }}</span>
         </div>
       </div>
 
-      <div class="form-group" :class="{ 'has-error' : errors.password }">
+      <div class="form-group" :class="{ 'has-error' : fieldErrors.password }">
         <div class="col-xs-12">
           <input class="form-control" type="password" required="" placeholder="Password" v-model="user.password">
           <i class="fa fa-key form-control-feedback l-h-34"></i>
-          <span class="text-danger" v-if="errors.password">{{ $t(errors.password.code) }}</span>
+          <span class="text-danger" v-if="fieldErrors.password">{{ $t(fieldErrors.password.code) }}</span>
         </div>
       </div>
 
@@ -68,20 +68,20 @@ export default {
         email: null,
         password: null
       },
-      errors: []
+      fieldErrors: {}
     };
   },
   methods: {
     ...mapActions(['login']),
     submit: function () {
-      this.errors = [];
+      this.fieldErrors = {};
 
       var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
       this.login(this.user).then(result => {
         this.$router.push({ path: redirect });
-      }, errors => {
-        errors.forEach((e) => {
-          this.$set(this.errors, e.field, e);
+      }, fieldErrors => {
+        fieldErrors.forEach((e) => {
+          this.$set(this.fieldErrors, e.field, e);
         });
       });
     }
