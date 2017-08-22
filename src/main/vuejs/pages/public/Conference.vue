@@ -9,7 +9,7 @@
   
         <div class="row">
           <div class="col-md-4">
-            <img :src="conference.bannerUrl" class="img-poster">
+            <img :src="conference.bannerUrl" class="img-poster" v-if="conference != null">
           </div>
           <div class="col-md-8">
             <panel>

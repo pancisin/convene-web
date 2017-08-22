@@ -60,6 +60,11 @@ export default {
     ...mapActions(['logout']),
     hamburgerClicked () {
       this.$emit('hamburgerClicked');
+    },
+    logoutUser () {
+      this.logout().then(response => {
+        this.$router.push({ path: '/' });
+      })
     }
   },
   computed: {
@@ -71,11 +76,6 @@ export default {
           size: 36
         });
       } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
-    },
-    logoutUser () {
-      this.logout().then(response => {
-        this.$router.push({ path: '/' });
-      })
     }
   },
   components: {

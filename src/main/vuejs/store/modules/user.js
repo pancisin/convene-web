@@ -5,7 +5,8 @@ import * as types from 'store/mutation-types';
 const state = {
   user: null,
   loadingUser: false,
-  notifications: []
+  notifications: [],
+  authenticated: false
 };
 
 const getters = {
@@ -21,7 +22,7 @@ const getters = {
   license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
   authenticated: state => {
-    return window.localStorage.getItem('id_token') != null && state.user != null;
+    return window.localStorage.getItem('id_token') != null || state.authenticated;
   },
   loadingUser: state => state.loadingUser
 };
@@ -103,6 +104,7 @@ const actions = {
 const mutations = {
   [types.SET_USER] (state, { user }) {
     state.user = user;
+    state.authenticated = user != null;
   },
 
   [types.SET_NOTIFICATIONS] (state, { notifications }) {

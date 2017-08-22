@@ -12,7 +12,7 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'app-root',
   created () {
-    if (this.authenticated) {
+    if (window.localStorage.getItem('id_token') != null) {
       this.initializeUser().then(user => {
         moment.locale(user.locale.name);
         this.$i18n.locale = user.locale.name;
