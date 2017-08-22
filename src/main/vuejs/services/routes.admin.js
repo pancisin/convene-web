@@ -139,24 +139,36 @@ export default [
       {
         path: 'overview',
         name: 'event.overview',
-        component: resolve => require(['../pages/event/Overview.vue'], resolve)
+        component: resolve => require(['../pages/event/Overview.vue'], resolve),
+        meta: {
+          titlle: 'Overview'
+        }
       },
       {
         path: 'programme',
         name: 'event.programme',
-        component: resolve => require(['../pages/event/Programme.vue'], resolve)
+        component: resolve => require(['../pages/event/Programme.vue'], resolve),
+        meta: {
+          titlle: 'Programme'
+        }
       },
       {
         path: 'attendees',
         name: 'event.attendees',
-        component: resolve => require(['../pages/event/Attendees.vue'], resolve)
+        component: resolve => require(['../pages/event/Attendees.vue'], resolve),
+        meta: {
+          titlle: 'Attendees'
+        }
       }
     ]
   },
   {
     path: 'article/:article_id',
     name: 'article',
-    component: resolve => require(['../pages/Article.vue'], resolve)
+    component: resolve => require(['../pages/Article.vue'], resolve),
+    meta: {
+      titlle: 'Article'
+    }
   },
   {
     path: 'page/create',
@@ -168,6 +180,9 @@ export default [
       } else {
         next('/pricing');
       }
+    },
+    meta: {
+      titlle: 'Create page'
     }
   },
   {
@@ -178,17 +193,26 @@ export default [
       {
         path: 'overview',
         name: 'page.overview',
-        component: resolve => require(['../pages/page/Overview.vue'], resolve)
+        component: resolve => require(['../pages/page/Overview.vue'], resolve),
+        meta: {
+          titlle: 'Overview'
+        }
       },
       {
         path: 'settings',
         name: 'page.settings',
-        component: resolve => require(['../pages/page/Compose.vue'], resolve)
+        component: resolve => require(['../pages/page/Compose.vue'], resolve),
+        meta: {
+          titlle: 'Settings'
+        }
       },
       {
         path: 'events',
         name: 'page.events',
-        component: resolve => require(['../pages/templates/Events.vue'], resolve)
+        component: resolve => require(['../pages/templates/Events.vue'], resolve),
+        meta: {
+          titlle: 'Page events'
+        }
       },
       {
         path: 'events/create',
@@ -198,7 +222,10 @@ export default [
             page_id: route.params.id,
             edit: false
           }
-        )
+        ),
+        meta: {
+          titlle: 'Create event'
+        }
       },
       {
         path: 'calendar',
@@ -207,22 +234,34 @@ export default [
       {
         path: 'services',
         name: 'page.services',
-        component: resolve => require(['../pages/templates/Services.vue'], resolve)
+        component: resolve => require(['../pages/templates/Services.vue'], resolve),
+        meta: {
+          titlle: 'Services'
+        }
       },
       {
         path: 'requests',
         name: 'page.requests',
-        component: resolve => require(['../pages/templates/Requests.vue'], resolve)
+        component: resolve => require(['../pages/templates/Requests.vue'], resolve),
+        meta: {
+          titlle: 'Requests'
+        }
       },
       {
         path: 'administrators',
         name: 'page.administrators',
-        component: resolve => require(['../pages/templates/Administrators.vue'], resolve)
+        component: resolve => require(['../pages/templates/Administrators.vue'], resolve),
+        meta: {
+          titlle: 'Administrators'
+        }
       },
       {
         path: 'places',
         name: 'page.places',
-        component: resolve => require(['../pages/templates/Places.vue'], resolve)
+        component: resolve => require(['../pages/templates/Places.vue'], resolve),
+        meta: {
+          titlle: 'Places'
+        }
       },
       {
         path: 'create-place',
@@ -232,7 +271,10 @@ export default [
             page_id: route.params.id,
             edit: false
           }
-        )
+        ),
+        meta: {
+          titlle: 'Create place'
+        }
       }
     ]
   },
@@ -244,21 +286,26 @@ export default [
     children: [
       {
         path: 'overview',
-        component: resolve => require(['../pages/place/Overview.vue'], resolve)
+        component: resolve => require(['../pages/place/Overview.vue'], resolve),
+        meta: {
+          titlle: 'Overview'
+        }
       },
       {
         path: 'gallery',
-        component: resolve => require(['../pages/place/Gallery.vue'], resolve)
+        component: resolve => require(['../pages/place/Gallery.vue'], resolve),
+        meta: {
+          titlle: 'Gallery'
+        }
       }
     ]
   },
   {
     path: 'notifications',
-    component: resolve => require(['../pages/Notifications.vue'], resolve)
-  },
-  {
-    path: 'notifications',
-    component: resolve => require(['../pages/Notifications.vue'], resolve)
+    component: resolve => require(['../pages/Notifications.vue'], resolve),
+    meta: {
+      titlle: 'Notifications'
+    }
   },
   {
     path: '*',

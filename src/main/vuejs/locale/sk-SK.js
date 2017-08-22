@@ -66,5 +66,9 @@ export default {
   locale: {
     en: 'Anglický',
     sk: 'Slovenský'
+  },
+  error: {
+    user_not_found: 'Používateľ sa nenašiel v našej databáze',
+    password: 'Nesprávne heslo'
   }
 };

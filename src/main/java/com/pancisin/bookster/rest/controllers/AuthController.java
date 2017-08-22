@@ -13,6 +13,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,12 +48,20 @@ public class AuthController {
 	private ApplicationEventPublisher eventPublisher;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> login(@RequestBody User user) {
+	public ResponseEntity<?> login(@RequestBody User user, BindingResult bindingResult) {
 		User stored = userRepository.findByEmail(user.getEmail());
 		user.setHashedPassword(hashPassword(user.getPassword()));
 
-		if (user == null || stored == null || !stored.getHashedPassword().equals(user.getHashedPassword())) {
-			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		if (user == null || stored == null) {
+			bindingResult.rejectValue("email", "error.user_not_found");;
+		}
+		
+		if (!stored.getHashedPassword().equals(user.getHashedPassword())) {
+			bindingResult.rejectValue("password", "error.password");;
+		}
+		
+		if (bindingResult.hasErrors()) {
+			throw new InvalidRequestException("Invalid data", bindingResult);
 		}
 
 		stored.setToken(JwtAuthenticationToken.generateToken(stored, secret));

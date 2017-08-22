@@ -20,8 +20,8 @@ export default {
         if (redirect) {
           router.push({ path: redirect });
         }
-      }, errors => {
-        reject(errors);
+      }, response => {
+        reject(response.fieldErrors);
       });
     });
   },
@@ -38,9 +38,9 @@ export default {
         if (redirect) {
           router.push({ path: redirect });
         }
-      }, errors => {
-        context.fieldErrors = errors;
-        reject(errors);
+      }, response => {
+        context.fieldErrors = response.fieldErrors;
+        reject(response.fieldErrors);
       });
     });
   },

@@ -1,22 +1,32 @@
 import Vue from 'vue';
 
-const AUTH_API_URL = 'api';
-
 export default {
 
+  /**
+   * Make an login post request.
+   * @param {Object} credentials - user object that only contains creadentials { email, password }
+   * @param {Function} success - success callback function
+   * @param {Function} error - error callback function
+   */
   login (credentials, success, error) {
-    Vue.http.post(`${AUTH_API_URL}/login`, credentials).then(response => {
+    Vue.http.post(`login`, credentials).then(response => {
       success(response.body);
     }, response => {
-      console.error(response.body.fieldErrors);
+      error(response.body);
     });
   },
 
+  /**
+   * Register post request.
+   * @param {Object} user - new user object that will be registered
+   * @param {Function} success - success callback function
+   * @param {Function} error - error callback function
+   */
   register (user, success, error) {
-    Vue.http.post(`${AUTH_API_URL}/register`, user).then(response => {
+    Vue.http.post(`register`, user).then(response => {
       success(response.body);
     }, response => {
-      console.error(response.body.fieldErrors);
+      error(response.body);
     });
   }
 };

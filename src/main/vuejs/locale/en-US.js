@@ -67,5 +67,9 @@ export default {
   locale: {
     en: 'English',
     sk: 'Slovak'
+  },
+  error: {
+    user_not_found: 'User not found in our database.',
+    password: 'Password does not match'
   }
 };
