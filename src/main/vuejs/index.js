@@ -15,7 +15,6 @@ import ContextMenu from './elements/ContextMenu.vue';
 require('font-awesome/css/font-awesome.css');
 
 // SERVICES
-import Auth from './services/auth.js';
 import store from 'store/index.js';
 import router from './services/router.js';
 import notifier from './services/notifier.js';
@@ -61,12 +60,11 @@ Vue.directive('loading', loading);
 Vue.config.devtools = true;
 
 Vue.http.interceptors.push((request, next) => {
-  request.headers.set('Authorization', 'Bearer ' + Auth.getAuthHeader());
+  request.headers.set('Authorization', 'Bearer ' + window.localStorage.getItem('id_token'));
 
   next(response => {
     if (response.status === 401) {
-      Auth.logout();
-      router.push('/login');
+      // should be logged out or something...
     }
   });
 });

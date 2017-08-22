@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js';
 import moment from 'moment';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'chat',
@@ -72,7 +72,6 @@ export default {
       message: null,
       recipient: null,
       users: [],
-      user: null,
       loading: false,
       subscriptions: []
     };
@@ -83,14 +82,13 @@ export default {
       this.fetchMessages();
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   created: function () {
     this.initializeChatStomp();
     this.fetchMessages();
-
-    Auth.currentUser(this).then((user) => {
-      this.user = user;
-      this.fetchCompanyUsers();
-    });
+    this.fetchCompanyUsers();
   },
   beforeDestroy: function () {
     console.log('destroying chat...');

@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js';
 import GMap from '../../elements/GMap.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'public-event',
@@ -103,6 +103,9 @@ export default {
   created () {
     this.getEvent();
   },
+  computed: {
+    ...mapGetters(['authenticated'])
+  },
   watch: {
     '$route': 'getEvent'
   },
@@ -117,7 +120,7 @@ export default {
             this.relatedEvents = paginator.content;
           });
 
-          if (Auth.user.authenticated) {
+          if (this.authenticated) {
             EventApi.getAttendanceStatus(event_id, status => {
               this.attending = status;
             });

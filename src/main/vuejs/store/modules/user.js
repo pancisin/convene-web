@@ -1,4 +1,5 @@
 import UserApi from 'api/user.api';
+import AuthApi from 'api/auth.api';
 import * as types from 'store/mutation-types';
 
 const state = {
@@ -18,7 +19,10 @@ const getters = {
   locale: state => state.user.locale,
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
   license: state => state.user.license ? state.user.license : null,
-  notifications: state => state.notifications
+  notifications: state => state.notifications,
+  authenticated: state => {
+    return state.user != null && state.user.id != null && window.localStorage.getItem('id_token');
+  }
 };
 
 const actions = {
@@ -30,15 +34,41 @@ const actions = {
       });
     });
   },
-  clearUser ({ commit }) {
-    commit(types.SET_USER, { user: null });
-  },
   updateUser ({ commit }, user) {
     return new Promise((resolve) => {
       UserApi.putUser(user, result => {
         commit(types.SET_USER, { result });
         resolve(user);
       });
+    });
+  },
+  login ({ commit }, credentials) {
+    return new Promise((resolve, reject) => {
+      AuthApi.login(credentials, user => {
+        window.localStorage.setItem('id_token', user.token);
+        commit(types.SET_USER, { user });
+        resolve(user);
+      }, response => {
+        reject(response.fieldErrors);
+      });
+    });
+  },
+  register ({ commit }, user_data) {
+    return new Promise((resolve, reject) => {
+      AuthApi.register(user_data, user => {
+        window.localStorage.setItem('id_token', user.token);
+        commit(types.SET_USER, { user });
+        resolve(user);
+      }, response => {
+        reject(response.fieldErrors);
+      });
+    });
+  },
+  logout ({ commit }) {
+    return new Promise((resolve) => {
+      window.localStorage.removeItem('id_token');
+      commit(types.SET_USER, { user: null });
+      resolve();
     });
   },
   initializeNotifications ({ commit }) {

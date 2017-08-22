@@ -118,12 +118,12 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js';
 import Paginator from '../../elements/Paginator.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import TabContainer from '../../elements/TabContainer.vue';
 import Tab from '../../elements/Tab.vue';
 import UserApi from 'api/user.api';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'dashboard',
@@ -138,7 +138,7 @@ export default {
     };
   },
   created () {
-    if (Auth.user.authenticated) {
+    if (this.authenticated) {
       UserApi.getAttendingEvents(events => {
         this.attending = events;
       });
@@ -151,9 +151,7 @@ export default {
     Paginator, StaggerTransition, TabContainer, Tab
   },
   computed: {
-    authenticated () {
-      return Auth.user.authenticated;
-    }
+    ...mapGetters(['authenticated'])
   },
   methods: {
     getEvents (page) {
@@ -199,7 +197,7 @@ export default {
         });
       }
 
-      if (id === 1 && Auth.user.authenticated && (this.followed == null || this.followed.length === 0)) {
+      if (id === 1 && this.authenticated && (this.followed == null || this.followed.length === 0)) {
         loading(true);
         UserApi.getFollowedPages(pages => {
           loading(false);

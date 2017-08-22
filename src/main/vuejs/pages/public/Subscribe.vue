@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js';
 import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'subscription-signup',

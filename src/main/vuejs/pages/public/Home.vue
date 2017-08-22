@@ -6,7 +6,8 @@
 <script>
 import Dashboard from './Dashboard.vue';
 import Landing from './Landing.vue';
-import Auth from '../../services/auth.js';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'home',
   data () {
@@ -17,8 +18,11 @@ export default {
   components: {
     Dashboard, Landing
   },
+  computed: {
+    ...mapGetters(['authenticated'])
+  },
   created () {
-    if (Auth.user.authenticated) {
+    if (this.authenticated) {
       this.currentView = 'dashboard';
     }
   }

@@ -59,7 +59,8 @@
   </div>
 </template>
 <script>
-import Auth from '../services/auth.js';
+import { mapActions } from 'vuex';
+
 export default {
   data: function () {
     return {
@@ -71,10 +72,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['login']),
     submit: function () {
-      var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-      Auth.login(this, this.user, redirect).then(result => {
+      this.errors = [];
 
+      var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+      this.login(this.user).then(result => {
+        this.$router.push({ path: redirect });
       }, errors => {
         errors.forEach((e) => {
           this.$set(this.errors, e.field, e);

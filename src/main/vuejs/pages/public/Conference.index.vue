@@ -20,20 +20,24 @@
 
 <script>
 import RootApi from 'api/api';
-import Auth from '../../services/auth.js';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'conference-index',
-  data() {
+  data () {
     return {
       conferences: []
     };
   },
-  created() {
+  created () {
     this.getConferences();
   },
+  computed: {
+    ...mapGetters(['authenticated'])
+  },
   methods: {
-    getConferences() {
-      RootApi.getConferences(0, 10, Auth.user.authenticated, conferences => {
+    getConferences () {
+      RootApi.getConferences(0, 10, this.authenticated, conferences => {
         this.conferences = conferences.content;
       });
     }

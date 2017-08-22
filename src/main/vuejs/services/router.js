@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Auth from './auth.js';
 Vue.use(VueRouter);
+import store from '../store/index';
 
 import publicRoutes from './routes.public.js';
 import adminRoutes from './routes.admin.js';
 
 const require_auth = (to, from, next) => {
-  if (!Auth.user.authenticated) {
+  if (!window.localStorage.getItem('id_token')) {
     next({
       path: '/login',
       query: { redirect: to.fullPath }
@@ -17,8 +17,8 @@ const require_auth = (to, from, next) => {
   }
 };
 
-const afterAuth = (_to, from, next) => {
-  if (Auth.user.authenticated) {
+const afterAuth = (to, from, next) => {
+  if (store.getters.authenticated) {
     next(from.path);
   } else {
     next();

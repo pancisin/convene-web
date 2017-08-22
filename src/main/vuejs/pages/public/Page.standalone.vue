@@ -7,7 +7,8 @@
 </template>
 
 <script>
-import Auth from '../../services/auth.js';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'page',
   data () {
@@ -20,6 +21,9 @@ export default {
   },
   created () {
     this.getPage();
+  },
+  computed: {
+    ...mapGetters(['authenticated'])
   },
   methods: {
     getPage () {
@@ -35,7 +39,7 @@ export default {
       }
 
       if (page_id != null) {
-        if (Auth.user.authenticated) {
+        if (this.authenticated) {
           this.$http.get('api/page/' + page_id).then(response => {
             this.page = response.body;
             this.checkFollow();

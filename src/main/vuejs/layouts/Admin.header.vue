@@ -49,18 +49,15 @@
 </template>
   
 <script>
-import Auth from '../services/auth.js';
 import Notifications from '../elements/Notifications.vue';
 import LangSwitcher from '../elements/LangSwitcher.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
 
 export default {
   name: 'header',
   methods: {
-    logout: function () {
-      Auth.logout(this, '/login');
-    },
+    ...mapActions(['logout']),
     hamburgerClicked () {
       this.$emit('hamburgerClicked');
     }

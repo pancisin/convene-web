@@ -1,6 +1,5 @@
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
-import Auth from './auth.js';
 
 export default {
   install (Vue) {
@@ -23,7 +22,7 @@ export default {
           Vue.prototype.$stompClient = stompClient;
 
           this.$stompClient.connect({
-            'Authorization': 'Bearer ' + Auth.getAuthHeader()
+            'Authorization': 'Bearer ' + window.localStorage.getItem('id_token')
           }, resolve, reject);
         }
       });

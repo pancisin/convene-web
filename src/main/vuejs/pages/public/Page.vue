@@ -70,8 +70,8 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
-import Auth from '../../services/auth.js';
 import PageApi from 'api/page.api';
+import { mapGetters } from 'vuex';
 
 import PageInjector from '../../services/injectors/page.injector.js';
 
@@ -101,6 +101,9 @@ export default {
   created () {
     this.getPage();
   },
+  computed: {
+    ...mapGetters(['authenticated'])
+  },
   methods: {
     getPage () {
       var page_id = this.$route.params.id;
@@ -113,20 +116,19 @@ export default {
           page_id = parts[0];
         }
       } else {
-        var auth = Auth.user.authenticated;
-        PageApi.getPage(page_id, auth, page => {
+        PageApi.getPage(page_id, this.authenticated, page => {
           this.page = page;
 
-          if (auth) {
+          if (this.authenticated) {
             PageApi.getFollowStatus(page.id, status => {
               this.follows = status;
             });
           }
 
-          PageApi.getServices(page.id, auth, services => {
+          PageApi.getServices(page.id, this.authenticated, services => {
             this.services = services;
           });
-          PageApi.getAllEvents(page.id, auth, events => {
+          PageApi.getAllEvents(page.id, this.authenticated, events => {
             this.events = events;
           });
         });

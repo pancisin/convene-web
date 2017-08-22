@@ -6,14 +6,13 @@
 </template>
 
 <script>
-import Auth from '../services/auth.js';
 import moment from 'moment';
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'app-root',
   created () {
-    if (Auth.user.authenticated) {
+    if (window.localStorage.getItem('id_token')) {
       this.initializeUser().then(user => {
         moment.locale(user.locale.name);
         this.$i18n.locale = user.locale.name;
@@ -23,6 +22,9 @@ export default {
       this.initializeStomp();
       this.initializeNotifications();
     }
+  },
+  computed: {
+    ...mapGetters(['authenticated'])
   },
   methods: {
     ...mapActions([

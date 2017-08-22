@@ -23,13 +23,13 @@
   
             <lang-switcher />
   
-            <notifications v-if="auth.user.authenticated" />
+            <notifications v-if="authenticated" />
   
-            <li class="dropdown" v-if="auth.user.authenticated">
+            <li class="dropdown" v-if="authenticated">
               <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
                 <img :src="avatar" alt="user-img" class="img-circle">
               </a>
-              <ul class="dropdown-menu" v-if="auth.user.authenticated">
+              <ul class="dropdown-menu" v-if="authenticated">
                 <li>
                   <router-link :to="{ name : 'settings' }" class="waves-effect waves-light">
                     <i class="fa fa-cog m-r-10"></i> Settings
@@ -166,11 +166,10 @@
 
 <script>
 // require("../assets/less/custom-menu.less")
-import Auth from '../services/auth.js';
 import Notifications from '../elements/Notifications.vue';
 import LangSwitcher from '../elements/LangSwitcher.vue';
 import SlideTransition from '../functional/SlideTransition';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
 
 export default {
@@ -184,10 +183,7 @@ export default {
     '$route': 'closeNavbar'
   },
   computed: {
-    ...mapGetters(['isAdmin', 'user']),
-    auth () {
-      return Auth;
-    },
+    ...mapGetters(['isAdmin', 'user', 'authenticated']),
     avatar () {
       if (this.user != null) {
         return gravatar.url(this.user.email, {
@@ -201,9 +197,7 @@ export default {
     Notifications, LangSwitcher, SlideTransition
   },
   methods: {
-    logout () {
-      Auth.logout(this, '/login');
-    },
+    ...mapActions(['logout']),
     closeNavbar () {
       this.collapsed = true;
     }
