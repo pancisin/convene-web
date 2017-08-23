@@ -22,7 +22,7 @@ const getters = {
   license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
   authenticated: state => {
-    return window.localStorage.getItem('id_token') != null || state.authenticated;
+    return state.authenticated || window.localStorage.getItem('id_token') != null;
   },
   loadingUser: state => state.loadingUser
 };
@@ -85,6 +85,8 @@ const actions = {
       window.localStorage.removeItem('id_token');
       commit(types.SET_USER, { user: null });
       commit(types.LOADING_USER, false);
+      commit(types.SET_PAGES, { pages: [] });
+      commit(types.SET_CONFERENCES, { conferences: [] });
       resolve();
     });
   },

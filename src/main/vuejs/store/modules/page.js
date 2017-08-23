@@ -11,7 +11,13 @@ const getters = {
   pages: state => state.pages,
   loadingPages: state => state.loadingPages,
   getPageById: state => id => {
-    return this.state.pages.find(page => page.id === id);
+    let index = state.pages.findIndex(p => {
+      return p.id === id;
+    });
+
+    if (index !== -1) {
+      return state.pages[index];
+    } else return null;
   }
 };
 

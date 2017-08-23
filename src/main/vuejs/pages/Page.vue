@@ -5,7 +5,7 @@
         <h4 class="page-title" v-text="page.name"></h4>
       </div>
     </div>
-  
+
     <div class="col-xs-12">
       <transition name="fade-down" mode="out-in">
         <keep-alive>
@@ -39,21 +39,18 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'pages'
+      'pages', 'getPageById'
     ]),
     page () {
       let page_id = Number.parseInt(this.$route.params.id, 10);
-      var index = this.pages.findIndex(p => {
-        return p.id === page_id;
-      });
+      let page = this.getPageById(page_id);
 
-      if (index !== -1) {
+      if (page != null) {
         this.edit = true;
+        this.injector = new PageInjector(page_id);
+      }
 
-        this.injector = new PageInjector(this.$route.params.id);
-
-        return this.pages[index];
-      } else return {};
+      return page;
     }
   }
 };

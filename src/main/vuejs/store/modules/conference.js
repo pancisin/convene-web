@@ -11,7 +11,13 @@ const getters = {
   conferences: state => state.conferences,
   loadingConferences: state => state.loadingConferences,
   getConferenceById: state => id => {
-    return state.conferences.find(conference => conference.id === id);
+    let index = state.conferences.findIndex(c => {
+      return c.id === id;
+    });
+
+    if (index !== -1) {
+      return state.conferences[index];
+    } else return null;
   }
 };
 

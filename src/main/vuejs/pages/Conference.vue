@@ -39,19 +39,18 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'conferences'
+      'conferences', 'getConferenceById'
     ]),
     conference () {
       var conference_id = Number.parseInt(this.$route.params.id, 10);
-      let index = this.conferences.findIndex(c => {
-        return c.id === conference_id;
-      });
+      let conference = this.getConferenceById(conference_id);
 
-      if (index !== -1) {
+      if (conference !== null) {
         this.edit = true;
-        this.injector = new ConferenceInjector(this.$route.params.id);
-        return this.conferences[index];
-      } else return {};
+        this.injector = new ConferenceInjector(conference_id);
+      };
+
+      return conference;
     }
   }
 };
