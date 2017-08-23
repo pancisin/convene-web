@@ -101,7 +101,7 @@ export default {
       this.working = true;
 
       this.$validator.validateAll().then(valid => {
-        if (valid === true) {
+        if (valid) {
           this.register(this.user).then(token => {
             this.$router.push('/');
           }, errors => {
