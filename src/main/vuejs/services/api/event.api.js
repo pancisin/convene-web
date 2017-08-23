@@ -1,12 +1,24 @@
 import Vue from 'vue';
 const EVENT_API_URL = 'api/event';
 export default {
-  getEvent (id, auth, success) {
+
+  /**
+   * Get event by id
+   * @param {Number} id - event id
+   * @param {Boolean} auth - authenticated user
+   * @param {Function} success - success callback function
+   * @param {Function} error - error callback function
+   */
+  getEvent (id, auth, success, error) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     var url = `${auth ? 'api' : 'public'}/event/${id}`;
     Vue.http.get(url).then(response => {
       success(response.body);
+    }, response => {
+      if (error != null) {
+        error(response.body);
+      }
     });
   },
   putEvent (id, event, success) {

@@ -125,6 +125,8 @@ export default {
               this.attending = status;
             });
           }
+        }, error => {
+          this.$error(error.error, error.message);
         });
       }
     },
