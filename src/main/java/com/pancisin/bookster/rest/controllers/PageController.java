@@ -10,6 +10,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -109,20 +111,13 @@ public class PageController {
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 
-	@GetMapping("/event")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-	public ResponseEntity<?> getEventsCurrent(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
-		List<Event> events = stored.getEvents().stream().filter(x -> x.getDate().compareTo(Calendar.getInstance()) > 1)
-				.collect(Collectors.toList());
-		return ResponseEntity.ok(stored.getEvents());
-	}
-
 	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size, 
+			@RequestParam("fromDate") String fromDate) {
+		
 		return ResponseEntity
-				.ok(eventRepository.getByPage(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
+				.ok(eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
 	}
 
 	@PostMapping("/event")

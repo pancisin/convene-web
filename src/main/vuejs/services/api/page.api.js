@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import moment from 'moment';
+
 const PAGE_API_URL = 'api/page';
 
 function errorHandler (response) {
@@ -6,6 +8,7 @@ function errorHandler (response) {
 }
 
 export default {
+
   /**
    * Get page data
    * @param {*} id - page id
@@ -72,26 +75,17 @@ export default {
    * @param {*} id - page id
    * @param {*} page - paginator page property
    * @param {*} size - paginator size property
-   * @param {*} success - success callback function
+   * @param {*} success - success callback function, @returns events paginator object
    */
   getEvents (id, page, size, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`).then(response => {
-      success(response.body);
-    }, errorHandler);
-  },
-
-  /**
-   * Get all page events without paginator
-   * @param {*} id - page id
-   * @param {Boolean} auth - authenticated user
-   * @param {*} success - success callback function
-   */
-  getAllEvents (id, auth, success) {
-    if (id == null || id === '') throw new Error('missing entity id');
-
-    Vue.http.get(`${auth ? 'api' : 'public'}/page/${id}/event`).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`, {
+      params: {
+        fromDate: moment().format('YYYY-MM-DD'),
+        orderBy: 'date ASC'
+      }
+    }).then(response => {
       success(response.body);
     }, errorHandler);
   },

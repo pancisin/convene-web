@@ -128,8 +128,8 @@ export default {
           PageApi.getServices(page.id, this.authenticated, services => {
             this.services = services;
           });
-          PageApi.getAllEvents(page.id, this.authenticated, events => {
-            this.events = events;
+          PageApi.getEvents(page.id, 0, 10, paginator => {
+            this.events = paginator.content;
           });
         });
       }

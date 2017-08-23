@@ -113,7 +113,7 @@ export default {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-        EventApi.getEvent(event_id, false, event => {
+        EventApi.getEvent(event_id, this.authenticated, event => {
           this.event = event;
 
           EventApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
