@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
   name: 'invoice',
   data () {
@@ -48,9 +47,6 @@ export default {
       license: {},
       card: {}
     };
-  },
-  computed: {
-    ...mapGetters(['locale'])
   },
   created () {
     this.getLicense();

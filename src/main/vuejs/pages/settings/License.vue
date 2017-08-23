@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
   name: 'licenses',
   data () {
@@ -51,9 +50,6 @@ export default {
   },
   created () {
     this.getSubscriptions();
-  },
-  computed: {
-    ...mapGetters(['locale'])
   },
   methods: {
     getSubscriptions () {

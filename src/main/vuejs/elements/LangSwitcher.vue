@@ -4,8 +4,8 @@
       <i class="fa fa-language"></i>
     </a>
     <ul class="dropdown-menu">
-      <li v-for="loc in locales">
-        <a @click="locale = loc; closeLanguage()">
+      <li v-for="loc in locales" :key="loc.code">
+        <a @click="selectLoc(loc)">
           {{ $t(loc.code) }}
         </a>
       </li>
@@ -29,10 +29,13 @@ export default {
     this.getLocales();
   },
   computed: {
+    ...mapGetters({
+      storeLocale: 'locale'
+    }),
     ...mapGetters(['locale', 'authenticated']),
     locale: {
       get () {
-        return this.authenticated ? this.locale : this.$i18n.locale;
+        return this.authenticated ? this.storeLocale : this.$i18n.locale;
       },
       set (value) {
         if (this.authenticated) {
@@ -61,6 +64,10 @@ export default {
       if (this.display) {
         this.display = false;
       }
+    },
+    selectloc (locale) {
+      this.locale = locale;
+      this.closeLanguage();
     }
   }
 };

@@ -106,7 +106,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
   name: 'invoice',
   data () {
@@ -114,9 +113,6 @@ export default {
       invoice: {},
       tax: 19.0
     };
-  },
-  computed: {
-    ...mapGetters(['locale'])
   },
   created () {
     this.getInvoice();

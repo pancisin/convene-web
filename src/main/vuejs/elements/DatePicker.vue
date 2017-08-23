@@ -39,7 +39,6 @@
 </template>
 <script>
 import moment from 'moment';
-import { mapGetters } from 'vuex';
 
 export default {
   props: ['value', 'placeholder', 'inline', 'name'],
@@ -53,7 +52,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['locale']),
     weekdays: function () {
       var wkds = moment.weekdays();
       wkds.push(wkds.shift());
