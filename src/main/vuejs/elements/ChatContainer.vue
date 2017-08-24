@@ -38,7 +38,8 @@ export default {
     return {
       collapsed: true,
       currentView: 'contacts-list',
-      user: null
+      user: null,
+      activeUsers: []
     };
   },
   created () {
@@ -51,9 +52,22 @@ export default {
           this.$info('Message', message.content);
         }
       });
+
+      this.$stompClient.subscribe('/topic/active', response => {
+        this.sendWM('/app/activeUsers', {});
+        let active_us = JSON.parse(response.body);
+        if (this.activeUsers.length !== active_us.length) {
+          this.activeUsers = active_us;
+        }
+      });
     }, frame => {
       // console.log(frame);
     });
+  },
+  watch: {
+    activeUsers (newVal) {
+      this.$emit('activityChanged', this.activeUsers);
+    }
   },
   components: {
     ContactsList,

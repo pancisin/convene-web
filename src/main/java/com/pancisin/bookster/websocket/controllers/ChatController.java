@@ -10,10 +10,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.Message;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.repository.MessageRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
