@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     getMessages () {
+      this.messages = [];
       this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => {
         let messages = response.body;
         messages.sort((a, b) => {
@@ -79,7 +80,7 @@ export default {
       }
 
       this.sendWM('/app/chat.private.' + this.recipient.email, {
-        content: this.message
+        content: this.message.trim()
       }).then(() => {
         var mes = {
           content: this.message,

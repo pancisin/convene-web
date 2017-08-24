@@ -15,8 +15,7 @@ public interface PageAdministratorRepository extends JpaRepository<PageAdministr
 	// pa.page page WHERE pa.role='ROLE_OWNER' AND page.id = :page.id")
 	// public User getPageOwner(Page page);
 
-	@Query("SELECT DISTINCT user FROM PageAdministrator pa JOIN pa.user user JOIN pa.page page WHERE page.id IN "
-			+ "(SELECT ipage.id FROM PageAdministrator ipa JOIN ipa.user iuser JOIN ipa.page ipage WHERE iuser.id = :user_id AND "
-			+ " ipa.role = 'ROLE_OWNER') AND pa.role != 'ROLE_OWNER'")
+	@Query("SELECT DISTINCT user FROM PageAdministrator pa JOIN pa.user user WHERE pa.page.id IN "
+			+ "(SELECT ipa.page.id FROM PageAdministrator ipa WHERE ipa.user.id = :user_id) AND user.id != :user_id")
 	public List<User> getContacts(@Param("user_id") Long user_id);
 }

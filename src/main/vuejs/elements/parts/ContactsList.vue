@@ -52,7 +52,7 @@ export default {
   min-height: 380px;
 
   overflow-y: auto;
-  padding: 10px;
+  // padding: 10px;
 }
 
 .contact-list {
