@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ul class="conversation-list" ref="conversationList" is="transition-group" name="fade">
-      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id + message.created">
+    <ul class="conversation-list" ref="conversationList">
+      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id">
         <div class="chat-avatar">
           <img :src="getAvatar(message.sender)" alt="male">
           <i>{{ message.created | moment('LT') }}</i>
@@ -48,6 +48,11 @@ export default {
     'recipient': 'getMessages'
   },
   created () {
+    this.$parent.$on('messageReceived', (message) => {
+      if (message.sender.email === this.recipient.email) {
+        this.addMessage(message);
+      }
+    });
     this.getMessages();
   },
   methods: {
@@ -68,6 +73,11 @@ export default {
       });
     },
     send () {
+      if (this.message == null || this.message.trim() === '' || this.message.trim() === '\n') {
+        this.message = null;
+        return;
+      }
+
       this.sendWM('/app/chat.private.' + this.recipient.email, {
         content: this.message
       }).then(() => {
@@ -75,7 +85,7 @@ export default {
           content: this.message,
           sender: this.user,
           recipient: this.recipient,
-          created: moment()
+          created: moment().toISOString()
         };
 
         this.addMessage(mes);
@@ -90,7 +100,7 @@ export default {
       }
 
       this.$nextTick(() => {
-        let container = this.$refs.conversationList.$el;
+        let container = this.$refs.conversationList;
         container.scrollTop = container.scrollHeight;
       });
     }

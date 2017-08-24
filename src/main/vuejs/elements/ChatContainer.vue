@@ -45,7 +45,11 @@ export default {
     this.connectWM('stomp').then(frame => {
       this.$stompClient.subscribe('/user/queue/chat.message', response => {
         let message = JSON.parse(response.body);
-        this.$info('Message', message.content);
+        this.$emit('messageReceived', message);
+
+        if (this.collapsed) {
+          this.$info('Message', message.content);
+        }
       });
     }, frame => {
       // console.log(frame);
