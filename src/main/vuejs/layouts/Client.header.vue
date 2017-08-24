@@ -92,7 +92,7 @@
                 </router-link>
                 <ul class="submenu">
                   <li>
-                    <router-link to="/events" class="waves-effect">
+                    <router-link :to="{ name: 'event.explore' }" class="waves-effect">
                       Explore
                     </router-link>
                   </li>
@@ -104,7 +104,7 @@
                 </ul>
               </li>
               <li>
-                <router-link to="/explore" class="waves-effect">
+                <router-link to="/explore" :to="{ name: 'event.explore' }" class="waves-effect">
                   <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
               </li>
               <li>
@@ -119,12 +119,12 @@
                   <li>
                     <ul>
                       <li>
-                        <router-link to="/about">
+                        <router-link :to="{ name: 'about' }">
                           About
                         </router-link>
                       </li>
                       <li>
-                        <router-link to="pricing">
+                        <router-link :to="{ name: 'pricing' }">
                           Pricing
                         </router-link>
                       </li>
@@ -134,17 +134,17 @@
                   <li>
                     <ul>
                       <li>
-                        <router-link to="faq">
+                        <router-link :to="{ name: 'faq' }">
                           FAQ
                         </router-link>
                       </li>
                       <li>
-                        <router-link to="terms">
+                        <router-link :to="{ name: 'terms' }">
                           Terms & Conditions
                         </router-link>
                       </li>
                       <li>
-                        <router-link to="privacy-policy">
+                        <router-link :to="{ name: 'privacy-policy' }">
                           Privacy policy
                         </router-link>
                       </li>
@@ -204,7 +204,7 @@ export default {
     logoutUser () {
       this.logout().then(response => {
         this.$router.push({ path: '/' });
-      })
+      });
     }
   }
 };

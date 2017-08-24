@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ul class="conversation-list">
-      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.id == current.id }" :key="message.id">
+    <ul class="conversation-list" ref="conversationList" is="transition-group" name="fade">
+      <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id + message.created">
         <div class="chat-avatar">
           <img :src="getAvatar(message.sender)" alt="male">
           <i>{{ message.created | moment('LT') }}</i>
@@ -13,47 +13,85 @@
         </div>
       </li>
     </ul>
-  
-    <div class="input-group">
-      <input type="email" id="example-input2-group2" name="example-input2-group2" class="form-control" placeholder="Type something">
-      <span class="input-group-btn">
-        <button type="button" class="btn waves-effect waves-light btn-primary">Send</button>
-      </span>
-    </div>
+
+    <form class="form" @submit.prevent="send">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Type something" v-model="message">
+        <span class="input-group-btn">
+          <button type="button" class="btn waves-effect waves-light btn-primary" @click="send">Send</button>
+        </span>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import gravatar from 'gravatar';
+import moment from 'moment';
+
 export default {
   name: 'conversation',
   props: {
-    user: Object
+    recipient: Object
   },
   data () {
     return {
-      messages: []
+      messages: [],
+      message: null
     };
   },
   computed: {
-    ...mapGetters({
-      current: 'user'
-    })
+    ...mapGetters(['user'])
   },
   watch: {
-    'user': 'getMessages'
+    'recipient': 'getMessages'
+  },
+  created () {
+    this.getMessages();
   },
   methods: {
     getMessages () {
-      this.$http.get('api/message/user/' + this.user.id + '/0').then(response => {
-        this.messages = response.body;
+      this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => {
+        let messages = response.body;
+        messages.sort((a, b) => {
+          return a.created > b.created;
+        });
+
+        this.addMessage(messages);
       });
     },
-    getAvatar (user) {
-      return gravatar.url(user.email, {
+    getAvatar (recipient) {
+      return gravatar.url(recipient.email, {
         protocol: 'https',
         size: 30
+      });
+    },
+    send () {
+      this.sendWM('/app/chat.private.' + this.recipient.email, {
+        content: this.message
+      }).then(() => {
+        var mes = {
+          content: this.message,
+          sender: this.user,
+          recipient: this.recipient,
+          created: moment()
+        };
+
+        this.addMessage(mes);
+        this.message = null;
+      });
+    },
+    addMessage (message) {
+      if (message instanceof Array) {
+        this.messages = message;
+      } else {
+        this.messages.push(message);
+      }
+
+      this.$nextTick(() => {
+        let container = this.$refs.conversationList.$el;
+        container.scrollTop = container.scrollHeight;
       });
     }
   }

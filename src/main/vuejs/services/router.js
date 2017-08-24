@@ -42,7 +42,7 @@ var router = new VueRouter({
           beforeEnter: require_auth
         },
         {
-          path: 'subscription-sign-up',
+          path: 'subscribe/:subscription',
           name: 'sub.signup',
           component: resolve => require(['../pages/public/Subscribe.vue'], resolve),
           beforeEnter: require_auth

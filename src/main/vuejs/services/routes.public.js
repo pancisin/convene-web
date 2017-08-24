@@ -14,14 +14,17 @@ export default [
   },
   {
     path: 'explore',
+    name: 'event.explore',
     component: resolve => require(['../pages/public/Page.index.vue'], resolve)
   },
   {
     path: 'page/:id',
+    name: 'page.public',
     component: resolve => require(['../pages/public/Page.vue'], resolve)
   },
   {
     path: 'conferences',
+    name: 'conferences',
     component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
   },
   {
@@ -32,26 +35,31 @@ export default [
   {
     path: 'about',
     alias: 'admin/about',
+    name: 'about',
     component: resolve => require(['../pages/static/About.vue'], resolve)
   },
   {
     path: 'faq',
     alias: 'admin/faq',
+    name: 'faq',
     component: resolve => require(['../pages/static/faq.vue'], resolve)
   },
   {
     path: 'terms',
     alias: 'admin/terms',
+    name: 'terms',
     component: resolve => require(['../pages/static/Terms.vue'], resolve)
   },
   {
     path: 'privacy-policy',
     alias: 'admin/privacy-policy',
+    name: 'privacy-policy',
     component: resolve => require(['../pages/static/Privacy.vue'], resolve)
   },
   {
     path: 'pricing',
     alias: 'admin/pricing',
+    name: 'pricing',
     component: resolve => require(['../pages/static/Pricing.vue'], resolve)
   },
   {

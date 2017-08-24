@@ -6,17 +6,17 @@
           <a @click="navigateBack" v-if="currentView == 'conversation-list'">
             <i class="fa fa-angle-left fa-lg m-r-15"></i>
           </a>
-  
+
           {{ user != null ? user.displayName : "Conversations" }}
           <a @click="collapsed = true" class="pull-right">
             <i class="fa fa-times"></i>
           </a>
         </div>
-  
+
         <div class="chat-wrapper">
           <transition name="fade-down" mode="out-in">
             <keep-alive>
-              <component :is="currentView" :user="user" @selected="userSelected"></component>
+              <component :is="currentView" :recipient="user" @selected="userSelected"></component>
             </keep-alive>
           </transition>
         </div>
@@ -40,6 +40,16 @@ export default {
       currentView: 'contacts-list',
       user: null
     };
+  },
+  created () {
+    this.connectWM('stomp').then(frame => {
+      this.$stompClient.subscribe('/user/queue/chat.message', response => {
+        let message = JSON.parse(response.body);
+        this.$info('Message', message.content);
+      });
+    }, frame => {
+      // console.log(frame);
+    });
   },
   components: {
     ContactsList,
