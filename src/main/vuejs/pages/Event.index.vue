@@ -5,6 +5,12 @@ import UserApi from 'api/user.api';
 export default {
   name: 'event-index',
   extends: EventsTemplate,
+  props: {
+    editable: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     getEvents (page) {
       this.loading = true;

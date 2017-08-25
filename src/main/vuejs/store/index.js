@@ -25,6 +25,9 @@ const store = new Vuex.Store({
       setTimeout(() => {
         commit(types.REMOVE_TOAST, { toast });
       }, 5000);
+    },
+    removeToast ({ commit }, toast) {
+      commit(types.REMOVE_TOAST, { toast });
     }
   },
   mutations: {

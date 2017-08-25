@@ -65,7 +65,7 @@ export default {
         this.display = false;
       }
     },
-    selectloc (locale) {
+    selectLoc (locale) {
       this.locale = locale;
       this.closeLanguage();
     }

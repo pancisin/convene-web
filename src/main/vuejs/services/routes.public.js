@@ -33,6 +33,11 @@ export default [
     component: resolve => require(['../pages/public/Conference.vue'], resolve)
   },
   {
+    path: 'article/:article_id',
+    name: 'article.public',
+    component: resolve => require(['../pages/public/Article.vue'], resolve)
+  },
+  {
     path: 'about',
     alias: 'admin/about',
     name: 'about',

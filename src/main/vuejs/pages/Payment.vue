@@ -15,11 +15,7 @@
             <span class="text-danger" v-if="errors.has('card_code')">{{ errors.first('card_code') }}</span>
           </div>
         </div>
-  
-        <div class="col-sm-4">
-        </div>
-  
-        <div class="col-sm-5">
+        <div class="col-sm-5 col-sm-offset-4">
           <div class="form-group" :class="{ 'has-error ' : errors.has('expiration_month') || errors.has('expiration_year') }">
             <label class="control-label">Expiration *</label>
             <div class="input-daterange input-group" id="date-range">

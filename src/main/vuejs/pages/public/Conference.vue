@@ -12,9 +12,7 @@
             <img :src="conference.bannerUrl" class="img-poster" v-if="conference != null">
           </div>
           <div class="col-md-8">
-            <panel>
-              <div v-html="conference.summary" v-if="conference != null"></div>
-            </panel>
+            <div v-html="conference.summary" v-if="conference != null"></div>
           </div>
         </div>
   

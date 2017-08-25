@@ -1,8 +1,8 @@
 <template>
-  <div class="alert" :class="notification.type ? 'alert-' + notification.type : 'secondary'">
-    <button type="button" @click="triggerClose" class="close" data-dismiss="alert" aria-hidden="true">
-      <i class="material-icons">close</i>
-    </button>
+  <div class="toast" :class="notification.type ? 'toast-' + notification.type : 'secondary'">
+    <!-- <button type="button" @click="triggerClose" class="close">
+          <i class="material-icons">close</i>
+        </button> -->
     <strong v-if="notification.title">{{notification.title}}</strong>
     <p>
       {{notification.message}}
@@ -20,3 +20,42 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.toast {
+  padding: 15px 25px;
+  background-color: #333;
+  color: #adadad;
+  margin-top: 5px;
+  position: relative;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.55);
+
+  strong {
+    color: #fff;
+  }
+
+  p {
+    margin-bottom: 0px;
+  }
+
+  .close {
+    color: #fff;
+  }
+
+  &:before {
+    content: '';
+    background-color: #525252;
+    position: absolute;
+    left: -7px;
+    top: 0;
+    bottom: 0;
+    width: 7px;
+  }
+
+  &.toast-success {
+    &:before {
+      background-color: green;
+    }
+  }
+}
+</style>
