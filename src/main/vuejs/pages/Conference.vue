@@ -7,6 +7,7 @@
     </div>
   
     <div class="col-xs-12">
+      <div class="alert alert-danger" v-if="conference.state == 'BLOCKED'">This conference state is blocked. You are not allowed to make changes to this conference.</div>
       <transition name="fade-down" mode="out-in">
         <keep-alive>
           <router-view :conference="conference" :edit="edit"></router-view>

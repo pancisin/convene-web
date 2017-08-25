@@ -87,7 +87,11 @@
           </li>
   
           <drop-down v-for="conference in conferences" :key="conference.id" ref="items" @opened="closeDropdowns">
-            <i class="material-icons" slot="title">work</i>
+
+            <i class="material-icons" slot="title" v-if="conference.state == 'PUBLISHED'">work</i>
+            <i class="material-icons" slot="title" v-else-if="conference.state == 'DEACTIVATED'">visibility_off</i>
+            <i class="material-icons" slot="title" v-else-if="conference.state == 'BLOCKED'">highlight_off</i>
+
             <span v-text="conference.name" slot="title"></span>
             <li slot="item">
               <router-link :to="{ name: 'conference.overview', params: { id : conference.id }}" class="list-group-item waves-effect">
@@ -180,7 +184,7 @@ export default {
   components: {
     DropDown: VerticalMenuDrop
   },
-  created() {
+  created () {
     this.initializePages();
     this.initializeConferences();
   },
@@ -188,7 +192,7 @@ export default {
     ...mapActions([
       'initializePages', 'initializeConferences'
     ]),
-    closeDropdowns(except) {
+    closeDropdowns (except) {
       if (!except.collapsed) {
         this.$refs.items.forEach(item => {
           if (item !== except && !item.collapsed) {

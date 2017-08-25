@@ -39,6 +39,7 @@ public class LicenseService {
 			} else if (s.getState() == SubscriptionState.NEW) {
 				s.setState(SubscriptionState.UNPAID);
 				s.getUser().getOwningPages().stream().forEach(p -> p.setState(PageState.BLOCKED));
+				s.getUser().getOwningConferences().stream().forEach(p -> p.setState(PageState.BLOCKED));
 			}
 		});
 

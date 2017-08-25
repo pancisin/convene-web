@@ -130,7 +130,7 @@ public class ConferenceController {
 
 	@GetMapping("/attendees")
 	// @JsonView(Summary.class)
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(caattendeeRepository.findByConference(conference_id));
 	}
@@ -171,7 +171,7 @@ public class ConferenceController {
 	}
 
 	@GetMapping("/meta-field")
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getMetaFields(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(conference.getMetaFields());
@@ -204,7 +204,7 @@ public class ConferenceController {
 	}
 
 	@GetMapping("/invitation")
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getInvitations(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(conference.getInvitations());
@@ -212,7 +212,7 @@ public class ConferenceController {
 
 	@GetMapping("/administrator")
 	@JsonView(Summary.class)
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(stored.getConferenceAdministrators());

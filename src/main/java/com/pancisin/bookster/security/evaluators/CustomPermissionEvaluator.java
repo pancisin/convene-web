@@ -18,6 +18,7 @@ import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BookRequestRepository;
@@ -96,8 +97,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		case "conference":
 			Conference conference = conferenceRepository.findOne((Long) targetId);
 
-			if (permission.equals("update"))
+			if (permission.equals("admin-read"))
 				return checkConferenceOwnership(conference, stored);
+			else if (permission.equals("update")) 
+				return conference.getState() != PageState.BLOCKED && checkConferenceOwnership(conference, stored);
 			else
 				return conference.getVisibility() == Visibility.PUBLIC
 						|| conference.getOwner().getId() == stored.getId();
@@ -115,8 +118,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			return notification.getRecipient().getId() == stored.getId();
 		case "page":
 			Page page = pageRepository.findOne((Long) targetId);
-			if (permission.equals("update")) {
+			if (permission.equals("admin-read")) {
 				return checkPageOwnership(page, stored);
+			} else if (permission.equals("update")) {
+				return page.getState() != PageState.BLOCKED && checkPageOwnership(page, stored);
 			} else
 				return true;
 		case "programme":

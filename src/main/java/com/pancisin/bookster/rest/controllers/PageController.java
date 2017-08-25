@@ -174,14 +174,14 @@ public class PageController {
 	}
 
 	@GetMapping("/followers")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getFollowers(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		return ResponseEntity.ok(stored.getFollowers());
 	}
 
 	@GetMapping("/requests")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getRequests(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 
@@ -193,7 +193,7 @@ public class PageController {
 
 	@GetMapping("/administrator")
 	@JsonView(Summary.class)
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		return ResponseEntity.ok(stored.getPageAdministrators());
@@ -218,7 +218,7 @@ public class PageController {
 	}
 
 	@GetMapping("/place")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getPlaces(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		return ResponseEntity.ok(stored.getPlaces());

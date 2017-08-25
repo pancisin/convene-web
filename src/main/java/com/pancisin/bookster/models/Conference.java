@@ -20,9 +20,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.interfaces.IAuthor;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "conferences")
@@ -50,6 +53,10 @@ public class Conference implements IAuthor {
 	@Enumerated(EnumType.STRING)
 	private Visibility visibility;
 
+	@JsonView(Summary.class)
+	@Enumerated(EnumType.STRING)
+	private PageState state = PageState.DEACTIVATED;
+	
 	@Lob
 	@Column
 	private String summary;
@@ -170,5 +177,13 @@ public class Conference implements IAuthor {
 
 	public void setArticles(List<Article> articles) {
 		this.articles = articles;
+	}
+
+	public PageState getState() {
+		return state;
+	}
+
+	public void setState(PageState state) {
+		this.state = state;
 	}
 }
