@@ -7,7 +7,7 @@
             <img :src="getAvatar(user)" alt="">
           </div>
           <span class="name" v-text="user.displayName"></span>
-          <i class="fa fa-circle online"></i>
+          <i class="fa fa-circle" :class="{ 'online' : isOnline(user.email) }"></i>
         </a>
         <span class="clearfix"></span>
       </li>
@@ -21,11 +21,15 @@ export default {
   name: 'contacts-list',
   data () {
     return {
-      users: []
+      users: [],
+      activeUsers: []
     };
   },
   created () {
     this.getContacts();
+    this.$parent.$on('activityChanged', (userNames) => {
+      this.activeUsers = userNames;
+    });
   },
   methods: {
     getContacts () {
@@ -41,6 +45,9 @@ export default {
         protocol: 'https',
         size: 30
       });
+    },
+    isOnline (email) {
+      return this.activeUsers.includes(email);
     }
   }
 };
@@ -83,15 +90,16 @@ export default {
     }
   }
   .list-group-item {
+    padding: 15px 20px;
     span.name {
       color: #707780;
       display: inline-block;
       overflow: hidden;
       padding-left: 5px;
-      padding-top: 6px;
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 130px;
+      vertical-align: middle;
     }
   }
   i.online {

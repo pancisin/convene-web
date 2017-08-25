@@ -4,11 +4,11 @@
       <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id">
         <div class="chat-avatar">
           <img :src="getAvatar(message.sender)" alt="male">
-          <i>{{ message.created | moment('LT') }}</i>
         </div>
         <div class="conversation-text">
           <div class="ctext-wrap">
             <p v-text="message.content"></p>
+            <small>{{ getTimeString(message.created) }}</small>
           </div>
         </div>
       </li>
@@ -104,6 +104,9 @@ export default {
         let container = this.$refs.conversationList;
         container.scrollTop = container.scrollHeight;
       });
+    },
+    getTimeString (timestamp) {
+      return moment().isSame(timestamp, 'd') ? moment(timestamp).format('LT') : moment(timestamp).format('L LT');
     }
   }
 };

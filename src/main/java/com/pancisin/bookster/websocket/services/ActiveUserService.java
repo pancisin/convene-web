@@ -30,7 +30,7 @@ public class ActiveUserService {
 		Set<String> active = Sets.newTreeSet();
 		for (String user : statsByUser.asMap().keySet()) {
 			// has the user checked in within the last 5 seconds?
-			if ((System.currentTimeMillis() - statsByUser.getUnchecked(user).lastAccess()) < 5000) {
+			if ((System.currentTimeMillis() - statsByUser.getUnchecked(user).lastAccess()) < 15000) {
 				active.add(user);
 			}
 		}

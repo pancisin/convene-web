@@ -7,7 +7,11 @@
             <i class="fa fa-angle-left fa-lg m-r-15"></i>
           </a>
 
-          {{ user != null ? user.displayName : "Conversations" }}
+          <span v-if="user != null">
+            {{ user.displayName }}
+            <i class="fa fa-circle status" :class="{ 'online' : isOnline(user.email) }"></i>
+          </span>
+          <span v-else>Conversations</span>
           <a @click="collapsed = true" class="pull-right">
             <i class="fa fa-times"></i>
           </a>
@@ -57,17 +61,13 @@ export default {
         this.sendWM('/app/activeUsers', {});
         let active_us = JSON.parse(response.body);
         if (this.activeUsers.length !== active_us.length) {
+          this.$emit('activityChanged', active_us);
           this.activeUsers = active_us;
         }
       });
     }, frame => {
       // console.log(frame);
     });
-  },
-  watch: {
-    activeUsers (newVal) {
-      this.$emit('activityChanged', this.activeUsers);
-    }
   },
   components: {
     ContactsList,
@@ -81,6 +81,9 @@ export default {
     navigateBack () {
       this.currentView = 'contacts-list';
       this.user = null;
+    },
+    isOnline (email) {
+      return this.activeUsers.includes(email);
     }
   }
 };
@@ -104,6 +107,16 @@ export default {
 
     a {
       color: #fff;
+    }
+
+    i.status {
+      color: #dddddd;
+      font-size: 9px;
+      margin-left: 10px;
+
+      &.online {
+        color: #a0d269;
+      }
     }
   }
 
