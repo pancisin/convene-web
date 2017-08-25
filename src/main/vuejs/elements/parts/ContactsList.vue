@@ -1,7 +1,7 @@
 <template>
   <div class="contact-list">
     <ul class="list-group contacts-list">
-      <li class="list-group-item" v-for="user in users" :key="user.id">
+      <li class="list-group-item" v-for="user in contacts" :key="user.id">
         <a @click="selectUser(user)">
           <div class="avatar">
             <img :src="getAvatar(user)" alt="">
@@ -17,26 +17,26 @@
 
 <script>
 import gravatar from 'gravatar';
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   name: 'contacts-list',
   data () {
     return {
-      users: [],
       activeUsers: []
     };
   },
   created () {
-    this.getContacts();
+    this.initializeContacts();
     this.$parent.$on('activityChanged', (userNames) => {
       this.activeUsers = userNames;
     });
   },
+  computed: {
+    ...mapGetters(['contacts'])
+  },
   methods: {
-    getContacts () {
-      this.$http.get('api/user/contacts').then(response => {
-        this.users = response.body;
-      });
-    },
+    ...mapActions(['initializeContacts']),
     selectUser (user) {
       this.$emit('selected', user);
     },
@@ -47,7 +47,7 @@ export default {
       });
     },
     isOnline (email) {
-      return this.activeUsers.includes(email);
+      return this.activeUsers.indexOf(email) !== -1;
     }
   }
 };

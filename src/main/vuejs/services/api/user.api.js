@@ -124,5 +124,15 @@ export default {
     Vue.http.get(`${USER_API_URL}/followed-pages`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get current user contacts
+   * @param {Function} success - success callback function
+   */
+  getContacts (success) {
+    Vue.http.get(`${USER_API_URL}/contacts`).then(response => {
+      success(response.body);
+    });
   }
 };

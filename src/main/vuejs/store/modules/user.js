@@ -6,7 +6,8 @@ const state = {
   user: null,
   loadingUser: false,
   notifications: [],
-  authenticated: false
+  authenticated: false,
+  contacts: []
 };
 
 const getters = {
@@ -24,7 +25,8 @@ const getters = {
   authenticated: state => {
     return state.authenticated || window.localStorage.getItem('id_token') != null;
   },
-  loadingUser: state => state.loadingUser
+  loadingUser: state => state.loadingUser,
+  contacts: state => state.contacts
 };
 
 const actions = {
@@ -100,6 +102,14 @@ const actions = {
   },
   removeNotification ({ commit }, notification) {
     commit(types.REMOVE_NOTIFICATION, { notification });
+  },
+  initializeContacts ({ commit }) {
+    return new Promise((resolve) => {
+      UserApi.getContacts((contacts) => {
+        commit(types.SET_CONTACTS, { contacts });
+        resolve();
+      });
+    });
   }
 };
 
@@ -125,6 +135,10 @@ const mutations = {
 
   [types.LOADING_USER] (state, loading_state) {
     state.loadingUser = loading_state;
+  },
+
+  [types.SET_CONTACTS] (state, { contacts }) {
+    state.contacts = contacts;
   }
 };
 

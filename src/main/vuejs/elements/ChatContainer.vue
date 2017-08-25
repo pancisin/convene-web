@@ -83,7 +83,7 @@ export default {
       this.user = null;
     },
     isOnline (email) {
-      return this.activeUsers.includes(email);
+      return this.activeUsers.indexOf(email) !== -1;
     }
   }
 };
