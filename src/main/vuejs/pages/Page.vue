@@ -10,7 +10,7 @@
       <div class="alert alert-danger" v-if="page.state == 'BLOCKED'">This page state is blocked. You are not allowed to make changes to this page.</div>
       <transition name="fade-down" mode="out-in">
         <keep-alive>
-          <router-view :page="page" :edit="edit"></router-view>
+          <router-view :page="page" :editable="page.state !== 'BLOCKED'"></router-view>
         </keep-alive>
       </transition>
     </div>

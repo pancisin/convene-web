@@ -76,6 +76,13 @@ export default {
       &.separator {
         border-top: 1px solid #ccc;
       }
+
+      &.disabled {
+        a {
+          color: #ccc;
+        }
+        pointer-events: none;
+      }
     }
   }
 

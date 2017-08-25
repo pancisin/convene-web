@@ -37,7 +37,7 @@
       </tbody>
     </table>
   
-    <div class="text-center">
+    <div class="text-center" v-if="editable">
       <a @click="editService(null)" class="btn btn-rounded btn-default">{{ $t('admin.service.create') }}</a>
     </div>
   
@@ -64,8 +64,11 @@ export default {
       loading: false
     };
   },
+  props: {
+    editable: Boolean
+  },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },

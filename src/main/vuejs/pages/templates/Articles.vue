@@ -34,12 +34,12 @@
             </router-link>
           </li>
           <li class="separator"></li>
-          <li>
+          <li v-if="editable">
             <router-link :to="{ name: 'article', params: { article_id: props.data.id } }">
               Edit
             </router-link>
           </li>
-          <li>
+          <li v-if="editable">
             <a @click="deleteArticle(props.data)">
               Delete
             </a>
@@ -54,7 +54,7 @@
       </template>
     </context-menu>
   
-    <div class="text-center">
+    <div class="text-center" v-if="editable">
       <router-link :to="{ name: 'conference.article.create' }" class="btn btn-primary btn-rounded">
         Create article
       </router-link>
@@ -67,6 +67,9 @@ import ArticleApi from 'api/article.api';
 export default {
   name: 'articles-template',
   inject: ['provider'],
+  props: {
+    editable: Boolean
+  },
   data () {
     return {
       articles: []

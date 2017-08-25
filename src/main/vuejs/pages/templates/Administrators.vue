@@ -18,7 +18,7 @@
           </td>
           <td>{{ admin.created | moment('L') }}</td>
           <td class="text-center">
-            <select v-model="admin.role" class="form-control" @change="putAdministrator(admin)" v-if="hasPermission(admin)">
+            <select v-model="admin.role" class="form-control" @change="putAdministrator(admin)" v-if="hasPermission(admin) && editable">
               <option v-for="role in roles" :value="role">{{ $t(role.code) }}</option>
             </select>
             <span v-else>
@@ -26,7 +26,12 @@
             </span>
           </td>
           <td class="text-center">
-            <a @click="toggleActive(admin)" class="btn btn-primary btn-rounded" v-if="hasPermission(admin)">{{ $t(admin.active ? 'administrator.active' : 'administrator.inactive') }}</a>
+            <a @click="toggleActive(admin)" class="btn btn-primary btn-rounded" v-if="hasPermission(admin) && editable">
+              {{ $t(admin.active ? 'administrator.active' : 'administrator.inactive') }}
+            </a>
+            <span v-else>
+              {{ $t(admin.active ? 'administrator.active' : 'administrator.inactive') }}
+            </span>
           </td>
           <td class="text-center">
             <a @click="deleteAdministrator(admin)" class="btn btn-rounded btn-xs btn-danger" v-if="hasPermission(admin)">
@@ -34,7 +39,7 @@
             </a>
           </td>
         </tr>
-        <tr :key="0">
+        <tr :key="0" v-if="editable">
           <td colspan="2">
             <user-search v-model="selected_user.email" :options="users" @search="searchUsers" />
           </td>
@@ -56,6 +61,9 @@ import UserApi from 'api/user.api';
 
 export default {
   name: 'conference-administrators',
+  props: {
+    editable: Boolean
+  },
   inject: ['provider'],
   data () {
     return {

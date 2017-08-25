@@ -32,7 +32,7 @@
           </tbody>
         </table>
   
-        <div class="text-center">
+        <div class="text-center" v-if="editable">
           <router-link to="create-place" class="btn btn-default btn-rounded text-center">
             Create place
           </router-link>
@@ -47,6 +47,9 @@ import PlaceApi from 'api/place.api';
 export default {
   name: 'places',
   inject: ['provider'],
+  props: {
+    editable: Boolean
+  },
   data () {
     return {
       places: [],

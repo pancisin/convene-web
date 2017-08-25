@@ -59,13 +59,13 @@
             </router-link>
           </li>
           <li class="separator"></li>
-          <li>
+          <li :class="{ 'disabled' : !editable }">
             <router-link to="events/create">
               Create event
             </router-link>
           </li>
           <li class="separator"></li>
-          <li>
+          <li :class="{ 'disabled' : !editable }">
             <a @click="deleteEvent(props.data)">
               Delete
             </a>
@@ -78,7 +78,7 @@
       <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate"></paginator>
     </div>
   
-    <div class="text-center">
+    <div class="text-center" v-if="editable">
       <router-link to="events/create" class="btn btn-default btn-rounded text-center">
         Create event
       </router-link>
@@ -92,6 +92,9 @@ import Paginator from '../../elements/Paginator.vue';
 export default {
   name: 'events',
   inject: ['provider'],
+  props: {
+    editable: Boolean
+  },
   data () {
     return {
       paginator: {},

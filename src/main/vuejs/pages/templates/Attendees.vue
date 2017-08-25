@@ -81,6 +81,9 @@ export default {
   components: {
     SuggestInput
   },
+  props: {
+    editable: Boolean
+  },
   data () {
     return {
       attendees: [],

@@ -51,14 +51,9 @@ export default [
         }
       },
       {
-        path: 'attendees_old',
-        name: 'conference.attendees.old',
-        component: resolve => require(['../pages/conference/Attendees.vue'], resolve)
-      },
-      {
         path: 'attendees',
         name: 'conference.attendees',
-        component: resolve => require(['../pages/conference/Attendees.new.vue'], resolve),
+        component: resolve => require(['../pages/conference/Attendees.vue'], resolve),
         meta: {
           title: 'Attendees'
         }

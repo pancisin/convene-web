@@ -39,7 +39,7 @@
           <a class="btn btn-rounded btn-success" @click="publishPage(page.id)" v-if="page.state == 'DEACTIVATED'">
             Publish
           </a>
-          <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
+          <button class="btn btn-rounded btn-primary" type="submit" @click="submit" :disabled="page.state == 'BLOCKED'">
             Save
           </button>
         </div>

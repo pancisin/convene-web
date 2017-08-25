@@ -27,7 +27,7 @@
     </div>
   
     <div class="text-center">
-      <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
+      <button class="btn btn-rounded btn-primary" type="submit" @click="submit" :disabled="conference.state == 'BLOCKED'">
         <span>Save</span>
       </button>
     </div>
