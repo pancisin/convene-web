@@ -38,8 +38,6 @@ public class Article {
 	private String bannerUrl;
 
 	@ManyToOne
-	// @JsonRawValue(true)
-	@JsonIgnore
 	private User author;
 
 	@Column

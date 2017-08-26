@@ -10,6 +10,10 @@
       </h3>
   
       <div class="clearfix">
+        <small class="text-muted" v-if="article.author != null"> 
+          {{ article.author.displayName }}
+        </small>
+
         <small class="pull-right text-muted">
           {{ article.created | moment('LLLL') }}
         </small>

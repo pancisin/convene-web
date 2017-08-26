@@ -10,7 +10,8 @@
       <p v-if="article.content != null" v-strip="article.content.substring(0, 200)"></p>
   
       <router-link :to="{ name: 'article.public', params: { article_id: article.id } }" class="btn btn-link btn-xs pull-right">
-        Read more <i class="fa fa-angle-right"></i>
+        Read more
+        <i class="fa fa-angle-right"></i>
       </router-link>
       </a>
     </div>
@@ -48,20 +49,26 @@ export default {
     }
 
     .article-image-container {
-      width: 30%;
+      border-radius: 100%;
+      width: 30%; 
       max-width: 200px;
       float: left;
       margin-right: 20px;
+      padding-bottom: 30%;
+      overflow: hidden;
+      position: relative;
+      background: #000;
 
       img {
+        position: absolute;
         width: 100%;
-        margin-bottom: 10px;
       }
     }
 
     &~.articles-list-item {
-      // border-top: 1px solid #eee;
+      border-top: 1px solid #eee;
       margin-top: 20px;
+      padding-top: 20px;
     }
   }
 }
@@ -70,6 +77,7 @@ export default {
   .articles-list {
     .articles-list-item {
       .article-image-container {
+        border-radius: 0;
         float: none;
         width: 100%;
         max-width: initial;

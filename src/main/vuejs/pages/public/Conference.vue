@@ -8,26 +8,21 @@
       <div class="col-md-9">
   
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <img :src="conference.bannerUrl" class="img-poster" v-if="conference != null">
           </div>
-          <div class="col-md-8">
+          <div class="col-sm-8">
             <div v-html="conference.summary" v-if="conference != null"></div>
           </div>
         </div>
   
         <div class="row">
-          <div class="col-md-6">
-            <panel>
-              <span slot="title">Events</span>
+          <div class="col-sm-4">
   
-              <events-list></events-list>
-            </panel>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-8">
             <panel>
               <span slot="title">News</span>
-  
               <articles-list></articles-list>
             </panel>
           </div>
@@ -40,10 +35,9 @@
           <span slot="title">Join conference</span>
           <attend-form @statusChanged="statusChanged"></attend-form>
         </panel>
-        <panel v-else>
-          <span slot="title">Details</span>
-  
-        </panel>
+        <div v-else>
+          <events-list></events-list>
+        </div>
       </div>
     </div>
   </div>
