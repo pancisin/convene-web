@@ -1,38 +1,28 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
         <h4>{{ format(key, 'LL') }}</h4>
   
         <ul class="events-list">
-          <li v-for="event in date" :key="event.id" :class="{ 'banner' : event.bannerUrl != null }">
+          <li v-for="event in date" :key="event.id">
             <router-link :to="{ name: 'event.public', params: { id: event.id } }">
   
-              <div v-if="event.bannerUrl != null">
-                <img :src="event.bannerUrl">
-  
-                <div class="event-content">
-                  <h4>
-                    {{ event.name }}
-                  </h4>
-                  <small class="text-muted">
-                    {{ event.date | moment('LL') }} - {{ event.startsAt }}
-                  </small>
-                  <p v-if="event.summary != null" v-strip="event.summary.substring(0, 400)">
-                  </p>
-                </div>
-              </div>
-              <div v-else>
-                <h5>
+              <img :src="event.bannerUrl" v-if="event.bannerUrl != null">
+              <div class="event-content" :class="{ 'detail' : event.bannerUrl == null }">
+                <h4>
                   {{ event.name }}
-                </h5>
+                </h4>
+                <small class="text-muted">
+                  {{ event.date | moment('LL') }} - {{ event.startsAt }}
+                </small>
+                <p v-if="event.summary != null" v-strip="event.summary.substring(0, 200)">
+                </p>
               </div>
-  
             </router-link>
           </li>
         </ul>
       </li>
-  
     </ul>
   </div>
 </template>
@@ -44,13 +34,13 @@ export default {
   inject: ['api'],
   data () {
     return {
-      events: [],
-      sorted_events: []
+      sorted_events: [],
+      loading: false,
     };
   },
   created () {
+    this.loading = true;
     this.api.getEvents(0, 100, events => {
-      this.events = events.content;
       let data = {};
       events.content.forEach(e => {
         if (data[e.date] == null) {
@@ -61,6 +51,7 @@ export default {
       })
 
       this.sorted_events = data;
+      this.loading = false;
     });
   },
   methods: {
@@ -91,51 +82,50 @@ ul.events-list {
       margin: 0;
     }
 
-    &.banner {
-      height: 150px;
-      overflow: hidden;
-      position: relative;
-      img {
-        width: 100%;
-      }
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    img {
+      width: 100%;
+    }
 
-      &:hover .event-content {
-        top: 0;
+    &:hover .event-content,
+    .event-content.detail {
+      top: 0;
+      opacity: 1;
+
+      small,
+      p {
         opacity: 1;
+      }
+    }
 
-        small,
-        p {
-          opacity: 1;
-        }
+    .event-content {
+      background: #333;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      opacity: .8;
+      padding: 10px;
+      transition: all .5s ease;
+      top: 110px;
+
+      small,
+      p {
+        opacity: 0;
+        transition: all 1s ease;
       }
 
-      .event-content {
-        background: #333;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        opacity: .8;
-        padding: 10px;
-        transition: all .5s ease;
-        top: 110px;
+      p {
+        font-size: 12px;
+        color: #bbb;
+      }
 
-        small,
-        p {
-          opacity: 0;
-          transition: all 1s ease;
-        }
-
-        p {
-          font-size: 12px;
-          color: #bbb;
-        }
-
-        h4 {
-          color: #fff;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
+      h4 {
+        color: #fff;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
     }
   }

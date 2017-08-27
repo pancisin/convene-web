@@ -17,10 +17,7 @@
         </div>
   
         <div class="row">
-          <div class="col-sm-4">
-  
-          </div>
-          <div class="col-sm-8">
+          <div class="col-xs-12">
             <panel>
               <span slot="title">News</span>
               <articles-list></articles-list>
@@ -31,7 +28,7 @@
       </div>
   
       <div class="col-md-3">
-        <panel v-if="attend_status != 'ACTIVE'" type="success">
+        <panel v-if="attend_status != 'ACTIVE'" type="primary">
           <span slot="title">Join conference</span>
           <attend-form @statusChanged="statusChanged"></attend-form>
         </panel>

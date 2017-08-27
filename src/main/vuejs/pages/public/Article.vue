@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-      <div class="article-banner">
+      <div class="article-banner" v-if="article.bannerUrl != null">
         <img :src="article.bannerUrl">
       </div>
   

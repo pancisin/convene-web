@@ -5,8 +5,10 @@
         <img :src="article.bannerUrl">
       </div>
   
-      <h4 v-text="article.title"></h4>
-      <!--<small>{{ article.created | moment('L') }}</small>-->
+      <router-link :to="{ name: 'article.public', params: { article_id: article.id } }">
+        <h4 v-text="article.title"></h4>
+      </router-link>
+
       <p v-if="article.content != null" v-strip="article.content.substring(0, 200)"></p>
   
       <router-link :to="{ name: 'article.public', params: { article_id: article.id } }" class="btn btn-link btn-xs pull-right">
@@ -42,6 +44,8 @@ export default {
 </script>
 
 <style lang="less">
+@thumbnail_percentage: 20%;
+
 .articles-list {
   .articles-list-item {
     h4 {
@@ -50,14 +54,12 @@ export default {
 
     .article-image-container {
       border-radius: 100%;
-      width: 30%; 
-      max-width: 200px;
+      width: @thumbnail_percentage;
       float: left;
       margin-right: 20px;
-      padding-bottom: 30%;
+      padding-bottom: @thumbnail_percentage;
       overflow: hidden;
       position: relative;
-      background: #000;
 
       img {
         position: absolute;
