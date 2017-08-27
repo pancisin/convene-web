@@ -62,6 +62,7 @@ var router = new VueRouter({
     },
     {
       path: '/login',
+      name: 'login',
       component: resolve => require(['../pages/Login.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {
@@ -70,6 +71,7 @@ var router = new VueRouter({
     },
     {
       path: '/register',
+      name: 'register',
       component: resolve => require(['../pages/Register.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {

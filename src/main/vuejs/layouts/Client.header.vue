@@ -42,12 +42,12 @@
               </ul>
               <ul class="dropdown-menu" v-else>
                 <li>
-                  <router-link to="/login">
+                  <router-link :to="{ name: 'login' }">
                     Login
                   </router-link>
                 </li>
                 <li>
-                  <router-link to="/register">
+                  <router-link :to="{ name: 'register' }">
                     Register
                   </router-link>
                 </li>
@@ -55,10 +55,10 @@
             </li>
             <template v-else>
               <li>
-                <router-link to="login" class="waves-effect">Login</router-link>
+                <router-link :to="{ name: 'login' }" class="waves-effect">Login</router-link>
               </li>
               <li>
-                <router-link to="register" class="waves-effect">Register</router-link>
+                <router-link :to="{ name: 'register' }" class="waves-effect">Register</router-link>
               </li>
             </template>
           </ul>
