@@ -1,12 +1,12 @@
 <template>
   <panel type="default">
     <span slot="title">Overview</span>
-  
+
     <div class="row">
       <div class="col-md-6">
         <image-upload v-model="conference.bannerUrl"></image-upload>
       </div>
-  
+
       <div class="col-md-6">
         <div class="form-group">
           <label class="control-label">Name: </label>
@@ -19,13 +19,18 @@
           </select>
         </div>
       </div>
+
+      <button class="btn btn-rounded btn-danger" @click="togglePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
+      <button class="btn btn-rounded btn-success" @click="togglePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
+        Publish
+      </button>
     </div>
-  
+
     <div class="form-group m-t-20">
       <label class="control-label">Summary: </label>
       <text-editor v-model="conference.summary"></text-editor>
     </div>
-  
+
     <div class="text-center">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit" :disabled="conference.state == 'BLOCKED'">
         <span>Save</span>
@@ -67,7 +72,7 @@ export default {
       });
     },
     ...mapActions([
-      'updateConference'
+      'updateConference', 'togglePublished'
     ])
   }
 };

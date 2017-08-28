@@ -1,13 +1,13 @@
 <template>
   <div class="container" v-if="page != null">
-  
+
     <div class="row">
       <div class="col-md-8">
-  
+
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img :src="page.bannerUrl" class="img" />
-  
+
             <h3 class="panel-title">{{ page.name }}
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>
             </h3>
@@ -22,10 +22,10 @@
           <span v-if="follows">Unfollow</span>
           <span v-else>Follow</span>
         </a>
-  
+
         <panel type="table" v-if="services && services.length > 0">
           <span slot="title">Services</span>
-  
+
           <table class="table table-striped">
             <tbody>
               <tr v-for="service in services">
@@ -37,7 +37,7 @@
             </tbody>
           </table>
         </panel>
-  
+
         <panel type="table">
           <span slot="title">Events</span>
           <table class="table table-striped">
@@ -55,10 +55,10 @@
             </tbody>
           </table>
         </panel>
-  
+
       </div>
     </div>
-  
+
     <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
       <h4 slot="header">Book a service</h4>
       <div slot="body">
@@ -71,6 +71,8 @@
 <script>
 import ServiceBook from './page/Service.book.vue';
 import PageApi from 'api/page.api';
+import PublicApi from 'api/public.api';
+
 import { mapGetters } from 'vuex';
 
 import PageInjector from '../../services/injectors/page.injector.js';
@@ -116,22 +118,31 @@ export default {
           page_id = parts[0];
         }
       } else {
-        PageApi.getPage(page_id, this.authenticated, page => {
-          this.page = page;
+        if (this.authenticated) {
+          PageApi.getPage(page_id, page => {
+            this.page = page;
 
-          if (this.authenticated) {
             PageApi.getFollowStatus(page.id, status => {
               this.follows = status;
             });
-          }
 
-          PageApi.getServices(page.id, this.authenticated, services => {
-            this.services = services;
+            PageApi.getEvents(this.page.id, 0, 10, paginator => {
+              this.events = paginator.content;
+            });
           });
-          PageApi.getEvents(page.id, 0, 10, paginator => {
-            this.events = paginator.content;
+        } else {
+          PublicApi.getPage(page_id, page => {
+            this.page = page;
+
+            PublicApi.page.getEvents(page.id, 0, 10, paginator => {
+              this.events = paginator.content;
+            });
+
+            PublicApi.getServices(this.page.id, services => {
+              this.services = services;
+            });
           });
-        });
+        }
       }
     },
     toggleFollow () {

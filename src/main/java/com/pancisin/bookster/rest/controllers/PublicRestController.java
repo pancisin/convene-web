@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -134,12 +135,12 @@ public class PublicRestController {
 		return ResponseEntity.ok(pageRepository.findOne(page_id).getServices());
 	}
 
-	@GetMapping("/page/{page_id}/event")
-	public ResponseEntity<?> getPageEvents(@PathVariable Long page_id) {
-		// return
-		// ResponseEntity.ok(pageRepository.findOne(page_id).getEvents());
+	@GetMapping("/page/{page_id}/event/{page}/{size}")
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size, 
+			@RequestParam("fromDate") String fromDate) {
+		
 		return ResponseEntity
-				.ok(eventRepository.getByPage(page_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
+				.ok(eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
 	}
 
 	@GetMapping("/user/{user_id}/event")

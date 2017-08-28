@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,6 +41,7 @@ import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ArticleRepository;
@@ -251,4 +253,19 @@ public class ConferenceController {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(stored.getArticles());
 	}
+	
+	@PatchMapping("/toggle-published")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
+	public ResponseEntity<?> togglePublishState(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+
+		if (stored.getState() == PageState.DEACTIVATED) {
+			stored.setState(PageState.PUBLISHED);
+		} else if (stored.getState() == PageState.PUBLISHED) {
+			stored.setState(PageState.DEACTIVATED);
+		}
+		
+		return ResponseEntity.ok(conferenceRepository.save(stored));
+	}
+
 }

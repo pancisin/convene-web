@@ -65,6 +65,17 @@ const actions = {
 
       commit(types.LOADING_CONFERENCES, true);
     });
+  },
+  togglePublished ({ commit }, conference) {
+    return new Promise(resolve => {
+      ConferenceApi.togglePublished(conference.id, result => {
+        commit(types.UPDATE_CONFERENCE, { conference: result });
+        commit(types.LOADING_CONFERENCES, false);
+        resolve(result);
+      });
+
+      commit(types.LOADING_CONFERENCES, true);
+    });
   }
 };
 

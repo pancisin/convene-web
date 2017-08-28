@@ -1,5 +1,5 @@
 import Vue from 'vue';
-
+import moment from 'moment';
 export default {
 
   /**
@@ -10,6 +10,31 @@ export default {
     Vue.http.get('api/public/popular-pages/').then(response => {
       success(response.body);
     });
+  },
+
+  getPage (id, success) {
+    Vue.http.get(`public/page/${id}`).then(response => {
+      success(response.body);
+    });
+  },
+
+  page: {
+    getEvents (page_id, page, size, success) {
+      Vue.http.get(`public/page/${page_id}/event/${page}/${size}`, {
+        params: {
+          fromDate: moment().format('YYYY-MM-DD'),
+          orderBy: 'date ASC'
+        }
+      }).then(response => {
+        success(response.body);
+      });
+    },
+
+    getServices (id, success) {
+      Vue.http.get(`public/page/${id}/service`).then(response => {
+        success(response.body);
+      });
+    }
   },
 
   /**

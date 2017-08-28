@@ -5,12 +5,12 @@ export default class PageInjector {
     this.page_id = page_id;
   }
 
-  getPage (auth, success) {
+  getPage (success) {
     if (this.page_id == null) {
       return {};
     }
 
-    PageApi.getPage(this.page_id, auth, success);
+    PageApi.getPage(this.page_id, success);
   }
 
   postPage (page, success) {
@@ -45,8 +45,8 @@ export default class PageInjector {
     PageApi.getRequests(this.page_id, success);
   }
 
-  getServices (auth, success) {
-    PageApi.getServices(this.page_id, auth, success);
+  getServices (success) {
+    PageApi.getServices(this.page_id, success);
   }
 
   postService (service, success) {

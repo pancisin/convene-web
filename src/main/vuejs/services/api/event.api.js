@@ -27,8 +27,7 @@ export default {
     });
   },
   getRelated (author_type, author_id, success) {
-    var url = ['public', author_type, author_id, 'event'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`public/${author_type}/${author_id}/event}`).then(response => {
       success(response.body);
     });
   },

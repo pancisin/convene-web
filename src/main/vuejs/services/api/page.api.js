@@ -15,11 +15,10 @@ export default {
    * @param {*} auth - authenticated user
    * @param {*} success - success callback function
    */
-  getPage (id, auth, success) {
+  getPage (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    var url = `${auth ? 'api' : 'public'}/page/${id}`;
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}`).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -96,10 +95,10 @@ export default {
    * @param {*} auth - authenticated user
    * @param {*} success - success callback function
    */
-  getServices (id, auth, success) {
+  getServices (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    Vue.http.get(`${auth ? 'api' : 'public'}/page/${id}/service`).then(response => {
+    Vue.http.get(`${PAGE_API_URL}/${id}/service`).then(response => {
       success(response.body);
     }, errorHandler);
   },

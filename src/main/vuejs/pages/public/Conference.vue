@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h3 v-if="conference != null">
+  <div class="container" v-if="conference != null">
+    <h3>
       {{conference.name}}
     </h3>
   
@@ -9,10 +9,10 @@
   
         <div class="row">
           <div class="col-sm-4">
-            <img :src="conference.bannerUrl" class="img-poster" v-if="conference != null">
+            <img :src="conference.bannerUrl" class="img-poster">
           </div>
-          <div class="col-sm-8">
-            <div v-html="conference.summary" v-if="conference != null"></div>
+          <div class="col-sm-8 custom-content">
+            <div v-html="conference.summary"></div>
           </div>
         </div>
   

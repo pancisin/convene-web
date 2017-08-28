@@ -18,10 +18,6 @@ export default class ConferenceInjector {
     ConferenceApi.putConference(conference, success);
   }
 
-  postConference (conference, success) {
-    ConferenceApi.postConference(conference, success);
-  }
-
   getAttendees (success) {
     ConferenceApi.getAttendees(this.conference_id, success);
   }
@@ -80,5 +76,9 @@ export default class ConferenceInjector {
 
   postArticle (article, success) {
     ConferenceApi.postArticle(this.conference_id, article, success);
+  }
+
+  togglePublished (success) {
+    ConferenceApi.togglePublished(this.conference_id, success);
   }
 };
