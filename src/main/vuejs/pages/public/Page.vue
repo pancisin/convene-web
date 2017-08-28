@@ -138,7 +138,7 @@ export default {
               this.events = paginator.content;
             });
 
-            PublicApi.getServices(this.page.id, services => {
+            PublicApi.page.getServices(this.page.id, services => {
               this.services = services;
             });
           });

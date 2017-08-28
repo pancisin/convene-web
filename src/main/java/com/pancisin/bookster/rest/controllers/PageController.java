@@ -35,6 +35,7 @@ import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
+import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
@@ -231,20 +232,18 @@ public class PageController {
 		place.setPage(stored);
 		return ResponseEntity.ok(placeRepository.save(place));
 	}
-
-	@PatchMapping("/publish")
+	
+	@PatchMapping("/toggle-published")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
-	public ResponseEntity<?> publishPage(@PathVariable Long page_id) {
+	public ResponseEntity<?> togglePublishState(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
-		stored.setState(PageState.PUBLISHED);
-		return ResponseEntity.ok(pageRepository.save(stored));
-	}
 
-	@PatchMapping("/deactivate")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
-	public ResponseEntity<?> deactivatePage(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
-		stored.setState(PageState.DEACTIVATED);
+		if (stored.getState() == PageState.DEACTIVATED) {
+			stored.setState(PageState.PUBLISHED);
+		} else if (stored.getState() == PageState.PUBLISHED) {
+			stored.setState(PageState.DEACTIVATED);
+		}
+		
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 

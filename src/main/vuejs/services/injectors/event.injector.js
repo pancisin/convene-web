@@ -10,7 +10,7 @@ export default class PageInjector {
       return {};
     }
 
-    EventApi.getEvent(this.event_id, auth, success);
+    EventApi.getEvent(this.event_id, success);
   }
 
   postEvent (event, success) {

@@ -1,9 +1,8 @@
 import ConferenceApi from 'api/conference.api';
 
 export default class ConferenceInjector {
-  constructor (conference_id, auth) {
+  constructor (conference_id) {
     this.conference_id = conference_id;
-    this.auth = auth;
   }
 
   getConference (success) {

@@ -66,7 +66,7 @@ const actions = {
       commit(types.LOADING_CONFERENCES, true);
     });
   },
-  togglePublished ({ commit }, conference) {
+  toggleConferencePublished ({ commit }, conference) {
     return new Promise(resolve => {
       ConferenceApi.togglePublished(conference.id, result => {
         commit(types.UPDATE_CONFERENCE, { conference: result });

@@ -86,6 +86,7 @@
 import GMap from '../../elements/GMap.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
+import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -113,21 +114,30 @@ export default {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-        EventApi.getEvent(event_id, this.authenticated, event => {
-          this.event = event;
 
-          EventApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
-            this.relatedEvents = paginator.content;
-          });
+        if (this.authenticated) {
+          EventApi.getEvent(event_id, event => {
+            this.event = event;
 
-          if (this.authenticated) {
+            EventApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
+              this.relatedEvents = paginator.content;
+            });
+
             EventApi.getAttendanceStatus(event_id, status => {
               this.attending = status;
             });
-          }
-        }, error => {
-          this.$error(error.error, error.message);
-        });
+          }, error => {
+            this.$error(error.error, error.message);
+          });
+        } else {
+          PublicApi.getEvent(event_id, event => {
+            this.event = event;
+
+            EventApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
+              this.relatedEvents = paginator.content;
+            });
+          })
+        }
       }
     },
     attend () {

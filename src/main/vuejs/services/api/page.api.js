@@ -12,7 +12,6 @@ export default {
   /**
    * Get page data
    * @param {*} id - page id
-   * @param {*} auth - authenticated user
    * @param {*} success - success callback function
    */
   getPage (id, success) {
@@ -48,23 +47,12 @@ export default {
   },
 
   /**
-   * Change publish status of page to published
+   * Toggle publish state of page.
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  publishPage (id, success) {
-    Vue.http.patch(`${PAGE_API_URL}/${id}/publish`).then(response => {
-      success(response.body);
-    }, errorHandler);
-  },
-
-  /**
-   * Change publish status of page to deactivated
-   * @param {*} id - page id
-   * @param {*} success - success callback function
-   */
-  deactivatePage (id, success) {
-    Vue.http.patch(`${PAGE_API_URL}/${id}/deactivate`).then(response => {
+  togglePublished (id, success) {
+    Vue.http.patch(`${PAGE_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -92,7 +80,6 @@ export default {
   /**
    * Get page services
    * @param {*} id - page id
-   * @param {*} auth - authenticated user
    * @param {*} success - success callback function
    */
   getServices (id, success) {

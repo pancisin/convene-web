@@ -18,6 +18,12 @@ export default {
     });
   },
 
+  getEvent (id, success) {
+    Vue.http.get(`public/event/${id}`).then(response => {
+      success(response.body);
+    });
+  },
+ 
   page: {
     getEvents (page_id, page, size, success) {
       Vue.http.get(`public/page/${page_id}/event/${page}/${size}`, {

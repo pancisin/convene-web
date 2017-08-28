@@ -63,16 +63,8 @@ const actions = {
       commit(types.LOADING_PAGES, true);
     });
   },
-  publishPage ({ commit }, page_id) {
-    PageApi.publishPage(page_id, result => {
-      commit(types.UPDATE_PAGE, { page: result });
-      commit(types.LOADING_PAGES, false);
-    });
-
-    commit(types.LOADING_PAGES, true);
-  },
-  deactivatePage ({ commit }, page_id) {
-    PageApi.deactivatePage(page_id, result => {
+  togglePagePublished ({ commit }, page) {
+    PageApi.togglePublished(page.id, result => {
       commit(types.UPDATE_PAGE, { page: result });
       commit(types.LOADING_PAGES, false);
     });

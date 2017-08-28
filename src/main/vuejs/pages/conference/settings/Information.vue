@@ -20,8 +20,8 @@
         </div>
       </div>
 
-      <button class="btn btn-rounded btn-danger" @click="togglePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
-      <button class="btn btn-rounded btn-success" @click="togglePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
+      <button class="btn btn-rounded btn-danger" @click="toggleConferencePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
+      <button class="btn btn-rounded btn-success" @click="toggleConferencePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
         Publish
       </button>
     </div>
@@ -72,7 +72,7 @@ export default {
       });
     },
     ...mapActions([
-      'updateConference', 'togglePublished'
+      'updateConference', 'toggleConferencePublished'
     ])
   }
 };
