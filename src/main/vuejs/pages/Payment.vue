@@ -42,36 +42,35 @@
 </template>
 
 <script>
+import LicenseApi from 'api/license.api';
+
 export default {
   name: 'invoice',
-  data() {
+  data () {
     return {
       license: {},
       card: {}
     };
   },
-  created() {
+  created () {
     this.getLicense();
   },
   methods: {
     getLicense () {
       var invoice_id = this.$route.params.invoice_id;
-
-      this.$http.get('api/license/' + invoice_id).then(response => {
-        this.license = response.body;
+      LicenseApi.getLicense(invoice_id, license => {
+        this.license = license;
       });
     },
     submitPayment () {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          this.$http.post(`api/license/${this.license.id}/payment`, this.card).then(response => {
-            if (response.body.successful === true) {
-              this.$router.push({ name: 'invoice', id: this.license.id });
-              this.$success('Payment successful!', 'yeey');
-            }
-          }, response => {
-            this.$error('Payment failed.', response.bodyText);
-          });
+          LicenseApi.postPayment(this.license.id, this.card, result => {
+            this.$router.push({ name: 'invoice', id: this.license.id });
+            this.$success('Payment successful!', 'yeey');
+          }, error => {
+            this.$error('Payment failed.', error);
+          })
         }
       });
     }
