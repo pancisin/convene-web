@@ -111,7 +111,9 @@ export default {
      * @param {Function} success - success callback function
      */
     getEvents (conference_id, success) {
-
+      Vue.http.get(`public/conference/${conference_id}/event`).then(response => {
+        success(response.body);
+      });
     },
 
     /**
@@ -120,7 +122,9 @@ export default {
      * @param {Function} success - success callback function
      */
     getArticles (conference_id, success) {
-
+      Vue.http.get(`public/conference/${conference_id}/article`).then(response => {
+        success(response.body);
+      });
     }
   },
 

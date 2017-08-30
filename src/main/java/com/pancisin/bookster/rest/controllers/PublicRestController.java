@@ -27,6 +27,7 @@ import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -54,6 +55,9 @@ public class PublicRestController {
 	@Autowired
 	private ConferenceRepository conferenceRepository;
 
+	@Autowired
+	private ArticleRepository articleRepository;
+	
 	@GetMapping("/events/{page}/{limit}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
 			@RequestParam(name = "timestamp", required = false) String timestamp) {
@@ -68,8 +72,8 @@ public class PublicRestController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 
-		return ResponseEntity.ok(
-				eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+		return ResponseEntity
+				.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/near-events/{page}/{limit}")
@@ -136,11 +140,11 @@ public class PublicRestController {
 	}
 
 	@GetMapping("/page/{page_id}/event/{page}/{size}")
-	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size, 
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
 			@RequestParam("fromDate") String fromDate) {
-		
-		return ResponseEntity
-				.ok(eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
+
+		return ResponseEntity.ok(
+				eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
 	}
 
 	@GetMapping("/user/{user_id}/event")
@@ -174,16 +178,28 @@ public class PublicRestController {
 		return ResponseEntity.ok(MetaType.values());
 	}
 
-	@GetMapping("/conference/${conference_id}")
+	@GetMapping("/conference/{conference_id}")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(conferenceRepository.getPublicConference(conference_id));
+	}
+
+	@GetMapping("/conference/{conference_id}/event")
+	public ResponseEntity<?> getConferenceEvents(@PathVariable Long conference_id) {
+		org.springframework.data.domain.Page<Event> eventsPaginator = eventRepository.getByConference(conference_id,
+				new PageRequest(0, 10));
+		return ResponseEntity.ok(eventsPaginator.getContent());
+	}
+
+	@GetMapping("/conference/{conference_id/article")
+	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id) {
+		return ResponseEntity.ok(articleRepository.getByConference(conference_id));
 	}
 	
 	@GetMapping("/conferences/{page}/{size}")
 	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
 		return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
 	}
-	
+
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
