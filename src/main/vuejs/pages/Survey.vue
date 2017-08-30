@@ -34,18 +34,18 @@
 
         <transition-group name="fade-down">
           <div class="row meta-field-row" v-for="(field, index) in survey.metaFields" :key="index">
-            <div class="col-md-2 text-center">
-              <button class="btn btn-danger btn-rounded btn-lg" @click="removeMeta(index)">
-                <i class="fa fa-minus"></i>
-              </button>
-
-              <br>
-              <button class="btn btn-rounded btn-lg" @click="moveMeta(index, -1)" v-if="index > 0">
+            <div class="col-md-2 col-lg-1 text-center">
+              <button class="btn btn-default btn-rounded btn-sm" @click="moveMeta(index, -1)" v-if="index > 0">
                 <i class="fa fa-arrow-up"></i>
               </button>
 
-              <button class="btn btn-rounded btn-lg" @click="moveMeta(index, 1)" v-if="index + 1 < survey.metaFields.length">
+              <button class="btn btn-default btn-rounded btn-sm" @click="moveMeta(index, 1)" v-if="index + 1 < survey.metaFields.length">
                 <i class="fa fa-arrow-down"></i>
+              </button>
+
+              <br><br />
+              <button class="btn btn-danger btn-rounded btn-sm" @click="removeMeta(index)">
+                <i class="fa fa-minus"></i>
               </button>
             </div>
 
@@ -59,7 +59,7 @@
                 <input class="form-control" v-model="field.description" type="text">
               </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 col-lg-6">
               <div class="form-group">
                 <label class="control-label">Type: </label>
 
@@ -99,9 +99,11 @@
           </div>
         </transition-group>
 
-        <button @click="survey.metaFields.push({})" class="btn btn-default btn-rounded btn-lg m-t-15">
-          <i class="fa fa-plus"></i>
-        </button>
+        <div class="text-center">
+          <button @click="survey.metaFields.push({})" class="btn btn-rounded btn-lg m-t-15 m-b-15">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
 
         <div class="text-center">
           <button class="btn btn-rounded btn-primary" type="submit" @click="submit">Save</button>
