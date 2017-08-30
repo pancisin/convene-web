@@ -1,5 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +42,24 @@ public class SurveyController {
 		stored.setName(survey.getName());
 		stored.setStart_date(survey.getStart_date());
 		stored.setEnd_date(survey.getEnd_date());
-
+		stored.setMetaFields(survey.getMetaFields());
+		
 		return ResponseEntity.ok(surveyRepository.save(stored));
 	}
 
 	@DeleteMapping
 	public ResponseEntity<?> deleteSurvey(@PathVariable Long survey_id) {
 		return null;
+	}
+
+	@PostMapping("/meta-fields")
+	public ResponseEntity<?> postMetaFields(@PathVariable Long survey_id, @RequestBody List<MetaField> fields) {
+		Survey stored = surveyRepository.findOne(survey_id);
+		
+		fields = mfRepository.save(fields);
+		stored.setMetaFields(fields);
+		
+		return ResponseEntity.ok(fields);
 	}
 
 	@Transactional

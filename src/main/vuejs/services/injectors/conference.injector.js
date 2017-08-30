@@ -80,4 +80,12 @@ export default class ConferenceInjector {
   togglePublished (success) {
     ConferenceApi.togglePublished(this.conference_id, success);
   }
+
+  getSurveys (success) {
+    ConferenceApi.getSurveys(this.conference_id, success);
+  }
+
+  postSurvey (survey, success) {
+    ConferenceApi.postSurvey(this.conference_id, survey, success);
+  }
 };

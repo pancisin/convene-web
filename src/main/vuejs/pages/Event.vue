@@ -43,7 +43,7 @@ export default {
     return {
       event: {},
       edit: false,
-      injector: null,
+      injector: null
     };
   },
   provide () {

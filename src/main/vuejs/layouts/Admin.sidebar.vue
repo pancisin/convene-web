@@ -4,44 +4,44 @@
       <div id="sidebar-menu">
         <ul>
           <li class="menu-title">{{ $t('admin.menu.main') }}</li>
-  
+
           <li>
             <router-link to="/admin/dashboard" class="waves-effect">
               <i class="material-icons">dashboard</i>
               <span>{{ $t('admin.menu.dashboard') }}</span>
             </router-link>
           </li>
-  
+
           <li>
             <router-link to="/admin/event" class="waves-effect">
               <i class="material-icons">event</i>
               <span>{{ $t('admin.menu.events') }}</span>
             </router-link>
           </li>
-  
+
           <li>
             <router-link to="/admin/notifications" class="waves-effect">
               <i class="material-icons">notifications_none</i>
               <span>{{ $t('admin.menu.notifications') }}</span>
             </router-link>
           </li>
-  
+
         </ul>
-  
+
         <ul v-loading="loadingPages">
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
-  
+
           <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
             <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'DEACTIVATED'">visibility_off</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
-  
+
             <span v-text="page.name" slot="title"></span>
             <!--<li slot="item">
-                          <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                            {{ $t('admin.page.overview') }}
-                          </router-link>
-                        </li>-->
+                              <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
+                                {{ $t('admin.page.overview') }}
+                              </router-link>
+                            </li>-->
             <li slot="item">
               <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.page.events') }}
@@ -73,7 +73,7 @@
               </router-link>
             </li>
           </drop-down>
-  
+
           <li>
             <router-link to="/admin/page/create" class="waves-effect text-muted">
               <i class="material-icons">add</i>
@@ -85,7 +85,7 @@
           <li class="menu-title">{{ $t('admin.menu.conferences') }}
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
-  
+
           <drop-down v-for="conference in conferences" :key="conference.id" ref="items" @opened="closeDropdowns">
 
             <i class="material-icons" slot="title" v-if="conference.state == 'PUBLISHED'">work</i>
@@ -109,6 +109,11 @@
               </router-link>
             </li>
             <li slot="item">
+              <router-link :to="{ name: 'conference.surveys', params: { id : conference.id }}" class="list-group-item waves-effect">
+                {{ $t('admin.conference.surveys') }}
+              </router-link>
+            </li>
+            <li slot="item">
               <router-link :to="{ name: 'conference.administrators', params: { id: conference.id }}" class="list-group-item waves-effect">
                 {{ $t('admin.conference.administrators') }}
               </router-link>
@@ -124,18 +129,18 @@
               </router-link>
             </li>
           </drop-down>
-  
+
           <li>
             <router-link to="/admin/conference/create" class="waves-effect text-muted">
               <i class="material-icons">add</i>
               <span>{{ $t('admin.menu.conference_create') }}</span>
             </router-link>
           </li>
-  
+
         </ul>
         <ul>
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
-  
+
           <li>
             <router-link to="/admin/faq" class="waves-effect">
               <i class="fa fa-question" aria-hidden="true"></i>
@@ -155,10 +160,10 @@
             </router-link>
           </li>
         </ul>
-  
+
         <div class="clearfix"></div>
       </div>
-  
+
       <div class="clearfix"></div>
     </div>
   </transition>

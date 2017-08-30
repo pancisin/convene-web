@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Survey {
 	@Column
 	private Date end_date;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<MetaField> metaFields;
 
 	public void addMetaField(MetaField field) {
@@ -68,6 +69,16 @@ public class Survey {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public void setMetaFields(List<MetaField> metaFields) {
+		if (this.metaFields == null)
+			this.metaFields = new ArrayList<MetaField>();
+		
+		this.metaFields.clear();
+		
+		if (metaFields != null)
+			this.metaFields.addAll(metaFields);
 	}
 
 	public List<MetaField> getMetaFields() {

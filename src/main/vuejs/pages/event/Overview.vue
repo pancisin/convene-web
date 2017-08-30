@@ -57,7 +57,7 @@ export default {
   {
     event: {
       type: Object,
-      default() {
+      default () {
         return {};
       }
     },
@@ -69,11 +69,11 @@ export default {
     conference_id: String
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     },
     visibility_options: {
-      get() {
+      get () {
         return [
           'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
         ];
@@ -83,12 +83,12 @@ export default {
   components: {
     TextEditor, DatePicker, ImageUpload
   },
-  data() {
+  data () {
     return {
       places: []
     };
   },
-  created() {
+  created () {
     this.getPlaces();
   },
   watch: {
@@ -97,7 +97,6 @@ export default {
   methods: {
     submit: function () {
       this.$validator.validateAll().then(result => {
-        console.warn(result);
         if (result) {
           if (this.edit) {
             let url = ['api/event', this.event.id].join('/');
@@ -134,9 +133,9 @@ export default {
             });
           }
         }
-      })
+      });
     },
-    getPlaces() {
+    getPlaces () {
       if (this.event.author == null) return;
 
       switch (this.event.author.type) {

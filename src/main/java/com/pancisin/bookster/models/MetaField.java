@@ -45,6 +45,9 @@ public class MetaField {
 	@Column
 	private boolean optional;
 
+	@Column
+	private int ordering;
+	
 	@Override
 	public String toString() {
 		return this.id.toString();
@@ -96,5 +99,13 @@ public class MetaField {
 
 	public List<MetaValue> getValues() {
 		return values;
+	}
+
+	public int getOrdering() {
+		return ordering;
+	}
+
+	public void setOrdering(int ordering) {
+		this.ordering = ordering;
 	}
 }

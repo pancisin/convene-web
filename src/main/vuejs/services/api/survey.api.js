@@ -40,6 +40,18 @@ export default {
   },
 
   /**
+   * Post batch update of meta fields.
+   * @param {*} id - survey id
+   * @param {*} metaFields - array of meta field data objects
+   * @param {*} success - success callback function
+   */
+  postMetaFields (id, metaFields, success) {
+    Vue.http.post(`${SURVEY_API_URL}/${id}/meta-fields`, metaFields).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
    * Get meta fields for survey.
    * @param {*} id - survey id
    * @param {*} success - success callback function
