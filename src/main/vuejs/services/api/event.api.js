@@ -34,18 +34,6 @@ export default {
 
   /**
    * Get event related events.
-   * @param {String} author_type - type of author
-   * @param {Number} author_id - id of author
-   * @param {Function} success - success callback function
-   */
-  getRelated (author_type, author_id, success) {
-    Vue.http.get(`public/${author_type}/${author_id}/event`).then(response => {
-      success(response.body);
-    });
-  },
-  
-  /**
-   * Get event related events.
    * @param {*} id - event id
    * @param {*} success - success callback function
    */

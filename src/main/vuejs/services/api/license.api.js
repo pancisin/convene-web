@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import moment from 'moment';
 
 const LICENSE_API_URL = 'api/license';
 
@@ -10,7 +9,7 @@ export default {
    * @param {*} id - license id
    * @param {*} success - success callback function
    */
-  getLicense(id, success) {
+  getLicense (id, success) {
     Vue.http.get(`${LICENSE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
@@ -24,13 +23,14 @@ export default {
    * @param {*} success - success callback function
    * @param {*} error - error callback function
    */
-  postPayment(id, card_details, success, error) {
+  postPayment (id, card_details, success, error) {
     Vue.http.post(`${LICENSE_API_URL}/${id}/payment`, card_details).then(response => {
       if (response.body.successful === true) {
         success(response.body);
       }
     }, response => {
-      error(response.bodyText)
+      error(response.bodyText);
     });
   }
 }
+;

@@ -16,4 +16,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
 	@Query("SELECT conference FROM Conference conference WHERE conference.visibility = 'PUBLIC' AND (conference.state = 'PUBLISHED' OR conference.state = 'BLOCKED')")
 	public Page<Conference> getPublic(Pageable pageable);
+
+	@Query("SELECT conference FROM Conference conference WHERE conference.id = :conference_id AND conference.visibility = 'PUBLIC' AND (conference.state = 'PUBLISHED' OR conference.state = 'BLOCKED')")
+	public Conference getPublicConference(@Param("conference_id") Long conference_id);
 }

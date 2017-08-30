@@ -1,16 +1,8 @@
 import Vue from 'vue';
 
-export default {
+const META_FIELD_API_URL = 'api/meta-field';
 
-  /**
-   * Get meta types
-   * @param {*} success - success callback function
-   */
-  getMetaTypes (success) {
-    Vue.http.get('public/meta-types').then(response => {
-      success(response.body);
-    });
-  },
+export default {
 
   /**
    * Update meta field
@@ -18,8 +10,7 @@ export default {
    * @param {*} success - success callback function
    */
   putMetaField (field, success) {
-    var url = `api/meta-field/${field.id}`;
-    Vue.http.put(url, field).then(response => {
+    Vue.http.put(`${META_FIELD_API_URL}/${field.id}`, field).then(response => {
       success(response.body);
     });
   },
@@ -30,8 +21,7 @@ export default {
    * @param {*} success - success callback function
    */
   deleteMetaField (id, success) {
-    var url = `api/meta-field/${id}`;
-    Vue.http.delete(url).then(response => {
+    Vue.http.delete(`${META_FIELD_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   }

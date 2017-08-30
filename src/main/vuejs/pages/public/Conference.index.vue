@@ -4,7 +4,7 @@
       <li v-for="conf in conferences" :key="conf.id">
         <router-link :to="{ name: 'conference', params: { id: conf.id } }">
           <div class="banner">
-          <img :src="conf.bannerUrl">
+            <img :src="conf.bannerUrl">
           </div>
 
           <div class="data">
@@ -21,6 +21,7 @@
 <script>
 import RootApi from 'api/api';
 import { mapGetters } from 'vuex';
+import PublicApi from 'api/public.api';
 
 export default {
   name: 'conference-index',
@@ -37,9 +38,15 @@ export default {
   },
   methods: {
     getConferences () {
-      RootApi.getConferences(0, 10, this.authenticated, conferences => {
-        this.conferences = conferences.content;
-      });
+      if (this.authenticated) {
+        RootApi.getConferences(0, 10, paginator => {
+          this.conferences = paginator.content;
+        });
+      } else {
+        PublicApi.getConferences(0, 10, paginator => {
+          this.conferences = paginator.content;
+        });
+      }
     }
   }
 };

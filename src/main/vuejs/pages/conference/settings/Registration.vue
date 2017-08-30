@@ -76,6 +76,8 @@
 
 <script>
 import MetaFieldApi from 'api/meta-field.api';
+import PublicApi from 'api/public.api';
+
 export default {
   name: 'registration-settings',
   props: ['conference'],
@@ -105,7 +107,7 @@ export default {
         this.metaFields = metaFields;
       });
 
-      MetaFieldApi.getMetaTypes(metaTypes => {
+      PublicApi.getMetaTypes(metaTypes => {
         this.metaTypes = metaTypes;
       });
     },

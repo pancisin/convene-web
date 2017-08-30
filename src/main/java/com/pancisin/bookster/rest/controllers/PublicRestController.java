@@ -174,11 +174,16 @@ public class PublicRestController {
 		return ResponseEntity.ok(MetaType.values());
 	}
 
+	@GetMapping("/conference/${conference_id}")
+	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
+		return ResponseEntity.ok(conferenceRepository.getPublicConference(conference_id));
+	}
+	
 	@GetMapping("/conferences/{page}/{size}")
 	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
 		return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
 	}
-
+	
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
