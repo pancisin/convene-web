@@ -47,6 +47,10 @@ public class Conference implements IAuthor {
 	private List<MetaField> metaFields;
 	
 	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Survey> surveys;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Event> events;
 
@@ -99,6 +103,13 @@ public class Conference implements IAuthor {
 			this.metaFields = new ArrayList<MetaField>();
 		
 		this.metaFields.add(field);
+	}
+	
+	public void addSurvey(Survey survey) {
+		if (this.surveys == null)
+			this.surveys = new ArrayList<Survey>();
+		
+		this.surveys.add(survey);
 	}
 	
 	public Long getId() {
@@ -163,6 +174,10 @@ public class Conference implements IAuthor {
 		return metaFields;
 	}
 
+	public List<Survey> getSurveys() {
+		return surveys;
+	}
+	
 	public String getBannerUrl() {
 		return bannerUrl;
 	}

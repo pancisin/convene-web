@@ -226,5 +226,28 @@ export default {
     Vue.http.patch(`${CONFERENCE_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Post survey to conference.
+   * @param {*} id - conference id
+   * @param {*} survey - survey data object
+   * @param {*} success - success callback function
+   */
+  postSurvey (id, survey, success) {
+    Vue.http.post(`${CONFERENCE_API_URL}/${id}/survey`, survey).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get conference surveys
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  getSurveys (id, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/survey`).then(response => {
+      success(response.body);
+    });
   }
 };

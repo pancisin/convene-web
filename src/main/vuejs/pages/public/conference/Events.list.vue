@@ -3,11 +3,11 @@
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
         <h4>{{ format(key, 'LL') }}</h4>
-  
+
         <ul class="events-list">
           <li v-for="event in date" :key="event.id">
             <router-link :to="{ name: 'event.public', params: { id: event.id } }">
-  
+
               <img :src="event.bannerUrl" v-if="event.bannerUrl != null">
               <div class="event-content" :class="{ 'detail' : event.bannerUrl == null }">
                 <h4>
@@ -35,7 +35,7 @@ export default {
   data () {
     return {
       sorted_events: [],
-      loading: false,
+      loading: false
     };
   },
   created () {
@@ -48,7 +48,7 @@ export default {
         }
 
         data[e.date].push(e);
-      })
+      });
 
       this.sorted_events = data;
       this.loading = false;
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     format (timestamp, pattern) {
-      let t = parseInt(timestamp);
+      let t = parseInt(timestamp, 10);
       return moment(t).format(pattern);
     }
   }

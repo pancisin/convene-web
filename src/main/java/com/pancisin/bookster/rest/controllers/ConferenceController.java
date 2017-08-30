@@ -39,6 +39,7 @@ import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
@@ -49,6 +50,7 @@ import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
 import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.MetaValueRepository;
+import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -87,6 +89,9 @@ public class ConferenceController {
 
 	@Autowired
 	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private SurveyRepository surveyRepository;
 	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
@@ -268,4 +273,22 @@ public class ConferenceController {
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
 
+	@Transactional
+	@PostMapping("/survey")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
+	public ResponseEntity<?> postSurvey(@PathVariable Long conference_id, @RequestBody Survey survey) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		
+		survey = surveyRepository.save(survey);
+		stored.addSurvey(survey);
+		conferenceRepository.save(stored);
+		return ResponseEntity.ok(survey);
+	}
+
+	@GetMapping("/survey")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')") 
+	public ResponseEntity<?> getSurveys(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(stored.getSurveys());
+	}
 }
