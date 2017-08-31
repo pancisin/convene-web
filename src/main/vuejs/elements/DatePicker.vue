@@ -1,10 +1,10 @@
 <template>
   <div class="date-picker-container" v-click-outside="outside">
     <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :name="name" :value="selected | moment('L')" class="form-control" @focus="focusChanged" @blur="focusChanged">
-  
+
     <transition name="slide-down">
       <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">
-  
+
         <div class="date-picker-header">
           <a class="btn btn-link" @click="moveCursor(-1)">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -14,7 +14,7 @@
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
-  
+
         <div class="date-picker-body">
           <table>
             <thead>
@@ -117,6 +117,7 @@ export default {
   }
 };
 </script>
+
 <style lang="less">
 .date-picker-container {
   position: relative;
