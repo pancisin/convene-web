@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,6 +37,10 @@ public class Survey {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<MetaField> metaFields;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "survey")
+	private List<SurveyMetaValue> metaValues;
+	
 	public void addMetaField(MetaField field) {
 		if (this.metaFields == null)
 			this.metaFields = new ArrayList<MetaField>();
@@ -83,5 +88,9 @@ public class Survey {
 
 	public List<MetaField> getMetaFields() {
 		return metaFields;
+	}
+
+	public List<SurveyMetaValue> getMetaValues() {
+		return metaValues;
 	}
 }

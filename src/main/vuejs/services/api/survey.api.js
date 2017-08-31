@@ -60,5 +60,28 @@ export default {
     Vue.http.get(`${SURVEY_API_URL}/${id}/meta-field`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Post answers to meta fields and meta values
+   * @param {*} id - survey id
+   * @param {*} values - meta values data objects array
+   * @param {*} success - success callback function
+   */
+  postMetaValues (id, values, success) {
+    Vue.http.post(`${SURVEY_API_URL}/${id}/meta-value`, values).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get survey meta values
+   * @param {*} id - survey id
+   * @param {*} success - success callback function
+   */
+  getMetaValues (id, success) {
+    Vue.http.get(`${SURVEY_API_URL}/${id}/meta-value`).then(response => {
+      success(response.body);
+    });
   }
 };

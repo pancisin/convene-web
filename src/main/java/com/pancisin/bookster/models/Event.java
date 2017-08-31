@@ -29,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
@@ -84,7 +86,7 @@ public class Event {
 
 	@Column(unique = true)
 	private String facebookId;
-	
+
 	@JsonIgnore
 	@ManyToMany
 	private List<User> attendees = new ArrayList<User>();
@@ -110,11 +112,12 @@ public class Event {
 
 		return null;
 	}
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "event")
 	private List<Invitation> invitations;
 
+//	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
 		if (conference != null)
 			return conference;

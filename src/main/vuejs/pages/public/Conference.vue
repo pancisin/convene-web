@@ -3,10 +3,10 @@
     <h3>
       {{conference.name}}
     </h3>
-  
+
     <div class="row">
       <div class="col-md-9">
-  
+
         <div class="row">
           <div class="col-sm-4">
             <img :src="conference.bannerUrl" class="img-poster">
@@ -15,7 +15,7 @@
             <div v-html="conference.summary"></div>
           </div>
         </div>
-  
+
         <div class="row">
           <div class="col-xs-12">
             <panel>
@@ -24,9 +24,9 @@
             </panel>
           </div>
         </div>
-  
+
       </div>
-  
+
       <div class="col-md-3">
         <panel v-if="attend_status != 'ACTIVE'" type="primary">
           <span slot="title">Join conference</span>
@@ -37,6 +37,13 @@
         </div>
       </div>
     </div>
+
+    <modal :show.sync="display_survey_modal" @close="display_survey_modal = false" :full="false">
+      <h4 slot="header">{{ surveys[0].name }}</h4>
+      <div slot="body">
+        <survey :survey="surveys[0]" v-if="surveys.length > 0"></survey>
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -45,6 +52,7 @@ import ConferenceInjector from '../../services/injectors/conference.injector.js'
 import AttendForm from './conference/Attend.form.vue';
 import ArticlesList from '../../elements/ArticlesList.vue';
 import EventsList from './conference/Events.list.vue';
+import Survey from './conference/Survey';
 
 export default {
   name: 'conference',
@@ -54,12 +62,14 @@ export default {
     };
   },
   components: {
-    AttendForm, ArticlesList, EventsList
+    AttendForm, ArticlesList, EventsList, Survey
   },
   data () {
     return {
       conference: null,
-      attend_status: false
+      attend_status: false,
+      surveys: [],
+      display_survey_modal: true
     };
   },
   created () {
@@ -70,6 +80,10 @@ export default {
 
     injector.getAttendStatus(status => {
       this.attend_status = status;
+    });
+
+    injector.getSurveys(surveys => {
+      this.surveys = surveys;
     });
   },
   methods: {
