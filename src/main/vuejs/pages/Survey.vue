@@ -5,11 +5,11 @@
         <h4 class="page-title" v-if="survey != null" v-text="survey.name"></h4>
       </div>
     </div>
-
+  
     <div class="col-xs-12">
       <panel type="default">
         <span slot="title">Overview</span>
-
+  
         <div class="row">
           <div class="col-md-6">
             <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
@@ -31,29 +31,29 @@
             </div>
           </div>
         </div>
-
+  
         <transition-group name="fade-down">
           <div class="row meta-field-row" v-for="(field, index) in survey.metaFields" :key="index">
             <div class="col-md-2 col-lg-1 text-center">
               <h3>
                 {{ index + 1 }}.
               </h3>
-
+  
               <div class="m-b-10">
                 <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, -1)" v-if="index > 0">
                   <i class="fa fa-arrow-up"></i>
                 </button>
-
+  
                 <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, 1)" v-if="index + 1 < survey.metaFields.length">
                   <i class="fa fa-arrow-down"></i>
                 </button>
               </div>
-
+  
               <button class="btn btn-danger btn-rounded btn-xs" @click="removeMeta(index)">
                 <i class="fa fa-minus"></i>
               </button>
             </div>
-
+  
             <div class="col-md-5">
               <div class="form-group">
                 <label class="control-label">Name</label>
@@ -63,19 +63,27 @@
                 <label class="control-label">Description</label>
                 <input class="form-control" v-model="field.description" type="text">
               </div>
+              <div class="form-group">
+                <div class="checkbox checkbox-primary">
+                  <input id="optional-checkbox" type="checkbox" v-model="field.optional">
+                  <label for="optional-checkbox">
+                    Optional
+                  </label>
+                </div>
+              </div>
             </div>
             <div class="col-md-5 col-lg-6">
               <div class="form-group">
                 <label class="control-label">Type: </label>
-
+  
                 <select class="form-control" v-model="field.type">
                   <option v-for="mtype in meta_types" v-text="mtype" :key="mtype"></option>
                 </select>
               </div>
-
+  
               <div class="form-group" v-if="field.type == 'SELECT' || field.type == 'RADIO'">
                 <label class="control-label">Options: </label>
-
+  
                 <ul class="list-unstyled">
                   <li v-for="(option, op_in) in field.options" :key="option" class="m-b-10">
                     {{ option }}
@@ -100,16 +108,16 @@
                 </ul>
               </div>
             </div>
-
+  
           </div>
         </transition-group>
-
+  
         <div class="text-center">
           <button @click="survey.metaFields.push({})" class="btn btn-rounded btn-lg m-t-15 m-b-15">
             <i class="fa fa-plus"></i>
           </button>
         </div>
-
+  
         <div class="text-center" v-show="touched">
           <button class="btn btn-rounded btn-primary" type="submit" @click="submit">Save</button>
         </div>
@@ -117,7 +125,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import SurveyApi from 'api/survey.api';
@@ -146,7 +153,6 @@ export default {
   },
   computed: {
     touched () {
-      console.log(calculateHash(this.original_survey) + ' - ' + calculateHash(JSON.stringify(this.survey)));
       return calculateHash(this.original_survey) !== calculateHash(JSON.stringify(this.survey));
     }
   },

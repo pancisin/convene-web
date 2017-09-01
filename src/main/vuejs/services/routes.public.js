@@ -38,6 +38,11 @@ export default [
     component: resolve => require(['../pages/public/Article.vue'], resolve)
   },
   {
+    path: 'survey/:survey_id',
+    name: 'survey.public',
+    component: resolve => require(['../pages/public/Survey.vue'], resolve)
+  },
+  {
     path: 'about',
     alias: 'admin/about',
     name: 'about',
