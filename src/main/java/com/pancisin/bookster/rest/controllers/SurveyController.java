@@ -62,7 +62,9 @@ public class SurveyController {
 
 	@DeleteMapping
 	public ResponseEntity<?> deleteSurvey(@PathVariable Long survey_id) {
-		return null;
+		Survey stored = surveyRepository.findOne(survey_id);
+		stored.setState(SurveyState.DELETED);
+		return ResponseEntity.ok(surveyRepository.save(stored));
 	}
 
 	@PostMapping("/meta-fields")
@@ -115,17 +117,17 @@ public class SurveyController {
 		Survey stored = surveyRepository.findOne(survey_id);
 		return ResponseEntity.ok(stored.getSubmissions());
 	}
-	
+
 	@PatchMapping("/toggle-published")
 	public ResponseEntity<?> togglePublished(@PathVariable Long survey_id) {
 		Survey stored = surveyRepository.findOne(survey_id);
-		
+
 		if (stored.getState() == SurveyState.NEW) {
 			stored.setState(SurveyState.IN_PROGRESS);
 		} else if (stored.getState() == SurveyState.IN_PROGRESS) {
 			stored.setState(SurveyState.NEW);
 		}
-		
+
 		return ResponseEntity.ok(surveyRepository.save(stored));
 	}
 }

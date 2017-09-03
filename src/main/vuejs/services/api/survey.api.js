@@ -28,6 +28,17 @@ export default {
   },
 
   /**
+   * Delete survey by id.
+   * @param {*} id - survey id
+   * @param {*} success success callback function
+   */
+  deleteSurvey (id, success) {
+    Vue.http.delete(`${SURVEY_API_URL}/${id}`).then(response => {
+      success(response.body);
+    })
+  },
+
+  /**
    * Post new meta field to survey.
    * @param {*} id - survey id
    * @param {*} metaField - meta field data object
