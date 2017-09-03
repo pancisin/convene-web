@@ -39,7 +39,7 @@ public class Survey {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "survey")
-	private List<SurveyMetaValue> metaValues;
+	private List<SurveySubmission> submissions;
 	
 	public void addMetaField(MetaField field) {
 		if (this.metaFields == null)
@@ -90,7 +90,7 @@ public class Survey {
 		return metaFields;
 	}
 
-	public List<SurveyMetaValue> getMetaValues() {
-		return metaValues;
+	public List<SurveySubmission> getSubmissions() {
+		return submissions;
 	}
 }

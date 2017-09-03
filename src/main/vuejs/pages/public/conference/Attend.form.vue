@@ -47,15 +47,12 @@ export default {
   created () {
     this.api.getMetaFields(fields => {
       this.meta_fields = fields;
-
-      for (var i = 0; i < fields.length; i++) {
+      fields.forEach((field) => {
         this.meta_values.push({
-          field: {
-            id: fields[i].id
-          },
+          field,
           value: null
-        });
-      }
+        })
+      })
     });
   },
   methods: {

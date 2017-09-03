@@ -281,6 +281,7 @@ public class ConferenceController {
 		
 		survey = surveyRepository.save(survey);
 		stored.addSurvey(survey);
+		
 		conferenceRepository.save(stored);
 		return ResponseEntity.ok(survey);
 	}

@@ -28,6 +28,7 @@ export default {
     overview: 'Prehľad',
     events: 'Podujatia',
     articles: 'Články',
+    surveys: 'Prieskumy',
     settings: 'Nastavenia',
     places: 'Miesta',
     attendees: 'Hostia',

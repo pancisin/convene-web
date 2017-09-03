@@ -1,6 +1,6 @@
 <template>
-  <div class="container" v-if="survey != null">
-    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+  <div class="container" v-loading="loading">
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" v-if="survey != null">
       <h3>
         {{ survey.name }}
       </h3>
@@ -51,6 +51,7 @@ export default {
     return {
       meta_values: [],
       survey: {},
+      loading: false
     };
   },
   components: {
@@ -61,7 +62,7 @@ export default {
   },
   methods: {
     getSurvey () {
-
+      this.loading = true;
       SurveyApi.getSurvey(this.$route.params.survey_id, survey => {
         this.survey = survey;
         this.survey.metaFields.sort((a, b) => {
@@ -75,14 +76,16 @@ export default {
             },
             value: null
           });
-        })
+        });
+
+        this.loading = false;
       })
 
     },
     submit () {
       this.$validator.validateAll().then(valid => {
         if (!valid) return;
-        SurveyApi.postMetaValues(this.survey.id, this.meta_values, result => {
+        SurveyApi.postSubmission(this.survey.id, this.meta_values, result => {
           this.$success('published !');
         });
       });

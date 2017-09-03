@@ -181,7 +181,7 @@ export default {
 
       if (this.survey.id != null) {
         SurveyApi.putSurvey(this.survey.id, this.survey, response => {
-          this.survey = response;
+        this.survey = response;
           this.survey.metaFields.sort((a, b) => {
             return a.ordering >= b.ordering;
           });

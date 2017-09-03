@@ -128,7 +128,7 @@ export default [
       {
         path: 'survey-create',
         name: 'conference.survey.create',
-        component: resolve => require(['../pages/survey/Overview.vue'], resolve),
+        component: resolve => require(['../pages/Survey.create.vue'], resolve),
         props: (route) => (
           {
             conference_id: route.params.id,
@@ -143,15 +143,8 @@ export default [
   },
   {
     path: 'survey/:survey_id',
+    name: 'survey',
     component: resolve => require(['../pages/Survey.vue'], resolve),
-    redirect: '/admin/survey/:survey_id/overview',
-    children: [
-      {
-        path: 'overview',
-        name: 'survey.overview',
-        component: resolve => require(['../pages/survey/Overview.vue'], resolve)
-      }
-    ]
   },
   {
     path: 'events/create',

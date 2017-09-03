@@ -3,10 +3,10 @@
     <h3>
       {{ conference.name }}
     </h3>
-  
+
     <div class="row">
       <div class="col-md-9">
-  
+
         <div class="row">
           <div class="col-sm-4">
             <img :src="conference.bannerUrl" class="img-poster">
@@ -15,7 +15,7 @@
             <div v-html="conference.summary"></div>
           </div>
         </div>
-  
+
         <div class="row">
           <div class="col-xs-12">
             <panel>
@@ -24,27 +24,33 @@
             </panel>
           </div>
         </div>
-  
+
       </div>
-  
+
       <div class="col-md-3">
         <panel v-if="attend_status != 'ACTIVE'" type="primary">
           <span slot="title">Join conference</span>
           <attend-form @statusChanged="statusChanged"></attend-form>
         </panel>
         <div v-else>
-          <div class="surveys-list" v-if="surveys != null && surveys.length > 0">
-            <h4>
-              Surveys
-            </h4>
-            <ul class="list-unstyled">
-              <li v-for="survey in surveys" :key="survey.id">
-                <router-link :to="{ name: 'survey.public', params: { survey_id: survey.id } }">
-                  {{ survey.name }}
-                </router-link>
-              </li>
-            </ul>
-          </div>
+          <panel type="primary" v-if="surveys.length > 0">
+            <span slot="title">Surveys</span>
+
+            <p>
+              <small>Please spare a little time to complete these surveys.</small>
+            </p>
+
+            <div class="surveys-list" v-if="surveys != null && surveys.length > 0">
+              <ul class="list-unstyled">
+                <li v-for="survey in surveys" :key="survey.id">
+                  <router-link :to="{ name: 'survey.public', params: { survey_id: survey.id } }">
+                    {{ survey.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </panel>
+
           <events-list></events-list>
         </div>
       </div>
@@ -98,10 +104,19 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 .img-poster {
   width: 100%;
   border: 1px solid #ccc;
   margin-bottom: 20px;
+}
+
+.surveys-list>ul {
+  li {
+    a {
+      padding: 5px 0;
+      display: block;
+    }
+  }
 }
 </style>

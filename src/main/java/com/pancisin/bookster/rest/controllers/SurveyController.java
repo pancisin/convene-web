@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Survey;
-import com.pancisin.bookster.models.SurveyMetaValue;
+import com.pancisin.bookster.models.SurveySubmission;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.MetaFieldRepository;
-import com.pancisin.bookster.repository.SurveyMetaValueRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
+import com.pancisin.bookster.repository.SurveySubmissionRepository;
 
 @RestController
 @RequestMapping("/api/survey/{survey_id}")
@@ -37,8 +38,8 @@ public class SurveyController {
 	private MetaFieldRepository mfRepository;
 
 	@Autowired
-	private SurveyMetaValueRepository smvRepository;
-	
+	private SurveySubmissionRepository ssRepository;
+
 	@GetMapping
 	public ResponseEntity<?> getSurvey(@PathVariable Long survey_id) {
 		return ResponseEntity.ok(surveyRepository.findOne(survey_id));
@@ -52,7 +53,7 @@ public class SurveyController {
 		stored.setStart_date(survey.getStart_date());
 		stored.setEnd_date(survey.getEnd_date());
 		stored.setMetaFields(survey.getMetaFields());
-		
+
 		return ResponseEntity.ok(surveyRepository.save(stored));
 	}
 
@@ -64,10 +65,10 @@ public class SurveyController {
 	@PostMapping("/meta-fields")
 	public ResponseEntity<?> postMetaFields(@PathVariable Long survey_id, @RequestBody List<MetaField> fields) {
 		Survey stored = surveyRepository.findOne(survey_id);
-		
+
 		fields = mfRepository.save(fields);
 		stored.setMetaFields(fields);
-		
+
 		return ResponseEntity.ok(fields);
 	}
 
@@ -88,22 +89,27 @@ public class SurveyController {
 		Survey stored = surveyRepository.findOne(survey_id);
 		return ResponseEntity.ok(stored.getMetaFields());
 	}
-	
-	@PostMapping("/meta-value")
-	public ResponseEntity<?> postMetaValues(@PathVariable Long survey_id, @RequestBody List<MetaValue> values) {
+
+	@PostMapping("/submission")
+	public ResponseEntity<?> postSubmission(@PathVariable Long survey_id, @RequestBody List<MetaValue> values) {
 		Survey stored = surveyRepository.findOne(survey_id);
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		List<SurveyMetaValue> survey_values = values.stream().map(v -> {
-			return new SurveyMetaValue(auth, stored, v);
-		}).collect(Collectors.toList());
+		SurveySubmission submission = new SurveySubmission(auth, stored);
+		submission.setValues(values);
 
-		return ResponseEntity.ok(smvRepository.save(survey_values));
+		try {
+			submission = ssRepository.save(submission);
+		} catch (Exception ex) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+
+		return ResponseEntity.ok(submission);
 	}
-	
-	@GetMapping("/meta-value")
-	public ResponseEntity<?> getMetaValues(@PathVariable Long survey_id) {
+
+	@GetMapping("/submission")
+	public ResponseEntity<?> getSubmissions(@PathVariable Long survey_id) {
 		Survey stored = surveyRepository.findOne(survey_id);
-		return ResponseEntity.ok(stored.getMetaValues());
+		return ResponseEntity.ok(stored.getSubmissions());
 	}
 }

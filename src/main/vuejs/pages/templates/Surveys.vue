@@ -10,17 +10,23 @@
           </th>
           <th>Start date</th>
           <th>End date</th>
+          <th class="text-center">State</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="survey in surveys" :key="survey.id">
           <td>
-            <router-link :to="{ name: 'survey.overview', params: { survey_id: survey.id } }">
+            <router-link :to="{ name: 'survey', params: { survey_id: survey.id } }">
               {{ survey.name }}
             </router-link>
           </td>
           <td>{{ survey.start_date | moment('L') }}</td>
           <td>{{ survey.end_date | moment('L') }}</td>
+          <td class="text-center">
+            <i class="fa fa-clock-o text-warning" aria-hidden="true" v-if="getStatus(survey) == 'PENDING'"></i>
+            <i class="fa fa-check text-success" aria-hidden="true" v-if="getStatus(survey) == 'COMPLETED'"></i>
+            <i class="fa fa-circle-o" aria-hidden="true" v-if="getStatus(survey) == 'NEW'"></i>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -34,6 +40,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
   name: 'surveys',
   inject: ['provider'],
@@ -68,6 +75,13 @@ export default {
           this.loading = false;
         });
       }
+    },
+    getStatus (survey) {
+      if (survey.start_date > moment().unix() * 1000) return 'NEW';
+      if (survey.end_date < moment().unix() * 1000) return 'COMPLETED';
+
+
+      return 'PENDING';
     }
   }
 };

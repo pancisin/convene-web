@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import DatePicker from '../../elements/DatePicker.vue';
+import DatePicker from '../elements/DatePicker.vue';
 
 export default {
   name: 'survey-overview',
   inject: ['provider'],
-  props: ['conference_id', 'edit'],
+  props: ['conference_id'],
   data () {
     return {
       survey: {}
@@ -49,15 +49,10 @@ export default {
   },
   methods: {
     submit () {
-      if (!this.edit) {
-        this.api.postSurvey(this.survey, result => {
-          this.$success('Survey has been created !', 'dsada');
-        });
-      } else {
-        this.api.putSurvey(this.survey, result => {
-          this.survey = result;
-        });
-      }
+      this.api.postSurvey(this.survey, result => {
+        this.$success('Survey has been created !', 'dsada');
+        this.$router.push({ name: 'survey', params: { survey_id: result.id }});
+      });
     }
   }
 };

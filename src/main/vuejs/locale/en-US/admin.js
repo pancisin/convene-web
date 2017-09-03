@@ -28,6 +28,7 @@ export default {
     overview: 'Overview',
     events: 'Events',
     articles: 'Articles',
+    surveys: 'Surveys',
     settings: 'Settings',
     places: 'Places',
     attendees: 'Attendees',

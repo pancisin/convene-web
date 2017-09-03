@@ -68,8 +68,8 @@ export default {
    * @param {*} values - meta values data objects array
    * @param {*} success - success callback function
    */
-  postMetaValues (id, values, success) {
-    Vue.http.post(`${SURVEY_API_URL}/${id}/meta-value`, values).then(response => {
+  postSubmission (id, values, success) {
+    Vue.http.post(`${SURVEY_API_URL}/${id}/submission`, values).then(response => {
       success(response.body);
     });
   },
@@ -79,8 +79,8 @@ export default {
    * @param {*} id - survey id
    * @param {*} success - success callback function
    */
-  getMetaValues (id, success) {
-    Vue.http.get(`${SURVEY_API_URL}/${id}/meta-value`).then(response => {
+  getSubmissions (id, success) {
+    Vue.http.get(`${SURVEY_API_URL}/${id}/submission`).then(response => {
       success(response.body);
     });
   }
