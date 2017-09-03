@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -288,8 +289,16 @@ public class ConferenceController {
 
 	@GetMapping("/survey")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')") 
-	public ResponseEntity<?> getSurveys(@PathVariable Long conference_id) {
+	public ResponseEntity<?> getSurveys(@PathVariable Long conference_id,
+			@RequestParam(name = "submitted", required = false, defaultValue = "false") String submitted) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		return ResponseEntity.ok(stored.getSurveys());
+		
+		if (Boolean.parseBoolean(submitted)) {
+			return ResponseEntity.ok(stored.getSurveys());
+		} else {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			List<Survey> surveys = surveyRepository.getByConference(conference_id, user.getId());
+			return ResponseEntity.ok(surveys);
+		}
 	}
 }

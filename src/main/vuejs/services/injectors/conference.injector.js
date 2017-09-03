@@ -88,4 +88,8 @@ export default class ConferenceInjector {
   postSurvey (survey, success) {
     ConferenceApi.postSurvey(this.conference_id, survey, success);
   }
+
+  getPublicSurveys (success) {
+    ConferenceApi.getPublicSurveys(this.conference_id, success);
+  }
 };

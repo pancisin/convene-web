@@ -245,9 +245,19 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getSurveys (id, success) {
+  getPublicSurveys (id, success) {
     Vue.http.get(`${CONFERENCE_API_URL}/${id}/survey`).then(response => {
       success(response.body);
     });
+  },
+
+  getSurveys (id, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/survey`, {
+      params: {
+        submitted: true
+      }
+    }).then(response => {
+      success(response.body);
+    })
   }
 };

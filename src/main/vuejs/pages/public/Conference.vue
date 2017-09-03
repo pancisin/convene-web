@@ -92,7 +92,7 @@ export default {
       this.attend_status = status;
     });
 
-    injector.getSurveys(surveys => {
+    injector.getPublicSurveys(surveys => {
       this.surveys = surveys;
     });
   },
