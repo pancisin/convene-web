@@ -60,6 +60,12 @@ public class Survey {
 	public String getName() {
 		return name;
 	}
+	
+	public int getSubmissionsCount() {
+		if (this.submissions != null) 
+			return this.submissions.size();
+		return 0;
+	}
 
 	public void setName(String name) {
 		this.name = name;

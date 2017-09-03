@@ -35,13 +35,11 @@
         <div v-else>
           <panel type="primary" v-if="surveys.length > 0">
             <span slot="title">Surveys</span>
-
-            <p>
-              <small>Please spare a little time to complete these surveys.</small>
-            </p>
+            <small slot="subtitle">Please spare a little time to complete these surveys.</small>
 
             <div class="surveys-list" v-if="surveys != null && surveys.length > 0">
-              <ul class="list-unstyled">
+              <survey-form v-if="surveys.length == 1" :survey="surveys[0]"></survey-form>
+              <ul class="list-unstyled" v-else>
                 <li v-for="survey in surveys" :key="survey.id">
                   <router-link :to="{ name: 'survey.public', params: { survey_id: survey.id } }">
                     {{ survey.name }}
@@ -63,6 +61,7 @@ import ConferenceInjector from '../../services/injectors/conference.injector.js'
 import AttendForm from './conference/Attend.form.vue';
 import ArticlesList from '../../elements/ArticlesList.vue';
 import EventsList from './conference/Events.list.vue';
+import SurveyForm from './survey/Survey.form';
 
 export default {
   name: 'conference',
@@ -72,7 +71,7 @@ export default {
     };
   },
   components: {
-    AttendForm, ArticlesList, EventsList
+    AttendForm, ArticlesList, EventsList, SurveyForm
   },
   data () {
     return {

@@ -10,6 +10,7 @@
           </th>
           <th>Start date</th>
           <th>End date</th>
+          <th class="text-center">Submissions</th>
           <th class="text-center">State</th>
         </tr>
       </thead>
@@ -22,6 +23,7 @@
           </td>
           <td>{{ survey.start_date | moment('L') }}</td>
           <td>{{ survey.end_date | moment('L') }}</td>
+          <td class="text-center">{{ survey.submissionsCount }}</td>
           <td class="text-center">
             <i class="fa fa-clock-o text-warning" aria-hidden="true" v-if="survey.state == 'IN_PROGRESS'"></i>
             <i class="fa fa-check text-success" aria-hidden="true" v-if="survey.state == 'COMPLETED'"></i>
