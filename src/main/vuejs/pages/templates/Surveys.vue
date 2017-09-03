@@ -23,9 +23,9 @@
           <td>{{ survey.start_date | moment('L') }}</td>
           <td>{{ survey.end_date | moment('L') }}</td>
           <td class="text-center">
-            <i class="fa fa-clock-o text-warning" aria-hidden="true" v-if="getStatus(survey) == 'PENDING'"></i>
-            <i class="fa fa-check text-success" aria-hidden="true" v-if="getStatus(survey) == 'COMPLETED'"></i>
-            <i class="fa fa-circle-o" aria-hidden="true" v-if="getStatus(survey) == 'NEW'"></i>
+            <i class="fa fa-clock-o text-warning" aria-hidden="true" v-if="survey.state == 'IN_PROGRESS'"></i>
+            <i class="fa fa-check text-success" aria-hidden="true" v-if="survey.state == 'COMPLETED'"></i>
+            <i class="fa fa-circle-o" aria-hidden="true" v-if="survey.state == 'NEW'"></i>
           </td>
         </tr>
       </tbody>
@@ -76,13 +76,6 @@ export default {
         });
       }
     },
-    getStatus (survey) {
-      if (survey.start_date > moment().unix() * 1000) return 'NEW';
-      if (survey.end_date < moment().unix() * 1000) return 'COMPLETED';
-
-
-      return 'PENDING';
-    }
   }
 };
 </script>

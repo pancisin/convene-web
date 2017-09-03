@@ -34,7 +34,6 @@ public class SurveySubmission {
 	private User user;
 
 	@JsonIgnore
-	@JsonProperty(access = Access.READ_ONLY)
 	@ManyToOne
 	private Survey survey;
 

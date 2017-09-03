@@ -83,5 +83,11 @@ export default {
     Vue.http.get(`${SURVEY_API_URL}/${id}/submission`).then(response => {
       success(response.body);
     });
+  },
+
+  togglePublished (id, success) {
+    Vue.http.patch(`${SURVEY_API_URL}/${id}/toggle-published`).then(response => {
+      success(response.body);
+    })
   }
 };

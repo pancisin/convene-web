@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.SurveySubmission;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.SurveyState;
 import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.SurveySubmissionRepository;
@@ -111,5 +114,18 @@ public class SurveyController {
 	public ResponseEntity<?> getSubmissions(@PathVariable Long survey_id) {
 		Survey stored = surveyRepository.findOne(survey_id);
 		return ResponseEntity.ok(stored.getSubmissions());
+	}
+	
+	@PatchMapping("/toggle-published")
+	public ResponseEntity<?> togglePublished(@PathVariable Long survey_id) {
+		Survey stored = surveyRepository.findOne(survey_id);
+		
+		if (stored.getState() == SurveyState.NEW) {
+			stored.setState(SurveyState.IN_PROGRESS);
+		} else if (stored.getState() == SurveyState.IN_PROGRESS) {
+			stored.setState(SurveyState.NEW);
+		}
+		
+		return ResponseEntity.ok(surveyRepository.save(stored));
 	}
 }

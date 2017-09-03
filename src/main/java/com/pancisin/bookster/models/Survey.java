@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.enums.SurveyState;
 
 @Entity
 @Table(name = "surveys")
@@ -40,7 +45,11 @@ public class Survey {
 	@JsonIgnore
 	@OneToMany(mappedBy = "survey")
 	private List<SurveySubmission> submissions;
-	
+
+	@Enumerated(EnumType.STRING)
+	@JsonProperty(access = Access.READ_ONLY)
+	private SurveyState state = SurveyState.NEW;
+
 	public void addMetaField(MetaField field) {
 		if (this.metaFields == null)
 			this.metaFields = new ArrayList<MetaField>();
@@ -75,13 +84,13 @@ public class Survey {
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setMetaFields(List<MetaField> metaFields) {
 		if (this.metaFields == null)
 			this.metaFields = new ArrayList<MetaField>();
-		
+
 		this.metaFields.clear();
-		
+
 		if (metaFields != null)
 			this.metaFields.addAll(metaFields);
 	}
@@ -92,5 +101,13 @@ public class Survey {
 
 	public List<SurveySubmission> getSubmissions() {
 		return submissions;
+	}
+
+	public SurveyState getState() {
+		return state;
+	}
+
+	public void setState(SurveyState state) {
+		this.state = state;
 	}
 }
