@@ -1,7 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -13,8 +12,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,35 +25,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.components.annotations.License;
-import com.pancisin.bookster.components.storage.StorageService;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.ConferenceAttendee;
-import com.pancisin.bookster.models.MetaField;
-import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
-import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.MetaField;
+import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
-import com.pancisin.bookster.repository.MetaFieldRepository;
-import com.pancisin.bookster.repository.MetaValueRepository;
-import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
+import com.pancisin.bookster.repository.MetaFieldRepository;
+import com.pancisin.bookster.repository.MetaValueRepository;
+import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
 @RestController
@@ -114,6 +108,14 @@ public class ConferenceController {
 			stored.setBannerUrl("/files/" + url + ".jpg");
 		}
 
+		return ResponseEntity.ok(conferenceRepository.save(stored));
+	}
+	
+	@DeleteMapping
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	public ResponseEntity<?> deleteConference(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		stored.setState(PageState.DELETED);
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
 

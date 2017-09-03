@@ -23,5 +23,10 @@ public enum PageState {
 	 * BANNED : Page is completely banned - not visible to anybody except super
 	 * administrator.
 	 */
-	BANNED
+	BANNED,
+	
+	/*
+	 * DETELED : Page is completely deleted - not visible to anyone
+	 */
+	DELETED,
 }

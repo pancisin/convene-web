@@ -43,19 +43,12 @@
               Go to survey
             </router-link>
           </li>
-          <li class="separator"></li>
           <li>
             <router-link :to="{ name: 'survey', params: { survey_id: props.data.id } }">
               Overview
             </router-link>
           </li>
 
-          <li class="separator"></li>
-          <li :class="{ 'disabled' : !editable }">
-            <router-link :to="{ name: 'conference.survey.create' }">
-              Create survey
-            </router-link>
-          </li>
           <li class="separator"></li>
           <li :class="{ 'disabled' : !editable }">
             <a @click="deleteSurvey(props.data)">

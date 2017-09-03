@@ -91,8 +91,9 @@ public class PageController {
 	@DeleteMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> deletePage(@PathVariable Long page_id) {
-		pageRepository.delete(page_id);
-		return ResponseEntity.ok("success");
+		Page stored = pageRepository.findOne(page_id);
+		stored.setState(PageState.DELETED);
+		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 
 	@PutMapping
