@@ -19,10 +19,10 @@
                     <br> {{ event.place.address.zip + " " + event.place.address.city }}
                     <br> {{ event.place.address.state }}
                   </address>
-  
+
                   <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
                 </div>
-  
+
                 <div v-html="event.summary"></div>
               </div>
               <div class="col-md-4">
@@ -30,12 +30,12 @@
                   <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
                   <p class="text-muted">Attendees</p>
                 </div>
-  
+
                 <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="attend">
                   <span v-if="attending">Cancel</span>
                   <span v-else>Attend</span>
                 </a>
-  
+
                 <div class="timeline-2 m-t-20">
                   <div class="time-item" v-for="p in event.programme" :key="p.id">
                     <div class="item-info">
@@ -54,22 +54,20 @@
       </div>
       <div class="col-sm-3">
         <img class="img-poster m-b-20" :src="event.bannerUrl">
-  
+
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
-  
+
           <div class="inbox-widget">
             <stagger-transition>
-              <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id">
-                <div class="inbox-item">
-                  <div class="inbox-item-img" v-if="related.bannerUrl != null">
-                    <img :src="related.bannerUrl" class="img-circle" alt="">
-                  </div>
-                  <p class="inbox-item-author" v-text="related.name"></p>
-                  <p class="inbox-item-text pull-right">
-                    {{ related.date | moment('L') }} {{ related.startsAt }}
-                  </p>
+              <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id" class="inbox-item">
+                <div class="inbox-item-img" v-if="related.bannerUrl != null">
+                  <img :src="related.bannerUrl" class="img-circle" alt="">
                 </div>
+                <p class="inbox-item-author" v-text="related.name"></p>
+                <p class="inbox-item-text pull-right">
+                  {{ related.date | moment('L') }} {{ related.startsAt }}
+                </p>
               </router-link>
             </stagger-transition>
           </div>
@@ -78,7 +76,7 @@
     </div>
   </div>
   <div v-else>
-  
+
   </div>
 </template>
 
@@ -141,10 +139,14 @@ export default {
       }
     },
     attend () {
-      EventApi.toggleAttendanceStatus(this.event.id, status => {
-        this.attending = status;
-        this.event.attendeesCount += status ? 1 : -1;
-      });
+      if (this.authenticated) {
+        EventApi.toggleAttendanceStatus(this.event.id, status => {
+          this.attending = status;
+          this.event.attendeesCount += status ? 1 : -1;
+        });
+      } else {
+        this.$router.push({ name: 'login' });
+      }
     }
   }
 };

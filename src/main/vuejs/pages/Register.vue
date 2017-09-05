@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper-page">
+  <div class="wrapper-page container">
 
     <div class="text-center">
       <router-link to="/" class="logo-lg">

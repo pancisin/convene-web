@@ -8,14 +8,14 @@
       <div class="col-md-9">
         <div class="events-list">
           <router-link v-for="event in eventsPaginator.content" :to="'/event/' + event.id" class="event-item clearfix" :key="event.id">
-            <img v-if="event.bannerUrl != null" :src="event.bannerUrl">
-  
+            <img v-if="event.bannerUrl != null" :src="event.bannerUrl" class="hidden-xs">
+
             <div class="content">
               <h4 v-text="event.name"></h4>
               <small>By {{ event.author.displayName }}</small>
               <br>
               <small v-if="event.place != null" v-text="event.place.address.formatted"></small>
-  
+
               <span class="date">
                 {{ event.date | moment('L') }}
                 <span class="time" v-if="event.startsAt != null">
@@ -28,7 +28,7 @@
         </div>
       </div>
     </div>
-  
+
     <div class="text-center">
       <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate"></paginator>
     </div>
@@ -88,7 +88,7 @@ export default {
 
   .event-item {
     clear: both;
-    flex: 370px 1 0;
+    flex: 370px 1 1;
     margin: .5%;
     background: #fff;
     border: 1px solid #ccc;

@@ -1,6 +1,5 @@
 .inbox-widget {
     .inbox-item {
-        border-bottom: 1px solid #f1f1f1;
         overflow: hidden;
         padding: 10px 0;
         position: relative;
@@ -32,6 +31,10 @@
             right: 7px;
             top: 10px;
             margin-top: 0;
+        }
+        
+        &~.inbox-item {
+            border-top: 1px solid #f1f1f1;
         }
     }
 }

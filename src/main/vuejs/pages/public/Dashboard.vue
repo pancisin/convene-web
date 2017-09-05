@@ -2,73 +2,67 @@
   <div class="container">
     <div class="row">
       <div class="col-md-4" v-if="authenticated">
-  
+
         <panel type="primary">
           <span slot="title">{{ $t('client.dashboard.attending') }}</span>
-  
+
           <div class="inbox-widget">
             <stagger-transition>
-              <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index">
-                <div class="inbox-item">
-                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                    <img :src="event.bannerUrl" class="img-circle" alt="">
-                  </div>
-                  <p class="inbox-item-author" v-text="event.name"></p>
-                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
+              <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
+                <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                  <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
+                <p class="inbox-item-author" v-text="event.name"></p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
               </router-link>
             </stagger-transition>
           </div>
         </panel>
       </div>
-  
+
       <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
         <panel type="primary">
           <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
-  
+
           <div class="inbox-widget">
             <stagger-transition>
-              <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index">
-                <div class="inbox-item">
-                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                    <img :src="event.bannerUrl" class="img-circle" alt="">
-                  </div>
-                  <p class="inbox-item-author" v-text="event.name"></p>
-                  <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
+              <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
+                <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                  <img :src="event.bannerUrl" class="img-circle" alt="">
                 </div>
+                <p class="inbox-item-author" v-text="event.name"></p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
               </router-link>
             </stagger-transition>
-  
+
             <div class="text-center">
               <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
             </div>
           </div>
         </panel>
       </div>
-  
+
       <div class="col-md-4">
         <!--<div class="page-title-box">
-                        <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-                      </div>-->
+                                  <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+                                </div>-->
         <tab-container>
           <tab :title="$t('client.dashboard.suggested')">
             <div class="inbox-widget">
               <stagger-transition>
-                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index">
-                  <div class="inbox-item">
-                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                      <img :src="page.bannerUrl" class="img-circle">
-                    </div>
-                    <p class="inbox-item-author" v-text="page.name"></p>
-                    <p class="inbox-item-text" v-if="page.category != null">
-                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                    </p>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                    <img :src="page.bannerUrl" class="img-circle">
                   </div>
+                  <p class="inbox-item-author" v-text="page.name"></p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
                 </router-link>
               </stagger-transition>
-  
+
               <div class="text-center">
                 <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
               </div>
@@ -77,16 +71,14 @@
           <tab :title="$t('client.dashboard.followed')" @navigated="tabNavigation">
             <div class="inbox-widget">
               <stagger-transition>
-                <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index">
-                  <div class="inbox-item">
-                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                      <img :src="page.bannerUrl" class="img-circle">
-                    </div>
-                    <p class="inbox-item-author" v-text="page.name"></p>
-                    <p class="inbox-item-text" v-if="page.category != null">
-                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                    </p>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                    <img :src="page.bannerUrl" class="img-circle">
                   </div>
+                  <p class="inbox-item-author" v-text="page.name"></p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
                 </router-link>
               </stagger-transition>
             </div>
@@ -94,19 +86,17 @@
           <tab :title="$t('client.dashboard.popular')" @navigated="tabNavigation">
             <div class="inbox-widget">
               <stagger-transition>
-                <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index">
-                  <div class="inbox-item">
-                    <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                      <img :src="page.bannerUrl" class="img-circle">
-                    </div>
-                    <p class="inbox-item-author">
-                      {{ page.name }}
-                      <span class="pull-right badge badge-primary">{{ page.followersCount }} followers</span>
-                    </p>
-                    <p class="inbox-item-text" v-if="page.category != null">
-                      {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                    </p>
+                <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
+                    <img :src="page.bannerUrl" class="img-circle">
                   </div>
+                  <p class="inbox-item-author">
+                    {{ page.name }}
+                    <span class="pull-right badge badge-primary">{{ page.followersCount }} followers</span>
+                  </p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
                 </router-link>
               </stagger-transition>
             </div>

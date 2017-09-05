@@ -16,81 +16,36 @@
         </div>
       </div>
     </section>
-  
+
     <section class="section bg-gray" id="how-it-work">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-            <div class="text-center">
-              <h2 class="title">How It Works ?</h2>
-              <p class="sub-title">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
-                <br> text of the printing and typesetting industry. </p>
-            </div>
-  
-            <div class="row">
-              <div class="col-sm-4">
-                <div class="service-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <div class="service-detail">
-                    <h4>Simple planning</h4>
-                    <p>We put a lot of effort in design, as it’s the most important ingredient of successful website.Sed ut perspiciatis unde omnis iste natus error sit.</p>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="col-sm-4">
-                <div class="service-item">
-                  <i class="fa fa-share-alt" aria-hidden="true"></i>
-                  <div class="service-detail">
-                    <h4>Share your events</h4>
-                    <p>We are putting social medias and sharing to the first place to address crowds.</p>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="col-sm-4">
-                <div class="service-item">
-                  <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
-                  <div class="service-detail">
-                    <h4>Manage attendants</h4>
-                    <p>With bookster it is easy to see who is going to take place on your event. And even you can notify attendants about programme changes and updates.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-      </div>
+      <how-it-works />
     </section>
-  
+
     <section class="section events">
       <div class="bg-overlay"></div>
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-md-offset-3 content bg-gray">
-  
+
             <div class="text-center">
               <h2 class="title">Still don't know what to do today ? </h2>
               <p class="sub-title">Bookster is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
             </div>
-  
+
             <div class="inbox-widget">
               <stagger-transition tag="span">
-                <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index">
-                  <div class="inbox-item">
-                    <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                      <img :src="event.bannerUrl" class="img-circle" alt="">
-                    </div>
-                    <p class="inbox-item-author" v-text="event.name"></p>
-                    <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
-                    <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
+                <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
+                    <img :src="event.bannerUrl" class="img-circle" alt="">
                   </div>
+                  <p class="inbox-item-author" v-text="event.name"></p>
+                  <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
+                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
                 </router-link>
               </stagger-transition>
-  
+
             </div>
-  
+
             <div class="text-center">
               <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
             </div>
@@ -98,93 +53,15 @@
         </div>
       </div>
     </section>
-  
-    <section class="section bg-gray" id="features">
-      <div class="container">
-  
-        <div class="row">
-          <div class="col-sm-6 col-md-4 col-md-offset-2">
-            <div class="feature-detail">
-              <h2 class="title">Clean and Ultra Modern Design</h2>
-              <p class="sub">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
-                <br> text of the printing and typesetting industry. </p>
-  
-              <ul class="list-unstyled">
-                <li>
-                  <i class="fa fa-angle-right"></i>
-                  Aliquam a augue suscipit, bibendum luctus neque. Vestibulum laoreet rhoncus ipsum, bibendum ullamcorper hendrerit tellus.
-                </li>
-                <li>
-                  <i class="fa fa-angle-right"></i>
-                  We put a lot of effort in design, as it’s the most important ingredient of successful website.
-                </li>
-  
-              </ul>
-  
-              <a href="" class="btn btn-primary btn-rounded w-lg">Buy Now</a>
-            </div>
-          </div>
-  
-          <div class="col-sm-6 col-md-4 text-center">
-            <img src="/notepad_flat.png">
-          </div>
-  
-        </div>
-      </div>
-    </section>
-  
+
     <section class="section" id="pricing">
       <pricing />
     </section>
-  
+
     <section class="section bg-gray" id="faq">
-      <div class="container">
-  
-        <div class="row">
-          <div class="col-sm-12 text-center">
-            <h1 class="title zoomIn animated wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">FAQ</h1>
-            <p class="sub-title zoomIn animated wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: zoomIn;">Constituto voluptatibus mei ex. Eum soleat lorem Ipsum is simply dummy
-              <br> text of the printing and typesetting industry. </p>
-          </div>
-        </div>
-        <!-- end row -->
-  
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            <!-- Question/Answer -->
-            <div class="animated fadeInLeft wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-              <h4 class="question" data-wow-delay=".1s">What is Lorem Ipsum?</h4>
-              <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-            </div>
-  
-            <!-- Question/Answer -->
-            <div class="animated fadeInLeft wow animated" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-              <h4 class="question">Why use Lorem Ipsum?</h4>
-              <p class="answer m-b-0">Lorem ipsum dolor sit amet, in mea nonumes dissentias dissentiunt, pro te solet oratio iriure. Cu sit consetetur moderatius intellegam, ius decore accusamus te. Ne primis suavitate disputando nam. Mutat convenirete.</p>
-            </div>
-  
-          </div>
-          <!--/col-md-5 -->
-  
-          <div class="col-md-5">
-            <!-- Question/Answer -->
-            <div class="animated fadeInRight wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInRight;">
-              <h4 class="question">Is safe use Lorem Ipsum?</h4>
-              <p class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
-            </div>
-  
-            <!-- Question/Answer -->
-            <div class="animated fadeInRight wow animated" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
-              <h4 class="question">When can be used?</h4>
-              <p class="answer m-b-0">Lorem ipsum dolor sit amet, in mea nonumes dissentias dissentiunt, pro te solet oratio iriure. Cu sit consetetur moderatius intellegam, ius decore accusamus te. Ne primis suavitate disputando nam. Mutat convenirete.</p>
-            </div>
-  
-          </div>
-          <!--/col-md-5-->
-        </div>
-  
-      </div>
+      <faq />
     </section>
+
   </div>
 </template>
 
@@ -192,10 +69,13 @@
 import Pricing from '../static/Pricing.vue';
 import Paginator from '../../elements/Paginator.vue';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
+import faq from '../static/FAQ';
+import HowItWorks from '../static/HowItWorks';
+
 export default {
   name: 'landing',
   components: {
-    Pricing, Paginator, StaggerTransition
+    Pricing, Paginator, StaggerTransition, faq, HowItWorks
   },
   data () {
     return {
@@ -267,17 +147,7 @@ export default {
 .bg-img-1 {
   background: url(http://www.dolcemexico.com/restaurant/wp-content/uploads/2015/01/contacto1.jpg);
   background-repeat: no-repeat;
-  background-size: 100%;
-}
-
-.hr {
-  display: inline-block;
-  border: 0;
-  width: 35px;
-  margin: 12px 0px 25px;
-  padding: 0;
-  height: 0;
-  border-top: 2px solid #3bafda;
+  background-size: cover;
 }
 
 .title {
@@ -386,7 +256,6 @@ export default {
 }
 
 .events {
-  padding: 0;
   background: url(http://www.citi.io/wp-content/uploads/2015/08/1168-00-06.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
@@ -394,14 +263,23 @@ export default {
 
   .content {
     background: #fff;
+    padding: 5%;
   }
 }
 
-@media (min-width: 992px) {
-  .events .content {
-    padding: 120px;
-    .inbox-widget {
-      min-height: 380px;
+@media only screen and (max-width: 992px) {
+  .events {
+    .bg-overlay {
+      display: none;
+    }
+
+    .container {
+      background: #fff;
+    }
+
+    .content {
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 }

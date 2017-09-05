@@ -1,8 +1,8 @@
 <template>
   <div class="toast" :class="notification.type ? 'toast-' + notification.type : 'secondary'">
-    <!-- <button type="button" @click="triggerClose" class="close">
-          <i class="material-icons">close</i>
-        </button> -->
+    <button type="button" @click="triggerClose" class="close">
+      <i class="material-icons">close</i>
+    </button>
     <strong v-if="notification.title">{{notification.title}}</strong>
     <p>
       {{notification.message}}
@@ -23,7 +23,7 @@ export default {
 
 <style lang="less">
 .toast {
-  padding: 15px 25px;
+  padding: 15px 25px 15px 32px;
   background-color: #333;
   color: #adadad;
   margin-top: 5px;
@@ -46,7 +46,7 @@ export default {
     content: '';
     background-color: #525252;
     position: absolute;
-    left: -7px;
+    left: 0px;
     top: 0;
     bottom: 0;
     width: 7px;
@@ -54,7 +54,25 @@ export default {
 
   &.toast-success {
     &:before {
-      background-color: green;
+      background-color: rgb(82, 187, 86);
+    }
+  }
+
+  &.toast-danger {
+    &:before {
+      background-color: rgb(239, 83, 80);
+    }
+  }
+
+  &.toast-warning {
+    &:before {
+      background-color: rgb(241, 181, 61);
+    }
+  }
+
+  &.toast-info {
+    &:before {
+      background-color: rgb(103, 209, 248);
     }
   }
 }

@@ -33,4 +33,13 @@ export default {
   width: 350px;
   z-index: 9999;
 }
+
+@media only screen and (max-width: 320px) {
+  .notification-container {
+    max-width: 100%;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
 </style>

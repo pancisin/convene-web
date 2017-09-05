@@ -58,6 +58,7 @@
         }
         .nav {
             >li {
+                display: inline-block;
                 >a {
                     color: #ffffff !important;
                     line-height: 60px;
@@ -272,6 +273,20 @@
     position: absolute;
     right: 0px;
     left: 0px;
+}
+
+
+@media (max-width: 400px) {
+    #topnav {
+        .topbar-main {
+            .logo {
+                display: none;
+            }
+        }
+        .navbar-toggle {
+            float:left;
+        }
+    }
 }
 
 @media (min-width: 992px) {
