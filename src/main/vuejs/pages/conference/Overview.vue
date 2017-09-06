@@ -10,14 +10,10 @@
             <table class="table">
               <thead>
                 <th>User</th>
-                <th>Type</th>
-                <th>Time</th>
               </thead>
               <tbody>
                 <tr v-for="activity in activities" :key="activity.id">
-                  <td>{{activity.user}}</td>
-                  <td>{{activity.type.name}}</td>
-                  <th>{{activity.created | moment('L LT') }}</th>
+                  <td>{{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.</td>
                 </tr>
               </tbody>
             </table>
@@ -48,6 +44,9 @@ export default {
     getActivities () {
       ConferenceApi.getActivities(this.conference.id, activities => {
         this.activities = activities;
+        this.activities.sort((a, b) => {
+          return a.created < b.created;
+        });
       });
     }
   }
