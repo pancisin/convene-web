@@ -13,7 +13,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.pancisin.bookster.models.enums.ActivityType;
@@ -23,25 +22,26 @@ import com.pancisin.bookster.models.enums.ActivityType;
 public class Activity {
 
 	@Id
-	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(updatable = false, nullable = false)
 	private String id;
-	
+
 	@ManyToOne(optional = true)
 	@JsonSerialize(using = ToStringSerializer.class)
 	private User user;
-	
+
 	@Column
 	@Enumerated(EnumType.STRING)
 	private ActivityType type;
-	
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
-	
+
 	public Activity() {
-		
+
 	}
-	
+
 	public Activity(User user, ActivityType type) {
 		this.user = user;
 		this.type = type;
