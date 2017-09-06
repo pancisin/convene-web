@@ -1,6 +1,7 @@
 package com.pancisin.bookster.models;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ public class Activity {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(updatable = false, nullable = false)
-	private String id;
+	private UUID id;
 
 	@ManyToOne(optional = true)
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -47,7 +48,7 @@ public class Activity {
 		this.type = type;
 	}
 
-	public String getId() {
+	public UUID getId() {
 		return id;
 	}
 
