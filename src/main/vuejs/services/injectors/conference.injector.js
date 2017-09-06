@@ -92,4 +92,8 @@ export default class ConferenceInjector {
   getPublicSurveys (success) {
     ConferenceApi.getPublicSurveys(this.conference_id, success);
   }
+
+  getActivities (success) {
+    ConferenceApi.getActivities(this.conference_id, success);
+  }
 };

@@ -258,6 +258,17 @@ export default {
       }
     }).then(response => {
       success(response.body);
-    })
+    });
+  },
+
+  /**
+   * Get conference recent activity.
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  getActivities (id, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/activity`).then(response => {
+      success(response.body);
+    });
   }
 };

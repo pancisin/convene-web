@@ -105,7 +105,18 @@ public class Page implements IAuthor {
 
 		return null;
 	}
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Activity> activities;
 
+	public void addActivity(Activity activity) {
+		if (this.activities == null)
+			this.activities = new ArrayList<Activity>();
+		
+		this.activities.add(activity);
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -198,5 +209,9 @@ public class Page implements IAuthor {
 
 	public void setState(PageState state) {
 		this.state = state;
+	}
+
+	public List<Activity> getActivities() {
+		return activities;
 	}
 }

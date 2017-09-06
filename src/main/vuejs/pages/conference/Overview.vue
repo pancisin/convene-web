@@ -4,10 +4,23 @@
       <div class="col-lg-4 col-lg-offset-4">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">There's nothing here yet</h3>
+            <h3 class="panel-title">Latest activity</h3>
           </div>
           <div class="panel-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <table class="table">
+              <thead>
+                <th>User</th>
+                <th>Type</th>
+                <th>Time</th>
+              </thead>
+              <tbody>
+                <tr v-for="activity in activities" :key="activity.id">
+                  <td>{{activity.user}}</td>
+                  <td>{{activity.type.name}}</td>
+                  <th>{{activity.created | moment('L LT') }}</th>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -16,7 +29,27 @@
 </template>
   
 <script>
+import ConferenceApi from 'api/conference.api';
 export default {
-  name: 'dashboard'
+  name: 'dashboard',
+  props: ['conference'],
+  data () {
+    return {
+      activities: []
+    };
+  },
+  watch: {
+    '$route': 'getActivities'
+  },
+  created () {
+    this.getActivities();
+  },
+  methods: {
+    getActivities () {
+      ConferenceApi.getActivities(this.conference.id, activities => {
+        this.activities = activities;
+      });
+    }
+  }
 };
 </script>
