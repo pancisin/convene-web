@@ -1,23 +1,21 @@
 <template>
   <div class="suggest-input" :class="{ '_loading' : loading }">
     <input class="form-control" @keyup="search($event); update($event.target.value)" v-model="selected" @focus="collapsed = false" @blur="collapsed = true" />
-  
+
     <div class="loader">
       <div class="spinner"></div>
     </div>
-  
+
     <transition name="fade-up">
       <div class="suggest-box" v-show="!collapsed">
         <div class="inbox-widget">
-          <a @click="select(option)" v-for="option in options">
-            <div class="inbox-item">
-              <div class="inbox-item-img">
-                <img :src="getAvatar(option)" class="img-circle">
-              </div>
-              <p class="inbox-item-author">{{ option.firstName }} {{ option.lastName }}</p>
-              <p class="inbox-item-text" v-text="option.email">
-              </p>
+          <a @click="select(option)" v-for="option in options" class="inbox-item">
+            <div class="inbox-item-img">
+              <img :src="getAvatar(option)" class="img-circle">
             </div>
+            <p class="inbox-item-author">{{ option.firstName }} {{ option.lastName }}</p>
+            <p class="inbox-item-text" v-text="option.email">
+            </p>
           </a>
         </div>
       </div>

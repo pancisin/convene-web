@@ -3,6 +3,30 @@ import moment from 'moment';
 export default {
 
   /**
+   * Get event public data.
+   * @param {Number} id - event id
+   * @param {Function} success - success callback function
+   */
+  getEvent (id, success) {
+    Vue.http.get(`public/event/${id}`).then(response => {
+      success(response.body);
+    });
+  },
+
+  event: {
+    /**
+     * Get events related events
+     * @param {*} event_id - event id
+     * @param {*} success - success callback function
+     */
+    getRelated (event_id, success) {
+      Vue.http.get(`public/event/${event_id}/related`).then(response => {
+        success(response.body);
+      });
+    }
+  },
+
+  /**
    * Get all public popular pages.
    * @param {Function} success - success callback function
    */
@@ -19,30 +43,6 @@ export default {
    */
   getPage (id, success) {
     Vue.http.get(`public/page/${id}`).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Get event public data.
-   * @param {Number} id - event id
-   * @param {Function} success - success callback function
-   */
-  getEvent (id, success) {
-    Vue.http.get(`public/event/${id}`).then(response => {
-      success(response.body);
-    });
-  },
-
-
-  /**
-   * Get event related events.
-   * @param {String} author_type - type of author
-   * @param {Number} author_id - id of author
-   * @param {Function} success - success callback function
-   */
-  getRelated (author_type, author_id, success) {
-    Vue.http.get(`public/${author_type}/${author_id}/event`).then(response => {
       success(response.body);
     });
   },

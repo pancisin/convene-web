@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
@@ -42,11 +43,13 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
@@ -81,7 +84,10 @@ public class PageController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
+	@Autowired
+	private ActivityRepository activityRepository;
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -89,6 +95,7 @@ public class PageController {
 	}
 
 	@DeleteMapping
+	@ActivityLog(type = ActivityType.DELETE)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> deletePage(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
@@ -97,6 +104,7 @@ public class PageController {
 	}
 
 	@PutMapping
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> putPage(@PathVariable Long page_id, @RequestBody Page page) {
 		Page stored = pageRepository.findOne(page_id);
@@ -115,15 +123,16 @@ public class PageController {
 
 	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size, 
+	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
 			@RequestParam("fromDate") String fromDate) {
-		
-		return ResponseEntity
-				.ok(eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
+
+		return ResponseEntity.ok(
+				eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
 	}
 
 	@PostMapping("/event")
 	@LicenseLimit(entity = "event", parent = "page", parentId = "page_id")
+	@ActivityLog(type = ActivityType.CREATE_EVENT)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postEvent(@PathVariable("page_id") Long page_id, @RequestBody Event event) {
 		Page stored = pageRepository.findOne(page_id);
@@ -133,6 +142,7 @@ public class PageController {
 
 	@PatchMapping("/toggle-follow")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
+	@ActivityLog(type = ActivityType.FOLLOWING)
 	public ResponseEntity<?> followPage(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -169,6 +179,7 @@ public class PageController {
 	@PostMapping("/service")
 	@LicenseLimit(entity = "service", parent = "page", parentId = "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@ActivityLog(type = ActivityType.CREATE_SERVICE)
 	public ResponseEntity<?> postService(@PathVariable("page_id") Long page_id, @RequestBody Service service) {
 		Page stored = pageRepository.findOne(page_id);
 		service.setPage(stored);
@@ -202,8 +213,10 @@ public class PageController {
 	}
 
 	@PostMapping("/administrator")
-//	@License(value = Subscription.PROFESSIONAL, parent = "page", parentId = "page_id")
+	// @License(value = Subscription.PROFESSIONAL, parent = "page", parentId =
+	// "page_id")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@ActivityLog(type = ActivityType.CREATE_ADMINISTRATOR)
 	public ResponseEntity<?> postAdministrator(@PathVariable Long page_id, @RequestBody User user) {
 		Page stored = pageRepository.findOne(page_id);
 
@@ -211,7 +224,7 @@ public class PageController {
 		if (existing != null) {
 			PageAdministrator pa = new PageAdministrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
-			
+
 			paRepository.save(pa);
 			return ResponseEntity.ok(pa);
 		}
@@ -228,14 +241,16 @@ public class PageController {
 
 	@PostMapping("/place")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
 		Page stored = pageRepository.findOne(page_id);
 		place.setPage(stored);
 		return ResponseEntity.ok(placeRepository.save(place));
 	}
-	
+
 	@PatchMapping("/toggle-published")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@ActivityLog(type = ActivityType.UPDATE)
 	public ResponseEntity<?> togglePublishState(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 
@@ -244,8 +259,15 @@ public class PageController {
 		} else if (stored.getState() == PageState.PUBLISHED) {
 			stored.setState(PageState.DEACTIVATED);
 		}
-		
+
 		return ResponseEntity.ok(pageRepository.save(stored));
+	}
+
+	@GetMapping("/activity")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
+	public ResponseEntity<?> getActivity(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(activityRepository.getByPage(stored.getId()));
 	}
 
 	@ExceptionHandler

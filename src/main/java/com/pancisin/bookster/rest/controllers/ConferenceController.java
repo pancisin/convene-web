@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Article;
@@ -35,11 +36,14 @@ import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
+import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
@@ -95,6 +99,7 @@ public class ConferenceController {
 	}
 
 	@PutMapping
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> putConference(@PathVariable Long conference_id, @RequestBody Conference conference) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -112,6 +117,7 @@ public class ConferenceController {
 	}
 	
 	@DeleteMapping
+	@ActivityLog(type = ActivityType.DELETE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> deleteConference(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -128,6 +134,7 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/event")
+	@ActivityLog(type = ActivityType.CREATE_EVENT)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postEvent(@PathVariable Long conference_id, @RequestBody Event event) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -147,6 +154,7 @@ public class ConferenceController {
 
 	@PostMapping("/attend")
 	@Transactional
+	@ActivityLog(type = ActivityType.ATTENDING)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> postAttend(@PathVariable Long conference_id, @RequestBody List<MetaValue> meta) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -159,6 +167,7 @@ public class ConferenceController {
 	}
 
 	@PutMapping("/cancel-attend")
+	@ActivityLog(type = ActivityType.ATTENDING)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> cancelAttend(@PathVariable Long conference_id) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -188,6 +197,7 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/meta-field")
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postMetaField(@PathVariable Long conference_id, @RequestBody MetaField field) {
 		Conference conference = conferenceRepository.findOne(conference_id);
@@ -198,6 +208,7 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/invitation")
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postInvitation(@PathVariable Long conference_id, @RequestBody Invitation invitation) {
 		Conference conference = conferenceRepository.findOne(conference_id);
@@ -229,6 +240,7 @@ public class ConferenceController {
 	}
 
 	@PostMapping("/administrator")
+	@ActivityLog(type = ActivityType.CREATE_ADMINISTRATOR)
 	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId = "conference_id")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long conference_id, @RequestBody User user) {
@@ -248,6 +260,7 @@ public class ConferenceController {
 
 	@PostMapping("/article")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@ActivityLog(type = ActivityType.CREATE_ARTICLE)
 	public ResponseEntity<?> postArticle(@PathVariable Long conference_id, @RequestBody Article article) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		article.setPublished(false);
@@ -263,6 +276,7 @@ public class ConferenceController {
 	}
 	
 	@PatchMapping("/toggle-published")
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
 	public ResponseEntity<?> togglePublishState(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -278,6 +292,7 @@ public class ConferenceController {
 
 	@Transactional
 	@PostMapping("/survey")
+	@ActivityLog(type = ActivityType.CREATE_SURVEY)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
 	public ResponseEntity<?> postSurvey(@PathVariable Long conference_id, @RequestBody Survey survey) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -302,5 +317,15 @@ public class ConferenceController {
 			List<Survey> surveys = surveyRepository.getByConference(conference_id, user.getId());
 			return ResponseEntity.ok(surveys);
 		}
+	}
+	
+	@Autowired
+	private ActivityRepository activityRepository;
+	
+	@GetMapping("/activity")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
+	public ResponseEntity<?> getActivity(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(activityRepository.getByConference(stored.getId()));
 	}
 }

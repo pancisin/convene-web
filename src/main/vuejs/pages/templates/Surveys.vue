@@ -69,7 +69,6 @@
 
 <script>
 import SurveyApi from 'api/survey.api';
-import moment from 'moment';
 export default {
   name: 'surveys',
   inject: ['provider'],
@@ -79,7 +78,7 @@ export default {
   data () {
     return {
       surveys: [],
-      loading: false,
+      loading: false
     };
   },
   computed: {
@@ -106,13 +105,15 @@ export default {
       }
     },
     deleteSurvey (survey) {
-      SurveyApi.deleteSurvey(survey.id, result => {
-        this.surveys.forEach((s, index) => {
-          if (s.id === result.id) {
-            this.surveys.splice(index, 1, result);
-          };
+      this.$prompt(`Deleting survey ${survey.name}.`, 'Are you sure you want to detele this survey permanently ?', () => {
+        SurveyApi.deleteSurvey(survey.id, result => {
+          this.surveys.forEach((s, index) => {
+            if (s.id === result.id) {
+              this.surveys.splice(index, 1, result);
+            };
+          });
         });
-      })
+      });
     }
   }
 };

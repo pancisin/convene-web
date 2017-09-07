@@ -91,6 +91,17 @@ public class Conference implements IAuthor {
 		return null;
 	}
 	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<Activity> activities;
+
+	public void addActivity(Activity activity) {
+		if (this.activities == null)
+			this.activities = new ArrayList<Activity>();
+		
+		this.activities.add(activity);
+	}
+	
 	public void addArticle(Article article) {
 		if (this.articles == null)
 			this.articles = new ArrayList<Article>();
@@ -200,5 +211,9 @@ public class Conference implements IAuthor {
 
 	public void setState(PageState state) {
 		this.state = state;
+	}
+
+	public List<Activity> getActivities() {
+		return activities;
 	}
 }

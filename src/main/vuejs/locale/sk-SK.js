@@ -70,5 +70,23 @@ export default {
   error: {
     user_not_found: 'Používateľ sa nenašiel v našej databáze',
     password: 'Nesprávne heslo'
+  },
+  activity: {
+    target: {
+      conference: 'konferencie',
+      page: 'stránky'
+    },
+    type: {
+      following: 'začal následovať',
+      attending: 'sa zúčastní',
+      delete: 'zmazal',
+      update: 'aktualizoval dáta',
+      create_event: 'vytvoril udalosť do',
+      create_service: 'vytvoril službu do',
+      create_administrator: 'pridelil prístupové práva do',
+      create_place: 'vytvoril miesto do',
+      create_article: 'vytvoril článok do',
+      create_survey: 'vytvoril prieskum do'
+    }
   }
 };

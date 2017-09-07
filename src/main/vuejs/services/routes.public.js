@@ -50,19 +50,16 @@ export default [
   },
   {
     path: 'faq',
-    alias: 'admin/faq',
     name: 'faq',
-    component: resolve => require(['../pages/static/faq.vue'], resolve)
+    component: resolve => require(['../pages/static/FAQ.vue'], resolve)
   },
   {
     path: 'terms',
-    alias: 'admin/terms',
     name: 'terms',
     component: resolve => require(['../pages/static/Terms.vue'], resolve)
   },
   {
     path: 'privacy-policy',
-    alias: 'admin/privacy-policy',
     name: 'privacy-policy',
     component: resolve => require(['../pages/static/Privacy.vue'], resolve)
   },

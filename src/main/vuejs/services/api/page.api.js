@@ -194,5 +194,16 @@ export default {
     Vue.http.delete(`api/page-administrator/${administrator_id}`).then(response => {
       success(response.body);
     }, errorHandler);
+  },
+
+  /**
+   * Get latest activity to page by page id.
+   * @param {Number} id - page id
+   * @param {Function} success - success callback function
+   */
+  getActivity (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/activity`).then(response => {
+      success(response.body);
+    });
   }
 };

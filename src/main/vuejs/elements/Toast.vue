@@ -1,12 +1,17 @@
 <template>
   <div class="toast" :class="notification.type ? 'toast-' + notification.type : 'secondary'">
-    <!-- <button type="button" @click="triggerClose" class="close">
-          <i class="material-icons">close</i>
-        </button> -->
+    <button type="button" @click="triggerClose" class="close">
+      <i class="material-icons">close</i>
+    </button>
     <strong v-if="notification.title">{{notification.title}}</strong>
     <p>
       {{notification.message}}
     </p>
+
+    <div class="toast-buttons m-t-20 text-center" v-if="notification.type === 'prompt'">
+      <a class="btn btn-primary" @click="selectOption(notification.agree)">Yes</a>
+      <a class="btn btn-default" @click="selectOption(notification.disagree)">No</a>
+    </div>
   </div>
 </template>
 
@@ -16,6 +21,13 @@ export default {
   methods: {
     triggerClose () {
       this.$emit('close-notification', this.notification);
+    },
+    selectOption (callback) {
+      if (callback != null) {
+        callback();
+      }
+
+      this.triggerClose();
     }
   }
 };
@@ -23,7 +35,7 @@ export default {
 
 <style lang="less">
 .toast {
-  padding: 15px 25px;
+  padding: 15px 25px 15px 32px;
   background-color: #333;
   color: #adadad;
   margin-top: 5px;
@@ -46,7 +58,7 @@ export default {
     content: '';
     background-color: #525252;
     position: absolute;
-    left: -7px;
+    left: 0px;
     top: 0;
     bottom: 0;
     width: 7px;
@@ -54,7 +66,25 @@ export default {
 
   &.toast-success {
     &:before {
-      background-color: green;
+      background-color: rgb(82, 187, 86);
+    }
+  }
+
+  &.toast-danger {
+    &:before {
+      background-color: rgb(239, 83, 80);
+    }
+  }
+
+  &.toast-warning {
+    &:before {
+      background-color: rgb(241, 181, 61);
+    }
+  }
+
+  &.toast-info {
+    &:before {
+      background-color: rgb(103, 209, 248);
     }
   }
 }

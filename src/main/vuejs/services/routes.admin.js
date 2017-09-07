@@ -2,6 +2,7 @@ import store from 'store/index';
 export default [
   {
     path: 'dashboard',
+    name: 'admin.dashboard',
     component: resolve => require(['../pages/Dashboard.vue'], resolve),
     meta: {
       title: 'Dashboard'
@@ -9,6 +10,7 @@ export default [
   },
   {
     path: 'event',
+    name: 'admin.event',
     component: resolve => require(['../pages/Event.index.vue'], resolve),
     meta: {
       title: 'Events'
@@ -217,7 +219,7 @@ export default [
         name: 'page.overview',
         component: resolve => require(['../pages/page/Overview.vue'], resolve),
         meta: {
-          titlle: 'Overview'
+          titlle: 'Page Dashboard'
         }
       },
       {
@@ -324,6 +326,7 @@ export default [
   },
   {
     path: 'notifications',
+    name: 'admin.notification',
     component: resolve => require(['../pages/Notifications.vue'], resolve),
     meta: {
       titlle: 'Notifications'

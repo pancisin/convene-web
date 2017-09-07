@@ -34,7 +34,7 @@ export default {
     };
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },

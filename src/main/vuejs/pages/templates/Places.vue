@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <panel type="table" v-loading="loading">
         <span slot="title">{{ $t('admin.page.places') }}</span>
-  
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -31,7 +31,7 @@
             </tr>
           </tbody>
         </table>
-  
+
         <div class="text-center" v-if="editable">
           <router-link to="create-place" class="btn btn-default btn-rounded text-center">
             Create place
@@ -78,9 +78,11 @@ export default {
       }
     },
     deletePlace (place) {
-      PlaceApi.deletePlace(place.id, result => {
-        this.places = this.places.filter(p => {
-          return p.id !== place.id;
+      this.$prompt(`Deleting place ${place.name}`, 'Are you sure you want to delete this place permanently ?', () => {
+        PlaceApi.deletePlace(place.id, result => {
+          this.places = this.places.filter(p => {
+            return p.id !== place.id;
+          });
         });
       });
     }
