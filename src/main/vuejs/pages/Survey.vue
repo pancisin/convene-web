@@ -65,8 +65,8 @@
               </div>
               <div class="form-group">
                 <div class="checkbox checkbox-primary">
-                  <input id="optional-checkbox" type="checkbox" v-model="field.optional">
-                  <label for="optional-checkbox">
+                  <input :id="'optional-' + index" type="checkbox" v-model="field.optional">
+                  <label :for="'optional-' + index">
                     Optional
                   </label>
                 </div>
