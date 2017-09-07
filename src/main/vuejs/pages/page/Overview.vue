@@ -35,6 +35,12 @@ export default {
       loading_activities: false
     };
   },
+  watch: {
+    '$route': 'getActivity'
+  },
+  created () {
+    this.getActivity();
+  },
   methods: {
     getActivity () {
       this.loading_activities = true;
