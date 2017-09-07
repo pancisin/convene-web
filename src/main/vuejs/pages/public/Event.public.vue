@@ -117,7 +117,7 @@ export default {
           EventApi.getEvent(event_id, event => {
             this.event = event;
 
-            PublicApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
+            EventApi.getRelated(this.event.id, paginator => {
               this.relatedEvents = paginator.content;
             });
 
@@ -131,7 +131,7 @@ export default {
           PublicApi.getEvent(event_id, event => {
             this.event = event;
 
-            PublicApi.getRelated(this.event.author.type, this.event.author.id, paginator => {
+            PublicApi.event.getRelated(this.event.id, paginator => {
               this.relatedEvents = paginator.content;
             });
           });

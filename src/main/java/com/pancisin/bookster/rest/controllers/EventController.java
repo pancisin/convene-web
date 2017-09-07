@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -168,5 +169,10 @@ public class EventController {
 	public ResponseEntity<?> getInvitations(@PathVariable Long event_id) {
 		Event stored = eventRepository.findOne(event_id);
 		return ResponseEntity.ok(stored.getInvitations());
+	}
+
+	@GetMapping("/related")
+	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
+		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
 	}
 }

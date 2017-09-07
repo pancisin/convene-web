@@ -113,5 +113,16 @@ export default {
     Vue.http.post(`${EVENT_API_URL}/${id}/programme`, programme).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get related events to one specified by id
+   * @param {*} id - event id
+   * @param {*} success - success callback function
+   */
+  getRelated (id, success) {
+    Vue.http.get(`${EVENT_API_URL}/${id}/related`).then(response => {
+      success(response.body);
+    });
   }
 };

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
@@ -27,6 +28,8 @@ import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.models.views.Compact;
+import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
