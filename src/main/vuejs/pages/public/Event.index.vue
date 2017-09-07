@@ -8,7 +8,9 @@
       <div class="col-md-9">
         <div class="events-masonry">
           <router-link v-for="event in eventsPaginator.content" :to="'/event/' + event.id" class="event-item" :key="event.id">
-            <img v-if="event.bannerUrl != null" :src="event.bannerUrl">
+            <div class="image-wrapper">
+              <img v-if="event.bannerUrl != null" :src="event.bannerUrl">
+            </div>
 
             <div class="content">
               <h4 v-text="event.name"></h4>
@@ -16,13 +18,13 @@
               <br>
               <small v-if="event.place != null" v-text="event.place.address.formatted"></small>
 
-              <span class="date">
+              <small class="date">
                 {{ event.date | moment('L') }}
                 <span class="time" v-if="event.startsAt != null">
                   at {{ event.startsAt }}
                 </span>
-              </span>
-              <!--<p v-strip="event.summary"></p>-->
+              </small>
+              <!-- <p v-strip="event.summary"></p> -->
             </div>
           </router-link>
         </div>
@@ -96,10 +98,22 @@ export default {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 
-    background: white;
+    background: #fff;
+    box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
 
     img {
       width: 100%;
+      transition: all .3s ease;
+    }
+
+    .image-wrapper {
+      overflow: hidden;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
     }
 
     .content {

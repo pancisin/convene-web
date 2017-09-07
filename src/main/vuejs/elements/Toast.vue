@@ -7,6 +7,11 @@
     <p>
       {{notification.message}}
     </p>
+
+    <div class="toast-buttons m-t-20 text-center" v-if="notification.type === 'prompt'">
+      <a class="btn btn-primary" @click="selectOption(notification.agree)">Yes</a>
+      <a class="btn btn-default" @click="selectOption(notification.disagree)">No</a>
+    </div>
   </div>
 </template>
 
@@ -16,6 +21,13 @@ export default {
   methods: {
     triggerClose () {
       this.$emit('close-notification', this.notification);
+    },
+    selectOption (callback) {
+      if (callback != null) {
+        callback();
+      }
+
+      this.triggerClose();
     }
   }
 };

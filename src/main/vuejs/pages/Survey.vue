@@ -161,7 +161,9 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.touched) {
-      this.$info('You have unsaved changes !');
+      this.$prompt('You have unsaved changes !', 'Are you sure you want to leave and discard recent changes ?', () => {
+        next();
+      });
     } else {
       next();
     }
@@ -227,7 +229,7 @@ export default {
         });
 
         this.original_survey = JSON.stringify(this.survey);
-      })
+      });
     }
   }
 };

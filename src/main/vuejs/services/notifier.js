@@ -37,5 +37,14 @@ export default {
 
       this.$store.dispatch('addToast', notification);
     };
+
+    Vue.prototype.$prompt = function (title, message, agree, disagree) {
+      var notification = {
+        title, message,
+        type: 'prompt', agree, disagree
+      };
+
+      this.$store.dispatch('addToast', notification);
+    };
   }
 };
