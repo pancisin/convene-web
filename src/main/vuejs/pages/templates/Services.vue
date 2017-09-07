@@ -85,7 +85,7 @@ export default {
     getServices () {
       this.loading = true;
       if (this.api != null) {
-        this.api.getServices(true, services => {
+        this.api.getServices(services => {
           this.services = services;
           this.loading = false;
         });

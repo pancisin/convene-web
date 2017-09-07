@@ -1,7 +1,7 @@
-  <template>
+<template>
   <div>
     <div class="row">
-      <div class="col-lg-4 col-lg-offset-4">
+      <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">Latest activity</h3>
@@ -45,7 +45,8 @@ export default {
       ConferenceApi.getActivities(this.conference.id, activities => {
         this.activities = activities;
         this.activities.sort((a, b) => {
-          return a.created < b.created;
+          if (a.created === b.created) return 0;
+          return a.created < b.created ? 1 : -1;
         });
       });
     }

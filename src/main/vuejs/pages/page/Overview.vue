@@ -1,19 +1,26 @@
 <template>
-  <div class="row">
-    <div class="col-md-9">
-      <panel type="default">
-        <span slot="title">Overview</span>
-      </panel>
-    </div>
-    <div class="col-md-3">
-      <div class="widget-simple-chart text-right card-box">
-        <h3 class="text-primary counter" v-text="page.followersCount"></h3>
-        <p class="text-muted text-nowrap">Followers</p>
-
+  <div>
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-default" v-loading="loading_activities">
+          <div class="panel-heading">
+            <h3 class="panel-title">Latest activity</h3>
+          </div>
+          <div class="panel-body">
+            <table class="table">
+              <thead>
+                <th>User</th>
+              </thead>
+              <tbody>
+                <tr v-for="activity in activities" :key="activity.id">
+                  <td>{{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-    
-    {{ activities }}
   </div>
 </template>
 
@@ -24,13 +31,16 @@ export default {
   props: ['page'],
   data () {
     return {
-      activities: []
+      activities: [],
+      loading_activities: false
     };
   },
   methods: {
     getActivity () {
+      this.loading_activities = true;
       PageApi.getActivity(this.page.id, activities => {
         this.activities = activities;
+        this.loading_activities = false;
       });
     }
   }

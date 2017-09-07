@@ -31,7 +31,7 @@ public class PageActivityMonitor {
 	public void pageController(Long page_id) {
 		
 	}
-	
+
 	@Transactional
 	@AfterReturning("pageController(page_id) && @annotation(activityLog)")
 	public void LogPageActivity(Long page_id, ActivityLog activityLog) {

@@ -5,27 +5,12 @@
         <ul>
           <li class="menu-title">{{ $t('admin.menu.main') }}</li>
 
-          <li>
-            <router-link to="/admin/dashboard" class="waves-effect">
-              <i class="material-icons">dashboard</i>
-              <span>{{ $t('admin.menu.dashboard') }}</span>
+          <li v-for="(route, index) in routes.main" :key="index">
+            <router-link :to="{ name: route.name }" class="waves-effect">
+              <i class="material-icons" v-text="route.icon"></i>
+              <span>{{ $t(route.code) }}</span>
             </router-link>
           </li>
-
-          <li>
-            <router-link to="/admin/event" class="waves-effect">
-              <i class="material-icons">event</i>
-              <span>{{ $t('admin.menu.events') }}</span>
-            </router-link>
-          </li>
-
-          <li>
-            <router-link to="/admin/notifications" class="waves-effect">
-              <i class="material-icons">notifications_none</i>
-              <span>{{ $t('admin.menu.notifications') }}</span>
-            </router-link>
-          </li>
-
         </ul>
 
         <ul v-loading="loadingPages">
@@ -37,39 +22,10 @@
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
 
             <span v-text="page.name" slot="title"></span>
-            <!--<li slot="item">
-                              <router-link :to="{ name: 'page.overview', params: { id : page.id }}" class="list-group-item waves-effect">
-                                {{ $t('admin.page.overview') }}
-                              </router-link>
-                            </li>-->
-            <li slot="item">
-              <router-link :to="{ name: 'page.events', params: { id: page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.events') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'page.places', params: { id: page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.places') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'page.administrators', params: { id: page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.administrators') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'page.services', params: { id: page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.services') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'page.requests', params: { id: page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.requests') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'page.settings', params: { id : page.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.page.settings') }}
+
+            <li slot="item" v-for="(route, index) in routes.page" :key="index">
+              <router-link :to="{ name: route.name, params: { id : page.id }}" class="list-group-item waves-effect">
+                {{ $t(route.code) }}
               </router-link>
             </li>
           </drop-down>
@@ -81,6 +37,7 @@
             </router-link>
           </li>
         </ul>
+
         <ul v-loading="loadingConferences">
           <li class="menu-title">{{ $t('admin.menu.conferences') }}
             <span class="label label-warning pull-right">Enterprise</span>
@@ -93,39 +50,10 @@
             <i class="material-icons" slot="title" v-else-if="conference.state == 'BLOCKED'">highlight_off</i>
 
             <span v-text="conference.name" slot="title"></span>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.overview', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.overview') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.events', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.events') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.articles', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.articles') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.surveys', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.surveys') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.administrators', params: { id: conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.administrators') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.attendees', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.attendees') }}
-              </router-link>
-            </li>
-            <li slot="item">
-              <router-link :to="{ name: 'conference.settings', params: { id : conference.id }}" class="list-group-item waves-effect">
-                {{ $t('admin.conference.settings') }}
+
+            <li slot="item" v-for="(route, index) in routes.conference" :key="index">
+              <router-link :to="{ name: route.name, params: { id : conference.id }}" class="list-group-item waves-effect">
+                {{ $t(route.code) }}
               </router-link>
             </li>
           </drop-down>
@@ -141,22 +69,10 @@
         <ul>
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
 
-          <li>
-            <router-link to="/admin/faq" class="waves-effect">
-              <i class="fa fa-question" aria-hidden="true"></i>
-              <span>{{ $t('admin.menu.faq') }}</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/admin/terms" class="waves-effect">
-              <i class="material-icons">lock</i>
-              <span>{{ $t('admin.menu.terms') }}</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/admin/privacy-policy" class="waves-effect">
-              <i class="material-icons">lock</i>
-              <span>{{ $t('admin.menu.privacy') }}</span>
+          <li v-for="(route, index) in routes.footer" :key="index">
+            <router-link :to="{ name: route.name }" class="waves-effect">
+              <i class="material-icons" v-text="route.icon"></i>
+              <span>{{ $t(route.code) }}</span>
             </router-link>
           </li>
         </ul>
@@ -172,6 +88,7 @@
 <script>
 import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue';
 import { mapActions, mapGetters } from 'vuex';
+import routes from '../services/maps/routes.map';
 
 export default {
   name: 'sidebar',
@@ -184,7 +101,10 @@ export default {
   computed: {
     ...mapGetters([
       'pages', 'conferences', 'loadingPages', 'loadingConferences'
-    ])
+    ]),
+    routes () {
+      return routes;
+    }
   },
   components: {
     DropDown: VerticalMenuDrop
