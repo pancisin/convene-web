@@ -96,9 +96,11 @@ export default {
       });
     },
     deleteArticle (article) {
-      ArticleApi.deleteArticle(article.id, result => {
-        this.articles = this.articles.filter(x => {
-          x.id !== article.id;
+      this.$prompt(`Deleting article ${article.title}.`, 'Are you sure you want to delete this article permanently ?', () => {
+        ArticleApi.deleteArticle(article.id, result => {
+          this.articles = this.articles.filter(x => {
+            x.id !== article.id;
+          });
         });
       });
     }

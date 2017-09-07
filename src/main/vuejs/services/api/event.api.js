@@ -33,6 +33,17 @@ export default {
   },
 
   /**
+   * Delete event by event id
+   * @param {*} id - event id
+   * @param {*} success - success callback function
+   */
+  deleteEvent (id, success) {
+    Vue.http.delete(`${EVENT_API_URL}/${id}`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
    * Get event related events.
    * @param {*} id - event id
    * @param {*} success - success callback function

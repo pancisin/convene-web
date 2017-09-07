@@ -1,7 +1,7 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.events') }}</span>
-  
+
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -33,7 +33,7 @@
         </tr>
       </tbody>
     </table>
-  
+
     <context-menu ref="menu">
       <template scope="props">
         <ul>
@@ -73,11 +73,11 @@
         </ul>
       </template>
     </context-menu>
-  
+
     <div class="text-center">
       <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate"></paginator>
     </div>
-  
+
     <div class="text-center" v-if="editable">
       <router-link to="events/create" class="btn btn-default btn-rounded text-center">
         Create event
@@ -88,6 +88,7 @@
 
 <script>
 import Paginator from '../../elements/Paginator.vue';
+import EventApi from 'api/event.api';
 
 export default {
   name: 'events',
@@ -126,9 +127,11 @@ export default {
       this.getEvents(0);
     },
     deleteEvent (event) {
-      this.$http.delete('api/event/' + event.id).then(response => {
-        this.paginator.content = this.paginator.content.filter(e => {
-          return e.id !== event.id;
+      this.$prompt(`Deleting event ${event.name}.`, 'Are you sure you want to delete permanently this event ?', () => {
+        EventApi.deleteEvent(event.id, result => {
+          this.paginator.content = this.paginator.content.filter(e => {
+            return e.id !== event.id;
+          });
         });
       });
     },
