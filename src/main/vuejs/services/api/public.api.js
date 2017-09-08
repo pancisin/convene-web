@@ -158,5 +158,15 @@ export default {
     Vue.http.get('public/meta-types').then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get widget types enum values.
+   * @param {*} success - success callback function
+   */
+  getWidgetTypes (success) {
+    Vue.http.get('public/widget-types').then(response => {
+      success(response.body);
+    });
   }
 };

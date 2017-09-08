@@ -23,9 +23,9 @@ import com.pancisin.bookster.models.enums.ActivityType;
 public class Activity {
 
 	@Id
-	@GeneratedValue(generator = "UUID")
-	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(updatable = false, nullable = false)
+	@GeneratedValue(generator = "uuid2")
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	@ManyToOne(optional = true)

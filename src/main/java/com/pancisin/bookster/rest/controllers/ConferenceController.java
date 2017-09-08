@@ -351,6 +351,6 @@ public class ConferenceController {
 		stored.setWidgets(widgets);
 		conferenceRepository.save(stored);
 
-		return ResponseEntity.ok(widgets);
+		return ResponseEntity.ok(stored.getWidgets());
 	}
 }

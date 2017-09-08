@@ -28,6 +28,7 @@ import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.models.enums.WidgetType;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ArticleRepository;
@@ -179,6 +180,11 @@ public class PublicRestController {
 	@GetMapping("/meta-types")
 	public ResponseEntity<?> getMetaTypes() {
 		return ResponseEntity.ok(MetaType.values());
+	}
+	
+	@GetMapping("/widget-types")
+	public ResponseEntity<?> getWidgetTypes() {
+		return ResponseEntity.ok(WidgetType.values());
 	}
 
 	@GetMapping("/conference/{conference_id}")
