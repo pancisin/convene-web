@@ -94,7 +94,7 @@ public class Conference implements IAuthor {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Activity> activities;
-
+	
 	public void addActivity(Activity activity) {
 		if (this.activities == null)
 			this.activities = new ArrayList<Activity>();
@@ -102,6 +102,10 @@ public class Conference implements IAuthor {
 		this.activities.add(activity);
 	}
 	
+	@JsonIgnore
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<Widget> widgets;
+
 	public void addArticle(Article article) {
 		if (this.articles == null)
 			this.articles = new ArrayList<Article>();
@@ -215,5 +219,21 @@ public class Conference implements IAuthor {
 
 	public List<Activity> getActivities() {
 		return activities;
+	}
+
+	public List<Widget> getWidgets() {
+		return widgets;
+	}
+
+	public void setWidgets(List<Widget> widgets) {
+		if (this.widgets == null) {
+			this.widgets = new ArrayList<Widget>();
+		}
+		
+		this.widgets.clear();
+
+		if (widgets != null) {
+			this.widgets.addAll(widgets);
+		}
 	}
 }

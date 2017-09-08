@@ -251,6 +251,11 @@ export default {
     });
   },
 
+  /**
+   * Get conference surveys
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
   getSurveys (id, success) {
     Vue.http.get(`${CONFERENCE_API_URL}/${id}/survey`, {
       params: {
@@ -268,6 +273,29 @@ export default {
    */
   getActivities (id, success) {
     Vue.http.get(`${CONFERENCE_API_URL}/${id}/activity`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get conference dashboard widgets data.
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  getWidgets (id, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/widget`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Update conference widgets positions and existence
+   * @param {*} id - conference id
+   * @param {*} widgets - widgets array
+   * @param {*} success - success callback function
+   */
+  putWidgets (id, widgets, success) {
+    Vue.http.put(`${CONFERENCE_API_URL}/${id}/widget`, widgets).then(response => {
       success(response.body);
     });
   }

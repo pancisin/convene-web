@@ -39,6 +39,7 @@ import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.Widget;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
@@ -54,6 +55,7 @@ import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.MetaValueRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.repository.WidgetRepository;
 
 @RestController
 @RequestMapping("/api/conference/{conference_id}")
@@ -88,10 +90,10 @@ public class ConferenceController {
 
 	@Autowired
 	private ArticleRepository articleRepository;
-	
+
 	@Autowired
 	private SurveyRepository surveyRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -115,7 +117,7 @@ public class ConferenceController {
 
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
-	
+
 	@DeleteMapping
 	@ActivityLog(type = ActivityType.DELETE)
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
@@ -127,10 +129,9 @@ public class ConferenceController {
 
 	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
-	public ResponseEntity<?> getEvents(@PathVariable Long conference_id, @PathVariable int page,
-			@PathVariable int size) {
-		return ResponseEntity.ok(eventRepository.getByConference(conference_id,
-				new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
+	public ResponseEntity<?> getEvents(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(
+				eventRepository.getByConference(conference_id, new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
 	}
 
 	@PostMapping("/event")
@@ -241,7 +242,8 @@ public class ConferenceController {
 
 	@PostMapping("/administrator")
 	@ActivityLog(type = ActivityType.CREATE_ADMINISTRATOR)
-	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId = "conference_id")
+	// @License(value = Subscription.ENTERPRISE, parent = "conference", parentId =
+	// "conference_id")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postAdministrator(@PathVariable Long conference_id, @RequestBody User user) {
 		Conference stored = conferenceRepository.findOne(conference_id);
@@ -250,11 +252,11 @@ public class ConferenceController {
 		if (existing != null) {
 			ConferenceAdministrator pa = new ConferenceAdministrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
-	
+
 			caRepository.save(pa);
 			return ResponseEntity.ok(pa);
 		}
-			
+
 		return new ResponseEntity("User not found by email", HttpStatus.BAD_REQUEST);
 	}
 
@@ -267,17 +269,17 @@ public class ConferenceController {
 		article.setConference(stored);
 		return ResponseEntity.ok(articleRepository.save(article));
 	}
-	
+
 	@GetMapping("/article")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getArticles(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(stored.getArticles());
 	}
-	
+
 	@PatchMapping("/toggle-published")
 	@ActivityLog(type = ActivityType.UPDATE)
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> togglePublishState(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 
@@ -286,30 +288,30 @@ public class ConferenceController {
 		} else if (stored.getState() == PageState.PUBLISHED) {
 			stored.setState(PageState.DEACTIVATED);
 		}
-		
+
 		return ResponseEntity.ok(conferenceRepository.save(stored));
 	}
 
 	@Transactional
 	@PostMapping("/survey")
 	@ActivityLog(type = ActivityType.CREATE_SURVEY)
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')") 
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postSurvey(@PathVariable Long conference_id, @RequestBody Survey survey) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		
+
 		survey = surveyRepository.save(survey);
 		stored.addSurvey(survey);
-		
+
 		conferenceRepository.save(stored);
 		return ResponseEntity.ok(survey);
 	}
 
 	@GetMapping("/survey")
-	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')") 
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getSurveys(@PathVariable Long conference_id,
 			@RequestParam(name = "submitted", required = false, defaultValue = "false") String submitted) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		
+
 		if (Boolean.parseBoolean(submitted)) {
 			return ResponseEntity.ok(stored.getSurveys());
 		} else {
@@ -318,14 +320,37 @@ public class ConferenceController {
 			return ResponseEntity.ok(surveys);
 		}
 	}
-	
+
 	@Autowired
 	private ActivityRepository activityRepository;
-	
+
 	@GetMapping("/activity")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getActivity(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		return ResponseEntity.ok(activityRepository.getByConference(stored.getId()));
+	}
+
+	@GetMapping("/widget")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
+	public ResponseEntity<?> getWidgets(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(stored.getWidgets());
+	}
+
+	@Autowired
+	private WidgetRepository widgetRepository;
+	
+	@Transactional
+	@PutMapping("/widget")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	public ResponseEntity<?> postWidgets(@PathVariable Long conference_id, @RequestBody List<Widget> widgets) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		
+//		widgets = widgetRepository.save(widgets);
+		stored.setWidgets(widgets);
+		conferenceRepository.save(stored);
+
+		return ResponseEntity.ok(widgets);
 	}
 }
