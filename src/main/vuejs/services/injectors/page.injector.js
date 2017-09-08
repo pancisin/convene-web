@@ -72,4 +72,16 @@ export default class PageInjector {
   deleteAdministrator (administrator_id, success) {
     PageApi.deleteAdministrator(administrator_id, success);
   }
+
+  getActivities (success) {
+    PageApi.getActivities(this.page_id, success);
+  }
+
+  getWidgets (success) {
+    PageApi.getWidgets(this.page_id, success);
+  }
+
+  putWidgets (widgets, success) {
+    PageApi.putWidgets(this.page_id, widgets, success);
+  }
 }

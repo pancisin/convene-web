@@ -338,16 +338,12 @@ public class ConferenceController {
 		return ResponseEntity.ok(stored.getWidgets());
 	}
 
-	@Autowired
-	private WidgetRepository widgetRepository;
-	
 	@Transactional
 	@PutMapping("/widget")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postWidgets(@PathVariable Long conference_id, @RequestBody List<Widget> widgets) {
 		Conference stored = conferenceRepository.findOne(conference_id);
 		
-//		widgets = widgetRepository.save(widgets);
 		stored.setWidgets(widgets);
 		conferenceRepository.save(stored);
 

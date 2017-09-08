@@ -96,4 +96,12 @@ export default class ConferenceInjector {
   getActivities (success) {
     ConferenceApi.getActivities(this.conference_id, success);
   }
+
+  getWidgets (success) {
+    ConferenceApi.getWidgets(this.conference_id, success);
+  }
+
+  putWidgets (widgets, success) {
+    ConferenceApi.putWidgets(this.conference_id, widgets, success);
+  }
 };

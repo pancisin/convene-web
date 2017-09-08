@@ -201,8 +201,31 @@ export default {
    * @param {Number} id - page id
    * @param {Function} success - success callback function
    */
-  getActivity (id, success) {
+  getActivities (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/activity`).then(response => {
+      success(response.body);
+    });
+  },
+
+    /**
+   * Get conference dashboard widgets data.
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  getWidgets (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/widget`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Update conference widgets positions and existence
+   * @param {*} id - conference id
+   * @param {*} widgets - widgets array
+   * @param {*} success - success callback function
+   */
+  putWidgets (id, widgets, success) {
+    Vue.http.put(`${PAGE_API_URL}/${id}/widget`, widgets).then(response => {
       success(response.body);
     });
   }

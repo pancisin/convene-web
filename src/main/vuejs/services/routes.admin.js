@@ -31,7 +31,7 @@ export default [
       {
         path: 'overview',
         name: 'conference.overview',
-        component: resolve => require(['../pages/conference/Overview.vue'], resolve),
+        component: resolve => require(['../pages/templates/Dashboard.vue'], resolve),
         meta: {
           title: 'Overview'
         }
@@ -210,7 +210,7 @@ export default [
       {
         path: 'overview',
         name: 'page.overview',
-        component: resolve => require(['../pages/page/Overview.vue'], resolve),
+        component: resolve => require(['../pages/templates/Dashboard.vue'], resolve),
         meta: {
           titlle: 'Page Dashboard'
         }

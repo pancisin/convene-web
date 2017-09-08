@@ -3,8 +3,8 @@
     <transition name="fade-up" mode="out-in">
       <div v-if="editMode" key="edit">
         <div class="text-center">
-          <a class="btn btn-danger" @click="editMode = false">Cancel</a>
-          <a class="btn btn-primary" @click="saveWidgets">Save</a>
+          <a class="btn btn-danger" @click="editModeSwitch(false)">Cancel</a>
+          <a class="btn btn-primary" v-show="touched" @click="saveWidgets">Save</a>
         </div>
 
         <div class="">
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div v-else key="pending">
-        <a class="btn btn-info btn-rounded btn-lg" @click="editMode = true">
+        <a class="btn btn-primary btn-rounded btn-lg" @click="editModeSwitch(true)">
           <i class="fa fa-pencil"></i>
         </a>
       </div>
@@ -35,7 +35,7 @@
             </a>
           </transition>
 
-          <component :is="item.type.component" :title="$t(item.type.code)" :conference="conference"></component>
+          <component :is="item.type.component" :title="$t(item.type.code)"></component>
         </div>
       </grid-item>
     </grid-layout>
@@ -43,25 +43,36 @@
 </template>
   
 <script>
-import ConferenceApi from 'api/conference.api';
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import * as WidgetComponents from '../../elements/widgets/index';
+import * as WidgetComponents from '../../elements/widgets';
 import PublicApi from 'api/public.api';
+import { calculateHash } from '../../services/helpers';
 
 export default {
   name: 'dashboard',
-  props: ['conference'],
+  inject: ['provider'],
   data () {
     return {
       activities: [],
       widgets: [],
       editMode: false,
-      widgetTypes: []
+      widgetTypes: [],
+      original_widgets: []
     };
   },
   components: {
     ...WidgetComponents,
     GridLayout, GridItem
+  },
+  computed: {
+    touched () {
+      return calculateHash(JSON.stringify(this.widgets)) !== calculateHash(JSON.stringify(this.original_widgets));
+    },
+    api () {
+      if (this.provider != null) {
+        return this.provider.api;
+      }
+    }
   },
   watch: {
     '$route': 'getWidgets'
@@ -72,8 +83,10 @@ export default {
   },
   methods: {
     getWidgets () {
-      ConferenceApi.getWidgets(this.conference.id, widgets => {
+      this.editMode = false;
+      this.api.getWidgets(widgets => {
         this.widgets = widgets;
+        this.original_widgets = widgets;
       });
     },
     getWidgetTypes () {
@@ -116,11 +129,22 @@ export default {
         };
       });
 
-      ConferenceApi.putWidgets(this.conference.id, data, widgets => {
+      this.api.putWidgets(data, widgets => {
         this.widgets = widgets;
         this.editMode = false;
         this.$success('Dashboard saved !', 'Your conference dashboard has been saved successfully.');
       });
+    },
+    editModeSwitch (enabled) {
+      if (!enabled && this.touched) {
+        this.$prompt('Discard dashboard changes.', 'Are you sure discard changes you made to this dashboard ?', () => {
+          this.widgets = this.original_widgets;
+          this.editMode = false;
+        });
+      } else {
+        this.editMode = enabled;
+      }
+
     }
   }
 };
@@ -130,7 +154,7 @@ export default {
 .vue-grid-item {
   .panel {
     height: 100%;
-    overflow: hidden;
+    overflow-y: auto;
   }
 }
 
@@ -138,7 +162,7 @@ export default {
   position: relative;
   height: 100%;
 
-  & > * {
+  &>* {
     height: 100%;
   }
 
@@ -146,7 +170,6 @@ export default {
     position: absolute;
     top: 15px;
     right: 15px;
-
   }
 }
 

@@ -47,11 +47,11 @@ public class Page implements IAuthor {
 
 	@JsonView(Compact.class)
 	private String slug;
-	
+
 	@Lob
 	@Column
 	private String summary = "";
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Event> events;
@@ -83,21 +83,22 @@ public class Page implements IAuthor {
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
 	private List<Place> places;
-	
+
 	@JsonIgnore
 	public User getOwner() {
-		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).findFirst();
-	
+		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
+				.findFirst();
+
 		if (owner.isPresent())
 			return owner.get().getUser();
-		
+
 		return null;
 	}
-	
+
 	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
 	private PageState state = PageState.DEACTIVATED;
-	
+
 	@JsonView(Summary.class)
 	public Category getCategory() {
 		if (getBranch() != null)
@@ -105,7 +106,7 @@ public class Page implements IAuthor {
 
 		return null;
 	}
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Activity> activities;
@@ -113,10 +114,14 @@ public class Page implements IAuthor {
 	public void addActivity(Activity activity) {
 		if (this.activities == null)
 			this.activities = new ArrayList<Activity>();
-		
+
 		this.activities.add(activity);
 	}
-	
+
+	@JsonIgnore
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<Widget> widgets;
+
 	public Long getId() {
 		return id;
 	}
@@ -213,5 +218,21 @@ public class Page implements IAuthor {
 
 	public List<Activity> getActivities() {
 		return activities;
+	}
+
+	public List<Widget> getWidgets() {
+		return widgets;
+	}
+
+	public void setWidgets(List<Widget> widgets) {
+		if (this.widgets == null) {
+			this.widgets = new ArrayList<Widget>();
+		}
+
+		this.widgets.clear();
+
+		if (widgets != null) {
+			this.widgets.addAll(widgets);
+		}
 	}
 }

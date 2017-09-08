@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +45,7 @@ import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.Widget;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
@@ -270,6 +273,25 @@ public class PageController {
 		return ResponseEntity.ok(activityRepository.getByPage(stored.getId()));
 	}
 
+	@GetMapping("/widget")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
+	public ResponseEntity<?> getWidgets(@PathVariable Long page_id) {
+		Page stored = pageRepository.findOne(page_id);
+		return ResponseEntity.ok(stored.getWidgets());
+	}
+
+	@Transactional
+	@PutMapping("/widget")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> postWidgets(@PathVariable Long page_id, @RequestBody List<Widget> widgets) {
+		Page stored = pageRepository.findOne(page_id);
+		
+		stored.setWidgets(widgets);
+		pageRepository.save(stored);
+
+		return ResponseEntity.ok(stored.getWidgets());
+	}
+	
 	@ExceptionHandler
 	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
 	public void handle(HttpMessageNotReadableException e) {
