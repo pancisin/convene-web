@@ -1,20 +1,28 @@
 <template>
-  <table class="table">
-    <thead>
-      <th>User</th>
-    </thead>
-    <tbody>
-      <tr v-for="activity in activities" :key="activity.id">
-        <td>{{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.</td>
-      </tr>
-    </tbody>
-  </table>
+  <panel type="table">
+    <span slot="title">
+      {{ title }}
+    </span>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="activity in activities" :key="activity.id">
+          <td>{{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.</td>
+        </tr>
+      </tbody>
+    </table>
+  </panel>
 </template>
 
 <script>
 export default {
   name: 'latest-activity',
   inject: ['provider'],
+  props: ['title'],
   data () {
     return {
       activities: []

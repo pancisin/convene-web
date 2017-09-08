@@ -40,5 +40,10 @@ export default {
     unit: 'Jednotka',
     price_per_unit: 'Cena za jednotku',
     create: 'Vytvoriť službu'
+  },
+  widgets: {
+    latest_activity: 'Posledná aktivita',
+    followers: 'Nasledovníci',
+    active_events: 'Aktívne podujatia'
   }
 };

@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum WidgetType {
 	LATEST_ACTIVITY("LATEST_ACTIVITY", "admin.widgets.latest_activity", "latest-activity"),
-	FOLLOWERS("FOLLOWERS", "admin.widgets.followers", "followers");
+	FOLLOWERS("FOLLOWERS", "admin.widgets.followers", "followers"),
+	ACTIVE_EVENTS("ACTIVE_EVENTS", "admin.widgets.active_events", "active-events");
 
 	private final String name;
 	private final String code;

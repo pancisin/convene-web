@@ -45,11 +45,11 @@ public class Conference implements IAuthor {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<MetaField> metaFields;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Survey> surveys;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Event> events;
@@ -60,7 +60,7 @@ public class Conference implements IAuthor {
 	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
 	private PageState state = PageState.DEACTIVATED;
-	
+
 	@Lob
 	@Column
 	private String summary;
@@ -72,14 +72,14 @@ public class Conference implements IAuthor {
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<ConferenceAttendee> attendees;
-	
+
 	@Column
 	private String bannerUrl;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
 	private List<Article> articles;
-	
+
 	@JsonIgnore
 	public User getOwner() {
 		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
@@ -90,18 +90,18 @@ public class Conference implements IAuthor {
 
 		return null;
 	}
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Activity> activities;
-	
+
 	public void addActivity(Activity activity) {
 		if (this.activities == null)
 			this.activities = new ArrayList<Activity>();
-		
+
 		this.activities.add(activity);
 	}
-	
+
 	@JsonIgnore
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Widget> widgets;
@@ -109,24 +109,31 @@ public class Conference implements IAuthor {
 	public void addArticle(Article article) {
 		if (this.articles == null)
 			this.articles = new ArrayList<Article>();
-		
+
 		this.articles.add(article);
 	}
-	
+
 	public void addMetaField(MetaField field) {
 		if (this.metaFields == null)
 			this.metaFields = new ArrayList<MetaField>();
-		
+
 		this.metaFields.add(field);
 	}
-	
+
 	public void addSurvey(Survey survey) {
 		if (this.surveys == null)
 			this.surveys = new ArrayList<Survey>();
-		
+
 		this.surveys.add(survey);
 	}
-	
+
+	public int getAttendeesCount() {
+		if (this.attendees != null)
+			return this.attendees.size();
+		else
+			return 0;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -192,7 +199,7 @@ public class Conference implements IAuthor {
 	public List<Survey> getSurveys() {
 		return surveys;
 	}
-	
+
 	public String getBannerUrl() {
 		return bannerUrl;
 	}
@@ -229,7 +236,7 @@ public class Conference implements IAuthor {
 		if (this.widgets == null) {
 			this.widgets = new ArrayList<Widget>();
 		}
-		
+
 		this.widgets.clear();
 
 		if (widgets != null) {

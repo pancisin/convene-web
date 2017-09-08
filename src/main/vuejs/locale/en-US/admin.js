@@ -40,5 +40,10 @@ export default {
     unit: 'Unit',
     price_per_unit: 'Price per unit',
     create: 'Create service'
+  },
+  widgets: {
+    latest_activity: 'Latest activity',
+    followers: 'Followerd',
+    active_events: 'Active events'
   }
 };

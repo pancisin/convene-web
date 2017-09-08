@@ -9,14 +9,6 @@ export default [
     }
   },
   {
-    path: 'event',
-    name: 'admin.event',
-    component: resolve => require(['../pages/Event.index.vue'], resolve),
-    meta: {
-      title: 'Events'
-    }
-  },
-  {
     path: 'conference/create',
     component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {
@@ -159,6 +151,7 @@ export default [
     path: 'event/:id',
     component: resolve => require(['../pages/Event.vue'], resolve),
     redirect: '/admin/event/:id/overview',
+    name: 'event',
     children: [
       {
         path: 'overview',

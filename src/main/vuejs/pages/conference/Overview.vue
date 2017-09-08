@@ -28,19 +28,15 @@
 
     <grid-layout :layout="widgets" :col-num="6" :row-height="100" :is-draggable="editMode" :is-resizable="editMode" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
       <grid-item v-for="(item, index) in widgets" :key="index" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-        <panel type="default">
-          <span slot="title">
-            {{ $t(item.type.code) }}
+        <div class="widget-wrapper" :class="getWidgetClass(item.w, item.h)">
+          <transition name="fade">
+            <a class="pull-right text-danger widget-delete" @click="removeWidget(item)" v-show="editMode">
+              <i class="fa fa-times fa-lg"></i>
+            </a>
+          </transition>
 
-            <transition name="fade">
-              <a class="pull-right text-danger" @click="removeWidget(item)" v-show="editMode">
-                <i class="fa fa-times fa-lg"></i>
-              </a>
-            </transition>
-          </span>
-
-          <component :is="item.type.component"></component>
-        </panel>
+          <component :is="item.type.component" :title="$t(item.type.code)" :conference="conference"></component>
+        </div>
       </grid-item>
     </grid-layout>
   </div>
@@ -84,6 +80,15 @@ export default {
       PublicApi.getWidgetTypes(widgetTypes => {
         this.widgetTypes = widgetTypes;
       });
+    },
+    getWidgetClass (width, height) {
+      if (width === 1 || height === 1) {
+        return 'widget-xs';
+      } else if (width === 2 || height === 2) {
+        return 'widget-md';
+      } else if (width >= 3 || height >= 3) {
+        return 'widget-lg';
+      }
     },
     addWidget (type) {
       let new_widget = {
@@ -129,9 +134,26 @@ export default {
   }
 }
 
+.widget-wrapper {
+  position: relative;
+  height: 100%;
+
+  & > * {
+    height: 100%;
+  }
+
+  .widget-delete {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+  }
+}
+
 .widget-types-list {
   margin: 0;
   padding: 0;
+  border-bottom: 1px solid gray;
 
   li {
     &:before {
