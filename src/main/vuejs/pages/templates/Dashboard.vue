@@ -1,10 +1,10 @@
 <template>
   <div>
-    <transition name="fade-up" mode="out-in">
+    <transition name="fade" mode="out-in">
       <div v-if="editMode" key="edit">
         <div class="text-center">
           <a class="btn btn-danger" @click="editModeSwitch(false)">Cancel</a>
-          <a class="btn btn-primary" v-show="touched" @click="saveWidgets">Save</a>
+          <a class="btn btn-primary" @click="saveWidgets">Save</a>
         </div>
 
         <div class="">
@@ -19,23 +19,23 @@
 
         </div>
       </div>
-      <div v-else key="pending">
-        <a class="btn btn-primary btn-rounded btn-lg" @click="editModeSwitch(true)">
-          <i class="fa fa-pencil"></i>
+      <div v-else key="pending" class="clearfix">
+        <a class="btn btn-link pull-right" @click="editModeSwitch(true)">
+          Edit dashboard
         </a>
       </div>
     </transition>
 
     <grid-layout :layout="widgets" :col-num="6" :row-height="100" :is-draggable="editMode" :is-resizable="editMode" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
       <grid-item v-for="(item, index) in widgets" :key="index" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-        <div class="widget-wrapper" :class="getWidgetClass(item.w, item.h)">
+        <div class="widget-wrapper" :class="{ 'edit-mode' : editMode }">
           <transition name="fade">
             <a class="pull-right text-danger widget-delete" @click="removeWidget(item)" v-show="editMode">
               <i class="fa fa-times fa-lg"></i>
             </a>
           </transition>
 
-          <component :is="item.type.component" :title="$t(item.type.code)"></component>
+          <component class="widget-wrapper-content" :is="item.type.component" :title="$t(item.type.code)"></component>
         </div>
       </grid-item>
     </grid-layout>
@@ -57,7 +57,7 @@ export default {
       widgets: [],
       editMode: false,
       widgetTypes: [],
-      original_widgets: []
+      original_widgets: null
     };
   },
   components: {
@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     touched () {
-      return calculateHash(JSON.stringify(this.widgets)) !== calculateHash(JSON.stringify(this.original_widgets));
+      return calculateHash(JSON.stringify(this.widgets)) !== calculateHash(this.original_widgets);
     },
     api () {
       if (this.provider != null) {
@@ -86,22 +86,13 @@ export default {
       this.editMode = false;
       this.api.getWidgets(widgets => {
         this.widgets = widgets;
-        this.original_widgets = widgets;
+        this.original_widgets = JSON.stringify(widgets);
       });
     },
     getWidgetTypes () {
       PublicApi.getWidgetTypes(widgetTypes => {
         this.widgetTypes = widgetTypes;
       });
-    },
-    getWidgetClass (width, height) {
-      if (width === 1 || height === 1) {
-        return 'widget-xs';
-      } else if (width === 2 || height === 2) {
-        return 'widget-md';
-      } else if (width >= 3 || height >= 3) {
-        return 'widget-lg';
-      }
     },
     addWidget (type) {
       let new_widget = {
@@ -131,6 +122,7 @@ export default {
 
       this.api.putWidgets(data, widgets => {
         this.widgets = widgets;
+        this.original_widgets = JSON.stringify(widgets);
         this.editMode = false;
         this.$success('Dashboard saved !', 'Your conference dashboard has been saved successfully.');
       });
@@ -138,13 +130,12 @@ export default {
     editModeSwitch (enabled) {
       if (!enabled && this.touched) {
         this.$prompt('Discard dashboard changes.', 'Are you sure discard changes you made to this dashboard ?', () => {
-          this.widgets = this.original_widgets;
+          this.widgets = JSON.parse(this.original_widgets);
           this.editMode = false;
         });
       } else {
         this.editMode = enabled;
       }
-
     }
   }
 };
@@ -170,13 +161,31 @@ export default {
     position: absolute;
     top: 15px;
     right: 15px;
+    z-index: 1;
+  }
+
+  &.edit-mode {
+    .widget-wrapper-content {
+      pointer-events: none;
+      user-select: none;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, .4);
+      }
+    }
   }
 }
 
 .widget-types-list {
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #ddd;
 
   li {
     &:before {
