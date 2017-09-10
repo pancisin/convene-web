@@ -1,6 +1,6 @@
 <template>
   <div class="venue-editor">
-    <div class="editor-toolbar">
+    <div class="editor-toolbar" v-if="canvas != null">
       <ul>
         <li>
           <a @click="addRectangle">Add rectangle</a>
@@ -10,14 +10,19 @@
         </li>
       </ul>
       <ul class="pull-right">
-        <li>
-          <a>
-              <i class="fa fa-plus"></i>
+         <li>
+          <a @click="toggleDrawingMode" :class="{ 'selected' : canvas.isDrawingMode }">
+            <i class="fa fa-pencil"></i>
           </a>
         </li>
         <li>
-          <a>
-            <i class="fa fa-search"></i>
+          <a @click="zoom(-0.2)">
+            <i class="fa fa-minus"></i>
+          </a>
+        </li>
+        <li>
+          <a @click="zoom(0.2)">
+            <i class="fa fa-plus"></i>
           </a>
         </li>
 
@@ -40,6 +45,8 @@ export default {
   },
   mounted () {
     let canvas = new fabric.Canvas(document.getElementById("fabric-canvas"), {
+      allowTouchScrolling: true,
+      // isDrawingMode: true
     });
     var grid = 10;
 
@@ -76,6 +83,13 @@ export default {
         height: 100,
         opacity: 1
       }))
+    },
+    zoom (value) {
+      let coef = 1 + value;
+      this.canvas.setZoom(this.canvas.getZoom() * coef);
+    },
+    toggleDrawingMode () {
+      this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     }
   }
 }
@@ -109,6 +123,10 @@ export default {
 
       &:hover {
         background-color: #eee;
+      }
+
+      &.selected {
+        background-color: #0f0;
       }
     }
   }
