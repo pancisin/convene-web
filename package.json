@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "debounce": "^1.0.2",
+    "fabric": "^1.7.18",
     "font-awesome": "^4.7.0",
     "google-maps-api-loader": "^0.3.0",
     "gravatar": "^1.6.0",

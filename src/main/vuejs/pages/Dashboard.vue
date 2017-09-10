@@ -12,11 +12,17 @@
         </div>
       </div>
     </div>
+
+    <fabric-canvas></fabric-canvas>
   </div>
 </template>
   
 <script>
+import FabricCanvas from '../elements/Canvas';
 export default {
   name: 'dashboard',
+  components: {
+    FabricCanvas
+  }
 };
 </script>
