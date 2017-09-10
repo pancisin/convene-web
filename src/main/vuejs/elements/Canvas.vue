@@ -1,7 +1,32 @@
 <template>
-  <canvas id="fabric-canvas" width="500" height="500">
+  <div class="venue-editor">
+    <div class="editor-toolbar">
+      <ul>
+        <li>
+          <a @click="addRectangle">Add rectangle</a>
+        </li>
+        <li>
+          <a>Test button</a>
+        </li>
+      </ul>
+      <ul class="pull-right">
+        <li>
+          <a>
+              <i class="fa fa-plus"></i>
+          </a>
+        </li>
+        <li>
+          <a>
+            <i class="fa fa-search"></i>
+          </a>
+        </li>
 
-  </canvas>
+      </ul>
+    </div>
+
+    <canvas id="fabric-canvas">
+    </canvas>
+  </div>
 </template>
 
 <script>
@@ -10,28 +35,13 @@ export default {
   name: 'fabric-canvas',
   data () {
     return {
-      serialized: null,
+      canvas: null,
     }
   },
   mounted () {
-    let canvas = new fabric.Canvas(this.$el);
-
-    var grid = 10;
-    for (var i = 0; i < (600 / grid); i++) {
-      canvas.add(new fabric.Line([i * grid, 0, i * grid, 600], { stroke: '#eee', selectable: false }));
-      canvas.add(new fabric.Line([0, i * grid, 600, i * grid], { stroke: '#eee', selectable: false }))
-    }
-
-    var rect = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: "#FF0000",
-      stroke: "#000",
-      width: 100,
-      height: 100,
-      strokeWidth: 10,
-      opacity: .8
+    let canvas = new fabric.Canvas(document.getElementById("fabric-canvas"), {
     });
+    var grid = 10;
 
     function snapToGrid (options) {
       options.target.set({
@@ -40,17 +50,67 @@ export default {
       });
     }
 
-    canvas.on('object:moving', snapToGrid);
-    canvas.on('object:scaling', snapToGrid);
+    let calibrateSize = () => {
+      canvas.setWidth(this.$el.scrollWidth);
+      canvas.setHeight(window.innerHeight - 200);
+    }
 
-    canvas.add(rect);
+    calibrateSize();
+
+    canvas.on('object:moving', snapToGrid);
+    canvas.on('object:scaling', (e) => {
+
+    });
+
+    window.addEventListener('resize', calibrateSize);
+    this.canvas = canvas;
   },
   methods: {
-
+    addRectangle () {
+      this.canvas.add(new fabric.Rect({
+        label: 'Simple rectangle',
+        left: 100,
+        top: 100,
+        fill: "#FF0000",
+        width: 100,
+        height: 100,
+        opacity: 1
+      }))
+    }
   }
 }
 </script>
 
-<style>
+<style lang="less">
+.venue-editor {
+  background-color: #fff;
 
+  .editor-toolbar {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+
+    ul {
+      display: inline-flex;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li {
+        display: inline-block;
+      }
+    }
+
+    a {
+      padding: 10px 15px;
+      color: #000;
+      border-right: 1px solid #eee;
+      transition: background-color .3s ease;
+      display: inline-block;
+
+      &:hover {
+        background-color: #eee;
+      }
+    }
+  }
+}
 </style>
