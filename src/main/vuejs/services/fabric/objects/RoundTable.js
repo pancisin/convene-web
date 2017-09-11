@@ -44,9 +44,9 @@ export default class RoundTable extends fabric.Object {
       x: -this.width / 2,
       y: -this.height / 2
     };
-    ctx.translate(tl.x, tl.y);
 
-    // ctx.clearRect(tl.x, tl.y, this.width, this.height);
+    ctx.translate(tl.x, tl.y);
+    ctx.clearRect(0, 0, this.width, this.height);
 
     const chair = {
       width: 15,
