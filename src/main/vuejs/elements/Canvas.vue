@@ -10,7 +10,7 @@
         </li>
       </ul>
       <ul class="pull-right">
-         <li>
+        <li>
           <a @click="toggleDrawingMode" :class="{ 'selected' : canvas.isDrawingMode }">
             <i class="fa fa-pencil"></i>
           </a>
@@ -36,17 +36,18 @@
 
 <script>
 import { fabric } from 'fabric';
+import * as fabric_objects from '../services/fabric/objects';
+
 export default {
   name: 'fabric-canvas',
   data () {
     return {
-      canvas: null,
-    }
+      canvas: null
+    };
   },
   mounted () {
-    let canvas = new fabric.Canvas(document.getElementById("fabric-canvas"), {
-      allowTouchScrolling: true,
-      // isDrawingMode: true
+    let canvas = new fabric.Canvas(document.getElementById('fabric-canvas'), {
+      allowTouchScrolling: true
     });
     var grid = 10;
 
@@ -60,7 +61,7 @@ export default {
     let calibrateSize = () => {
       canvas.setWidth(this.$el.scrollWidth);
       canvas.setHeight(window.innerHeight - 200);
-    }
+    };
 
     calibrateSize();
 
@@ -74,15 +75,13 @@ export default {
   },
   methods: {
     addRectangle () {
-      this.canvas.add(new fabric.Rect({
-        label: 'Simple rectangle',
-        left: 100,
-        top: 100,
-        fill: "#FF0000",
+      this.canvas.add(new fabric_objects.RoundTable({
         width: 100,
         height: 100,
-        opacity: 1
-      }))
+        fill: '#f00',
+        top: 100,
+        left: 100
+      }));
     },
     zoom (value) {
       let coef = 1 + value;
@@ -92,7 +91,7 @@ export default {
       this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     }
   }
-}
+};
 </script>
 
 <style lang="less">
