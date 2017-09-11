@@ -2,8 +2,8 @@
   <div class="venue-editor">
     <div class="editor-toolbar" v-if="canvas != null">
       <ul>
-        <li>
-          <a @click="addRectangle">Add rectangle</a>
+        <li v-for="(fobj, index) in fabric_objects" :key="index">
+          <a @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
         </li>
         <li>
           <a>Test button</a>
@@ -73,15 +73,29 @@ export default {
     window.addEventListener('resize', calibrateSize);
     this.canvas = canvas;
   },
+  computed: {
+    fabric_objects () {
+      return fabric_objects;
+    }
+  },
   methods: {
     addRectangle () {
       this.canvas.add(new fabric_objects.RoundTable({
         width: 100,
         height: 100,
-        fill: '#f00',
+        fill: '#ccc',
         top: 100,
         left: 100
       }));
+    },
+    addObject (obj) {
+      this.canvas.add(new obj({
+        width: 100,
+        height: 100,
+        fill: '#ccc',
+        top: 100,
+        left: 100
+      }))
     },
     zoom (value) {
       let coef = 1 + value;

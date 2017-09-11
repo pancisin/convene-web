@@ -5,9 +5,9 @@ import {
 /**
  * Round table object representation for fabric js canvas.
  */
-export default class RoundTable extends fabric.Object {
+export default class SquaredTable extends fabric.Object {
   static get code() {
-    return 'venue_editor.objects.round_table';
+    return 'venue_editor.objects.squared_table';
   }
 
   get boundingBox() {
@@ -53,9 +53,7 @@ export default class RoundTable extends fabric.Object {
       gap: 5
     };
 
-    ctx.beginPath();
-    ctx.arc(this.width / 2, this.height / 2, 30, 0, 2 * Math.PI);
-    ctx.stroke();
+    ctx.fillRect(0, 20, this.width, this.height - 40);
 
     for (let i = 0; i < this.width / (chair.width + chair.gap); i++) {
       let gap = i > 0 ? chair.gap : 0;

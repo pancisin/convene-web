@@ -88,5 +88,11 @@ export default {
       create_article: 'vytvoril článok do',
       create_survey: 'vytvoril prieskum do'
     }
+  },
+  venue_editor: {
+    objects: {
+      squared_table: 'Štvorcový stôl',
+      round_table: 'Okruhlý stôl'
+    }
   }
 };

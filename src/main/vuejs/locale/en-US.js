@@ -89,5 +89,11 @@ export default {
       create_article: 'has created an article to',
       create_survey: 'has created a survey to'
     }
+  },
+  venue_editor: {
+    objects: {
+      squared_table: 'Squared table',
+      round_table: 'Round table'
+    }
   }
 };
