@@ -33,7 +33,7 @@ export default class RoundTable extends fabric.Object {
 
     this.seats = [];
     for (let i = 0; i < seats_count; i++) {
-      this.seats.push(new Seat(Seat.dimension.width / 2, -this.height / 2));
+      this.seats.push(new Seat(Seat.dimension.width / 2, -this.height / 2, i));
     }
   }
 

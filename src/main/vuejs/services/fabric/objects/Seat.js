@@ -9,11 +9,12 @@ export default class Seat extends fabric.Object {
     return 'venue_editor.objects.seat';
   }
 
-  constructor (offsetX, offsetY) {
+  constructor (offsetX, offsetY, identifier) {
     super({});
 
     this.offsetX = offsetX;
     this.offsetY = offsetY;
+    this.identifier = identifier;
   }
 
   static get dimension () {
@@ -43,12 +44,12 @@ export default class Seat extends fabric.Object {
     ctx.strokeStyle = '#000';
 
     const pos = {
-      x: this.offsetX || -this.width / 2,
-      y: this.offsetY || -this.height / 2
+      x: this.offsetX,
+      y: this.offsetY
     };
 
     ctx.strokeRect(pos.x, pos.y, this.width, this.height);
-    ctx.fillText('s', pos.x + 2, pos.y + Seat.dimension.height / 2);
+    ctx.fillText(this.identifier, pos.x + 2, pos.y + Seat.dimension.height / 2 + 2);
   }
 
   toSVG () {

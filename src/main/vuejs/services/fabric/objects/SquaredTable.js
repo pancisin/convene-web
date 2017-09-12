@@ -28,9 +28,10 @@ export default class SquaredTable extends fabric.Object {
     const dim = Seat.dimension;
 
     this.seats = [];
+    var i = 0;
     for (let col = 5 / 2; col < this.width; col += dim.width + 5) {
-      this.seats.push(new Seat(col, 0));
-      this.seats.push(new Seat(col, this.height - dim.height));
+      this.seats.push(new Seat(col, 0, i++));
+      this.seats.push(new Seat(col, this.height - dim.height, i++));
     }
   }
 

@@ -15,9 +15,10 @@ export default class SeatsInRows extends fabric.Object {
     const dimension = Seat.dimension;
     this.seats = [];
 
+    var i = 0;
     for (var row = gap / 2; row < this.height; row += dimension.height + gap) {
       for (var col = gap / 2; col < this.width; col += dimension.width + gap) {
-        this.seats.push(new Seat(row, col));
+        this.seats.push(new Seat(row, col, i++));
       }
     }
   }
