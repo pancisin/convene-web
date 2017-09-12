@@ -93,7 +93,8 @@ export default {
     objects: {
       squared_table: 'Štvorcový stôl',
       round_table: 'Okruhlý stôl',
-      seats_in_rows: 'Sedadlá v radoch'
+      seats_in_rows: 'Sedadlá v radoch',
+      seat: 'Miesto na sedenie'
     }
   }
 };

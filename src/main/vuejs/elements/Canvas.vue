@@ -5,9 +5,6 @@
         <li v-for="(fobj, index) in fabric_objects" :key="index">
           <a @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
         </li>
-        <li>
-          <a>Test button</a>
-        </li>
       </ul>
       <ul class="pull-right">
         <li>
@@ -31,6 +28,8 @@
 
     <canvas id="fabric-canvas">
     </canvas>
+
+    <img :src="image" />
   </div>
 </template>
 
@@ -76,26 +75,22 @@ export default {
   computed: {
     fabric_objects () {
       return fabric_objects;
+    },
+    image () {
+      if (this.canvas != null) {
+        return this.canvas.toDataURL();
+      }
     }
   },
   methods: {
-    addRectangle () {
-      this.canvas.add(new fabric_objects.RoundTable({
+    addObject (Obj) {
+      this.canvas.add(new Obj({
         width: 100,
         height: 100,
         fill: '#ccc',
         top: 100,
         left: 100
       }));
-    },
-    addObject (obj) {
-      this.canvas.add(new obj({
-        width: 100,
-        height: 100,
-        fill: '#ccc',
-        top: 100,
-        left: 100
-      }))
     },
     zoom (value) {
       let coef = 1 + value;
