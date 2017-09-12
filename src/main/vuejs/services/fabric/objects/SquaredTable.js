@@ -22,6 +22,7 @@ export default class SquaredTable extends fabric.Object {
     });
 
     this.adjustSeats();
+    this.type = 'squared-table';
   }
 
   adjustSeats () {
@@ -48,5 +49,20 @@ export default class SquaredTable extends fabric.Object {
     this.seats.forEach(s => {
       s.drawObject(ctx);
     });
+  }
+
+  toObject () {
+    return {
+      ...super.toObject(),
+      seats: this.seats
+    };
+  }
+
+  static fromObject (object, callback) {
+    const table = new SquaredTable({
+      ...object
+    });
+
+    callback(table);
   }
 };

@@ -36,6 +36,7 @@ export default class SeatsInRows extends fabric.Object {
 
     this.seats = [];
     this.adjustSeats();
+    this.type = 'seats-in-rows';
   }
 
   _render (ctx) {
@@ -50,7 +51,18 @@ export default class SeatsInRows extends fabric.Object {
     });
   }
 
-  toSVG () {
-    return '';
+  toObject () {
+    return {
+      ...super.toObject(),
+      seats: this.seats
+    };
+  }
+
+  static fromObject (object, callback) {
+    const table = new SeatsInRows({
+      ...object
+    });
+
+    callback(table);
   }
 };

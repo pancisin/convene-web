@@ -26,6 +26,7 @@ export default class RoundTable extends fabric.Object {
     });
 
     this.adjustSeats();
+    this.type = 'round-table';
   }
 
   adjustSeats () {
@@ -53,9 +54,18 @@ export default class RoundTable extends fabric.Object {
     });
   }
 
-  toSVG () {
-    return this.seats.map(s => {
-      return s.toSVG();
+  toObject () {
+    return {
+      ...super.toObject(),
+      seats: this.seats
+    };
+  }
+
+  static fromObject (object, callback) {
+    const table = new RoundTable({
+      ...object
     });
+
+    callback(table);
   }
 };

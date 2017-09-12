@@ -37,6 +37,7 @@ export default class Seat extends fabric.Object {
     this.lockUniScaling = true;
     this.width = Seat.dimension.width;
     this.height = Seat.dimension.height;
+    this.type = 'seat';
   }
 
   _render (ctx) {
@@ -50,6 +51,18 @@ export default class Seat extends fabric.Object {
 
     ctx.strokeRect(pos.x, pos.y, this.width, this.height);
     ctx.fillText(this.identifier, pos.x + 2, pos.y + Seat.dimension.height / 2 + 2);
+  }
+
+  toObject () {
+    return {
+      type: this.type,
+      offsetX: this.offsetX,
+      offsetY: this.offsetY
+    };
+  }
+
+  static fromObject (object, callback) {
+    console.warn(object);
   }
 
   toSVG () {

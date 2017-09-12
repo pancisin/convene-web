@@ -5,6 +5,9 @@
         <li v-for="(fobj, index) in fabric_objects" :key="index">
           <a @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
         </li>
+        <li>
+          <a @click="submit">Save</a>
+        </li>
       </ul>
       <ul class="pull-right">
         <li>
@@ -28,8 +31,6 @@
 
     <canvas id="fabric-canvas">
     </canvas>
-
-    <img :src="image" />
   </div>
 </template>
 
@@ -48,14 +49,20 @@ export default {
     let canvas = new fabric.Canvas(document.getElementById('fabric-canvas'), {
       allowTouchScrolling: true
     });
-    var grid = 10;
 
-    function snapToGrid (options) {
-      options.target.set({
-        left: Math.round(options.target.left / grid) * grid,
-        top: Math.round(options.target.top / grid) * grid
+    fabric.RoundTable = fabric_objects.RoundTable;
+    fabric.Seat = fabric_objects.Seat;
+    fabric.SeatsInRows = fabric_objects.SeatsInRows;
+    fabric.SquaredTable = fabric_objects.SquaredTable;
+
+    const venue_stored = window.localStorage.getItem('venue_stored');
+    if (venue_stored != null) {
+      canvas.loadFromJSON(venue_stored, () => {
+        canvas.renderAll();
       });
     }
+
+    var grid = 20;
 
     let calibrateSize = () => {
       canvas.setWidth(this.$el.scrollWidth);
@@ -64,9 +71,11 @@ export default {
 
     calibrateSize();
 
-    canvas.on('object:moving', snapToGrid);
-    canvas.on('object:scaling', (e) => {
-
+    canvas.on('object:moving', (e) => {
+      e.target.set({
+        left: Math.round(e.target.left / grid) * grid,
+        top: Math.round(e.target.top / grid) * grid
+      });
     });
 
     window.addEventListener('resize', calibrateSize);
@@ -75,18 +84,13 @@ export default {
   computed: {
     fabric_objects () {
       return fabric_objects;
-    },
-    image () {
-      if (this.canvas != null) {
-        return this.canvas.toDataURL();
-      }
     }
   },
   methods: {
     addObject (Obj) {
       this.canvas.add(new Obj({
-        width: 100,
-        height: 100,
+        width: 75,
+        height: 75,
         fill: '#ccc',
         top: 100,
         left: 100
@@ -98,6 +102,10 @@ export default {
     },
     toggleDrawingMode () {
       this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
+    },
+    submit () {
+      window.localStorage.setItem('venue_stored', JSON.stringify(this.canvas));
+      this.$success('Venue layout saved !', '');
     }
   }
 };
