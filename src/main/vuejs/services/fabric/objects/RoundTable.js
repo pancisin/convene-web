@@ -29,11 +29,11 @@ export default class RoundTable extends fabric.Object {
   }
 
   adjustSeats () {
-    const seats_count = Math.round((2 * Math.PI * (this.radius - Seat.dimension.height)) / Seat.dimension.width) - 1;
+    const seats_count = Math.round((2 * Math.PI * (this.radius - Seat.dimension.height)) / (Seat.dimension.width + 5)) - 1;
 
     this.seats = [];
     for (let i = 0; i < seats_count; i++) {
-      this.seats.push(new Seat(Seat.dimension.width / 2, -this.height / 2, i));
+      this.seats.push(new Seat(-Seat.dimension.width / 2, -this.height / 2, i));
     }
   }
 
@@ -41,18 +41,13 @@ export default class RoundTable extends fabric.Object {
     ctx.fillStyle = this.fill;
     ctx.strokeStyle = '#000';
 
-    ctx.translate(-this.width / 2, -this.height / 2);
-    ctx.clearRect(0, 0, this.width, this.height);
-
     ctx.beginPath();
-    ctx.arc(this.width / 2, this.height / 2, this.radius - (Seat.dimension.height + 5), 0, 2 * Math.PI);
+    ctx.arc(0, 0, this.radius - (Seat.dimension.height + 5), 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 
-    ctx.translate(this.width / 2, this.height / 2);
-
     this.seats.forEach((s, index) => {
-      ctx.rotate(index * (2 * Math.PI / this.seats.length));
+      ctx.rotate(2 * Math.PI / this.seats.length);
       s.drawObject(ctx);
       ctx.restore();
     });
