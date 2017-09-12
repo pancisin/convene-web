@@ -3,9 +3,9 @@ import { fabric } from 'fabric';
 /**
  * Round table object representation for fabric js canvas.
  */
-export default class RoundTable extends fabric.Object {
+export default class SeatsInRows extends fabric.Object {
   static get code () {
-    return 'venue_editor.objects.round_table';
+    return 'venue_editor.objects.seats_in_rows';
   }
 
   get boundingBox () {
@@ -32,11 +32,6 @@ export default class RoundTable extends fabric.Object {
 
       this.scale(1);
     });
-
-    this.noScaleCache = true;
-    this.originX = 'left';
-    this.originY = 'top';
-    this.seats = 0;
   }
 
   _render (ctx) {
@@ -52,19 +47,10 @@ export default class RoundTable extends fabric.Object {
       gap: 5
     };
 
-    ctx.beginPath();
-    let radius = this.width <= this.height ? this.width / 2 : this.height / 2;
-    ctx.arc(this.width / 2, this.height / 2, radius - (chair.height + chair.gap), 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
-
-    this.seats = Math.round((2 * Math.PI * (radius - chair.height)) / chair.width) - 1;
-
-    ctx.translate(this.width / 2, this.height / 2);
-    for (let rotation = 0; rotation < 2 * Math.PI; rotation += 2 * Math.PI / this.seats) {
-      ctx.rotate(rotation);
-      ctx.strokeRect(-chair.width / 2, -this.height / 2, chair.width, chair.height);
-      ctx.restore();
+    for (var row = chair.gap / 2; row < this.height; row += chair.height + chair.gap) {
+      for (var col = chair.gap / 2; col < this.width; col += chair.width + chair.gap) {
+        ctx.strokeRect(col, row, chair.width, chair.height);
+      }
     }
   }
 };

@@ -1,16 +1,14 @@
-import {
-  fabric
-} from 'fabric';
+import { fabric } from 'fabric';
 
 /**
  * Round table object representation for fabric js canvas.
  */
 export default class SquaredTable extends fabric.Object {
-  static get code() {
+  static get code () {
     return 'venue_editor.objects.squared_table';
   }
 
-  get boundingBox() {
+  get boundingBox () {
     const coords = this.calcCoords();
 
     var wx = coords.mr.x - coords.ml.x;
@@ -25,7 +23,7 @@ export default class SquaredTable extends fabric.Object {
     };
   }
 
-  initialize(el, options = {}) {
+  initialize (el, options = {}) {
     super.initialize(el, options);
 
     this.on('modified', (e) => {
@@ -40,7 +38,7 @@ export default class SquaredTable extends fabric.Object {
     this.originY = 'top';
   }
 
-  _render(ctx) {
+  _render (ctx) {
     ctx.fillStyle = this.fill;
     ctx.strokeStyle = '#000';
 
@@ -54,9 +52,10 @@ export default class SquaredTable extends fabric.Object {
     };
 
     ctx.fillRect(0, 20, this.width, this.height - 40);
+    ctx.strokeRect(0, 20, this.width, this.height - 40);
 
     for (let i = 0; i < this.width / (chair.width + chair.gap); i++) {
-      let gap = i > 0 ? chair.gap : 0;
+      let gap = i > 0 ? chair.gap : chair.gap / 2;
       ctx.strokeRect(i * (chair.width + gap), 0, chair.width, chair.height);
       ctx.strokeRect(i * (chair.width + gap), this.height - 15, chair.width, chair.height);
     }

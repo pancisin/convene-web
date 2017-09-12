@@ -93,7 +93,8 @@ export default {
   venue_editor: {
     objects: {
       squared_table: 'Squared table',
-      round_table: 'Round table'
+      round_table: 'Round table',
+      seats_in_rows: 'Seats in rows'
     }
   }
 };
