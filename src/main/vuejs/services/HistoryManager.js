@@ -1,10 +1,15 @@
-// const history_size = 15;
+const HISTORY_SIZE = 15;
 
 export default class HistoryManager {
 
-  constructor () {
+  constructor (state) {
     this.history = [];
+    this.history.push(state);
     this.pointer = 0;
+  }
+
+  get historyLength () {
+    return this.history.length > 1 ? this.history.length - 1 : 0; 
   }
 
   get currentVersion () {
@@ -12,29 +17,28 @@ export default class HistoryManager {
   }
 
   putItem (item) {
-    if (this.history.length === this.pointer + 1) {
+    if (this.pointer === this.history.length - 1) {
       this.history.push(item);
     } else {
-      this.history.splice(this.pointer, this.history.length - this.pointer + 1, item);
+      this.history.splice(this.pointer + 1, this.history.length - this.pointer - 1, item);
     }
 
     this.pointer = this.history.length - 1;
   }
 
   goBack () {
-    this.pointer -= 1;
+    this.pointer -= this.pointer > 0 ? 1 : 0;
   }
 
   goForward () {
-    this.pointer += 1;
+    this.pointer += this.pointer + 1 < this.history.length ? 1 : 0;
   }
 
   canGoBack () {
-    return this.pointer - 1 >= 0;
+    return this.history.length > 0 && this.pointer > 0;
   }
 
   canGoForward () {
     return this.history.length > this.pointer + 1;
   }
-
 };
