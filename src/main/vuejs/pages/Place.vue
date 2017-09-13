@@ -1,15 +1,18 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="place != null">
     <div class="col-xs-12">
       <h3 v-text="place.name" class="page-title"></h3>
     </div>
     <div class="col-md-3">
       <div class="list-group mail-list">
-        <router-link to="overview" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'place.overview' }" class="list-group-item waves-effect">
           Overview
         </router-link>
-        <router-link to="gallery" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'place.gallery' }" class="list-group-item waves-effect">
           Gallery
+        </router-link>
+        <router-link :to="{ name: 'place.venue' }" class="list-group-item waves-effect">
+          Venue editor
         </router-link>
       </div>
     </div>
@@ -22,11 +25,13 @@
 </template>
 
 <script>
+import PlaceApi from 'api/place.api';
+
 export default {
   name: 'place-layout',
   data () {
     return {
-      place: {},
+      place: null,
       edit: false
     };
   },
@@ -40,13 +45,9 @@ export default {
     getPlace () {
       var place_id = this.$route.params.id;
 
-      if (this.place.id != null && this.place.id === place_id) {
-        return;
-      }
-
-      if (place_id != null) {
-        this.$http.get('api/place/' + place_id).then(response => {
-          this.place = response.body;
+      if ((this.place === null || this.place.id !== place_id) && place_id != null) {
+        PlaceApi.getPlace(place_id, place => {
+          this.place = place;
           this.edit = true;
         });
       } else {

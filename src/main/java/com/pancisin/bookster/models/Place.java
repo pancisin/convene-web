@@ -9,9 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "places")
@@ -44,6 +47,14 @@ public class Place {
 	@JsonIgnore
 	@ManyToOne
 	private User user;
+
+	@Column
+	@JsonProperty(access = Access.READ_ONLY)
+	private String venueJsonUrl;
+	
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String venueData;
 	
 	public String getName() {
 		return name;
@@ -95,5 +106,21 @@ public class Place {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getVenueJsonUrl() {
+		return venueJsonUrl;
+	}
+
+	public void setVenueJsonUrl(String venueJsonUrl) {
+		this.venueJsonUrl = venueJsonUrl;
+	}
+
+	public void setVenueData(String venueData) {
+		this.venueData = venueData;
+	}
+
+	public String getVenueData() {
+		return venueData;
 	}
 }

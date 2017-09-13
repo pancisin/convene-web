@@ -10,6 +10,10 @@ public interface StorageService {
 
     void init();
 
+    String storeBinary(String binary, String filename);
+    
+    String storeText(String text, String filename, String extension);
+    
     void store(MultipartFile file);
 
     Stream<Path> loadAll();

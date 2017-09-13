@@ -107,10 +107,23 @@ import * as fabric_building from '../services/fabric/building';
 
 export default {
   name: 'fabric-canvas',
+  props: {
+    json: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       canvas: null
     };
+  },
+  watch: {
+    json (newValue) {
+      this.canvas.loadFromJSON(newValue, () => {
+        this.canvas.renderAll();
+      });
+    }
   },
   mounted () {
     let canvas = new fabric.Canvas(document.getElementById('fabric-canvas'), {
@@ -123,15 +136,13 @@ export default {
     fabric.SquaredTable = fabric_objects.SquaredTable;
     fabric.Room = fabric_building.Room;
 
-    const venue_stored = window.localStorage.getItem('venue_stored');
-    if (venue_stored != null) {
-      canvas.loadFromJSON(venue_stored, () => {
+    if (this.json != null) {
+      canvas.loadFromJSON(this.json, () => {
         canvas.renderAll();
       });
     }
 
     var grid = 20;
-    var edgedetection = 20; //pixels to snap
 
     let calibrateSize = () => {
       canvas.setWidth(this.$el.scrollWidth);
@@ -140,55 +151,10 @@ export default {
 
     calibrateSize();
 
-    canvas.on('object:moving', function (e) {
-      var obj = e.target;
-      obj.setCoords(); // Sets corner position coordinates based on current angle, width and height
-
-      if (obj.getLeft() < edgedetection) {
-        obj.setLeft(0);
-      }
-
-      if (obj.getTop() < edgedetection) {
-        obj.setTop(0);
-      }
-
-      if ((obj.getWidth() + obj.getLeft()) > (canvas.getWidth() - edgedetection)) {
-        obj.setLeft(canvas.getWidth() - obj.getWidth());
-      }
-
-      if ((obj.getHeight() + obj.getTop()) > (canvas.getHeight() - edgedetection)) {
-        obj.setTop(canvas.getHeight() - obj.getHeight());
-      }
-
-      canvas.forEachObject(function (targ) {
-        var activeObject = canvas.getActiveObject();
-
-        if (targ === activeObject) return;
-
-
-        if (Math.abs(activeObject.oCoords.tr.x - targ.oCoords.tl.x) < edgedetection) {
-          activeObject.left = targ.left - activeObject.currentWidth;
-        }
-        if (Math.abs(activeObject.oCoords.tl.x - targ.oCoords.tr.x) < edgedetection) {
-          activeObject.left = targ.left + targ.currentWidth;
-        }
-        if (Math.abs(activeObject.oCoords.br.y - targ.oCoords.tr.y) < edgedetection) {
-          activeObject.top = targ.top - activeObject.currentHeight;
-        }
-        if (Math.abs(targ.oCoords.br.y - activeObject.oCoords.tr.y) < edgedetection) {
-          activeObject.top = targ.top + targ.currentHeight;
-        }
-        if (activeObject.intersectsWithObject(targ) && targ.intersectsWithObject(activeObject)) {
-          targ.strokeWidth = 10;
-          targ.stroke = 'red';
-        } else {
-          targ.strokeWidth = 0;
-          targ.stroke = false;
-        }
-        if (!activeObject.intersectsWithObject(targ)) {
-          activeObject.strokeWidth = 0;
-          activeObject.stroke = false;
-        }
+    canvas.on('object:moving', (e) => {
+      e.target.set({
+        left: Math.round(e.target.left / grid) * grid,
+        top: Math.round(e.target.top / grid) * grid
       });
     });
 
@@ -221,8 +187,7 @@ export default {
       this.canvas.isDrawingMode = !this.canvas.isDrawingMode;
     },
     submit () {
-      window.localStorage.setItem('venue_stored', JSON.stringify(this.canvas));
-      this.$success('Venue layout saved !', '');
+      this.$emit('submit', JSON.stringify(this.canvas));
     }
   }
 };

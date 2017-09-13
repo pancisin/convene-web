@@ -43,6 +43,23 @@ public class StorageServiceImpl implements StorageService {
 
 		return relative_path;
 	}
+	
+	public String storeText(String text, String filename, String extension) {
+		String relative_path = storagePath + filename + "." + extension;
+		
+		File file = new File(relative_path);
+		file.getParentFile().mkdirs();
+
+		try (FileOutputStream textOutFile = new FileOutputStream(file)) {
+			textOutFile.write(text.getBytes());
+		} catch (FileNotFoundException e) {
+			System.out.println("Text file not found" + e);
+		} catch (IOException ioe) {
+			System.out.println("Exception while reading the Image " + ioe);
+		}
+
+		return relative_path;
+	}
 
 	public boolean isBinary(String context) {
 		return Pattern.compile("^data:image/[^;]*;base64,?").matcher(context).find();

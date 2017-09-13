@@ -303,6 +303,7 @@ export default [
     children: [
       {
         path: 'overview',
+        name: 'place.overview',
         component: resolve => require(['../pages/place/Overview.vue'], resolve),
         meta: {
           titlle: 'Overview'
@@ -310,9 +311,18 @@ export default [
       },
       {
         path: 'gallery',
+        name: 'place.gallery',
         component: resolve => require(['../pages/place/Gallery.vue'], resolve),
         meta: {
           titlle: 'Gallery'
+        }
+      },
+      {
+        path: 'venue',
+        name: 'place.venue',
+        component: resolve => require(['../pages/place/VenueEditor.vue'], resolve),
+        meta: {
+          title: 'Venue editor'
         }
       }
     ]
