@@ -29,12 +29,13 @@ export default {
   },
   methods: {
     getVenue () {
-      console.warn('fetching venue data json ' + this.place.venueJsonUrl);
-      this.loading = true;
-      this.$http.get(this.place.venueJsonUrl).then(response => {
-        this.venue = JSON.stringify(response.body);
-        this.loading = false;
-      });
+      if (this.place.venueJsonUrl != null) {
+        this.loading = true;
+        this.$http.get(this.place.venueJsonUrl).then(response => {
+          this.venue = JSON.stringify(response.body);
+          this.loading = false;
+        });
+      }
     },
     submitVenue (venue_json) {
       PlaceApi.patchVenue(this.place.id, venue_json, result => {
