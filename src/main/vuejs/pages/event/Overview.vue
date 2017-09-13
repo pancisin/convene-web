@@ -47,9 +47,7 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue';
-import DatePicker from '../../elements/DatePicker.vue';
-import ImageUpload from '../../elements/ImageUpload.vue';
+import { TextEditor, DatePicker, ImageUpload } from '../../elements';
 
 export default {
   inject: ['provider'],

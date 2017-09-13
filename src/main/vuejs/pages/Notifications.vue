@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import Paginator from '../elements/Paginator.vue';
+import { Paginator } from '../elements';
 export default {
   name: 'notifications',
   data () {

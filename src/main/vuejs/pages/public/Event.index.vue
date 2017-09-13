@@ -38,8 +38,7 @@
 </template>
 
 <script>
-import Paginator from '../../elements/Paginator.vue';
-import DatePicker from '../../elements/DatePicker.vue';
+import { Paginator, DatePicker } from '../../elements';
 export default {
   name: 'events',
   data () {

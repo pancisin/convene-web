@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import DatePicker from '../../../elements/DatePicker.vue';
+import { DatePicker } from '../../../elements';
 export default {
   name: 'conference-application',
   inject: ['api'],
@@ -51,8 +51,8 @@ export default {
         this.meta_values.push({
           field,
           value: null
-        })
-      })
+        });
+      });
     });
   },
   methods: {

@@ -36,8 +36,7 @@
 
 <script>
 import ArticleApi from 'api/article.api';
-import ImageUpload from '../elements/ImageUpload.vue';
-import TextEditor from '../elements/TextEditor.vue';
+import { ImageUpload, TextEditor } from '../elements';
 
 export default {
   name: 'article',

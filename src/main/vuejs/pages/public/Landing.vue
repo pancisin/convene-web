@@ -67,7 +67,7 @@
 
 <script>
 import Pricing from '../static/Pricing.vue';
-import Paginator from '../../elements/Paginator.vue';
+import { Paginator } from '../../elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import faq from '../static/FAQ';
 import HowItWorks from '../static/HowItWorks';

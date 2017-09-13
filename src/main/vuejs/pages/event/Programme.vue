@@ -1,7 +1,7 @@
 <template>
   <panel type="table">
     <span slot="title">Programme</span>
-  
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import TimePicker from '../../elements/TimePicker.vue';
+import { TimePicker } from '../../elements';
 import ProgrammeApi from 'api/programme.api';
 export default {
   inject: ['provider'],
@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
     }
   },

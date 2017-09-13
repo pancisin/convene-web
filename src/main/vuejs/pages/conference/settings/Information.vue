@@ -40,8 +40,7 @@
 </template>
 
 <script>
-import TextEditor from '../../../elements/TextEditor.vue';
-import ImageUpload from '../../../elements/ImageUpload.vue';
+import { TextEditor, ImageUpload } from '../../../elements';
 import { mapActions } from 'vuex';
 export default {
   props:

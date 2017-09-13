@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import VerticalMenuDrop from '../elements/VerticalMenuDrop.vue';
+import { VerticalMenuDrop } from '../elements';
 import { mapActions, mapGetters } from 'vuex';
 import routes from '../services/maps/routes.map';
 

@@ -165,9 +165,7 @@
 </template>
 
 <script>
-// require("../assets/less/custom-menu.less")
-import Notifications from '../elements/Notifications.vue';
-import LangSwitcher from '../elements/LangSwitcher.vue';
+import { Notifications, LangSwitcher } from '../elements';
 import SlideTransition from '../functional/SlideTransition';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';

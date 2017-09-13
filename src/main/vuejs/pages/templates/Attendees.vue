@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import SuggestInput from '../../elements/UserSuggestInput.vue';
+import { SuggestInput } from '../../elements';
 import UserApi from 'api/user.api';
 
 export default {

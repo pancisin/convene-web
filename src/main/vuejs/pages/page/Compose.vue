@@ -52,10 +52,9 @@
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue';
+import { TextEditor, ImageUpload } from '../../elements';
 import { mapActions } from 'vuex';
 import PublicApi from 'api/public.api';
-import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {
   name: 'page-compose',
