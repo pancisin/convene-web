@@ -9,6 +9,7 @@ import VeeValidate from 'vee-validate';
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment';
 import { Modal, Panel, ContextMenu } from 'elements';
+import Fullscreen from 'vue-fullscreen';
 
 require('font-awesome/css/font-awesome.css');
 
@@ -43,6 +44,7 @@ Vue.use(VueAnalytics, {
   router
 });
 Vue.use(VeeValidate);
+Vue.use(Fullscreen);
 Vue.component('modal', Modal);
 Vue.component('panel', Panel);
 Vue.component('context-menu', ContextMenu);

@@ -1,4 +1,5 @@
 <template>
+<fullscreen :fullscreen.sync="fullscreen_on">
   <div class="venue-editor">
     <div class="editor-statusbar">
       <ul>
@@ -46,6 +47,17 @@
           </div>
         </li>
       </ul>
+
+      <ul class="pull-right">
+        <li>
+          <a class="btn btn-secondary" @click="fullscreen_on = true" v-if="!fullscreen_on">
+            <i class="fa fa-expand"></i>
+          </a>
+          <a class="btn btn-secondary" @click="fullscreen_on = false" v-else>
+            <i class="fa fa-compress"></i>
+          </a>
+        </li>
+      </ul>
     </div>
 
     <div class="editor-toolbar" v-if="canvas != null">
@@ -84,7 +96,6 @@
             </div>
           </div>
         </li>
-
       </ul>
       <ul class="pull-right">
         <li>
@@ -109,6 +120,7 @@
     <canvas id="fabric-canvas">
     </canvas>
   </div>
+</fullscreen>
 </template>
 
 <script>
@@ -130,7 +142,8 @@ export default {
     return {
       canvas: null,
       history: [],
-      historyManager: null
+      historyManager: null,
+      fullscreen_on: false
     };
   },
   watch: {
@@ -161,10 +174,9 @@ export default {
 
     let calibrateSize = () => {
       canvas.setWidth(this.$el.scrollWidth);
-      canvas.setHeight(window.innerHeight - 315);
+      let height = this.fullscreen_on ? window.screen.height : window.innerHeight - 315;
+      canvas.setHeight(height);
     };
-
-    calibrateSize();
 
     canvas.on('object:moving', (e) => {
       e.target.set({
@@ -178,8 +190,9 @@ export default {
     });
 
     window.addEventListener('resize', calibrateSize);
-    this.canvas = canvas;
+    calibrateSize();
 
+    this.canvas = canvas;
     this.historyManager = new HistoryManager();
   },
   computed: {
