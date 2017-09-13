@@ -95,6 +95,9 @@ export default {
       round_table: 'Okruhlý stôl',
       seats_in_rows: 'Sedadlá v radoch',
       seat: 'Miesto na sedenie'
+    },
+    building: {
+      room: 'Miestnosť'
     }
   }
 };

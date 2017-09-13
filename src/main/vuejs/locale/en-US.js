@@ -96,6 +96,9 @@ export default {
       round_table: 'Round table',
       seats_in_rows: 'Seats in rows',
       seat: 'Seat'
+    },
+    building: {
+      room: 'Room'
     }
   }
 };

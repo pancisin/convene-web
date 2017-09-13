@@ -1,6 +1,6 @@
 <template>
   <div class="venue-editor">
-    <div class="editor-toolbar">
+    <div class="editor-statusbar">
       <ul>
         <li>
           <div class="btn-group">
@@ -41,7 +41,7 @@
               <i class="fa fa-angle-down"></i>
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item">Open</a>
+              <a class="dropdown-item">About Bookster venue editor</a>
             </div>
           </div>
         </li>
@@ -50,11 +50,22 @@
 
     <div class="editor-toolbar" v-if="canvas != null">
       <ul>
-        <li>
+        <li :class="{ disabled : !touched }">
           <a @click="submit">
             <i class="fa fa-save"></i>
           </a>
         </li>
+        <li class="disabled">
+          <a>
+            <i class="fa fa-arrow-left"></i>
+          </a>
+        </li>
+        <li class="disabled">
+          <a>
+            <i class="fa fa-arrow-right"></i>
+          </a>
+        </li>
+
         <li>
           <div class="btn-group">
             <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">Add building
@@ -104,9 +115,10 @@
 import { fabric } from 'fabric';
 import * as fabric_objects from '../services/fabric/objects';
 import * as fabric_building from '../services/fabric/building';
+import { calculateHash } from '../services/helpers';
 
 export default {
-  name: 'fabric-canvas',
+  name: 'venue-editor',
   props: {
     json: {
       type: String,
@@ -115,7 +127,8 @@ export default {
   },
   data () {
     return {
-      canvas: null
+      canvas: null,
+      history: []
     };
   },
   watch: {
@@ -167,6 +180,9 @@ export default {
     },
     fabric_building () {
       return fabric_building;
+    },
+    touched () {
+      return calculateHash(this.json) !== calculateHash(JSON.stringify(this.canvas));
     }
   },
   methods: {
@@ -209,27 +225,61 @@ export default {
 
       li {
         display: inline-block;
-      }
 
-      a {
-        padding: 10px 15px;
-        color: #000;
-        border-right: 1px solid #eee;
-        transition: background-color .3s ease;
-        display: inline-block;
+        a {
+          padding: 10px 15px;
+          color: #000;
+          border-right: 1px solid #eee;
+          transition: background-color .3s ease;
+          display: inline-block;
 
-        &:hover {
-          background-color: #eee;
+          &:hover {
+            background-color: #eee;
+          }
+
+          &.selected {
+            background-color: #0f0;
+          }
         }
 
-        &.selected {
-          background-color: #0f0;
+        &.disabled a {
+          color: #bbb;
+          pointer-events: none;
         }
       }
 
       .dropdown-item {
         display: block;
         border: none;
+      }
+    }
+  }
+
+  .editor-statusbar {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+
+    ul {
+      display: inline-flex;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li {
+        a {
+          color: #333;
+          transition: background-color .3s ease;
+
+          &:hover {
+            background-color: #eee;
+          }
+        }
+      }
+
+      .dropdown-item {
+        display: block;
+        border: none;
+        padding: 5px 15px;
       }
     }
   }

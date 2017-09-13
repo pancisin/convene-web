@@ -39,6 +39,7 @@ export default {
     },
     submitVenue (venue_json) {
       PlaceApi.patchVenue(this.place.id, venue_json, result => {
+        this.venue = venue_json;
         this.$success('venue data saved !');
       });
     }
