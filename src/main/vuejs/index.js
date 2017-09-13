@@ -8,7 +8,7 @@ import VeeValidate from 'vee-validate';
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment';
-import { Modal, Panel, ContextMenu } from './elements';
+import { Modal, Panel, ContextMenu } from 'elements';
 
 require('font-awesome/css/font-awesome.css');
 

@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { GMap } from '../../elements';
+import { GMap } from 'elements';
 export default {
   name: 'place-overview',
   props: {

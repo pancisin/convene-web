@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload } from '../../elements';
+import { TextEditor, ImageUpload } from 'elements';
 import { mapActions } from 'vuex';
 import PublicApi from 'api/public.api';
 

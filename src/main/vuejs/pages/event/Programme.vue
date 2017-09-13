@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { TimePicker } from '../../elements';
+import { TimePicker } from 'elements';
 import ProgrammeApi from 'api/programme.api';
 export default {
   inject: ['provider'],

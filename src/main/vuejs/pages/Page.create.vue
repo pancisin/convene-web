@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Wizard, WizardPage, TextEditor } from '../elements';
+import { Wizard, WizardPage, TextEditor } from 'elements';
 import { mapActions } from 'vuex';
 import PublicApi from 'api/public.api';
 

@@ -59,7 +59,7 @@
 <script>
 import ConferenceInjector from '../../services/injectors/conference.injector.js';
 import AttendForm from './conference/Attend.form.vue';
-import { ArticlesList } from '../../elements';
+import { ArticlesList } from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 

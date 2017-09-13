@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { Paginator, DatePicker } from '../../elements';
+import { Paginator, DatePicker } from 'elements';
 export default {
   name: 'events',
   data () {

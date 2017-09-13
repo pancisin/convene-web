@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { UserSearch } from '../../elements';
+import { UserSearch } from 'elements';
 import UserApi from 'api/user.api';
 
 export default {

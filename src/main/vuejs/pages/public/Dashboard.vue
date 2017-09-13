@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { Paginator, Tab, TabContainer } from '../../elements';
+import { Paginator, Tab, TabContainer } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import UserApi from 'api/user.api';
 import { mapGetters } from 'vuex';

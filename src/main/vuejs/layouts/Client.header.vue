@@ -165,7 +165,7 @@
 </template>
 
 <script>
-import { Notifications, LangSwitcher } from '../elements';
+import { Notifications, LangSwitcher } from 'elements';
 import SlideTransition from '../functional/SlideTransition';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';

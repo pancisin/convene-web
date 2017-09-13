@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { DatePicker } from '../../../elements';
+import { DatePicker } from 'elements';
 import SurveyApi from 'api/survey.api';
 
 export default {

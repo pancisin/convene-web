@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { DatePicker, TextEditor } from '../../elements';
+import { DatePicker, TextEditor } from 'elements';
 import ProgrammeEditor from '../event/Programme.vue';
 
 export default {

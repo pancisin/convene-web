@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { DatePicker } from '../../../elements';
+import { DatePicker } from 'elements';
 export default {
   name: 'conference-application',
   inject: ['api'],

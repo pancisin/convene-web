@@ -19,7 +19,7 @@
 <script>
 import HeaderComponent from './Admin.header.vue';
 import FooterComponent from './Footer.vue';
-import { ToastContainer, ChatContainer } from '../elements';
+import { ToastContainer, ChatContainer } from 'elements';
 import SidebarComponent from './Admin.sidebar.vue';
 
 export default {

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { VenueEditor } from '../../elements';
+import { VenueEditor } from 'elements';
 import PlaceApi from 'api/place.api';
 
 export default {

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { GMap } from '../../elements';
+import { GMap } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';

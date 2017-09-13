@@ -49,7 +49,7 @@
 </template>
   
 <script>
-import { Notifications, LangSwitcher } from '../elements';
+import { Notifications, LangSwitcher } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
 

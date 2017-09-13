@@ -131,7 +131,7 @@
 
 <script>
 import SurveyApi from 'api/survey.api';
-import { DatePicker } from '../elements';
+import { DatePicker } from 'elements';
 import PublicApi from 'api/public.api';
 import { calculateHash } from '../services/helpers';
 

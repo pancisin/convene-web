@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { Paginator } from '../../elements';
+import { Paginator } from 'elements';
 import EventApi from 'api/event.api';
 
 export default {

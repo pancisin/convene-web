@@ -57,7 +57,7 @@
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import ExplorerTransition from '../../functional/ExplorerTransition.vue';
-import { Paginator } from '../../elements';
+import { Paginator } from 'elements';
 export default {
   name: 'page-explore',
   data () {

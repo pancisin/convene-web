@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { TextEditor, DatePicker, ImageUpload } from '../../elements';
+import { TextEditor, DatePicker, ImageUpload } from 'elements';
 
 export default {
   inject: ['provider'],

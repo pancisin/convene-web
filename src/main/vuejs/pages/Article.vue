@@ -36,7 +36,7 @@
 
 <script>
 import ArticleApi from 'api/article.api';
-import { ImageUpload, TextEditor } from '../elements';
+import { ImageUpload, TextEditor } from 'elements';
 
 export default {
   name: 'article',
