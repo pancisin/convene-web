@@ -50,18 +50,18 @@
 
     <div class="editor-toolbar" v-if="canvas != null">
       <ul>
-        <li :class="{ disabled : !touched }">
+        <li :class="{ 'disabled' : !touched }">
           <a @click="submit">
             <i class="fa fa-save"></i>
           </a>
         </li>
-        <li class="disabled">
-          <a>
+        <li :class="{ 'disabled' : !historyManager.canGoBack() }">
+          <a @click="goHistory(-1)">
             <i class="fa fa-arrow-left"></i>
           </a>
         </li>
-        <li class="disabled">
-          <a>
+        <li :class="{ 'disabled' : !historyManager.canGoForward() }">
+          <a @click="goHistory(1)">
             <i class="fa fa-arrow-right"></i>
           </a>
         </li>
@@ -116,6 +116,7 @@ import { fabric } from 'fabric';
 import * as fabric_objects from '../services/fabric/objects';
 import * as fabric_building from '../services/fabric/building';
 import { calculateHash } from '../services/helpers';
+import HistoryManager from '../services/HistoryManager';
 
 export default {
   name: 'venue-editor',
@@ -128,7 +129,8 @@ export default {
   data () {
     return {
       canvas: null,
-      history: []
+      history: [],
+      historyManager: null
     };
   },
   watch: {
@@ -171,8 +173,14 @@ export default {
       });
     });
 
+    canvas.on('object:modified', (e) => {
+      this.historyManager.putItem(JSON.stringify(this.canvas));
+    });
+
     window.addEventListener('resize', calibrateSize);
     this.canvas = canvas;
+
+    this.historyManager = new HistoryManager();
   },
   computed: {
     fabric_objects () {
@@ -204,6 +212,17 @@ export default {
     },
     submit () {
       this.$emit('submit', JSON.stringify(this.canvas));
+    },
+    goHistory (direction) {
+      if (direction > 0) {
+        this.historyManager.goForward();
+      } else {
+        this.historyManager.goBack();
+      }
+
+      this.canvas.loadFromJSON(this.historyManager.currentVersion, () => {
+        this.canvas.renderAll();
+      });
     }
   }
 };

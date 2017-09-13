@@ -9,11 +9,6 @@ export default class Room extends fabric.Rect {
   initialize (el, options = {}) {
     super.initialize(el, options);
 
-    this.on('mouseover', () => {
-      this.strokeStyle = '#F00';
-      console.warn('mouse over');
-    });
-
     this.on('modified', (e) => {
       this.width = this.getWidth();
       this.height = this.getHeight();
