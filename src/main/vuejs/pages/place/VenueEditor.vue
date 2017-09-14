@@ -1,6 +1,6 @@
 <template>
   <panel type="primary" class="panel-nopadding" v-loading="loading">
-    <span slot="title">Venue editor</span>
+    <span slot="title">Venue editor <sup class="label label-danger">preview</sup></span>
     <venue-editor :json="venue" @submit="submitVenue"></venue-editor>
   </panel>
 </template>
