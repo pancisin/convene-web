@@ -108,7 +108,7 @@ export default {
           this.$router.push({
             name: 'place',
             params: {
-              id: place.id
+              place_id: place.id
             }
           });
         });

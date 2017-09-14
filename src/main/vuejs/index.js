@@ -30,10 +30,6 @@ require('node-waves/src/less/waves.less');
 require('./assets/less/components.less');
 require('./assets/less/responsive.less');
 
-// TRANSLATIONS
-import sk from './locale/sk-SK.js';
-import en from './locale/en-US.js';
-
 Vue.use(VueResource);
 Vue.use(VueI18n);
 Vue.use(VueWebsocket);
@@ -50,12 +46,10 @@ Vue.component('panel', Panel);
 Vue.component('context-menu', ContextMenu);
 
 // DIRECTIVES
-import clickOutside from './directives/clickOutside.js';
-import stripTags from './directives/stripTags.js';
-import loading from './directives/loading.js';
-Vue.directive('click-outside', clickOutside);
-Vue.directive('strip', stripTags);
-Vue.directive('loading', loading);
+import { ClickOutside, StripTags, Loading } from './directives';
+Vue.directive('click-outside', ClickOutside);
+Vue.directive('strip', StripTags);
+Vue.directive('loading', Loading);
 
 Vue.config.devtools = true;
 
@@ -69,12 +63,13 @@ Vue.http.interceptors.push((request, next) => {
   });
 });
 
+// TRANSLATIONS
+import * as translations from './locale';
+
 const i18n = new VueI18n({
   locale: 'en',
   fallbackLocale: 'en',
-  messages: {
-    sk, en
-  }
+  messages: translations
 });
 
 import App from './components/App.vue';

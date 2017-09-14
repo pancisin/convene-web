@@ -1,7 +1,7 @@
 <template>
-  <panel type="default">
+  <panel type="default" v-loading="loadingProgress">
     <span slot="title">Overview</span>
-  
+
     <div class="row">
       <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
@@ -32,12 +32,12 @@
         <image-upload v-model="event.bannerUrl"></image-upload>
       </div>
     </div>
-  
+
     <div class="form-group">
       <label class="control-label">Summary</label>
       <text-editor v-model="event.summary"></text-editor>
     </div>
-  
+
     <div class="text-center">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
@@ -83,7 +83,8 @@ export default {
   },
   data () {
     return {
-      places: []
+      places: [],
+      loadingProgress: false
     };
   },
   created () {
@@ -98,14 +99,23 @@ export default {
         if (result) {
           if (this.edit) {
             let url = ['api/event', this.event.id].join('/');
-            this.$http.put(url, this.event).then(response => {
+            this.loadingProgress = true;
+            this.$http.put(url, this.event, {
+              progress (e) {
+                if (e.lengthComputable) {
+                  this.loadingProgress = (e.loaded / e.total) * 100;
+                }
+              }
+            }).then(response => {
               this.$emit('updated', response.body);
               this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
+              this.loadingProgress = false;
             }, response => {
               response.body.fieldErrors.forEach((e) => {
                 this.$set(this.errors, e.field, e);
               });
               this.$error('Error !', 'Problem in saving event.');
+              this.loadingProgress = false;
             });
           } else {
             let url = null;
