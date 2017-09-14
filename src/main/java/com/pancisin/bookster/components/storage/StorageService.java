@@ -16,6 +16,8 @@ public interface StorageService {
     
     void store(MultipartFile file);
 
+    boolean isBinary(String context);
+    
     Stream<Path> loadAll();
 
     Path load(String filename);

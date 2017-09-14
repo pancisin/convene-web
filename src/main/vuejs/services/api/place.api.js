@@ -56,5 +56,17 @@ export default {
    * @param {*} success - success callback function
    */
   getVenue (id, success) {
+  },
+
+  getGallery (id, success) {
+    Vue.http.get(`${PLACE_API_URL}/${id}/gallery`).then(response => {
+      success(response.body);
+    });
+  },
+
+  postGalleryItem (id, itemData, success) {
+    Vue.http.post(`${PLACE_API_URL}/${id}/gallery`, itemData).then(response => {
+      success(response.body);
+    });
   }
-};
+}; 

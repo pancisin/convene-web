@@ -7,13 +7,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.storage.StorageService;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 
 @RestController
@@ -26,6 +29,9 @@ public class PlaceController {
 	@Autowired
 	private StorageService storageService;
 
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping
 	public ResponseEntity<?> getPlace(@PathVariable Long place_id) {
 		Place place = placeRepository.findOne(place_id);
@@ -73,5 +79,30 @@ public class PlaceController {
 		}
 		
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping("/gallery")
+	public ResponseEntity<?> getGallery(@PathVariable Long place_id) {
+		Place stored = placeRepository.findOne(place_id);
+		return ResponseEntity.ok(stored.getGallery());
+	}
+	
+	@PostMapping("/gallery") 
+	public ResponseEntity<?> postGallery(@PathVariable Long place_id, @RequestBody String galleryData) {
+		Place stored = placeRepository.findOne(place_id);
+
+		if (storageService.isBinary(galleryData)) {
+			Media gallery_item = new Media();
+			gallery_item = mediaRepository.save(gallery_item);
+			String url = "images/places/" + gallery_item.getId().toString();
+			
+			gallery_item.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(galleryData, url);
+			stored.AddGallery(gallery_item);
+		}
+		
+		placeRepository.save(stored);
+		
+		return ResponseEntity.ok(stored.getGallery());
 	}
 }

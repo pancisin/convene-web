@@ -20,7 +20,7 @@ import TextEditor from './TextEditor';
 import TimePicker from './TimePicker';
 import Toast from './Toast';
 import ToastContainer from './ToastContainer';
-import UserSuggestInput from './UserSuggestInput';
+import UserSearch from './UserSearch';
 import VenueEditor from './VenueEditor';
 import VerticalMenuDrop from './VerticalMenuDrop';
 import Wizard from './Wizard';
@@ -52,7 +52,7 @@ export {
   TimePicker,
   Toast,
   ToastContainer,
-  UserSuggestInput,
+  UserSearch,
   VenueEditor,
   VerticalMenuDrop,
   Wizard,

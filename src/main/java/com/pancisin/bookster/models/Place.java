@@ -51,7 +51,7 @@ public class Place {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String venueData;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH })
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
 	
 	public String getName() {

@@ -51,6 +51,7 @@ public class Article {
 	
 
 	@ManyToOne
+	@JsonProperty(access = Access.READ_ONLY)
 	private User author;
 
 	@Column
