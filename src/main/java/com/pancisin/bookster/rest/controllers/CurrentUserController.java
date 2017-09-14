@@ -236,19 +236,19 @@ public class CurrentUserController {
 			return null;
 	}
 
-	@PostMapping("/place")
-	public ResponseEntity<?> postPlace(@RequestBody Place place) {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		place.setUser(auth);
-		return ResponseEntity.ok(placeRepository.save(place));
-	}
+//	@PostMapping("/place")
+//	public ResponseEntity<?> postPlace(@RequestBody Place place) {
+//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		place.setUser(auth);
+//		return ResponseEntity.ok(placeRepository.save(place));
+//	}
 
-	@GetMapping("/place")
-	public ResponseEntity<?> getPlace() {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		return ResponseEntity.ok(stored.getPlaces());
-	}
+//	@GetMapping("/place")
+//	public ResponseEntity<?> getPlace() {
+//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		User stored = userRepository.findOne(auth.getId());
+//		return ResponseEntity.ok(stored.getPlaces());
+//	}
 
 	@JsonView(Summary.class)
 	@GetMapping("/search")

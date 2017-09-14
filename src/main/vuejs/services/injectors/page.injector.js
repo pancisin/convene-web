@@ -33,6 +33,10 @@ export default class PageInjector {
     PageApi.getPlaces(this.page_id, success);
   }
 
+  postPlace (place, success) {
+    PageApi.postPlace(this.page_id, place, success);
+  }
+
   publishPage (success) {
     PageApi.publishPage(this.page_id, success);
   }

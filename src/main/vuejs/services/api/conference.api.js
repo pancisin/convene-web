@@ -298,5 +298,28 @@ export default {
     Vue.http.put(`${CONFERENCE_API_URL}/${id}/widget`, widgets).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Post new place and map it to conference by id
+   * @param {*} id - conference id
+   * @param {*} place - place data object
+   * @param {*} success - success callback function
+   */
+  postPlace (id, place, success) {
+    Vue.http.post(`${CONFERENCE_API_URL}/${id}/place`, place).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get all places mapped to conference by conference id
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  getPlaces (id, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/place`).then(response => {
+      success(response.body);
+    });
   }
 };

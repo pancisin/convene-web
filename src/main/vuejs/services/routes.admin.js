@@ -128,6 +128,28 @@ export default [
         }
       },
       {
+        path: 'places',
+        name: 'conference.places',
+        component: resolve => require(['../pages/templates/Places.vue'], resolve),
+        meta: {
+          title: 'Places'
+        }
+      },
+      {
+        path: 'create-place',
+        name: 'conference.place.create',
+        component: resolve => require(['../pages/place/Overview.vue'], resolve),
+        props: (route) => (
+          {
+            conference_id: route.params.id,
+            edit: false
+          }
+        ),
+        meta: {
+          titlle: 'Create place'
+        }
+      },
+      {
         path: 'survey-create',
         name: 'conference.survey.create',
         component: resolve => require(['../pages/Survey.create.vue'], resolve),
@@ -146,7 +168,7 @@ export default [
   {
     path: 'survey/:survey_id',
     name: 'survey',
-    component: resolve => require(['../pages/Survey.vue'], resolve),
+    component: resolve => require(['../pages/Survey.vue'], resolve)
   },
   {
     path: 'events/create',
@@ -304,9 +326,9 @@ export default [
     ]
   },
   {
-    path: 'place/:id',
+    path: 'place/:place_id',
     component: resolve => require(['../pages/Place.vue'], resolve),
-    redirect: '/admin/place/:id/overview',
+    redirect: '/admin/place/:place_id/overview',
     name: 'place',
     children: [
       {

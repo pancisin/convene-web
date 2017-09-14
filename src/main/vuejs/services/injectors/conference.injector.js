@@ -104,4 +104,12 @@ export default class ConferenceInjector {
   putWidgets (widgets, success) {
     ConferenceApi.putWidgets(this.conference_id, widgets, success);
   }
+
+  getPlaces (success) {
+    ConferenceApi.getPlaces(this.conference_id, success);
+  }
+
+  postPlace (place, success) {
+    ConferenceApi.postPlace(this.conference_id, place, success);
+  }
 };

@@ -242,13 +242,18 @@ public class PageController {
 		return ResponseEntity.ok(stored.getPlaces());
 	}
 
+	@Transactional
 	@PostMapping("/place")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
 		Page stored = pageRepository.findOne(page_id);
-		place.setPage(stored);
-		return ResponseEntity.ok(placeRepository.save(place));
+		
+		place = placeRepository.save(place);
+		stored.addPlace(place);
+		pageRepository.save(stored);
+		
+		return ResponseEntity.ok(place);
 	}
 
 	@PatchMapping("/toggle-published")

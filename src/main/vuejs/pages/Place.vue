@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getPlace () {
-      var place_id = this.$route.params.id;
+      var place_id = this.$route.params.place_id;
 
       if ((this.place === null || this.place.id !== place_id) && place_id != null) {
         PlaceApi.getPlace(place_id, place => {

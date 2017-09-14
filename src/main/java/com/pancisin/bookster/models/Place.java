@@ -6,12 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -39,14 +37,6 @@ public class Place {
 	@JsonManagedReference
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
-
-	@JsonIgnore
-	@ManyToOne
-	private Page page;
-
-	@JsonIgnore
-	@ManyToOne
-	private User user;
 
 	@Column
 	@JsonProperty(access = Access.READ_ONLY)
@@ -90,22 +80,6 @@ public class Place {
 
 	public Long getId() {
 		return id;
-	}
-
-	public Page getPage() {
-		return page;
-	}
-
-	public void setPage(Page page) {
-		this.page = page;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getVenueJsonUrl() {

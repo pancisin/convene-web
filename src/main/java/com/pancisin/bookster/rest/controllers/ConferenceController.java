@@ -37,6 +37,7 @@ import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.Widget;
@@ -53,6 +54,7 @@ import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
 import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.MetaValueRepository;
+import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.repository.WidgetRepository;
@@ -94,6 +96,9 @@ public class ConferenceController {
 	@Autowired
 	private SurveyRepository surveyRepository;
 
+	@Autowired
+	private PlaceRepository placeRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -348,5 +353,26 @@ public class ConferenceController {
 		conferenceRepository.save(stored);
 
 		return ResponseEntity.ok(stored.getWidgets());
+	}
+	
+	@GetMapping("/place")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
+	public ResponseEntity<?> getPlaces(@PathVariable Long conference_id) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		return ResponseEntity.ok(stored.getPlaces());
+	}
+
+	@Transactional
+	@PostMapping("/place")
+	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
+	@ActivityLog(type = ActivityType.CREATE_PLACE)
+	public ResponseEntity<?> postPlace(@PathVariable Long conference_id, @RequestBody Place place) {
+		Conference stored = conferenceRepository.findOne(conference_id);
+		
+		place = placeRepository.save(place);
+		stored.addPlace(place);
+		conferenceRepository.save(stored);
+		
+		return ResponseEntity.ok(place);
 	}
 }

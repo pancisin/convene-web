@@ -25,10 +25,10 @@ const PageRoutes = [
     name: 'page.events',
     code: 'admin.page.events'
   },
-  {
-    name: 'page.places',
-    code: 'admin.page.places'
-  },
+  // {
+  //   name: 'page.places',
+  //   code: 'admin.page.places'
+  // },
   {
     name: 'page.administrators',
     code: 'admin.page.administrators'
@@ -63,6 +63,10 @@ const ConferenceRoutes = [
   {
     name: 'conference.surveys',
     code: 'admin.conference.surveys'
+  },
+  {
+    name: 'conference.places',
+    code: 'admin.conference.places'
   },
   {
     name: 'conference.administrators',

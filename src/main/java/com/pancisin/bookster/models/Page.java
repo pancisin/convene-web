@@ -81,7 +81,7 @@ public class Page implements IAuthor {
 	private Calendar created;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "page")
+	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.DETACH }, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Place> places;
 
 	@JsonIgnore
@@ -234,5 +234,12 @@ public class Page implements IAuthor {
 		if (widgets != null) {
 			this.widgets.addAll(widgets);
 		}
+	}
+	
+	public void addPlace(Place place) {
+		if (this.places == null)
+			this.places = new ArrayList<Place>();
+
+		this.places.add(place);
 	}
 }

@@ -129,6 +129,18 @@ export default {
   },
 
   /**
+   * Post new place and map it to page specified by id
+   * @param {*} id - page id
+   * @param {*} place - place data object
+   * @param {*} success - success callback function
+   */
+  postPlace (id, place, success) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/place`, place).then(response => {
+      success(response.body);
+    }, errorHandler);
+  },
+
+  /**
    * Get page places
    * @param {*} id - page id
    * @param {*} success - success callback function
