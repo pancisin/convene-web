@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.Address;
 import com.pancisin.bookster.models.EventBot;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
@@ -57,7 +58,7 @@ public class EventBotService {
 				for (int j = 0; j < events.size(); j++) {
 					Event ev = events.get(j);
 					com.pancisin.bookster.models.Event event = buildEvent(ev);
-					event.setBannerUrl(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString());
+					event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
 					event.setPage(bot.getPage());
 					event.setOwner(bot.getAlias());
 

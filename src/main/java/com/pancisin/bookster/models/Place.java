@@ -1,11 +1,16 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -45,6 +50,9 @@ public class Place {
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String venueData;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH })
+	private List<Media> gallery;
 	
 	public String getName() {
 		return name;
@@ -96,5 +104,17 @@ public class Place {
 
 	public String getVenueData() {
 		return venueData;
+	}
+
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

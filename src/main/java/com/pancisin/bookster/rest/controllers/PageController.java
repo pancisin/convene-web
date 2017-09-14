@@ -40,6 +40,7 @@ import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
@@ -54,6 +55,7 @@ import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.EventRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
@@ -91,6 +93,9 @@ public class PageController {
 	@Autowired
 	private ActivityRepository activityRepository;
 
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -115,10 +120,14 @@ public class PageController {
 		stored.setBranch(page.getBranch());
 		stored.setSummary(page.getSummary());
 
-		if (page.getBannerUrl() != null && storageService.isBinary(page.getBannerUrl())) {
-			String url = "banners/pages/" + stored.getId();
-			storageService.storeBinary(page.getBannerUrl(), url);
-			stored.setBannerUrl("/files/" + url + ".jpg");
+		if (page.getPosterData() != null && storageService.isBinary(page.getPosterData())) {
+			Media poster = new Media();
+			poster = mediaRepository.save(poster);
+			String url = "banners/pages/" + poster.getId().toString();
+			
+			poster.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(page.getPosterData(), url);
+			stored.setPoster(poster);
 		}
 
 		return ResponseEntity.ok(pageRepository.save(stored));

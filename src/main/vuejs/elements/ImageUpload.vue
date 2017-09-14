@@ -1,6 +1,6 @@
 <template>
   <div class="fileupload waves-effect">
-    <img :src="value" class="img-thumbnail dropzone" style="width: 100%" />
+    <img :src="source" class="img-thumbnail dropzone" style="width: 100%" />
     <input type="file" class="upload" @change="onImageChange">
   </div>
 </template>
@@ -8,11 +8,15 @@
 <script>
 export default {
   name: 'image-upload',
-  props: ['value'],
-  data () {
-    return {
-
-    };
+  props: ['value', 'path', 'media'],
+  computed: {
+    source () {
+      if (this.value != null) {
+        return this.value;
+      } else {
+        return this.media != null ? this.media.path : this.path;
+      }
+    }
   },
   methods: {
     onImageChange (e) {

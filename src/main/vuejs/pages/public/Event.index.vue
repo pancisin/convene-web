@@ -9,7 +9,7 @@
         <div class="events-masonry">
           <router-link v-for="event in eventsPaginator.content" :to="'/event/' + event.id" class="event-item" :key="event.id">
             <div class="image-wrapper">
-              <img v-if="event.bannerUrl != null" :src="event.bannerUrl">
+              <img v-if="event.poster != null" :src="event.poster.path">
             </div>
 
             <div class="content">

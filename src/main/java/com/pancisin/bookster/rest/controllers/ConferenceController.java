@@ -34,6 +34,7 @@ import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.ConferenceAttendee;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Page;
@@ -52,6 +53,7 @@ import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.MetaValueRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
@@ -99,6 +101,9 @@ public class ConferenceController {
 	@Autowired
 	private PlaceRepository placeRepository;
 	
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -114,10 +119,14 @@ public class ConferenceController {
 		stored.setSummary(conference.getSummary());
 		stored.setVisibility(conference.getVisibility());
 
-		if (conference.getBannerUrl() != null && storageService.isBinary(conference.getBannerUrl())) {
-			String url = "banners/conferences/" + stored.getId();
-			storageService.storeBinary(conference.getBannerUrl(), url);
-			stored.setBannerUrl("/files/" + url + ".jpg");
+		if (conference.getPosterData() != null && storageService.isBinary(conference.getPosterData())) {
+			Media poster = new Media();
+			poster = mediaRepository.save(poster);
+			String url = "banners/conferences/" + poster.getId().toString();
+			
+			poster.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(conference.getPosterData(), url);
+			stored.setPoster(poster);
 		}
 
 		return ResponseEntity.ok(conferenceRepository.save(stored));

@@ -17,10 +17,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;
@@ -73,8 +77,13 @@ public class Conference implements IAuthor {
 	@OneToMany(mappedBy = "conference")
 	private List<ConferenceAttendee> attendees;
 
-	@Column
-	private String bannerUrl;
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+	@JsonView(Summary.class)
+	private Media poster;
+
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String posterData;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "conference")
@@ -211,12 +220,20 @@ public class Conference implements IAuthor {
 		return surveys;
 	}
 
-	public String getBannerUrl() {
-		return bannerUrl;
+	public Media getPoster() {
+		return poster;
 	}
 
-	public void setBannerUrl(String bannerUrl) {
-		this.bannerUrl = bannerUrl;
+	public void setPoster(Media poster) {
+		this.poster = poster;
+	}
+
+	public String getPosterData() {
+		return posterData;
+	}
+
+	public void setPosterData(String posterData) {
+		this.posterData = posterData;
 	}
 
 	public List<Article> getArticles() {

@@ -28,11 +28,13 @@ import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
@@ -59,6 +61,9 @@ public class EventController {
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
@@ -80,10 +85,14 @@ public class EventController {
 		stored.setDate(event.getDate());
 		stored.setPlace(event.getPlace());
 
-		if (event.getBannerUrl() != null && storageService.isBinary(event.getBannerUrl())) {
-			String url = "banners/events/" + stored.getId();
-			storageService.storeBinary(event.getBannerUrl(), url);
-			stored.setBannerUrl("/files/" + url + ".jpg");
+		if (event.getPosterData() != null && storageService.isBinary(event.getPosterData())) {
+			Media poster = new Media();
+			poster = mediaRepository.save(poster);
+			String url = "banners/events/" + poster.getId().toString();
+			
+			poster.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(event.getPosterData(), url);
+			stored.setPoster(poster);
 		}
 
 		return ResponseEntity.ok(eventRepository.save(stored));

@@ -1,8 +1,8 @@
 <template>
   <div class="articles-list" v-loading="loading">
     <div class="articles-list-item clearfix" v-for="article in articles" :key="article.id">
-      <div class="article-image-container" v-if="article.bannerUrl != null">
-        <img :src="article.bannerUrl">
+      <div class="article-image-container" v-if="article.thumbnail != null">
+        <img :src="article.thumbnail.path">
       </div>
   
       <router-link :to="{ name: 'article.public', params: { article_id: article.id } }">

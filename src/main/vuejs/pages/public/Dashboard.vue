@@ -9,8 +9,8 @@
           <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
-                <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                  <img :src="event.bannerUrl" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="event.poster != null">
+                  <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
                 <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
@@ -28,8 +28,8 @@
           <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
-                <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                  <img :src="event.bannerUrl" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="event.poster != null">
+                  <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="event.name"></p>
                 <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
@@ -53,8 +53,8 @@
             <div class="inbox-widget">
               <stagger-transition>
                 <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="page.id" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                    <img :src="page.bannerUrl" class="img-circle">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
                   </div>
                   <p class="inbox-item-author" v-text="page.name"></p>
                   <p class="inbox-item-text" v-if="page.category != null">
@@ -72,8 +72,8 @@
             <div class="inbox-widget">
               <stagger-transition>
                 <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                    <img :src="page.bannerUrl" class="img-circle">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
                   </div>
                   <p class="inbox-item-author" v-text="page.name"></p>
                   <p class="inbox-item-text" v-if="page.category != null">
@@ -87,8 +87,8 @@
             <div class="inbox-widget">
               <stagger-transition>
                 <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="page.bannerUrl != null">
-                    <img :src="page.bannerUrl" class="img-circle">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
                   </div>
                   <p class="inbox-item-author">
                     {{ page.name }}

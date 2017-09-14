@@ -46,7 +46,7 @@
       </panel>
     </div>
     <div class="col-md-4">
-      <image-upload v-model="page.bannerUrl" />
+      <image-upload v-model="page.posterData" :media="page.poster" />
     </div>
   </div>
 </template>

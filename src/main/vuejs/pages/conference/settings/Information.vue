@@ -4,7 +4,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <image-upload v-model="conference.bannerUrl"></image-upload>
+        <image-upload v-model="conference.posterData" :media="conference.poster"></image-upload>
       </div>
 
       <div class="col-md-6">

@@ -1,10 +1,10 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-9" :class="{ 'col-sm-9' : event.bannerUrl }">
+      <div class="col-sm-9" :class="{ 'col-sm-9' : event.poster }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
-            <img :src="event.bannerUrl">
+            <img v-if="event.poster != null" :src="event.poster.path">
             <h3 class="panel-title">{{ event.name }}</h3>
             <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('LL') }} {{ event.startsAt }}
               <br>Usporiadatel : {{ event.author.displayName }}</p>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="col-sm-3">
-        <img class="img-poster m-b-20" :src="event.bannerUrl">
+        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
 
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
@@ -61,8 +61,8 @@
           <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id" class="inbox-item">
-                <div class="inbox-item-img" v-if="related.bannerUrl != null">
-                  <img :src="related.bannerUrl" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="related.poster != null">
+                  <img :src="related.poster.path" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="related.name"></p>
                 <p class="inbox-item-text pull-right">

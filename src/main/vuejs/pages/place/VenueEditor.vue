@@ -1,6 +1,8 @@
 <template>
   <panel type="primary" class="panel-nopadding" v-loading="loading">
-    <span slot="title">Venue editor <sup class="label label-danger">preview</sup></span>
+    <span slot="title">Venue editor
+      <sup class="label label-danger">preview</sup>
+    </span>
     <venue-editor :json="venue" @submit="submitVenue"></venue-editor>
   </panel>
 </template>
@@ -31,7 +33,14 @@ export default {
     getVenue () {
       if (this.place.venueJsonUrl != null) {
         this.loading = true;
-        this.$http.get(this.place.venueJsonUrl).then(response => {
+        this.$http.get(this.place.venueJsonUrl, {
+          progress (e) {
+            if (e.lengthComputable) {
+              console.log(e);
+              this.loading = (e.loaded / e.total) * 100;
+            }
+          }
+        }).then(response => {
           this.venue = JSON.stringify(response.body);
           this.loading = false;
         });

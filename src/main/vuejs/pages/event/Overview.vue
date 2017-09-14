@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="col-md-6" v-if="edit">
-        <image-upload v-model="event.bannerUrl"></image-upload>
+        <image-upload v-model="event.posterData" :media="event.poster"></image-upload>
       </div>
     </div>
 

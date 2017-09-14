@@ -19,7 +19,7 @@
         </div>
   
         <div class="col-md-4" v-if="edit">
-          <image-upload v-model="article.bannerUrl"></image-upload>
+          <image-upload v-model="article.thumbnailData" :media="article.thumbnail"></image-upload>
         </div>
       </div>
   

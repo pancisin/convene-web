@@ -2,6 +2,7 @@ package com.pancisin.bookster.models;
 
 import java.util.Calendar;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +11,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "articles")
@@ -34,8 +41,14 @@ public class Article {
 	@Column
 	private String content;
 
-	@Column
-	private String bannerUrl;
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+	@JsonView(Summary.class)
+	private Media thumbnail;
+
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String thumbnailData;
+	
 
 	@ManyToOne
 	private User author;
@@ -64,12 +77,20 @@ public class Article {
 		this.content = content;
 	}
 
-	public String getBannerUrl() {
-		return bannerUrl;
+	public Media getThumbnail() {
+		return thumbnail;
 	}
 
-	public void setBannerUrl(String bannerUrl) {
-		this.bannerUrl = bannerUrl;
+	public void setThumbnail(Media thumbnail) {
+		this.thumbnail = thumbnail;
+	}
+
+	public String getThumbnailData() {
+		return thumbnailData;
+	}
+
+	public void setThumbnailData(String thumbnailData) {
+		this.thumbnailData = thumbnailData;
 	}
 
 	public User getAuthor() {

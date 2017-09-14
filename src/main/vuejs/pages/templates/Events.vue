@@ -15,7 +15,7 @@
       <tbody>
         <tr v-for="ev in paginator.content" :key="ev.id" @contextmenu.prevent="$refs.menu.open($event, ev)">
           <td>
-            <router-link :to="'/admin/event/' + ev.id" v-text="ev.name">
+            <router-link :to="{ name: 'event', params: { id: ev.id } }" v-text="ev.name">
             </router-link>
           </td>
           <td>{{ ev.date | moment('L') }} {{ ev.startsAt }}</td>
