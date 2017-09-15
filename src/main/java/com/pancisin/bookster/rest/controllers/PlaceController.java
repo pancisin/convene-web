@@ -88,17 +88,16 @@ public class PlaceController {
 	}
 	
 	@PostMapping("/gallery") 
-	public ResponseEntity<?> postGallery(@PathVariable Long place_id, @RequestBody String galleryData) {
+	public ResponseEntity<?> postGallery(@PathVariable Long place_id, @RequestBody Media galleryItem) {
 		Place stored = placeRepository.findOne(place_id);
 
-		if (storageService.isBinary(galleryData)) {
-			Media gallery_item = new Media();
-			gallery_item = mediaRepository.save(gallery_item);
-			String url = "images/places/" + gallery_item.getId().toString();
+		if (storageService.isBinary(galleryItem.getData())) {
+			galleryItem = mediaRepository.save(galleryItem);
+			String url = "images/places/" + galleryItem.getId().toString();
 			
-			gallery_item.setPath("/files/" + url + ".jpg");
-			storageService.storeBinary(galleryData, url);
-			stored.AddGallery(gallery_item);
+			galleryItem.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(galleryItem.getData(), url);
+			stored.AddGallery(galleryItem);
 		}
 		
 		placeRepository.save(stored);

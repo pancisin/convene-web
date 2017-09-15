@@ -8,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "medias")
@@ -28,7 +32,14 @@ public class Media {
 	private String title;
 
 	@Column
+	private String description;
+	
+	@Column
 	private String path;
+	
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String data;
 	
 	public Media() {
 		
@@ -60,5 +71,21 @@ public class Media {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

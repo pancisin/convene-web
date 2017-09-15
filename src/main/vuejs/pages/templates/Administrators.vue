@@ -8,11 +8,10 @@
           <th>Granted</th>
           <th class="text-center">Role</th>
           <th class="text-center">State</th>
-          <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
-        <tr v-for="admin in administrators" :key="admin.id">
+        <tr v-for="admin in administrators" :key="admin.id" @contextmenu.prevent="$refs.menu.open($event, admin)">
           <td>
             {{ admin.user.firstName + ' ' + admin.user.lastName }}
           </td>
@@ -33,11 +32,6 @@
               {{ $t(admin.active ? 'administrator.active' : 'administrator.inactive') }}
             </span>
           </td>
-          <td class="text-center">
-            <a @click="deleteAdministrator(admin)" class="btn btn-rounded btn-xs btn-danger" v-if="hasPermission(admin)">
-              <i class="fa fa-trash"></i>
-            </a>
-          </td>
         </tr>
         <tr :key="0" v-if="editable">
           <td colspan="2">
@@ -51,6 +45,24 @@
         </tr>
       </tbody>
     </table>
+
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li :class="{ 'disabled' : !editable || !hasPermission(props.data) }">
+            <a @click="toggleActive(props.data)">
+              {{ $t(props.data.active ? 'administrator.active' : 'administrator.inactive') }}
+            </a>
+          </li>
+          <li class="separator"></li>
+          <li :class="{ 'disabled' : !editable || !hasPermission(props.data) }">
+            <a @click="deleteAdministrator(props.data)">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
   </panel>
 </template>
 

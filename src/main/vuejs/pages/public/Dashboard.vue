@@ -8,7 +8,7 @@
 
           <div class="inbox-widget">
             <stagger-transition>
-              <router-link :to="'event/' + event.id" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
+              <router-link :to="{ name: 'event.public', params: { id: event.id} }" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
                 <div class="inbox-item-img" v-if="event.poster != null">
                   <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
@@ -27,7 +27,7 @@
 
           <div class="inbox-widget">
             <stagger-transition>
-              <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
+              <router-link :to="{ name: 'event.public', params: { id: event.id }}" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
                 <div class="inbox-item-img" v-if="event.poster != null">
                   <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
