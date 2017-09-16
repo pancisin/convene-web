@@ -95,6 +95,11 @@ export default {
     };
   },
   methods: {
+    getPlace () {
+      this.api.getPlace(place => {
+        this.place = place;
+      }); 
+    },
     submit () {
       if (this.edit) {
         PlaceApi.putPlace(this.place.id, this.place, place => {
