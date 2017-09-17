@@ -7,11 +7,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -43,6 +45,14 @@ public class Media {
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String data;
+	
+	@JsonIgnore
+	@JsonProperty(access = Access.READ_ONLY)
+	@ManyToOne(optional = true)
+	private User author;
+	
+	@JsonProperty(access = Access.READ_ONLY)
+	private Long size;
 	
 	public Media() {
 		
@@ -98,5 +108,21 @@ public class Media {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
 	}
 }

@@ -10,7 +10,7 @@ public interface StorageService {
 
     void init();
 
-    String storeBinary(String binary, String filename);
+    Long storeBinary(String binary, String filename);
     
     String storeText(String text, String filename, String extension);
     

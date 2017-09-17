@@ -93,7 +93,7 @@ export default class PageInjector {
     PageApi.getGallery(this.page_id, success);
   }
 
-  postGalleryItem(gallery_item, success) {
-    PageApi.postGalleryItem(this.page_id, gallery_item, success);
+  postGalleryItem(gallery_item, success, progress_func) {
+    PageApi.postGalleryItem(this.page_id, gallery_item, success, progress_func);
   }
 }

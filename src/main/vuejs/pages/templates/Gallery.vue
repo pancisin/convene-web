@@ -21,7 +21,7 @@
                   <textarea rows="3" class="form-control" v-model="galleryItem.description" name="description" v-validate data-vv-rules="min:3|required" />
                   <span class="text-danger" v-if="errors.has('description')">{{ errors.first('description') }}</span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" @click="submit">
+                <button type="submit" class="btn btn-primary btn-block">
                   <i class="fa fa-paper-plane-o m-r-5"></i> Submit</button>
               </div>
             </form>
@@ -30,10 +30,13 @@
       </div>
     </div>
 
-    <div class="gallery-masonry" v-loading="loading">
+    <div class="gallery-masonry" v-loading="loading" :class="{ 'columns-4' : columns == 4 }">
       <div class="gallery-item" v-for="item in gallery" :key="item.id">
         <img :src="item.path" class="img img-thumbnail">
-        <h5 v-show="item.title">{{ item.title }}</h5>
+        <h5 v-show="item.title">{{ item.title }}
+          <small class="pull-right label label-info">({{ Math.round(item.size / 1000) }} kB)</small>
+        </h5>
+
         <p v-show="item.description">{{ item.description }}</p>
 
         <div class="controls-wrapper">
@@ -60,6 +63,14 @@ export default {
   name: 'event-gallery',
   props: ['editable'],
   inject: ['provider'],
+  props: {
+    columns: {
+      type: Number,
+      default () {
+        return 3;
+      }
+    }
+  },
   data () {
     return {
       gallery: [],
@@ -100,6 +111,8 @@ export default {
             this.sortGallery();
             this.galleryItem = {};
             this.uploading = false;
+          }, percentage => {
+            this.uploading = percentage;
           });
         }
       });
@@ -199,6 +212,12 @@ export default {
     -moz-column-count: 3;
     -webkit-column-count: 3;
     column-count: 3;
+
+    &.columns-4 {
+      -moz-column-count: 4;
+      -webkit-column-count: 4;
+      column-count: 4;
+    }
   }
 }
 </style>

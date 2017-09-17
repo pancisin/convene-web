@@ -30,7 +30,7 @@ export default class PlaceInjector {
     PlaceApi.getGallery(this.place_id, success);
   }
 
-  postGalleryItem(gallery_item, success) {
-    PlaceApi.postGalleryItem(this.place_id, gallery_item, success);
+  postGalleryItem(gallery_item, success, progress_func) {
+    PlaceApi.postGalleryItem(this.place_id, gallery_item, success, progress_func);
   }
 }

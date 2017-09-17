@@ -8,7 +8,7 @@ export default {
    * @param {Function} success - success callback function
    * @param {Function} error - error callback function
    */
-  getEvent (id, success, error) {
+  getEvent(id, success, error) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${EVENT_API_URL}/${id}`).then(response => {
@@ -26,7 +26,7 @@ export default {
    * @param {*} event - event object data
    * @param {*} success - success callback function
    */
-  putEvent (id, event, success) {
+  putEvent(id, event, success) {
     Vue.http.put(`${EVENT_API_URL}/${id}`, event).then(response => {
       success(response.body);
     });
@@ -37,7 +37,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  deleteEvent (id, success) {
+  deleteEvent(id, success) {
     Vue.http.delete(`${EVENT_API_URL}/${id}`).then(response => {
       success(response.body);
     });
@@ -48,7 +48,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  getAttendanceStatus (id, success) {
+  getAttendanceStatus(id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${EVENT_API_URL}/${id}/attend-status`).then(response => {
@@ -61,7 +61,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  toggleAttendanceStatus (id, success) {
+  toggleAttendanceStatus(id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.patch(`${EVENT_API_URL}/${id}/toggle-attend`).then(response => {
@@ -74,7 +74,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  getInvitations (id, success) {
+  getInvitations(id, success) {
     Vue.http.get(`${EVENT_API_URL}/${id}/invitation`).then(response => {
       success(response.body);
     });
@@ -85,7 +85,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  getAttendees (id, success) {
+  getAttendees(id, success) {
     Vue.http.get(`${EVENT_API_URL}/${id}/attendees`).then(response => {
       success(response.body);
     });
@@ -97,7 +97,7 @@ export default {
    * @param {*} invitation - invitation object data
    * @param {*} success -success callback function
    */
-  postInvitation (id, invitation, success) {
+  postInvitation(id, invitation, success) {
     Vue.http.post(`${EVENT_API_URL}/${id}/invite`, invitation).then(response => {
       success(response.body);
     });
@@ -108,7 +108,7 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  getProgramme (id, success) {
+  getProgramme(id, success) {
     Vue.http.get(`${EVENT_API_URL}/${id}/programme`).then(response => {
       success(response.body);
     });
@@ -120,7 +120,7 @@ export default {
    * @param {*} programme - programme data object
    * @param {*} success - success callback function
    */
-  postProgramme (id, programme, success) {
+  postProgramme(id, programme, success) {
     Vue.http.post(`${EVENT_API_URL}/${id}/programme`, programme).then(response => {
       success(response.body);
     });
@@ -131,8 +131,37 @@ export default {
    * @param {*} id - event id
    * @param {*} success - success callback function
    */
-  getRelated (id, success) {
+  getRelated(id, success) {
     Vue.http.get(`${EVENT_API_URL}/${id}/related`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get gallery images
+   * @param {*} id - event id
+   * @param {*} success - success callback function
+   */
+  getGallery(id, success, progress_func) {
+    Vue.http.get(`${EVENT_API_URL}/${id}/gallery`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Post new image to gallery
+   * @param {*} id - event id
+   * @param {*} itemData - media entity data
+   * @param {*} success - success callback function
+   */
+  postGalleryItem(id, itemData, success, progress_func) {
+    Vue.http.post(`${EVENT_API_URL}/${id}/gallery`, itemData, {
+      progress(e) {
+        if (e.lengthComputable) {
+          progress_func((e.loaded / e.total) * 100);
+        }
+      }
+    }).then(response => {
       success(response.body);
     });
   }

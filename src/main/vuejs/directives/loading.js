@@ -4,7 +4,7 @@ const updateLoader = (el, value) => {
     display: value && value !== true ? 'inline-block' : 'none'
   };
 
-  percentage.innerText = value !== true && value !== false ? `${value}%` : '';
+  percentage.innerText = value !== true && value !== false ? `${Math.round(value)}%` : '';
 };
 
 export default {

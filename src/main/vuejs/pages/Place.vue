@@ -6,12 +6,15 @@
     <div class="col-md-3">
       <div class="list-group mail-list">
         <router-link :to="{ name: 'place.overview' }" class="list-group-item waves-effect">
+          <i class="fa fa-dashboard"></i>
           Overview
         </router-link>
         <router-link :to="{ name: 'place.gallery' }" class="list-group-item waves-effect">
+          <i class="fa fa-picture-o"></i>
           Gallery
         </router-link>
         <router-link :to="{ name: 'place.venue' }" class="list-group-item waves-effect">
+          <i class="fa fa-pencil"></i>
           Venue editor
         </router-link>
       </div>

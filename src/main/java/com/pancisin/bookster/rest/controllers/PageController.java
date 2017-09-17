@@ -1,18 +1,14 @@
 package com.pancisin.bookster.rest.controllers;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -34,11 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
-import com.pancisin.bookster.components.annotations.License;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
-import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
@@ -50,8 +44,6 @@ import com.pancisin.bookster.models.Widget;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.Role;
-import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.EventRepository;
@@ -122,11 +114,14 @@ public class PageController {
 
 		if (page.getPosterData() != null && storageService.isBinary(page.getPosterData())) {
 			Media poster = new Media();
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			poster.setAuthor(user);
 			poster = mediaRepository.save(poster);
 			String url = "banners/pages/" + poster.getId().toString();
 			
 			poster.setPath("/files/" + url + ".jpg");
-			storageService.storeBinary(page.getPosterData(), url);
+			Long size = storageService.storeBinary(page.getPosterData(), url);
+			poster.setSize(size);
 			stored.setPoster(poster);
 		}
 
@@ -322,11 +317,15 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 
 		if (storageService.isBinary(galleryItem.getData())) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			galleryItem.setAuthor(user);
+			
 			galleryItem = mediaRepository.save(galleryItem);
 			String url = "images/page/" + galleryItem.getId().toString();
 			
 			galleryItem.setPath("/files/" + url + ".jpg");
-			storageService.storeBinary(galleryItem.getData(), url);
+			Long size = storageService.storeBinary(galleryItem.getData(), url);
+			galleryItem.setSize(size);
 			stored.AddGallery(galleryItem);
 		}
 		

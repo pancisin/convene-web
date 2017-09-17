@@ -29,7 +29,7 @@ public class StorageServiceImpl implements StorageService {
 	@Value("${storage.path}")
 	private String storagePath;
 
-	public String storeBinary(String binary, String filename) {
+	public Long storeBinary(String binary, String filename) {
 		String relative_path = storagePath + filename + ".jpg";
 
 		File file = new File(relative_path);
@@ -45,7 +45,7 @@ public class StorageServiceImpl implements StorageService {
 			System.out.println("Exception while reading the Image " + ioe);
 		}
 
-		return relative_path;
+		return file.length();
 	}
 	
 	public String storeText(String text, String filename, String extension) {

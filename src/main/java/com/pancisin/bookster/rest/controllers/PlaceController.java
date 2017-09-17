@@ -3,6 +3,7 @@ package com.pancisin.bookster.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.components.storage.StorageService;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
+import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 
@@ -91,11 +93,15 @@ public class PlaceController {
 		Place stored = placeRepository.findOne(place_id);
 
 		if (storageService.isBinary(galleryItem.getData())) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			galleryItem.setAuthor(user);
+			
 			galleryItem = mediaRepository.save(galleryItem);
 			String url = "images/places/" + galleryItem.getId().toString();
 			
 			galleryItem.setPath("/files/" + url + ".jpg");
-			storageService.storeBinary(galleryItem.getData(), url);
+			Long size = storageService.storeBinary(galleryItem.getData(), url);
+			galleryItem.setSize(size);
 			stored.AddGallery(galleryItem);
 		}
 		

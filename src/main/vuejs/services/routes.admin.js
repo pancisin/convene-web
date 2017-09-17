@@ -204,7 +204,15 @@ export default [
         name: 'event.attendees',
         component: resolve => require(['../pages/event/Attendees.vue'], resolve),
         meta: {
-          titlle: 'Attendees'
+          title: 'Attendees'
+        }
+      },
+      {
+        path: 'gallery',
+        name: 'event.gallery',
+        component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
+        meta: {
+          title: 'Gallery'
         }
       }
     ]
@@ -327,6 +335,9 @@ export default [
         path: 'gallery',
         name: 'page.gallery',
         component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
+        props: {
+          columns: 4,
+        },
         meta: {
           title: 'Gallery'
         }

@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -123,6 +124,9 @@ public class Event {
 	@OneToMany(mappedBy = "event")
 	private List<Invitation> invitations;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
+	private List<Media> gallery;
+	
 //	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
 		if (conference != null)
@@ -259,5 +263,17 @@ public class Event {
 
 	public void setPosterData(String posterData) {
 		this.posterData = posterData;
+	}
+	
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

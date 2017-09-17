@@ -29,6 +29,7 @@ import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Media;
+import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.views.Summary;
@@ -87,11 +88,14 @@ public class EventController {
 
 		if (event.getPosterData() != null && storageService.isBinary(event.getPosterData())) {
 			Media poster = new Media();
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			poster.setAuthor(user);
 			poster = mediaRepository.save(poster);
 			String url = "banners/events/" + poster.getId().toString();
 			
 			poster.setPath("/files/" + url + ".jpg");
-			storageService.storeBinary(event.getPosterData(), url);
+			Long size = storageService.storeBinary(event.getPosterData(), url);
+			poster.setSize(size);
 			stored.setPoster(poster);
 		}
 
@@ -183,5 +187,32 @@ public class EventController {
 	@GetMapping("/related")
 	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
+	}
+	
+	@GetMapping("/gallery")
+	public ResponseEntity<?> getGallery(@PathVariable Long event_id) {
+		return ResponseEntity.ok(mediaRepository.getByEvent(event_id));
+	}
+	
+	@PostMapping("/gallery") 
+	public ResponseEntity<?> postGallery(@PathVariable Long event_id, @RequestBody Media galleryItem) {
+		Event stored = eventRepository.findOne(event_id);
+
+		if (storageService.isBinary(galleryItem.getData())) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			galleryItem.setAuthor(user);
+			
+			galleryItem = mediaRepository.save(galleryItem);
+			String url = "images/event/" + galleryItem.getId().toString();
+			
+			galleryItem.setPath("/files/" + url + ".jpg");
+			Long size = storageService.storeBinary(galleryItem.getData(), url);
+			galleryItem.setSize(size);
+			stored.AddGallery(galleryItem);
+		}
+		
+		eventRepository.save(stored);
+		
+		return ResponseEntity.ok(galleryItem);
 	}
 }
