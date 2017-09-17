@@ -88,4 +88,12 @@ export default class PageInjector {
   putWidgets (widgets, success) {
     PageApi.putWidgets(this.page_id, widgets, success);
   }
+
+  getGallery(success) {
+    PageApi.getGallery(this.page_id, success);
+  }
+
+  postGalleryItem(gallery_item, success) {
+    PageApi.postGalleryItem(this.page_id, gallery_item, success);
+  }
 }

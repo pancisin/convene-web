@@ -322,6 +322,14 @@ export default [
         meta: {
           titlle: 'Create place'
         }
+      },
+      {
+        path: 'gallery',
+        name: 'page.gallery',
+        component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
+        meta: {
+          title: 'Gallery'
+        }
       }
     ]
   },

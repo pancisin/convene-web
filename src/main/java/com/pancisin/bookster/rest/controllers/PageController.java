@@ -311,4 +311,27 @@ public class PageController {
 	public void handle(HttpMessageNotReadableException e) {
 		System.err.println(e);
 	}
+	
+	@GetMapping("/gallery")
+	public ResponseEntity<?> getGallery(@PathVariable Long page_id) {
+		return ResponseEntity.ok(mediaRepository.getByPage(page_id));
+	}
+	
+	@PostMapping("/gallery") 
+	public ResponseEntity<?> postGallery(@PathVariable Long page_id, @RequestBody Media galleryItem) {
+		Page stored = pageRepository.findOne(page_id);
+
+		if (storageService.isBinary(galleryItem.getData())) {
+			galleryItem = mediaRepository.save(galleryItem);
+			String url = "images/page/" + galleryItem.getId().toString();
+			
+			galleryItem.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(galleryItem.getData(), url);
+			stored.AddGallery(galleryItem);
+		}
+		
+		pageRepository.save(stored);
+		
+		return ResponseEntity.ok(galleryItem);
+	}
 }

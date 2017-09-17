@@ -130,6 +130,9 @@ public class Page implements IAuthor {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Widget> widgets;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
+	private List<Media> gallery;
+	
 	public Long getId() {
 		return id;
 	}
@@ -257,5 +260,17 @@ public class Page implements IAuthor {
 			this.places = new ArrayList<Place>();
 
 		this.places.add(place);
+	}
+	
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

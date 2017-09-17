@@ -107,7 +107,6 @@ export default {
     deleteImage (uuid) {
       this.$prompt('Delete image ?', 'You are going to delete this image completely. Are you sure ?', () => {
         MediaApi.deleteMedia(uuid, gallery_item => {
-          console.log('filtering');
           this.gallery = this.gallery.filter(g => {
             return g.id !== uuid;
           })

@@ -1,5 +1,4 @@
-const MainRoutes = [
-  {
+const MainRoutes = [{
     name: 'admin.dashboard',
     code: 'admin.menu.dashboard',
     icon: 'dashboard'
@@ -16,8 +15,7 @@ const MainRoutes = [
   }
 ];
 
-const PageRoutes = [
-  {
+const PageRoutes = [{
     name: 'page.overview',
     code: 'admin.page.overview'
   },
@@ -30,10 +28,6 @@ const PageRoutes = [
   //   code: 'admin.page.places'
   // },
   {
-    name: 'page.administrators',
-    code: 'admin.page.administrators'
-  },
-  {
     name: 'page.services',
     code: 'admin.page.services'
   },
@@ -42,13 +36,20 @@ const PageRoutes = [
     code: 'admin.page.requests'
   },
   {
+    name: 'page.gallery',
+    code: 'admin.page.gallery'
+  },
+  {
+    name: 'page.administrators',
+    code: 'admin.page.administrators'
+  },
+  {
     name: 'page.settings',
     code: 'admin.page.settings'
   }
 ];
 
-const ConferenceRoutes = [
-  {
+const ConferenceRoutes = [{
     name: 'conference.overview',
     code: 'admin.conference.overview'
   },
@@ -82,8 +83,7 @@ const ConferenceRoutes = [
   }
 ];
 
-const FooterRoutes = [
-  {
+const FooterRoutes = [{
     name: 'faq',
     code: 'admin.menu.faq',
     icon: 'help_outline'

@@ -240,5 +240,17 @@ export default {
     Vue.http.put(`${PAGE_API_URL}/${id}/widget`, widgets).then(response => {
       success(response.body);
     });
+  },
+
+  getGallery (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/gallery`).then(response => {
+      success(response.body);
+    });
+  },
+
+  postGalleryItem (id, itemData, success) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/gallery`, itemData).then(response => {
+      success(response.body);
+    });
   }
 };

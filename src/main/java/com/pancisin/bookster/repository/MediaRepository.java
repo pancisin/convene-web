@@ -15,4 +15,7 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 	
 	@Query("SELECT media FROM Place place JOIN place.gallery media WHERE place.id = :place_id AND media.deleted = 0")
 	public List<Media> getByPlace(@Param("place_id") Long place_id);
+	
+	@Query("SELECT media FROM Page page JOIN page.gallery media WHERE page.id = :page_id AND media.deleted = 0")
+	public List<Media> getByPage(@Param("page_id") Long page_id);
 }
