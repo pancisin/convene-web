@@ -83,8 +83,7 @@ public class PlaceController {
 	
 	@GetMapping("/gallery")
 	public ResponseEntity<?> getGallery(@PathVariable Long place_id) {
-		Place stored = placeRepository.findOne(place_id);
-		return ResponseEntity.ok(stored.getGallery());
+		return ResponseEntity.ok(mediaRepository.getByPlace(place_id));
 	}
 	
 	@PostMapping("/gallery") 
@@ -102,6 +101,6 @@ public class PlaceController {
 		
 		placeRepository.save(stored);
 		
-		return ResponseEntity.ok(stored.getGallery());
+		return ResponseEntity.ok(galleryItem);
 	}
 }

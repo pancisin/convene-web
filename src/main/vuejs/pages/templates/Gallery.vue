@@ -2,8 +2,8 @@
   <div>
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <panel type="default">
-          <span slot="title">Add image</span>
+        <panel type="default" v-loading="uploading">
+          <span slot="title">Upload image</span>
           <div class="row m-b-20">
             <form class="form" @submit.prevent="submit">
               <div class="col-md-6">
@@ -35,6 +35,17 @@
         <img :src="item.path" class="img img-thumbnail">
         <h5 v-show="item.title">{{ item.title }}</h5>
         <p v-show="item.description">{{ item.description }}</p>
+
+        <div class="controls-wrapper">
+          <div class="controls">
+            <a class="btn btn-link">
+              <i class="fa fa-pencil"></i>
+            </a>
+            <a class="btn btn-outline pull-right" @click="deleteImage(item.id)">
+              <i class="fa fa-trash-o text-danger"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -43,6 +54,7 @@
 
 <script>
 import { ImageUpload } from 'elements';
+import MediaApi from 'api/media.api';
 
 export default {
   name: 'event-gallery',
@@ -52,7 +64,8 @@ export default {
     return {
       gallery: [],
       galleryItem: {},
-      loading: false
+      loading: false,
+      uploading: false
     }
   },
   components: {
@@ -74,23 +87,39 @@ export default {
       this.loading = true;
       this.api.getGallery(gallery => {
         this.gallery = gallery;
-        this.gallery.sort((a, b) => {
-          if (a.created === b.created)
-            return 0;
-
-          return a.created < b.created ? 1 : -1;
-        })
+        this.sortGallery();
         this.loading = false;
       });
     },
     submit () {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          this.api.postGalleryItem(this.galleryItem, gallery => {
-            this.gallery = gallery;
+          this.uploading = true;
+          this.api.postGalleryItem(this.galleryItem, gallery_item => {
+            this.gallery.push(gallery_item);
+            this.sortGallery();
             this.galleryItem = {};
+            this.uploading = false;
           });
         }
+      });
+    },
+    deleteImage (uuid) {
+      this.$prompt('Delete image ?', 'You are going to delete this image completely. Are you sure ?', () => {
+        MediaApi.deleteMedia(uuid, gallery_item => {
+          console.log('filtering');
+          this.gallery = this.gallery.filter(g => {
+            return g.id !== uuid;
+          })
+        })
+      })
+    },
+    sortGallery () {
+      this.gallery.sort((a, b) => {
+        if (a.created === b.created)
+          return 0;
+
+        return a.created < b.created ? 1 : -1;
       });
     }
   }
@@ -112,6 +141,37 @@ export default {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     font-size: 12px;
+    position: relative;
+
+    &:hover .controls-wrapper .controls {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .controls-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      bottom: 0;
+      z-index: 1;
+
+      .controls {
+        transform: translateY(-50%);
+        background-color: #fff;
+        opacity: 0;
+        transition: all .3s ease;
+        border-bottom: 1px solid #eee;
+        box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+
+        a {
+          &:hover {
+            background-color: #eee;
+          }
+        }
+      }
+    }
 
     .img-thumbnail {
       box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);

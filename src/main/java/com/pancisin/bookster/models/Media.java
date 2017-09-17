@@ -37,6 +37,9 @@ public class Media {
 	@Column
 	private String path;
 	
+	@Column
+	private boolean deleted;
+	
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String data;
@@ -87,5 +90,13 @@ public class Media {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }
