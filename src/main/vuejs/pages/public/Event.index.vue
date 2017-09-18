@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { Paginator, DatePicker } from 'elements';
+import { Paginator, DatePicker, Masonry, MasonryItem } from 'elements';
 export default {
   name: 'events',
   data () {
@@ -50,7 +50,7 @@ export default {
     };
   },
   components: {
-    Paginator, DatePicker
+    Paginator, DatePicker, Masonry, MasonryItem
   },
   watch: {
     filters: {

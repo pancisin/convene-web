@@ -23,6 +23,11 @@ export default {
 
   img {
     width: 100%;
+
+    &.img-thumbnail {
+      box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+      padding: 0;
+    }
   }
 }
 </style>

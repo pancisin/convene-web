@@ -150,12 +150,6 @@ export default {
   background-size: cover;
 }
 
-.title {
-  font-weight: 300;
-  line-height: 50px;
-  margin-top: 0px;
-}
-
 .sub-title {
   color: #97a0af;
   margin-bottom: 50px;
@@ -264,6 +258,12 @@ export default {
   .content {
     background: #fff;
     padding: 5%;
+  }
+
+  .title {
+    font-weight: 300;
+    line-height: 50px;
+    margin-top: 0px;
   }
 }
 

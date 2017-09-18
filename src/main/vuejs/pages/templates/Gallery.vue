@@ -35,8 +35,8 @@
       </div>
     </div>
 
-    <div class="gallery-masonry" v-loading="loading" :class="{ 'columns-4' : columns == 4 }">
-      <div class="gallery-item" v-for="item in gallery" :key="item.id" @contextmenu.prevent="$refs.menu.open($event, item)">
+    <masonry v-loading="loading" :columns="columns">
+      <masonry-item v-for="item in gallery" :key="item.id" class="gallery-item" @contextmenu.prevent="$refs.menu.open($event, item)">
         <img :src="item.path" class="img img-thumbnail">
         <h5 v-show="item.title">{{ item.title }}
           <sup class="pull-right label label-primary">({{ item.size | bytes }})</sup>
@@ -54,8 +54,8 @@
             </a>
           </div>
         </div>
-      </div>
-    </div>
+      </masonry-item>
+    </masonry>
 
     <context-menu ref="menu">
       <template scope="props">
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { ImageUpload } from 'elements';
+import { ImageUpload, Masonry, MasonryItem } from 'elements';
 import MediaApi from 'api/media.api';
 
 export default {
@@ -92,7 +92,12 @@ export default {
         return 3;
       }
     },
-    editable: Boolean,
+    editable: {
+      type: Boolean,
+      default () {
+        return true;
+      }
+    },
     limit: {
       type: Number,
       default () {
@@ -109,7 +114,7 @@ export default {
     };
   },
   components: {
-    ImageUpload
+    ImageUpload, Masonry, MasonryItem
   },
   created () {
     this.getGallery();
@@ -190,85 +195,41 @@ export default {
 </script>
 
 <style lang="less">
-.gallery-masonry {
-  padding: 0;
-  -moz-column-gap: 1.5em;
-  -webkit-column-gap: 1.5em;
-  column-gap: 1.5em;
+.gallery-item {
+  &:hover .controls-wrapper .controls {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-  .gallery-item {
-    display: inline-block;
-    margin: 0 0 1.5em;
+  .controls-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    font-size: 12px;
-    position: relative;
+    overflow: hidden;
+    bottom: 0;
+    z-index: 1;
 
-    &:hover .controls-wrapper .controls {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 
-    .controls-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      bottom: 0;
-      z-index: 1;
+    .controls {
+      transform: translateY(-50%);
+      background-color: #fff;
+      opacity: 0;
+      transition: all .3s ease;
+      border-bottom: 1px solid #eee;
+      box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
 
-      .controls {
-        transform: translateY(-50%);
-        background-color: #fff;
-        opacity: 0;
-        transition: all .3s ease;
-        border-bottom: 1px solid #eee;
-        box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+      a {
+        &.btn {
+          border-radius: 0;
+        }
 
-        a {
-          &:hover {
-            background-color: #eee;
-          }
+        &:hover {
+          background-color: #eee;
         }
       }
-    }
-
-    .img-thumbnail {
-      box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
-      width: 100%;
-    }
-  }
-}
-
-@media only screen and (min-width: 700px) {
-  .gallery-masonry {
-    -moz-column-count: 2;
-    -webkit-column-count: 2;
-    column-count: 2;
-  }
-}
-
-@media only screen and (min-width: 900px) {
-  .gallery-masonry {
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-    column-count: 3;
-  }
-}
-
-@media only screen and (min-width: 1100px) {
-  .gallery-masonry {
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-    column-count: 3;
-
-    &.columns-4 {
-      -moz-column-count: 4;
-      -webkit-column-count: 4;
-      column-count: 4;
     }
   }
 }

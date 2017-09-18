@@ -17,6 +17,14 @@ export default [
     }
   },
   {
+    path: 'media-manager',
+    name: 'admin.media-manager',
+    component: resolve => require(['../pages/MediaManager.vue'], resolve),
+    meta: {
+      title: 'Media manager'
+    }
+  },
+  {
     path: 'conference/create',
     component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {

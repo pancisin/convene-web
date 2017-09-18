@@ -53,9 +53,10 @@
             <masonry columns="4">
               <masonry-item v-for="media in gallery" :key="media.id">
                 <img :src="media.path" class="img-thumbnail">
+                <h5>{{ media.title }}</h5>
+                <p>{{ media.description }}</p>
               </masonry-item>
             </masonry>
-
           </div>
         </div>
       </div>

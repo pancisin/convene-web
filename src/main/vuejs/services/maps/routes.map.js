@@ -1,13 +1,18 @@
 const MainRoutes = [{
-    name: 'admin.dashboard',
-    code: 'admin.menu.dashboard',
-    icon: 'dashboard'
-  },
+  name: 'admin.dashboard',
+  code: 'admin.menu.dashboard',
+  icon: 'dashboard'
+},
   {
     name: 'admin.event',
     code: 'admin.menu.events',
     icon: 'event'
   },
+  // {
+  //   name: 'admin.media-manager',
+  //   code: 'admin.menu.media-manager',
+  //   icon: 'picture-o'
+  // },
   {
     name: 'admin.notification',
     code: 'admin.menu.notifications',
@@ -16,17 +21,17 @@ const MainRoutes = [{
 ];
 
 const PageRoutes = [{
-    name: 'page.overview',
-    code: 'admin.page.overview'
-  },
+  name: 'page.overview',
+  code: 'admin.page.overview'
+},
   {
     name: 'page.events',
     code: 'admin.page.events'
   },
-  // {
-  //   name: 'page.places',
-  //   code: 'admin.page.places'
-  // },
+// {
+//   name: 'page.places',
+//   code: 'admin.page.places'
+// },
   {
     name: 'page.services',
     code: 'admin.page.services'
@@ -50,9 +55,9 @@ const PageRoutes = [{
 ];
 
 const ConferenceRoutes = [{
-    name: 'conference.overview',
-    code: 'admin.conference.overview'
-  },
+  name: 'conference.overview',
+  code: 'admin.conference.overview'
+},
   {
     name: 'conference.events',
     code: 'admin.conference.events'
@@ -84,10 +89,10 @@ const ConferenceRoutes = [{
 ];
 
 const FooterRoutes = [{
-    name: 'faq',
-    code: 'admin.menu.faq',
-    icon: 'help_outline'
-  },
+  name: 'faq',
+  code: 'admin.menu.faq',
+  icon: 'help_outline'
+},
   {
     name: 'terms',
     code: 'admin.menu.terms',
