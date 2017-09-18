@@ -337,6 +337,7 @@ export default [
         component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
         props: {
           columns: 4,
+          limit: 1024 * 1024 * 20
         },
         meta: {
           title: 'Gallery'

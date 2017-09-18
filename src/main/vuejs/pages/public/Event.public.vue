@@ -49,6 +49,13 @@
                 </div>
               </div>
             </div>
+
+            <masonry columns="4">
+              <masonry-item v-for="media in gallery" :key="media.id">
+                <img :src="media.path" class="img-thumbnail">
+              </masonry-item>
+            </masonry>
+
           </div>
         </div>
       </div>
@@ -81,7 +88,7 @@
 </template>
 
 <script>
-import { GMap } from 'elements';
+import { GMap, Masonry, MasonryItem } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -93,11 +100,12 @@ export default {
     return {
       event: null,
       attending: false,
-      relatedEvents: []
+      relatedEvents: [],
+      gallery: []
     };
   },
   components: {
-    GMap, StaggerTransition
+    GMap, StaggerTransition, Masonry, MasonryItem
   },
   created () {
     this.getEvent();
@@ -113,6 +121,12 @@ export default {
       var event_id = this.$route.params.id;
       if (event_id != null) {
 
+        const getAdditionalData = () => {
+          PublicApi.event.getGallery(event_id, gallery => {
+            this.gallery = gallery;
+          });
+        };
+
         if (this.authenticated) {
           EventApi.getEvent(event_id, event => {
             this.event = event;
@@ -124,6 +138,8 @@ export default {
             EventApi.getAttendanceStatus(event_id, status => {
               this.attending = status;
             });
+
+            getAdditionalData();
           }, error => {
             this.$error(error.error, error.message);
           });
@@ -134,6 +150,8 @@ export default {
             PublicApi.event.getRelated(this.event.id, paginator => {
               this.relatedEvents = paginator.content;
             });
+
+            getAdditionalData();
           });
         }
       }

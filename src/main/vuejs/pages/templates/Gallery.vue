@@ -27,7 +27,7 @@
             </form>
           </div>
 
-          <b>~ {{ usedStorage | bytes }} / 10MB used</b>
+          <b>~ {{ usedStorage | bytes }} / {{ limit | bytes }} used</b>
           <div class="progress progress-striped">
             <div class="bar progress-bar progress-bar-primary" :style="progressBarStyle"></div>
           </div>
@@ -36,10 +36,10 @@
     </div>
 
     <div class="gallery-masonry" v-loading="loading" :class="{ 'columns-4' : columns == 4 }">
-      <div class="gallery-item" v-for="item in gallery" :key="item.id">
+      <div class="gallery-item" v-for="item in gallery" :key="item.id" @contextmenu.prevent="$refs.menu.open($event, item)">
         <img :src="item.path" class="img img-thumbnail">
         <h5 v-show="item.title">{{ item.title }}
-          <small class="pull-right label label-info">({{ item.size | bytes }})</small>
+          <sup class="pull-right label label-primary">({{ item.size | bytes }})</sup>
         </h5>
 
         <p v-show="item.description">{{ item.description }}</p>
@@ -56,6 +56,24 @@
         </div>
       </div>
     </div>
+
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li :class="{ 'disabled' : !editable }">
+            <a>
+              Edit
+            </a>
+          </li>
+          <li class="separator"></li>
+          <li :class="{ 'disabled' : !editable }">
+            <a @click="deleteImage(props.data.id)">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
 
   </div>
 </template>
@@ -74,7 +92,13 @@ export default {
         return 3;
       }
     },
-    editable: Boolean
+    editable: Boolean,
+    limit: {
+      type: Number,
+      default () {
+        return 10000000;
+      }
+    }
   },
   data () {
     return {
@@ -103,7 +127,7 @@ export default {
     },
     progressBarStyle () {
       return {
-        width: `${this.usedStorage / 100000}%`
+        width: `${this.usedStorage / this.limit * 100}%`
       };
     }
   },

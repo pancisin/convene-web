@@ -25,6 +25,8 @@ import VenueEditor from './VenueEditor';
 import VerticalMenuDrop from './VerticalMenuDrop';
 import Wizard from './Wizard';
 import WizardPage from './WizardPage';
+import Masonry from './Masonry';
+import MasonryItem from './MasonryItem';
 
 import widgets from './widgets';
 
@@ -56,5 +58,7 @@ export {
   VenueEditor,
   VerticalMenuDrop,
   Wizard,
-  WizardPage
+  WizardPage,
+  Masonry,
+  MasonryItem
 };

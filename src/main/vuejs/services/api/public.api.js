@@ -23,6 +23,17 @@ export default {
       Vue.http.get(`public/event/${event_id}/related`).then(response => {
         success(response.body);
       });
+    },
+
+    /**
+     * Get public accessible gallery for event
+     * @param {*} event_id - event id
+     * @param {*} success - success callback function
+     */
+    getGallery (event_id, success) {
+      Vue.http.get(`public/event/${event_id}/gallery`).then(response => {
+        success(response.body);
+      });
     }
   },
 

@@ -36,6 +36,7 @@ import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
 import facebook4j.FacebookException;
@@ -61,6 +62,9 @@ public class PublicRestController {
 
 	@Autowired
 	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private MediaRepository mediaRepository;
 	
 	@GetMapping("/events/{page}/{limit}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
@@ -102,6 +106,11 @@ public class PublicRestController {
 	@GetMapping("/event/{event_id}/related")
 	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
+	}
+
+	@GetMapping("/event/{event_id}/gallery")
+	public ResponseEntity<?> getEventGallery(@PathVariable Long event_id) {
+		return ResponseEntity.ok(mediaRepository.getByEvent(event_id));
 	}
 
 	@GetMapping("/pages/{page}/{limit}")

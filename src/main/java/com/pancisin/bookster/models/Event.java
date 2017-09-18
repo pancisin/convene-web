@@ -124,6 +124,7 @@ public class Event {
 	@OneToMany(mappedBy = "event")
 	private List<Invitation> invitations;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
 	
