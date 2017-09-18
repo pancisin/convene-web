@@ -36,7 +36,6 @@ export default {
         this.$http.get(this.place.venueJsonUrl, {
           progress (e) {
             if (e.lengthComputable) {
-              console.log(e);
               this.loading = (e.loaded / e.total) * 100;
             }
           }

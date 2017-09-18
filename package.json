@@ -18,7 +18,7 @@
     "google-maps-api-loader": "^0.3.0",
     "gravatar": "^1.6.0",
     "jquery": "^3.2.1",
-    "later": "RickCarlino/later",
+    "later": "github:rickcarlino/later",
     "moment": "^2.18.0",
     "node-waves": "^0.7.5",
     "quill": "^1.2.4",

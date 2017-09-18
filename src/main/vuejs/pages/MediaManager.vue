@@ -10,6 +10,9 @@
           <th>
             Title
           </th>
+           <th>
+            Size
+          </th>
           <th>
             Created
           </th>
@@ -24,6 +27,9 @@
             {{ media.title }}
           </td>
           <td>
+            {{ media.size | bytes }}
+          </td>
+          <td>
             {{ media.created | moment('L') }}
           </td>
         </tr>
@@ -34,6 +40,8 @@
 
 <script>
 import UserApi from 'api/user.api';
+import { bytes } from 'filters';
+
 export default {
   name: 'media-manager',
   data () {
@@ -43,6 +51,9 @@ export default {
   },
   created () {
     this.getMedia();
+  },
+  filters: {
+    bytes
   },
   methods: {
     getMedia () {

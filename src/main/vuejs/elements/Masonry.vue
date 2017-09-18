@@ -10,7 +10,7 @@ export default {
   name: 'masonry',
   props: {
     columns: {
-      type: String,
+      type: Number,
       default () {
         return 3;
       }
