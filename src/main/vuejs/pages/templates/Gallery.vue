@@ -26,6 +26,11 @@
               </div>
             </form>
           </div>
+
+          <b>~ {{ usedStorage | bytes }} / 10MB used</b>
+          <div class="progress progress-striped">
+            <div class="bar progress-bar progress-bar-primary" :style="progressBarStyle"></div>
+          </div>
         </panel>
       </div>
     </div>
@@ -34,7 +39,7 @@
       <div class="gallery-item" v-for="item in gallery" :key="item.id">
         <img :src="item.path" class="img img-thumbnail">
         <h5 v-show="item.title">{{ item.title }}
-          <small class="pull-right label label-info">({{ Math.round(item.size / 1000) }} kB)</small>
+          <small class="pull-right label label-info">({{ item.size | bytes }})</small>
         </h5>
 
         <p v-show="item.description">{{ item.description }}</p>
@@ -61,7 +66,6 @@ import MediaApi from 'api/media.api';
 
 export default {
   name: 'event-gallery',
-  props: ['editable'],
   inject: ['provider'],
   props: {
     columns: {
@@ -69,7 +73,8 @@ export default {
       default () {
         return 3;
       }
-    }
+    },
+    editable: Boolean
   },
   data () {
     return {
@@ -77,7 +82,7 @@ export default {
       galleryItem: {},
       loading: false,
       uploading: false
-    }
+    };
   },
   components: {
     ImageUpload
@@ -88,10 +93,31 @@ export default {
   computed: {
     api () {
       return this.provider.api;
+    },
+    usedStorage () {
+      if (this.gallery !== null && this.gallery.length > 0) {
+        return this.gallery.reduce((ac, current) => {
+          return ac + current.size;
+        }, 0);
+      } else return 0;
+    },
+    progressBarStyle () {
+      return {
+        width: `${this.usedStorage / 100000}%`
+      };
     }
   },
   watch: {
     'api': 'getGallery'
+  },
+  filters: {
+    bytes (bytes) {
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      if (bytes === 0) return '0 Byte';
+
+      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
   },
   methods: {
     getGallery () {
@@ -122,14 +148,15 @@ export default {
         MediaApi.deleteMedia(uuid, gallery_item => {
           this.gallery = this.gallery.filter(g => {
             return g.id !== uuid;
-          })
-        })
-      })
+          });
+        });
+      });
     },
     sortGallery () {
       this.gallery.sort((a, b) => {
-        if (a.created === b.created)
+        if (a.created === b.created) {
           return 0;
+        }
 
         return a.created < b.created ? 1 : -1;
       });
@@ -187,6 +214,7 @@ export default {
 
     .img-thumbnail {
       box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+      width: 100%;
     }
   }
 }
