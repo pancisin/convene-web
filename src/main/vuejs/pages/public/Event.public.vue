@@ -1,10 +1,10 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-9" :class="{ 'col-sm-9' : event.bannerUrl }">
+      <div class="col-sm-9" :class="{ 'col-sm-9' : event.poster }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
-            <img :src="event.bannerUrl">
+            <img v-if="event.poster != null" :src="event.poster.path">
             <h3 class="panel-title">{{ event.name }}</h3>
             <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('LL') }} {{ event.startsAt }}
               <br>Usporiadatel : {{ event.author.displayName }}</p>
@@ -49,11 +49,19 @@
                 </div>
               </div>
             </div>
+
+            <masonry columns="4">
+              <masonry-item v-for="media in gallery" :key="media.id">
+                <img :src="media.path" class="img-thumbnail">
+                <h5>{{ media.title }}</h5>
+                <p>{{ media.description }}</p>
+              </masonry-item>
+            </masonry>
           </div>
         </div>
       </div>
       <div class="col-sm-3">
-        <img class="img-poster m-b-20" :src="event.bannerUrl">
+        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
 
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
@@ -61,8 +69,8 @@
           <div class="inbox-widget">
             <stagger-transition>
               <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id" class="inbox-item">
-                <div class="inbox-item-img" v-if="related.bannerUrl != null">
-                  <img :src="related.bannerUrl" class="img-circle" alt="">
+                <div class="inbox-item-img" v-if="related.poster != null">
+                  <img :src="related.poster.path" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="related.name"></p>
                 <p class="inbox-item-text pull-right">
@@ -81,7 +89,7 @@
 </template>
 
 <script>
-import GMap from '../../elements/GMap.vue';
+import { GMap, Masonry, MasonryItem } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -93,11 +101,12 @@ export default {
     return {
       event: null,
       attending: false,
-      relatedEvents: []
+      relatedEvents: [],
+      gallery: []
     };
   },
   components: {
-    GMap, StaggerTransition
+    GMap, StaggerTransition, Masonry, MasonryItem
   },
   created () {
     this.getEvent();
@@ -113,6 +122,12 @@ export default {
       var event_id = this.$route.params.id;
       if (event_id != null) {
 
+        const getAdditionalData = () => {
+          PublicApi.event.getGallery(event_id, gallery => {
+            this.gallery = gallery;
+          });
+        };
+
         if (this.authenticated) {
           EventApi.getEvent(event_id, event => {
             this.event = event;
@@ -124,6 +139,8 @@ export default {
             EventApi.getAttendanceStatus(event_id, status => {
               this.attending = status;
             });
+
+            getAdditionalData();
           }, error => {
             this.$error(error.error, error.message);
           });
@@ -134,6 +151,8 @@ export default {
             PublicApi.event.getRelated(this.event.id, paginator => {
               this.relatedEvents = paginator.content;
             });
+
+            getAdditionalData();
           });
         }
       }

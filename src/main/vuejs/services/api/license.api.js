@@ -15,7 +15,6 @@ export default {
     });
   },
 
-
   /**
    * Make payment by credit card.
    * @param {*} id - license id
@@ -32,5 +31,4 @@ export default {
       error(response.bodyText);
     });
   }
-}
-;
+};

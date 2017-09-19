@@ -44,7 +44,7 @@
   
 <script>
 import { GridLayout, GridItem } from 'vue-grid-layout';
-import * as WidgetComponents from '../../elements/widgets';
+import * as WidgetComponents from 'elements/widgets';
 import PublicApi from 'api/public.api';
 import { calculateHash } from '../../services/helpers';
 

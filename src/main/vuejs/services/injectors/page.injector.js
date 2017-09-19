@@ -33,6 +33,10 @@ export default class PageInjector {
     PageApi.getPlaces(this.page_id, success);
   }
 
+  postPlace (place, success) {
+    PageApi.postPlace(this.page_id, place, success);
+  }
+
   publishPage (success) {
     PageApi.publishPage(this.page_id, success);
   }
@@ -83,5 +87,13 @@ export default class PageInjector {
 
   putWidgets (widgets, success) {
     PageApi.putWidgets(this.page_id, widgets, success);
+  }
+
+  getGallery(success) {
+    PageApi.getGallery(this.page_id, success);
+  }
+
+  postGalleryItem(gallery_item, success, progress_func) {
+    PageApi.postGalleryItem(this.page_id, gallery_item, success, progress_func);
   }
 }

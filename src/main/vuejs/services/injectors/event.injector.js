@@ -48,4 +48,12 @@ export default class PageInjector {
   postProgramme (programme, success) {
     EventApi.postProgramme(this.event_id, programme, success);
   }
+
+  getGallery(success) {
+    EventApi.getGallery(this.event_id, success);
+  }
+
+  postGalleryItem(gallery_item, success, progress_func) {
+    EventApi.postGalleryItem(this.event_id, gallery_item, success, progress_func);
+  }
 }

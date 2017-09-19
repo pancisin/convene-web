@@ -19,7 +19,7 @@
         </div>
   
         <div class="col-md-4" v-if="edit">
-          <image-upload v-model="article.bannerUrl"></image-upload>
+          <image-upload v-model="article.thumbnailData" :media="article.thumbnail"></image-upload>
         </div>
       </div>
   
@@ -36,8 +36,7 @@
 
 <script>
 import ArticleApi from 'api/article.api';
-import ImageUpload from '../elements/ImageUpload.vue';
-import TextEditor from '../elements/TextEditor.vue';
+import { ImageUpload, TextEditor } from 'elements';
 
 export default {
   name: 'article',

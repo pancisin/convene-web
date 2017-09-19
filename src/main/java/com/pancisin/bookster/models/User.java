@@ -140,10 +140,6 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonView(Summary.class)
 	private Locale locale;
 
-	@OneToMany(mappedBy = "user")
-	@JsonIgnore
-	private List<Place> places;
-
 	@Column
 	private boolean verified = false;
 
@@ -348,10 +344,6 @@ public class User implements UserDetails, Principal, IAuthor {
 	@Override
 	public String getType() {
 		return "user";
-	}
-
-	public List<Place> getPlaces() {
-		return places;
 	}
 
 	public Role getRole() {

@@ -46,16 +46,15 @@
       </panel>
     </div>
     <div class="col-md-4">
-      <image-upload v-model="page.bannerUrl" />
+      <image-upload v-model="page.posterData" :media="page.poster" />
     </div>
   </div>
 </template>
 
 <script>
-import TextEditor from '../../elements/TextEditor.vue';
+import { TextEditor, ImageUpload } from 'elements';
 import { mapActions } from 'vuex';
 import PublicApi from 'api/public.api';
-import ImageUpload from '../../elements/ImageUpload.vue';
 
 export default {
   name: 'page-compose',

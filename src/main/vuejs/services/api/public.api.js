@@ -1,5 +1,10 @@
 import Vue from 'vue';
 import moment from 'moment';
+
+const EVENT_PUBLIC_URL = 'public/event';
+const PAGE_PUBLIC_URL = 'public/page';
+const CONFERENCE_PUBLIC_URL = 'public/conference';
+
 export default {
 
   /**
@@ -8,7 +13,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getEvent (id, success) {
-    Vue.http.get(`public/event/${id}`).then(response => {
+    Vue.http.get(`${EVENT_PUBLIC_URL}/${id}`).then(response => {
       success(response.body);
     });
   },
@@ -20,7 +25,18 @@ export default {
      * @param {*} success - success callback function
      */
     getRelated (event_id, success) {
-      Vue.http.get(`public/event/${event_id}/related`).then(response => {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${event_id}/related`).then(response => {
+        success(response.body);
+      });
+    },
+
+    /**
+     * Get public accessible gallery for event
+     * @param {*} event_id - event id
+     * @param {*} success - success callback function
+     */
+    getGallery (event_id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${event_id}/gallery`).then(response => {
         success(response.body);
       });
     }
@@ -42,7 +58,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getPage (id, success) {
-    Vue.http.get(`public/page/${id}`).then(response => {
+    Vue.http.get(`${PAGE_PUBLIC_URL}/${id}`).then(response => {
       success(response.body);
     });
   },
@@ -57,7 +73,7 @@ export default {
      * @param {Function} success - success callback function
      */
     getEvents (page_id, page, size, success) {
-      Vue.http.get(`public/page/${page_id}/event/${page}/${size}`, {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/${page_id}/event/${page}/${size}`, {
         params: {
           fromDate: moment().format('YYYY-MM-DD'),
           orderBy: 'date ASC'
@@ -73,7 +89,7 @@ export default {
      * @param {Function} success - success callback function
      */
     getServices (id, success) {
-      Vue.http.get(`public/page/${id}/service`).then(response => {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/${id}/service`).then(response => {
         success(response.body);
       });
     }
@@ -85,7 +101,7 @@ export default {
    * @param {*} success - success callback function
    */
   getConference (conference_id, success) {
-    Vue.http.get(`public/conference/${conference_id}`).then(response => {
+    Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}`).then(response => {
       success(response.body);
     });
   },
@@ -98,7 +114,7 @@ export default {
  * @param {*} success - success callback function
  */
   getConferences (page, size, success) {
-    Vue.http.get(`public/conferences/${page}/${size}`).then(response => {
+    Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
@@ -111,7 +127,7 @@ export default {
      * @param {Function} success - success callback function
      */
     getEvents (conference_id, success) {
-      Vue.http.get(`public/conference/${conference_id}/event`).then(response => {
+      Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}/event`).then(response => {
         success(response.body);
       });
     },
@@ -122,7 +138,7 @@ export default {
      * @param {Function} success - success callback function
      */
     getArticles (conference_id, success) {
-      Vue.http.get(`public/conference/${conference_id}/article`).then(response => {
+      Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}/article`).then(response => {
         success(response.body);
       });
     }

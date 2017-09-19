@@ -49,8 +49,7 @@
 </template>
   
 <script>
-import Notifications from '../elements/Notifications.vue';
-import LangSwitcher from '../elements/LangSwitcher.vue';
+import { Notifications, LangSwitcher } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
 
@@ -64,7 +63,7 @@ export default {
     logoutUser () {
       this.logout().then(response => {
         this.$router.push({ path: '/' });
-      })
+      });
     }
   },
   computed: {

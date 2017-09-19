@@ -6,10 +6,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
@@ -91,10 +94,14 @@ public class Event {
 	@ManyToMany
 	private List<User> attendees = new ArrayList<User>();
 
-	@Column
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
-	private String bannerUrl;
+	private Media poster;
 
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String posterData;
+	
 	@OneToOne
 	private Place place;
 
@@ -117,6 +124,10 @@ public class Event {
 	@OneToMany(mappedBy = "event")
 	private List<Invitation> invitations;
 
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
+	private List<Media> gallery;
+	
 //	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
 		if (conference != null)
@@ -215,14 +226,6 @@ public class Event {
 		this.attendees = attendees;
 	}
 
-	public String getBannerUrl() {
-		return bannerUrl;
-	}
-
-	public void setBannerUrl(String bannerUrl) {
-		this.bannerUrl = bannerUrl;
-	}
-
 	public void setProgramme(List<Programme> programme) {
 		this.programme = programme;
 	}
@@ -245,5 +248,33 @@ public class Event {
 
 	public List<Invitation> getInvitations() {
 		return invitations;
+	}
+
+	public Media getPoster() {
+		return poster;
+	}
+
+	public void setPoster(Media poster) {
+		this.poster = poster;
+	}
+
+	public String getPosterData() {
+		return posterData;
+	}
+
+	public void setPosterData(String posterData) {
+		this.posterData = posterData;
+	}
+	
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

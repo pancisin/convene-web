@@ -48,6 +48,7 @@ import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
@@ -91,6 +92,9 @@ public class CurrentUserController {
 	@Autowired
 	private ConferenceAdministratorRepository caRepository;
 
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe(HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -236,19 +240,19 @@ public class CurrentUserController {
 			return null;
 	}
 
-	@PostMapping("/place")
-	public ResponseEntity<?> postPlace(@RequestBody Place place) {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		place.setUser(auth);
-		return ResponseEntity.ok(placeRepository.save(place));
-	}
+//	@PostMapping("/place")
+//	public ResponseEntity<?> postPlace(@RequestBody Place place) {
+//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		place.setUser(auth);
+//		return ResponseEntity.ok(placeRepository.save(place));
+//	}
 
-	@GetMapping("/place")
-	public ResponseEntity<?> getPlace() {
-		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		return ResponseEntity.ok(stored.getPlaces());
-	}
+//	@GetMapping("/place")
+//	public ResponseEntity<?> getPlace() {
+//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		User stored = userRepository.findOne(auth.getId());
+//		return ResponseEntity.ok(stored.getPlaces());
+//	}
 
 	@JsonView(Summary.class)
 	@GetMapping("/search")
@@ -283,5 +287,11 @@ public class CurrentUserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
 		return ResponseEntity.ok(stored.getFollowed());
+	}
+	
+	@GetMapping("/media")
+	public ResponseEntity<?> getMedias() {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ResponseEntity.ok(mediaRepository.getByAuthor(auth.getId()));
 	}
 }

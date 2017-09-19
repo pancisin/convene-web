@@ -6,7 +6,7 @@
 
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
-            <img :src="page.bannerUrl" class="img" />
+            <img v-if="page.poster != null" :src="page.poster.path" class="img" />
 
             <h3 class="panel-title">{{ page.name }}
               <span class="label label-primary pull-right"> {{ page.followersCount }} followers</span>

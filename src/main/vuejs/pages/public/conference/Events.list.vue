@@ -8,8 +8,8 @@
           <li v-for="event in date" :key="event.id">
             <router-link :to="{ name: 'event.public', params: { id: event.id } }">
 
-              <img :src="event.bannerUrl" v-if="event.bannerUrl != null">
-              <div class="event-content" :class="{ 'detail' : event.bannerUrl == null }">
+              <img :src="event.poster.path" v-if="event.poster != null">
+              <div class="event-content" :class="{ 'detail' : event.poster == null }">
                 <h4>
                   {{ event.name }}
                 </h4>

@@ -1,0 +1,9 @@
+diff a/src/main/vuejs/services/routes.admin.js b/src/main/vuejs/services/routes.admin.js	(rejected hunks)
+@@ -9,7 +9,6 @@
+     }
+   },
+   {
+-    path: 'event',
+     path: 'conference/create',
+     component: resolve => require(['../pages/Conference.create.vue'], resolve),
+     beforeEnter: (to, from, next) => {

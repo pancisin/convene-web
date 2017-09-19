@@ -46,7 +46,7 @@
           </li>
           <li class="separator"></li>
           <li>
-            <router-link :to="{ name: 'conference.article.create' }">
+            <router-link :to="{ name: 'conference.place.create' }">
               Create article
             </router-link>
           </li>

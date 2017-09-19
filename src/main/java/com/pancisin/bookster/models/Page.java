@@ -18,10 +18,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.interfaces.IAuthor;
@@ -68,9 +72,13 @@ public class Page implements IAuthor {
 	@OneToMany(mappedBy = "page")
 	private List<Service> services;
 
-	@Column
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
-	private String bannerUrl;
+	private Media poster;
+
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String posterData;
 
 	@JsonView(Summary.class)
 	public int getFollowersCount() {
@@ -81,7 +89,7 @@ public class Page implements IAuthor {
 	private Calendar created;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "page")
+	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.DETACH }, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Place> places;
 
 	@JsonIgnore
@@ -122,6 +130,9 @@ public class Page implements IAuthor {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Widget> widgets;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
+	private List<Media> gallery;
+	
 	public Long getId() {
 		return id;
 	}
@@ -170,12 +181,20 @@ public class Page implements IAuthor {
 		this.summary = summary;
 	}
 
-	public String getBannerUrl() {
-		return bannerUrl;
+	public Media getPoster() {
+		return poster;
 	}
 
-	public void setBannerUrl(String bannerUrl) {
-		this.bannerUrl = bannerUrl;
+	public void setPoster(Media poster) {
+		this.poster = poster;
+	}
+
+	public String getPosterData() {
+		return posterData;
+	}
+
+	public void setPosterData(String posterData) {
+		this.posterData = posterData;
 	}
 
 	public List<PageAdministrator> getPageAdministrators() {
@@ -234,5 +253,24 @@ public class Page implements IAuthor {
 		if (widgets != null) {
 			this.widgets.addAll(widgets);
 		}
+	}
+	
+	public void addPlace(Place place) {
+		if (this.places == null)
+			this.places = new ArrayList<Place>();
+
+		this.places.add(place);
+	}
+	
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

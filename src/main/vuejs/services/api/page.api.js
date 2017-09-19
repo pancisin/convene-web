@@ -129,6 +129,18 @@ export default {
   },
 
   /**
+   * Post new place and map it to page specified by id
+   * @param {*} id - page id
+   * @param {*} place - place data object
+   * @param {*} success - success callback function
+   */
+  postPlace (id, place, success) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/place`, place).then(response => {
+      success(response.body);
+    }, errorHandler);
+  },
+
+  /**
    * Get page places
    * @param {*} id - page id
    * @param {*} success - success callback function
@@ -168,7 +180,10 @@ export default {
    * @param {*} success - success callback function
    */
   postAdministrator (id, administrator, success) {
-    Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, { id: administrator.id, email: administrator.email }).then(response => {
+    Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, {
+      id: administrator.id,
+      email: administrator.email
+    }).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -207,7 +222,7 @@ export default {
     });
   },
 
-    /**
+  /**
    * Get conference dashboard widgets data.
    * @param {*} id - conference id
    * @param {*} success - success callback function
@@ -226,6 +241,35 @@ export default {
    */
   putWidgets (id, widgets, success) {
     Vue.http.put(`${PAGE_API_URL}/${id}/widget`, widgets).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get gallery images
+   * @param {*} id - page id
+   * @param {*} success - success callback function
+   */
+  getGallery (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/gallery`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Post new image to gallery
+   * @param {*} id - page id
+   * @param {*} itemData - media entity data
+   * @param {*} success - success callback function
+   */
+  postGalleryItem (id, itemData, success, progress_func) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/gallery`, itemData, {
+      progress (e) {
+        if (e.lengthComputable) {
+          progress_func((e.loaded / e.total) * 100);
+        }
+      }
+    }).then(response => {
       success(response.body);
     });
   }

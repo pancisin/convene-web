@@ -9,6 +9,22 @@ export default [
     }
   },
   {
+    path: 'event',
+    name: 'admin.event',
+    component: resolve => require(['../pages/Event.index.vue'], resolve),
+    meta: {
+      title: 'Events'
+    }
+  },
+  {
+    path: 'media-manager',
+    name: 'admin.media-manager',
+    component: resolve => require(['../pages/MediaManager.vue'], resolve),
+    meta: {
+      title: 'Media manager'
+    }
+  },
+  {
     path: 'conference/create',
     component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {
@@ -120,6 +136,28 @@ export default [
         }
       },
       {
+        path: 'places',
+        name: 'conference.places',
+        component: resolve => require(['../pages/templates/Places.vue'], resolve),
+        meta: {
+          title: 'Places'
+        }
+      },
+      {
+        path: 'create-place',
+        name: 'conference.place.create',
+        component: resolve => require(['../pages/place/Overview.vue'], resolve),
+        props: (route) => (
+          {
+            conference_id: route.params.id,
+            edit: false
+          }
+        ),
+        meta: {
+          titlle: 'Create place'
+        }
+      },
+      {
         path: 'survey-create',
         name: 'conference.survey.create',
         component: resolve => require(['../pages/Survey.create.vue'], resolve),
@@ -138,7 +176,7 @@ export default [
   {
     path: 'survey/:survey_id',
     name: 'survey',
-    component: resolve => require(['../pages/Survey.vue'], resolve),
+    component: resolve => require(['../pages/Survey.vue'], resolve)
   },
   {
     path: 'events/create',
@@ -174,7 +212,15 @@ export default [
         name: 'event.attendees',
         component: resolve => require(['../pages/event/Attendees.vue'], resolve),
         meta: {
-          titlle: 'Attendees'
+          title: 'Attendees'
+        }
+      },
+      {
+        path: 'gallery',
+        name: 'event.gallery',
+        component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
+        meta: {
+          title: 'Gallery'
         }
       }
     ]
@@ -292,17 +338,30 @@ export default [
         meta: {
           titlle: 'Create place'
         }
+      },
+      {
+        path: 'gallery',
+        name: 'page.gallery',
+        component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
+        props: {
+          columns: 4,
+          limit: 1024 * 1024 * 20
+        },
+        meta: {
+          title: 'Gallery'
+        }
       }
     ]
   },
   {
-    path: 'place/:id',
+    path: 'place/:place_id',
     component: resolve => require(['../pages/Place.vue'], resolve),
-    redirect: '/admin/place/:id/overview',
+    redirect: '/admin/place/:place_id/overview',
     name: 'place',
     children: [
       {
         path: 'overview',
+        name: 'place.overview',
         component: resolve => require(['../pages/place/Overview.vue'], resolve),
         meta: {
           titlle: 'Overview'
@@ -310,9 +369,18 @@ export default [
       },
       {
         path: 'gallery',
-        component: resolve => require(['../pages/place/Gallery.vue'], resolve),
+        name: 'place.gallery',
+        component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
         meta: {
           titlle: 'Gallery'
+        }
+      },
+      {
+        path: 'venue',
+        name: 'place.venue',
+        component: resolve => require(['../pages/place/VenueEditor.vue'], resolve),
+        meta: {
+          title: 'Venue editor'
         }
       }
     ]

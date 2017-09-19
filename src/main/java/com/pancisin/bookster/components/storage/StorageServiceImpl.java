@@ -12,6 +12,7 @@ import java.util.Base64;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -19,13 +20,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pancisin.bookster.models.Media;
+import com.pancisin.bookster.repository.MediaRepository;
+
 @Component
 public class StorageServiceImpl implements StorageService {
 
 	@Value("${storage.path}")
 	private String storagePath;
 
-	public String storeBinary(String binary, String filename) {
+	public Long storeBinary(String binary, String filename) {
 		String relative_path = storagePath + filename + ".jpg";
 
 		File file = new File(relative_path);
@@ -37,6 +41,23 @@ public class StorageServiceImpl implements StorageService {
 			imageOutFile.write(imageByteArray);
 		} catch (FileNotFoundException e) {
 			System.out.println("Image not found" + e);
+		} catch (IOException ioe) {
+			System.out.println("Exception while reading the Image " + ioe);
+		}
+
+		return file.length();
+	}
+	
+	public String storeText(String text, String filename, String extension) {
+		String relative_path = storagePath + filename + "." + extension;
+		
+		File file = new File(relative_path);
+		file.getParentFile().mkdirs();
+
+		try (FileOutputStream textOutFile = new FileOutputStream(file)) {
+			textOutFile.write(text.getBytes());
+		} catch (FileNotFoundException e) {
+			System.out.println("Text file not found" + e);
 		} catch (IOException ioe) {
 			System.out.println("Exception while reading the Image " + ioe);
 		}

@@ -1,31 +1,31 @@
 <template>
   <panel type="default">
     <span slot="title">Create place</span>
-  
+
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.name }">
           <label class="control-label">Name</label>
           <input class="form-control required" v-model="place.name" type="text">
         </div>
-  
+
         <div class="form-group">
           <label class="control-label">Description</label>
           <input class="form-control required" v-model="place.description" type="text">
         </div>
-  
+
         <div class="form-group">
           <label class="control-label">Capacity</label>
           <input class="form-control required" v-model="place.capacity" type="number">
         </div>
-  
+
       </div>
       <div class="col-md-6" v-if="place.address != null">
         <div class="form-group" :class="{ 'has-error' : errors.name }">
           <label class="control-label">City</label>
           <input class="form-control required" v-model="place.address.city" type="text">
         </div>
-  
+
         <div class="row">
           <div class="col-xs-8">
             <div class="form-group" :class="{ 'has-error' : errors.name }">
@@ -40,18 +40,18 @@
             </div>
           </div>
         </div>
-  
+
         <div class="form-group" :class="{ 'has-error' : errors.state }">
           <label class="control-label">State</label>
           <input class="form-control required" v-model="place.address.state" type="text">
         </div>
-  
+
       </div>
     </div>
-  
+
     <label>Please verify that map points to the correct place</label>
     <g-map :address="place.address" :lat="place.address.latitude" :lng="place.address.longitude" @updated="mapUpdated"></g-map>
-  
+
     <div class="text-center m-t-20">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
         <span v-if="edit">Save</span>
@@ -61,9 +61,12 @@
 </template>
 
 <script>
-import GMap from '../../elements/GMap.vue';
+import { GMap } from 'elements';
+import PlaceApi from 'api/place.api';
+
 export default {
   name: 'place-overview',
+  inject: ['provider'],
   props: {
     place: {
       type: Object,
@@ -76,12 +79,15 @@ export default {
     edit: {
       type: Boolean,
       default: false
-    },
-    page_id: String,
-    conference_id: String
+    }
   },
   components: {
     GMap
+  },
+  computed: {
+    api () {
+      return this.provider.api;
+    }
   },
   data () {
     return {
@@ -89,22 +95,25 @@ export default {
     };
   },
   methods: {
+    getPlace () {
+      this.api.getPlace(place => {
+        this.place = place;
+      }); 
+    },
     submit () {
       if (this.edit) {
-        this.$http.put('api/place/' + this.place.id, this.place).then(response => {
+        PlaceApi.putPlace(this.place.id, this.place, place => {
           this.$success('Success !', 'Place ' + this.place.name + ' has been updated.');
-          this.$emit('updated', response.body);
+          this.$emit('updated', place);
         });
       } else {
-        var url = ['api/page', this.page_id, 'place'].join('/');
-
-        this.$http.post(url, this.place).then(response => {
-          this.place = response.body;
+        this.api.postPlace(this.place, place => {
           this.$success('Success !', 'Place ' + this.place.name + ' has been created.');
+
           this.$router.push({
             name: 'place',
             params: {
-              id: this.place.id
+              place_id: place.id
             }
           });
         });

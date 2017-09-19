@@ -6,7 +6,7 @@
   
         <form class="form" @submit.prevent="invite">
           <div class="input-group" style="margin: 0px 20px 20px 20px">
-            <suggest-input v-model="invitation.email" :options="users" @search="searchUsers"></suggest-input>
+            <user-search v-model="invitation.email" :options="users" @search="searchUsers"></user-search>
             <!--<input type="email" v-model="invitation.email" class="form-control" placeholder="Email">-->
             <span class="input-group-btn">
               <input type="submit" class="btn waves-effect waves-light btn-primary">Invite</input>
@@ -73,13 +73,13 @@
 </template>
 
 <script>
-import SuggestInput from '../../elements/UserSuggestInput.vue';
+import { UserSearch } from 'elements';
 import UserApi from 'api/user.api';
 
 export default {
   name: 'event-attendees',
   components: {
-    SuggestInput
+    UserSearch
   },
   props: {
     editable: Boolean

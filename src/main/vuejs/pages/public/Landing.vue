@@ -35,8 +35,8 @@
             <div class="inbox-widget">
               <stagger-transition tag="span">
                 <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="event.bannerUrl != null">
-                    <img :src="event.bannerUrl" class="img-circle" alt="">
+                  <div class="inbox-item-img" v-if="event.poster != null">
+                    <img :src="event.poster.path" class="img-circle" alt="">
                   </div>
                   <p class="inbox-item-author" v-text="event.name"></p>
                   <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
@@ -67,7 +67,7 @@
 
 <script>
 import Pricing from '../static/Pricing.vue';
-import Paginator from '../../elements/Paginator.vue';
+import { Paginator } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import faq from '../static/FAQ';
 import HowItWorks from '../static/HowItWorks';
@@ -148,12 +148,6 @@ export default {
   background: url(http://www.dolcemexico.com/restaurant/wp-content/uploads/2015/01/contacto1.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.title {
-  font-weight: 300;
-  line-height: 50px;
-  margin-top: 0px;
 }
 
 .sub-title {
@@ -264,6 +258,12 @@ export default {
   .content {
     background: #fff;
     padding: 5%;
+  }
+
+  .title {
+    font-weight: 300;
+    line-height: 50px;
+    margin-top: 0px;
   }
 }
 

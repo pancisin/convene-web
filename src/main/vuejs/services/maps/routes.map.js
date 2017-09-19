@@ -9,6 +9,11 @@ const MainRoutes = [
     code: 'admin.menu.events',
     icon: 'event'
   },
+  // {
+  //   name: 'admin.media-manager',
+  //   code: 'admin.menu.media-manager',
+  //   icon: 'picture-o'
+  // },
   {
     name: 'admin.notification',
     code: 'admin.menu.notifications',
@@ -25,14 +30,10 @@ const PageRoutes = [
     name: 'page.events',
     code: 'admin.page.events'
   },
-  {
-    name: 'page.places',
-    code: 'admin.page.places'
-  },
-  {
-    name: 'page.administrators',
-    code: 'admin.page.administrators'
-  },
+  // {
+  //   name: 'page.places',
+  //   code: 'admin.page.places'
+  // },
   {
     name: 'page.services',
     code: 'admin.page.services'
@@ -40,6 +41,14 @@ const PageRoutes = [
   {
     name: 'page.requests',
     code: 'admin.page.requests'
+  },
+  {
+    name: 'page.gallery',
+    code: 'admin.page.gallery'
+  },
+  {
+    name: 'page.administrators',
+    code: 'admin.page.administrators'
   },
   {
     name: 'page.settings',
@@ -63,6 +72,10 @@ const ConferenceRoutes = [
   {
     name: 'conference.surveys',
     code: 'admin.conference.surveys'
+  },
+  {
+    name: 'conference.places',
+    code: 'admin.conference.places'
   },
   {
     name: 'conference.administrators',

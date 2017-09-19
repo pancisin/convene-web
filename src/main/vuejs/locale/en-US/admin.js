@@ -22,7 +22,8 @@ export default {
     advanced: 'Advanced',
     administrators: 'Administrators',
     services: 'Services',
-    requests: 'Requests'
+    requests: 'Requests',
+    gallery: 'Gallery'
   },
   conference: {
     overview: 'Overview',

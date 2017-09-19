@@ -3,8 +3,8 @@
     <ul class="conference-list">
       <li v-for="conf in conferences" :key="conf.id">
         <router-link :to="{ name: 'conference', params: { id: conf.id } }">
-          <div class="banner">
-            <img :src="conf.bannerUrl">
+          <div class="banner" v-if="conf.poster != null">
+            <img :src="conf.poster.path">
           </div>
 
           <div class="data">

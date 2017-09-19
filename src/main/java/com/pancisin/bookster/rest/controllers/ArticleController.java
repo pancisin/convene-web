@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.Article;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.repository.ArticleRepository;
+import com.pancisin.bookster.repository.MediaRepository;
 
 @RestController
 @RequestMapping("/api/article/{article_id}")
@@ -25,6 +27,9 @@ public class ArticleController {
 	@Autowired
 	private StorageServiceImpl storageService;
 
+	@Autowired
+	private MediaRepository mediaRepository;
+	
 	@GetMapping
 	public ResponseEntity<?> getArticle(@PathVariable Long article_id) {
 		return ResponseEntity.ok(articleRepository.findOne(article_id));
@@ -37,10 +42,14 @@ public class ArticleController {
 		stored.setContent(article.getContent());
 		stored.setTitle(article.getTitle());
 
-		if (article.getBannerUrl() != null && storageService.isBinary(article.getBannerUrl())) {
-			String url = "banners/conferences/" + stored.getId();
-			storageService.storeBinary(article.getBannerUrl(), url);
-			stored.setBannerUrl("/files/" + url + ".jpg");
+		if (article.getThumbnailData() != null && storageService.isBinary(article.getThumbnailData())) {
+			Media thumbnail = new Media();
+			thumbnail = mediaRepository.save(thumbnail);
+			String url = "banners/articles/" + thumbnail.getId().toString();
+			
+			thumbnail.setPath("/files/" + url + ".jpg");
+			storageService.storeBinary(article.getThumbnailData(), url);
+			stored.setThumbnail(thumbnail);
 		}
 
 		return ResponseEntity.ok(articleRepository.save(stored));

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import DatePicker from '../../../elements/DatePicker.vue';
+import { DatePicker } from 'elements';
 import SurveyApi from 'api/survey.api';
 
 export default {
@@ -59,7 +59,7 @@ export default {
     initializeSurvey () {
       this.survey.metaFields.sort((a, b) => {
         return a.ordering > b.ordering;
-      })
+      });
 
       this.survey.metaFields.forEach((field, index) => {
         this.meta_values.push({

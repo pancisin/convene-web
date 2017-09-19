@@ -14,7 +14,9 @@ module.exports = {
     alias: {
       'src': path.resolve(__dirname, '../src'),
       'store': path.resolve(__dirname, '../src/main/vuejs/store'),
-      'api': path.resolve(__dirname, '../src/main/vuejs/services/api')
+      'api': path.resolve(__dirname, '../src/main/vuejs/services/api'),
+      'elements': path.resolve(__dirname, '../src/main/vuejs/elements'),
+      'filters': path.resolve(__dirname, '../src/main/vuejs/filters')
     }
   },
   module: {

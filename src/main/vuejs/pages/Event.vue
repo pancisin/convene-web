@@ -8,15 +8,19 @@
   
     <div class="col-md-3">
       <div class="list-group mail-list">
-        <router-link to="overview" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'event.overview' }" class="list-group-item waves-effect">
           <i class="fa fa-dashboard"></i>
           Overview
         </router-link>
-        <router-link to="programme" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'event.programme' }" class="list-group-item waves-effect">
           <i class="fa fa-list" aria-hidden="true"></i>
           Programme
         </router-link>
-        <router-link to="attendees" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'event.gallery' }" class="list-group-item waves-effect">
+          <i class="fa fa-picture-o" aria-hidden="true"></i>
+          Gallery
+        </router-link>
+        <router-link :to="{ name: 'event.attendees' }" class="list-group-item waves-effect">
           <i class="fa fa-users" aria-hidden="true"></i>
           Attendees
         </router-link>

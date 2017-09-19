@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import DatePicker from '../elements/DatePicker.vue';
+import { DatePicker } from 'elements';
 
 export default {
   name: 'survey-overview',

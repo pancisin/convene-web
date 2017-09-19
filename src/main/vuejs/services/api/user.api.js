@@ -134,5 +134,15 @@ export default {
     Vue.http.get(`${USER_API_URL}/contacts`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get all users medias
+   * @param {*} success - success callback function
+   */
+  getMedia (success) {
+    Vue.http.get(`${USER_API_URL}/media`).then(response => {
+      success(response.body);
+    });
   }
 };

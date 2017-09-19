@@ -30,7 +30,7 @@
           <explorer-transition tag="div" class="explore-container">
             <div class="page-panel" v-for="(page, index) in pagesPaginator.content" :data-index="index" :key="page.id">
               <router-link :to="'page/' + page.id">
-                <img v-if="page.bannerUrl != null" :src="page.bannerUrl">
+                <img v-if="page.poster != null" :src="page.poster.path">
                 <img v-else src="/bookster_logo.png" style="min-width:auto">
 
                 <div class="title">
@@ -57,7 +57,7 @@
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import ExplorerTransition from '../../functional/ExplorerTransition.vue';
-import Paginator from '../../elements/Paginator.vue';
+import { Paginator } from 'elements';
 export default {
   name: 'page-explore',
   data () {

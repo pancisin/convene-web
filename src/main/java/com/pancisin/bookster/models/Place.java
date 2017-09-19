@@ -1,17 +1,23 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @Table(name = "places")
@@ -37,13 +43,16 @@ public class Place {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 
-	@JsonIgnore
-	@ManyToOne
-	private Page page;
-
-	@JsonIgnore
-	@ManyToOne
-	private User user;
+	@Column
+	@JsonProperty(access = Access.READ_ONLY)
+	private String venueJsonUrl;
+	
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String venueData;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
+	private List<Media> gallery;
 	
 	public String getName() {
 		return name;
@@ -81,19 +90,31 @@ public class Place {
 		return id;
 	}
 
-	public Page getPage() {
-		return page;
+	public String getVenueJsonUrl() {
+		return venueJsonUrl;
 	}
 
-	public void setPage(Page page) {
-		this.page = page;
+	public void setVenueJsonUrl(String venueJsonUrl) {
+		this.venueJsonUrl = venueJsonUrl;
 	}
 
-	public User getUser() {
-		return user;
+	public void setVenueData(String venueData) {
+		this.venueData = venueData;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public String getVenueData() {
+		return venueData;
+	}
+
+	public List<Media> getGallery() {
+		return gallery;
+	}
+
+	public void AddGallery(Media media) {
+		if (this.gallery == null) {
+			this.gallery = new ArrayList<Media>();
+		}
+		
+		this.gallery.add(media);
 	}
 }

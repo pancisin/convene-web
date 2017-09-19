@@ -22,7 +22,8 @@ export default {
     advanced: 'Pokročilé',
     administrators: 'Správcovia',
     services: 'Služby',
-    requests: 'Žiadosti'
+    requests: 'Žiadosti',
+    gallery: 'Galéria'
   },
   conference: {
     overview: 'Prehľad',

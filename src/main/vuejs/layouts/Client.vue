@@ -18,7 +18,7 @@
 <script>
 import HeaderComponent from './Client.header.vue';
 import FooterComponent from './Footer.vue';
-import ToastContainer from '../elements/ToastContainer.vue';
+import { ToastContainer } from 'elements';
 
 export default {
   name: 'layout',

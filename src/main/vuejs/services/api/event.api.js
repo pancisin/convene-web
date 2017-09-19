@@ -135,5 +135,34 @@ export default {
     Vue.http.get(`${EVENT_API_URL}/${id}/related`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get gallery images
+   * @param {*} id - event id
+   * @param {*} success - success callback function
+   */
+  getGallery (id, success, progress_func) {
+    Vue.http.get(`${EVENT_API_URL}/${id}/gallery`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Post new image to gallery
+   * @param {*} id - event id
+   * @param {*} itemData - media entity data
+   * @param {*} success - success callback function
+   */
+  postGalleryItem (id, itemData, success, progress_func) {
+    Vue.http.post(`${EVENT_API_URL}/${id}/gallery`, itemData, {
+      progress (e) {
+        if (e.lengthComputable) {
+          progress_func((e.loaded / e.total) * 100);
+        }
+      }
+    }).then(response => {
+      success(response.body);
+    });
   }
 };

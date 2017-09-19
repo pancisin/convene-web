@@ -4,7 +4,7 @@
 
     <div class="row">
       <div class="col-md-6">
-        <image-upload v-model="conference.bannerUrl"></image-upload>
+        <image-upload v-model="conference.posterData" :media="conference.poster"></image-upload>
       </div>
 
       <div class="col-md-6">
@@ -40,8 +40,7 @@
 </template>
 
 <script>
-import TextEditor from '../../../elements/TextEditor.vue';
-import ImageUpload from '../../../elements/ImageUpload.vue';
+import { TextEditor, ImageUpload } from 'elements';
 import { mapActions } from 'vuex';
 export default {
   props:

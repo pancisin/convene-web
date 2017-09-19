@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-pane" v-show="display" v-loading="loading">
+  <div class="tab-pane tab-visible" v-show="display" v-loading="loading">
     <slot></slot>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="less">
-.tab-content>.tab-pane {
+.tab-content>.tab-pane.tab-visible {
   display: block;
 }
 </style>

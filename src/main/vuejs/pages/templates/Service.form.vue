@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import vSelect from '../../elements/Select.vue';
+import { vSelect } from 'elements';
 import ServiceApi from 'api/service.api';
 
 export default {

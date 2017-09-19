@@ -88,5 +88,16 @@ export default {
       create_article: 'vytvoril článok do',
       create_survey: 'vytvoril prieskum do'
     }
+  },
+  venue_editor: {
+    objects: {
+      squared_table: 'Štvorcový stôl',
+      round_table: 'Okruhlý stôl',
+      seats_in_rows: 'Sedadlá v radoch',
+      seat: 'Miesto na sedenie'
+    },
+    building: {
+      room: 'Miestnosť'
+    }
   }
 };

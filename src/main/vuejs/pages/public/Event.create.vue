@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-6" v-if="edit">
               <div class="fileupload waves-effect">
-                <img :src="event.bannerUrl" class="img-thumbnail dropzone" style="width: 100%" />
+                <img v-if="event.poster != null" :src="event.poster.path" class="img-thumbnail dropzone" style="width: 100%" />
                 <input type="file" class="upload" @change="onLogoChange">
               </div>
             </div>
@@ -51,8 +51,7 @@
 </template>
 
 <script>
-import DatePicker from '../../elements/DatePicker.vue';
-import TextEditor from '../../elements/TextEditor.vue';
+import { DatePicker, TextEditor } from 'elements';
 import ProgrammeEditor from '../event/Programme.vue';
 
 export default {
@@ -112,7 +111,7 @@ export default {
       var reader = new FileReader();
 
       reader.onload = (e) => {
-        self.event.bannerUrl = e.target.result;
+        self.event.posterData = e.target.result;
       };
 
       reader.readAsDataURL(file);

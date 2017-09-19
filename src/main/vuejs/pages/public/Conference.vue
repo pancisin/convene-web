@@ -8,8 +8,8 @@
       <div class="col-md-9">
 
         <div class="row">
-          <div class="col-sm-4">
-            <img :src="conference.bannerUrl" class="img-poster">
+          <div class="col-sm-4" v-if="conference.poster != null">
+            <img :src="conference.poster.path" class="img-poster">
           </div>
           <div class="col-sm-8 custom-content">
             <div v-html="conference.summary"></div>
@@ -59,7 +59,7 @@
 <script>
 import ConferenceInjector from '../../services/injectors/conference.injector.js';
 import AttendForm from './conference/Attend.form.vue';
-import ArticlesList from '../../elements/ArticlesList.vue';
+import { ArticlesList } from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 

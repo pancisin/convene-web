@@ -1,60 +1,66 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="place != null">
     <div class="col-xs-12">
       <h3 v-text="place.name" class="page-title"></h3>
     </div>
     <div class="col-md-3">
       <div class="list-group mail-list">
-        <router-link to="overview" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'place.overview' }" class="list-group-item waves-effect">
+          <i class="fa fa-dashboard"></i>
           Overview
         </router-link>
-        <router-link to="gallery" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'place.gallery' }" class="list-group-item waves-effect">
+          <i class="fa fa-picture-o"></i>
           Gallery
+        </router-link>
+        <router-link :to="{ name: 'place.venue' }" class="list-group-item waves-effect">
+          <i class="fa fa-pencil"></i>
+          Venue editor
         </router-link>
       </div>
     </div>
     <div class="col-md-9">
       <transition name="fade-up" mode="out-in">
-        <router-view :place="place" :edit="edit" @updated="placeUpdated"></router-view>
+        <router-view :place="place"></router-view>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
+import PlaceInjector from '../services/injectors/place.injector.js';
+
 export default {
   name: 'place-layout',
   data () {
     return {
-      place: {},
-      edit: false
+      injector: null,
+      place: null
     };
   },
+  provide () {
+    const provider = {};
+
+    Object.defineProperty(provider, 'api', {
+      get: () => this.injector
+    });
+
+    return { provider };
+  },
   watch: {
-    '$route': 'getPlace'
+    '$route': 'initializeInjector'
   },
   created () {
-    this.getPlace();
+    this.initializeInjector();
   },
   methods: {
-    getPlace () {
-      var place_id = this.$route.params.id;
+    initializeInjector () {
+      var place_id = this.$route.params.place_id;
 
-      if (this.place.id != null && this.place.id === place_id) {
-        return;
-      }
-
-      if (place_id != null) {
-        this.$http.get('api/place/' + place_id).then(response => {
-          this.place = response.body;
-          this.edit = true;
-        });
-      } else {
-        this.place = {};
-      }
-    },
-    placeUpdated (place) {
-      this.place = place;
+      this.injector = new PlaceInjector(place_id);
+      this.injector.getPlace(place => {
+        this.place = place;
+      })
     }
   }
 };
