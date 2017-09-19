@@ -1,5 +1,5 @@
 <template>
-  <panel type="default" v-loading="loadingProgress">
+  <panel type="default" v-loading="loading">
     <span slot="title">Overview</span>
 
     <div class="row">
@@ -84,7 +84,7 @@ export default {
   data () {
     return {
       places: [],
-      loadingProgress: false
+      loading: false
     };
   },
   created () {
@@ -99,23 +99,23 @@ export default {
         if (result) {
           if (this.edit) {
             let url = ['api/event', this.event.id].join('/');
-            this.loadingProgress = true;
+            this.loading = true;
             this.$http.put(url, this.event, {
               progress (e) {
                 if (e.lengthComputable) {
-                  this.loadingProgress = (e.loaded / e.total) * 100;
+                  this.loading = (e.loaded / e.total) * 100;
                 }
               }
             }).then(response => {
               this.$emit('updated', response.body);
               this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
-              this.loadingProgress = false;
+              this.loading = false;
             }, response => {
               response.body.fieldErrors.forEach((e) => {
                 this.$set(this.errors, e.field, e);
               });
               this.$error('Error !', 'Problem in saving event.');
-              this.loadingProgress = false;
+              this.loading = false;
             });
           } else {
             let url = null;

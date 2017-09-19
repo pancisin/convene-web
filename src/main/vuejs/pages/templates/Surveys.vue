@@ -29,7 +29,6 @@
             <i class="fa fa-check text-success" aria-hidden="true" v-if="survey.state == 'COMPLETED'"></i>
             <i class="fa fa-circle-o" aria-hidden="true" v-if="survey.state == 'NEW'"></i>
             <i class="fa fa-trash-o text-danger" aria-hidden="true" v-if="survey.state == 'DELETED'"></i>
-
           </td>
         </tr>
       </tbody>

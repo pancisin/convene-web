@@ -1,8 +1,11 @@
 const updateLoader = (el, value) => {
-  let percentage = el.getElementsByClassName('percentage')[0];
+  const loader = el.getElementsByClassName('loader')[0];
+  const percentage = el.getElementsByClassName('percentage')[0];
   percentage.style = {
     display: value && value !== true ? 'inline-block' : 'none'
   };
+
+  loader.classList.toggle('percentage-visible', value && value !== true);
 
   percentage.innerText = value !== true && value !== false ? `${Math.round(value)}%` : '';
 };

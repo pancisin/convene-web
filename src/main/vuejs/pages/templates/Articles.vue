@@ -5,10 +5,15 @@
       <thead>
         <tr>
           <th>
+          </th>
+          <th>
             Title
           </th>
           <th>
             Created
+          </th>
+          <th class="text-center">
+            Status
           </th>
         </tr>
       </thead>
@@ -16,11 +21,18 @@
       <tbody>
         <tr v-for="article in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
           <td>
+            <img :src="article.thumbnail.path" v-if="article.thumbnail != null" style="height:50px">
+          </td>
+          <td>
             <router-link :to="{ name: 'article', params: { article_id: article.id } }">
               {{ article.title }}
             </router-link>
           </td>
           <td>{{ article.created | moment('L') }}</td>
+          <td class="text-center">
+            <i class="fa fa-check text-success" aria-hidden="true" v-if="article.published"></i>
+            <i class="fa fa-eye-slash text-warning" aria-hidden="true" v-else></i>
+          </td>
         </tr>
       </tbody>
     </table>

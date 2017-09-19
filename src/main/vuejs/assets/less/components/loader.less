@@ -24,6 +24,17 @@
   z-index: 1;
   transition: opacity .4s linear;
   opacity: 0;
+
+  &.percentage-visible {
+    .spinner {
+      background: #fff;
+    }
+
+    .percentage {
+      display: inline-block;
+    }
+  }
+
   .spinner {
     margin: auto;
     border-radius: 100%;
@@ -35,6 +46,7 @@
     box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.45);
   }
   .percentage {
+    display: none;
     position: absolute;
     top: 0;
     text-align: center;
