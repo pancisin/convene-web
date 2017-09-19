@@ -3,7 +3,7 @@ import moment from 'moment';
 
 const PAGE_API_URL = 'api/page';
 
-function errorHandler(response) {
+function errorHandler (response) {
   console.error(response);
 }
 
@@ -14,7 +14,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getPage(id, success) {
+  getPage (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${PAGE_API_URL}/${id}`).then(response => {
@@ -27,7 +27,7 @@ export default {
    * @param {*} page - page data object
    * @param {*} success - success callback function
    */
-  putPage(page, success) {
+  putPage (page, success) {
     Vue.http.put(`${PAGE_API_URL}/${page.id}`, page).then(response => {
       success(response.body);
     }, errorHandler);
@@ -38,7 +38,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  deletePage(id, success) {
+  deletePage (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.delete(`${PAGE_API_URL}/${id}`).then(response => {
@@ -51,7 +51,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  togglePublished(id, success) {
+  togglePublished (id, success) {
     Vue.http.patch(`${PAGE_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);
     }, errorHandler);
@@ -64,7 +64,7 @@ export default {
    * @param {*} size - paginator size property
    * @param {*} success - success callback function, @returns events paginator object
    */
-  getEvents(id, page, size, success) {
+  getEvents (id, page, size, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`, {
@@ -82,7 +82,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getServices(id, success) {
+  getServices (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${PAGE_API_URL}/${id}/service`).then(response => {
@@ -96,7 +96,7 @@ export default {
    * @param {*} service - service data object
    * @param {*} success - success callback function
    */
-  postService(id, service, success) {
+  postService (id, service, success) {
     Vue.http.post(`${PAGE_API_URL}/${id}/service`, service).then(response => {
       success(response.body);
     }, errorHandler);
@@ -107,7 +107,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getFollowStatus(id, success) {
+  getFollowStatus (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${PAGE_API_URL}/${id}/follow-status`).then(response => {
@@ -120,7 +120,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  toggleFollowStatus(id, success) {
+  toggleFollowStatus (id, success) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.patch(`${PAGE_API_URL}/${id}/toggle-follow`).then(response => {
@@ -134,7 +134,7 @@ export default {
    * @param {*} place - place data object
    * @param {*} success - success callback function
    */
-  postPlace(id, place, success) {
+  postPlace (id, place, success) {
     Vue.http.post(`${PAGE_API_URL}/${id}/place`, place).then(response => {
       success(response.body);
     }, errorHandler);
@@ -145,7 +145,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getPlaces(id, success) {
+  getPlaces (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/place`).then(response => {
       success(response.body);
     }, errorHandler);
@@ -156,7 +156,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getRequests(id, success) {
+  getRequests (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/requests`).then(response => {
       success(response.body);
     }, errorHandler);
@@ -167,7 +167,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getAdministrators(id, success) {
+  getAdministrators (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/administrator`).then(response => {
       success(response.body);
     }, errorHandler);
@@ -179,7 +179,7 @@ export default {
    * @param {*} administrator - user data object (should contain email)
    * @param {*} success - success callback function
    */
-  postAdministrator(id, administrator, success) {
+  postAdministrator (id, administrator, success) {
     Vue.http.post(`${PAGE_API_URL}/${id}/administrator`, {
       id: administrator.id,
       email: administrator.email
@@ -194,7 +194,7 @@ export default {
    * @param {*} administrator - page administrator data object
    * @param {*} success - success callback function
    */
-  putAdministrator(administrator_id, administrator, success) {
+  putAdministrator (administrator_id, administrator, success) {
     Vue.http.put(`api/page-administrator/${administrator_id}`, administrator).then(response => {
       success(response.body);
     }, errorHandler);
@@ -205,7 +205,7 @@ export default {
    * @param {*} administrator_id - page administrator id
    * @param {*} success - success callback function
    */
-  deleteAdministrator(administrator_id, success) {
+  deleteAdministrator (administrator_id, success) {
     Vue.http.delete(`api/page-administrator/${administrator_id}`).then(response => {
       success(response.body);
     }, errorHandler);
@@ -216,7 +216,7 @@ export default {
    * @param {Number} id - page id
    * @param {Function} success - success callback function
    */
-  getActivities(id, success) {
+  getActivities (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/activity`).then(response => {
       success(response.body);
     });
@@ -227,7 +227,7 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getWidgets(id, success) {
+  getWidgets (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/widget`).then(response => {
       success(response.body);
     });
@@ -239,7 +239,7 @@ export default {
    * @param {*} widgets - widgets array
    * @param {*} success - success callback function
    */
-  putWidgets(id, widgets, success) {
+  putWidgets (id, widgets, success) {
     Vue.http.put(`${PAGE_API_URL}/${id}/widget`, widgets).then(response => {
       success(response.body);
     });
@@ -250,7 +250,7 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getGallery(id, success) {
+  getGallery (id, success) {
     Vue.http.get(`${PAGE_API_URL}/${id}/gallery`).then(response => {
       success(response.body);
     });
@@ -262,9 +262,9 @@ export default {
    * @param {*} itemData - media entity data
    * @param {*} success - success callback function
    */
-  postGalleryItem(id, itemData, success, progress_func) {
+  postGalleryItem (id, itemData, success, progress_func) {
     Vue.http.post(`${PAGE_API_URL}/${id}/gallery`, itemData, {
-      progress(e) {
+      progress (e) {
         if (e.lengthComputable) {
           progress_func((e.loaded / e.total) * 100);
         }

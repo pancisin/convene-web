@@ -6,10 +6,10 @@ export default {
 
   /**
    * Get media item
-   * @param {*} uuid - media item uuid 
+   * @param {*} uuid - media item uuid
    * @param {*} success - success callback function
    */
-  getMedia(uuid, success) {
+  getMedia (uuid, success) {
     Vue.http.get(`${MEDIA_API_URL}/${uuid}`).then(response => {
       success(response.body);
     });
@@ -20,9 +20,9 @@ export default {
    * @param {*} uuid - media item uuid
    * @param {*} success - success callback function
    */
-  deleteMedia(uuid, success) {
+  deleteMedia (uuid, success) {
     Vue.http.delete(`${MEDIA_API_URL}/${uuid}`).then(response => {
       success(response.body);
-    })
+    });
   }
-}
+};

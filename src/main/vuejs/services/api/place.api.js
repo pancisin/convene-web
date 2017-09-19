@@ -9,7 +9,7 @@ export default {
    * @param {*} id - place id
    * @param {*} success - success callback function
    */
-  getPlace(id, success) {
+  getPlace (id, success) {
     Vue.http.get(`${PLACE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
@@ -20,7 +20,7 @@ export default {
    * @param {*} id - place id
    * @param {*} success - success callback function
    */
-  deletePlace(id, success) {
+  deletePlace (id, success) {
     Vue.http.delete(`${PLACE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
@@ -32,7 +32,7 @@ export default {
    * @param {*} place - place data object
    * @param {*} success - success callback function
    */
-  putPlace(id, place, success) {
+  putPlace (id, place, success) {
     Vue.http.put(`${PLACE_API_URL}/${id}`, place).then(response => {
       success(response.body);
     });
@@ -44,7 +44,7 @@ export default {
    * @param {*} venue_data - venue data object
    * @param {*} success - success callback function
    */
-  patchVenue(id, venue_data, success) {
+  patchVenue (id, venue_data, success) {
     Vue.http.patch(`${PLACE_API_URL}/${id}/venue`, venue_data).then(response => {
       success(response.body);
     });
@@ -55,19 +55,18 @@ export default {
    * @param {*} id - place id
    * @param {*} success - success callback function
    */
-  getVenue(id, success) {},
+  getVenue (id, success) { },
 
   /**
    * Get gallery images
    * @param {*} id - place id
    * @param {*} success - success callback function
    */
-  getGallery(id, success) {
+  getGallery (id, success) {
     Vue.http.get(`${PLACE_API_URL}/${id}/gallery`).then(response => {
       success(response.body);
     });
   },
-
 
   /**
    * Post new image to gallery
@@ -75,9 +74,9 @@ export default {
    * @param {*} itemData - media entity data
    * @param {*} success - success callback function
    */
-  postGalleryItem(id, itemData, success, progress_func) {
+  postGalleryItem (id, itemData, success, progress_func) {
     Vue.http.post(`${PLACE_API_URL}/${id}/gallery`, itemData, {
-      progress(e) {
+      progress (e) {
         if (e.lengthComputable) {
           progress_func((e.loaded / e.total) * 100);
         }
