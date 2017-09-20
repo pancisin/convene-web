@@ -192,7 +192,7 @@ export default {
           });
 
           this.original_survey = JSON.stringify(this.survey);
-          this.$success('saved');
+          this.$success('notification.survey.updated');
         });
       } else {
 

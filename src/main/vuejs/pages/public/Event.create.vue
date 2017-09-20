@@ -76,7 +76,7 @@ export default {
         var url = ['api/event', this.event.id].join('/');
         this.$http.put(url, this.event).then(response => {
           this.event = response.body;
-          this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
+          this.$success('notification.event.updated', this.event.name);
         }, response => {
           response.body.fieldErrors.forEach((e) => {
             this.$set(this.errors, e.field, e);
@@ -86,7 +86,7 @@ export default {
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
           this.event = response.body;
-          this.$success('Success !', 'Event ' + this.event.name + ' has been created.');
+          this.$success('notification.event.created', this.event.name);
           this.edit = true;
         }, response => {
           if (response.body != null) {

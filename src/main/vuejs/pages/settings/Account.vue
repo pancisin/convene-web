@@ -88,7 +88,7 @@ export default {
       };
 
       this.updateUser(data).then(user => {
-        this.$success('Success !', 'User account information has been updated.');
+        this.$success('notification.account.updated');
       });
     }
   }

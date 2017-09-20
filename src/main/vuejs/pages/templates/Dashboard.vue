@@ -124,12 +124,12 @@ export default {
         this.widgets = widgets;
         this.original_widgets = JSON.stringify(widgets);
         this.editMode = false;
-        this.$success('Dashboard saved !', 'Your conference dashboard has been saved successfully.');
+        this.$success('notification.dashboard.saved');
       });
     },
     editModeSwitch (enabled) {
       if (!enabled && this.touched) {
-        this.$prompt('Discard dashboard changes.', 'Are you sure discard changes you made to this dashboard ?', () => {
+        this.$prompt('notification.dashboard.save_prompt', () => {
           this.widgets = JSON.parse(this.original_widgets);
           this.editMode = false;
         });

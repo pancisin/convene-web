@@ -50,7 +50,7 @@ export default {
   methods: {
     submit () {
       this.api.postSurvey(this.survey, result => {
-        this.$success('Survey has been created !', 'dsada');
+        this.$success('notification.survey.created');
         this.$router.push({ name: 'survey', params: { survey_id: result.id }});
       });
     }
