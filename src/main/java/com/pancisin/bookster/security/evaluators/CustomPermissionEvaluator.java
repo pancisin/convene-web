@@ -2,6 +2,7 @@ package com.pancisin.bookster.security.evaluators;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
@@ -90,20 +91,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		final User stored = userRepository.findOne(user.getId());
 
 		switch (targetType) {
+
 		case "book_request":
 			BookRequest bookRequest = bookRequestRepository.findOne((Long) targetId);
 			return bookRequest.getService().getPage().getPageAdministrators().stream()
 					.anyMatch(x -> x.getUser().getId() == stored.getId());
-		case "conference":
-			Conference conference = conferenceRepository.findOne((Long) targetId);
 
-			if (permission.equals("admin-read"))
-				return checkConferenceOwnership(conference, stored);
-			else if (permission.equals("update")) 
-				return conference.getState() != PageState.BLOCKED && checkConferenceOwnership(conference, stored);
-			else
-				return conference.getVisibility() == Visibility.PUBLIC
-						|| conference.getOwner().getId() == stored.getId();
 		case "event":
 			Event event = eventRepository.findOne((Long) targetId);
 
@@ -111,11 +104,14 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				return checkEventOwnership(event, stored);
 			} else
 				return checkEventVisibility(event, stored);
+
 		case "license":
 			return true;
+
 		case "notification":
-			Notification notification = notificationRepository.findOne((Long) targetId);
+			Notification notification = notificationRepository.findById((UUID) targetId);
 			return notification.getRecipient().getId() == stored.getId();
+
 		case "page":
 			Page page = pageRepository.findOne((Long) targetId);
 			if (permission.equals("admin-read")) {
@@ -124,21 +120,34 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				return page.getState() != PageState.BLOCKED && checkPageOwnership(page, stored);
 			} else
 				return true;
+
+		case "conference":
+			Conference conference = conferenceRepository.findOne((Long) targetId);
+			if (permission.equals("admin-read"))
+				return checkConferenceOwnership(conference, stored);
+			else if (permission.equals("update"))
+				return conference.getState() != PageState.BLOCKED && checkConferenceOwnership(conference, stored);
+			else
+				return checkConferenceVisibility(conference, stored) || checkConferenceOwnership(conference, stored);
+
 		case "programme":
 			Programme programme = programmeRepository.findOne((Long) targetId);
 			return checkEventOwnership(programme.getEvent(), stored);
+
 		case "service":
 			Service service = serviceRepository.findOne((Long) targetId);
 
 			if (permission == "update")
-				return service.getPage().getPageAdministrators().stream()
-						.anyMatch(x -> x.getUser().getId() == stored.getId());
+				return service.getPage().getPageAdministrators().stream().anyMatch(x -> x.getUser().getId() == stored.getId());
 			else
 				return true;
+
 		case "page-administrator":
 			return true;
+
 		case "invitation":
 			return true;
+
 		case "conference-administrator":
 			return true;
 		}
@@ -168,8 +177,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		if (oPa.isPresent()) {
 			PageAdministrator pa = oPa.get();
-			return pa.getActive()
-					&& (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
+			return pa.getActive() && (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
 		}
 
 		return false;
@@ -181,7 +189,17 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		if (oCa.isPresent()) {
 			ConferenceAdministrator ca = oCa.get();
-			return ca.isActive() && (ca.getRole().getLevel() >= 60);
+			return ca.isActive() && (ca.getRole() == PageRole.ROLE_ADMINISTRATOR || ca.getRole() == PageRole.ROLE_OWNER);
+		}
+
+		return false;
+	}
+
+	private boolean checkConferenceVisibility(Conference conference, User user) {
+		if (conference.getVisibility() == Visibility.PUBLIC) {
+			return true;
+		} else if (conference.getVisibility() == Visibility.INVITED) {
+			return conference.getInvitations().stream().anyMatch(i -> i.getUser().getId() == user.getId());
 		}
 
 		return false;

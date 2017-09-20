@@ -1,5 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,13 +23,13 @@ public class NotificationController {
 	private NotificationRepository notificationRepository;
 
 	@GetMapping
-	public ResponseEntity<?> getNotification(@PathVariable Long notification_id) {
-		return ResponseEntity.ok(notificationRepository.findOne(notification_id));
+	public ResponseEntity<?> getNotification(@PathVariable UUID notification_id) {
+		return ResponseEntity.ok(notificationRepository.findById(notification_id));
 	}
 
 	@PatchMapping("/toggle-seen")
-	public ResponseEntity<?> toggleSeen(@PathVariable Long notification_id) {
-		Notification not = notificationRepository.findOne(notification_id);
+	public ResponseEntity<?> toggleSeen(@PathVariable UUID notification_id) {
+		Notification not = notificationRepository.findById(notification_id);
 		not.setSeen(!not.isSeen());
 		return ResponseEntity.ok(notificationRepository.save(not));
 	}

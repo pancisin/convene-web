@@ -35,4 +35,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
 	@Query("SELECT page FROM Page page LEFT JOIN page.followers followers GROUP BY page ORDER BY count(followers) DESC, page.name ASC")
 	public org.springframework.data.domain.Page<Page> getPopular(Pageable pageable);
+
+	@Query("SELECT page FROM Page page JOIN page.followers user WHERE user.id = :user_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
+	public List<Page> getFollowed(@Param("user_id") Long user_id);
 }

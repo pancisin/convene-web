@@ -61,12 +61,12 @@ export default {
       if (this.edit) {
         ArticleApi.putArticle(this.article.id, this.article, article => {
           this.article = article;
-          this.$success('Success', `Article ${article.title} has been save !`);
+          this.$success('notification.article.updated', article.title);
         });
       } else {
         this.provider.api.postArticle(this.article, article => {
           this.$router.push({ name: 'article', params: { article_id: article.id } });
-          this.$success('Success', `Article ${article.title} has been created !`);
+          this.$success('notification.article.saved', article.title);
         });
       }
     },

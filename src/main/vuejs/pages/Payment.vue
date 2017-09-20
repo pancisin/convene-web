@@ -67,10 +67,10 @@ export default {
         if (valid) {
           LicenseApi.postPayment(this.license.id, this.card, result => {
             this.$router.push({ name: 'invoice', id: this.license.id });
-            this.$success('Payment successful!', 'yeey');
+            this.$success('notification.payment.successful');
           }, error => {
-            this.$error('Payment failed.', error);
-          })
+            this.$error('notification.payment.failed', error);
+          });
         }
       });
     }

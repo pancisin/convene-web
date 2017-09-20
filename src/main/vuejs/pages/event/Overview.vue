@@ -108,7 +108,7 @@ export default {
               }
             }).then(response => {
               this.$emit('updated', response.body);
-              this.$success('Success !', 'Event ' + this.event.name + ' has been updated.');
+              this.$success('notification.event.updated', this.event.name);
               this.loading = false;
             }, response => {
               response.body.fieldErrors.forEach((e) => {
@@ -129,7 +129,7 @@ export default {
 
             this.$http.post(url, this.event).then(response => {
               var event = response.body;
-              this.$success('Success !', 'Event ' + event.name + ' has been created.');
+              this.$success('notification.event.created', event.name);
               this.$router.push('/admin/event/' + event.id);
             }, response => {
               if (response.body != null) {

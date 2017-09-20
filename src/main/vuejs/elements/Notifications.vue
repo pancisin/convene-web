@@ -15,9 +15,9 @@
               <em class="fa fa-diamond noti-primary"></em>
             </div>
             <div class="media-body">
-              <h5 class="media-heading" v-text="not.title"></h5>
+              <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
               <p class="m-0">
-                <small v-text="not.message"></small>
+                <small>{{ $t(not.code + '.message') }}</small>
               </p>
             </div>
           </div>

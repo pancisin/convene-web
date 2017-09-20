@@ -42,8 +42,8 @@
 
       <div class="col-md-4">
         <!-- <div class="page-title-box">
-            <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-          </div> -->
+              <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+            </div> -->
         <tab-container>
           <tab :title="$t('client.dashboard.suggested')">
             <div class="inbox-widget">
@@ -83,7 +83,7 @@
                 </div>
                 <p class="inbox-item-author">
                   {{ page.name }}
-                  <span class="pull-right badge badge-primary">{{ page.followersCount }} followers</span>
+                  <span class="pull-right label label-default">{{ page.followersCount }} followers</span>
                 </p>
                 <p class="inbox-item-text" v-if="page.category != null">
                   {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     getEvents (page) {
-      console.log(navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition(position => {
         var url = ['public/near-events', page, 5].join('/');
         this.$http.get(url, {
           params: {
@@ -142,8 +142,9 @@ export default {
           }
         }).then(response => {
           this.eventsPaginator = response.body;
+          this.eventsPaginator.content = this.eventsPaginator.content.filter(x => x);
         });
-      }));
+      });
     },
     getPages (page) {
       var url = ['public/pages', page, 5].join('/');

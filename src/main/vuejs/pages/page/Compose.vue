@@ -83,7 +83,7 @@ export default {
     ]),
     submit () {
       this.updatePage(this.page).then(page => {
-        this.$success('Success !', 'Page ' + page.name + ' has been updated.');
+        this.$success('notification.page.updated' + page.name);
       });
     },
     getCategories () {

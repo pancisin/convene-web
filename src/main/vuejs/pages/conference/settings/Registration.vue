@@ -115,12 +115,12 @@ export default {
       if (this.selected.id == null) {
         this.api.postMetaField(this.selected, field => {
           this.metaFields.push(field);
-          this.$success('Success', 'Meta field has been saved.');
+          this.$success('notification.meta_field.created');
         });
       } else {
         MetaFieldApi.putMetaField(this.selected, field => {
           this.selected = field;
-          this.$success('Success', 'Meta field has been saved.');
+          this.$success('notification.meta_field.updated');
         });
       }
     },

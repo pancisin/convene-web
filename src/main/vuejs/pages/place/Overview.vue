@@ -98,17 +98,17 @@ export default {
     getPlace () {
       this.api.getPlace(place => {
         this.place = place;
-      }); 
+      });
     },
     submit () {
       if (this.edit) {
         PlaceApi.putPlace(this.place.id, this.place, place => {
-          this.$success('Success !', 'Place ' + this.place.name + ' has been updated.');
+          this.$success('notification.place.updated', this.place.name);
           this.$emit('updated', place);
         });
       } else {
         this.api.postPlace(this.place, place => {
-          this.$success('Success !', 'Place ' + this.place.name + ' has been created.');
+          this.$success('notification.place.created', this.place.name);
 
           this.$router.push({
             name: 'place',

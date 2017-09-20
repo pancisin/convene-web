@@ -2,45 +2,45 @@ export default {
   install (Vue) {
     Vue.prototype.keyPrefix = '_';
 
-    Vue.prototype.$success = function (title, message) {
+    Vue.prototype.$success = function (code) {
       var notification = {
-        title, message,
+        code,
         type: 'success'
       };
 
       this.$store.dispatch('addToast', notification);
     };
 
-    Vue.prototype.$error = function (title, message) {
+    Vue.prototype.$error = function (code) {
       var notification = {
-        title, message,
+        code,
         type: 'danger'
       };
 
       this.$store.dispatch('addToast', notification);
     };
 
-    Vue.prototype.$info = function (title, message) {
+    Vue.prototype.$info = function (code) {
       var notification = {
-        title, message,
+        code,
         type: 'info'
       };
 
       this.$store.dispatch('addToast', notification);
     };
 
-    Vue.prototype.$warn = function (title, message) {
+    Vue.prototype.$warn = function (code) {
       var notification = {
-        title, message,
+        code,
         type: 'warning'
       };
 
       this.$store.dispatch('addToast', notification);
     };
 
-    Vue.prototype.$prompt = function (title, message, agree, disagree) {
+    Vue.prototype.$prompt = function (code, agree, disagree) {
       var notification = {
-        title, message,
+        code,
         type: 'prompt', agree, disagree
       };
 

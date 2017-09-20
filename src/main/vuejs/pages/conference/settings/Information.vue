@@ -67,7 +67,7 @@ export default {
   methods: {
     submit () {
       this.updateConference(this.conference).then(conference => {
-        this.$success('Success !', conference.name + ' has been updated.');
+        this.$success('notification.conference.updated', conference.name);
       });
     },
     ...mapActions([

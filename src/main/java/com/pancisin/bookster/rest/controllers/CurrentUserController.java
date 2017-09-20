@@ -257,7 +257,7 @@ public class CurrentUserController {
 	@JsonView(Summary.class)
 	@GetMapping("/search")
 	public ResponseEntity<?> searchUser(@RequestParam String q) {
-		List result = null;
+		List<User> result = null;
 
 		try {
 			result = userSearchRepository.search(q);
@@ -285,8 +285,7 @@ public class CurrentUserController {
 	@JsonView(Summary.class)
 	public ResponseEntity<?> getFollowedPages() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User stored = userRepository.findOne(auth.getId());
-		return ResponseEntity.ok(stored.getFollowed());
+		return ResponseEntity.ok(pageRepository.getFollowed(auth.getId()));
 	}
 	
 	@GetMapping("/media")

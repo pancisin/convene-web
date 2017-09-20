@@ -15,13 +15,16 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.views.Summary;
 
 @Entity
 @Table(name = "medias")
 public class Media {
 
 	@Id
+	@JsonView(Summary.class)
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
@@ -31,12 +34,14 @@ public class Media {
 	private Calendar created;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String title;
 
 	@Column
 	private String description;
 	
 	@Column
+	@JsonView(Summary.class)
 	private String path;
 	
 	@Column

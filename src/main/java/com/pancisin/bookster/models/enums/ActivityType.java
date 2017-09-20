@@ -18,8 +18,10 @@ public enum ActivityType {
 	CREATE_ADMINISTRATOR("CREATE_ADMINISTRATOR", "activity.type.create_administrator"),
 	CREATE_PLACE("CREATE_PLACE", "activity.type.create_place"),
 	CREATE_ARTICLE("CREATE_ARTICLE", "activity.type.create_article"),
-	CREATE_SURVEY("CREATE_SURVEY", "activity.type.create_survey");
+	CREATE_SURVEY("CREATE_SURVEY", "activity.type.create_survey"),
 
+	POST_MEDIA("POST_MEDIA", "activity.type.post_media");
+	
 	public final String name;
 	public final String code;
 

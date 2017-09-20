@@ -6,12 +6,16 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.models.Activity;
+import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
@@ -23,24 +27,52 @@ public class PageActivityMonitor {
 
 	@Autowired
 	private ActivityRepository activityRepository;
-	
+
 	@Autowired
 	private PageRepository pageRepository;
-	
+
+	@Autowired
+	private Notifier notifier;
+
 	@Pointcut("execution(* com.pancisin.bookster.rest.controllers.PageController.*(..)) && args(page_id,..)")
 	public void pageController(Long page_id) {
-		
 	}
 
 	@Transactional
-	@AfterReturning("pageController(page_id) && @annotation(activityLog)")
-	public void LogPageActivity(Long page_id, ActivityLog activityLog) {
+	@AfterReturning(pointcut = "pageController(page_id) && @annotation(activityLog)", returning = "response")
+	public void LogPageActivity(Long page_id, ActivityLog activityLog, ResponseEntity<?> response) {
 		Page stored = pageRepository.findOne(page_id);
-		
+
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Activity activity = activityRepository.save(new Activity(auth, activityLog.type()));
 		stored.addActivity(activity);
-		
+
+		if (activityLog.type() == ActivityType.CREATE_EVENT) {
+			Event event = (Event) response.getBody();
+
+			stored.getFollowers().stream().forEach(user -> {
+//				notifier.notifyUser(user, event.getName(),
+//						"Page you are following " + stored.getName() + " has created new event. ");
+				
+				notifier.notifyUser(user, "notification.page.event_created");
+			});
+		}
+
+		if (activityLog.type() == ActivityType.FOLLOWING) {
+			stored.getPageAdministrators().stream().forEach(x -> notifier.notifyUser(x.getUser(), "notification.page.new_follower",
+					auth.getEmail()));
+		}
+
+		if (activityLog.type() == ActivityType.CREATE_SERVICE) {
+			Service service = (Service) response.getBody();
+
+			stored.getFollowers().stream().forEach(user -> {
+//				notifier.notifyUser(user, service.getName(),
+//						"Page that you are following " + stored.getName() + " offers a new service you might be interested in.");
+				notifier.notifyUser(user, "notification.page.service_created", service.getName());
+			});
+		}
+
 		pageRepository.save(stored);
 	}
 }

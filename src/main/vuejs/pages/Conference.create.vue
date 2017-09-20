@@ -72,7 +72,7 @@ export default {
     },
     submit () {
       this.createConference(this.conference).then(conference => {
-        this.$success('Success !', 'Conference ' + conference.name + ' has been created.');
+        this.$success('notification.conference.created', conference.name);
         this.$router.push({ name: 'conference.overview', params: { id: conference.id } });
       });
     }

@@ -1,8 +1,7 @@
-import category from './en-US/category.js';
-import admin from './en-US/admin.js';
-import client from './en-US/client.js';
+import * as translations from './en-US/index';
+
 export default {
-  category, admin, client,
+  ...translations,
   role: {
     owner: 'Owner',
     administrator: 'Administrator',

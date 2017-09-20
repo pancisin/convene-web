@@ -99,7 +99,7 @@ export default {
     },
     submit () {
       this.createPage(this.page).then(page => {
-        this.$success('Success !', 'Page ' + page.name + ' has been created.');
+        this.$success('notification.page.created', page.name);
         this.$router.push({ name: 'page.settings', params: { id: page.id } });
       });
     }

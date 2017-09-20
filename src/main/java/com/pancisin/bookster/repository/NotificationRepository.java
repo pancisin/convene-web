@@ -1,5 +1,7 @@
 package com.pancisin.bookster.repository;
 
+import java.util.UUID;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -22,4 +24,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
 	@Cacheable(value = "notifications")
 	public Page<Notification> findByRecipientId(Long recipientId, Pageable pageable);
+	
+	public Notification findById(UUID id);
 }

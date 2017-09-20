@@ -11,11 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
@@ -69,9 +65,6 @@ public class PageController {
 
 	@Autowired
 	private StorageServiceImpl storageService;
-
-	@Autowired
-	private Notifier notifier;
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
@@ -160,8 +153,6 @@ public class PageController {
 					stored.getFollowers().stream().filter(x -> x.getId() != user.getId()).collect(Collectors.toList()));
 		else {
 			stored.getFollowers().add(user);
-			stored.getPageAdministrators().stream().forEach(x -> notifier.notifyUser(x.getUser(), "New follower !",
-					user.getEmail() + " has started to following your page."));
 		}
 
 		pageRepository.save(stored);
@@ -236,7 +227,7 @@ public class PageController {
 			return ResponseEntity.ok(pa);
 		}
 
-		return new ResponseEntity("User not found by email", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("User not found by email", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/place")
@@ -291,6 +282,7 @@ public class PageController {
 
 	@Transactional
 	@PutMapping("/widget")
+	@ActivityLog(type = ActivityType.UPDATE)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postWidgets(@PathVariable Long page_id, @RequestBody List<Widget> widgets) {
 		Page stored = pageRepository.findOne(page_id);
@@ -301,18 +293,15 @@ public class PageController {
 		return ResponseEntity.ok(stored.getWidgets());
 	}
 	
-	@ExceptionHandler
-	@ResponseStatus(code = org.springframework.http.HttpStatus.BAD_REQUEST)
-	public void handle(HttpMessageNotReadableException e) {
-		System.err.println(e);
-	}
-	
 	@GetMapping("/gallery")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getGallery(@PathVariable Long page_id) {
 		return ResponseEntity.ok(mediaRepository.getByPage(page_id));
 	}
 	
 	@PostMapping("/gallery") 
+	@ActivityLog(type = ActivityType.POST_MEDIA)
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postGallery(@PathVariable Long page_id, @RequestBody Media galleryItem) {
 		Page stored = pageRepository.findOne(page_id);
 

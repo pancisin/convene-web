@@ -17,8 +17,16 @@ public class Notifier {
 	@Autowired
 	private SimpMessagingTemplate webSocket;
 
-	public void notifyUser(User user, String title, String message) {
-		Notification notification = new Notification(title, message);
+	public void notifyUser(User user, String code) {
+		this.notifyUser(user, code, "");
+	}
+	
+	public void notifyUser(User user, String code, String target) {
+		Notification notification = new Notification(code, target);
+		this.notifyUser(user, notification);
+	}
+
+	public void notifyUser(User user, Notification notification) {
 		notification.setRecipient(user);
 		webSocket.convertAndSendToUser(user.getEmail(), "/queue/notifier", notificationRepository.save(notification));
 	}

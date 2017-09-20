@@ -1,8 +1,7 @@
-import category from './sk-SK/category.js';
-import admin from './sk-SK/admin.js';
-import client from './sk-SK/client.js';
+import * as translations from './sk-SK/index';
+
 export default {
-  category, admin, client,
+  ...translations,
   role: {
     owner: 'Vlastník',
     administrator: 'Administrátor',
