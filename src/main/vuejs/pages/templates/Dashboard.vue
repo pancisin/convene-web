@@ -129,7 +129,7 @@ export default {
     },
     editModeSwitch (enabled) {
       if (!enabled && this.touched) {
-        this.$prompt('notification.dashboard.save_prompt', () => {
+        this.$prompt('notification.dashboard.leave_prompt', () => {
           this.widgets = JSON.parse(this.original_widgets);
           this.editMode = false;
         });

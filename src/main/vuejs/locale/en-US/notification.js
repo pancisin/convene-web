@@ -78,7 +78,7 @@ export default {
     },
     saved: {
       title: 'Article saved !',
-      message: '{subject has been saved successfuly.}'
+      message: '{subject} has been saved successfuly.'
     },
     delete_prompt: {
       title: 'Deleting article',
