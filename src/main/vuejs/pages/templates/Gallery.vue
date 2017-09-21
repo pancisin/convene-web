@@ -168,7 +168,7 @@ export default {
       });
     },
     deleteImage (uuid) {
-      this.$prompt('Delete image ?', 'You are going to delete this image completely. Are you sure ?', () => {
+      this.$prompt('notification.media.delete_prompt', () => {
         MediaApi.deleteMedia(uuid, gallery_item => {
           this.gallery = this.gallery.filter(g => {
             return g.id !== uuid;

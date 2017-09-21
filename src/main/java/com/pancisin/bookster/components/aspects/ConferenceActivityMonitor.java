@@ -51,9 +51,6 @@ public class ConferenceActivityMonitor {
 
 		if (activityLog.type() == ActivityType.ATTENDING) {
 			stored.getConferenceAdministrators().stream().forEach(ca -> {
-				// notifier.notifyUser(ca.getUser(), "New attender !",
-				// "Conference " + stored.getName() + " has new attender " +
-				// auth.getDisplayName());
 				notifier.notifyUser(ca.getUser(), "notification.conference.new_attender");
 			});
 		}
@@ -61,9 +58,6 @@ public class ConferenceActivityMonitor {
 		if (activityLog.type() == ActivityType.CREATE_EVENT) {
 			Event event = (Event) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				// notifier.notifyUser(att.getUser(), event.getName(),
-				// "Conference you are attending " + stored.getName() + " has created new event
-				// " + event.getName() + ".");
 				notifier.notifyUser(att.getUser(), "notification.conference.event_created", event.getName());
 			});
 		}
@@ -71,10 +65,6 @@ public class ConferenceActivityMonitor {
 		if (activityLog.type() == ActivityType.CREATE_SURVEY) {
 			Survey survey = (Survey) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				// notifier.notifyUser(att.getUser(), survey.getName(), "Conference you are
-				// attending " + stored.getName()
-				// + " has created new survey " + survey.getName() + ". Please find some time to
-				// complete this survey.");
 				notifier.notifyUser(att.getUser(), "notification.conference.survey_created", survey.getName());
 			});
 		}
@@ -82,9 +72,6 @@ public class ConferenceActivityMonitor {
 		if (activityLog.type() == ActivityType.CREATE_ARTICLE) {
 			Article article = (Article) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				// notifier.notifyUser(att.getUser(), article.getTitle(),
-				// "Conference you are attending " + stored.getName() + " has posted new article
-				// " + article.getTitle() + ".");
 				notifier.notifyUser(att.getUser(), "notification.conference.article_created", article.getTitle());
 			});
 		}

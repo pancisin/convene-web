@@ -100,7 +100,7 @@ export default {
       }
     },
     deletePlace (place) {
-      this.$prompt(`Deleting place ${place.name}`, 'Are you sure you want to delete this place permanently ?', () => {
+      this.$prompt('notification.place.delete_prompt', () => {
         PlaceApi.deletePlace(place.id, result => {
           this.places = this.places.filter(p => {
             return p.id !== place.id;

@@ -61,6 +61,10 @@ public class Notification {
 		return recipient;
 	}
 
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
+	}
+
 	public boolean isSeen() {
 		return seen;
 	}

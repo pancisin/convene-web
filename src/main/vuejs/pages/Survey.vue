@@ -161,7 +161,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.touched) {
-      this.$prompt('You have unsaved changes !', 'Are you sure you want to leave and discard recent changes ?', () => {
+      this.$prompt('notification.survey.leave_prompt', () => {
         next();
       });
     } else {
@@ -192,7 +192,7 @@ export default {
           });
 
           this.original_survey = JSON.stringify(this.survey);
-          this.$success('notification.survey.updated');
+          this.$success('notification.survey.updated', this.survey.name);
         });
       } else {
 

@@ -2,131 +2,177 @@ export default {
   event: {
     created: {
       title: 'Event created !',
-      message: 'Event has been created successfuly.'
+      message: 'Event {subject} has been created successfuly.'
     },
     updated: {
       title: 'Event updated !',
-      message: 'Event has been updated successfuly.'
+      message: 'Event {subject} has been updated successfuly.'
+    },
+    delete_prompt: {
+      title: 'Deleting event.',
+      message: 'Are you sure you want to delete permanently this event ?'
+    },
+    error: {
+      created: {
+        title: 'Error !',
+        message: 'There is problem in creating {subject}. Please correct your data.'
+      },
+      updated: {
+        title: 'Error !',
+        message: 'There is problem in updating {subject}. Please correct your data.'
+      }
     }
   },
   page: {
     created: {
-      title: '',
-      message: ''
+      title: 'Page created !',
+      message: 'Page {subject} has been created successfuly.'
     },
     updated: {
-      title: '',
-      message: ''
+      title: 'Page updated !',
+      message: 'Page {subject} has been updated successfuly.'
     },
     new_follower: {
       title: 'You have a new follower',
-      message: '*user* has just started to following one of your pages.'
+      message: '{subject} has just started to following one of your pages.'
     },
     event_created: {
-      title: '*event_name*',
+      title: '{subject}',
       message: 'Event has just been created in one of your followed pages.'
     },
     service_created: {
-      title: '*service_name*',
+      title: '{subject}',
       message: 'New service is available right now.'
     }
   },
   conference: {
     created: {
-      title: '',
-      message: ''
+      title: 'Conference created !',
+      message: 'Conference {subject} has been created successfuly.'
     },
     updated: {
-      title: '',
-      message: ''
+      title: 'Conference updated !',
+      message: 'Conference {subject} has been updated successfuly.'
     },
     new_attender: {
-      title: '',
-      message: ''
+      title: 'Person has joined conference !',
+      message: '{subject} has joined one of your conference conference.'
     },
     event_created: {
-      title: '',
-      message: ''
+      title: '{subject}',
+      message: 'Conference has a new event created.'
     },
     survey_created: {
-      title: '',
-      message: ''
+      title: '{subject}',
+      message: 'Conference has new survey created. Please complete this survey.'
     },
     article_created: {
-      title: '',
-      message: ''
+      title: '{subject}',
+      message: 'Conference has new article created that you might be interested in.'
     }
   },
   article: {
     updated: {
       title: 'Article updated !',
-      message: ''
+      message: '{subject} has been updated successfuly.'
     },
     saved: {
       title: 'Article saved !',
-      message: ''
+      message: '{subject has been saved successfuly.}'
+    },
+    delete_prompt: {
+      title: 'Deleting article',
+      message: 'Are you sure you want to delete this article permanently ?'
+    }
+  },
+  service: {
+    delete_prompt: {
+      title: 'Deleting service',
+      message: 'Are you sure you want to delete this service permanently ?'
     }
   },
   meta_field: {
     created: {
-      title: '',
-      message: ''
+      title: 'Meta field created !',
+      message: 'Meta field {subject} has been created successfuly.'
     },
     updated: {
-      title: '',
-      message: ''
+      title: 'Meta field updated',
+      message: 'Meta field {subject} has been updated successfuly.'
     }
   },
   place: {
     created: {
-      title: '',
-      message: ''
+      title: 'Place created !',
+      message: 'Place {subject} has been created successfuly.'
     },
     updated: {
-      title: '',
-      message: ''
+      title: 'Place updated !',
+      message: 'Place {subject} has been updated successfuly.'
+    },
+    delete_prompt: {
+      title: 'Deleting place.',
+      message: 'Are you sure you want to delete this place permanently ?'
     }
   },
   venue: {
     saved: {
-      title: '',
-      message: ''
+      title: 'Venue saved !',
+      message: 'Venue for {subject} has been saved successfuly.'
     }
   },
   payment: {
     successful: {
-      title: '',
+      title: 'Payment successful !',
       message: ''
     },
     failed: {
-      title: '',
+      title: 'Payment failed !',
       message: ''
     }
   },
   survey: {
     created: {
-      title: '',
-      message: ''
+      title: 'Survey created !',
+      message: 'Survey {subject} has been created successfuly.'
     },
     updated: {
-      title: '',
-      message: ''
+      title: 'Survey updated !',
+      message: 'Survey {subject} has been updated successfuly.'
     },
     completed: {
-      title: '',
-      message: ''
+      title: 'Survey completed !',
+      message: 'Thank you.'
+    },
+    leave_prompt: {
+      title: 'You have unsaved changes !',
+      message: 'Are you sure you want to leave and discard recent changes ?'
+    },
+    delete_prompt: {
+      title: 'Deleting survey.',
+      message: 'Are you sure you want to detele this survey permanently ?'
     }
   },
   account: {
     updated: {
-      title: '',
+      title: 'Account updated !',
       message: ''
     }
   },
   dashboard: {
     saved: {
-      title: '',
+      title: 'Dashboard saved !',
       message: ''
+    },
+    leave_prompt: {
+      title: 'You have unsaved changes !',
+      message: 'Are you sure you want to leave and discard recent changes ?'
+    }
+  },
+  media: {
+    delete_prompt: {
+      title: 'Delete image ?',
+      message: 'You are going to delete this image completely. Are you sure ?'
     }
   }
 };

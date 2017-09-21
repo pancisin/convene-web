@@ -53,7 +53,7 @@ export default {
         this.$emit('messageReceived', message);
 
         if (this.collapsed) {
-          this.$info('Message', message.content);
+          this.$info('notification.chat.message', message.content);
         }
       });
 

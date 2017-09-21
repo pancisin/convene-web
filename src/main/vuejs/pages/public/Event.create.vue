@@ -2,10 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-6" :class="{ 'col-sm-offset-3' : !edit }">
-  
+
         <panel type="primary">
           <span slot="title">Overview</span>
-  
+
           <div class="row">
             <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
               <div class="form-group" :class="{ 'has-error' : errors.name }">
@@ -30,12 +30,12 @@
               </div>
             </div>
           </div>
-  
+
           <div class="form-group">
             <label class="control-label">Summary</label>
             <text-editor v-model="event.summary"></text-editor>
           </div>
-  
+
           <div class="text-center">
             <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
               <span v-if="edit">Save</span>
@@ -81,7 +81,7 @@ export default {
           response.body.fieldErrors.forEach((e) => {
             this.$set(this.errors, e.field, e);
           });
-          this.$error('Error !', 'Problem in saving event.');
+          this.$error('notification.event.error.updated', this.event.name);
         });
       } else {
         this.$http.post('api/user/event', this.event).then(response => {
@@ -93,8 +93,8 @@ export default {
             response.body.fieldErrors.forEach((e) => {
               this.$set(this.errors, e.field, e);
             });
-            this.$error('Error !', 'Problem in saving event.');
-          } else this.$error(response.statusText, response.bodyText);
+            this.$error('notification.event.error.created', this.event.name);
+          } else this.$error('notification.event.error.created', response.bodyText);
         });
       }
     },

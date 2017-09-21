@@ -114,7 +114,7 @@ export default {
               response.body.fieldErrors.forEach((e) => {
                 this.$set(this.errors, e.field, e);
               });
-              this.$error('Error !', 'Problem in saving event.');
+              this.$error('notification.event.error.updated', this.event.name);
               this.loading = false;
             });
           } else {
@@ -136,8 +136,8 @@ export default {
                 response.body.fieldErrors.forEach((e) => {
                   this.$set(this.errors, e.field, e);
                 });
-                this.$error('Error !', 'Problem in saving event.');
-              } else this.$error(response.statusText, response.bodyText);
+                this.$error('notification.event.error.created', this.event.name);
+              } else this.$error('notification.event.error.created', response.bodyText);
             });
           }
         }

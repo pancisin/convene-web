@@ -3,9 +3,9 @@
     <button type="button" @click="triggerClose" class="close">
       <i class="material-icons">close</i>
     </button>
-    <strong v-if="notification.code">{{ $t(notification.code + '.title') }}</strong>
+    <strong v-if="notification.code">{{ $t(`${notification.code}.title`, { subject: notification.subject }) }}</strong>
     <p>
-      {{ $t(notification.code + '.message') }}
+      {{ $t(`${notification.code}.message`, { subject: notification.subject }) }}
     </p>
 
     <div class="toast-buttons m-t-20 text-center" v-if="notification.type === 'prompt'">

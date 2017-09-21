@@ -49,26 +49,21 @@ public class PageActivityMonitor {
 
 		if (activityLog.type() == ActivityType.CREATE_EVENT) {
 			Event event = (Event) response.getBody();
-
 			stored.getFollowers().stream().forEach(user -> {
-//				notifier.notifyUser(user, event.getName(),
-//						"Page you are following " + stored.getName() + " has created new event. ");
-				
-				notifier.notifyUser(user, "notification.page.event_created");
+				notifier.notifyUser(user, "notification.page.event_created", event.getName());
 			});
 		}
 
 		if (activityLog.type() == ActivityType.FOLLOWING) {
-			stored.getPageAdministrators().stream().forEach(x -> notifier.notifyUser(x.getUser(), "notification.page.new_follower",
-					auth.getEmail()));
+			stored.getPageAdministrators().stream().forEach(x -> {
+				notifier.notifyUser(x.getUser(), "notification.page.new_follower", auth.getDisplayName());
+			});
 		}
 
 		if (activityLog.type() == ActivityType.CREATE_SERVICE) {
 			Service service = (Service) response.getBody();
 
 			stored.getFollowers().stream().forEach(user -> {
-//				notifier.notifyUser(user, service.getName(),
-//						"Page that you are following " + stored.getName() + " offers a new service you might be interested in.");
 				notifier.notifyUser(user, "notification.page.service_created", service.getName());
 			});
 		}

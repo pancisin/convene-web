@@ -127,7 +127,7 @@ export default {
       this.getEvents(0);
     },
     deleteEvent (event) {
-      this.$prompt(`Deleting event ${event.name}.`, 'Are you sure you want to delete permanently this event ?', () => {
+      this.$prompt('notification.event.delete_prompt', () => {
         EventApi.deleteEvent(event.id, result => {
           this.paginator.content = this.paginator.content.filter(e => {
             return e.id !== event.id;

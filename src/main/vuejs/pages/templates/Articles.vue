@@ -108,7 +108,7 @@ export default {
       });
     },
     deleteArticle (article) {
-      this.$prompt(`Deleting article ${article.title}.`, 'Are you sure you want to delete this article permanently ?', () => {
+      this.$prompt('notification.article.delete_prompt', () => {
         ArticleApi.deleteArticle(article.id, result => {
           this.articles = this.articles.filter(x => {
             x.id !== article.id;

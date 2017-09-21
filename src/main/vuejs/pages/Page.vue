@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="page != null">
     <div class="col-sm-12">
       <div class="page-title-box">
         <h4 class="page-title" v-text="page.name"></h4>
