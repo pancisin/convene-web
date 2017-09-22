@@ -53,6 +53,10 @@ const PageRoutes = [
   {
     name: 'page.settings',
     code: 'admin.page.settings'
+  },
+  {
+    name: 'page.bots',
+    code: 'admin.page.bots'
   }
 ];
 
