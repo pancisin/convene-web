@@ -1,6 +1,7 @@
 package com.pancisin.bookster.models;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,10 @@ public class EventBot {
 	
 	public int getRunsCount() {
 		return runs != null ? runs.size() : 0;
+	}
+	
+	public Calendar getLastRun() {
+		return runs != null ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get().getDate() : null;
 	}
 	
 	public String getFbPageId() {

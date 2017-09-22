@@ -16,6 +16,9 @@
                 Runs
               </th>
               <th>
+                Last run
+              </th>
+              <th>
                 Action
               </th>
             </tr>
@@ -32,6 +35,9 @@
               </td>
               <td>
                 {{ bot.runsCount }}
+              </td>
+              <td>
+                {{ bot.lastRun | moment('L LT') }}
               </td>
               <td>
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
