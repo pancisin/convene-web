@@ -83,7 +83,8 @@ public class EventBotService {
 	}
 
 	private EventBotRun run(EventBot bot, Facebook fb) throws FacebookException {
-
+		int savedEventsCount = 0;
+		
 		ResponseList<Event> events = fb.getEvents(bot.getFbPageId(),
 				new Reading().fields("name", "description", "place", "id", "start_time"));
 
@@ -102,13 +103,15 @@ public class EventBotService {
 			}
 
 			try {
-				eventRepository.save(event);
+				if (eventRepository.save(event) != null) {
+					savedEventsCount++;
+				}
 			} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
 				ex.printStackTrace();
 			}
 		}
 
-		return eventBotRunRepository.save(new EventBotRun(bot, true, events.size()));
+		return eventBotRunRepository.save(new EventBotRun(bot, true, savedEventsCount));
 	}
 
 	private com.pancisin.bookster.models.Event buildEvent(Event ev) {
