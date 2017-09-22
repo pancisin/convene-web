@@ -53,7 +53,7 @@ public class EventBot {
 	}
 	
 	public Calendar getLastRun() {
-		return runs != null ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get().getDate() : null;
+		return this.runs != null && this.runs.size() > 0 ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get().getDate() : null;
 	}
 	
 	public String getFbPageId() {

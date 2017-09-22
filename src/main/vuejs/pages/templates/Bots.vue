@@ -3,6 +3,7 @@
     <div class="col-md-10">
       <panel type="table">
         <span slot="title">Bots</span>
+        <!-- <span slot="subtitle">Here are all ya robots ! Release them all at once...</span> -->
         <table class="table" v-loading="loading">
           <thead>
             <tr>
@@ -12,13 +13,13 @@
               <th>
                 Facebook page
               </th>
-              <th>
+              <th class="text-center">
                 Runs
               </th>
               <th>
                 Last run
               </th>
-              <th>
+              <th class="text-center">
                 Action
               </th>
             </tr>
@@ -33,13 +34,13 @@
               <td>
                 {{ bot.fbPageId }}
               </td>
-              <td>
+              <td class="text-center">
                 {{ bot.runsCount }}
               </td>
               <td>
                 {{ bot.lastRun | moment('L LT') }}
               </td>
-              <td>
+              <td class="text-center">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
                 <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
               </td>

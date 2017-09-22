@@ -59,10 +59,12 @@ public class EventBotService {
 		}
 
 		bots.stream().forEach(b -> {
-			try {
-				this.run(b, fb);
-			} catch (FacebookException e) {
-				e.printStackTrace();
+			if (b.isActive()) {
+				try {
+					this.run(b, fb);
+				} catch (FacebookException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -84,7 +86,7 @@ public class EventBotService {
 
 	private EventBotRun run(EventBot bot, Facebook fb) throws FacebookException {
 		int savedEventsCount = 0;
-		
+
 		ResponseList<Event> events = fb.getEvents(bot.getFbPageId(),
 				new Reading().fields("name", "description", "place", "id", "start_time"));
 
