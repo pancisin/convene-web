@@ -23,7 +23,8 @@ export default {
     administrators: 'Správcovia',
     services: 'Služby',
     requests: 'Žiadosti',
-    gallery: 'Galéria'
+    gallery: 'Galéria',
+    bots: 'Eventový roboti'
   },
   conference: {
     overview: 'Prehľad',

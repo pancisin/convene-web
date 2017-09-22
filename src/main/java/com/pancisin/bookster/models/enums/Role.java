@@ -6,9 +6,11 @@ import com.pancisin.bookster.models.views.Compact;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Role {
-	ROLE_SUPERADMIN("ROLE_SUPERADMIN", "role.superadmin", 100), ROLE_ADMINISTRATOR("ROLE_ADMINISTRATOR",
-			"role.administrator", 80), ROLE_SUPPORT("ROLE_SUPPORT", "role.support", 60), ROLE_AUTHOR("ROLE_AUTHOR",
-					"role.author", 40), ROLE_VISITOR("ROLE_VISITOR", "role.visitor", 20);
+	ROLE_SUPERADMIN("ROLE_SUPERADMIN", "role.superadmin", 100),
+	ROLE_ADMINISTRATOR("ROLE_ADMINISTRATOR", "role.administrator", 80),
+	ROLE_SUPPORT("ROLE_SUPPORT", "role.support", 60),
+	ROLE_AUTHOR("ROLE_AUTHOR", "role.author", 40),
+	ROLE_VISITOR("ROLE_VISITOR", "role.visitor", 20);
 
 	Role(String name, String code, int level) {
 		this.name = name;

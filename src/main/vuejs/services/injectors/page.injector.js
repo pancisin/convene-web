@@ -89,11 +89,19 @@ export default class PageInjector {
     PageApi.putWidgets(this.page_id, widgets, success);
   }
 
-  getGallery(success) {
+  getGallery (success) {
     PageApi.getGallery(this.page_id, success);
   }
 
-  postGalleryItem(gallery_item, success, progress_func) {
+  postGalleryItem (gallery_item, success, progress_func) {
     PageApi.postGalleryItem(this.page_id, gallery_item, success, progress_func);
+  }
+
+  getBots (success) {
+    PageApi.getBots(this.page_id, success);
+  }
+
+  postBot (bot, success) {
+    PageApi.postBot(this.page_id, bot, success);
   }
 }

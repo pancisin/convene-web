@@ -30,6 +30,7 @@ import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
@@ -42,6 +43,7 @@ import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
+import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
@@ -80,6 +82,9 @@ public class PageController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
+
+	@Autowired
+	private EventBotRepository eventBotRepository;
 	
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
@@ -111,7 +116,7 @@ public class PageController {
 			poster.setAuthor(user);
 			poster = mediaRepository.save(poster);
 			String url = "banners/pages/" + poster.getId().toString();
-			
+
 			poster.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(page.getPosterData(), url);
 			poster.setSize(size);
@@ -243,11 +248,11 @@ public class PageController {
 	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
 		Page stored = pageRepository.findOne(page_id);
-		
+
 		place = placeRepository.save(place);
 		stored.addPlace(place);
 		pageRepository.save(stored);
-		
+
 		return ResponseEntity.ok(place);
 	}
 
@@ -286,20 +291,20 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postWidgets(@PathVariable Long page_id, @RequestBody List<Widget> widgets) {
 		Page stored = pageRepository.findOne(page_id);
-		
+
 		stored.setWidgets(widgets);
 		pageRepository.save(stored);
 
 		return ResponseEntity.ok(stored.getWidgets());
 	}
-	
+
 	@GetMapping("/gallery")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getGallery(@PathVariable Long page_id) {
 		return ResponseEntity.ok(mediaRepository.getByPage(page_id));
 	}
-	
-	@PostMapping("/gallery") 
+
+	@PostMapping("/gallery")
 	@ActivityLog(type = ActivityType.POST_MEDIA)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> postGallery(@PathVariable Long page_id, @RequestBody Media galleryItem) {
@@ -308,18 +313,33 @@ public class PageController {
 		if (storageService.isBinary(galleryItem.getData())) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			galleryItem.setAuthor(user);
-			
+
 			galleryItem = mediaRepository.save(galleryItem);
 			String url = "images/page/" + galleryItem.getId().toString();
-			
+
 			galleryItem.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(galleryItem.getData(), url);
 			galleryItem.setSize(size);
 			stored.AddGallery(galleryItem);
 		}
-		
+
 		pageRepository.save(stored);
-		
+
 		return ResponseEntity.ok(galleryItem);
 	}
+
+	@GetMapping("/bot")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
+	public ResponseEntity<?> getEventBots(@PathVariable Long page_id) {
+		return ResponseEntity.ok(eventBotRepository.getByPage(page_id));
+	}
+	
+	@PostMapping("/bot")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> postEventBot(@PathVariable Long page_id, @RequestBody EventBot eventBot) {
+		Page stored = pageRepository.findOne(page_id);
+		eventBot.setPage(stored);
+		return ResponseEntity.ok(eventBotRepository.save(eventBot));
+	}
+
 }

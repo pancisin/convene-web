@@ -272,5 +272,28 @@ export default {
     }).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Get event bots defined for page specified
+   * @param {*} id - page id
+   * @param {*} success - success callback function
+   */
+  getBots (id, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/bot`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Post new event bot to page specified
+   * @param {*} id - page id
+   * @param {*} bot - event bot data object
+   * @param {*} success - success callback function
+   */
+  postBot (id, bot, success) {
+    Vue.http.post(`${PAGE_API_URL}/${id}/bot`, bot).then(response => {
+      success(response.body);
+    });
   }
 };

@@ -328,6 +328,7 @@ export default [
       },
       {
         path: 'create-place',
+        name: 'page.create-place',
         component: resolve => require(['../pages/place/Overview.vue'], resolve),
         props: (route) => (
           {
@@ -349,6 +350,25 @@ export default [
         },
         meta: {
           title: 'Gallery'
+        }
+      },
+      {
+        path: 'create-event-bot',
+        name: 'page.create-event-bot',
+        component: resolve => require(['../pages/EventBot.vue'], resolve),
+        props: (route) => ({
+          edit: false
+        }),
+        meta: {
+          title: 'Create event bot'
+        }
+      },
+      {
+        path: 'bots',
+        name: 'page.bots',
+        component: resolve => require(['../pages/templates/Bots.vue'], resolve),
+        meta: {
+          title: 'Bots'
         }
       }
     ]
@@ -384,6 +404,11 @@ export default [
         }
       }
     ]
+  },
+  {
+    path: 'event-bot/:bot_id',
+    component: resolve => require(['../pages/EventBot.vue'], resolve),
+    name: 'event-bot'
   },
   {
     path: 'notifications',

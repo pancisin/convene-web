@@ -53,6 +53,13 @@ const PageRoutes = [
   {
     name: 'page.settings',
     code: 'admin.page.settings'
+  },
+  {
+    name: 'page.bots',
+    code: 'admin.page.bots',
+    hasPermission: (user) => {
+      return user.role.name === 'ROLE_SUPERADMIN';
+    }
   }
 ];
 
@@ -109,9 +116,26 @@ const FooterRoutes = [
   }
 ];
 
+const validateRoutes = (routes) => {
+  routes.forEach((r, index) => {
+    let { hasPermission } = r;
+
+    if (hasPermission == null) {
+      routes.splice(index, 1, {
+        ...r,
+        hasPermission: () => {
+          return true;
+        }
+      });
+    }
+  });
+
+  return routes;
+};
+
 export default {
-  main: MainRoutes,
-  page: PageRoutes,
-  conference: ConferenceRoutes,
-  footer: FooterRoutes
+  main: validateRoutes(MainRoutes),
+  page: validateRoutes(PageRoutes),
+  conference: validateRoutes(ConferenceRoutes),
+  footer: validateRoutes(FooterRoutes)
 };

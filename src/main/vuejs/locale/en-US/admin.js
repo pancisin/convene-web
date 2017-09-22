@@ -23,7 +23,8 @@ export default {
     administrators: 'Administrators',
     services: 'Services',
     requests: 'Requests',
-    gallery: 'Gallery'
+    gallery: 'Gallery',
+    bots: 'Event bots'
   },
   conference: {
     overview: 'Overview',

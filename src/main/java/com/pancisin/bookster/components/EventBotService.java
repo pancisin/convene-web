@@ -3,6 +3,7 @@ package com.pancisin.bookster.components;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.Address;
 import com.pancisin.bookster.models.EventBot;
+import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
+import com.pancisin.bookster.repository.EventBotRunRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 
@@ -40,47 +43,77 @@ public class EventBotService {
 	@Autowired
 	private EventRepository eventRepository;
 
+	@Autowired
+	private EventBotRunRepository eventBotRunRepository;
+
 	@Scheduled(cron = "0 0 6 * * *")
 	public ResponseList<Event> run() {
-		List<EventBot> bots = eventBotRepository.findAll();
+		List<EventBot> bots = eventBotRepository.findAll().stream().filter(b -> b.isActive()).collect(Collectors.toList());
 
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+		} catch (FacebookException e1) {
+			e1.printStackTrace();
+		}
 
-			for (int i = 0; i < bots.size(); i++) {
-				EventBot bot = bots.get(i);
-
-				ResponseList<Event> events = fb.getEvents(bot.getFbPageId(),
-						new Reading().fields("name", "description", "place", "id", "start_time"));
-
-				for (int j = 0; j < events.size(); j++) {
-					Event ev = events.get(j);
-					com.pancisin.bookster.models.Event event = buildEvent(ev);
-					event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
-					event.setPage(bot.getPage());
-					event.setOwner(bot.getAlias());
-
-					if (ev.getVenue() != null) {
-						Place place = placeRepository.findByFacebookId(ev.getVenue().getId());
-						if (place == null)
-							place = placeRepository.save(buildPlace(ev.getLocation(), ev.getVenue()));
-
-						event.setPlace(place);
-					}
-
-					try {
-						eventRepository.save(event);
-					} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-						ex.printStackTrace();
-					}
+		bots.stream().forEach(b -> {
+			if (b.isActive()) {
+				try {
+					this.run(b, fb);
+				} catch (FacebookException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (FacebookException ex) {
-			ex.printStackTrace();
-		}
+		});
+
 		return null;
+	}
+
+	public EventBotRun run(EventBot bot) {
+		Facebook fb = new FacebookFactory().getInstance();
+
+		try {
+			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+			return this.run(bot, fb);
+		} catch (FacebookException e1) {
+			e1.printStackTrace();
+		}
+
+		return eventBotRunRepository.save(new EventBotRun(bot, false, 0));
+	}
+
+	private EventBotRun run(EventBot bot, Facebook fb) throws FacebookException {
+		int savedEventsCount = 0;
+
+		ResponseList<Event> events = fb.getEvents(bot.getFbPageId(),
+				new Reading().fields("name", "description", "place", "id", "start_time"));
+
+		for (int j = 0; j < events.size(); j++) {
+			Event ev = events.get(j);
+			com.pancisin.bookster.models.Event event = buildEvent(ev);
+			event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
+			event.setPage(bot.getPage());
+
+			if (ev.getVenue() != null) {
+				Place place = placeRepository.findByFacebookId(ev.getVenue().getId());
+				if (place == null)
+					place = placeRepository.save(buildPlace(ev.getLocation(), ev.getVenue()));
+
+				event.setPlace(place);
+			}
+
+			try {
+				if (eventRepository.save(event) != null) {
+					savedEventsCount++;
+				}
+			} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		return eventBotRunRepository.save(new EventBotRun(bot, true, savedEventsCount));
 	}
 
 	private com.pancisin.bookster.models.Event buildEvent(Event ev) {

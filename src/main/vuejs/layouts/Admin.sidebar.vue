@@ -5,7 +5,7 @@
         <ul>
           <li class="menu-title">{{ $t('admin.menu.main') }}</li>
 
-          <li v-for="(route, index) in routes.main" :key="index">
+          <li v-for="(route, index) in routes.main" :key="index" v-if="route.hasPermission(user)">
             <router-link :to="{ name: route.name }" class="waves-effect">
               <i class="material-icons" v-text="route.icon"></i>
               <span>{{ $t(route.code) }}</span>
@@ -23,7 +23,7 @@
 
             <span v-text="page.name" slot="title"></span>
 
-            <li slot="item" v-for="(route, index) in routes.page" :key="index">
+            <li slot="item" v-for="(route, index) in routes.page" :key="index" v-if="route.hasPermission(user)">
               <router-link :to="{ name: route.name, params: { id : page.id }}" class="list-group-item waves-effect">
                 {{ $t(route.code) }}
               </router-link>
@@ -51,7 +51,7 @@
 
             <span v-text="conference.name" slot="title"></span>
 
-            <li slot="item" v-for="(route, index) in routes.conference" :key="index">
+            <li slot="item" v-for="(route, index) in routes.conference" :key="index" v-if="route.hasPermission(user)">
               <router-link :to="{ name: route.name, params: { id : conference.id }}" class="list-group-item waves-effect">
                 {{ $t(route.code) }}
               </router-link>
@@ -69,7 +69,7 @@
         <ul>
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
 
-          <li v-for="(route, index) in routes.footer" :key="index">
+          <li v-for="(route, index) in routes.footer" :key="index" v-if="route.hasPermission(user)">
             <router-link :to="{ name: route.name }" class="waves-effect">
               <i class="material-icons" v-text="route.icon"></i>
               <span>{{ $t(route.code) }}</span>
@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'pages', 'conferences', 'loadingPages', 'loadingConferences'
+      'pages', 'conferences', 'loadingPages', 'loadingConferences', 'user'
     ]),
     routes () {
       return routes;
