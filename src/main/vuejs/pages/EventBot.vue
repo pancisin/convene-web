@@ -19,7 +19,7 @@
 
       <hr />
 
-      <ul>
+      <ul class="list-unstyled">
         <li v-for="(run, index) in runs" :key="index">
           <i class="fa fa-check text-success" v-if="run.success"></i>
           <i class="fa fa-times text-danger" v-else></i> {{ run.date | moment('L LT') }} - {{ run.eventsCount }}
@@ -65,7 +65,7 @@ export default {
   methods: {
     submit () {
       this.api.postBot(this.bot, bot => {
-        console.log('success');
+        this.$router.push(this.api.base_route);
       });
     },
     deleteBot (bot_id) {

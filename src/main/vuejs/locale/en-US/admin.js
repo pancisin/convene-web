@@ -12,7 +12,8 @@ export default {
     faq: 'FAQ',
     terms: 'Terms & Conditions',
     privacy: 'Privacy policy',
-    contact: 'Contact'
+    contact: 'Contact',
+    system: 'System'
   },
   page: {
     overview: 'Overview',
@@ -47,5 +48,8 @@ export default {
     latest_activity: 'Latest activity',
     followers: 'Followerd',
     active_events: 'Active events'
+  },
+  system: {
+    users: 'Users',
   }
 };

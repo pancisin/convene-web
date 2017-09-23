@@ -38,7 +38,11 @@
                 {{ bot.runsCount }}
               </td>
               <td>
-                {{ bot.lastRun | moment('L LT') }}
+                <span v-if="bot.lastRun != null">
+                  <i class="fa fa-check text-success" v-if="bot.lastRun.success"></i>
+                  <i class="fa fa-exclamation-triangle text-danger" v-else></i>
+                  <b>{{ bot.lastRun.date | moment('L LT') }}</b>
+                </span>
               </td>
               <td class="text-center">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
@@ -100,7 +104,12 @@ export default {
     run (bot_id) {
       this.loading = true;
       EventBotApi.run(bot_id, run => {
-        console.log(run);
+        let index = this.bots.map(b => b.id).indexOf(bot_id);
+        this.bots.splice(index, 1, {
+          ...this.bots[index],
+          lastRun: run,
+          runsCount: this.bots[index].runsCount + 1
+        });
         this.loading = false;
       });
     }

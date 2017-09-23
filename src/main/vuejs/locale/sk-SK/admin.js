@@ -12,7 +12,8 @@ export default {
     faq: 'FAQ',
     terms: 'Terms & Conditions',
     privacy: 'Privacy policy',
-    contact: 'Kontakt'
+    contact: 'Kontakt',
+    system: 'Systém'
   },
   page: {
     overview: 'Prehľad',
@@ -47,5 +48,8 @@ export default {
     latest_activity: 'Posledná aktivita',
     followers: 'Nasledovníci',
     active_events: 'Aktívne podujatia'
+  },
+  system: {
+    users: 'Používatelia',
   }
 };

@@ -1,9 +1,13 @@
 package com.pancisin.bookster.security;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -37,8 +41,11 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 		if (parsedUser == null) {
 			throw new JwtTokenMalformedException("JWT token is not valid");
 		}
-		// List<GrantedAuthority> authorityList =
-		// AuthorityUtils.commaSeparatedStringToAuthorityList(null);
-		return new User(parsedUser.getId(), parsedUser.getEmail(), token, null);
+		
+		String[] roleArray = new String[1];
+		roleArray[0] = parsedUser.getRole().getName();
+		
+		List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(roleArray);
+		return new User(parsedUser.getId(), parsedUser.getEmail(), token, authorityList);
 	}
 }

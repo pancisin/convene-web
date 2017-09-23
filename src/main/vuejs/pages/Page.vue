@@ -2,7 +2,9 @@
   <div class="row" v-if="page != null">
     <div class="col-sm-12">
       <div class="page-title-box">
-        <h4 class="page-title" v-text="page.name"></h4>
+        <h4 class="page-title">
+          {{ page.name }}
+        </h4>
       </div>
     </div>
 

@@ -96,7 +96,7 @@ public class CurrentUserController {
 	private MediaRepository mediaRepository;
 	
 	@GetMapping("/me")
-	public ResponseEntity<User> getMe(HttpServletRequest request) {
+	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User auth_user = (User) auth.getPrincipal();
 		User stored = userRepository.findOne(auth_user.getId());

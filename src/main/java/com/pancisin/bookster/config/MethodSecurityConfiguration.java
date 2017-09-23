@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 import com.pancisin.bookster.security.evaluators.CustomPermissionEvaluator;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled=true)
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
 	@Bean

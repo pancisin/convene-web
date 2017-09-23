@@ -4,6 +4,7 @@ export default {
   ...translations,
   role: {
     owner: 'Vlastník',
+    superadmin: 'Super Administrátor',
     administrator: 'Administrátor',
     reporter: 'Prispievateľ',
     visitor: 'Navštevník',

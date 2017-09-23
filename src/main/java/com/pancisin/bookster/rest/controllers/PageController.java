@@ -329,13 +329,13 @@ public class PageController {
 	}
 
 	@GetMapping("/bot")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read') AND hasRole('SUPERADMIN')")
 	public ResponseEntity<?> getEventBots(@PathVariable Long page_id) {
 		return ResponseEntity.ok(eventBotRepository.getByPage(page_id));
 	}
 	
 	@PostMapping("/bot")
-	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update') AND hasRole('SUPERADMIN')")
 	public ResponseEntity<?> postEventBot(@PathVariable Long page_id, @RequestBody EventBot eventBot) {
 		Page stored = pageRepository.findOne(page_id);
 		eventBot.setPage(stored);

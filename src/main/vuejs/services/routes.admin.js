@@ -25,6 +25,11 @@ export default [
     }
   },
   {
+    path: 'users',
+    name: 'system.users',
+    component: resolve => require(['../pages/system/Users.vue'], resolve)
+  },
+  {
     path: 'conference/create',
     component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {
@@ -252,6 +257,7 @@ export default [
     path: 'page/:id',
     component: resolve => require(['../pages/Page.vue'], resolve),
     redirect: '/admin/page/:id/overview',
+    name: 'page',
     children: [
       {
         path: 'overview',

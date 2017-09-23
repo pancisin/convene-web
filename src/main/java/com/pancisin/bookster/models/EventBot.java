@@ -52,8 +52,8 @@ public class EventBot {
 		return runs != null ? runs.size() : 0;
 	}
 	
-	public Calendar getLastRun() {
-		return this.runs != null && this.runs.size() > 0 ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get().getDate() : null;
+	public EventBotRun getLastRun() {
+		return this.runs != null && this.runs.size() > 0 ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get() : null;
 	}
 	
 	public String getFbPageId() {

@@ -4,6 +4,7 @@ export default {
   ...translations,
   role: {
     owner: 'Owner',
+    superadmin: 'Super Administrator',
     administrator: 'Administrator',
     reporter: 'Reporter',
     visitor: 'Visitor',

@@ -2,10 +2,10 @@
   <transition name="fade-left">
     <div class="left side-menu" v-show="!collapsed">
       <div id="sidebar-menu">
-        <ul>
+        <ul v-if="menus.main.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.main') }}</li>
 
-          <li v-for="(route, index) in routes.main" :key="index" v-if="route.hasPermission(user)">
+          <li v-for="(route, index) in menus.main.routes" :key="index" v-if="route.hasPermission(user)">
             <router-link :to="{ name: route.name }" class="waves-effect">
               <i class="material-icons" v-text="route.icon"></i>
               <span>{{ $t(route.code) }}</span>
@@ -13,7 +13,18 @@
           </li>
         </ul>
 
-        <ul v-loading="loadingPages">
+        <ul v-if="menus.system.hasPermission(user)">
+          <li class="menu-title">{{ $t('admin.menu.system') }}</li>
+
+          <li v-for="(route, index) in menus.system.routes" :key="index" v-if="route.hasPermission(user)">
+            <router-link :to="{ name: route.name }" class="waves-effect">
+              <i class="material-icons" v-text="route.icon"></i>
+              <span>{{ $t(route.code) }}</span>
+            </router-link>
+          </li>
+        </ul>
+
+        <ul v-loading="loadingPages" v-if="menus.page.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
 
           <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
@@ -23,7 +34,7 @@
 
             <span v-text="page.name" slot="title"></span>
 
-            <li slot="item" v-for="(route, index) in routes.page" :key="index" v-if="route.hasPermission(user)">
+            <li slot="item" v-for="(route, index) in menus.page.routes" :key="index" v-if="route.hasPermission(user)">
               <router-link :to="{ name: route.name, params: { id : page.id }}" class="list-group-item waves-effect">
                 {{ $t(route.code) }}
               </router-link>
@@ -38,7 +49,7 @@
           </li>
         </ul>
 
-        <ul v-loading="loadingConferences">
+        <ul v-loading="loadingConferences" v-if="menus.conference.hasPermission(user)"> 
           <li class="menu-title">{{ $t('admin.menu.conferences') }}
             <span class="label label-warning pull-right">Enterprise</span>
           </li>
@@ -51,7 +62,7 @@
 
             <span v-text="conference.name" slot="title"></span>
 
-            <li slot="item" v-for="(route, index) in routes.conference" :key="index" v-if="route.hasPermission(user)">
+            <li slot="item" v-for="(route, index) in menus.conference.routes" :key="index" v-if="route.hasPermission(user)">
               <router-link :to="{ name: route.name, params: { id : conference.id }}" class="list-group-item waves-effect">
                 {{ $t(route.code) }}
               </router-link>
@@ -66,10 +77,10 @@
           </li>
 
         </ul>
-        <ul>
+        <ul v-if="menus.footer.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.about') }}</li>
 
-          <li v-for="(route, index) in routes.footer" :key="index" v-if="route.hasPermission(user)">
+          <li v-for="(route, index) in menus.footer.routes" :key="index" v-if="route.hasPermission(user)">
             <router-link :to="{ name: route.name }" class="waves-effect">
               <i class="material-icons" v-text="route.icon"></i>
               <span>{{ $t(route.code) }}</span>
@@ -88,7 +99,7 @@
 <script>
 import { VerticalMenuDrop } from 'elements';
 import { mapActions, mapGetters } from 'vuex';
-import routes from '../services/maps/routes.map';
+import menus from '../services/maps/menus.map';
 
 export default {
   name: 'sidebar',
@@ -102,8 +113,8 @@ export default {
     ...mapGetters([
       'pages', 'conferences', 'loadingPages', 'loadingConferences', 'user'
     ]),
-    routes () {
-      return routes;
+    menus () {
+      return menus;
     }
   },
   components: {

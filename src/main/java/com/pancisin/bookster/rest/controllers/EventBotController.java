@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,6 +18,7 @@ import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.repository.EventBotRepository;
 
 @RestController
+@PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/event-bot/{bot_id}")
 public class EventBotController {
 

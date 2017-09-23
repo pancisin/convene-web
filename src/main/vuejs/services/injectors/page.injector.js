@@ -1,6 +1,16 @@
 import PageApi from 'api/page.api';
 
 export default class PageInjector {
+  
+  get base_route() {
+    return {
+      name: 'page',
+      props: {
+        id: this.page_id
+      }
+    }
+  }
+  
   constructor (page_id) {
     this.page_id = page_id;
   }
