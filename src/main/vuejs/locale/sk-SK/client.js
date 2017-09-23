@@ -1,8 +1,16 @@
 export default {
   menu: {
     home: 'Domov',
+    events: 'Podujatia',
+    my_events: 'Moje podujatia',
     explore: 'Preskúmať stránky',
-    about: 'O službe Bookster'
+    conferences: 'Konferencie',
+    about: 'O aplikácií',
+    pricing: 'Cenník',
+    faq: 'FAQ',
+    terms: 'Terms & conditions',
+    privacy: 'Pravidlá ochrany súkromia',
+    admin: 'Administrácia'
   },
   dashboard: {
     attending: 'Kam idem',

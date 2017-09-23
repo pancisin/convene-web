@@ -2,14 +2,14 @@
   <header id="topnav">
     <div class="topbar-main">
       <div class="container">
-  
+
         <div class="logo">
           <router-link to="/" class="logo">
             <i class="fa fa-book"></i>
             <span>Bookster</span>
           </router-link>
         </div>
-  
+
         <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
             <li>
@@ -20,11 +20,11 @@
                 </a>
               </form>
             </li>
-  
+
             <lang-switcher />
-  
+
             <notifications v-if="authenticated" />
-  
+
             <li class="dropdown" v-if="authenticated">
               <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
                 <img :src="avatar" alt="user-img" class="img-circle">
@@ -62,7 +62,7 @@
               </li>
             </template>
           </ul>
-  
+
           <div class="menu-item">
             <a class="navbar-toggle waves-effect" @click="collapsed = !collapsed">
               <div class="lines">
@@ -75,86 +75,23 @@
         </div>
       </div>
     </div>
-  
+
     <div class="navbar-custom active">
       <div class="container">
         <slide-transition>
           <div id="navigation" class="active" v-show="!collapsed">
-            <ul class="navigation-menu">
-              <li>
-                <router-link to="/" class="waves-effect" exact>
-                  <i class="material-icons">home</i> {{ $t('client.menu.home') }}
+            <ul class="navigation-menu" v-if="clientMenu.hasPermission(user)">
+              <li v-for="(route, index) in clientMenu.routes" :key="index" v-if="route.hasPermission(user)" :class="{ 'has-submenu' : route.children && route.children.length > 0 }">
+                <router-link :to="{ name: route.name }" class="waves-effect" exact>
+                  <i class="material-icons">{{ route.icon }}</i> {{ $t(route.code) }}
                 </router-link>
-              </li>
-              <li class="has-submenu">
-                <router-link to="/events" class="waves-effect">
-                  <i class="material-icons">event</i> Events
-                </router-link>
-                <ul class="submenu">
-                  <li>
-                    <router-link :to="{ name: 'event.explore' }" class="waves-effect">
-                      Explore
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/my-events" class="waves-effect">
-                      My events
+                <ul class="submenu" v-if="route.children && route.children.length > 0">
+                  <li v-for="(child, child_index) in route.children" :key="child_index">
+                    <router-link :to="{ name: child.name }" class="waves-effect">
+                      {{ $t(child.code) }}
                     </router-link>
                   </li>
                 </ul>
-              </li>
-              <li>
-                <router-link to="/explore" :to="{ name: 'event.explore' }" class="waves-effect">
-                  <i class="material-icons">explore</i> {{ $t('client.menu.explore') }}</router-link>
-              </li>
-              <li>
-                <router-link to="/conferences">
-                  <i class="material-icons">people</i> Conferences</router-link>
-              </li>
-              <li class="has-submenu">
-                <router-link to="/about">
-                  <i class="material-icons">question_answer</i> {{ $t('client.menu.about') }}
-                </router-link>
-                <ul class="submenu megamenu">
-                  <li>
-                    <ul>
-                      <li>
-                        <router-link :to="{ name: 'about' }">
-                          About
-                        </router-link>
-                      </li>
-                      <li>
-                        <router-link :to="{ name: 'pricing' }">
-                          Pricing
-                        </router-link>
-                      </li>
-                    </ul>
-                  </li>
-  
-                  <li>
-                    <ul>
-                      <li>
-                        <router-link :to="{ name: 'faq' }">
-                          FAQ
-                        </router-link>
-                      </li>
-                      <li>
-                        <router-link :to="{ name: 'terms' }">
-                          Terms & Conditions
-                        </router-link>
-                      </li>
-                      <li>
-                        <router-link :to="{ name: 'privacy-policy' }">
-                          Privacy policy
-                        </router-link>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <router-link to="/admin" v-if="isAdmin">
-                  <i class="material-icons">dashboard</i> Admin</router-link>
               </li>
             </ul>
           </div>
@@ -169,6 +106,7 @@ import { Notifications, LangSwitcher } from 'elements';
 import SlideTransition from '../functional/SlideTransition';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
+import menus from '../services/maps/menus.map';
 
 export default {
   name: 'header',
@@ -189,6 +127,9 @@ export default {
           size: 36
         });
       } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
+    },
+    clientMenu () {
+      return menus.client;
     }
   },
   components: {

@@ -1,7 +1,10 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-9" :class="{ 'col-sm-9' : event.poster }">
+      <div class="col-sm-3 col-sm-push-9">
+        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
+      </div>
+      <div class="col-sm-6" :class="{ 'col-sm-9' : event.poster }">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img v-if="event.poster != null" :src="event.poster.path">
@@ -60,10 +63,8 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3">
-        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
-
-        <panel type="default">
+      <div class="col-sm-3 col-sm-pull-9">
+        <panel type="default" v-if="related != null && related.length > 0">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
 
           <div class="inbox-widget">
@@ -73,7 +74,7 @@
                   <img :src="related.poster.path" class="img-circle" alt="">
                 </div>
                 <p class="inbox-item-author" v-text="related.name"></p>
-                <p class="inbox-item-text pull-right">
+                <p class="inbox-item-text">
                   {{ related.date | moment('L') }} {{ related.startsAt }}
                 </p>
               </router-link>
@@ -81,6 +82,7 @@
           </div>
         </panel>
       </div>
+
     </div>
   </div>
   <div v-else>

@@ -56,7 +56,7 @@
           </td>
           <td>
             <a class="btn btn-xs btn-default">
-              <i class="fa fa-commenting"></i>
+              <i class="fa fa-comment-o"></i>
             </a>
           </td>
         </tr>

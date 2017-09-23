@@ -3,11 +3,13 @@ import PageMenu from './page.menu';
 import ConferenceMenu from './conference.menu';
 import FooterMenu from './footer.menu';
 import SystemMenu from './system.menu';
+import ClientMenu from './client.menu';
 
 export {
   MainMenu,
   PageMenu,
   ConferenceMenu,
   FooterMenu,
-  SystemMenu
+  SystemMenu,
+  ClientMenu
 }

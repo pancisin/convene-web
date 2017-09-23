@@ -1,10 +1,12 @@
 export default [
   {
     path: '',
+    name: 'client.home',
     component: resolve => require(['../pages/public/Home.vue'], resolve)
   },
   {
     path: 'my-events',
+    name: 'client.event.my',
     component: resolve => require(['../pages/public/Event.my.vue'], resolve)
   },
   {
@@ -14,7 +16,7 @@ export default [
   },
   {
     path: 'explore',
-    name: 'event.explore',
+    name: 'client.page.explore',
     component: resolve => require(['../pages/public/Page.index.vue'], resolve)
   },
   {
@@ -71,6 +73,7 @@ export default [
   },
   {
     path: 'events',
+    name: 'client.event.explore',
     component: resolve => require(['../pages/public/Event.index.vue'], resolve)
   },
   {

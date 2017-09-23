@@ -19,7 +19,7 @@
               <th>
                 Last run
               </th>
-              <th class="text-center">
+              <th class="text-center" v-if="editable">
                 Action
               </th>
             </tr>
@@ -44,7 +44,7 @@
                   <b>{{ bot.lastRun.date | moment('L LT') }}</b>
                 </span>
               </td>
-              <td class="text-center">
+              <td class="text-center" v-if="editable">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
                 <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
               </td>
@@ -52,7 +52,7 @@
           </tbody>
         </table>
 
-        <div class="text-center">
+        <div class="text-center" v-if="editable">
           <router-link to="create-event-bot" class="btn btn-default btn-rounded">Create event bot</router-link>
         </div>
       </panel>
@@ -68,6 +68,9 @@ import EventBotApi from 'api/event-bot.api';
 export default {
   name: 'bots',
   inject: ['provider'],
+  props: {
+    editable: Boolean
+  },
   data () {
     return {
       bots: [],

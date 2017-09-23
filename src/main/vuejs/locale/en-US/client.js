@@ -1,8 +1,16 @@
 export default {
   menu: {
     home: 'Home',
+    events: 'Events',
+    my_events: 'My events',
     explore: 'Explore pages',
-    about: 'About Bookster'
+    conferences: 'Conferences',
+    about: 'About Bookster',
+    pricing: 'Pricing',
+    faq: 'FAQ',
+    terms: 'Terms & conditions',
+    privacy: 'Privacy policy',
+    admin: 'Admin'
   },
   dashboard: {
     attending: 'Where am i going',

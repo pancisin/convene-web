@@ -213,7 +213,7 @@ public class PublicRestController {
 		return ResponseEntity.ok(articleRepository.getByConference(conference_id));
 	}
 	
-	@GetMapping("/conferences/{page}/{size}")
+	@GetMapping("/conference/{page}/{size}")
 	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
 		return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
 	}
