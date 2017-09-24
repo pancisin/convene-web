@@ -2,8 +2,13 @@
   <div class="container" v-if="page != null">
 
     <div class="row">
-      <div class="col-md-8">
-
+      <div class="col-sm-3 col-sm-push-9">
+        <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
+          {{ follows ? 'Unfollow' : 'Follow' }}
+        </a>
+        <img class="img-poster m-b-20" v-if="page.poster != null" :src="page.poster.path">
+      </div>
+      <div class="col-sm-6">
         <div class="panel panel-primary panel-blur">
           <div class="panel-heading">
             <img v-if="page.poster != null" :src="page.poster.path" class="img" />
@@ -17,18 +22,13 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
-          <span v-if="follows">Unfollow</span>
-          <span v-else>Follow</span>
-        </a>
-
+      <div class="col-sm-3 col-sm-pull-9">
         <panel type="table" v-if="services && services.length > 0">
           <span slot="title">Services</span>
 
           <table class="table table-striped">
             <tbody>
-              <tr v-for="service in services">
+              <tr v-for="(service, index) in services" :key="index">
                 <td v-text="service.name"></td>
                 <td class="text-right">
                   <a class="btn btn-rounded btn-primary btn-xs" @click="bookService(service)">Book</a>
@@ -38,24 +38,10 @@
           </table>
         </panel>
 
-        <panel type="table">
+        <panel>
           <span slot="title">Events</span>
-          <table class="table table-striped">
-            <tbody>
-              <tr v-for="event in events">
-                <td>
-                  <router-link :to="'/event/' + event.id" v-text="event.name">
-                  </router-link>
-                </td>
-                <td>{{ event.date | moment('L') }}</td>
-              </tr>
-              <tr v-if="events.length == 0">
-                <td colspan="2" class="text-center">There's nothing to display.</td>
-              </tr>
-            </tbody>
-          </table>
+          <events-list :events="events"></events-list>
         </panel>
-
       </div>
     </div>
 
@@ -70,6 +56,8 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
+import { EventsList } from 'elements';
+
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
 
@@ -95,7 +83,7 @@ export default {
     };
   },
   components: {
-    ServiceBook
+    ServiceBook, EventsList
   },
   watch: {
     '$route': 'getPage'
@@ -160,3 +148,10 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.img-poster {
+  width: 100%;
+  border: 1px solid #ccc;
+}
+</style>

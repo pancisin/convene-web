@@ -14,20 +14,6 @@
           </div>
           <div class="panel-body">
             <div class="row">
-              <div class="col-md-8 m-b-10">
-                <div v-if="event.place != null" class="map-container">
-                  <address class="event-address">
-                    <strong v-text="event.place.name"></strong>
-                    <br> {{ event.place.address.street + " " + event.place.address.number }}
-                    <br> {{ event.place.address.zip + " " + event.place.address.city }}
-                    <br> {{ event.place.address.state }}
-                  </address>
-
-                  <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
-                </div>
-
-                <div v-html="event.summary"></div>
-              </div>
               <div class="col-md-4">
                 <div class="widget-simple text-center card-box">
                   <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
@@ -51,6 +37,20 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-8 m-b-10">
+                <div v-if="event.place != null" class="map-container">
+                  <address class="event-address">
+                    <strong v-text="event.place.name"></strong>
+                    <br> {{ event.place.address.street + " " + event.place.address.number }}
+                    <br> {{ event.place.address.zip + " " + event.place.address.city }}
+                    <br> {{ event.place.address.state }}
+                  </address>
+
+                  <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
+                </div>
+
+                <div v-html="event.summary"></div>
+              </div>
             </div>
 
             <masonry columns="4">
@@ -64,25 +64,11 @@
         </div>
       </div>
       <div class="col-sm-3 col-sm-pull-9">
-        <panel type="default" v-if="related != null && related.length > 0">
+        <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
-
-          <div class="inbox-widget">
-            <stagger-transition>
-              <router-link :to="'/event/' + related.id" v-for="(related, index) in relatedEvents" :key="related.id" :data-index="index" v-if="related.id != event.id" class="inbox-item">
-                <div class="inbox-item-img" v-if="related.poster != null">
-                  <img :src="related.poster.path" class="img-circle" alt="">
-                </div>
-                <p class="inbox-item-author" v-text="related.name"></p>
-                <p class="inbox-item-text">
-                  {{ related.date | moment('L') }} {{ related.startsAt }}
-                </p>
-              </router-link>
-            </stagger-transition>
-          </div>
+          <events-list :events="relatedEvents" />
         </panel>
       </div>
-
     </div>
   </div>
   <div v-else>
@@ -91,7 +77,7 @@
 </template>
 
 <script>
-import { GMap, Masonry, MasonryItem } from 'elements';
+import { GMap, Masonry, MasonryItem, EventsList } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -108,7 +94,7 @@ export default {
     };
   },
   components: {
-    GMap, StaggerTransition, Masonry, MasonryItem
+    GMap, StaggerTransition, Masonry, MasonryItem, EventsList
   },
   created () {
     this.getEvent();

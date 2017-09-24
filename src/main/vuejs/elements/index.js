@@ -27,6 +27,7 @@ import Wizard from './Wizard';
 import WizardPage from './WizardPage';
 import Masonry from './Masonry';
 import MasonryItem from './MasonryItem';
+import EventsList from './EventsList';
 
 import widgets from './widgets';
 
@@ -60,5 +61,6 @@ export {
   Wizard,
   WizardPage,
   Masonry,
-  MasonryItem
+  MasonryItem,
+  EventsList
 };
