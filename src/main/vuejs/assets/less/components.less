@@ -14,179 +14,180 @@
 @import "components/email.less";
 @import "components/notifications.less";
 @import "components/loader.less";
+@import (reference) 'variables.less';
 .fileupload {
-    overflow: hidden;
-    position: relative;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  &:after {
+    content: "click to upload image";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    &:after {
-        content: "click to upload image";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        top: 50%;
-        transform: translate(0, -50%);
-        text-transform: uppercase;
-    }
-    input.upload {
-        cursor: pointer;
-        filter: alpha(opacity=0);
-        font-size: 20px;
-        margin: 0;
-        opacity: 0;
-        padding: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        width: 100%;
-    }
+    text-align: center;
+    top: 50%;
+    transform: translate(0, -50%);
+    text-transform: uppercase;
+  }
+  input.upload {
+    cursor: pointer;
+    filter: alpha(opacity=0);
+    font-size: 20px;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .loader-1 {
-    -moz-animation: loaderAnimate 1000ms linear infinite;
-    -o-animation: loaderAnimate 1000ms linear infinite;
-    -webkit-animation: loaderAnimate 1000ms linear infinite;
-    animation: loaderAnimate 1000ms linear infinite;
+  -moz-animation: loaderAnimate 1000ms linear infinite;
+  -o-animation: loaderAnimate 1000ms linear infinite;
+  -webkit-animation: loaderAnimate 1000ms linear infinite;
+  animation: loaderAnimate 1000ms linear infinite;
+  clip: rect(0, 30px, 30px, 15px);
+  height: 30px;
+  left: 50%;
+  margin-left: -15px;
+  margin-top: -15px;
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  &:after {
+    -moz-animation: loaderAnimate2 1000ms ease-in-out infinite;
+    -o-animation: loaderAnimate2 1000ms ease-in-out infinite;
+    -webkit-animation: loaderAnimate2 1000ms ease-in-out infinite;
+    animation: loaderAnimate2 1000ms ease-in-out infinite;
+    border-radius: 50%;
     clip: rect(0, 30px, 30px, 15px);
+    content: '';
     height: 30px;
-    left: 50%;
-    margin-left: -15px;
-    margin-top: -15px;
     position: absolute;
-    top: 50%;
     width: 30px;
-    &:after {
-        -moz-animation: loaderAnimate2 1000ms ease-in-out infinite;
-        -o-animation: loaderAnimate2 1000ms ease-in-out infinite;
-        -webkit-animation: loaderAnimate2 1000ms ease-in-out infinite;
-        animation: loaderAnimate2 1000ms ease-in-out infinite;
-        border-radius: 50%;
-        clip: rect(0, 30px, 30px, 15px);
-        content: '';
-        height: 30px;
-        position: absolute;
-        width: 30px;
-    }
+  }
 }
 
 .carousel-control {
-    width: 10%;
-    span {
-        position: absolute;
-        top: 50%;
-        z-index: 5;
-        display: inline-block;
-        font-size: 30px;
-    }
+  width: 10%;
+  span {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    display: inline-block;
+    font-size: 30px;
+  }
 }
 
 .carousel-indicators {
-    li {
-        border: 2px solid #ffffff;
-    }
+  li {
+    border: 2px solid #ffffff;
+  }
 }
 
 .error {
-    color: #ef5350;
-    font-size: 12px;
-    font-weight: 500;
+  color: @color-danger;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .search-input {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .ms-selectable {
-    box-shadow: none;
-    outline: none !important;
+  box-shadow: none;
+  outline: none !important;
 }
 
 .ms-container {
-    .ms-list.ms-focus {
-        box-shadow: none;
+  .ms-list.ms-focus {
+    box-shadow: none;
+  }
+  .ms-selectable {
+    li.ms-hover {
+      background-color: @color-primary;
     }
-    .ms-selectable {
-        li.ms-hover {
-            background-color: #039cfd;
-        }
+  }
+  .ms-selection {
+    li.ms-hover {
+      background-color: @color-primary;
     }
-    .ms-selection {
-        li.ms-hover {
-            background-color: #039cfd;
-        }
-    }
+  }
 }
 
 .note-editor {
-    border: 1px solid #eeeeee;
-    position: relative;
-    .note-toolbar {
-        background-color: rgba(128, 137, 142, 0.1);
-        border-bottom: 1px solid #eeeeee;
-        margin: 0;
+  border: 1px solid #eeeeee;
+  position: relative;
+  .note-toolbar {
+    background-color: rgba(128, 137, 142, 0.1);
+    border-bottom: 1px solid #eeeeee;
+    margin: 0;
+  }
+  .note-statusbar {
+    background-color: #ffffff;
+    .note-resizebar {
+      border-top: none;
+      height: 15px;
+      padding-top: 3px;
     }
-    .note-statusbar {
-        background-color: #ffffff;
-        .note-resizebar {
-            border-top: none;
-            height: 15px;
-            padding-top: 3px;
-        }
-    }
+  }
 }
 
 .note-popover {
-    .popover {
-        .popover-content {
-            padding: 5px 0 10px 5px;
-        }
+  .popover {
+    .popover-content {
+      padding: 5px 0 10px 5px;
     }
+  }
 }
 
 .note-toolbar {
-    padding: 5px 0 10px 5px;
+  padding: 5px 0 10px 5px;
 }
 
 .dropzone {
-    min-height: 230px;
-    border: 2px dashed rgba(0, 0, 0, 0.3);
-    background: white;
-    border-radius: 6px;
-    .dz-message {
-        font-size: 30px;
-    }
+  min-height: 230px;
+  border: 2px dashed rgba(0, 0, 0, 0.3);
+  background: white;
+  border-radius: 6px;
+  .dz-message {
+    font-size: 30px;
+  }
 }
 
 .question-q-box {
-    height: 30px;
-    width: 30px;
-    color: #ffffff;
-    background-color: #ef5350;
-    text-align: center;
-    border-radius: 50%;
-    float: left;
-    line-height: 30px;
-    font-weight: 700;
+  height: 30px;
+  width: 30px;
+  color: #ffffff;
+  background-color: @color-danger;
+  text-align: center;
+  border-radius: 50%;
+  float: left;
+  line-height: 30px;
+  font-weight: 700;
 }
 
 .question {
-    margin-top: 0;
-    margin-left: 50px;
-    font-weight: 400;
-    font-size: 16px;
+  margin-top: 0;
+  margin-left: 50px;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 .answer {
-    margin-left: 50px;
-    color: #80898e;
-    margin-bottom: 40px;
-    line-height: 26px;
+  margin-left: 50px;
+  color: #80898e;
+  margin-bottom: 40px;
+  line-height: 26px;
 }
 
 .custom-content {
-    img {
-        max-width: 100%;
-    }
+  img {
+    max-width: 100%;
+  }
 }

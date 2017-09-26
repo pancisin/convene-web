@@ -1,399 +1,400 @@
+@import (reference) '../variables.less';
 .btn {
-    border-radius: 2px;
-    padding: 6px 14px;
+  border-radius: 2px;
+  padding: 6px 14px;
 }
 
 .btn-group-lg {
-    >.btn {
-        padding: 10px 16px !important;
-        font-size: 16px;
-    }
+  >.btn {
+    padding: 10px 16px !important;
+    font-size: 16px;
+  }
 }
 
 .btn-lg {
-    padding: 10px 16px !important;
-    font-size: 16px;
+  padding: 10px 16px !important;
+  font-size: 16px;
 }
 
 .btn-group-sm {
-    >.btn {
-        padding: 5px 10px !important;
-    }
+  >.btn {
+    padding: 5px 10px !important;
+  }
 }
 
 .btn-sm {
-    padding: 5px 10px !important;
+  padding: 5px 10px !important;
 }
 
 .btn-group-xs {
-    >.btn {
-        padding: 1px 5px !important;
-    }
+  >.btn {
+    padding: 1px 5px !important;
+  }
 }
 
 .btn-xs {
-    padding: 1px 5px !important;
+  padding: 1px 5px !important;
 }
 
 .btn-group {
-    .btn+.btn {
-        margin-left: 0px;
-    }
-    .btn+.btn-group {
-        margin-left: 0px;
-    }
-    .btn-group+.btn {
-        margin-left: 0px;
-    }
-    .btn-group+.btn-group {
-        margin-left: 0px;
-    }
+  .btn+.btn {
+    margin-left: 0px;
+  }
+  .btn+.btn-group {
+    margin-left: 0px;
+  }
+  .btn-group+.btn {
+    margin-left: 0px;
+  }
+  .btn-group+.btn-group {
+    margin-left: 0px;
+  }
 }
 
 .btn-group.open {
-    .dropdown-toggle {
-        -webkit-box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.1) inset;
-        box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.1) inset;
-    }
+  .dropdown-toggle {
+    -webkit-box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.1) inset;
+  }
 }
 
 .btn-primary {
-    color: #ffffff !important;
-    background-color: #039cfd !important;
-    border: 1px solid #039cfd !important;
-    &:hover {
-        background-color: #028de5 !important;
-        background-color: #028de5 !important;
-        border: 1px solid #028de5 !important;
-        border: 1px solid #028de5 !important;
-    }
-    &:focus {
-        background-color: #028de5 !important;
-        background-color: #028de5 !important;
-        border: 1px solid #028de5 !important;
-        border: 1px solid #028de5 !important;
-    }
-    &:active {
-        background-color: #028de5 !important;
-        background-color: #028de5 !important;
-        border: 1px solid #028de5 !important;
-        border: 1px solid #028de5 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-primary !important;
+  border: 1px solid @color-primary !important;
+  &:hover {
+    background-color: @color-primary-active !important;
+    background-color: @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+  }
+  &:focus {
+    background-color: @color-primary-active !important;
+    background-color: @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+  }
+  &:active {
+    background-color: @color-primary-active !important;
+    background-color: @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+  }
 }
 
 .btn-success {
-    color: #ffffff !important;
-    background-color: #52bb56 !important;
-    border: 1px solid #52bb56 !important;
-    &:hover {
-        background-color: #45af49 !important;
-        background-color: #45af49 !important;
-        border: 1px solid #45af49 !important;
-        border: 1px solid #45af49 !important;
-    }
-    &:focus {
-        background-color: #45af49 !important;
-        background-color: #45af49 !important;
-        border: 1px solid #45af49 !important;
-        border: 1px solid #45af49 !important;
-    }
-    &:active {
-        background-color: #45af49 !important;
-        background-color: #45af49 !important;
-        border: 1px solid #45af49 !important;
-        border: 1px solid #45af49 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-success !important;
+  border: 1px solid @color-success !important;
+  &:hover {
+    background-color: @color-success-active !important;
+    background-color: @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+  }
+  &:focus {
+    background-color: @color-success-active !important;
+    background-color: @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+  }
+  &:active {
+    background-color: @color-success-active !important;
+    background-color: @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+  }
 }
 
 .btn-info {
-    color: #ffffff !important;
-    background-color: #67d1f8 !important;
-    border: 1px solid #67d1f8 !important;
-    &:hover {
-        background-color: #4fcaf7 !important;
-        background-color: #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-    }
-    &:focus {
-        background-color: #4fcaf7 !important;
-        background-color: #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-    }
-    &:active {
-        background-color: #4fcaf7 !important;
-        background-color: #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-info !important;
+  border: 1px solid @color-info !important;
+  &:hover {
+    background-color: @color-info-active !important;
+    background-color: @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+  }
+  &:focus {
+    background-color: @color-info-active !important;
+    background-color: @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+  }
+  &:active {
+    background-color: @color-info-active !important;
+    background-color: @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+  }
 }
 
 .btn-warning {
-    color: #ffffff !important;
-    background-color: #f1b53d !important;
-    border: 1px solid #f1b53d !important;
-    &:hover {
-        background-color: #efac25 !important;
-        background-color: #efac25 !important;
-        border: 1px solid #efac25 !important;
-        border: 1px solid #efac25 !important;
-    }
-    &:focus {
-        background-color: #efac25 !important;
-        background-color: #efac25 !important;
-        border: 1px solid #efac25 !important;
-        border: 1px solid #efac25 !important;
-    }
-    &:active {
-        background-color: #efac25 !important;
-        background-color: #efac25 !important;
-        border: 1px solid #efac25 !important;
-        border: 1px solid #efac25 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-warning !important;
+  border: 1px solid @color-warning !important;
+  &:hover {
+    background-color: @color-warning-active !important;
+    background-color: @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+  }
+  &:focus {
+    background-color: @color-warning-active !important;
+    background-color: @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+  }
+  &:active {
+    background-color: @color-warning-active !important;
+    background-color: @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+  }
 }
 
 .btn-danger {
-    color: #ffffff !important;
-    background-color: #ef5350 !important;
-    border: 1px solid #ef5350 !important;
-    &:active {
-        background-color: #ed3c39 !important;
-        background-color: #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-    }
-    &:focus {
-        background-color: #ed3c39 !important;
-        background-color: #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-    }
-    &:hover {
-        background-color: #ed3c39 !important;
-        background-color: #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-danger !important;
+  border: 1px solid @color-danger !important;
+  &:active {
+    background-color: @color-danger-active !important;
+    background-color: @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+  }
+  &:focus {
+    background-color: @color-danger-active !important;
+    background-color: @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+  }
+  &:hover {
+    background-color: @color-danger-active !important;
+    background-color: @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+  }
 }
 
 .btn-inverse {
-    color: #ffffff !important;
-    background-color: #4c5667 !important;
-    border: 1px solid #4c5667 !important;
-    &:hover {
-        background-color: #414a58 !important;
-        background-color: #414a58 !important;
-        border: 1px solid #414a58 !important;
-        border: 1px solid #414a58 !important;
-    }
-    &:focus {
-        background-color: #414a58 !important;
-        background-color: #414a58 !important;
-        border: 1px solid #414a58 !important;
-        border: 1px solid #414a58 !important;
-    }
-    &:active {
-        background-color: #414a58 !important;
-        background-color: #414a58 !important;
-        border: 1px solid #414a58 !important;
-        border: 1px solid #414a58 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-inverse !important;
+  border: 1px solid @color-inverse !important;
+  &:hover {
+    background-color: @color-inverse-active !important;
+    background-color: @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+  }
+  &:focus {
+    background-color: @color-inverse-active !important;
+    background-color: @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+  }
+  &:active {
+    background-color: @color-inverse-active !important;
+    background-color: @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+  }
 }
 
 .btn-purple {
-    color: #ffffff !important;
-    background-color: #7266ba !important;
-    border: 1px solid #7266ba !important;
-    &:hover {
-        background-color: #6254b2 !important;
-        border: 1px solid #6254b2 !important;
-    }
-    &:focus {
-        background-color: #6254b2 !important;
-        border: 1px solid #6254b2 !important;
-    }
-    &:active {
-        background-color: #6254b2 !important;
-        border: 1px solid #6254b2 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-purple !important;
+  border: 1px solid @color-purple !important;
+  &:hover {
+    background-color: @color-purple-active !important;
+    border: 1px solid @color-purple-active !important;
+  }
+  &:focus {
+    background-color: @color-purple-active !important;
+    border: 1px solid @color-purple-active !important;
+  }
+  &:active {
+    background-color: @color-purple-active !important;
+    border: 1px solid @color-purple-active !important;
+  }
 }
 
 .btn-pink {
-    color: #ffffff !important;
-    background-color: #f76397 !important;
-    border: 1px solid #f76397 !important;
-    &:hover {
-        background-color: #f64b87 !important;
-        border: 1px solid #f64b87 !important;
-    }
-    &:focus {
-        background-color: #f64b87 !important;
-        border: 1px solid #f64b87 !important;
-    }
-    &:active {
-        background-color: #f64b87 !important;
-        border: 1px solid #f64b87 !important;
-    }
+  color: #ffffff !important;
+  background-color: @color-pink !important;
+  border: 1px solid @color-pink !important;
+  &:hover {
+    background-color: @color-pink-active !important;
+    border: 1px solid @color-pink-active !important;
+  }
+  &:focus {
+    background-color: @color-pink-active !important;
+    border: 1px solid @color-pink-active !important;
+  }
+  &:active {
+    background-color: @color-pink-active !important;
+    border: 1px solid @color-pink-active !important;
+  }
 }
 
 .btn-default {
-    background-color: #ffffff;
+  background-color: #ffffff;
+  border-color: #cccccc;
+  &:focus {
+    background-color: #f3f3f3;
     border-color: #cccccc;
-    &:focus {
-        background-color: #f3f3f3;
-        border-color: #cccccc;
-    }
-    &:hover {
-        background-color: #f3f3f3;
-        border-color: #cccccc;
-    }
-    &:active {
-        background-color: #f3f3f3;
-        border-color: #cccccc;
-        background-color: #f3f3f3;
-        border-color: #cccccc;
-    }
+  }
+  &:hover {
+    background-color: #f3f3f3;
+    border-color: #cccccc;
+  }
+  &:active {
+    background-color: #f3f3f3;
+    border-color: #cccccc;
+    background-color: #f3f3f3;
+    border-color: #cccccc;
+  }
 }
 
 .btn-default.active {
-    background-color: #f3f3f3;
-    border-color: #cccccc;
+  background-color: #f3f3f3;
+  border-color: #cccccc;
 }
 
 .open {
-    >.dropdown-toggle.btn-default {
-        background-color: #f3f3f3;
-        border-color: #cccccc;
-    }
-    >.dropdown-toggle.btn-primary {
-        background-color: #028de5 !important;
-        border: 1px solid #028de5 !important;
-    }
-    >.dropdown-toggle.btn-success {
-        background-color: #45af49 !important;
-        border: 1px solid #45af49 !important;
-    }
-    >.dropdown-toggle.btn-info {
-        background-color: #4fcaf7 !important;
-        border: 1px solid #4fcaf7 !important;
-    }
-    >.dropdown-toggle.btn-warning {
-        background-color: #efac25 !important;
-        border: 1px solid #efac25 !important;
-    }
-    >.dropdown-toggle.btn-danger {
-        background-color: #ed3c39 !important;
-        border: 1px solid #ed3c39 !important;
-    }
-    >.dropdown-toggle.btn-inverse {
-        background-color: #414a58 !important;
-        border: 1px solid #414a58 !important;
-    }
+  >.dropdown-toggle.btn-default {
+    background-color: #f3f3f3;
+    border-color: #cccccc;
+  }
+  >.dropdown-toggle.btn-primary {
+    background-color: @color-primary-active !important;
+    border: 1px solid @color-primary-active !important;
+  }
+  >.dropdown-toggle.btn-success {
+    background-color: @color-success-active !important;
+    border: 1px solid @color-success-active !important;
+  }
+  >.dropdown-toggle.btn-info {
+    background-color: @color-info-active !important;
+    border: 1px solid @color-info-active !important;
+  }
+  >.dropdown-toggle.btn-warning {
+    background-color: @color-warning-active !important;
+    border: 1px solid @color-warning-active !important;
+  }
+  >.dropdown-toggle.btn-danger {
+    background-color: @color-danger-active !important;
+    border: 1px solid @color-danger-active !important;
+  }
+  >.dropdown-toggle.btn-inverse {
+    background-color: @color-inverse-active !important;
+    border: 1px solid @color-inverse-active !important;
+  }
 }
 
 .btn-primary.active {
-    background-color: #028de5 !important;
-    border: 1px solid #028de5 !important;
+  background-color: @color-primary-active !important;
+  border: 1px solid @color-primary-active !important;
 }
 
 .btn-primary.focus {
-    background-color: #028de5 !important;
-    border: 1px solid #028de5 !important;
+  background-color: @color-primary-active !important;
+  border: 1px solid @color-primary-active !important;
 }
 
 .btn-success.active {
-    background-color: #45af49 !important;
-    border: 1px solid #45af49 !important;
+  background-color: @color-success-active !important;
+  border: 1px solid @color-success-active !important;
 }
 
 .btn-success.focus {
-    background-color: #45af49 !important;
-    border: 1px solid #45af49 !important;
+  background-color: @color-success-active !important;
+  border: 1px solid @color-success-active !important;
 }
 
 .btn-info.active {
-    background-color: #4fcaf7 !important;
-    border: 1px solid #4fcaf7 !important;
+  background-color: @color-info-active !important;
+  border: 1px solid @color-info-active !important;
 }
 
 .btn-info.focus {
-    background-color: #4fcaf7 !important;
-    border: 1px solid #4fcaf7 !important;
+  background-color: @color-info-active !important;
+  border: 1px solid @color-info-active !important;
 }
 
 .btn-warning.active {
-    background-color: #efac25 !important;
-    border: 1px solid #efac25 !important;
+  background-color: @color-warning-active !important;
+  border: 1px solid @color-warning-active !important;
 }
 
 .btn-warning.focus {
-    background-color: #efac25 !important;
-    border: 1px solid #efac25 !important;
+  background-color: @color-warning-active !important;
+  border: 1px solid @color-warning-active !important;
 }
 
 .btn-danger.active {
-    background-color: #ed3c39 !important;
-    border: 1px solid #ed3c39 !important;
+  background-color: @color-danger-active !important;
+  border: 1px solid @color-danger-active !important;
 }
 
 .btn-danger.focus {
-    background-color: #ed3c39 !important;
-    border: 1px solid #ed3c39 !important;
+  background-color: @color-danger-active !important;
+  border: 1px solid @color-danger-active !important;
 }
 
 .btn-inverse.active {
-    background-color: #414a58 !important;
-    border: 1px solid #414a58 !important;
+  background-color: @color-inverse-active !important;
+  border: 1px solid @color-inverse-active !important;
 }
 
 .btn-inverse.focus {
-    background-color: #414a58 !important;
-    border: 1px solid #414a58 !important;
+  background-color: @color-inverse-active !important;
+  border: 1px solid @color-inverse-active !important;
 }
 
 .btn-custom {
-    border-bottom: 3px solid transparent;
+  border-bottom: 3px solid transparent;
 }
 
 .btn-custom.btn-default {
-    background-color: #f3f3f3;
-    border-bottom: 2px solid #cccccc !important;
+  background-color: #f3f3f3;
+  border-bottom: 2px solid #cccccc !important;
 }
 
 .btn-custom.btn-primary {
-    border-bottom: 2px solid #027dcb !important;
+  border-bottom: 2px solid #027dcb !important;
 }
 
 .btn-custom.btn-success {
-    border-bottom: 2px solid #3e9c41 !important;
+  border-bottom: 2px solid #3e9c41 !important;
 }
 
 .btn-custom.btn-info {
-    border-bottom: 2px solid #0bb1ee !important;
+  border-bottom: 2px solid #0bb1ee !important;
 }
 
 .btn-custom.btn-warning {
-    border-bottom: 2px solid #eaa211 !important;
+  border-bottom: 2px solid #eaa211 !important;
 }
 
 .btn-custom.btn-danger {
-    border-bottom: 2px solid #c71612 !important;
+  border-bottom: 2px solid #c71612 !important;
 }
 
 .btn-custom.btn-inverse {
-    border-bottom: 2px solid #21252c !important;
+  border-bottom: 2px solid #21252c !important;
 }
 
 .btn-custom.btn-purple {
-    border-bottom: 2px solid #443a80 !important;
+  border-bottom: 2px solid #443a80 !important;
 }
 
 .btn-custom.btn-pink {
-    border-bottom: 2px solid #e80c59 !important;
+  border-bottom: 2px solid #e80c59 !important;
 }
 
 .btn-rounded {
-    border-radius: 2em;
-    padding: 6px 18px;
+  border-radius: 2em;
+  padding: 6px 18px;
 }
