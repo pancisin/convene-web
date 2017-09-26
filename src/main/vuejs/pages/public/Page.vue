@@ -1,7 +1,7 @@
 <template>
   <div v-if="page != null">
     <hero-unit :background="page.poster != null ? page.poster.path : null">
-      <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
+      <h1 class="text-uppercase text-inverse">{{ page.name }}</h1>
     </hero-unit>  
 
     <div class="container">

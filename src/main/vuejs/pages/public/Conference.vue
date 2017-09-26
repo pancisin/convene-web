@@ -1,7 +1,7 @@
 <template>
   <div v-if="conference != null">
     <hero-unit :background="conference.poster != null ? conference.poster.path : null">
-      <h1 class="text-uppercase text-primary">{{ conference.name }}</h1>
+      <h1 class="text-uppercase text-inverse">{{ conference.name }}</h1>
     </hero-unit>
 
     <div class="container">

@@ -1,6 +1,6 @@
 <template>
   <div class="hero-unit">
-    <img v-if="background" :src="background" class="hero-background">
+    <img v-if="background" :src="background" class="hero-background" :style="bg_style">
     <div class="container">
       <slot>
 
@@ -12,6 +12,24 @@
 <script>
 export default {
   name: 'hero-unit',
+  data () {
+    return {
+      bg_style: {}
+    };
+  },
+  created () {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+  methods: {
+    handleScroll () {
+      this.bg_style = {
+        top: `calc(50% + ${window.scrollY * 0.5}px)`
+      };
+    }
+  },
   props: {
     background: {
       type: String,
@@ -39,6 +57,18 @@ export default {
   }
 }
 
+.color_loop (@n, @index: 0) when (@index <=@n) {
+  @keyframeSel: @index/@n * 100%;
+  @{keyframeSel} {
+    background-color: desaturate(spin(#3bafda, @index * 50), 10%);
+  }
+  .color_loop(@n, (@index + 1));
+}
+
+@keyframes backgroundAnimation {
+  .color_loop(10);
+}
+
 .hero-unit {
   color: white;
   padding: 80px 0;
@@ -46,7 +76,7 @@ export default {
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
-  background-color: #3bafda;
+  animation: backgroundAnimation ease-in-out 60s infinite alternate;
 
   &>.container {
     position: relative;
@@ -59,7 +89,8 @@ export default {
     left: 0;
     width: 100%;
     transform: translateY(-50%);
-    top: 50%;
+    top: calc(50% + 0px);
+    min-height: 100%;
   }
 
   &:after {
@@ -79,7 +110,7 @@ export default {
     background-color: rgba(255, 255, 255, 0.6);
     z-index: 1;
     width: 40%;
-    height: 200%;
+    height: 250%;
     left: 0;
     top: 50%;
     transform: @original_transform;

@@ -1,104 +1,111 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4" v-if="authenticated">
+  <div>
+    <hero-unit>
+      <h1 class="text-uppercase text-inverse">
+        Welcome, Patrik.
+      </h1>
+    </hero-unit>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4" v-if="authenticated">
 
-        <panel type="primary">
-          <span slot="title">{{ $t('client.dashboard.attending') }}</span>
+          <panel type="primary">
+            <span slot="title">{{ $t('client.dashboard.attending') }}</span>
 
-          <div class="inbox-widget">
-            <router-link :to="{ name: 'event.public', params: { id: event.id} }" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
-              <div class="inbox-item-img" v-if="event.poster != null">
-                <img :src="event.poster.path" class="img-circle" alt="">
-              </div>
-              <p class="inbox-item-author" v-text="event.name"></p>
-              <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-              <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
-            </router-link>
-          </div>
-        </panel>
-      </div>
-
-      <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
-        <panel type="primary" v-if="eventsPaginator.content != null">
-          <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
-
-          <div class="inbox-widget">
-            <router-link :to="{ name: 'event.public', params: { id: event.id }}" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
-              <div class="inbox-item-img" v-if="event.poster != null">
-                <img :src="event.poster.path" class="img-circle" alt="">
-              </div>
-              <p class="inbox-item-author" v-text="event.name"></p>
-              <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-              <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
-            </router-link>
-
-            <div class="text-center">
-              <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
-            </div>
-          </div>
-        </panel>
-      </div>
-
-      <div class="col-md-4">
-        <!-- <div class="page-title-box">
-              <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-            </div> -->
-        <tab-container>
-          <tab :title="$t('client.dashboard.suggested')">
             <div class="inbox-widget">
-              <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
-                <div class="inbox-item-img" v-if="page.poster != null">
-                  <img :src="page.poster.path" class="img-circle">
+              <router-link :to="{ name: 'event.public', params: { id: event.id} }" v-for="(event, index) in attending" :key="event.id" :data-index="index" class="inbox-item">
+                <div class="inbox-item-img" v-if="event.poster != null">
+                  <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
-                <p class="inbox-item-author" v-text="page.name"></p>
-                <p class="inbox-item-text" v-if="page.category != null">
-                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                </p>
+                <p class="inbox-item-author" v-text="event.name"></p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
+              </router-link>
+            </div>
+          </panel>
+        </div>
+
+        <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
+          <panel type="primary" v-if="eventsPaginator.content != null">
+            <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
+
+            <div class="inbox-widget">
+              <router-link :to="{ name: 'event.public', params: { id: event.id }}" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
+                <div class="inbox-item-img" v-if="event.poster != null">
+                  <img :src="event.poster.path" class="img-circle" alt="">
+                </div>
+                <p class="inbox-item-author" v-text="event.name"></p>
+                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
+                <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
               </router-link>
 
               <div class="text-center">
-                <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+                <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
               </div>
             </div>
-          </tab>
-          <tab :title="$t('client.dashboard.followed')" @navigated="tabNavigation">
-            <div class="inbox-widget">
-              <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index" class="inbox-item">
-                <div class="inbox-item-img" v-if="page.poster != null">
-                  <img :src="page.poster.path" class="img-circle">
+          </panel>
+        </div>
+
+        <div class="col-md-4">
+          <!-- <div class="page-title-box">
+                    <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
+                  </div> -->
+          <tab-container>
+            <tab :title="$t('client.dashboard.suggested')">
+              <div class="inbox-widget">
+                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
+                  </div>
+                  <p class="inbox-item-author" v-text="page.name"></p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
+                </router-link>
+
+                <div class="text-center">
+                  <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
                 </div>
-                <p class="inbox-item-author" v-text="page.name"></p>
-                <p class="inbox-item-text" v-if="page.category != null">
-                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                </p>
-              </router-link>
-            </div>
-          </tab>
-          <tab :title="$t('client.dashboard.popular')" @navigated="tabNavigation">
-            <div class="inbox-widget">
-              <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index" class="inbox-item">
-                <div class="inbox-item-img" v-if="page.poster != null">
-                  <img :src="page.poster.path" class="img-circle">
-                </div>
-                <p class="inbox-item-author">
-                  {{ page.name }}
-                  <span class="pull-right label label-default">{{ page.followersCount }} followers</span>
-                </p>
-                <p class="inbox-item-text" v-if="page.category != null">
-                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                </p>
-              </router-link>
-            </div>
-          </tab>
-        </tab-container>
+              </div>
+            </tab>
+            <tab :title="$t('client.dashboard.followed')" @navigated="tabNavigation">
+              <div class="inbox-widget">
+                <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
+                  </div>
+                  <p class="inbox-item-author" v-text="page.name"></p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
+                </router-link>
+              </div>
+            </tab>
+            <tab :title="$t('client.dashboard.popular')" @navigated="tabNavigation">
+              <div class="inbox-widget">
+                <router-link :to="'page/' + page.id" v-for="(page, index) in popular" :key="page.id" :data-index="index" class="inbox-item">
+                  <div class="inbox-item-img" v-if="page.poster != null">
+                    <img :src="page.poster.path" class="img-circle">
+                  </div>
+                  <p class="inbox-item-author">
+                    {{ page.name }}
+                    <span class="pull-right label label-default">{{ page.followersCount }} followers</span>
+                  </p>
+                  <p class="inbox-item-text" v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </p>
+                </router-link>
+              </div>
+            </tab>
+          </tab-container>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Paginator, Tab, TabContainer } from 'elements';
+import { Paginator, Tab, TabContainer, HeroUnit } from 'elements';
 import UserApi from 'api/user.api';
 import { mapGetters } from 'vuex';
 
@@ -125,7 +132,7 @@ export default {
     this.getPages(0);
   },
   components: {
-    Paginator, TabContainer, Tab
+    Paginator, TabContainer, Tab, HeroUnit
   },
   computed: {
     ...mapGetters(['authenticated'])
