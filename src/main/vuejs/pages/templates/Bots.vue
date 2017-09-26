@@ -89,6 +89,17 @@ export default {
   },
   created () {
     this.getBots();
+
+    this.connectWM('stomp').then(frame => {
+      this.$stompClient.subscribe('/user/queue/page.bots', response => {
+        let message = JSON.parse(response.body);
+        this.$emit('messageReceived', message);
+
+        if (this.collapsed) {
+          this.$info('notification.chat.message', message.content);
+        }
+      });
+    });
   },
   methods: {
     getBots () {

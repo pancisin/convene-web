@@ -27,6 +27,16 @@ export default {
       }
     }).then(response => {
       success(response.body);
-    })
+    });
+  },
+
+  /**
+   * Get Unit enum vales
+   * @param {*} success - success callback function
+   */
+  getUnits (success) {
+    Vue.http.get('api/enum/unit').then(response => {
+      success(response.body);
+    });
   }
 };

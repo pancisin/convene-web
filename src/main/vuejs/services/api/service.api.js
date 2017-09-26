@@ -25,8 +25,8 @@ export default {
    * @param {Object} service - service data object
    * @param {Function} success - success callback function
    */
-  putService (service, success) {
-    Vue.http.put(`${SERVICE_API_URL}/${service.id}`, service).then(response => {
+  putService (id, service, success) {
+    Vue.http.put(`${SERVICE_API_URL}/${id}`, service).then(response => {
       success(response.body);
     });
   },

@@ -1,9 +1,13 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.EventBot;
+import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.repository.EventBotRepository;
 
 @RestController
@@ -27,6 +32,9 @@ public class EventBotController {
 
 	@Autowired
 	private EventBotService eventBotService;
+	
+	@Autowired
+	private SimpMessagingTemplate webSocket;
 	
 	@GetMapping
 	public ResponseEntity<?> getEventBot(@PathVariable UUID bot_id) {
@@ -56,5 +64,14 @@ public class EventBotController {
 	public ResponseEntity<?> getRuns(@PathVariable UUID bot_id) {
 		EventBot stored = eventBotRepository.findOne(bot_id);
 		return ResponseEntity.ok(stored.getRuns());
+	}
+	
+
+	@MessageMapping("/bot/{bot_id}/run")
+	public void runEventBot(@DestinationVariable("bot_id") UUID bot_id, Principal principal) {
+		EventBot stored = eventBotRepository.findOne(bot_id);
+		EventBotRun run = eventBotService.run(stored);
+		
+		webSocket.convertAndSendToUser(principal.getName(), "/queue/notifier", run);
 	}
 }

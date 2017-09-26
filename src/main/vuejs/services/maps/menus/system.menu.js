@@ -7,11 +7,11 @@ export default {
       name: 'system.users',
       code: 'admin.system.users',
       icon: 'supervisor_account'
-    },
-    {
-      name: 'system.support',
-      code: 'admin.system.support',
-      icon: 'idk'
     }
+    // {
+    //   name: 'system.support',
+    //   code: 'admin.system.support',
+    //   icon: 'idk'
+    // }
   ]
-}
+};

@@ -1,7 +1,7 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.services') }}</span>
-  
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -9,26 +9,24 @@
           <th>{{ $t('admin.service.detail') }}</th>
           <th>{{ $t('admin.service.unit') }}</th>
           <th class="text-center">{{ $t('admin.service.price_per_unit') }}</th>
-          <th class="text-center"></th>
         </tr>
       </thead>
       <tbody is="transition-group" name="fade">
-        <tr v-for="service in services" :key="service.id">
-          <td v-text="service.name"></td>
-          <td v-text="service.detail"></td>
+        <tr v-for="service in services" :key="service.id" @contextmenu.prevent="$refs.menu.open($event, service)">
+          <td>
+            <router-link :to="{ name: 'service', params: { service_id: service.id } }">
+              {{ service.name }}
+            </router-link>
+          </td>
+          <td>
+            {{ service.detail }}
+          </td>
           <td>
             <span v-if="service.unit">{{ $t(service.unit.code) }}</span>
           </td>
-          <td class="text-center">{{ service.pricePerUnit }}
-            <i class="fa fa-euro"></i>
-          </td>
           <td class="text-center">
-            <a @click="deleteService(service)" class="btn btn-rounded btn-xs btn-danger">
-              <i class="fa fa-trash"></i>
-            </a>
-            <a @click="editService(service)" class="btn btn-rounded btn-xs btn-primary">
-              <i class="fa fa-pencil"></i>
-            </a>
+            {{ service.pricePerUnit }}
+            <i class="fa fa-euro"></i>
           </td>
         </tr>
         <tr v-if="services.length == 0" :key="0">
@@ -36,22 +34,39 @@
         </tr>
       </tbody>
     </table>
-  
+
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li>
+            <a @click="editService(props.data)">
+              Edit
+            </a>
+          </li>
+          <li v-if="editable">
+            <a @click="deleteService(props.data)">
+              Delete
+            </a>
+          </li>
+          <li class="separator"></li>
+          <li>
+            <router-link :to="{ name: 'page.create-service' }">
+              {{ $t('admin.service.create') }}
+            </router-link>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
+
     <div class="text-center" v-if="editable">
-      <a @click="editService(null)" class="btn btn-rounded btn-default">{{ $t('admin.service.create') }}</a>
+      <router-link :to="{ name: 'page.create-service' }" class="btn btn-rounded btn-primary">
+        {{ $t('admin.service.create') }}
+      </router-link>
     </div>
-  
-    <modal :show.sync="displayEditModal" @close="displayEditModal = false" :full="false">
-      <h4 slot="header">{{ $t('admin.service.create') }}</h4>
-      <div slot="body">
-        <service-form :service="selectedService" @updated="updatedService"></service-form>
-      </div>
-    </modal>
   </panel>
 </template>
 
 <script>
-import ServiceForm from './Service.form.vue';
 import ServiceApi from 'api/service.api';
 
 export default {
@@ -71,9 +86,6 @@ export default {
     api () {
       return this.provider.api;
     }
-  },
-  components: {
-    ServiceForm
   },
   created () {
     this.getServices();

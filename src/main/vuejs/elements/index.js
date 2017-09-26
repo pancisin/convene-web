@@ -28,6 +28,8 @@ import WizardPage from './WizardPage';
 import Masonry from './Masonry';
 import MasonryItem from './MasonryItem';
 import EventsList from './EventsList';
+import HeroUnit from './HeroUnit';
+
 
 import widgets from './widgets';
 
@@ -62,5 +64,6 @@ export {
   WizardPage,
   Masonry,
   MasonryItem,
-  EventsList
+  EventsList,
+  HeroUnit
 };

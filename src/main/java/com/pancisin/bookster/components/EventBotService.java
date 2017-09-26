@@ -1,6 +1,7 @@
 package com.pancisin.bookster.components;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,9 +48,10 @@ public class EventBotService {
 	private EventBotRunRepository eventBotRunRepository;
 
 	@Scheduled(cron = "0 0 6 * * *")
-	public ResponseList<Event> run() {
-		List<EventBot> bots = eventBotRepository.findAll().stream().filter(b -> b.isActive()).collect(Collectors.toList());
-
+	public List<EventBotRun> run() {
+		List<EventBot> bots = eventBotRepository.findAll();
+		List<EventBotRun> runs = new ArrayList<EventBotRun>();
+		
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
@@ -61,14 +63,14 @@ public class EventBotService {
 		bots.stream().forEach(b -> {
 			if (b.isActive()) {
 				try {
-					this.run(b, fb);
+					runs.add(this.run(b, fb));
 				} catch (FacebookException e) {
 					e.printStackTrace();
 				}
 			}
 		});
 
-		return null;
+		return runs;
 	}
 
 	public EventBotRun run(EventBot bot) {

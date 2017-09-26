@@ -1,9 +1,11 @@
 <template>
-  <transition name="fade">
-    <div v-if="visible" class="context-menu" :style="style" tabindex="-1" @contextmenu.capture.prevent @blur="close" @click="close" v-click-outside="close">
-      <slot :data="data"></slot>
-    </div>
-  </transition>
+  <div>
+    <transition name="fade">
+      <div v-if="visible" class="context-menu" :style="style" tabindex="-1" @contextmenu.capture.prevent @blur="close" @click="close" v-click-outside="close">
+        <slot :data="data"></slot>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -19,10 +21,10 @@ export default {
   },
   computed: {
     style () {
-      return this.isVisible ? {
+      return {
         top: this.y - document.body.scrollTop + 'px',
         left: this.x + 'px'
-      } : {};
+      };
     },
     isVisible () {
       return this.x !== null && this.y !== null;
@@ -39,9 +41,6 @@ export default {
     close (evt) {
       this.visible = false;
       this.data = null;
-      // this.x = null
-      // this.y = null
-      // this.userData = null
     }
   }
 };
