@@ -45,50 +45,6 @@
   }
 }
 
-.loader-1 {
-  -moz-animation: loaderAnimate 1000ms linear infinite;
-  -o-animation: loaderAnimate 1000ms linear infinite;
-  -webkit-animation: loaderAnimate 1000ms linear infinite;
-  animation: loaderAnimate 1000ms linear infinite;
-  clip: rect(0, 30px, 30px, 15px);
-  height: 30px;
-  left: 50%;
-  margin-left: -15px;
-  margin-top: -15px;
-  position: absolute;
-  top: 50%;
-  width: 30px;
-  &:after {
-    -moz-animation: loaderAnimate2 1000ms ease-in-out infinite;
-    -o-animation: loaderAnimate2 1000ms ease-in-out infinite;
-    -webkit-animation: loaderAnimate2 1000ms ease-in-out infinite;
-    animation: loaderAnimate2 1000ms ease-in-out infinite;
-    border-radius: 50%;
-    clip: rect(0, 30px, 30px, 15px);
-    content: '';
-    height: 30px;
-    position: absolute;
-    width: 30px;
-  }
-}
-
-.carousel-control {
-  width: 10%;
-  span {
-    position: absolute;
-    top: 50%;
-    z-index: 5;
-    display: inline-block;
-    font-size: 30px;
-  }
-}
-
-.carousel-indicators {
-  li {
-    border: 2px solid #ffffff;
-  }
-}
-
 .error {
   color: @color-danger;
   font-size: 12px;
@@ -102,52 +58,6 @@
 .ms-selectable {
   box-shadow: none;
   outline: none !important;
-}
-
-.ms-container {
-  .ms-list.ms-focus {
-    box-shadow: none;
-  }
-  .ms-selectable {
-    li.ms-hover {
-      background-color: @color-primary;
-    }
-  }
-  .ms-selection {
-    li.ms-hover {
-      background-color: @color-primary;
-    }
-  }
-}
-
-.note-editor {
-  border: 1px solid #eeeeee;
-  position: relative;
-  .note-toolbar {
-    background-color: rgba(128, 137, 142, 0.1);
-    border-bottom: 1px solid #eeeeee;
-    margin: 0;
-  }
-  .note-statusbar {
-    background-color: #ffffff;
-    .note-resizebar {
-      border-top: none;
-      height: 15px;
-      padding-top: 3px;
-    }
-  }
-}
-
-.note-popover {
-  .popover {
-    .popover-content {
-      padding: 5px 0 10px 5px;
-    }
-  }
-}
-
-.note-toolbar {
-  padding: 5px 0 10px 5px;
 }
 
 .dropzone {

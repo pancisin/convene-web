@@ -116,15 +116,19 @@ export default {
       });
     },
     run (bot_id) {
-      this.loading = true;
-      EventBotApi.run(bot_id, run => {
-        let index = this.bots.map(b => b.id).indexOf(bot_id);
-        this.bots.splice(index, 1, {
-          ...this.bots[index],
-          lastRun: run,
-          runsCount: this.bots[index].runsCount + 1
-        });
-        this.loading = false;
+      // this.loading = true;
+      // EventBotApi.run(bot_id, run => {
+      //   let index = this.bots.map(b => b.id).indexOf(bot_id);
+      //   this.bots.splice(index, 1, {
+      //     ...this.bots[index],
+      //     lastRun: run,
+      //     runsCount: this.bots[index].runsCount + 1
+      //   });
+      //   this.loading = false;
+      // });
+
+      this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({})).then(() => {
+        console.log('message sent');
       });
     }
   }

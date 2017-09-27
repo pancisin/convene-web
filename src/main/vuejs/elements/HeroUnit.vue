@@ -40,6 +40,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 @original_transform: rotateZ(-20deg) translateY(-50%);
 
 @keyframes movingAnimation {
@@ -60,7 +61,7 @@ export default {
 .color_loop (@n, @index: 0) when (@index <=@n) {
   @keyframeSel: @index/@n * 100%;
   @{keyframeSel} {
-    background-color: desaturate(spin(#3bafda, @index * 50), 10%);
+    background-color: desaturate(spin(@color-primary, @index * 50), 10%);
   }
   .color_loop(@n, (@index + 1));
 }

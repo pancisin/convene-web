@@ -119,6 +119,8 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
+
 .date-picker-container {
   position: relative;
 
@@ -206,7 +208,7 @@ export default {
           }
 
           &:before {
-            background-color: #4c5667 !important;
+            background-color: @color-inverse !important;
             height: 100%;
             width: 100%;
             border-radius: 0;

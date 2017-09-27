@@ -54,6 +54,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) '~less/variables.less';
+
 .conversation-container .contact-list {
   max-height: 380px;
   min-height: 380px;
@@ -71,10 +73,10 @@ export default {
     }
   }
   i.offline {
-    color: #ef5350;
+    color: @color-danger;
   }
   i.away {
-    color: #ffaa00;
+    color: @color-warning;
   }
 }
 
@@ -103,7 +105,7 @@ export default {
     }
   }
   i.online {
-    color: #a0d269;
+    color: @color-success;
   }
   i {
     color: #dddddd;

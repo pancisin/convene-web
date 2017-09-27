@@ -149,6 +149,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .explore-container {
   display: flex;
   flex-wrap: wrap;
@@ -161,12 +162,19 @@ export default {
   margin: 10px;
   overflow: hidden;
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
-  background: #3bafda;
+  background: @color-primary;
+
+  & > a {
+    display: block;
+  }
 
   img {
     min-width: 100%;
     transition: all .3s ease;
     height: 200px;
+    margin: 0 auto;
+    display: block;
+    max-width: 100%;
   }
 
   .title {
@@ -208,7 +216,7 @@ export default {
 
         &.active {
           background-color: #f5f5f5;
-          color: #3bafda;
+          color: @color-primary;
         }
 
         &:hover {

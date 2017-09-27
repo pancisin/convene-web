@@ -90,6 +90,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) '~less/variables.less';
+
 .conversation-container {
   position: fixed;
   right: 0;
@@ -101,7 +103,7 @@ export default {
 
   .chat-header {
     padding: 15px;
-    background: #039cfd;
+    background: @color-primary;
     color: white;
     font-weight: bold;
 

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
+import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventBotRunRepository;
@@ -51,26 +51,28 @@ public class EventBotService {
 	public List<EventBotRun> run() {
 		List<EventBot> bots = eventBotRepository.findAll();
 		List<EventBotRun> runs = new ArrayList<EventBotRun>();
-		
+
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+
+			bots.stream().forEach(b -> {
+				if (b.isActive()) {
+					try {
+						runs.add(this.run(b, fb));
+					} catch (FacebookException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
+			return eventBotRunRepository.save(runs);
 		} catch (FacebookException e1) {
 			e1.printStackTrace();
 		}
 
-		bots.stream().forEach(b -> {
-			if (b.isActive()) {
-				try {
-					runs.add(this.run(b, fb));
-				} catch (FacebookException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		return runs;
+		return null;
 	}
 
 	public EventBotRun run(EventBot bot) {
@@ -78,12 +80,14 @@ public class EventBotService {
 
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
-			return this.run(bot, fb);
+			return eventBotRunRepository.save(this.run(bot, fb));
 		} catch (FacebookException e1) {
 			e1.printStackTrace();
 		}
 
-		return eventBotRunRepository.save(new EventBotRun(bot, false, 0));
+		EventBotRun failedRun = new EventBotRun(bot, 0);
+		failedRun.setState(BotRunState.ERROR);
+		return eventBotRunRepository.save(failedRun);
 	}
 
 	private EventBotRun run(EventBot bot, Facebook fb) throws FacebookException {
@@ -111,11 +115,13 @@ public class EventBotService {
 					savedEventsCount++;
 				}
 			} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
-				ex.printStackTrace();
+				// ex.printStackTrace();
 			}
 		}
 
-		return eventBotRunRepository.save(new EventBotRun(bot, true, savedEventsCount));
+		EventBotRun run = new EventBotRun(bot, savedEventsCount);
+		run.setState(BotRunState.SUCCESS);
+		return run;
 	}
 
 	private com.pancisin.bookster.models.Event buildEvent(Event ev) {

@@ -47,6 +47,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import (reference) '~less/variables.less';
 .modal {
   display: block;
   .modal-dialog {
@@ -114,7 +115,7 @@ export default {
   padding: 15px 25px 15px 25px;
   line-height: 22px;
   font-size: 18px;
-  background-color: #3bafda;
+  background-color: @color-primary;
   color: #ffffff;
   text-align: left;
   margin: 0px;

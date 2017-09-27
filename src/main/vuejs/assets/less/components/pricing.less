@@ -1,6 +1,4 @@
-
 @import (reference) '../variables.less';
-
 .pricing-item {
   margin: 0 0 30px;
   position: relative;
@@ -74,7 +72,7 @@
   height: 120px;
   width: 120px;
   margin: 0px auto;
-  color: #3bafda;
+  color: @color-accent;
   background: rgba(59, 175, 218, 0.3);
   border-radius: 50%;
   border: 12px solid #fafafa;
@@ -128,7 +126,7 @@
     width: 100px;
     display: block;
     background: #79A70A;
-    background: linear-gradient(#3BAFDA 0%, #3bafda 100%);
+    background: linear-gradient(@color-accent 0%, @color-accent 100%);
     box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
     position: absolute;
     top: 19px;
@@ -139,10 +137,10 @@
       left: 0px;
       top: 100%;
       z-index: -1;
-      border-left: 3px solid #3bafda;
+      border-left: 3px solid @color-accent;
       border-right: 3px solid transparent;
       border-bottom: 3px solid transparent;
-      border-top: 3px solid #3bafda;
+      border-top: 3px solid @color-accent;
     }
     &::after {
       content: "";
@@ -151,9 +149,9 @@
       top: 100%;
       z-index: -1;
       border-left: 3px solid transparent;
-      border-right: 3px solid #3bafda;
+      border-right: 3px solid @color-accent;
       border-bottom: 3px solid transparent;
-      border-top: 3px solid #3bafda;
+      border-top: 3px solid @color-accent;
     }
   }
 }

@@ -144,6 +144,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .data-list {
   border: 1px solid #ccc;
   list-style-type: none;
@@ -163,7 +164,7 @@ export default {
       background-color: rgba(152, 166, 173, 0.1);
 
       a {
-        color: #3bafda;
+        color: @color-primary;
       }
     }
   }

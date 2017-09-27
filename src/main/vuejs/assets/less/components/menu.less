@@ -1,3 +1,5 @@
+@import (reference) '../variables.less';
+
 .wrapper {
   margin-top: 145px;
 }
@@ -14,28 +16,28 @@
   transition: all .5s ease;
   min-height: 62px;
   a.active {
-    color: #3bafda !important;
+    color: @color-accent !important;
     i {
-      // color: #3bafda !important;
+      // color: @color-accent !important;
     }
   }
   .has-submenu.active {
     a {
-      color: #3bafda;
+      color: @color-accent;
       i {
-        color: #3bafda;
+        color: @color-accent;
       }
     }
     .submenu {
       li.active {
         >a {
-          color: #3bafda;
+          color: @color-accent;
         }
       }
     }
   }
   .topbar-main {
-    background-color: #3bafda;
+    background-color: @color-accent;
     .logo {
       color: #ffffff !important;
       font-size: 18px;
@@ -176,7 +178,7 @@
     &:focus {
       background-color: transparent;
       span {
-        background-color: #3bafda;
+        background-color: @color-accent;
       }
     }
     .lines {
@@ -234,23 +236,23 @@
         padding-left: 20px;
         padding-right: 20px;
         &:hover {
-          color: #3bafda;
+          color: @color-accent;
           background-color: transparent;
           i {
-            color: #3bafda;
+            color: @color-accent;
           }
         }
         &:focus {
-          color: #3bafda;
+          color: @color-accent;
           background-color: transparent;
           i {
-            color: #3bafda;
+            color: @color-accent;
           }
         }
         &:active {
-          color: #3bafda;
+          color: @color-accent;
           i {
-            color: #3bafda;
+            color: @color-accent;
           }
         }
         i {
@@ -303,9 +305,9 @@
         }
         &:hover {
           a {
-            color: #3bafda;
+            color: @color-accent;
             i {
-              color: #3bafda;
+              color: @color-accent;
             }
           }
         }
@@ -360,7 +362,7 @@
               font-weight: 500;
               color: #494e53;
               &:hover {
-                color: #3bafda;
+                color: @color-accent;
               }
             }
             span {
@@ -450,7 +452,7 @@
               padding: 7px 20px;
               color: #797979;
               &:hover {
-                color: #3bafda;
+                color: @color-accent;
               }
             }
           }
@@ -497,7 +499,7 @@
       }
       >li.has-submenu.open {
         >a {
-          color: #3bafda;
+          color: @color-accent;
         }
       }
     }

@@ -2,7 +2,7 @@
   <div>
     <hero-unit>
       <h1 class="text-uppercase text-inverse">
-        Welcome, Patrik.
+        Welcome, {{ user.displayName }}.
       </h1>
     </hero-unit>
     <div class="container">
@@ -135,7 +135,7 @@ export default {
     Paginator, TabContainer, Tab, HeroUnit
   },
   computed: {
-    ...mapGetters(['authenticated'])
+    ...mapGetters(['authenticated', 'user'])
   },
   methods: {
     getEvents (page) {

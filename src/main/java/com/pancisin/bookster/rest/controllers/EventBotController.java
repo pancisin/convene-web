@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,13 +66,12 @@ public class EventBotController {
 		EventBot stored = eventBotRepository.findOne(bot_id);
 		return ResponseEntity.ok(stored.getRuns());
 	}
-	
 
 	@MessageMapping("/bot/{bot_id}/run")
 	public void runEventBot(@DestinationVariable("bot_id") UUID bot_id, Principal principal) {
 		EventBot stored = eventBotRepository.findOne(bot_id);
 		EventBotRun run = eventBotService.run(stored);
 		
-		webSocket.convertAndSendToUser(principal.getName(), "/queue/notifier", run);
+		webSocket.convertAndSendToUser(principal.getName(), "/queue/page.bots", run);
 	}
 }

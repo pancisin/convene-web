@@ -104,6 +104,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .section {
   padding-top: 120px;
   padding-bottom: 120px;
@@ -194,7 +195,7 @@ export default {
     margin-bottom: 20px;
     display: block;
     line-height: 36px;
-    color: #3bafda;
+    color: @color-accent;
   }
   .service-detail {
     p {
@@ -232,7 +233,7 @@ export default {
   color: #ffffff;
   .facts {
     i {
-      color: #3bafda;
+      color: @color-accent;
       font-size: 36px;
     }
   }

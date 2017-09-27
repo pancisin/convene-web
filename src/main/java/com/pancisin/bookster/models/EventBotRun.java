@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -13,6 +15,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.models.enums.BotRunState;
 
 @Entity
 @Table(name = "event_bots_runs")
@@ -28,31 +33,24 @@ public class EventBotRun {
 	private Calendar date;
 
 	@Column
-	private boolean success = false;
+	@JsonProperty(access = Access.READ_ONLY)
+	@Enumerated(EnumType.STRING)
+	private BotRunState state = BotRunState.SCHEDULED;
 
 	@Column
 	private int eventsCount;
-	
+
 	@JsonIgnore
 	@ManyToOne(optional = false)
 	private EventBot bot;
 
 	public EventBotRun() {
-		
-	}
-	
-	public EventBotRun(EventBot bot, boolean success, int eventsCount) {
-		this.bot = bot;
-		this.success = success;
-		this.eventsCount = eventsCount;
-	}
-	
-	public boolean isSuccess() {
-		return success;
+
 	}
 
-	public void setSuccess(boolean success) {
-		this.success = success;
+	public EventBotRun(EventBot bot, int eventsCount) {
+		this.bot = bot;
+		this.eventsCount = eventsCount;
 	}
 
 	public EventBot getBot() {
@@ -77,5 +75,13 @@ public class EventBotRun {
 
 	public void setEventsCount(int eventsCount) {
 		this.eventsCount = eventsCount;
+	}
+
+	public BotRunState getState() {
+		return state;
+	}
+
+	public void setState(BotRunState state) {
+		this.state = state;
 	}
 }

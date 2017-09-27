@@ -88,6 +88,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .wizard {
   .wizard-navigation {
     margin: 0;
@@ -122,7 +123,7 @@ export default {
         }
 
         .number-circle {
-          background-color: #3bafda;
+          background-color: @color-primary;
           color: #fff;
         }
       }
