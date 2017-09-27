@@ -8,9 +8,6 @@
           <thead>
             <tr>
               <th>
-                UUID
-              </th>
-              <th>
                 Facebook page
               </th>
               <th class="text-center">
@@ -27,19 +24,17 @@
           <tbody>
             <tr v-for="(bot, index) in bots" :key="bot.id">
               <td>
+                <h4 v-if="bot.loading" class="text-danger">Loading...</h4>
                 <router-link :to="{ name: 'event-bot', params: { bot_id: bot.id } }">
-                  {{ bot.id }}
+                  {{ bot.fbPageId }}
                 </router-link>
-              </td>
-              <td>
-                {{ bot.fbPageId }}
               </td>
               <td class="text-center">
                 {{ bot.runsCount }}
               </td>
               <td>
                 <span v-if="bot.lastRun != null">
-                  <i class="fa fa-check text-success" v-if="bot.lastRun.success"></i>
+                  <i class="fa fa-check text-success" v-if="bot.lastRun.state.name === 'SUCCESS'"></i>
                   <i class="fa fa-exclamation-triangle text-danger" v-else></i>
                   <b>{{ bot.lastRun.date | moment('L LT') }}</b>
                 </span>
@@ -92,11 +87,19 @@ export default {
 
     this.connectWM('stomp').then(frame => {
       this.$stompClient.subscribe('/user/queue/page.bots', response => {
-        let message = JSON.parse(response.body);
-        this.$emit('messageReceived', message);
+        let run = JSON.parse(response.body);
 
-        if (this.collapsed) {
-          this.$info('notification.chat.message', message.content);
+        if (run != null) {
+          this.bots.forEach((bot, index) => {
+            if (bot.id === run.bot.id) {
+              this.bots.splice(index, 1, {
+                ...bot,
+                loading: false,
+                lastRun: run,
+                runsCount: bot.runsCount + 1
+              });
+            }
+          })
         }
       });
     });
@@ -128,8 +131,18 @@ export default {
       // });
 
       this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({})).then(() => {
-        console.log('message sent');
+        this.setLoading(bot_id, true);
       });
+    },
+    setLoading (bot_id, value) {
+      this.bots.forEach((bot, index) => {
+        if (bot.id === bot_id) {
+          this.bots.splice(index, 1, {
+            ...bot,
+            loading: value
+          });
+        }
+      })
     }
   }
 };

@@ -24,7 +24,7 @@ import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.repository.EventBotRepository;
 
 @RestController
-@PreAuthorize("hasRole('SUPERADMIN')")
+//@PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/event-bot/{bot_id}")
 public class EventBotController {
 

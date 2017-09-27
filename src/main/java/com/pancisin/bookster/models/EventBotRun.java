@@ -15,8 +15,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.pancisin.bookster.models.enums.BotRunState;
 
 @Entity
@@ -40,7 +42,7 @@ public class EventBotRun {
 	@Column
 	private int eventsCount;
 
-	@JsonIgnore
+	@JsonIgnoreProperties({"fbPageId", "active", "ceated", "lastRun", "runsCount" })
 	@ManyToOne(optional = false)
 	private EventBot bot;
 
