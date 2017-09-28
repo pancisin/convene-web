@@ -14,6 +14,8 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -41,7 +43,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/stomp").setAllowedOrigins("*").withSockJS();
 	}
-
+	
 	@Override
 	public void configureClientInboundChannel(ChannelRegistration registration) {
 		registration.setInterceptors(new ChannelInterceptorAdapter() {
@@ -53,9 +55,14 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 				if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 					List<String> headers = accessor.getNativeHeader(tokenHeader);
 					String token = headers.get(0);
-					User user = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
+					User parsedUser = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
 
-					accessor.setUser((Principal) user);
+					String[] roleArray = new String[1];
+					roleArray[0] = parsedUser.getRole().getName();
+
+					List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(roleArray);
+
+					accessor.setUser(new User(parsedUser.getId(), parsedUser.getEmail(), token, authorityList));
 				}
 
 				return message;

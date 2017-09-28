@@ -24,7 +24,6 @@
           <tbody>
             <tr v-for="(bot, index) in bots" :key="bot.id">
               <td>
-                <h4 v-if="bot.loading" class="text-danger">Loading...</h4>
                 <router-link :to="{ name: 'event-bot', params: { bot_id: bot.id } }">
                   {{ bot.fbPageId }}
                 </router-link>
@@ -33,13 +32,17 @@
                 {{ bot.runsCount }}
               </td>
               <td>
-                <span v-if="bot.lastRun != null">
+                <span v-if="bot.lastRun != null && !bot.running">
                   <i class="fa fa-check text-success" v-if="bot.lastRun.state.name === 'SUCCESS'"></i>
                   <i class="fa fa-exclamation-triangle text-danger" v-else></i>
                   <b>{{ bot.lastRun.date | moment('L LT') }}</b>
                 </span>
+                <span v-if="bot.running">
+                  <i class="fa fa-clock-o text-warning"></i>
+                  <b>Running...</b>
+                </span>
               </td>
-              <td class="text-center" v-if="editable">
+              <td class="text-center" v-if="editable && !bot.running">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
                 <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
               </td>
@@ -94,12 +97,12 @@ export default {
             if (bot.id === run.bot.id) {
               this.bots.splice(index, 1, {
                 ...bot,
-                loading: false,
+                running: run.state.name !== 'SUCCESS',
                 lastRun: run,
-                runsCount: bot.runsCount + 1
+                runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
               });
             }
-          })
+          });
         }
       });
     });
@@ -119,30 +122,7 @@ export default {
       });
     },
     run (bot_id) {
-      // this.loading = true;
-      // EventBotApi.run(bot_id, run => {
-      //   let index = this.bots.map(b => b.id).indexOf(bot_id);
-      //   this.bots.splice(index, 1, {
-      //     ...this.bots[index],
-      //     lastRun: run,
-      //     runsCount: this.bots[index].runsCount + 1
-      //   });
-      //   this.loading = false;
-      // });
-
-      this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({})).then(() => {
-        this.setLoading(bot_id, true);
-      });
-    },
-    setLoading (bot_id, value) {
-      this.bots.forEach((bot, index) => {
-        if (bot.id === bot_id) {
-          this.bots.splice(index, 1, {
-            ...bot,
-            loading: value
-          });
-        }
-      })
+      this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({}));
     }
   }
 };

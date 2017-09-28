@@ -40,7 +40,7 @@ public class EventBotRun {
 	private BotRunState state = BotRunState.SCHEDULED;
 
 	@Column
-	private int eventsCount;
+	private int eventsCount = 0;
 
 	@JsonIgnoreProperties({"fbPageId", "active", "ceated", "lastRun", "runsCount" })
 	@ManyToOne(optional = false)
@@ -50,9 +50,9 @@ public class EventBotRun {
 
 	}
 
-	public EventBotRun(EventBot bot, int eventsCount) {
+	public EventBotRun(EventBot bot, BotRunState state) {
 		this.bot = bot;
-		this.eventsCount = eventsCount;
+		this.state = state;
 	}
 
 	public EventBot getBot() {

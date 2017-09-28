@@ -1,10 +1,6 @@
 package com.pancisin.bookster.security.utils;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.User;
@@ -24,16 +20,13 @@ public class JwtUtil {
 	public User parseToken(String token) {
 		try {
 			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+      
+			User u = new User();
+      u.setEmail(body.getSubject());
+      u.setId(Long.parseLong((String) body.get("userId")));
+      u.setRole(Role.valueOf((String) body.get("role")));
 
-			String[] roleArray = new String[1];
-			roleArray[0] = (String) body.get("role");
-			
-			List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(roleArray);
-			
-			User user = new User(Long.parseLong((String) body.get("userId")), body.getSubject(), token, authorityList);
-      user.setRole(Role.valueOf((String) body.get("role")));
-			
-			return user;
+      return u;
 		} catch (JwtException | ClassCastException e) {
 			System.err.println(e.getMessage());
 		}

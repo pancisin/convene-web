@@ -85,8 +85,7 @@ public class EventBotService {
 			e1.printStackTrace();
 		}
 
-		EventBotRun failedRun = new EventBotRun(bot, 0);
-		failedRun.setState(BotRunState.ERROR);
+		EventBotRun failedRun = new EventBotRun(bot, BotRunState.ERROR);
 		return eventBotRunRepository.save(failedRun);
 	}
 
@@ -119,8 +118,8 @@ public class EventBotService {
 			}
 		}
 
-		EventBotRun run = new EventBotRun(bot, savedEventsCount);
-		run.setState(BotRunState.SUCCESS);
+		EventBotRun run = new EventBotRun(bot, BotRunState.SUCCESS);
+		run.setEventsCount(savedEventsCount);
 		return run;
 	}
 
