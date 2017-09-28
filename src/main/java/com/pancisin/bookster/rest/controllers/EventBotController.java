@@ -24,7 +24,7 @@ import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.EventBotRepository;
 
 @RestController
-//@PreAuthorize("hasRole('SUPERADMIN')")
+// @PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/event-bot/{bot_id}")
 public class EventBotController {
 
@@ -33,10 +33,10 @@ public class EventBotController {
 
 	@Autowired
 	private EventBotService eventBotService;
-	
+
 	@Autowired
 	private SimpMessagingTemplate webSocket;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getEventBot(@PathVariable UUID bot_id) {
 		return ResponseEntity.ok(eventBotRepository.findOne(bot_id));
@@ -54,13 +54,20 @@ public class EventBotController {
 		stored.setActive(!stored.isActive());
 		return ResponseEntity.ok(eventBotRepository.save(stored));
 	}
-	
+
+	@GetMapping("/run")
+	public ResponseEntity<?> getRuns(@PathVariable UUID bot_id) {
+		EventBot stored = eventBotRepository.findOne(bot_id);
+		return ResponseEntity.ok(stored.getRuns());
+	}
+
 	@MessageMapping("/bot/{bot_id}/run")
 	public void runEventBot(@DestinationVariable("bot_id") UUID bot_id, Principal principal) {
 		EventBot stored = eventBotRepository.findOne(bot_id);
 
-		webSocket.convertAndSendToUser(principal.getName(), "/queue/page.bots", new EventBotRun(stored, BotRunState.RUNNING));
-		
+		webSocket.convertAndSendToUser(principal.getName(), "/queue/page.bots",
+				new EventBotRun(stored, BotRunState.RUNNING));
+
 		EventBotRun run = eventBotService.run(stored);
 		webSocket.convertAndSendToUser(principal.getName(), "/queue/page.bots", run);
 	}

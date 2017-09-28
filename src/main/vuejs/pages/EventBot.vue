@@ -16,21 +16,39 @@
 
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
-
-      <hr />
-
-      <ul class="list-unstyled">
-        <li v-for="(run, index) in runs" :key="index">
-          <i class="fa fa-check text-success" v-if="run.success"></i>
-          <i class="fa fa-times text-danger" v-else></i> {{ run.date | moment('L LT') }} - {{ run.eventsCount }}
-        </li>
-      </ul>
+    </panel>
+    <panel type="table">
+      <span slot="title">Recent runs</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              State
+            </th>
+            <th>
+              Events imported
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(run, index) in runs" :key="index">
+            <td>
+              <bot-run-indicator :run="run" />
+            </td>
+            <td>
+              {{ run.eventsCount }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </panel>
   </div>
 </template>
 
 <script>
 import EventBotApi from 'api/event-bot.api';
+import { BotRunIndicator } from 'elements';
+
 export default {
   name: 'event-bot',
   inject: ['provider'],
@@ -45,6 +63,9 @@ export default {
       bot: {},
       runs: []
     };
+  },
+  components: {
+    BotRunIndicator
   },
   computed: {
     api () {

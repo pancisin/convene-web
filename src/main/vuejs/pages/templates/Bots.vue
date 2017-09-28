@@ -32,17 +32,9 @@
                 {{ bot.runsCount }}
               </td>
               <td>
-                <span v-if="bot.lastRun != null && !bot.running">
-                  <i class="fa fa-check text-success" v-if="bot.lastRun.state.name === 'SUCCESS'"></i>
-                  <i class="fa fa-exclamation-triangle text-danger" v-else></i>
-                  <b>{{ bot.lastRun.date | moment('L LT') }}</b>
-                </span>
-                <span v-if="bot.running">
-                  <i class="fa fa-clock-o text-warning"></i>
-                  <b>Running...</b>
-                </span>
+                <bot-run-indicator v-if="bot.lastRun != null" :run="bot.lastRun" />
               </td>
-              <td class="text-center" v-if="editable && !bot.running">
+              <td class="text-center" v-if="editable && (bot.lastRun == null || bot.lastRun.state.name !== 'RUNNING')">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
                 <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
               </td>
@@ -63,6 +55,8 @@
 
 <script>
 import EventBotApi from 'api/event-bot.api';
+import { BotRunIndicator } from 'elements';
+
 export default {
   name: 'bots',
   inject: ['provider'],
@@ -82,6 +76,9 @@ export default {
       }
     }
   },
+  components: {
+    BotRunIndicator
+  },
   watch: {
     'api': 'getBots'
   },
@@ -97,7 +94,6 @@ export default {
             if (bot.id === run.bot.id) {
               this.bots.splice(index, 1, {
                 ...bot,
-                running: run.state.name !== 'SUCCESS',
                 lastRun: run,
                 runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
               });
