@@ -96,13 +96,12 @@ export default {
     },
     getRuns () {
       EventBotApi.getRuns(this.bot.id, runs => {
+        runs.sort((a, b) => {
+          return a.date < b.date ? 1 : -1;
+        });
         this.runs = runs;
       });
     }
   }
 };
 </script>
-
-<style>
-
-</style>

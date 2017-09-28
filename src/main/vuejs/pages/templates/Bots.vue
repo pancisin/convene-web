@@ -66,7 +66,8 @@ export default {
   data () {
     return {
       bots: [],
-      loading: false
+      loading: false,
+      subscription: null
     };
   },
   computed: {
@@ -86,7 +87,7 @@ export default {
     this.getBots();
 
     this.connectWM('stomp').then(frame => {
-      this.$stompClient.subscribe('/user/queue/page.bots', response => {
+      this.subscription = this.$stompClient.subscribe('/user/queue/page.bots', response => {
         let run = JSON.parse(response.body);
 
         if (run != null) {
@@ -97,17 +98,23 @@ export default {
                 lastRun: run,
                 runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
               });
+
+              this.sortBots();
             }
           });
         }
       });
     });
   },
+  beforeDestroy () {
+    this.subscription.unsubscribe();
+  },
   methods: {
     getBots () {
       this.loading = true;
       this.api.getBots(bots => {
         this.bots = bots;
+        this.sortBots();
         this.loading = false;
       });
     },
@@ -119,6 +126,18 @@ export default {
     },
     run (bot_id) {
       this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({}));
+    },
+    sortBots () {
+      this.bots.sort((a, b) => {
+        if (a.lastRun == null) {
+          return 1;
+        } else if (b.lastRun == null) {
+          return -1;
+        } else {
+          console.log(a);
+          return a.lastRun.date < b.lastRun.date ? 1 : -1;
+        }
+      });
     }
   }
 };

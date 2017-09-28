@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -31,7 +32,7 @@ public class EventBotRun {
 	@Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
 	private UUID id;
 
-	@Column(name = "date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+	@Column(name = "date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)
 	private Calendar date;
 
 	@Column
@@ -53,6 +54,11 @@ public class EventBotRun {
 	public EventBotRun(EventBot bot, BotRunState state) {
 		this.bot = bot;
 		this.state = state;
+	}
+	
+	@PrePersist
+	private void onCreate() {
+		this.date = Calendar.getInstance();
 	}
 
 	public EventBot getBot() {
