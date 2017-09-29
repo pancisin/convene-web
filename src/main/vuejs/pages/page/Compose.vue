@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <categorizer :category.sync="page.category" :branch.sync="page.branch" />
+            <categorizer :category.sync="page.category" :branch.sync="page.branch" required />
           </div>
         </div>
 
@@ -42,28 +42,14 @@
 <script>
 import { TextEditor, ImageUpload, Categorizer } from 'elements';
 import { mapActions } from 'vuex';
-import PublicApi from 'api/public.api';
 
 export default {
   name: 'page-compose',
   props: {
     page: Object
   },
-  data () {
-    return {
-      categories: [],
-      branches: []
-    };
-  },
   components: {
     TextEditor, ImageUpload, Categorizer
-  },
-  created () {
-    this.getCategories();
-  },
-  watch: {
-    'page.category': 'getBranches',
-    'page': 'getCategories'
   },
   methods: {
     ...mapActions([
@@ -72,18 +58,6 @@ export default {
     submit () {
       this.updatePage(this.page).then(page => {
         this.$success('notification.page.updated' + page.name);
-      });
-    },
-    getCategories () {
-      this.branches = [];
-      PublicApi.getCategories(categories => {
-        this.categories = categories;
-      });
-    },
-    getBranches () {
-      if (this.page.category == null) return;
-      PublicApi.getBranches(this.page.category.id, branches => {
-        this.branches = branches;
       });
     }
   }

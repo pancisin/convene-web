@@ -1,10 +1,14 @@
 import UserApi from 'api/user.api';
 import PageApi from 'api/page.api';
+import PublicApi from 'api/public.api';
 import * as types from 'store/mutation-types';
 
 const state = {
   pages: [],
-  loadingPages: false
+  loadingPages: false,
+  categories: [],
+  loadingCategories: false,
+  loadingBranches: false
 };
 
 const getters = {
@@ -18,7 +22,21 @@ const getters = {
     if (index !== -1) {
       return state.pages[index];
     } else return null;
-  }
+  },
+  categories: state => state.categories,
+  getBranchesByCategoryId: state => id => {
+    let branches = [];
+
+    state.categories.forEach(c => {
+      if (c.id === id) {
+        branches = c.branches;
+      }
+    });
+
+    return branches;
+  },
+  loadingCategories: state => state.loadingCategories,
+  loadingBranches: state => state.loadingBranches
 };
 
 const actions = {
@@ -70,6 +88,22 @@ const actions = {
     });
 
     commit(types.LOADING_PAGES, true);
+  },
+  initializeCategories ({ commit }) {
+    commit(types.SET_CATEGORIES_LOADING, true);
+
+    PublicApi.getCategories(categories => {
+      commit(types.SET_CATEGORIES, { categories });
+      commit(types.SET_CATEGORIES_LOADING, false);
+    });
+  },
+  initalizeBranches ({ commit }, category_id) {
+    commit(types.SET_BRANCHES_LOADING, true);
+
+    PublicApi.getBranches(category_id, branches => {
+      commit(types.SET_BRANCHES, { category_id, branches });
+      commit(types.SET_BRANCHES_LOADING, false);
+    });
   }
 };
 
@@ -101,6 +135,29 @@ const mutations = {
 
   [types.LOADING_PAGES] (state, loading_state) {
     state.loadingPages = loading_state;
+  },
+
+  [types.SET_CATEGORIES] (state, { categories }) {
+    state.categories = categories;
+  },
+
+  [types.SET_BRANCHES] (state, { category_id, branches }) {
+    state.categories.forEach((c, index) => {
+      if (c.id === category_id) {
+        state.categories.splice(index, 1, {
+          ...c,
+          branches
+        });
+      }
+    });
+  },
+
+  [types.SET_CATEGORIES_LOADING] (state, value) {
+    state.loadingCategories = value;
+  },
+
+  [types.SET_BRANCHES_LOADING] (state, value) {
+    state.loadingBranches = value;
   }
 };
 

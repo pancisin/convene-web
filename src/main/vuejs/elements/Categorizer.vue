@@ -1,8 +1,8 @@
 <template>
-  <form data-vv-scope="category" @submit.prevent="e => {}">
+  <form @submit.prevent="e => {}" v-loading="loadingCategories || loadingBranches">
     <div class="form-group" :class="{ 'has-error' : errors.has('category') }">
       <label class="control-label">{{ $t('page.category') }}</label>
-      <select v-model="categoryId" class="form-control" name="category" v-validate data-vv-rules="required" @change="updateCategory">
+      <select v-model="categoryId" class="form-control" name="category" v-validate :data-vv-rules="required ? 'required' : ''" @change="updateCategory">
         <option v-for="cat in categories" :value="cat.id" :key="cat.id">{{ $t('category.' + cat.code + '.default') }}</option>
       </select>
       <span class="text-danger" v-if="errors.has('category')">{{ errors.first('category') }}</span>
@@ -10,7 +10,7 @@
 
     <div class="form-group" v-if="category != null" :class="{ 'has-error' : errors.has('branch') }">
       <label class="control-label">{{ $t('page.branch') }}</label>
-      <select v-model="branchId" class="form-control" name="branch" v-validate data-vv-rules="required" @change="updateBranch">
+      <select v-model="branchId" class="form-control" name="branch" v-validate :data-vv-rules="required ? 'required' : ''" @change="updateBranch">
         <option v-for="branch in branches" :value="branch.id" :key="branch.id">{{ $t('category.' + category.code + '.' + branch.code) }}</option>
       </select>
       <span class="text-danger" v-if="errors.has('branch')">{{ errors.first('branch') }}</span>
@@ -30,8 +30,19 @@ export default {
     };
   },
   props: {
-    category: Object,
-    branch: Object
+    category: {
+      type: Object,
+      default () {
+        return {};
+      }
+    },
+    branch: {
+      type: Object,
+      default () {
+        return {};
+      }
+    },
+    required: Boolean
   },
   watch: {
     category () {
@@ -42,15 +53,20 @@ export default {
     }
   },
   created () {
-    this.categoryId = this.category.id;
-    this.branchId = this.branch.id;
+    if (this.category != null) {
+      this.categoryId = this.category.id;
+    }
+
+    if (this.branch != null) {
+      this.branchId = this.branch.id;
+    }
 
     if (this.categories.length === 0) {
       this.initializeCategories();
     }
   },
   computed: {
-    ...mapGetters(['categories', 'getBranchesByCategoryId']),
+    ...mapGetters(['categories', 'getBranchesByCategoryId', 'loadingCategories', 'loadingBranches']),
     branches () {
       if (this.category != null) {
         let branches = this.getBranchesByCategoryId(this.category.id);
@@ -74,6 +90,7 @@ export default {
       });
 
       this.$emit('update:category', category);
+      this.$emit('change', {});
     },
     updateBranch () {
       let branch = null;
@@ -84,6 +101,7 @@ export default {
       });
 
       this.$emit('update:branch', branch);
+      this.$emit('change', {});
     }
   }
 };
