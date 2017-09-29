@@ -30,6 +30,7 @@ import MasonryItem from './MasonryItem';
 import EventsList from './EventsList';
 import HeroUnit from './HeroUnit';
 import BotRunIndicator from './BotRunIndicator';
+import Categorizer from './Categorizer';
 
 import widgets from './widgets';
 
@@ -66,5 +67,6 @@ export {
   MasonryItem,
   EventsList,
   HeroUnit,
-  BotRunIndicator
+  BotRunIndicator,
+  Categorizer
 };

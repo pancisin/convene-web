@@ -13,27 +13,15 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="form-group">
-              <label class="control-label">{{ $t('page.category') }}</label>
-              <select v-model="page.category" class="form-control">
-                <option v-for="cat in categories" :value="cat" :key="cat">{{ $t('category.' + cat.code + '.default') }}</option>
-              </select>
-            </div>
-  
-            <div class="form-group" v-if="page.category != null">
-              <label class="control-label">{{ $t('page.branch') }}</label>
-              <select v-model="page.branch" class="form-control">
-                <option v-for="branch in branches" :value="branch" :key="branch">{{ $t('category.' + page.category.code + '.' + branch.code) }}</option>
-              </select>
-            </div>
+            <categorizer :category.sync="page.category" :branch.sync="page.branch" />
           </div>
         </div>
-  
+
         <div class="form-group">
           <label class="control-label">{{ $t('page.summary') }}</label>
           <text-editor v-model="page.summary"></text-editor>
         </div>
-  
+
         <div class="text-center">
           <button class="btn btn-rounded btn-danger" @click="togglePagePublished(page)" v-if="page.state == 'PUBLISHED'">Deactivate</button>
           <a class="btn btn-rounded btn-success" @click="togglePagePublished(page)" v-if="page.state == 'DEACTIVATED'">
@@ -52,7 +40,7 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload } from 'elements';
+import { TextEditor, ImageUpload, Categorizer } from 'elements';
 import { mapActions } from 'vuex';
 import PublicApi from 'api/public.api';
 
@@ -68,7 +56,7 @@ export default {
     };
   },
   components: {
-    TextEditor, ImageUpload
+    TextEditor, ImageUpload, Categorizer
   },
   created () {
     this.getCategories();

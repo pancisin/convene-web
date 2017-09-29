@@ -20,3 +20,6 @@ export const SET_CONTACTS = 'SET_CONTACTS';
 
 export const ADD_TOAST = 'ADD_TOAST';
 export const REMOVE_TOAST = 'REMOVE_TOAST';
+
+export const SET_CATEGORIES = 'SET_CATEGORIES';
+export const SET_BRANCHES = 'SET_BRANCHES';
