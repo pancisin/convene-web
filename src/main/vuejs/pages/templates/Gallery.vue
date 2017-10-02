@@ -26,15 +26,20 @@
               </div>
             </form>
           </div>
+
+          <b>~ {{ usedStorage | bytes }} / {{ limit | bytes }} used</b>
+          <div class="progress progress-striped">
+            <div class="bar progress-bar progress-bar-primary" :style="progressBarStyle"></div>
+          </div>
         </panel>
       </div>
     </div>
 
-    <div class="gallery-masonry" v-loading="loading" :class="{ 'columns-4' : columns == 4 }">
-      <div class="gallery-item" v-for="item in gallery" :key="item.id">
+    <masonry v-loading="loading" :columns="columns">
+      <masonry-item v-for="item in gallery" :key="item.id" class="gallery-item" @contextmenu.prevent="$refs.menu.open($event, item)">
         <img :src="item.path" class="img img-thumbnail">
         <h5 v-show="item.title">{{ item.title }}
-          <small class="pull-right label label-info">({{ Math.round(item.size / 1000) }} kB)</small>
+          <sup class="pull-right label label-primary">({{ item.size | bytes }})</sup>
         </h5>
 
         <p v-show="item.description">{{ item.description }}</p>
@@ -49,25 +54,55 @@
             </a>
           </div>
         </div>
-      </div>
-    </div>
+      </masonry-item>
+    </masonry>
+
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li :class="{ 'disabled' : !editable }">
+            <a>
+              Edit
+            </a>
+          </li>
+          <li class="separator"></li>
+          <li :class="{ 'disabled' : !editable }">
+            <a @click="deleteImage(props.data.id)">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
 
   </div>
 </template>
 
 <script>
-import { ImageUpload } from 'elements';
+import { ImageUpload, Masonry, MasonryItem } from 'elements';
 import MediaApi from 'api/media.api';
+import { bytes } from 'filters';
 
 export default {
   name: 'event-gallery',
-  props: ['editable'],
   inject: ['provider'],
   props: {
     columns: {
       type: Number,
       default () {
         return 3;
+      }
+    },
+    editable: {
+      type: Boolean,
+      default () {
+        return true;
+      }
+    },
+    limit: {
+      type: Number,
+      default () {
+        return 10000000;
       }
     }
   },
@@ -77,10 +112,10 @@ export default {
       galleryItem: {},
       loading: false,
       uploading: false
-    }
+    };
   },
   components: {
-    ImageUpload
+    ImageUpload, Masonry, MasonryItem
   },
   created () {
     this.getGallery();
@@ -88,10 +123,25 @@ export default {
   computed: {
     api () {
       return this.provider.api;
+    },
+    usedStorage () {
+      if (this.gallery !== null && this.gallery.length > 0) {
+        return this.gallery.reduce((ac, current) => {
+          return ac + current.size;
+        }, 0);
+      } else return 0;
+    },
+    progressBarStyle () {
+      return {
+        width: `${this.usedStorage / this.limit * 100}%`
+      };
     }
   },
   watch: {
     'api': 'getGallery'
+  },
+  filters: {
+    bytes
   },
   methods: {
     getGallery () {
@@ -118,108 +168,63 @@ export default {
       });
     },
     deleteImage (uuid) {
-      this.$prompt('Delete image ?', 'You are going to delete this image completely. Are you sure ?', () => {
+      this.$prompt('notification.media.delete_prompt', () => {
         MediaApi.deleteMedia(uuid, gallery_item => {
           this.gallery = this.gallery.filter(g => {
             return g.id !== uuid;
-          })
-        })
-      })
+          });
+        });
+      });
     },
     sortGallery () {
       this.gallery.sort((a, b) => {
-        if (a.created === b.created)
+        if (a.created === b.created) {
           return 0;
+        }
 
         return a.created < b.created ? 1 : -1;
       });
-    },
-    displayBytes(bytes) {
-
     }
   }
 };
 </script>
 
 <style lang="less">
-.gallery-masonry {
-  padding: 0;
-  -moz-column-gap: 1.5em;
-  -webkit-column-gap: 1.5em;
-  column-gap: 1.5em;
+.gallery-item {
+  &:hover .controls-wrapper .controls {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-  .gallery-item {
-    display: inline-block;
-    margin: 0 0 1.5em;
+  .controls-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    font-size: 12px;
-    position: relative;
+    overflow: hidden;
+    bottom: 0;
+    z-index: 1;
 
-    &:hover .controls-wrapper .controls {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 
-    .controls-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      bottom: 0;
-      z-index: 1;
+    .controls {
+      transform: translateY(-50%);
+      background-color: #fff;
+      opacity: 0;
+      transition: all .3s ease;
+      border-bottom: 1px solid #eee;
+      box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
 
-      .controls {
-        transform: translateY(-50%);
-        background-color: #fff;
-        opacity: 0;
-        transition: all .3s ease;
-        border-bottom: 1px solid #eee;
-        box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+      a {
+        &.btn {
+          border-radius: 0;
+        }
 
-        a {
-          &:hover {
-            background-color: #eee;
-          }
+        &:hover {
+          background-color: #eee;
         }
       }
-    }
-
-    .img-thumbnail {
-      box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
-    }
-  }
-}
-
-@media only screen and (min-width: 700px) {
-  .gallery-masonry {
-    -moz-column-count: 2;
-    -webkit-column-count: 2;
-    column-count: 2;
-  }
-}
-
-@media only screen and (min-width: 900px) {
-  .gallery-masonry {
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-    column-count: 3;
-  }
-}
-
-@media only screen and (min-width: 1100px) {
-  .gallery-masonry {
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-    column-count: 3;
-
-    &.columns-4 {
-      -moz-column-count: 4;
-      -webkit-column-count: 4;
-      column-count: 4;
     }
   }
 }

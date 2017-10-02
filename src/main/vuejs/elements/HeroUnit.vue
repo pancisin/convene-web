@@ -61,7 +61,7 @@ export default {
 .color_loop (@n, @index: 0) when (@index <=@n) {
   @keyframeSel: @index/@n * 100%;
   @{keyframeSel} {
-    background-color: desaturate(spin(@color-primary, @index * 50), 10%);
+    background-color: desaturate(spin(@color-primary, @index * 50), 20%);
   }
   .color_loop(@n, (@index + 1));
 }

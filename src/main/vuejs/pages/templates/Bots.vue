@@ -3,7 +3,6 @@
     <div class="col-md-10">
       <panel type="table">
         <span slot="title">Bots</span>
-        <!-- <span slot="subtitle">Here are all ya robots ! Release them all at once...</span> -->
         <table class="table" v-loading="loading">
           <thead>
             <tr>
@@ -134,7 +133,6 @@ export default {
         } else if (b.lastRun == null) {
           return -1;
         } else {
-          console.log(a);
           return a.lastRun.date < b.lastRun.date ? 1 : -1;
         }
       });

@@ -1,20 +1,18 @@
 <template>
-  <panel type="table">
+  <panel>
     <span slot="title">
       {{ title }}
     </span>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>User</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="activity in activities" :key="activity.id">
-          <td>{{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="timeline-2">
+      <div class="time-item" v-for="activity in activities" :key="activity.id">
+        <div class="item-info">
+          <small class="text-muted">{{ activity.created | moment('from') }}</small>
+          <p>
+            {{ activity.user }} {{ $t(activity.type.code) }} {{ $t('activity.target.conference') }} {{ activity.created | moment('from') }}.
+          </p>
+        </div>
+      </div>
+    </div>
   </panel>
 </template>
 

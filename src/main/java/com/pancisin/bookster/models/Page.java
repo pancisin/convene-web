@@ -109,8 +109,8 @@ public class Page implements IAuthor {
 
 	@JsonView(Summary.class)
 	public Category getCategory() {
-		if (getBranch() != null)
-			return getBranch().getCategory();
+		if (this.getBranch() != null)
+			return this.getBranch().getCategory();
 
 		return null;
 	}

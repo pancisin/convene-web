@@ -38,19 +38,19 @@
                 </div>
               </div>
               <div class="col-md-8 m-b-10">
-                <div v-if="event.place != null" class="map-container">
-                  <address class="event-address">
-                    <strong v-text="event.place.name"></strong>
-                    <br> {{ event.place.address.street + " " + event.place.address.number }}
-                    <br> {{ event.place.address.zip + " " + event.place.address.city }}
-                    <br> {{ event.place.address.state }}
-                  </address>
-
-                  <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
-                </div>
-
                 <div v-html="event.summary"></div>
               </div>
+            </div>
+
+            <div v-if="event.place != null" class="map-container">
+              <address class="event-address">
+                <strong v-text="event.place.name"></strong>
+                <br> {{ event.place.address.street + " " + event.place.address.number }}
+                <br> {{ event.place.address.zip + " " + event.place.address.city }}
+                <br> {{ event.place.address.state }}
+              </address>
+
+              <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
             </div>
 
             <masonry columns="4">

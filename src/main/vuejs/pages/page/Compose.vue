@@ -3,7 +3,7 @@
     <div class="col-md-8">
       <panel type="default">
         <span slot="title">
-          {{ $t('admin.page.overview') }}
+          {{ $t('admin.page.settings') }}
         </span>
         <div class="row">
           <div class="col-md-6">
