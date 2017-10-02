@@ -441,6 +441,9 @@ export default [
     meta: {
       title: 'List of articles'
     },
+    redirect: {
+      name: 'system.list.articles'
+    },
     children: [
       {
         path: 'create-article',
@@ -456,14 +459,18 @@ export default [
       {
         path: 'articles',
         name: 'system.list.articles',
-        component: resolve => require(['../pages/templates/Articles.vue'], resolve)
+        component: resolve => require(['../pages/templates/Articles.vue'], resolve),
+        props: {
+          editable: true,
+          insertable: true
+        }
       }
     ]
   },
   {
     path: 'lists',
     component: resolve => require(['../pages/ArticlesLists.vue'], resolve),
-    name: 'system.lists',
+    name: 'system.lists'
   },
   {
     path: '*',

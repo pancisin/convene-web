@@ -66,8 +66,8 @@
       </template>
     </context-menu>
 
-    <div class="text-center" v-if="editable">
-      <router-link :to="{ name: 'conference.article.create' }" class="btn btn-primary btn-rounded">
+    <div class="text-center" v-if="editable && insertable">
+      <router-link to="create-article" class="btn btn-primary btn-rounded">
         Create article
       </router-link>
     </div>
@@ -80,7 +80,11 @@ export default {
   name: 'articles-template',
   inject: ['provider'],
   props: {
-    editable: Boolean
+    editable: Boolean,
+    insertable: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {

@@ -1,37 +1,30 @@
 <template>
   <div v-if="list != null">
-    <!-- <panel>
-            <span slot="title">Create list of articles</span>
-            <form @submit.prevent="submit">
-              <div class="form-group">
-                <label for="articlesList.name">Name</label>
-                <input type="text" v-model="articlesList.name" class="form-control">
-              </div>
-
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-          </panel> -->
+    <h3 v-text="list.name" class="page-title"></h3>
 
     <div class="row">
       <div class="col-md-3">
-
-      </div>
-      <div class="col-md-9">
-        <transition name="slide-left" mode="out-in">
-          <router-view></router-view>
-        </transition>
-        <div class="text-center" v-if="injector != null">
-          <router-link :to="{ name: 'system.news.create-article' }" class="btn btn-default btn-rounded">
-            Create article
+        <div class="list-group mail-list">
+          <router-link :to="{ name: 'system.list.articles' }" class="list-group-item waves-effect">
+            <i class="fa fa-file" aria-hidden="true"></i> Articles
+          </router-link>
+          <router-link :to="{ name: 'system.list.create-article' }" class="list-group-item waves-effect">
+            <i class="fa fa-cog" aria-hidden="true"></i> Settings
           </router-link>
         </div>
+      </div>
+      <div class="col-md-9">
+        <keep-alive>
+          <transition name="fade-down" mode="out-in">
+            <router-view :key="$route.path"></router-view>
+          </transition>
+        </keep-alive>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ArticlesListApi from 'api/articles-list.api';
 import ArticlesListInjector from '../services/injectors/articles-list.injector';
 
 export default {
@@ -39,7 +32,6 @@ export default {
   data () {
     return {
       list: null,
-      articles: [],
       injector: null
     };
   },
@@ -59,11 +51,6 @@ export default {
     '$route': 'initializeInjector'
   },
   methods: {
-    submit () {
-      ArticlesListApi.postArticlesList(this.articlesList, (articlesList) => {
-        this.articlesLists.push(articlesList);
-      });
-    },
     initializeInjector () {
       var list_id = this.$route.params.list_id;
 

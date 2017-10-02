@@ -1,8 +1,44 @@
 <template>
-  <div class="list-group mail-list">
-    <router-link :to="{ name: 'system.list', params: { list_id: list.id } }" v-for="list in articlesLists" :key="list.id" class="list-group-item waves-effect">
-      {{ list.name }}
-    </router-link>
+  <div>
+    <panel type="table">
+      <span slot="title">News lists</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              UUID
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="list in articlesLists" :key="list.id">
+            <td>
+              <router-link :to="{ name: 'system.list', params: { list_id: list.id } }">
+                {{ list.name }}
+              </router-link>
+            </td>
+            <td>
+              {{ list.id }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </panel>
+
+    <panel>
+      <span slot="title">Create list of articles</span>
+      <form @submit.prevent="submit">
+        <div class="form-group">
+          <label for="articlesList.name">Name</label>
+          <input type="text" v-model="list.name" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </panel>
   </div>
 </template>
 
@@ -12,7 +48,8 @@ export default {
   name: 'articles-lists',
   data () {
     return {
-      articlesLists: []
+      articlesLists: [],
+      list: {}
     };
   },
   created () {
@@ -21,7 +58,18 @@ export default {
     });
   },
   methods: {
+    submit () {
+      ArticlesListApi.postArticlesList(this.list, (articlesList) => {
+        this.$router.push({
+          name: 'system.list',
+          params: {
+            list_id: articlesList.id
+          }
+        });
 
+        this.articlesLists.push(articlesList);
+      });
+    }
   }
 };
 </script>

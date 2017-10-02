@@ -13,4 +13,8 @@ export default class ArticlesListInjector {
   getArticles (success) {
     ArticlesListApi.getArticles(this.articlesList_id, success);
   }
+
+  getArticlesList (success) {
+    ArticlesListApi.getArticlesList(this.articlesList_id, success);
+  }
 };

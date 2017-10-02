@@ -6,7 +6,7 @@
 
     <panel>
       <div class="row">
-        <div class="col-md-8">
+        <div :class="{ 'col-md-8' : edit }">
           <div class="form-group">
             <label class="control-label">Title</label>
             <input type="text" class="form-control" v-model="article.title">
