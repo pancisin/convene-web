@@ -435,6 +435,37 @@ export default [
     }
   },
   {
+    path: 'list/:list_id',
+    component: resolve => require(['../pages/ArticlesList.vue'], resolve),
+    name: 'system.list',
+    meta: {
+      title: 'List of articles'
+    },
+    children: [
+      {
+        path: 'create-article',
+        name: 'system.list.create-article',
+        component: resolve => require(['../pages/Article.vue'], resolve),
+        props: route => ({
+          edit: false
+        }),
+        meta: {
+          title: 'Create article to list'
+        }
+      },
+      {
+        path: 'articles',
+        name: 'system.list.articles',
+        component: resolve => require(['../pages/templates/Articles.vue'], resolve)
+      }
+    ]
+  },
+  {
+    path: 'lists',
+    component: resolve => require(['../pages/ArticlesLists.vue'], resolve),
+    name: 'system.lists',
+  },
+  {
     path: '*',
     component: resolve => require(['../pages/error/404.vue'], resolve)
   }
