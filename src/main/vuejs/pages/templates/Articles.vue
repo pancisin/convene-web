@@ -47,6 +47,11 @@
           </li>
           <li class="separator"></li>
           <li v-if="editable">
+            <a @click="togglePublished(props.data.id)">
+              Toggle published
+            </a>
+          </li>
+          <li v-if="editable">
             <router-link :to="{ name: 'article', params: { article_id: props.data.id } }">
               Edit
             </router-link>
@@ -109,6 +114,15 @@ export default {
       this.api.getArticles(articles => {
         this.articles = articles;
         this.loading = false;
+      });
+    },
+    togglePublished (article_id) {
+      ArticleApi.togglePublished(article_id, article => {
+        this.articles.forEach((a, index) => {
+          if (a.id === article_id) {
+            this.articles.splice(index, 1, article);
+          }
+        });
       });
     },
     deleteArticle (article) {
