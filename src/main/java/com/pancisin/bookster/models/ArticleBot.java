@@ -42,6 +42,9 @@ public class ArticleBot {
 	private ArticlesList articlesList;
 
 	@Column
+	private String name;
+	
+	@Column
 	private String sourceUrl;
 
 	@Enumerated(EnumType.STRING)
@@ -99,5 +102,13 @@ public class ArticleBot {
 
 	public Calendar getCreated() {
 		return created;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

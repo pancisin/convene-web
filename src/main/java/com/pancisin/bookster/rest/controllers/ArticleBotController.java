@@ -37,6 +37,7 @@ public class ArticleBotController {
 	public ResponseEntity<?> putArticleBot(@PathVariable UUID articleBotId, @RequestBody ArticleBot articleBot) {
 		ArticleBot stored = abRepository.findOne(articleBotId);
 
+		stored.setName(articleBot.getName());
 		stored.setActive(articleBot.isActive());
 		stored.setParser(articleBot.getParser());
 		stored.setSourceType(articleBot.getSourceType());

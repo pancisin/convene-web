@@ -475,6 +475,14 @@ export default [
         meta: {
           title: 'Article bots'
         }
+      },
+      {
+        path: 'create-bot',
+        name: 'system.list.create-bot',
+        component: resolve => require(['../pages/ArticleBot.vue'], resolve),
+        props: {
+          edit: false
+        }
       }
     ]
   },
@@ -486,7 +494,10 @@ export default [
   {
     path: 'article-bot/:article_bot_id',
     component: resolve => require(['../pages/ArticleBot.vue'], resolve),
-    name: 'admin.article-bot'
+    name: 'admin.article-bot',
+    props: {
+      edit: true
+    }
   },
   {
     path: '*',

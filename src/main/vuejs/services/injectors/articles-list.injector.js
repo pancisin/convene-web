@@ -21,4 +21,8 @@ export default class ArticlesListInjector {
   getBots (success) {
     ArticlesListApi.getBots(this.articlesList_id, success);
   }
+
+  postBot (articleBot, success) {
+    ArticlesListApi.postBot(this.articlesList_id, articleBot, success);
+  }
 };

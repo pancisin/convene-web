@@ -1,7 +1,7 @@
 <template>
   <div v-if="bot != null">
     <div class="page-title-box">
-      <h4 class="page-title" v-text="bot.id"></h4>
+      <h4 class="page-title" v-text="bot.name"></h4>
     </div>
     <panel type="primary">
       <span slot="title">
@@ -9,39 +9,54 @@
       </span>
 
       <form class="form" @submit.prevent="submit">
-        <div class="form-group">
-          <label class="control-label">Source url</label>
-          <input class="form-control required" v-model="bot.sourceUrl" type="text">
-        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">Name</label>
+              <input class="form-control required" v-model="bot.name" type="text">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="control-label">Source url</label>
+              <textarea class="form-control required" v-model="bot.sourceUrl" rows="5"></textarea>
+            </div>
 
-        <div class="form-group">
-          <label class="control-label">Source type</label>
-          <input class="form-control required" v-model="bot.sourceType" type="text">
+            <div class="form-group">
+              <label class="control-label">Source type</label>
+              <input class="form-control required" v-model="bot.sourceType" type="text">
+            </div>
+          </div>
         </div>
 
         <hr>
         <h4>Parsers</h4>
 
-        <div class="row" v-for="(parser, index) in parsers" :key="index">
-          <div class="form-group col-md-6">
-            <label class="control-label">Field name</label>
-            <input class="form-control required" v-model="parser.name" type="text">
+        <transition-group name="fade-up">
+          <div class="form-group" v-for="(parser, index) in parsers" :key="index">
+            <div class="input-group">
+              <input class="form-control required" v-model="parser.name" type="text">
+              <span class="input-group-addon">
+                <i class="fa fa-code"></i>
+              </span>
+              <input class="form-control required" v-model="parser.value" type="text">
+              <span class="input-group-btn">
+                <button class="btn btn-danger" type="button" @click="deleteParser(parser.name)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </span>
+            </div>
           </div>
-          <div class="form-group col-md-6">
-            <label class="control-label">Parser</label>
-            <input class="form-control required" v-model="parser.value" type="text">
-          </div>
-        </div>
+        </transition-group>
 
         <div class="text-center">
-          <a class="btn btn-xs btn-primary btn-rounded" @click="addParser"><i class="fa fa-plus"></i></a>
+          <a class="btn btn-xs btn-primary btn-rounded" @click="addParser">
+            <i class="fa fa-plus"></i>
+          </a>
         </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
+        <button type="submit" class="btn btn-primary" v-if="touched">Save</button>
       </form>
-    </panel>
-    <panel type="default">
-      <span slot="title">Runs</span>
     </panel>
   </div>
 </template>
@@ -49,6 +64,7 @@
 <script>
 import ArticleBotApi from 'api/article-bot.api';
 import { BotRunIndicator } from 'elements';
+import { calculateHash } from '../services/helpers';
 
 export default {
   name: 'article-bot',
@@ -62,6 +78,7 @@ export default {
   data () {
     return {
       bot: {},
+      originalBot: null,
       parsers: []
     };
   },
@@ -90,22 +107,15 @@ export default {
       if (this.provider != null) {
         return this.provider.api;
       }
+    },
+    touched () {
+      return this.originalBot !== calculateHash(JSON.stringify(this.bot));
     }
   },
   created () {
     if (this.edit) {
       ArticleBotApi.getArticleBot(this.$route.params.article_bot_id, bot => {
-        this.bot = bot;
-
-        let parsers = [];
-        for (var key in this.bot.parser) {
-          parsers.push({
-            name: key,
-            value: this.bot.parser[key]
-          });
-        }
-
-        this.parsers = parsers;
+        this.initializeBot(bot);
       });
     }
   },
@@ -113,19 +123,42 @@ export default {
     submit () {
       if (!this.edit) {
         this.api.postBot(this.bot, bot => {
-          this.$router.push(this.api.base_route);
+          this.$router.push({
+            name: 'admin.article-bot',
+            params: {
+              article_bot_id: bot.id
+            }
+          });
         });
       } else {
         ArticleBotApi.putArticleBot(this.bot.id, this.bot, bot => {
-          this.bot = bot;
+          this.initializeBot(bot);
         });
       }
+    },
+    initializeBot (bot) {
+      this.bot = bot;
+      this.originalBot = calculateHash(JSON.stringify(bot));
+
+      let parsers = [];
+      for (var key in this.bot.parser) {
+        parsers.push({
+          name: key,
+          value: this.bot.parser[key]
+        });
+      }
+
+      this.parsers = parsers;
     },
     addParser () {
       this.parsers.push({
         name: '',
         value: ''
       });
+    },
+    deleteParser (key) {
+      const index = this.parsers.map(p => p.name).indexOf(key);
+      this.parsers.splice(index, 1);
     },
     deleteBot (bot_id) {
       ArticleBotApi.deleteBot(bot_id, result => {

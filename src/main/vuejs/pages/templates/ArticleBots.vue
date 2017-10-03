@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <th>
-            UUID
+            Name
           </th>
         </tr>
       </thead>
@@ -16,12 +16,16 @@
         <tr v-for="(bot, index) in bots" :key="bot.id">
           <td>
             <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: bot.id } }">
-              {{ bot.id }}
+              {{ bot.name }}
             </router-link>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div class="text-center">
+      <router-link :to="{ name: 'system.list.create-bot' }" class="btn btn-primary btn-rounded">Create bot</router-link>
+    </div>
   </panel>
 </template>
 
