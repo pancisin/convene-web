@@ -41,7 +41,7 @@
       <template scope="props">
         <ul>
           <li>
-            <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
+            <router-link :to="{ name: 'article.public', params: { id: props.data.id } }">
               Go to article
             </router-link>
           </li>

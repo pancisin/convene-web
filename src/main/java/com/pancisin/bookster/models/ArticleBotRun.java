@@ -41,7 +41,7 @@ public class ArticleBotRun {
 	@Column
 	private int articlesCount;
 	
-	@JsonIgnoreProperties({"active", "created", "lastRun", "runsCount", "parser", "sourceUrl", "sourceType", "name" })
+	@JsonIgnoreProperties({"active", "created", "lastRun", "runsCount", "parser", "sourceUrl", "sourceType", "name", "articlesList" })
 	@ManyToOne(optional = false)
 	private ArticleBot bot;
 	

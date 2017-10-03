@@ -28,7 +28,7 @@ public class ArticlesList {
 	private UUID id;
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Article> articles = new ArrayList<Article>();
 
 	@Column
