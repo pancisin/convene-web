@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +22,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,7 +46,7 @@ public class Page implements IAuthor {
 	private Long id;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "page", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "page")
 	private List<PageAdministrator> pageAdministrators;
 
 	@Column
@@ -132,7 +136,27 @@ public class Page implements IAuthor {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
-	
+
+	@Transient
+	@JsonView(Summary.class)
+	public PageAdministrator getPrivilege() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (this.pageAdministrators == null || user == null)
+				return null;
+
+			Optional<PageAdministrator> pUser = this.pageAdministrators.stream()
+					.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+
+			if (pUser.isPresent())
+				return pUser.get();
+		}
+
+		return null;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -254,14 +278,14 @@ public class Page implements IAuthor {
 			this.widgets.addAll(widgets);
 		}
 	}
-	
+
 	public void addPlace(Place place) {
 		if (this.places == null)
 			this.places = new ArrayList<Place>();
 
 		this.places.add(place);
 	}
-	
+
 	public List<Media> getGallery() {
 		return gallery;
 	}
@@ -270,7 +294,7 @@ public class Page implements IAuthor {
 		if (this.gallery == null) {
 			this.gallery = new ArrayList<Media>();
 		}
-		
+
 		this.gallery.add(media);
 	}
 }
