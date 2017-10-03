@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -33,11 +34,16 @@ public class ArticlesList {
 	@Column
 	private String name;
 
-	// TODO: Should have parsers entities mounted/merged relations.
-	// TODO: Should contain list attributes as language, category, tags...
-
+	@JsonIgnore
+	@OneToMany(mappedBy = "articlesList")
+	private List<ArticleBot> bots;
+	
 	public void addArticle(Article article) {
 		this.articles.add(article);
+	}
+	
+	public void addArticles(List<Article> articles) {
+		this.articles.addAll(articles);
 	}
 	
 	public String getName() {

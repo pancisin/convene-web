@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.models.Article;
+import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticlesList;
+import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
 
@@ -31,6 +33,9 @@ public class ArticlesListController {
 	@Autowired
 	private ArticleRepository articleRepository;
 
+	@Autowired
+	private ArticleBotRepository abRepository;
+	
 	@GetMapping
 	public ResponseEntity<?> getArticlesList(@PathVariable UUID articlesListId) {
 		return ResponseEntity.ok(alRepository.findOne(articlesListId));
@@ -62,5 +67,17 @@ public class ArticlesListController {
 		alRepository.save(stored);
 		
 		return ResponseEntity.ok(article);
+	}
+	
+	@PostMapping("/bot")
+	public ResponseEntity<?> postArticleBot(@PathVariable UUID articlesListId, @RequestBody ArticleBot bot) {
+		ArticlesList stored = alRepository.findOne(articlesListId);
+		bot.setArticlesList(stored);
+		return ResponseEntity.ok(abRepository.save(bot));
+	}
+
+	@GetMapping("/bot")
+	public ResponseEntity<?> getArticleBots(@PathVariable UUID articlesListId) {
+		return ResponseEntity.ok(abRepository.getByList(articlesListId));
 	}
 }
