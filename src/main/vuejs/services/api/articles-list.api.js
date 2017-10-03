@@ -67,5 +67,28 @@ export default {
     Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/article`).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Create new article bot for list specified.
+   * @param {*} id - articles list id
+   * @param {*} articleBot - article bot data object
+   * @param {*} success - success callback function
+   */
+  postBot (id, articleBot, success) {
+    Vue.http.post(`${ARTICLES_LIST_API_URL}/${id}/bot`, articleBot).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get all article bots for list specified
+   * @param {*} id - articles list id
+   * @param {*} success - success callback function
+   */
+  getBots (id, success) {
+    Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/bot`).then(response => {
+      success(response.body);
+    });
   }
 };

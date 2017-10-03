@@ -38,17 +38,6 @@ export default {
   },
 
   /**
-   * Run event bot instantly
-   * @param {*} id - event bot id
-   * @param {*} success - success callback function
-   */
-  run (id, success) {
-    Vue.http.post(`${EVENT_BOT_API_URL}/${id}/run`).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
    * Get all recent runs
    * @param {*} id - event bot id
    * @param {*} success - success callback function

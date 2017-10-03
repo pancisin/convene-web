@@ -464,6 +464,17 @@ export default [
           editable: true,
           insertable: true
         }
+      },
+      {
+        path: 'bots',
+        name: 'system.list.bots',
+        component: resolve => require(['../pages/templates/ArticleBots.vue'], resolve),
+        props: {
+
+        },
+        meta: {
+          title: 'Article bots'
+        }
       }
     ]
   },
@@ -471,6 +482,11 @@ export default [
     path: 'lists',
     component: resolve => require(['../pages/ArticlesLists.vue'], resolve),
     name: 'system.lists'
+  },
+  {
+    path: 'article-bot/:article_bot_id',
+    component: resolve => require(['../pages/ArticleBot.vue'], resolve),
+    name: 'admin.article-bot'
   },
   {
     path: '*',

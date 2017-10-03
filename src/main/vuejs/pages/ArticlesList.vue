@@ -8,8 +8,8 @@
           <router-link :to="{ name: 'system.list.articles' }" class="list-group-item waves-effect">
             <i class="fa fa-file" aria-hidden="true"></i> Articles
           </router-link>
-          <router-link :to="{ name: 'system.list.create-article' }" class="list-group-item waves-effect">
-            <i class="fa fa-cog" aria-hidden="true"></i> Settings
+          <router-link :to="{ name: 'system.list.bots' }" class="list-group-item waves-effect">
+            <i class="fa fa-android" aria-hidden="true"></i> Bots
           </router-link>
         </div>
       </div>
