@@ -53,10 +53,19 @@ import { BotRunIndicator } from 'elements';
 export default {
   name: 'article-bots',
   inject: ['provider'],
+  props: {
+    editable: {
+      type: Boolean,
+      default () {
+        return true;
+      }
+    }
+  },
   data () {
     return {
       bots: [],
-      loading: false
+      loading: false,
+      subscription: null
     };
   },
   computed: {
@@ -74,6 +83,27 @@ export default {
   },
   created () {
     this.getBots();
+
+    this.connectWM('stomp').then(frame => {
+      this.subscription = this.$stompClient.subscribe('/user/queue/list.bots', response => {
+        let run = JSON.parse(response.body);
+
+        if (run != null) {
+          this.bots.forEach((bot, index) => {
+            if (bot.id === run.bot.id) {
+              this.bots.splice(index, 1, {
+                ...bot,
+                lastRun: run,
+                runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
+              });
+            }
+          });
+        }
+      });
+    });
+  },
+  beforeDestroy () {
+    this.subscription.unsubscribe();
   },
   methods: {
     getBots () {
@@ -82,6 +112,12 @@ export default {
         this.bots = bots;
         this.loading = false;
       });
+    },
+    toggleActive (bot_id) {
+      // todo
+    },
+    run (bot_id) {
+      this.sendWM(`/app/article-bot/${bot_id}/run`, JSON.stringify({}));
     }
   }
 };
