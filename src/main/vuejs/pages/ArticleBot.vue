@@ -58,6 +58,32 @@
         <button type="submit" class="btn btn-primary" v-if="touched">Save</button>
       </form>
     </panel>
+
+    <panel type="table" v-if="runs.length > 0">
+      <span slot="title">Recent runs</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              State
+            </th>
+            <th>
+              Articles imported
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(run, index) in runs" :key="index">
+            <td>
+              <bot-run-indicator :run="run" />
+            </td>
+            <td>
+              {{ run.articlesCount }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </panel>
   </div>
 </template>
 
@@ -79,7 +105,8 @@ export default {
     return {
       bot: {},
       originalBot: null,
-      parsers: []
+      parsers: [],
+      runs: []
     };
   },
   components: {
@@ -116,6 +143,7 @@ export default {
     if (this.edit) {
       ArticleBotApi.getArticleBot(this.$route.params.article_bot_id, bot => {
         this.initializeBot(bot);
+        this.getRuns();
       });
     }
   },
@@ -163,6 +191,11 @@ export default {
     deleteBot (bot_id) {
       ArticleBotApi.deleteBot(bot_id, result => {
 
+      });
+    },
+    getRuns () {
+      ArticleBotApi.getRuns(this.bot.id, runs => {
+        this.runs = runs;
       });
     }
   }

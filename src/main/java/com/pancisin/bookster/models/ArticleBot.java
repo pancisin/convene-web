@@ -2,6 +2,7 @@ package com.pancisin.bookster.models;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -16,10 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pancisin.bookster.models.enums.BotSourceType;
 
 @Entity
@@ -38,6 +41,7 @@ public class ArticleBot {
 	@CollectionTable(name = "article_bots_parsers", joinColumns = { @JoinColumn(name = "article_bot_id") })
 	private Map<String, String> parser = new HashMap<String, String>();
 
+	@JsonIgnore
 	@ManyToOne(optional = false)
 	private ArticlesList articlesList;
 
@@ -56,6 +60,18 @@ public class ArticleBot {
 	@Column
 	private boolean active;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "bot", orphanRemoval = true)
+	private List<ArticleBotRun> runs; 
+	
+	public int getRunsCount() {
+		return runs != null ? runs.size() : 0;
+	}
+	
+	public ArticleBotRun getLastRun() {
+		return this.runs != null && this.runs.size() > 0 ? runs.stream().reduce((a, b) -> a.getDate().compareTo(b.getDate()) > 0 ? a : b).get() : null;
+	}
+	
 	public Map<String, String> getParser() {
 		return parser;
 	}
@@ -110,5 +126,9 @@ public class ArticleBot {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<ArticleBotRun> getRuns() {
+		return runs;
 	}
 }

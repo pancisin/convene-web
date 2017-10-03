@@ -17,7 +17,10 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticleBot;
+import com.pancisin.bookster.models.ArticleBotRun;
+import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
+import com.pancisin.bookster.repository.ArticleBotRunRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
 
@@ -29,14 +32,14 @@ import okhttp3.Response;
 public class ArticleBotService {
 
 	@Autowired
-	private ArticleBotRepository abRepository;
-
-	@Autowired
 	private ArticleRepository articleRepository;
 	
 	@Autowired
 	private ArticlesListRepository alRepository;
 
+	@Autowired
+	private ArticleBotRunRepository abRunRepository;
+	
 //	@Scheduled(cron = "0 30 5 * * *")
 //	public int run() {
 //		List<ArticleBot> bots = abRepository.findAll();
@@ -45,7 +48,7 @@ public class ArticleBotService {
 //	}
 
 	@Transactional
-	public void run(ArticleBot articleBot) {
+	public ArticleBotRun run(ArticleBot articleBot) {
 
 		try {
 			OkHttpClient client = new OkHttpClient();
@@ -84,8 +87,14 @@ public class ArticleBotService {
 			articleRepository.save(articles);
 			articleBot.getArticlesList().addArticles(articles);
 			alRepository.save(articleBot.getArticlesList());
+			
+			ArticleBotRun run = new ArticleBotRun(articleBot, BotRunState.SUCCESS);
+			return abRunRepository.save(run);
 		} catch (IOException e) {
 			e.printStackTrace();
+
+			ArticleBotRun run = new ArticleBotRun(articleBot, BotRunState.ERROR);
+			return abRunRepository.save(run);
 		}
 	}
 }

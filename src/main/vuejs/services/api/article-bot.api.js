@@ -49,12 +49,18 @@ export default {
     });
   },
 
+  run (id, success) {
+    Vue.http.post(`${ARTICLE_BOT_API_URL}/${id}/run`).then(response => {
+      success(response.body);
+    });
+  },
+
   /**
    * Get all recent runs
    * @param {*} id - article bot id
    * @param {*} success - success callback function
    */
-  run (id, success) {
+  getRuns (id, success) {
     Vue.http.get(`${ARTICLE_BOT_API_URL}/${id}/run`).then(response => {
       success(response.body);
     });
