@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.jayway.jsonpath.ReadContext;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticleBotRun;
+import com.pancisin.bookster.models.ArticlesList;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleBotRunRepository;
@@ -70,7 +72,7 @@ public class ArticleBotService {
 				}
 			}
 
-			List<Article> articles = new ArrayList<Article>();
+			ArticlesList list = articleBot.getArticlesList();
 
 			for (int i = 0; i < length; i++) {
 				Article art = new Article();
@@ -84,6 +86,8 @@ public class ArticleBotService {
 
 						if (field.getType().isAssignableFrom(String.class) || field.getType().isPrimitive()) {
 							field.set(art, entry.getValue().get(index));
+						} else if (field.getType().isAssignableFrom(Calendar.class)) {
+
 						} else {
 							try {
 								Constructor<?> constructor = field.getType().getConstructor(String.class);
@@ -97,12 +101,11 @@ public class ArticleBotService {
 					}
 				});
 
-				articles.add(art);
+				list.addArticle(art);
+				articleRepository.save(art);
 			}
 
-			articleRepository.save(articles);
-			articleBot.getArticlesList().addArticles(articles);
-			alRepository.save(articleBot.getArticlesList());
+			alRepository.save(list);
 
 			ArticleBotRun run = new ArticleBotRun(articleBot, BotRunState.SUCCESS);
 			return abRunRepository.save(run);

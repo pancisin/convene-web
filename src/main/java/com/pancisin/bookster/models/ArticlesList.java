@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,8 +29,8 @@ public class ArticlesList {
 	private UUID id;
 
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Article> articles = new ArrayList<Article>();
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.DETACH })
+	private List<Article> articles;
 
 	@Column
 	private String name;
@@ -37,15 +38,23 @@ public class ArticlesList {
 	@JsonIgnore
 	@OneToMany(mappedBy = "articlesList")
 	private List<ArticleBot> bots;
-	
+
 	public void addArticle(Article article) {
-		this.articles.add(article);
+		if (this.getArticles() == null) {
+			this.articles = new ArrayList<Article>();
+		}
+		
+		this.getArticles().add(article);
 	}
-	
+
 	public void addArticles(List<Article> articles) {
-		this.articles.addAll(articles);
+		if (this.getArticles() == null) {
+			this.articles = new ArrayList<Article>();
+		}
+
+		this.getArticles().addAll(articles);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
