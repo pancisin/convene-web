@@ -10,8 +10,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.components.ArticleBotService;
 import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticleBotRun;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 
 @RestController
+//@PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/article-bot/{articleBotId}")
 public class ArticleBotController {
 
@@ -60,6 +59,13 @@ public class ArticleBotController {
 	@DeleteMapping
 	public ResponseEntity<?> deleteArticleBot(@PathVariable UUID articleBotId) {
 		return null;
+	}
+	
+	@PatchMapping("/toggle-active")
+	public ResponseEntity<?> toggleActive(@PathVariable UUID bot_id) {
+		ArticleBot stored = abRepository.findOne(bot_id);
+		stored.setActive(!stored.isActive());
+		return ResponseEntity.ok(abRepository.save(stored));
 	}
 
 	@GetMapping("/run")

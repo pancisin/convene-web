@@ -35,6 +35,9 @@ public class Article {
 	private Calendar created;
 
 	@Column
+	private Calendar date;
+	
+	@Column
 	private String title;
 
 	@Lob
@@ -124,5 +127,13 @@ public class Article {
 
 	public void setConference(Conference conference) {
 		this.conference = conference;
+	}
+
+	public Calendar getDate() {
+		return date;
+	}
+
+	public void setDate(Calendar date) {
+		this.date = date;
 	}
 }

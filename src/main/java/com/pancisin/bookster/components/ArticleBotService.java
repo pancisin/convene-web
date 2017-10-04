@@ -1,7 +1,9 @@
 package com.pancisin.bookster.components;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,19 +35,19 @@ public class ArticleBotService {
 
 	@Autowired
 	private ArticleRepository articleRepository;
-	
+
 	@Autowired
 	private ArticlesListRepository alRepository;
 
 	@Autowired
 	private ArticleBotRunRepository abRunRepository;
-	
-//	@Scheduled(cron = "0 30 5 * * *")
-//	public int run() {
-//		List<ArticleBot> bots = abRepository.findAll();
-//		bots.stream().forEach(b -> this.run(b));
-//		return 1;
-//	}
+
+	// @Scheduled(cron = "0 30 5 * * *")
+	// public int run() {
+	// List<ArticleBot> bots = abRepository.findAll();
+	// bots.stream().forEach(b -> this.run(b));
+	// return 1;
+	// }
 
 	@Transactional
 	public ArticleBotRun run(ArticleBot articleBot) {
@@ -57,14 +59,20 @@ public class ArticleBotService {
 
 			ReadContext ctx = JsonPath.parse(response.body().string());
 
+			int length = 0;
 			Map<String, List<String>> contentStore = new HashMap<String, List<String>>();
 			for (Map.Entry<String, String> entry : articleBot.getParser().entrySet()) {
-				contentStore.put(entry.getKey(), ctx.read(entry.getValue()));
+				List<String> values = ctx.read(entry.getValue());
+				contentStore.put(entry.getKey(), values);
+
+				if (length == 0 || values.size() < length) {
+					length = values.size();
+				}
 			}
 
 			List<Article> articles = new ArrayList<Article>();
 
-			for (int i = 0; i <= 10; i++) {
+			for (int i = 0; i < length; i++) {
 				Article art = new Article();
 				final int index = i;
 
@@ -73,12 +81,20 @@ public class ArticleBotService {
 
 						Field field = Article.class.getDeclaredField(entry.getKey());
 						field.setAccessible(true);
-						field.set(art, entry.getValue().get(index));
 
+						if (field.getType().isAssignableFrom(String.class) || field.getType().isPrimitive()) {
+							field.set(art, entry.getValue().get(index));
+						} else {
+							try {
+								Constructor<?> constructor = field.getType().getConstructor(String.class);
+								field.set(art, constructor.newInstance(entry.getValue().get(index)));
+							} catch (NoSuchMethodException | InstantiationException | InvocationTargetException e) {
+								e.printStackTrace();
+							}
+						}
 					} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
 					}
-
 				});
 
 				articles.add(art);
@@ -87,7 +103,7 @@ public class ArticleBotService {
 			articleRepository.save(articles);
 			articleBot.getArticlesList().addArticles(articles);
 			alRepository.save(articleBot.getArticlesList());
-			
+
 			ArticleBotRun run = new ArticleBotRun(articleBot, BotRunState.SUCCESS);
 			return abRunRepository.save(run);
 		} catch (IOException e) {

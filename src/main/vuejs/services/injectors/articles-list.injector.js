@@ -6,16 +6,28 @@ export default class ArticlesListInjector {
     this.articlesList_id = articlesList_id;
   }
 
+  getArticlesLists (success) {
+    ArticlesListApi.getArticlesLists(success);
+  }
+
+  postArticlesList (articlesList, success) {
+    ArticlesListApi.postArticlesList(articlesList, success);
+  }
+
+  putArticlesList (articlesList, success) {
+    ArticlesListApi.putArticlesList(this.articlesList_id, articlesList, success);
+  }
+
+  getArticlesList (success) {
+    ArticlesListApi.getArticlesList(this.articlesList_id, success);
+  }
+
   postArticle (article, success) {
     ArticlesListApi.postArticle(this.articlesList_id, article, success);
   }
 
   getArticles (success) {
     ArticlesListApi.getArticles(this.articlesList_id, success);
-  }
-
-  getArticlesList (success) {
-    ArticlesListApi.getArticlesList(this.articlesList_id, success);
   }
 
   getBots (success) {
