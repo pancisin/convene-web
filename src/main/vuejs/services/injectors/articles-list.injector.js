@@ -2,8 +2,13 @@ import ArticlesListApi from 'api/articles-list.api';
 
 export default class ArticlesListInjector {
 
+  get instance () {
+    return this.inst;
+  }
+
   constructor (articlesList_id) {
     this.articlesList_id = articlesList_id;
+    this.inst = null;
   }
 
   getArticlesLists (success) {
@@ -19,7 +24,10 @@ export default class ArticlesListInjector {
   }
 
   getArticlesList (success) {
-    ArticlesListApi.getArticlesList(this.articlesList_id, success);
+    ArticlesListApi.getArticlesList(this.articlesList_id, articlesList => {
+      this.inst = articlesList;
+      success(articlesList);
+    });
   }
 
   postArticle (article, success) {

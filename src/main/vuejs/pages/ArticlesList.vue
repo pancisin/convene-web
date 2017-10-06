@@ -11,6 +11,9 @@
           <router-link :to="{ name: 'system.list.bots' }" class="list-group-item waves-effect">
             <i class="fa fa-android" aria-hidden="true"></i> Bots
           </router-link>
+          <router-link :to="{ name: 'system.list.settings' }" class="list-group-item waves-effect">
+            <i class="fa fa-cog" aria-hidden="true"></i> Settings
+          </router-link>
         </div>
       </div>
       <div class="col-md-9">

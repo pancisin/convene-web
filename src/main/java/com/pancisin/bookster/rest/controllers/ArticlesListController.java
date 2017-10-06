@@ -49,6 +49,7 @@ public class ArticlesListController {
 		
 		ArticlesList stored = alRepository.findOne(articlesListId);
 		stored.setName(articlesList.getName());
+		stored.setTags(articlesList.getTags());
 		return ResponseEntity.ok(alRepository.save(stored));
 	}
 

@@ -1,6 +1,10 @@
 package com.pancisin.bookster.models;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,15 +14,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.JoinColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.views.Summary;
@@ -36,7 +42,7 @@ public class Article {
 
 	@Column
 	private Calendar date;
-	
+
 	@Column
 	private String title;
 
@@ -51,7 +57,6 @@ public class Article {
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String thumbnailData;
-	
 
 	@ManyToOne
 	@JsonProperty(access = Access.READ_ONLY)
@@ -61,9 +66,36 @@ public class Article {
 	private boolean published;
 
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne(optional = true)
 	@JoinTable(name = "conferences_articles", joinColumns = @JoinColumn(name = "articles_id"), inverseJoinColumns = @JoinColumn(name = "conference_id"))
 	private Conference conference;
+
+	@Column(unique = true, updatable = false, nullable = false)
+	private int identifier;
+	
+	@JsonIgnore
+	@ManyToOne(optional = true)
+	@JoinTable(name = "articles_lists_articles", joinColumns = @JoinColumn(name = "articles_id"), inverseJoinColumns = @JoinColumn(name = "articles_list_id"))
+	private ArticlesList articlesList;
+	
+	@PrePersist
+	private void onCreate() {
+		List<String> values = new ArrayList<String>();
+		values.add(this.title);
+		
+		if (this.articlesList != null) {
+			values.add(this.articlesList.getId().toString());
+		} else if (this.conference != null) {
+			values.add(this.conference.getId().toString());
+		}
+		
+		int result = 17;
+	  for (String v : values) {
+	  	result = 37 * result + v.hashCode();
+	  }
+	  
+	  this.identifier = result;
+	}
 
 	public String getTitle() {
 		return title;
@@ -135,5 +167,17 @@ public class Article {
 
 	public void setDate(Calendar date) {
 		this.date = date;
+	}
+
+	public int getIdentifier() {
+		return identifier;
+	}
+
+	public ArticlesList getArticlesList() {
+		return articlesList;
+	}
+
+	public void setArticlesList(ArticlesList articlesList) {
+		this.articlesList = articlesList;
 	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +11,9 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.jayway.jsonpath.JsonPath;
@@ -23,7 +23,6 @@ import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticleBotRun;
 import com.pancisin.bookster.models.ArticlesList;
 import com.pancisin.bookster.models.enums.BotRunState;
-import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleBotRunRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
@@ -51,7 +50,6 @@ public class ArticleBotService {
 	// return 1;
 	// }
 
-	@Transactional
 	public ArticleBotRun run(ArticleBot articleBot) {
 
 		try {
@@ -72,8 +70,8 @@ public class ArticleBotService {
 				}
 			}
 
-			ArticlesList list = articleBot.getArticlesList();
-
+			int savedArticlesCount = 0;
+			
 			for (int i = 0; i < length; i++) {
 				Article art = new Article();
 				final int index = i;
@@ -101,13 +99,18 @@ public class ArticleBotService {
 					}
 				});
 
-				list.addArticle(art);
-				articleRepository.save(art);
+				art.setArticlesList(articleBot.getArticlesList());
+				try {
+					if (articleRepository.save(art) != null) {
+						savedArticlesCount++;
+					}
+				} catch (ConstraintViolationException | DataIntegrityViolationException ex) {
+					// ex.printStackTrace();
+				}
 			}
 
-			alRepository.save(list);
-
 			ArticleBotRun run = new ArticleBotRun(articleBot, BotRunState.SUCCESS);
+			run.setArticlesCount(savedArticlesCount);
 			return abRunRepository.save(run);
 		} catch (IOException e) {
 			e.printStackTrace();

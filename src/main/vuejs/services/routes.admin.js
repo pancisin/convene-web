@@ -483,6 +483,14 @@ export default [
         props: {
           edit: false
         }
+      },
+      {
+        path: 'settings',
+        name: 'system.list.settings',
+        component: resolve => require(['../pages/articles-list/Settings.vue'], resolve),
+        meta: {
+          title: 'List settings'
+        }
       }
     ]
   },
