@@ -8,4 +8,5 @@ import com.pancisin.bookster.models.ArticlesList;
 
 public interface ArticlesListRepository extends JpaRepository<ArticlesList, UUID> {
 
+	public ArticlesList findByTagsHash(int tagsHash);
 }

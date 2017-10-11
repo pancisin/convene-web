@@ -62,12 +62,9 @@ public class ArticlesListController {
 	@PostMapping("/article")
 	public ResponseEntity<?> postArticle(@PathVariable UUID articlesListId, @RequestBody Article article) {
 		ArticlesList stored = alRepository.findOne(articlesListId);
-
-		article = articleRepository.save(article);
-		stored.addArticle(article);
-		alRepository.save(stored);
+		article.setArticlesList(stored);
 		
-		return ResponseEntity.ok(article);
+		return ResponseEntity.ok(articleRepository.save(article));
 	}
 	
 	@PostMapping("/bot")

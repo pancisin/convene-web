@@ -7,7 +7,8 @@ const state = {
   loadingUser: false,
   notifications: [],
   authenticated: false,
-  contacts: []
+  contacts: [],
+  followedPages: []
 };
 
 const getters = {
@@ -26,7 +27,8 @@ const getters = {
     return state.authenticated || window.localStorage.getItem('id_token') != null;
   },
   loadingUser: state => state.loadingUser,
-  contacts: state => state.contacts
+  contacts: state => state.contacts,
+  followedPages: state => state.followedPages
 };
 
 const actions = {
@@ -110,6 +112,15 @@ const actions = {
         resolve();
       });
     });
+  },
+
+  initializeFollowedPages ({ commit }) {
+    return new Promise((resolve) => {
+      UserApi.getFollowedPages(pages => {
+        commit(types.SET_FOLLOWED_PAGES, { pages });
+        resolve();
+      });
+    });
   }
 };
 
@@ -139,6 +150,10 @@ const mutations = {
 
   [types.SET_CONTACTS] (state, { contacts }) {
     state.contacts = contacts;
+  },
+
+  [types.SET_FOLLOWED_PAGES] (state, { pages}) {
+    state.followedPages = pages;
   }
 };
 

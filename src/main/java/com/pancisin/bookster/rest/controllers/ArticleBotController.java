@@ -58,12 +58,13 @@ public class ArticleBotController {
 
 	@DeleteMapping
 	public ResponseEntity<?> deleteArticleBot(@PathVariable UUID articleBotId) {
-		return null;
+		abRepository.delete(articleBotId);
+		return ResponseEntity.ok("success");
 	}
 	
 	@PatchMapping("/toggle-active")
-	public ResponseEntity<?> toggleActive(@PathVariable UUID bot_id) {
-		ArticleBot stored = abRepository.findOne(bot_id);
+	public ResponseEntity<?> toggleActive(@PathVariable UUID articleBotId) {
+		ArticleBot stored = abRepository.findOne(articleBotId);
 		stored.setActive(!stored.isActive());
 		return ResponseEntity.ok(abRepository.save(stored));
 	}

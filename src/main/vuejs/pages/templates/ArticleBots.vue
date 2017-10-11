@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(bot, index) in bots" :key="bot.id">
+        <tr v-for="(bot, index) in bots" :key="bot.id" @contextmenu.prevent="$refs.menu.open($event, bot)">
           <td>
             <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: bot.id } }">
               {{ bot.name }}
@@ -42,6 +42,29 @@
       </tbody>
     </table>
 
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li v-if="editable">
+            <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: props.data.id } }">
+              Edit
+            </router-link>
+          </li>
+          <li v-if="editable">
+            <a @click="deleteBot(props.data.id)">
+              Delete
+            </a>
+          </li>
+          <li class="separator"></li>
+          <li>
+            <router-link :to="{ name: 'system.list.create-bot' }">
+              Create bot
+            </router-link>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
+
     <div class="text-center">
       <router-link :to="{ name: 'system.list.create-bot' }" class="btn btn-primary btn-rounded">Create bot</router-link>
     </div>
@@ -50,6 +73,7 @@
 
 <script>
 import { BotRunIndicator } from 'elements';
+import ArtcleBotApi from 'api/article-bot.api';
 export default {
   name: 'article-bots',
   inject: ['provider'],
@@ -114,7 +138,20 @@ export default {
       });
     },
     toggleActive (bot_id) {
-      // todo
+      ArtcleBotApi.toggleActive(bot_id, bot => {
+        this.bots.forEach((b, index) => {
+          if (b.id === bot_id) {
+            this.bots.splice(index, 1, bot);
+          }
+        });
+      });
+    },
+    deleteBot (bot_id) {
+      this.$prompt('notification.article-bot.delete_prompt', () => {
+        ArtcleBotApi.deleteArticleBot(bot_id, result => {
+          this.bots = this.bots.filter(bot => bot.id !== bot_id);
+        });
+      });
     },
     run (bot_id) {
       this.sendWM(`/app/article-bot/${bot_id}/run`, JSON.stringify({}));

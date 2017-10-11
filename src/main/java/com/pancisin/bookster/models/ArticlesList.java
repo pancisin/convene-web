@@ -3,6 +3,7 @@ package com.pancisin.bookster.models;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -56,29 +57,9 @@ public class ArticlesList {
 	@PreUpdate
 	private void onUpdate() {
 		if (this.tags != null && !this.tags.isEmpty()) {
-			int result = 17;
-			for (String v : this.tags) {
-				result = 37 * result + v.hashCode();
-			}
-
-			this.tagsHash = result;
+			List<String> sorted = this.tags.stream().sorted((a, b) -> a.compareTo(b)).collect(Collectors.toList());
+			this.tagsHash = sorted.hashCode();
 		}
-	}
-
-	public void addArticle(Article article) {
-		if (this.getArticles() == null) {
-			this.articles = new ArrayList<Article>();
-		}
-
-		this.getArticles().add(article);
-	}
-
-	public void addArticles(List<Article> articles) {
-		if (this.getArticles() == null) {
-			this.articles = new ArrayList<Article>();
-		}
-
-		this.getArticles().addAll(articles);
 	}
 
 	public String getName() {

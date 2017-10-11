@@ -184,5 +184,11 @@ export default {
     Vue.http.get('public/widget-types').then(response => {
       success(response.body);
     });
+  },
+
+  getLocales (success) {
+    Vue.http.get('public/locales').then(response => {
+      success(response.body);
+    });
   }
 };

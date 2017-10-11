@@ -9,7 +9,7 @@
               Name
             </th>
             <th>
-              UUID
+              Tags
             </th>
           </tr>
         </thead>
@@ -21,7 +21,9 @@
               </router-link>
             </td>
             <td>
-              {{ list.id }}
+              <span v-for="(tag, index) in list.tags" :key="index">
+                {{ tag }},
+              </span>
             </td>
           </tr>
         </tbody>

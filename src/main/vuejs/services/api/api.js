@@ -38,5 +38,17 @@ export default {
     Vue.http.get('api/enum/unit').then(response => {
       success(response.body);
     });
+  },
+
+  getHeadlines (language, success) {
+    Vue.http.get('api/articles', {
+      params: {
+        tags: `language:${language || 'en'}, headlines`,
+        page: 0,
+        size: 6
+      }
+    }).then(response => {
+      success(response.body);
+    });
   }
 };

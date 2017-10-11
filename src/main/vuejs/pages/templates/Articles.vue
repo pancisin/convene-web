@@ -1,9 +1,12 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">Articles</span>
-    <table class="table">
+    <table class="table articles-table">
       <thead>
         <tr>
+          <th>
+            #
+          </th>
           <th>
           </th>
           <th>
@@ -19,7 +22,10 @@
       </thead>
 
       <tbody>
-        <tr v-for="article in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
+        <tr v-for="(article, index) in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
+          <td>
+            {{ index + 1 }}
+          </td>
           <td>
             <img :src="article.thumbnail.path" v-if="article.thumbnail != null" style="height:50px">
           </td>
@@ -137,3 +143,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.articles-table {
+  & > tbody > tr > td {
+    vertical-align: middle;
+  }
+}
+</style>

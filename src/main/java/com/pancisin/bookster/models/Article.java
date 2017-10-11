@@ -88,13 +88,8 @@ public class Article {
 		} else if (this.conference != null) {
 			values.add(this.conference.getId().toString());
 		}
-		
-		int result = 17;
-	  for (String v : values) {
-	  	result = 37 * result + v.hashCode();
-	  }
 	  
-	  this.identifier = result;
+	  this.identifier = values.hashCode();
 	}
 
 	public String getTitle() {

@@ -1,14 +1,9 @@
 <template>
   <div>
-    <hero-unit>
-      <h1 class="text-uppercase text-inverse">
-        Welcome, {{ user.displayName }}.
-      </h1>
-    </hero-unit>
     <div class="container">
-      <div class="row">
-        <div class="col-md-4" v-if="authenticated">
 
+      <div class="row">
+        <div class="col-md-3 col-lg-2 col-lg-offset-2">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
 
@@ -17,15 +12,16 @@
                 <div class="inbox-item-img" v-if="event.poster != null">
                   <img :src="event.poster.path" class="img-circle" alt="">
                 </div>
+
                 <p class="inbox-item-author" v-text="event.name"></p>
-                <p class="inbox-item-text" v-if="event.summary != null" v-strip="event.summary.substr(0, 200)"></p>
-                <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
+                <!-- <p class="inbox-item-date">{{ event.date | moment('L') }}</p> -->
+                <small>
+                  <i>{{ event.date | moment('L') }}</i>
+                </small>
               </router-link>
             </div>
           </panel>
-        </div>
 
-        <div :class="{ 'col-md-4' : authenticated, 'col-md-8' : !authenticated }">
           <panel type="primary" v-if="eventsPaginator.content != null">
             <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
 
@@ -45,32 +41,32 @@
             </div>
           </panel>
         </div>
+        <div class="col-md-6 col-lg-4">
+          <articles-list :articles="headlines" v-loading="loadingHeadlines"></articles-list>
+        </div>
 
-        <div class="col-md-4">
-          <!-- <div class="page-title-box">
-                    <h4 class="page-title">{{ $t('client.dashboard.pages') }}</h4>
-                  </div> -->
+        <div class="col-md-3 col-lg-2">
           <tab-container>
-            <tab :title="$t('client.dashboard.suggested')">
-              <div class="inbox-widget">
-                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="page.poster != null">
-                    <img :src="page.poster.path" class="img-circle">
-                  </div>
-                  <p class="inbox-item-author" v-text="page.name"></p>
-                  <p class="inbox-item-text" v-if="page.category != null">
-                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                  </p>
-                </router-link>
+            <!-- <tab :title="$t('client.dashboard.suggested')">
+                    <div class="inbox-widget">
+                      <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
+                        <div class="inbox-item-img" v-if="page.poster != null">
+                          <img :src="page.poster.path" class="img-circle">
+                        </div>
+                        <p class="inbox-item-author" v-text="page.name"></p>
+                        <p class="inbox-item-text" v-if="page.category != null">
+                          {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                        </p>
+                      </router-link>
 
-                <div class="text-center">
-                  <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
-                </div>
-              </div>
-            </tab>
+                      <div class="text-center">
+                        <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+                      </div>
+                    </div>
+                  </tab> -->
             <tab :title="$t('client.dashboard.followed')" @navigated="tabNavigation">
               <div class="inbox-widget">
-                <router-link :to="'page/' + page.id" v-for="(page, index) in followed" :key="page.id" :data-index="index" class="inbox-item">
+                <router-link :to="'page/' + page.id" v-for="(page, index) in followedPages" :key="page.id" :data-index="index" class="inbox-item">
                   <div class="inbox-item-img" v-if="page.poster != null">
                     <img :src="page.poster.path" class="img-circle">
                   </div>
@@ -105,9 +101,10 @@
 </template>
 
 <script>
-import { Paginator, Tab, TabContainer, HeroUnit } from 'elements';
+import { Paginator, Tab, TabContainer, HeroUnit, ArticlesList } from 'elements';
 import UserApi from 'api/user.api';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import RootApi from 'api/api';
 
 export default {
   name: 'dashboard',
@@ -117,27 +114,37 @@ export default {
       attending: [],
       pagesPaginator: {},
       eventsPaginator: {},
-      followed: [],
-      popular: []
+      popular: [],
+      headlines: [],
+      loadingHeadlines: false
     };
   },
   created () {
+    if (this.followedPages.length === 0) {
+      this.initializeFollowedPages();
+    }
+
     if (this.authenticated) {
       UserApi.getAttendingEvents(events => {
         this.attending = events;
       });
     }
 
+    this.getHeadlines();
     this.getEvents(0);
     this.getPages(0);
   },
   components: {
-    Paginator, TabContainer, Tab, HeroUnit
+    Paginator, TabContainer, Tab, HeroUnit, ArticlesList
   },
   computed: {
-    ...mapGetters(['authenticated', 'user'])
+    ...mapGetters(['authenticated', 'user', 'followedPages'])
+  },
+  watch: {
+    'user.locale': 'getHeadlines'
   },
   methods: {
+    ...mapActions(['initializeFollowedPages']),
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
         var url = ['public/near-events', page, 5].join('/');
@@ -151,6 +158,13 @@ export default {
           this.eventsPaginator = response.body;
           this.eventsPaginator.content = this.eventsPaginator.content.filter(x => x);
         });
+      });
+    },
+    getHeadlines () {
+      this.loadingHeadlines = true;
+      RootApi.getHeadlines(this.user.locale.name, paginator => {
+        this.headlines = paginator.content;
+        this.loadingHeadlines = false;
       });
     },
     getPages (page) {
@@ -179,14 +193,6 @@ export default {
         this.$http.get('public/popular-pages/0/5').then(response => {
           this.popular = response.body.content;
           loading(false);
-        });
-      }
-
-      if (id === 1 && this.authenticated && (this.followed == null || this.followed.length === 0)) {
-        loading(true);
-        UserApi.getFollowedPages(pages => {
-          loading(false);
-          this.followed = pages;
         });
       }
     }

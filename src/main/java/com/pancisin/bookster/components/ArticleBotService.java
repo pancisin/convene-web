@@ -9,11 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.Transactional;
-
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.jayway.jsonpath.JsonPath;
@@ -21,11 +20,10 @@ import com.jayway.jsonpath.ReadContext;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticleBotRun;
-import com.pancisin.bookster.models.ArticlesList;
 import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleBotRunRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
-import com.pancisin.bookster.repository.ArticlesListRepository;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -38,17 +36,21 @@ public class ArticleBotService {
 	private ArticleRepository articleRepository;
 
 	@Autowired
-	private ArticlesListRepository alRepository;
-
-	@Autowired
 	private ArticleBotRunRepository abRunRepository;
 
-	// @Scheduled(cron = "0 30 5 * * *")
-	// public int run() {
-	// List<ArticleBot> bots = abRepository.findAll();
-	// bots.stream().forEach(b -> this.run(b));
-	// return 1;
-	// }
+	@Autowired
+	private ArticleBotRepository abRepository;
+
+	@Scheduled(cron = "0 30 5 * * *")
+	public int run() {
+		List<ArticleBot> bots = abRepository.findAll();
+		bots.stream().forEach(b -> {
+			if (b.isActive())
+				this.run(b);
+		});
+
+		return 1;
+	}
 
 	public ArticleBotRun run(ArticleBot articleBot) {
 
@@ -71,7 +73,7 @@ public class ArticleBotService {
 			}
 
 			int savedArticlesCount = 0;
-			
+
 			for (int i = 0; i < length; i++) {
 				Article art = new Article();
 				final int index = i;

@@ -20,7 +20,7 @@
       </div>
       <hr />
   
-      <div v-html="article.content"></div>
+      <div v-html="article.content" class="custom-content"></div>
     </div>
   </div>
 </template>

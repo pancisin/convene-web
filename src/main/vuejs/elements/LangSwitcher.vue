@@ -21,18 +21,19 @@ export default {
   name: 'language-switcher',
   data () {
     return {
-      locales: [],
       display: false
     };
   },
   created () {
-    this.getLocales();
+    if (this.locales.length === 0) {
+      this.initializeLocales();
+    }
   },
   computed: {
     ...mapGetters({
       storeLocale: 'locale'
     }),
-    ...mapGetters(['locale', 'authenticated']),
+    ...mapGetters(['locale', 'authenticated', 'locales']),
     locale: {
       get () {
         return this.authenticated ? this.storeLocale : this.$i18n.locale;
@@ -53,13 +54,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'initializeUser'
+      'initializeUser', 'initializeLocales'
     ]),
-    getLocales () {
-      this.$http.get('public/locales').then(response => {
-        this.locales = response.body;
-      });
-    },
     closeLanguage (e) {
       if (this.display) {
         this.display = false;
