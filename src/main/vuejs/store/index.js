@@ -58,4 +58,13 @@ const store = new Vuex.Store({
   }
 });
 
+[user, page, conference].forEach((module) => {
+  if (module.watchers) {
+    module.watchers.forEach((params) => {
+      console.log(params);
+      store.watch(...params);
+    });
+  }
+});
+
 export default store;

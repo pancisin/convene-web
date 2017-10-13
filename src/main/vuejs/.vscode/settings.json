@@ -1,0 +1,41 @@
+{
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "[vue]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "eslint.options": {
+    "extensions": [
+      ".html",
+      ".js",
+      ".vue"
+    ]
+  },
+  "eslint.validate": [
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    }
+  ],
+  "emmet.includeLanguages": {
+    "vue-html": "html"
+  },
+  "beautify.tabSize": 2,
+  "emmet.showSuggestionsAsSnippets": true,
+  "extensions.ignoreRecommendations": false,
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "vetur.format.html.wrap_attributes": "force",
+  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true
+}

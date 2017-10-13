@@ -1,10 +1,14 @@
 <template>
-  <li class="dropdown hidden-xs" :class="{ 'open' : display }" v-click-outside="closeLanguage">
-    <a @click="display = !display" class="dropdown-toggle waves-effect waves-light">
+  <li class="dropdown hidden-xs"
+    :class="{ 'open' : display }"
+    v-click-outside="closeLanguage">
+    <a @click="display = !display"
+      class="dropdown-toggle waves-effect waves-light">
       <i class="fa fa-language"></i>
     </a>
     <ul class="dropdown-menu">
-      <li v-for="loc in locales" :key="loc.code">
+      <li v-for="loc in locales"
+        :key="loc.code">
         <a @click="selectLoc(loc)">
           {{ $t(loc.code) }}
         </a>
