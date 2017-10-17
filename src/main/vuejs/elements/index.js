@@ -5,7 +5,8 @@ import ChatContainer from './ChatContainer';
 import Checkbox from './Checkbox';
 import ContextMenu from './ContextMenu';
 import DatePicker from './DatePicker';
-import DropDown from './DropDown';
+import DropDownMenu from './DropDownMenu';
+import DropDownMenuItem from './DropDownMenuItem';
 import GMap from './GMap';
 import ImageUpload from './ImageUpload';
 import LangSwitcher from './LangSwitcher';
@@ -44,7 +45,8 @@ export {
   Checkbox,
   ContextMenu,
   DatePicker,
-  DropDown,
+  DropDownMenu,
+  DropDownMenuItem,
   GMap,
   ImageUpload,
   LangSwitcher,

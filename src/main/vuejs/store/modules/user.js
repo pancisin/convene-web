@@ -31,6 +31,17 @@ const getters = {
   followedPages: state => state.followedPages
 };
 
+const watchers = [
+  [
+    state => {
+      return state.user.user.locale;
+    },
+    (newVal, oldVal) => {
+      console.log(newVal);
+    }
+  ]
+];
+
 const actions = {
   initializeUser ({ commit }) {
     return new Promise((resolve, reject) => {
@@ -161,5 +172,6 @@ export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
+  watchers
 };

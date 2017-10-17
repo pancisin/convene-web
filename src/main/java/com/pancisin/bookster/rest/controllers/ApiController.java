@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -89,7 +90,7 @@ public class ApiController {
 		ArticlesList articlesList = alRepository.findByTagsHash(tagsHash);
 		
 		if (articlesList != null) {
-			Page<Article> articles = articleRepository.getByArticlesList(articlesList.getId(), new PageRequest(page, size));
+			Page<Article> articles = articleRepository.getByArticlesList(articlesList.getId(), new PageRequest(page, size, Direction.DESC, "created"));
 			return ResponseEntity.ok(articles);
 		}
 		

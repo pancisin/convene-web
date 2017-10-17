@@ -40,15 +40,19 @@ export default {
     });
   },
 
-  getHeadlines (language, success) {
+  getHeadlines (language, page, size, success, error) {
     Vue.http.get('api/articles', {
       params: {
         tags: `language:${language || 'en'}, headlines`,
-        page: 0,
-        size: 6
+        page: page || 0,
+        size: size || 10
       }
     }).then(response => {
       success(response.body);
+    }, errors => {
+      if (error != null) {
+        error(errors);
+      }
     });
   }
 };

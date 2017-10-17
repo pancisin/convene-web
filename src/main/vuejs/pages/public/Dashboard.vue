@@ -64,29 +64,33 @@
           </panel>
         </div>
         <div class="col-md-6 col-lg-4">
-          <articles-list :articles="headlines"
+          <articles-list :articles="headlinesPaginator.content"
             v-loading="loadingHeadlines"></articles-list>
+          <div class="text-center">
+            <paginator :paginator="headlinesPaginator"
+              @navigate="headlinesPaginatorNavigate" />
+          </div>
         </div>
 
         <div class="col-md-3 col-lg-2">
           <tab-container>
             <!-- <tab :title="$t('client.dashboard.suggested')">
-                              <div class="inbox-widget">
-                                <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
-                                  <div class="inbox-item-img" v-if="page.poster != null">
-                                    <img :src="page.poster.path" class="img-circle">
-                                  </div>
-                                  <p class="inbox-item-author" v-text="page.name"></p>
-                                  <p class="inbox-item-text" v-if="page.category != null">
-                                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                                  </p>
-                                </router-link>
+                                      <div class="inbox-widget">
+                                        <router-link :to="'page/' + page.id" v-for="(page, index) in pagesPaginator.content" :key="index" :data-index="index" class="inbox-item">
+                                          <div class="inbox-item-img" v-if="page.poster != null">
+                                            <img :src="page.poster.path" class="img-circle">
+                                          </div>
+                                          <p class="inbox-item-author" v-text="page.name"></p>
+                                          <p class="inbox-item-text" v-if="page.category != null">
+                                            {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                                          </p>
+                                        </router-link>
 
-                                <div class="text-center">
-                                  <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
-                                </div>
-                              </div>
-                            </tab> -->
+                                        <div class="text-center">
+                                          <paginator :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate" />
+                                        </div>
+                                      </div>
+                                    </tab> -->
             <tab :title="$t('client.dashboard.followed')"
               @navigated="tabNavigation">
               <div class="inbox-widget">
@@ -110,7 +114,7 @@
                 </router-link>
               </div>
             </tab>
-            
+
             <tab :title="$t('client.dashboard.popular')"
               @navigated="tabNavigation">
               <div class="inbox-widget">
@@ -157,7 +161,7 @@ export default {
       pagesPaginator: {},
       eventsPaginator: {},
       popular: [],
-      headlines: [],
+      headlinesPaginator: [],
       loadingHeadlines: false
     };
   },
@@ -202,10 +206,10 @@ export default {
         });
       });
     },
-    getHeadlines () {
+    getHeadlines (page) {
       this.loadingHeadlines = true;
-      RootApi.getHeadlines(this.user.locale.name, paginator => {
-        this.headlines = paginator.content;
+      RootApi.getHeadlines(this.user.locale.name, page, 6, paginator => {
+        this.headlinesPaginator = paginator;
         this.loadingHeadlines = false;
       });
     },
@@ -227,6 +231,13 @@ export default {
         this.getEvents(this.eventsPaginator.number + e.direction);
       } else if (e.page != null) {
         this.getEvents(e.page);
+      }
+    },
+    headlinesPaginatorNavigate (e) {
+      if (e.direction != null) {
+        this.getHeadlines(this.headlinesPaginator.number + e.direction);
+      } else if (e.page != null) {
+        this.getHeadlines(e.page);
       }
     },
     tabNavigation (id, loading) {

@@ -1,46 +1,50 @@
 <template>
-  <li class="dropdown hidden-xs" :class="{ 'open' : display }" v-click-outside="closeNotifications">
-    <a @click="display = !display" class="dropdown-toggle waves-effect waves-light">
+  <drop-down-menu large>
+    <span slot="button">
       <i class="material-icons">notifications</i>
-      <span class="badge badge-xs" v-text="notifications.length"></span>
-    </a>
-  
-    <ul class="dropdown-menu dropdown-menu-lg">
-      <li class="text-center notifi-title">Notification</li>
-      <li class="list-group notification-list">
-  
-        <a v-for="not in notifications" class="list-group-item" :key="not.id">
-          <div class="media">
-            <div class="pull-left p-r-10">
-              <em class="fa fa-diamond noti-primary"></em>
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
-              <p class="m-0">
-                <small>{{ $t(not.code + '.message') }}</small>
-              </p>
-            </div>
+      <span class="badge badge-xs"
+        v-text="notifications.length"></span>
+    </span>
+
+    <drop-down-menu-item class="notifi-title">
+      Notification
+    </drop-down-menu-item>
+    <drop-down-menu-item class="list-group notification-list">
+      <a v-for="not in notifications"
+        class="list-group-item"
+        :key="not.id">
+        <div class="media">
+          <div class="pull-left p-r-10">
+            <em class="fa fa-diamond noti-primary"></em>
           </div>
-        </a>
-  
-        <div v-if="notifications.length == 0" class="text-center m-t-10 text-muted">There's nothing to display</div>
-  
-      </li>
-  
-      <li>
-        <a href="javascript:void(0);" class=" text-right">
-          <small>
-            <b>See all notifications</b>
-          </small>
-        </a>
-      </li>
-  
-    </ul>
-  </li>
+          <div class="media-body">
+            <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
+            <p class="m-0">
+              <small>{{ $t(not.code + '.message') }}</small>
+            </p>
+          </div>
+        </div>
+      </a>
+
+      <div v-if="notifications.length == 0"
+        class="text-center m-t-10 text-muted">There's nothing to display
+      </div>
+    </drop-down-menu-item>
+    <drop-down-menu-item>
+      <a href="javascript:void(0);"
+        class=" text-right">
+        <small>
+          <b>See all notifications</b>
+        </small>
+      </a>
+    </drop-down-menu-item>
+  </drop-down-menu>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { DropDownMenu, DropDownMenuItem } from 'elements';
+
 export default {
   name: 'notifications',
   data: function () {
@@ -50,6 +54,9 @@ export default {
   },
   computed: {
     ...mapGetters(['notifications'])
+  },
+  components: {
+    DropDownMenu, DropDownMenuItem
   },
   methods: {
     markAsSeen: function (notification) {

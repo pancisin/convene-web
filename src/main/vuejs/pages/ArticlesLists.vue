@@ -1,6 +1,6 @@
 <template>
   <div>
-    <panel type="table">
+    <panel type="table" v-loading="loading">
       <span slot="title">News lists</span>
       <table class="table">
         <thead>
@@ -51,12 +51,15 @@ export default {
   data () {
     return {
       articlesLists: [],
-      list: {}
+      list: {},
+      loading: false
     };
   },
   created () {
+    this.loading = true;
     ArticlesListApi.getArticlesLists(articlesLists => {
       this.articlesLists = articlesLists;
+      this.loading = false;
     });
   },
   methods: {

@@ -39,17 +39,6 @@ const getters = {
   loadingBranches: state => state.loadingBranches
 };
 
-const watchers = [
-  [
-    state => {
-      return state.page.pages;
-    },
-    pages => {
-      console.log(pages);  
-    }
-  ]
-];
-
 const actions = {
   initializePages ({ commit }) {
     UserApi.getPages((pages) => {
@@ -176,6 +165,5 @@ export default {
   state,
   getters,
   actions,
-  mutations,
-  watchers
+  mutations
 };

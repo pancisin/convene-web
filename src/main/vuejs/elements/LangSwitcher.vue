@@ -1,37 +1,29 @@
 <template>
-  <li class="dropdown hidden-xs"
-    :class="{ 'open' : display }"
-    v-click-outside="closeLanguage">
-    <a @click="display = !display"
-      class="dropdown-toggle waves-effect waves-light">
-      <i class="fa fa-language"></i>
-    </a>
-    <ul class="dropdown-menu">
-      <li v-for="loc in locales"
-        :key="loc.code">
-        <a @click="selectLoc(loc)">
-          {{ $t(loc.code) }}
-        </a>
-      </li>
-    </ul>
-  </li>
+  <drop-down-menu>
+    <span slot="button"><i class="fa fa-language"></i></span>
+    <drop-down-menu-item v-for="loc in locales"
+      :key="loc.code">
+      <a @click="selectLoc(loc)">
+        {{ $t(loc.code) }}
+      </a>
+    </drop-down-menu-item>
+  </drop-down-menu>
 </template>
 
 <script>
 import moment from 'moment';
+import { DropDownMenu, DropDownMenuItem } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'language-switcher',
-  data () {
-    return {
-      display: false
-    };
-  },
   created () {
     if (this.locales.length === 0) {
       this.initializeLocales();
     }
+  },
+  components: {
+    DropDownMenu, DropDownMenuItem
   },
   computed: {
     ...mapGetters({
@@ -60,14 +52,8 @@ export default {
     ...mapActions([
       'initializeUser', 'initializeLocales'
     ]),
-    closeLanguage (e) {
-      if (this.display) {
-        this.display = false;
-      }
-    },
     selectLoc (locale) {
       this.locale = locale;
-      this.closeLanguage();
     }
   }
 };

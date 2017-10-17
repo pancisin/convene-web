@@ -3,7 +3,8 @@
     <div class="topbar-main">
       <div class="container">
         <div class="menu-item">
-          <a class="navbar-toggle waves-effect" @click="hamburgerClicked">
+          <a class="navbar-toggle waves-effect"
+            @click="hamburgerClicked">
             <div class="lines">
               <span></span>
               <span></span>
@@ -11,37 +12,41 @@
             </div>
           </a>
         </div>
-  
+
         <div class="logo">
-          <router-link to="/" class="logo">
+          <router-link to="/"
+            class="logo">
             <i class="fa fa-book"></i>
             <span>Bookster</span>
           </router-link>
         </div>
-  
+
         <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
             <lang-switcher />
             <notifications />
-  
-            <li class="dropdown">
-              <a href="" class="dropdown-toggle waves-effect waves-light profile" data-toggle="dropdown" aria-expanded="true">
-                <img :src="avatar" alt="user-img" class="img-circle">
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <router-link :to="{ name: 'settings' }" class="waves-effect waves-light">
-                    <i class="fa fa-cog m-r-10"></i> Settings
-                  </router-link>
-                </li>
-                <li>
-                  <a @click="logoutUser">
-                    <i class="fa fa-power-off m-r-10"></i> Logout</a>
-                </li>
-              </ul>
-            </li>
+
+            <drop-down-menu>
+              <span slot="button"
+                class="profile">
+                <img :src="avatar"
+                  alt="user-img"
+                  class="img-circle">
+              </span>
+
+              <drop-down-menu-item>
+                <router-link :to="{ name: 'settings' }"
+                  class="waves-effect waves-light">
+                  <i class="fa fa-cog m-r-10"></i> Settings
+                </router-link>
+              </drop-down-menu-item>
+              <drop-down-menu-item>
+                <a @click="logoutUser">
+                  <i class="fa fa-power-off m-r-10"></i> Logout
+                </a>
+              </drop-down-menu-item>
+            </drop-down-menu>
           </ul>
-  
         </div>
       </div>
     </div>
@@ -49,7 +54,7 @@
 </template>
   
 <script>
-import { Notifications, LangSwitcher } from 'elements';
+import { Notifications, LangSwitcher, DropDownMenu, DropDownMenuItem } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
 
@@ -78,7 +83,7 @@ export default {
     }
   },
   components: {
-    Notifications, LangSwitcher
+    Notifications, LangSwitcher, DropDownMenu, DropDownMenuItem
   }
 };
 </script>

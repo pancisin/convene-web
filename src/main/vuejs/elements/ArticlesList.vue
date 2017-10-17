@@ -1,8 +1,12 @@
 <template>
-  <div class="articles-list" v-loading="loading">
+  <div class="articles-list"
+    v-loading="loading">
     <transition-group name="fade">
-      <div class="articles-list-item clearfix" v-for="article in articlesList" :key="article.id">
-        <div class="article-image-container" v-if="article.thumbnail != null">
+      <div class="articles-list-item clearfix"
+        v-for="article in articlesList"
+        :key="article.id">
+        <div class="article-image-container"
+          v-if="article.thumbnail != null">
           <img :src="article.thumbnail.path">
         </div>
 
@@ -10,9 +14,11 @@
           <h4 v-text="article.title"></h4>
         </router-link>
 
-        <p v-if="article.content != null" v-strip="article.content.substring(0, 200)"></p>
+        <p v-if="article.content != null"
+          v-strip="article.content.substring(0, 200)"></p>
 
-        <router-link :to="{ name: 'article.public', params: { article_id: article.id } }" class="btn btn-link btn-xs pull-right">
+        <router-link :to="{ name: 'article.public', params: { article_id: article.id } }"
+          class="btn btn-link btn-xs pull-right">
           Read more
           <i class="fa fa-angle-right"></i>
         </router-link>
@@ -54,6 +60,7 @@ export default {
         });
       } else {
         this.articlesList = this.articles;
+        this.loading = false;
       }
     }
   }

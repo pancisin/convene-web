@@ -196,6 +196,7 @@ export default {
     getRuns () {
       ArticleBotApi.getRuns(this.bot.id, runs => {
         this.runs = runs;
+        this.runs.sort((a, b) => b.date - a.date);
       });
     }
   }
