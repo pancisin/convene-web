@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" v-loading="loading">
       <div class="article-banner" v-if="article.thumbnail != null">
         <img :src="article.thumbnail.path">
       </div>
@@ -20,7 +20,7 @@
       </div>
       <hr />
   
-      <div v-html="article.content"></div>
+      <div v-html="article.content" class="custom-content"></div>
     </div>
   </div>
 </template>
@@ -32,12 +32,15 @@ export default {
   name: 'article',
   data () {
     return {
-      article: {}
+      article: {},
+      loading: false
     };
   },
   created () {
+    this.loading = true;
     ArticleApi.getArticle(this.$route.params.article_id, article => {
       this.article = article;
+      this.loading = false;
     });
   }
 };

@@ -1,0 +1,85 @@
+@import (reference) '../variables.less';
+.pagination {
+  >li {
+    &:first-child {
+      >a {
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+      }
+      >span {
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+      }
+    }
+    &:last-child {
+      >a {
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+      >span {
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+      }
+    }
+    >a {
+      color: #636e7b;
+      &:hover {
+        background-color: #e4e7ea;
+      }
+      &:focus {
+        background-color: #e4e7ea;
+      }
+    }
+    >span {
+      color: #636e7b;
+      &:hover {
+        background-color: #e4e7ea;
+      }
+      &:focus {
+        background-color: #e4e7ea;
+      }
+    }
+  }
+  >.active {
+    >a {
+      background-color: @color-accent;
+      border-color: @color-accent;
+      &:hover {
+        background-color: @color-accent;
+        border-color: @color-accent;
+      }
+      &:focus {
+        background-color: @color-accent;
+        border-color: @color-accent;
+      }
+    }
+    >span {
+      background-color: @color-accent;
+      border-color: @color-accent;
+      &:hover {
+        background-color: @color-accent;
+        border-color: @color-accent;
+      }
+      &:focus {
+        background-color: @color-accent;
+        border-color: @color-accent;
+      }
+    }
+  }
+}
+
+.pagination-split {
+  li {
+    margin-left: 5px;
+    display: inline-block;
+    float: left;
+    &:first-child {
+      margin-left: 0;
+    }
+    a {
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+    }
+  }
+}

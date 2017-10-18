@@ -1,38 +1,41 @@
 <template>
-  <li class="dropdown hidden-xs" :class="{ 'open' : display }" v-click-outside="closeLanguage">
-    <a @click="display = !display" class="dropdown-toggle waves-effect waves-light">
+  <drop-down-menu>
+    <span slot="button">
       <i class="fa fa-language"></i>
-    </a>
-    <ul class="dropdown-menu">
-      <li v-for="loc in locales" :key="loc.code">
-        <a @click="selectLoc(loc)">
-          {{ $t(loc.code) }}
-        </a>
-      </li>
-    </ul>
-  </li>
+    </span>
+    <drop-down-menu-item header>
+      Language
+    </drop-down-menu-item>
+    <drop-down-menu-item v-for="loc in locales"
+      :key="loc.code">
+      <a @click="selectLoc(loc)">
+        {{ $t(loc.code) }}
+      </a>
+    </drop-down-menu-item>
+  </drop-down-menu>
 </template>
 
 <script>
 import moment from 'moment';
+import { DropDownMenu, DropDownMenuItem } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'language-switcher',
-  data () {
-    return {
-      locales: [],
-      display: false
-    };
-  },
   created () {
-    this.getLocales();
+    if (this.locales.length === 0) {
+      this.initializeLocales();
+    }
+  },
+  components: {
+    'drop-down-menu': DropDownMenu,
+    'drop-down-menu-item': DropDownMenuItem
   },
   computed: {
     ...mapGetters({
       storeLocale: 'locale'
     }),
-    ...mapGetters(['locale', 'authenticated']),
+    ...mapGetters(['locale', 'authenticated', 'locales']),
     locale: {
       get () {
         return this.authenticated ? this.storeLocale : this.$i18n.locale;
@@ -53,21 +56,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'initializeUser'
+      'initializeUser', 'initializeLocales'
     ]),
-    getLocales () {
-      this.$http.get('public/locales').then(response => {
-        this.locales = response.body;
-      });
-    },
-    closeLanguage (e) {
-      if (this.display) {
-        this.display = false;
-      }
-    },
     selectLoc (locale) {
       this.locale = locale;
-      this.closeLanguage();
     }
   }
 };

@@ -5,12 +5,14 @@ import ChatContainer from './ChatContainer';
 import Checkbox from './Checkbox';
 import ContextMenu from './ContextMenu';
 import DatePicker from './DatePicker';
-import DropDown from './DropDown';
+import DropDownMenu from './DropDownMenu';
+import DropDownMenuItem from './DropDownMenuItem';
 import GMap from './GMap';
 import ImageUpload from './ImageUpload';
-import LangSwitcher from './LangSwitcher';
+import LangSwitcher from './header/LangSwitcher';
+import Notifications from './header/Notifications';
+import UserProfile from './header/UserProfile';
 import Modal from './Modal';
-import Notifications from './Notifications';
 import Paginator from './Paginator';
 import Panel from './Panel';
 import Select from './Select';
@@ -31,6 +33,7 @@ import EventsList from './EventsList';
 import HeroUnit from './HeroUnit';
 import BotRunIndicator from './BotRunIndicator';
 import Categorizer from './Categorizer';
+import TagInput from './TagInput';
 
 import widgets from './widgets';
 
@@ -43,12 +46,14 @@ export {
   Checkbox,
   ContextMenu,
   DatePicker,
-  DropDown,
+  DropDownMenu,
+  DropDownMenuItem,
   GMap,
   ImageUpload,
   LangSwitcher,
   Modal,
   Notifications,
+  UserProfile,
   Paginator,
   Panel,
   Select,
@@ -68,5 +73,6 @@ export {
   EventsList,
   HeroUnit,
   BotRunIndicator,
-  Categorizer
+  Categorizer,
+  TagInput
 };

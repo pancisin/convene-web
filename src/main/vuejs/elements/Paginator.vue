@@ -5,8 +5,12 @@
         <i class="fa fa-angle-left"></i>
       </a>
     </li>
-    <li v-for="(page, index) in paginator.totalPages" :class="{'active' : paginator.number == index}" :key="index">
-      <a v-text="page" @click="paginatorNavigate(null, index)"></a>
+    <li v-for="index in pages"
+      :class="{'active' : paginator.number === index}"
+      :key="index">
+      <a @click="paginatorNavigate(null, index)">
+        {{ index + 1}}
+      </a>
     </li>
     <li v-if="!paginator.last">
       <a @click="paginatorNavigate(1, null)">
@@ -18,10 +22,30 @@
 
 <script>
 export default {
-  props: ['paginator', 'history'],
+  props: {
+    paginator: {
+      type: Object,
+      default: {}
+    },
+    history: {
+      type: Boolean,
+      default: false
+    }
+  },
   created () {
     if (this.$route.query.page) {
       this.paginatorNavigate(null, this.$route.query.page);
+    }
+  },
+  computed: {
+    pages () {
+      if (this.paginator.totalPages > 5) {
+        let total = [...Array(this.paginator.totalPages).keys()];
+        const index = this.paginator.number;
+        return total.slice(index - 2 > 0 ? index - 2 : 0, index + 3);
+      } else {
+        return [...Array(this.paginator.totalPages).keys()];
+      }
     }
   },
   methods: {
@@ -29,16 +53,20 @@ export default {
       if (this.history) {
         this.$router.replace({
           query: {
-            page: page
+            page
           }
         });
       }
 
       this.$emit('navigate', {
-        direction: direction,
-        page: page
+        direction,
+        page
       });
     }
   }
 };
 </script>
+
+<style lang="less">
+
+</style>

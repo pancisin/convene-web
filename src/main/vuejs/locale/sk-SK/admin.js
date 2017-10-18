@@ -51,5 +51,6 @@ export default {
   },
   system: {
     users: 'Používatelia',
+    news: 'News'
   }
 };

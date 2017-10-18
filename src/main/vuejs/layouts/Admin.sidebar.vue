@@ -34,7 +34,7 @@
 
             <span v-text="page.name" slot="title"></span>
 
-            <li slot="item" v-for="(route, index) in menus.page.routes" :key="index" v-if="route.hasPermission(user)">
+            <li slot="item" v-for="(route, index) in menus.page.routes" :key="index" v-if="route.hasPermission(page.privilege)">
               <router-link :to="{ name: route.name, params: { id : page.id }}" class="list-group-item waves-effect">
                 {{ $t(route.code) }}
               </router-link>

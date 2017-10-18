@@ -3,26 +3,26 @@
     <div class="page-title-box">
       <h4 class="page-title" v-text="article.title"></h4>
     </div>
-  
+
     <panel>
       <div class="row">
-        <div class="col-md-8">
+        <div :class="{ 'col-md-8' : edit }">
           <div class="form-group">
             <label class="control-label">Title</label>
             <input type="text" class="form-control" v-model="article.title">
           </div>
-  
+
           <div class="form-group">
             <label class="control-label">Content</label>
             <text-editor v-model="article.content"></text-editor>
           </div>
         </div>
-  
+
         <div class="col-md-4" v-if="edit">
           <image-upload v-model="article.thumbnailData" :media="article.thumbnail"></image-upload>
         </div>
       </div>
-  
+
       <div class="text-center m-t-20">
         <span v-if="edit">
           <a v-if="article.published" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
@@ -51,10 +51,19 @@ export default {
     ImageUpload, TextEditor
   },
   created () {
-    ArticleApi.getArticle(this.$route.params.article_id, article => {
-      this.article = article;
-      this.edit = article.id != null;
-    });
+    const route = this.$route.params.article_id;
+
+    if (route != null) {
+      ArticleApi.getArticle(route, article => {
+        this.article = article;
+        this.edit = article.id != null;
+      });
+    }
+  },
+  computed: {
+    api () {
+      return this.provider.api;
+    }
   },
   methods: {
     submit () {
@@ -64,7 +73,7 @@ export default {
           this.$success('notification.article.updated', article.title);
         });
       } else {
-        this.provider.api.postArticle(this.article, article => {
+        this.api.postArticle(this.article, article => {
           this.$router.push({ name: 'article', params: { article_id: article.id } });
           this.$success('notification.article.saved', article.title);
         });

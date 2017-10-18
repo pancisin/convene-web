@@ -8,15 +8,19 @@ import conference from './modules/conference';
 
 import * as types from 'store/mutation-types';
 
+import PublicApi from 'api/public.api';
+
 const store = new Vuex.Store({
   state: {
-    toasts: []
+    toasts: [],
+    locales: []
   },
   modules: {
     user, page, conference
   },
   getters: {
-    toasts: state => state.toasts
+    toasts: state => state.toasts,
+    locales: state => state.locales
   },
   actions: {
     addToast ({ commit }, toast) {
@@ -28,8 +32,15 @@ const store = new Vuex.Store({
         }, 5000);
       }
     },
+
     removeToast ({ commit }, toast) {
       commit(types.REMOVE_TOAST, { toast });
+    },
+
+    initializeLocales ({ commit }) {
+      PublicApi.getLocales(locales => {
+        commit(types.SET_LOCALES, { locales });
+      });
     }
   },
   mutations: {
@@ -39,7 +50,20 @@ const store = new Vuex.Store({
 
     [types.REMOVE_TOAST] (state, { toast }) {
       state.toasts.splice(state.toasts.indexOf(toast), 1);
+    },
+
+    [types.SET_LOCALES] (state, { locales }) {
+      state.locales = locales;
     }
+  }
+});
+
+[user, page, conference].forEach((module) => {
+  if (module.watchers) {
+    module.watchers.forEach((params) => {
+      console.log(params);
+      store.watch(...params);
+    });
   }
 });
 

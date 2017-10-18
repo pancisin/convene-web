@@ -1,9 +1,12 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">Articles</span>
-    <table class="table">
+    <table class="table articles-table">
       <thead>
         <tr>
+          <th>
+            #
+          </th>
           <th>
           </th>
           <th>
@@ -19,7 +22,10 @@
       </thead>
 
       <tbody>
-        <tr v-for="article in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
+        <tr v-for="(article, index) in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
+          <td>
+            {{ index + 1 }}
+          </td>
           <td>
             <img :src="article.thumbnail.path" v-if="article.thumbnail != null" style="height:50px">
           </td>
@@ -41,11 +47,16 @@
       <template scope="props">
         <ul>
           <li>
-            <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
+            <router-link :to="{ name: 'article.public', params: { article_id: props.data.id } }">
               Go to article
             </router-link>
           </li>
           <li class="separator"></li>
+          <li v-if="editable">
+            <a @click="togglePublished(props.data.id)">
+              Toggle published
+            </a>
+          </li>
           <li v-if="editable">
             <router-link :to="{ name: 'article', params: { article_id: props.data.id } }">
               Edit
@@ -58,7 +69,7 @@
           </li>
           <li class="separator"></li>
           <li>
-            <router-link :to="{ name: 'conference.place.create' }">
+            <router-link to="create-article">
               Create article
             </router-link>
           </li>
@@ -66,8 +77,8 @@
       </template>
     </context-menu>
 
-    <div class="text-center" v-if="editable">
-      <router-link :to="{ name: 'conference.article.create' }" class="btn btn-primary btn-rounded">
+    <div class="text-center" v-if="editable && insertable">
+      <router-link to="create-article" class="btn btn-primary btn-rounded">
         Create article
       </router-link>
     </div>
@@ -80,7 +91,11 @@ export default {
   name: 'articles-template',
   inject: ['provider'],
   props: {
-    editable: Boolean
+    editable: Boolean,
+    insertable: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
@@ -107,6 +122,15 @@ export default {
         this.loading = false;
       });
     },
+    togglePublished (article_id) {
+      ArticleApi.togglePublished(article_id, article => {
+        this.articles.forEach((a, index) => {
+          if (a.id === article_id) {
+            this.articles.splice(index, 1, article);
+          }
+        });
+      });
+    },
     deleteArticle (article) {
       this.$prompt('notification.article.delete_prompt', () => {
         ArticleApi.deleteArticle(article.id, result => {
@@ -119,3 +143,11 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.articles-table {
+  & > tbody > tr > td {
+    vertical-align: middle;
+  }
+}
+</style>

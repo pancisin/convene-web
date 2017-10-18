@@ -68,8 +68,7 @@ export default {
     return {
       conference: null,
       attend_status: false,
-      surveys: [],
-      display_survey_modal: true
+      surveys: []
     };
   },
   created () {
