@@ -56,7 +56,8 @@ export default {
     ...mapGetters(['notifications'])
   },
   components: {
-    DropDownMenu, DropDownMenuItem
+    'drop-down-menu': DropDownMenu,
+    'drop-down-menu-item': DropDownMenuItem
   },
   methods: {
     markAsSeen: function (notification) {

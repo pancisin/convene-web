@@ -2,43 +2,61 @@
   <fullscreen :fullscreen.sync="fullscreen_on">
     <div class="venue-editor">
       <div class="editor-statusbar">
-        <ul>
+        <ul class="navbar-nav list-unstyled">
+          <drop-down-menu>
+            <span slot="button">File <i class="fa fa-angle-down"></i></span>
+
+            <drop-down-menu-item>
+              Open
+            </drop-down-menu-item>
+            <drop-down-menu-item>
+              <a class="dropdown-item"
+                @click="submit"
+                :class="{ 'disabled' : !touched }">Save</a>
+            </drop-down-menu-item>
+            <drop-down-menu-item>
+              Save as
+            </drop-down-menu-item>
+            <drop-down-menu-item>
+              Export
+            </drop-down-menu-item>
+          </drop-down-menu>
+
           <li>
             <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">File
+              <a type="button"
+                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+                data-toggle="dropdown"
+                aria-expanded="false">Edit
                 <i class="fa fa-angle-down"></i>
               </a>
               <div class="dropdown-menu">
                 <a class="dropdown-item">Open</a>
-                <a class="dropdown-item" @click="submit" :class="{ 'disabled' : !touched }">Save</a>
-                <a class="dropdown-item">Save as</a>
-                <a class="dropdown-item">Export</a>
               </div>
             </div>
           </li>
           <li>
             <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">Edit
+              <a type="button"
+                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+                data-toggle="dropdown"
+                aria-expanded="false">View
                 <i class="fa fa-angle-down"></i>
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item">Open</a>
+                <a class="dropdown-item"
+                  @click="fullscreen_on = !fullscreen_on">
+                  <i class="fa fa-check"
+                    v-show="fullscreen_on"></i> Fullscreen</a>
               </div>
             </div>
           </li>
           <li>
             <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">View
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" @click="fullscreen_on = !fullscreen_on"><i class="fa fa-check" v-show="fullscreen_on"></i> Fullscreen</a>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">Help
+              <a type="button"
+                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+                data-toggle="dropdown"
+                aria-expanded="false">Help
                 <i class="fa fa-angle-down"></i>
               </a>
               <div class="dropdown-menu">
@@ -50,26 +68,33 @@
 
         <ul class="pull-right">
           <li>
-            <a class="btn btn-secondary" @click="fullscreen_on = true" v-if="!fullscreen_on">
+            <a class="btn btn-secondary"
+              @click="fullscreen_on = true"
+              v-if="!fullscreen_on">
               <i class="fa fa-expand"></i>
             </a>
-            <a class="btn btn-secondary" @click="fullscreen_on = false" v-else>
+            <a class="btn btn-secondary"
+              @click="fullscreen_on = false"
+              v-else>
               <i class="fa fa-compress"></i>
             </a>
           </li>
         </ul>
       </div>
 
-      <div class="editor-toolbar" v-if="canvas != null">
+      <div class="editor-toolbar"
+        v-if="canvas != null">
         <ul>
           <li class="disabled">
             <a>
-              <i class="fa fa-file-text-o" aria-hidden="true"></i>
+              <i class="fa fa-file-text-o"
+                aria-hidden="true"></i>
             </a>
           </li>
           <li class="disabled">
             <a>
-              <i class="fa fa-folder-open" aria-hidden="true"></i>
+              <i class="fa fa-folder-open"
+                aria-hidden="true"></i>
             </a>
           </li>
           <li :class="{ 'disabled' : !touched }">
@@ -90,26 +115,39 @@
 
           <li>
             <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">Add building
+              <a type="button"
+                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+                data-toggle="dropdown"
+                aria-expanded="false">Add building
                 <i class="fa fa-angle-down"></i>
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" v-for="(fobj, index) in fabric_building" :key="index" @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
+                <a class="dropdown-item"
+                  v-for="(fobj, index) in fabric_building"
+                  :key="index"
+                  @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
               </div>
             </div>
             <div class="btn-group">
-              <a type="button" class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar" data-toggle="dropdown" aria-expanded="false">Add object
+              <a type="button"
+                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+                data-toggle="dropdown"
+                aria-expanded="false">Add object
                 <i class="fa fa-angle-down"></i>
               </a>
               <div class="dropdown-menu">
-                <a class="dropdown-item" v-for="(fobj, index) in fabric_objects" :key="index" @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
+                <a class="dropdown-item"
+                  v-for="(fobj, index) in fabric_objects"
+                  :key="index"
+                  @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
               </div>
             </div>
           </li>
         </ul>
         <ul class="pull-right">
           <li>
-            <a @click="toggleDrawingMode" :class="{ 'selected' : canvas.isDrawingMode }">
+            <a @click="toggleDrawingMode"
+              :class="{ 'selected' : canvas.isDrawingMode }">
               <i class="fa fa-pencil"></i>
             </a>
           </li>
@@ -139,6 +177,7 @@ import * as fabric_objects from '../services/fabric/objects';
 import * as fabric_building from '../services/fabric/building';
 import { calculateHash } from '../services/helpers';
 import HistoryManager from '../services/HistoryManager';
+import { DropDownMenu, DropDownMenuItem } from 'elements';
 
 export default {
   name: 'venue-editor',
@@ -155,6 +194,10 @@ export default {
       historyManager: null,
       fullscreen_on: false
     };
+  },
+  components: {
+    'drop-down-menu': DropDownMenu,
+    'drop-down-menu-item': DropDownMenuItem
   },
   watch: {
     json (newValue) {
@@ -300,45 +343,45 @@ export default {
     }
   }
 
-  .editor-statusbar {
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-    font-size: 12px;
+  // .editor-statusbar {
+  //   background-color: #fff;
+  //   border-bottom: 1px solid #eee;
+  //   font-size: 12px;
 
-    ul {
-      display: inline-flex;
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
+  //   ul {
+  //     display: inline-flex;
+  //     margin: 0;
+  //     padding: 0;
+  //     list-style-type: none;
 
-      li {
-        a {
-          color: #333;
-          transition: background-color .3s ease;
-          font-size: inherit;
+  //     li {
+  //       a {
+  //         color: #333;
+  //         transition: background-color .3s ease;
+  //         font-size: inherit;
 
-          &:hover {
-            background-color: #eee;
-          }
-        }
-      }
+  //         &:hover {
+  //           background-color: #eee;
+  //         }
+  //       }
+  //     }
 
-      .dropdown-menu {
-        font-size: inherit;
-      }
+  //     .dropdown-menu {
+  //       font-size: inherit;
+  //     }
 
-      .dropdown-item {
-        display: block;
-        border: none;
-        padding: 3px 10px;
-        font-size: inherit;
+  //     .dropdown-item {
+  //       display: block;
+  //       border: none;
+  //       padding: 3px 10px;
+  //       font-size: inherit;
 
-        &.disabled {
-          color: #bbb;
-          pointer-events: none;
-        }
-      }
-    }
-  }
+  //       &.disabled {
+  //         color: #bbb;
+  //         pointer-events: none;
+  //       }
+  //     }
+  //   }
+  // }
 }
 </style>

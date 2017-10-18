@@ -1,6 +1,11 @@
 <template>
   <drop-down-menu>
-    <span slot="button"><i class="fa fa-language"></i></span>
+    <span slot="button">
+      <i class="fa fa-language"></i>
+    </span>
+    <drop-down-menu-item header>
+      Language
+    </drop-down-menu-item>
     <drop-down-menu-item v-for="loc in locales"
       :key="loc.code">
       <a @click="selectLoc(loc)">
@@ -23,7 +28,8 @@ export default {
     }
   },
   components: {
-    DropDownMenu, DropDownMenuItem
+    'drop-down-menu': DropDownMenu,
+    'drop-down-menu-item': DropDownMenuItem
   },
   computed: {
     ...mapGetters({

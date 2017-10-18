@@ -9,9 +9,10 @@ import DropDownMenu from './DropDownMenu';
 import DropDownMenuItem from './DropDownMenuItem';
 import GMap from './GMap';
 import ImageUpload from './ImageUpload';
-import LangSwitcher from './LangSwitcher';
+import LangSwitcher from './header/LangSwitcher';
+import Notifications from './header/Notifications';
+import UserProfile from './header/UserProfile';
 import Modal from './Modal';
-import Notifications from './Notifications';
 import Paginator from './Paginator';
 import Panel from './Panel';
 import Select from './Select';
@@ -52,6 +53,7 @@ export {
   LangSwitcher,
   Modal,
   Notifications,
+  UserProfile,
   Paginator,
   Panel,
   Select,

@@ -25,27 +25,9 @@
               </form>
             </li>
 
-            <lang-switcher />
-            <notifications v-if="authenticated" />
-
-            <drop-down-menu v-if="authenticated">
-              <span slot="button"
-                class="profile">
-                <img :src="avatar"
-                  alt="user-img"
-                  class="img-circle">
-              </span>
-              <drop-down-menu-item>
-                <router-link :to="{ name : 'settings' }"
-                  class="waves-effect waves-light">
-                  <i class="fa fa-cog m-r-10"></i> Settings
-                </router-link>
-              </drop-down-menu-item>
-              <drop-down-menu-item>
-                <a @click="logoutUser">
-                  <i class="fa fa-power-off m-r-10"></i> Logout</a>
-              </drop-down-menu-item>
-            </drop-down-menu>
+            <lang-switcher></lang-switcher>
+            <notifications v-if="authenticated"></notifications>
+            <user-profile v-if="authenticated"></user-profile>
             <template v-else>
               <li>
                 <router-link :to="{ name: 'login' }"
@@ -72,7 +54,7 @@
       </div>
     </div>
 
-    <div class="navbar-custom active">
+    <div class="navbar-custom">
       <div class="container">
         <slide-transition>
           <div id="navigation"
@@ -109,10 +91,9 @@
 </template>
 
 <script>
-import { Notifications, LangSwitcher, DropDownMenu, DropDownMenuItem } from 'elements';
+import { Notifications, LangSwitcher, UserProfile } from 'elements';
 import SlideTransition from '../functional/SlideTransition';
-import { mapGetters, mapActions } from 'vuex';
-import gravatar from 'gravatar';
+import { mapGetters } from 'vuex';
 import menus from '../services/maps/menus.map';
 
 export default {
@@ -126,31 +107,17 @@ export default {
     '$route': 'closeNavbar'
   },
   computed: {
-    ...mapGetters(['isAdmin', 'user', 'authenticated']),
-    avatar () {
-      if (this.user != null) {
-        return gravatar.url(this.user.email, {
-          protocol: 'https',
-          size: 36
-        });
-      } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
-    },
+    ...mapGetters(['user', 'authenticated']),
     clientMenu () {
       return menus.client;
     }
   },
   components: {
-    Notifications, LangSwitcher, SlideTransition, DropDownMenu, DropDownMenuItem
+    Notifications, LangSwitcher, SlideTransition, UserProfile
   },
   methods: {
-    ...mapActions(['logout']),
     closeNavbar () {
       this.collapsed = true;
-    },
-    logoutUser () {
-      this.logout().then(response => {
-        this.$router.push({ path: '/' });
-      });
     }
   }
 };

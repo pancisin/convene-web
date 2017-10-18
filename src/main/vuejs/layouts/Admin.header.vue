@@ -25,27 +25,7 @@
           <ul class="nav navbar-nav navbar-right pull-right">
             <lang-switcher />
             <notifications />
-
-            <drop-down-menu>
-              <span slot="button"
-                class="profile">
-                <img :src="avatar"
-                  alt="user-img"
-                  class="img-circle">
-              </span>
-
-              <drop-down-menu-item>
-                <router-link :to="{ name: 'settings' }"
-                  class="waves-effect waves-light">
-                  <i class="fa fa-cog m-r-10"></i> Settings
-                </router-link>
-              </drop-down-menu-item>
-              <drop-down-menu-item>
-                <a @click="logoutUser">
-                  <i class="fa fa-power-off m-r-10"></i> Logout
-                </a>
-              </drop-down-menu-item>
-            </drop-down-menu>
+            <user-profile />
           </ul>
         </div>
       </div>
@@ -54,36 +34,17 @@
 </template>
   
 <script>
-import { Notifications, LangSwitcher, DropDownMenu, DropDownMenuItem } from 'elements';
-import { mapGetters, mapActions } from 'vuex';
-import gravatar from 'gravatar';
+import { Notifications, LangSwitcher, UserProfile } from 'elements';
 
 export default {
   name: 'header',
+  components: {
+    Notifications, LangSwitcher, UserProfile
+  },
   methods: {
-    ...mapActions(['logout']),
     hamburgerClicked () {
       this.$emit('hamburgerClicked');
-    },
-    logoutUser () {
-      this.logout().then(response => {
-        this.$router.push({ path: '/' });
-      });
     }
-  },
-  computed: {
-    ...mapGetters(['user']),
-    avatar () {
-      if (this.user.email != null) {
-        return gravatar.url(this.user.email, {
-          protocol: 'https',
-          size: 36
-        });
-      } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
-    }
-  },
-  components: {
-    Notifications, LangSwitcher, DropDownMenu, DropDownMenuItem
   }
 };
 </script>

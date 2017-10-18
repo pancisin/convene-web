@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="row">
-        <div class="col-md-3 col-lg-2 col-lg-offset-2">
+        <div class="col-md-3">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
 
@@ -63,7 +63,7 @@
             </div>
           </panel>
         </div>
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-6">
           <articles-list :articles="headlinesPaginator.content"
             v-loading="loadingHeadlines"></articles-list>
           <div class="text-center">
@@ -72,7 +72,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 col-lg-2">
+        <div class="col-md-3">
           <tab-container>
             <!-- <tab :title="$t('client.dashboard.suggested')">
                                       <div class="inbox-widget">
