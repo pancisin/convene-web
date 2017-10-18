@@ -70,9 +70,7 @@ export default {
   data () {
     return {
       eventsPaginator: {},
-      filters: {
-        timestamp: Date.now()
-      },
+      filters: { },
       loading: false
     };
   },
@@ -83,18 +81,27 @@ export default {
     filters: {
       handler () {
         this.getEvents(this.eventsPaginator.number);
+        this.$router.replace({
+          query: {
+            ...this.filters
+          }
+        });
       },
       deep: true
     }
   },
   created () {
+    this.filters = {
+      ...this.$route.query
+    };
+
     this.getEvents(0);
   },
   computed: {
     ...mapGetters(['user']),
     createdByMe: {
       get () {
-        return this.filters.authorType === 'USER' && this.filters.authorId === this.user.id;
+        return this.filters.authorType === 'USER' && parseInt(this.filters.authorId, 10) === this.user.id;
       },
       set (value) {
         this.filters = {
@@ -109,7 +116,7 @@ export default {
     getEvents (page) {
       this.loading = true;
 
-      PublicApi.getEvents(page, 5, this.filters, paginator => {
+      PublicApi.getEvents(page, 100, this.filters, paginator => {
         this.eventsPaginator = paginator;
         this.loading = false;
       });

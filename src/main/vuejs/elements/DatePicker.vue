@@ -67,7 +67,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   props: {
-    value: Number,
+    value: Number | String,
     placeholder: String,
     inline: Boolean,
     name: String
