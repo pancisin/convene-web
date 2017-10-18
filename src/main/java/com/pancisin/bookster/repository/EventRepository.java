@@ -19,14 +19,14 @@ import com.pancisin.bookster.models.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-//	@Override
-//	@Cacheable("events")
-//	Event findOne(Long id);
-//
-//	@Override
-//	@CacheEvict(value = "events", key = "#p0.id")
-//	<S extends Event> S save(S entity);
-	
+	// @Override
+	// @Cacheable("events")
+	// Event findOne(Long id);
+	//
+	// @Override
+	// @CacheEvict(value = "events", key = "#p0.id")
+	// <S extends Event> S save(S entity);
+
 	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL")
 	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable);
 
@@ -39,6 +39,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event WHERE event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date)")
 	@Cacheable("events") // here is second level cache problem.
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
+
+	@Query("SELECT event FROM User user JOIN user.events event WHERE user.id = :userId AND event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date) AND event.page IS NULL AND event.conference IS NULL")
+	public Page<Event> getPublicByUser(@Param("userId") Long userId, @Param("date") Calendar date, Pageable pageable);
 
 	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
@@ -57,5 +60,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	public Page<Event> getRelated(@Param("event_id") Long event_id, Pageable pageable);
 
 	@Query("SELECT event FROM Event event WHERE event.page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND event.visibility = 'PUBLIC'")
-	public Page<Event> getByPageFrom(@Param("page_id") Long page_id, Pageable pageable, @Param("fromDate") String fromDate);
+	public Page<Event> getByPageFrom(@Param("page_id") Long page_id, Pageable pageable,
+			@Param("fromDate") String fromDate);
 }

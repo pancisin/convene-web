@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.components.EventBotService;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Locale;
@@ -29,8 +26,6 @@ import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.enums.WidgetType;
-import com.pancisin.bookster.models.views.Compact;
-import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
@@ -38,8 +33,6 @@ import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageRepository;
-
-import facebook4j.FacebookException;
 
 @RestController
 @RequestMapping("/public")
@@ -62,13 +55,15 @@ public class PublicRestController {
 
 	@Autowired
 	private ArticleRepository articleRepository;
-	
+
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping("/events/{page}/{limit}")
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
-			@RequestParam(name = "timestamp", required = false) String timestamp) {
+			@RequestParam(name = "timestamp", required = false) String timestamp,
+			@RequestParam(name = "authorType", required = false, defaultValue = "") String authorType,
+			@RequestParam(name = "authorId", required = false, defaultValue = "0") String authorId) {
 
 		Date date = null;
 		try {
@@ -80,8 +75,20 @@ public class PublicRestController {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 
-		return ResponseEntity
-				.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+		switch (authorType) {
+		case "PAGE":
+			// TODO
+			return null;
+		case "USER":
+			Long userId = Long.parseLong(authorId);
+			return ResponseEntity.ok(eventRepository.getPublicByUser(userId, cal, new PageRequest(page, limit)));
+		case "CONFERENCE":
+			// TODO
+			return null;
+		default:
+			return ResponseEntity
+					.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+		}
 	}
 
 	@GetMapping("/near-events/{page}/{limit}")
@@ -190,7 +197,7 @@ public class PublicRestController {
 	public ResponseEntity<?> getMetaTypes() {
 		return ResponseEntity.ok(MetaType.values());
 	}
-	
+
 	@GetMapping("/widget-types")
 	public ResponseEntity<?> getWidgetTypes() {
 		return ResponseEntity.ok(WidgetType.values());
@@ -212,7 +219,7 @@ public class PublicRestController {
 	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id) {
 		return ResponseEntity.ok(articleRepository.getByConference(conference_id));
 	}
-	
+
 	@GetMapping("/conference/{page}/{size}")
 	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
 		return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));

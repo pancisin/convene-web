@@ -6,8 +6,20 @@
           class="btn btn-block btn-rounded btn-inverse m-b-20">
           Create event
         </router-link>
+
+        <h4>Filters:</h4>
+        <div class="checkbox checkbox-primary">
+          <input id="checkbox-mine"
+            type="checkbox"
+            v-model="createdByMe">
+          <label for="checkbox-mine">
+            Created by me only
+          </label>
+        </div>
+
         <date-picker v-model="filters.timestamp"
-          inline></date-picker>
+          inline>
+        </date-picker>
       </div>
       <div class="col-md-9"
         v-loading="loading">
@@ -50,6 +62,9 @@
 
 <script>
 import { Paginator, DatePicker, Masonry, MasonryItem } from 'elements';
+import PublicApi from 'api/public.api';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'events',
   data () {
@@ -75,13 +90,27 @@ export default {
   created () {
     this.getEvents(0);
   },
+  computed: {
+    ...mapGetters(['user']),
+    createdByMe: {
+      get () {
+        return this.filters.authorType === 'USER' && this.filters.authorId === this.user.id;
+      },
+      set (value) {
+        this.filters = {
+          ...this.filters,
+          authorId: value ? this.user.id : '0',
+          authorType: value ? 'USER' : ''
+        };
+      }
+    }
+  },
   methods: {
     getEvents (page) {
       this.loading = true;
-      this.$http.get('public/events/' + page + '/5', {
-        params: this.filters
-      }).then(response => {
-        this.eventsPaginator = response.body;
+
+      PublicApi.getEvents(page, 5, this.filters, paginator => {
+        this.eventsPaginator = paginator;
         this.loading = false;
       });
     },

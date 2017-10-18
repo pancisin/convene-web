@@ -1,20 +1,31 @@
 <template>
-  <div class="suggest-input" :class="{ '_loading' : loading }">
-    <input class="form-control" @keyup="search($event); update($event.target.value)" v-model="selected" @focus="collapsed = false" @blur="collapsed = true" />
+  <div class="suggest-input"
+    :class="{ '_loading' : loading }">
+    <input class="form-control"
+      @keyup="search($event); update($event.target.value)"
+      v-model="selected"
+      @focus="collapsed = false"
+      @blur="collapsed = true" />
 
     <div class="loader">
       <div class="spinner"></div>
     </div>
 
     <transition name="fade-up">
-      <div class="suggest-box" v-show="!collapsed">
+      <div class="suggest-box"
+        v-show="!collapsed">
         <div class="inbox-widget">
-          <a @click="select(option)" v-for="option in options" class="inbox-item">
+          <a @click="select(user)"
+            v-for="(user, index) in users"
+            class="inbox-item"
+            :key="index">
             <div class="inbox-item-img">
-              <img :src="getAvatar(option)" class="img-circle">
+              <img :src="getAvatar(user)"
+                class="img-circle">
             </div>
-            <p class="inbox-item-author">{{ option.firstName }} {{ option.lastName }}</p>
-            <p class="inbox-item-text" v-text="option.email">
+            <p class="inbox-item-author">{{ user.firstName }} {{ user.lastName }}</p>
+            <p class="inbox-item-text"
+              v-text="user.email">
             </p>
           </a>
         </div>
@@ -26,8 +37,10 @@
 <script>
 import debounce from 'debounce';
 import gravatar from 'gravatar';
+import UserApi from 'api/user.api';
 
 export default {
+  name: 'user-search',
   props: {
     value: String,
     options: Array
@@ -41,18 +54,19 @@ export default {
     return {
       loading: false,
       selected: null,
-      collapsed: true
+      collapsed: true,
+      users: []
     };
   },
   methods: {
     search: debounce(function (e) {
       this.collapsed = false;
-      this.$emit('search',
-        e.target.value,
-        (v) => {
-          this.loading = v;
-        }
-      );
+      this.loading = true;
+
+      UserApi.searchUsers(e.target.value, users => {
+        this.users = users;
+        this.loading = false;
+      });
     }, 500),
     select (option) {
       this.collapsed = true;

@@ -18,6 +18,14 @@ export default {
     });
   },
 
+  getEvents (page, size, filters, success) {
+    Vue.http.get(`public/events/${page}/${size}`, {
+      params: filters
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   event: {
     /**
      * Get events related events

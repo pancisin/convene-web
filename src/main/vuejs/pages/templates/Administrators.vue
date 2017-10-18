@@ -35,7 +35,7 @@
         </tr>
         <tr :key="0" v-if="editable">
           <td colspan="2">
-            <user-search v-model="selected_user.email" :options="users" @search="searchUsers" />
+            <user-search v-model="selected_user.email" />
           </td>
           <td>
             <a @click="grantAccess" class="btn btn-success btn-rounded">Grant access</a>
@@ -69,7 +69,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { UserSearch } from 'elements';
-import UserApi from 'api/user.api';
 
 export default {
   name: 'conference-administrators',
@@ -81,7 +80,6 @@ export default {
     return {
       administrators: [],
       roles: [],
-      users: [],
       selected_user: {},
       loading: false,
       current_pa: null
@@ -152,13 +150,6 @@ export default {
         this.administrators = this.administrators.filter(a => {
           return a.id !== admin.id;
         });
-      });
-    },
-    searchUsers (search, loading) {
-      loading(true);
-      UserApi.searchUsers(search, users => {
-        this.users = users;
-        loading(false);
       });
     },
     grantAccess () {

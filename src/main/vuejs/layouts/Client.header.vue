@@ -25,9 +25,9 @@
               </form>
             </li>
 
-            <lang-switcher></lang-switcher>
-            <notifications v-if="authenticated"></notifications>
-            <user-profile v-if="authenticated"></user-profile>
+            <lang-switcher />
+            <notifications v-if="authenticated" />
+            <user-profile v-if="authenticated" />
             <template v-else>
               <li>
                 <router-link :to="{ name: 'login' }"

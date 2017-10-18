@@ -2,11 +2,13 @@
   <fullscreen :fullscreen.sync="fullscreen_on">
     <div class="venue-editor">
       <div class="editor-statusbar">
-        <ul class="navbar-nav list-unstyled">
+        <ul class="list-unstyled">
           <dropdown-menu>
-            <span slot="button">File
+            <a class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+              slot="button">
+              File
               <i class="fa fa-angle-down"></i>
-            </span>
+            </a>
 
             <dropdown-menu-item>
               Open
@@ -24,48 +26,44 @@
             </dropdown-menu-item>
           </dropdown-menu>
 
-          <li>
-            <div class="btn-group">
-              <a type="button"
-                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
-                data-toggle="dropdown"
-                aria-expanded="false">Edit
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item">Open</a>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <a type="button"
-                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
-                data-toggle="dropdown"
-                aria-expanded="false">View
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item"
-                  @click="fullscreen_on = !fullscreen_on">
-                  <i class="fa fa-check"
-                    v-show="fullscreen_on"></i> Fullscreen</a>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="btn-group">
-              <a type="button"
-                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
-                data-toggle="dropdown"
-                aria-expanded="false">Help
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item">About Bookster venue editor</a>
-              </div>
-            </div>
-          </li>
+          <dropdown-menu>
+            <a class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+              slot="button">
+              Edit
+              <i class="fa fa-angle-down"></i>
+            </a>
+
+            <dropdown-menu-item>
+              Open
+            </dropdown-menu-item>
+          </dropdown-menu>
+
+          <dropdown-menu>
+            <a class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+              slot="button">
+              View
+              <i class="fa fa-angle-down"></i>
+            </a>
+
+            <dropdown-menu-item>
+              <a class="dropdown-item"
+                @click="fullscreen_on = !fullscreen_on">
+                <i class="fa fa-check"
+                  v-show="fullscreen_on"></i> Fullscreen</a>
+            </dropdown-menu-item>
+          </dropdown-menu>
+
+          <dropdown-menu>
+            <a class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
+              slot="button">
+              Help
+              <i class="fa fa-angle-down"></i>
+            </a>
+
+            <dropdown-menu-item>
+              About Bookster venue editor
+            </dropdown-menu-item>
+          </dropdown-menu>
         </ul>
 
         <ul class="pull-right">
@@ -115,36 +113,29 @@
             </a>
           </li>
 
-          <li>
-            <div class="btn-group">
-              <a type="button"
-                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
-                data-toggle="dropdown"
-                aria-expanded="false">Add building
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item"
-                  v-for="(fobj, index) in fabric_building"
-                  :key="index"
-                  @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
-              </div>
-            </div>
-            <div class="btn-group">
-              <a type="button"
-                class="btn btn-secondary dropdown-toggle waves-effect waves-light btn-navbar"
-                data-toggle="dropdown"
-                aria-expanded="false">Add object
-                <i class="fa fa-angle-down"></i>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item"
-                  v-for="(fobj, index) in fabric_objects"
-                  :key="index"
-                  @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
-              </div>
-            </div>
-          </li>
+          <dropdown-menu>
+            <span slot="button">
+              Add building
+              <i class="fa fa-angle-down"></i>
+            </span>
+
+            <dropdown-menu-item v-for="(fobj, index) in fabric_building"
+              :key="index">
+              <a @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
+            </dropdown-menu-item>
+          </dropdown-menu>
+
+          <dropdown-menu>
+            <span slot="button">
+              Add object
+              <i class="fa fa-angle-down"></i>
+            </span>
+
+            <dropdown-menu-item v-for="(fobj, index) in fabric_objects"
+              :key="index">
+              <a @click="addObject(fobj)">{{ $t(fobj.code) }}</a>
+            </dropdown-menu-item>
+          </dropdown-menu>
         </ul>
         <ul class="pull-right">
           <li>
@@ -179,7 +170,9 @@ import * as fabric_objects from '../services/fabric/objects';
 import * as fabric_building from '../services/fabric/building';
 import { calculateHash } from '../services/helpers';
 import HistoryManager from '../services/HistoryManager';
-import { DropdownMenu, DropdownMenuItem } from 'elements';
+
+import DropdownMenu from './DropdownMenu';
+import DropdownMenuItem from './DropdownMenuItem';
 
 export default {
   name: 'venue-editor',
@@ -307,16 +300,16 @@ export default {
     background-color: #fff;
     border-bottom: 1px solid #eee;
 
-    ul {
+    &>ul {
       display: inline-flex;
       margin: 0;
       padding: 0;
       list-style-type: none;
 
-      li {
+      &>li {
         display: inline-block;
 
-        a {
+        &>a {
           padding: 10px 15px;
           color: #000;
           border-right: 1px solid #eee;
@@ -337,45 +330,42 @@ export default {
           pointer-events: none;
         }
       }
+    }
+  }
 
+  .editor-statusbar {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    &>ul {
+      display: inline-flex;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      li {
+        a {
+          color: #333;
+          transition: background-color .3s ease;
+          font-size: inherit;
+          &:hover {
+            background-color: #eee;
+          }
+        }
+      }
+      .dropdown-menu {
+        font-size: inherit;
+      }
       .dropdown-item {
         display: block;
         border: none;
+        padding: 3px 10px;
+        font-size: inherit;
+        &.disabled {
+          color: #bbb;
+          pointer-events: none;
+        }
       }
     }
-  } // .editor-statusbar {
-  //   background-color: #fff;
-  //   border-bottom: 1px solid #eee;
-  //   font-size: 12px;
-  //   ul {
-  //     display: inline-flex;
-  //     margin: 0;
-  //     padding: 0;
-  //     list-style-type: none;
-  //     li {
-  //       a {
-  //         color: #333;
-  //         transition: background-color .3s ease;
-  //         font-size: inherit;
-  //         &:hover {
-  //           background-color: #eee;
-  //         }
-  //       }
-  //     }
-  //     .dropdown-menu {
-  //       font-size: inherit;
-  //     }
-  //     .dropdown-item {
-  //       display: block;
-  //       border: none;
-  //       padding: 3px 10px;
-  //       font-size: inherit;
-  //       &.disabled {
-  //         color: #bbb;
-  //         pointer-events: none;
-  //       }
-  //     }
-  //   }
-  // }
+  }
 }
 </style>

@@ -30,12 +30,12 @@ const validateMenu = menu => {
       hasPermission: () => {
         return true;
       }
-    }
+    };
   }
 
   validateRoutes(menu.routes);
   return menu;
-}
+};
 
 export default {
   main: validateMenu(menus.MainMenu),
