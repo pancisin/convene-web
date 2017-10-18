@@ -67,7 +67,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   props: {
-    value: Number | String,
+    value: [ Number, String ],
     placeholder: String,
     inline: Boolean,
     name: String
@@ -90,6 +90,7 @@ export default {
     }
   },
   created: function () {
+    this.selected = this.value;
     moment.locale('sk');
     this.updateCalendar();
   },

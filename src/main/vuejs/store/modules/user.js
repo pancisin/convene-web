@@ -33,14 +33,14 @@ const getters = {
 };
 
 const watchers = [
-  [
-    state => {
-      return state.user.user.locale;
-    },
-    (newVal, oldVal) => {
-      moment.locale(newVal.name);
-    }
-  ]
+  // [
+  //   state => {
+  //     return state.user.user.locale;
+  //   },
+  //   (newVal, oldVal) => {
+  //     moment.locale(newVal.name);
+  //   }
+  // ]
 ];
 
 const actions = {

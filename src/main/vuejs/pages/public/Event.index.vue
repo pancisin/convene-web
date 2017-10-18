@@ -70,7 +70,11 @@ export default {
   data () {
     return {
       eventsPaginator: {},
-      filters: { },
+      filters: {
+        timestamp: Date.now(),
+        authorType: '',
+        authorId: '0'
+      },
       loading: false
     };
   },
@@ -92,6 +96,7 @@ export default {
   },
   created () {
     this.filters = {
+      ...this.filters,
       ...this.$route.query
     };
 
