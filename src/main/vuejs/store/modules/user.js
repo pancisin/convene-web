@@ -1,6 +1,7 @@
 import UserApi from 'api/user.api';
 import AuthApi from 'api/auth.api';
 import * as types from 'store/mutation-types';
+import moment from 'moment';
 
 const state = {
   user: null,
@@ -37,7 +38,7 @@ const watchers = [
       return state.user.user.locale;
     },
     (newVal, oldVal) => {
-      console.log(newVal);
+      moment.locale(newVal.name);
     }
   ]
 ];

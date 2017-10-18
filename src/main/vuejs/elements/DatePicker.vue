@@ -1,17 +1,32 @@
 <template>
-  <div class="date-picker-container" v-click-outside="outside">
-    <input v-show="!inline" type="text" ref="input" :placeholder="placeholder" :name="name" :value="selected | moment('L')" class="form-control" @focus="focusChanged" @blur="focusChanged">
+  <div class="date-picker-container"
+    v-click-outside="outside">
+    <input v-show="!inline"
+      type="text"
+      ref="input"
+      :placeholder="placeholder"
+      :name="name"
+      :value="selected | moment('L')"
+      class="form-control"
+      @focus="focusChanged"
+      @blur="focusChanged">
 
     <transition name="slide-down">
-      <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">
+      <div class="date-picker"
+        v-show="display || inline"
+        :class="{ 'date-picker-inline' : inline }">
 
         <div class="date-picker-header">
-          <a class="btn btn-link waves-effect waves-light" @click="moveCursor(-1)">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          <a class="btn btn-link waves-effect waves-light"
+            @click="moveCursor(-1)">
+            <i class="fa fa-arrow-left"
+              aria-hidden="true"></i>
           </a>
-          <h4 v-text="monthName"></h4>
-          <a class="btn btn-link waves-effect waves-light" @click="moveCursor(1)">
-            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <h4 class="text-center">{{ focusDate.format('MMMM YYYY') }}</h4>
+          <a class="btn btn-link waves-effect waves-light"
+            @click="moveCursor(1)">
+            <i class="fa fa-arrow-right"
+              aria-hidden="true"></i>
           </a>
         </div>
 
@@ -19,15 +34,24 @@
           <table>
             <thead>
               <tr>
-                <th v-for="weekday in weekdays" :key="weekday">
+                <th v-for="weekday in weekdays"
+                  :key="weekday">
                   <span>{{ weekday.substr(0, 2) }}</span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(week, index) in weeks" :key="index">
-                <td v-for="(day, i) in week" :key="i" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month, 'current' : selected == day.timestamp }">
-                  <a class="monthday" v-text="day.day" @click="select(day)"></a>
+              <tr v-for="(week, index) in weeks"
+                :key="index">
+                <td v-for="(day, i) in week"
+                  :key="i"
+                  :class="{ 
+                      'current' : selected == day.timestamp, 
+                      'disabled' : day.month != focusDate.month()
+                    }">
+                  <a class="monthday"
+                    v-text="day.day"
+                    @click="select(day)"></a>
                 </td>
               </tr>
             </tbody>
@@ -39,26 +63,30 @@
 </template>
 <script>
 import moment from 'moment';
+import { mapGetters } from 'vuex';
 
 export default {
-  props: ['value', 'placeholder', 'inline', 'name'],
+  props: {
+    value: Number,
+    placeholder: String,
+    inline: Boolean,
+    name: String
+  },
   data: function () {
     return {
       weeks: [],
-      month: moment().month(),
-      displayDatePicker: false,
+      display: false,
       selected: null,
-      focus: false
+      focus: false,
+      focusDate: moment()
     };
   },
   computed: {
+    ...mapGetters(['locale']),
     weekdays: function () {
       var wkds = moment.weekdays();
       wkds.push(wkds.shift());
       return wkds;
-    },
-    monthName: function () {
-      return moment.months(this.month);
     }
   },
   created: function () {
@@ -67,16 +95,20 @@ export default {
   },
   watch: {
     focus (newVal) {
-      if (newVal) this.displayDatePicker = true;
+      if (newVal) this.display = true;
     },
-    'value' (newVal) {
+    value (newVal) {
       this.selected = newVal;
+    },
+    locale (newVal) {
+      moment.locale(newVal.name);
+      this.updateCalendar();
     }
   },
   methods: {
-    updateCalendar: function () {
-      var start = moment().month(this.month).startOf('month').startOf('isoweek');
-      var end = moment().month(this.month).endOf('month').endOf('isoweek');
+    updateCalendar () {
+      var start = this.focusDate.clone().startOf('month').startOf('isoweek');
+      var end = this.focusDate.clone().endOf('month').endOf('isoweek');
 
       this.weeks = [];
       var first_week = start.week();
@@ -91,28 +123,31 @@ export default {
         this.weeks[week_index].push({
           day: start.date(),
           timestamp: start.valueOf(),
-          month: start.month()
+          month: start.month(),
+          year: start.year()
         });
         start.add(1, 'days');
       }
     },
-    moveCursor: function (i) {
-      this.month += i;
+    moveCursor (i) {
+      if (i > 0) {
+        this.focusDate.add(1, 'M');
+      } else {
+        this.focusDate.subtract(1, 'M');
+      }
+
       this.updateCalendar();
-    },
-    isCurrent: function (day, month) {
-      return moment().date() === day && moment().month() === month;
     },
     focusChanged (e) {
       this.focus = e.type === 'focus';
     },
     select (day) {
       this.selected = day.timestamp;
-      this.displayDatePicker = false;
+      this.display = false;
       this.$emit('input', day.timestamp);
     },
     outside: function () {
-      if (focus) this.displayDatePicker = false;
+      if (focus) this.display = false;
     }
   }
 };
@@ -140,7 +175,7 @@ export default {
 
     .btn {
       transition: background-color .3s ease;
-    border-radius: 100%;
+      border-radius: 100%;
 
       &:hover {
         background-color: lighten(@header-color, 5%);
@@ -163,6 +198,10 @@ export default {
 
     &.date-picker-inline {
       position: relative;
+
+      table th {
+        padding: 10px 0;
+      }
     }
 
     table {
@@ -170,7 +209,7 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px 0px;
+        padding: 10px;
         border-bottom: 1px solid #ccc;
         text-align: center;
       }

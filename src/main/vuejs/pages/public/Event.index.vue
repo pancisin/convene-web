@@ -7,7 +7,7 @@
           Create event
         </router-link>
         <date-picker v-model="filters.timestamp"
-          inline="true"></date-picker>
+          inline></date-picker>
       </div>
       <div class="col-md-9"
         v-loading="loading">
