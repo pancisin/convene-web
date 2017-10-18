@@ -3,24 +3,24 @@
     <div class="venue-editor">
       <div class="editor-statusbar">
         <ul class="navbar-nav list-unstyled">
-          <drop-down-menu>
+          <dropdown-menu>
             <span slot="button">File <i class="fa fa-angle-down"></i></span>
 
-            <drop-down-menu-item>
+            <dropdown-menu-item>
               Open
-            </drop-down-menu-item>
-            <drop-down-menu-item>
+            </dropdown-menu-item>
+            <dropdown-menu-item>
               <a class="dropdown-item"
                 @click="submit"
                 :class="{ 'disabled' : !touched }">Save</a>
-            </drop-down-menu-item>
-            <drop-down-menu-item>
+            </dropdown-menu-item>
+            <dropdown-menu-item>
               Save as
-            </drop-down-menu-item>
-            <drop-down-menu-item>
+            </dropdown-menu-item>
+            <dropdown-menu-item>
               Export
-            </drop-down-menu-item>
-          </drop-down-menu>
+            </dropdown-menu-item>
+          </dropdown-menu>
 
           <li>
             <div class="btn-group">
@@ -177,7 +177,7 @@ import * as fabric_objects from '../services/fabric/objects';
 import * as fabric_building from '../services/fabric/building';
 import { calculateHash } from '../services/helpers';
 import HistoryManager from '../services/HistoryManager';
-import { DropDownMenu, DropDownMenuItem } from 'elements';
+import { DropdownMenu, DropdownMenuItem } from 'elements';
 
 export default {
   name: 'venue-editor',
@@ -196,8 +196,8 @@ export default {
     };
   },
   components: {
-    'drop-down-menu': DropDownMenu,
-    'drop-down-menu-item': DropDownMenuItem
+    'dropdown-menu': DropdownMenu,
+    'dropdown-menu-item': DropdownMenuItem
   },
   watch: {
     json (newValue) {

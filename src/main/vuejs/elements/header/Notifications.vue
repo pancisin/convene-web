@@ -1,15 +1,15 @@
 <template>
-  <drop-down-menu large>
+  <dropdown-menu large>
     <span slot="button">
       <i class="material-icons">notifications</i>
       <span class="badge badge-xs"
         v-text="notifications.length"></span>
     </span>
 
-    <drop-down-menu-item class="notifi-title">
+    <dropdown-menu-item class="notifi-title">
       Notification
-    </drop-down-menu-item>
-    <drop-down-menu-item class="list-group notification-list">
+    </dropdown-menu-item>
+    <dropdown-menu-item class="list-group notification-list">
       <a v-for="not in notifications"
         class="list-group-item"
         :key="not.id">
@@ -29,21 +29,22 @@
       <div v-if="notifications.length == 0"
         class="text-center m-t-10 text-muted">There's nothing to display
       </div>
-    </drop-down-menu-item>
-    <drop-down-menu-item>
+    </dropdown-menu-item>
+    <dropdown-menu-item>
       <a href="javascript:void(0);"
         class=" text-right">
         <small>
           <b>See all notifications</b>
         </small>
       </a>
-    </drop-down-menu-item>
-  </drop-down-menu>
+    </dropdown-menu-item>
+  </dropdown-menu>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { DropDownMenu, DropDownMenuItem } from 'elements';
+import DropdownMenu from '../DropdownMenu';
+import DropdownMenuItem from '../DropdownMenuItem';
 
 export default {
   name: 'notifications',
@@ -56,8 +57,7 @@ export default {
     ...mapGetters(['notifications'])
   },
   components: {
-    'drop-down-menu': DropDownMenu,
-    'drop-down-menu-item': DropDownMenuItem
+    DropdownMenu, DropdownMenuItem
   },
   methods: {
     markAsSeen: function (notification) {

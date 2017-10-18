@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'drop-down-menu',
+  name: 'dropdown-menu',
   props: {
     large: Boolean
   },
@@ -36,22 +36,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-.dropdown-menu {
-  padding: 4px 0; 
-  display: initial;
-  border: 0;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  margin-top: 2px;
-  >li {
-    >a {
-      padding: 6px 20px;
-    }
-  }
-
-  .divider {
-    margin: 0;
-  }
-}
-</style>

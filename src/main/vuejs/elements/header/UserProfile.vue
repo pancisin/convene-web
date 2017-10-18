@@ -1,5 +1,5 @@
 <template>
-  <drop-down-menu>
+  <dropdown-menu>
     <span slot="button"
       class="profile">
       <img :src="avatar"
@@ -7,29 +7,30 @@
         class="img-circle">
     </span>
 
-    <drop-down-menu-item header>
+    <dropdown-menu-item header>
       User profile
-    </drop-down-menu-item>
-    <drop-down-menu-item>
+    </dropdown-menu-item>
+    <dropdown-menu-item>
       <router-link :to="{ name: 'settings' }"
         class="waves-effect waves-light">
         <i class="fa fa-cog m-r-10"></i> Settings
       </router-link>
-    </drop-down-menu-item>
-    <drop-down-menu-item divider>
-    </drop-down-menu-item>
-    <drop-down-menu-item>
+    </dropdown-menu-item>
+    <dropdown-menu-item divider>
+    </dropdown-menu-item>
+    <dropdown-menu-item>
       <a @click="logoutUser">
         <i class="fa fa-power-off m-r-10"></i> Logout
       </a>
-    </drop-down-menu-item>
-  </drop-down-menu>
+    </dropdown-menu-item>
+  </dropdown-menu>
 </template>
 
 <script>
-import { DropDownMenu, DropDownMenuItem } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
 import gravatar from 'gravatar';
+import DropdownMenu from '../DropdownMenu';
+import DropdownMenuItem from '../DropdownMenuItem';
 
 export default {
   name: 'user-profile',
@@ -39,8 +40,7 @@ export default {
     };
   },
   components: {
-    'drop-down-menu': DropDownMenu,
-    'drop-down-menu-item': DropDownMenuItem
+    DropdownMenu, DropdownMenuItem
   },
   computed: {
     ...mapGetters(['user']),
@@ -63,7 +63,3 @@ export default {
   }
 };
 </script>
-
-<style>
-
-</style>

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'drop-down-menu-item',
+  name: 'dropdown-menu-item',
   props: {
     header: Boolean,
     divider: Boolean

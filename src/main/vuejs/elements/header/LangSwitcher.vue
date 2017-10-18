@@ -1,41 +1,41 @@
 <template>
-  <drop-down-menu>
+  <dropdown-menu>
     <span slot="button">
       <i class="fa fa-language"></i>
     </span>
-    <drop-down-menu-item header>
+    <dropdown-menu-item header>
       Language
-    </drop-down-menu-item>
-    <drop-down-menu-item v-for="loc in locales"
+    </dropdown-menu-item>
+    <dropdown-menu-item v-for="loc in locales"
       :key="loc.code">
       <a @click="selectLoc(loc)">
         {{ $t(loc.code) }}
       </a>
-    </drop-down-menu-item>
-  </drop-down-menu>
+    </dropdown-menu-item>
+  </dropdown-menu>
 </template>
 
 <script>
 import moment from 'moment';
-import { DropDownMenu, DropDownMenuItem } from 'elements';
 import { mapGetters, mapActions } from 'vuex';
+import DropdownMenu from '../DropdownMenu';
+import DropdownMenuItem from '../DropdownMenuItem';
 
 export default {
-  name: 'language-switcher',
+  name: 'lang-switcher',
   created () {
     if (this.locales.length === 0) {
       this.initializeLocales();
     }
   },
   components: {
-    'drop-down-menu': DropDownMenu,
-    'drop-down-menu-item': DropDownMenuItem
+    DropdownMenu, DropdownMenuItem
   },
   computed: {
     ...mapGetters({
       storeLocale: 'locale'
     }),
-    ...mapGetters(['locale', 'authenticated', 'locales']),
+    ...mapGetters(['authenticated', 'locales']),
     locale: {
       get () {
         return this.authenticated ? this.storeLocale : this.$i18n.locale;
