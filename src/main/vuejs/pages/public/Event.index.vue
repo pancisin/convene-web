@@ -2,29 +2,39 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3 m-b-10">
-        <router-link to="/create-event" class="btn btn-block btn-rounded btn-inverse m-b-20">Create event</router-link>
-        <date-picker v-model="filters.timestamp" inline="true"></date-picker>
+        <router-link to="/create-event"
+          class="btn btn-block btn-rounded btn-inverse m-b-20">
+          Create event
+        </router-link>
+        <date-picker v-model="filters.timestamp"
+          inline="true"></date-picker>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-9"
+        v-loading="loading">
         <div class="events-masonry">
-          <router-link v-for="event in eventsPaginator.content" :to="'/event/' + event.id" class="event-item" :key="event.id">
+          <router-link v-for="event in eventsPaginator.content"
+            :to="'/event/' + event.id"
+            class="event-item"
+            :key="event.id">
             <div class="image-wrapper">
-              <img v-if="event.poster != null" :src="event.poster.path">
+              <img v-if="event.poster != null"
+                :src="event.poster.path">
             </div>
 
             <div class="content">
               <h4 v-text="event.name"></h4>
               <small>By {{ event.author.displayName }}</small>
               <br>
-              <small v-if="event.place != null" v-text="event.place.address.formatted"></small>
+              <small v-if="event.place != null"
+                v-text="event.place.address.formatted"></small>
 
               <small class="date">
                 {{ event.date | moment('L') }}
-                <span class="time" v-if="event.startsAt != null">
+                <span class="time"
+                  v-if="event.startsAt != null">
                   at {{ event.startsAt }}
                 </span>
               </small>
-              <!-- <p v-strip="event.summary"></p> -->
             </div>
           </router-link>
         </div>
@@ -32,7 +42,8 @@
     </div>
 
     <div class="text-center">
-      <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate"></paginator>
+      <paginator :paginator="eventsPaginator"
+        @navigate="eventsPaginatorNavigate"></paginator>
     </div>
   </div>
 </template>
@@ -46,7 +57,8 @@ export default {
       eventsPaginator: {},
       filters: {
         timestamp: Date.now()
-      }
+      },
+      loading: false
     };
   },
   components: {
@@ -65,10 +77,12 @@ export default {
   },
   methods: {
     getEvents (page) {
+      this.loading = true;
       this.$http.get('public/events/' + page + '/5', {
         params: this.filters
       }).then(response => {
         this.eventsPaginator = response.body;
+        this.loading = false;
       });
     },
     eventsPaginatorNavigate (e) {

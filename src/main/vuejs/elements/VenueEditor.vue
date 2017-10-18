@@ -4,7 +4,9 @@
       <div class="editor-statusbar">
         <ul class="navbar-nav list-unstyled">
           <dropdown-menu>
-            <span slot="button">File <i class="fa fa-angle-down"></i></span>
+            <span slot="button">File
+              <i class="fa fa-angle-down"></i>
+            </span>
 
             <dropdown-menu-item>
               Open
@@ -341,41 +343,33 @@ export default {
         border: none;
       }
     }
-  }
-
-  // .editor-statusbar {
+  } // .editor-statusbar {
   //   background-color: #fff;
   //   border-bottom: 1px solid #eee;
   //   font-size: 12px;
-
   //   ul {
   //     display: inline-flex;
   //     margin: 0;
   //     padding: 0;
   //     list-style-type: none;
-
   //     li {
   //       a {
   //         color: #333;
   //         transition: background-color .3s ease;
   //         font-size: inherit;
-
   //         &:hover {
   //           background-color: #eee;
   //         }
   //       }
   //     }
-
   //     .dropdown-menu {
   //       font-size: inherit;
   //     }
-
   //     .dropdown-item {
   //       display: block;
   //       border: none;
   //       padding: 3px 10px;
   //       font-size: inherit;
-
   //       &.disabled {
   //         color: #bbb;
   //         pointer-events: none;

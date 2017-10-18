@@ -6,11 +6,11 @@
       <div class="date-picker" v-show="displayDatePicker || inline" :class="{ 'date-picker-inline' : inline }">
 
         <div class="date-picker-header">
-          <a class="btn btn-link" @click="moveCursor(-1)">
+          <a class="btn btn-link waves-effect waves-light" @click="moveCursor(-1)">
             <i class="fa fa-arrow-left" aria-hidden="true"></i>
           </a>
           <h4 v-text="monthName"></h4>
-          <a class="btn btn-link" @click="moveCursor(1)">
+          <a class="btn btn-link waves-effect waves-light" @click="moveCursor(1)">
             <i class="fa fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
@@ -120,6 +120,7 @@ export default {
 
 <style lang="less">
 @import (reference) '~less/variables.less';
+@header-color: @color-inverse;
 
 .date-picker-container {
   position: relative;
@@ -129,12 +130,22 @@ export default {
     justify-content: space-between;
     align-items: center;
     text-transform: uppercase;
-    background-color: #343c49;
+    background-color: @header-color;
     padding: 10px;
 
     a,
     h4 {
       color: #fff;
+    }
+
+    .btn {
+      transition: background-color .3s ease;
+    border-radius: 100%;
+
+      &:hover {
+        background-color: lighten(@header-color, 5%);
+        padding: 10px 14px;
+      }
     }
   }
 
@@ -159,7 +170,7 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px;
+        padding: 10px 0px;
         border-bottom: 1px solid #ccc;
         text-align: center;
       }
