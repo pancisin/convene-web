@@ -34,6 +34,7 @@ import HeroUnit from './HeroUnit';
 import BotRunIndicator from './BotRunIndicator';
 import Categorizer from './Categorizer';
 import TagInput from './TagInput';
+import GiphySearch from './GiphySearch';
 
 import widgets from './widgets';
 
@@ -74,5 +75,6 @@ export {
   HeroUnit,
   BotRunIndicator,
   Categorizer,
-  TagInput
+  TagInput,
+  GiphySearch
 };

@@ -86,6 +86,9 @@ public class EventController {
 		stored.setDate(event.getDate());
 		stored.setPlace(event.getPlace());
 
+		// HERE weGo
+		stored.setBanner(event.getBanner());
+
 		if (event.getPosterData() != null && storageService.isBinary(event.getPosterData())) {
 			Media poster = new Media();
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -98,6 +101,7 @@ public class EventController {
 			poster.setSize(size);
 			stored.setPoster(poster);
 		}
+		
 
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}

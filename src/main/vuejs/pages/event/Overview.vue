@@ -27,6 +27,12 @@
             <option :value="place" v-for="place in places" v-text="place.name" :key="place.id"></option>
           </select>
         </div>
+
+        <div class="form-group">
+          <label>Banner</label>
+          <giphy-search v-model="event.banner" upload></giphy-search>
+        </div>
+
       </div>
       <div class="col-md-6" v-if="edit">
         <image-upload v-model="event.posterData" :media="event.poster"></image-upload>
@@ -47,7 +53,7 @@
 </template>
 
 <script>
-import { TextEditor, DatePicker, ImageUpload } from 'elements';
+import { TextEditor, DatePicker, ImageUpload, GiphySearch } from 'elements';
 
 export default {
   inject: ['provider'],
@@ -79,7 +85,7 @@ export default {
     }
   },
   components: {
-    TextEditor, DatePicker, ImageUpload
+    TextEditor, DatePicker, ImageUpload, GiphySearch
   },
   data () {
     return {

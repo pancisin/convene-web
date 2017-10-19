@@ -98,6 +98,10 @@ public class Event {
 	@JsonView(Summary.class)
 	private Media poster;
 
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+	@JsonView(Summary.class)
+	private Media banner;
+	
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String posterData;
@@ -256,6 +260,14 @@ public class Event {
 
 	public void setPoster(Media poster) {
 		this.poster = poster;
+	}
+
+	public Media getBanner() {
+		return banner;
+	}
+
+	public void setBanner(Media banner) {
+		this.banner = banner;
 	}
 
 	public String getPosterData() {

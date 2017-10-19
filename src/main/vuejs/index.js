@@ -55,7 +55,6 @@ Vue.config.devtools = true;
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + window.localStorage.getItem('id_token'));
-
   next(response => {
     if (response.status === 401) {
       // should be logged out or something...

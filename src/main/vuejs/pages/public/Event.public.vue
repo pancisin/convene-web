@@ -6,7 +6,7 @@
       </div>
       <div class="col-sm-6" :class="{ 'col-sm-9' : event.poster }">
 
-        <hero-unit :background="event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
+        <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
 
           <p class="panel-sub-title font-13">{{ event.date | moment('LL') }} {{ event.startsAt }}
