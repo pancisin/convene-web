@@ -177,10 +177,10 @@ export default {
     .btn {
       transition: background-color .3s ease;
       border-radius: 100%;
+      padding: 10px 14px;
 
       &:hover {
         background-color: lighten(@header-color, 5%);
-        padding: 10px 14px;
       }
     }
   }

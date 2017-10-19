@@ -5,13 +5,24 @@
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
       </div>
       <div class="col-sm-6" :class="{ 'col-sm-9' : event.poster }">
-        <div class="panel panel-primary panel-blur">
-          <div class="panel-heading">
-            <img v-if="event.poster != null" :src="event.poster.path">
-            <h3 class="panel-title">{{ event.name }}</h3>
-            <p class="panel-sub-title font-13 text-muted">{{ event.date | moment('LL') }} {{ event.startsAt }}
-              <br>Usporiadatel : {{ event.author.displayName }}</p>
+
+        <hero-unit :background="event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
+          <h1 class="text-pink">{{ event.name }}</h1>
+
+          <p class="panel-sub-title font-13">{{ event.date | moment('LL') }} {{ event.startsAt }}
+                <br>Usporiadatel : {{ event.author.displayName }}</p>
+       
+          <div class="socials">
+            <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank" v-if="event.facebookId != null">
+              <i class="fa fa-facebook"></i>
+            </a>
+            <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank">
+              <i class="fa fa-twitter"></i>
+            </a>
           </div>
+        </hero-unit>
+
+        <div class="panel panel-primary">
           <div class="panel-body">
             <div class="row">
               <div class="col-md-4">
@@ -77,7 +88,7 @@
 </template>
 
 <script>
-import { GMap, Masonry, MasonryItem, EventsList } from 'elements';
+import { GMap, Masonry, MasonryItem, EventsList, HeroUnit } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -94,7 +105,12 @@ export default {
     };
   },
   components: {
-    GMap, StaggerTransition, Masonry, MasonryItem, EventsList
+    GMap,
+    StaggerTransition,
+    Masonry,
+    MasonryItem,
+    EventsList,
+    HeroUnit
   },
   created () {
     this.getEvent();
@@ -103,13 +119,12 @@ export default {
     ...mapGetters(['authenticated'])
   },
   watch: {
-    '$route': 'getEvent'
+    $route: 'getEvent'
   },
   methods: {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-
         const getAdditionalData = () => {
           PublicApi.event.getGallery(event_id, gallery => {
             this.gallery = gallery;
@@ -117,21 +132,25 @@ export default {
         };
 
         if (this.authenticated) {
-          EventApi.getEvent(event_id, event => {
-            this.event = event;
+          EventApi.getEvent(
+            event_id,
+            event => {
+              this.event = event;
 
-            EventApi.getRelated(this.event.id, paginator => {
-              this.relatedEvents = paginator.content;
-            });
+              EventApi.getRelated(this.event.id, paginator => {
+                this.relatedEvents = paginator.content;
+              });
 
-            EventApi.getAttendanceStatus(event_id, status => {
-              this.attending = status;
-            });
+              EventApi.getAttendanceStatus(event_id, status => {
+                this.attending = status;
+              });
 
-            getAdditionalData();
-          }, error => {
-            this.$error(error.error, error.message);
-          });
+              getAdditionalData();
+            },
+            error => {
+              this.$error(error.error, error.message);
+            }
+          );
         } else {
           PublicApi.getEvent(event_id, event => {
             this.event = event;
@@ -177,5 +196,28 @@ export default {
 .img-poster {
   width: 100%;
   border: 1px solid #ccc;
+}
+
+.event-hero-unit {
+  p {
+    color: #fff;
+  }
+
+  h1 {
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  .socials {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    a {
+      color: #fff;
+      font-size: 21px;
+    }
+  }
 }
 </style>

@@ -23,8 +23,8 @@
                 <p class="inbox-item-author"
                   v-text="event.name"></p>
                 <!-- <p class="inbox-item-date">{{ event.date | moment('L') }}</p> -->
-                <small>
-                  <i>{{ event.date | moment('L') }}</i>
+                <small class="inbox-item-text">
+                  {{ event.date | moment('L') }}
                 </small>
               </router-link>
             </div>

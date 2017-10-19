@@ -1,9 +1,11 @@
 <template>
-  <div class="hero-unit">
-    <img v-if="background" :src="background" class="hero-background" :style="bg_style">
+  <div class="hero-unit" :class="{ 'hero-unit-fluid': !solid }">
+    <img v-if="background" 
+      :src="background" 
+      class="hero-background" 
+      :style="bg_style">
     <div class="container">
       <slot>
-
       </slot>
     </div>
   </div>
@@ -12,6 +14,13 @@
 <script>
 export default {
   name: 'hero-unit',
+  props: {
+    background: {
+      type: String,
+      default: null
+    },
+    solid: Boolean
+  },
   data () {
     return {
       bg_style: {}
@@ -29,18 +38,12 @@ export default {
         top: `calc(50% + ${window.scrollY * 0.5}px)`
       };
     }
-  },
-  props: {
-    background: {
-      type: String,
-      default: null
-    }
   }
 };
 </script>
 
 <style lang="less">
-@import (reference) '~less/variables.less';
+@import (reference) "~less/variables.less";
 @original_transform: rotateZ(-20deg) translateY(-50%);
 
 @keyframes movingAnimation {
@@ -49,7 +52,7 @@ export default {
     transform: @original_transform translateX(0);
   }
   50% {
-    opacity: .3;
+    opacity: 0.3;
     transform: @original_transform translateX(50px);
   }
   100% {
@@ -73,13 +76,37 @@ export default {
 .hero-unit {
   color: white;
   padding: 80px 0;
-  margin-top: -20px;
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
   animation: backgroundAnimation ease-in-out 60s infinite alternate;
 
-  &>.container {
+  &.hero-unit-fluid {
+    margin-top: -20px;
+
+    &:after {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(255, 255, 255, 0.4) 100%
+      );
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.6);
+      z-index: 1;
+      width: 40%;
+      height: 250%;
+      left: 0;
+      top: 50%;
+      transform: @original_transform;
+      animation: movingAnimation ease 10s infinite;
+    }
+  }
+
+  & > .container {
     position: relative;
     z-index: 2;
   }
@@ -95,27 +122,14 @@ export default {
   }
 
   &:after {
-    content: '';
+    content: "";
     z-index: 1;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%);
+    background: rgba(0, 0, 0, 0.6);
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-  }
-
-  &:before {
-    content: '';
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.6);
-    z-index: 1;
-    width: 40%;
-    height: 250%;
-    left: 0;
-    top: 50%;
-    transform: @original_transform;
-    animation: movingAnimation ease 10s infinite;
   }
 }
 </style>
