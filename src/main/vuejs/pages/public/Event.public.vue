@@ -1,10 +1,7 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-3 col-sm-push-9">
-        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
-      </div>
-      <div class="col-sm-6" :class="{ 'col-sm-9' : event.poster }">
+      <div class="col-sm-6 col-sm-push-3" :class="{ 'col-sm-9' : event.poster }">
 
         <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
@@ -73,6 +70,9 @@
             </masonry>
           </div>
         </div>
+      </div>
+      <div class="col-sm-3 col-sm-push-3">
+        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
       </div>
       <div class="col-sm-3 col-sm-pull-9">
         <panel type="default">
