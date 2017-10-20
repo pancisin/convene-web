@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-lg-8 col-lg-offset-2">
       <panel type="primary" v-loading="loading">
         <span slot="title">Events calendar</span>
-        <calendar :events="paginator.content" @navigate="getEvents"></calendar>
+        <calendar :events="paginator.content" @navigate="getEvents" ref="calendar" :editable="editable"></calendar>
       </panel>
     </div>
   </div>
@@ -33,6 +33,11 @@ export default {
       if (this.provider != null) {
         return this.provider.api;
       }
+    }
+  },
+  watch: {
+    api () {
+      this.$refs.calendar.navigate();
     }
   },
   methods: {

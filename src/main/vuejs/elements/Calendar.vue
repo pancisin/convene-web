@@ -28,7 +28,7 @@
             <span class="monthday" v-text="day.day"></span>
             
             <ul @dragover.prevent @drop="drop(day)">
-              <li v-for="(event, index) in day.events" :key="index">
+              <li v-for="(event, index) in day.events" :key="index"  @contextmenu.prevent="$refs.menu.open($event, event)">
                 <router-link  :to="{ name: 'event', params: { id: event.id } }">
                   {{ event.name }}
                 </router-link>
@@ -43,11 +43,52 @@
         </tr>
       </tbody>
     </table>
+
+    <context-menu ref="menu">
+      <template scope="props">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
+              Go to event
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li>
+            <router-link :to="{ name: 'event.overview', params: { id: props.data.id } }">
+              Overview
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'event.programme', params: { id: props.data.id } }">
+              Programme
+            </router-link>
+          </li>
+          <li>
+            <router-link :to="{ name: 'event.attendees', params: { id: props.data.id } }">
+              Attendees
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li :class="{ 'disabled' : !editable }">
+            <router-link to="events/create">
+              Create event
+            </router-link>
+          </li>
+          <li class="separator"></li>
+          <li :class="{ 'disabled' : !editable }">
+            <a @click="deleteEvent(props.data)">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </template>
+    </context-menu>
   </div>
 </template>
 
 <script>
 import moment from 'moment';
+import EventApi from 'api/event.api';
 export default {
   props: {
     events: {
@@ -55,7 +96,8 @@ export default {
       default () {
         return [];
       }
-    }
+    },
+    editable: Boolean
   },
   data: function () {
     return {
@@ -130,6 +172,16 @@ export default {
         query: {
           focus: this.focusDate.valueOf()
         }
+      });
+    },
+    deleteEvent (event) {
+      this.$prompt('notification.event.delete_prompt', () => {
+        EventApi.deleteEvent(event.id, result => {
+          this.paginator.content = this.paginator.content.filter(e => {
+            return e.id !== event.id;
+          });
+          this.updateCalendar();
+        });
       });
     },
     isCurrent: function (day, month) {

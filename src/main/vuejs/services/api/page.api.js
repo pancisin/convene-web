@@ -67,8 +67,6 @@ export default {
   getEvents (id, page, size, success, params) {
     if (id == null || id === '') throw new Error('missing entity id');
 
-    console.warn(params);
-
     Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`, {
       params: {
         orderBy: 'date ASC',
