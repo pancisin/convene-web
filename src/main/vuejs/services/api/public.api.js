@@ -84,6 +84,7 @@ export default {
       Vue.http.get(`${PAGE_PUBLIC_URL}/${page_id}/event/${page}/${size}`, {
         params: {
           fromDate: moment().format('YYYY-MM-DD'),
+          toDate: moment().add(1, 'M').format('YYYY-MM-DD'),
           orderBy: 'date ASC'
         }
       }).then(response => {

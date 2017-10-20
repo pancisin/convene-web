@@ -3,7 +3,7 @@
     <div class="calendar-header">
       <a class="btn btn-link" @click="moveCursor(-1)">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('calendar.prev') }}</a>
-      <h3 v-text="monthName"></h3>
+      <h3 class="text-center">{{ focusDate.format('MMMM YYYY') }}</h3>
       <a class="btn btn-link" @click="moveCursor(1)">{{ $t('calendar.next') }}
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </a>
@@ -12,21 +12,30 @@
     <table class="calendar-table">
       <thead>
         <tr>
-          <th v-for="weekday in weekdays">
+          <th v-for="(weekday, index) in weekdays" :key="index">
             <span v-text="weekday"></span>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(week, index) in weeks" :key="index">
-          <td v-for="(day, index) in week" :class="{ 'current' : isCurrent(day.day, day.month), 'disabled' : day.month != month }">
+        <tr v-for="(week, row) in weeks" :key="row">
+          <td v-for="(day, column) in week" 
+            :key="column" 
+            :class="{ 
+              'current' : isCurrent(day.day, day.month), 
+              'disabled' : day.month != focusDate.month() 
+            }">
             <span class="monthday" v-text="day.day"></span>
+            
             <ul @dragover.prevent @drop="drop(day)">
-              <li v-for="instance in day.instances" :class="{ 'edited' : instance.clause != null }" draggable="true" v-on:dragstart="dragstart(instance, day)">
-  
-                <i v-show="instance.loading" class="fa fa-spinner fa-spin fa-fw"></i> {{ instance.duty.location }}
-                <router-link :to="'/instance/' + instance.duty.id + '/' + instance.date">
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
+              <li v-for="(event, index) in day.events" :key="index">
+                <router-link  :to="{ name: 'event', params: { id: event.id } }">
+                  {{ event.name }}
+                </router-link>
+              </li>
+              <li>
+                <router-link to="events/create" class="create-event">
+                  <i class="fa fa-plus"></i>
                 </router-link>
               </li>
             </ul>
@@ -40,12 +49,18 @@
 <script>
 import moment from 'moment';
 export default {
+  props: {
+    events: {
+      type: Array,
+      default () {
+        return [];
+      }
+    }
+  },
   data: function () {
     return {
       weeks: [],
-      month: moment().month(),
-      dragElem: null,
-      dragSource: null
+      focusDate: moment()
     };
   },
   computed: {
@@ -53,18 +68,24 @@ export default {
       var wkds = moment.weekdays();
       wkds.push(wkds.shift());
       return wkds;
-    },
-    monthName: function () {
-      return moment.months(this.month);
     }
+  },
+  watch: {
+    'events': 'updateCalendar'
   },
   created: function () {
     this.updateCalendar();
+    const query_focus = parseInt(this.$route.query.focus, 10);
+    if (query_focus) {
+      this.focusDate = moment(query_focus);
+    }
+
+    this.navigate();
   },
   methods: {
-    updateCalendar: function () {
-      var start = moment().month(this.month).startOf('month').startOf('isoweek');
-      var end = moment().month(this.month).endOf('month').endOf('isoweek');
+    updateCalendar () {
+      var start = this.focusDate.clone().startOf('month').startOf('isoweek');
+      var end = this.focusDate.clone().endOf('month').endOf('isoweek');
 
       this.weeks = [];
       var first_week = start.week();
@@ -76,71 +97,51 @@ export default {
           this.weeks[week_index] = [];
         }
 
+        const events = this.events.filter(e => {
+          return moment(e.date).startOf('day').valueOf() === start.startOf('day').valueOf();
+        });
+
         this.weeks[week_index].push({
           day: start.date(),
           timestamp: start.valueOf(),
-          month: start.month()
-          // instances: instances.filter(elem => {
-          //   return moment(elem.date).format('YYYY-MM-DD') == start.format('YYYY-MM-DD');
-          // })
+          month: start.month(),
+          year: start.year(),
+          events
         });
         start.add(1, 'days');
       }
     },
-    moveCursor: function (i) {
-      this.month += i;
+    navigate () {
+      this.$emit('navigate', {
+        from: this.focusDate.clone().startOf('month').startOf('isoWeek').valueOf(),
+        to: this.focusDate.clone().endOf('month').endOf('isoWeek').valueOf()
+      });
+    },
+    moveCursor (i) {
+      if (i > 0) {
+        this.focusDate.add(1, 'M');
+      } else {
+        this.focusDate.subtract(1, 'M');
+      }
+
       this.updateCalendar();
+      this.navigate();
+      this.$router.replace({
+        query: {
+          focus: this.focusDate.valueOf()
+        }
+      });
     },
     isCurrent: function (day, month) {
       return moment().date() === day && moment().month() === month;
-    },
-    dragstart: function (inst, source_day) {
-      this.dragElem = inst;
-      this.dragSource = source_day;
-    },
-    drop: function (day) {
-      var self = this;
-      if (day.instances.filter(elem => {
-        return elem.duty.id === self.dragElem.duty.id;
-      }) === 0) {
-        day.instances.push(this.dragElem);
-        this.dragSource.instances = this.dragSource.instances.filter(elem => {
-          return elem.duty.id !== self.dragElem.duty.id;
-        });
-        this.dragElem.loading = true;
-
-        this.storeClause(this.dragElem, day.timestamp).then(clause => {
-          this.dragElem.clause = clause;
-          this.dragElem.loading = false;
-          this.dragSource = null;
-          this.dragElem = null;
-          this.$forceUpdate();
-        });
-      }
-    },
-    storeClause: function (instance, alternative_date) {
-      return new Promise((resolve, reject) => {
-        var url = ['api/duty', instance.duty.id, 'clause'].join('/');
-
-        this.$http.post(url, {
-          id: instance.clause != null ? instance.clause.id : null,
-          primaryDate: instance.clause != null ? instance.clause.primaryDate : instance.date,
-          alternativeDate: alternative_date
-        }).then(response => {
-          resolve(response.body);
-        }, response => {
-          reject();
-        });
-      });
-    },
-    editInstance: function (instance) {
-      this.$emit('edit-instance', instance);
     }
   }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+@import (reference) '~less/variables.less';
+
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -170,8 +171,6 @@ table.calendar-table {
     }
 
     &.disabled {
-      position: relative;
-
       &:after {
         content: '';
         background: rgba(238, 237, 237, 0.81);
@@ -195,33 +194,37 @@ table.calendar-table {
       min-height: 50px;
 
       li {
-        background: #51d17d;
-        padding: 5px 10px;
         margin-bottom: 1px;
-        color: white;
-
-        &.edited {
-          background: #ef9a1c;
-        }
-
-        .fa {
-          margin-right: 10px;
-        }
 
         a {
+          background-color: @color-primary;
+          padding: 5px 10px;
           color: #fff;
-          float: right;
-          display: none;
-        }
-
-        &:hover a {
+          font-size: 12px;
+          line-height: 17px;
           display: block;
+          transition: background-color .3s ease;
+
+          &:hover {
+            background-color: @color-primary-active;
+          }
+
+          &.create-event {
+            text-align: center;
+            background-color: @color-inverse;
+            opacity: 0;
+            transition: opacity .3s ease;
+          }
         }
       }
     }
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.1);
+
+      ul li a.create-event {
+        opacity: 1;
+      }
     }
   }
 }

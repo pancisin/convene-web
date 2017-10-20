@@ -95,7 +95,6 @@ export default {
     }
   },
   created () {
-    console.warn(this.filters.timestamp);
     this.filters = {
       ...this.filters,
       ...this.$route.query

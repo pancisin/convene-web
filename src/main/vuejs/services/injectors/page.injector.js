@@ -1,16 +1,16 @@
 import PageApi from 'api/page.api';
 
 export default class PageInjector {
-  
-  get base_route() {
+
+  get base_route () {
     return {
       name: 'page',
       props: {
         id: this.page_id
       }
-    }
+    };
   }
-  
+
   constructor (page_id) {
     this.page_id = page_id;
   }
@@ -31,8 +31,8 @@ export default class PageInjector {
     PageApi.putPage(page, success);
   }
 
-  getEvents (page, size, success) {
-    PageApi.getEvents(this.page_id, page, size, success);
+  getEvents (page, size, success, params) {
+    PageApi.getEvents(this.page_id, page, size, success, params);
   }
 
   getAdministrators (page, size, success) {

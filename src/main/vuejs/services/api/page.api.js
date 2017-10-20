@@ -64,13 +64,16 @@ export default {
    * @param {*} size - paginator size property
    * @param {*} success - success callback function, @returns events paginator object
    */
-  getEvents (id, page, size, success) {
+  getEvents (id, page, size, success, params) {
     if (id == null || id === '') throw new Error('missing entity id');
+
+    console.warn(params);
 
     Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`, {
       params: {
-        fromDate: moment().format('YYYY-MM-DD'),
-        orderBy: 'date ASC'
+        orderBy: 'date ASC',
+        fromDate: params.from != null ? moment(params.from).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
+        toDate: params.to != null ? moment(params.to).format('YYYY-MM-DD') : null
       }
     }).then(response => {
       success(response.body);

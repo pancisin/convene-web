@@ -278,7 +278,7 @@ export default [
       {
         path: 'events',
         name: 'page.events',
-        component: resolve => require(['../pages/templates/Events.vue'], resolve),
+        component: resolve => require(['../pages/templates/EventsCalendar.vue'], resolve),
         meta: {
           titlle: 'Page events'
         }

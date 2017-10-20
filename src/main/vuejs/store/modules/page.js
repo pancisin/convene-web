@@ -61,7 +61,7 @@ const actions = {
   },
   deletePage ({ commit }, page) {
     return new Promise((resolve) => {
-      UserApi.deletePage(page.id, () => {
+      PageApi.deletePage(page.id, () => {
         commit(types.REMOVE_PAGE, { page });
         commit(types.LOADING_PAGES, false);
         resolve(page);

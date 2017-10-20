@@ -161,10 +161,10 @@ public class PublicRestController {
 
 	@GetMapping("/page/{page_id}/event/{page}/{size}")
 	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
-			@RequestParam("fromDate") String fromDate) {
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 
-		return ResponseEntity.ok(
-				eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
+		return ResponseEntity.ok(eventRepository.getByPageRange(page_id,
+				new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate));
 	}
 
 	@GetMapping("/user/{user_id}/event")

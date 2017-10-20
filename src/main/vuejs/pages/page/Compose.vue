@@ -32,6 +32,21 @@
           </button>
         </div>
       </panel>
+
+      <panel type="danger">
+        <span slot="title">Completely delete page</span>
+        <p class="m-b-15">Write name of page to ensure it's not misstake and confirm with 'Delete'.</p>
+
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+            <input type="text" class="form-control" v-model="deleteConfirm">
+          </div>
+          <div class="col-md-6">
+            <a class="btn btn-danger" :disabled="deleteConfirm !== page.name" @click="deleteP">Delete</a>
+          </div>
+        </div>
+      </panel>
     </div>
     <div class="col-md-4">
       <image-upload v-model="page.posterData" :media="page.poster" />
@@ -48,16 +63,28 @@ export default {
   props: {
     page: Object
   },
+  data () {
+    return {
+      deleteConfirm: null
+    };
+  },
   components: {
     TextEditor, ImageUpload, Categorizer
   },
   methods: {
     ...mapActions([
-      'removePage', 'updatePage', 'togglePagePublished'
+      'removePage', 'updatePage', 'togglePagePublished', 'deletePage'
     ]),
     submit () {
       this.updatePage(this.page).then(page => {
         this.$success('notification.page.updated' + page.name);
+      });
+    },
+    deleteP () {
+      this.$prompt('notification.page.delete_prompt', () => {
+        this.deletePage(this.page).then(() => {
+          console.log('test');
+        });
       });
     }
   }

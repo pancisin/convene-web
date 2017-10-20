@@ -59,7 +59,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event JOIN event.page page WHERE event.id != :event_id AND page.id = (SELECT event.page.id FROM Event event WHERE event.id = :event_id) AND DATE(event.date) >= CURDATE()")
 	public Page<Event> getRelated(@Param("event_id") Long event_id, Pageable pageable);
 
-	@Query("SELECT event FROM Event event WHERE event.page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND event.visibility = 'PUBLIC'")
-	public Page<Event> getByPageFrom(@Param("page_id") Long page_id, Pageable pageable,
-			@Param("fromDate") String fromDate);
+	@Query("SELECT event FROM Event event WHERE event.page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.visibility = 'PUBLIC'")
+	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,
+			@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 }

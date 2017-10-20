@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
@@ -146,8 +147,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	@Transient
 	public UserSubscription getLicense() {
 		Optional<UserSubscription> subscription = subscriptions.stream()
-				.filter(s -> s.getState() == SubscriptionState.ACTIVE || s.getState() == SubscriptionState.NEW)
-				.findFirst();
+				.filter(s -> s.getState() == SubscriptionState.ACTIVE || s.getState() == SubscriptionState.NEW).findFirst();
 
 		if (subscription.isPresent())
 			return subscription.get();
@@ -161,7 +161,7 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@OneToOne(optional = true, cascade = CascadeType.ALL)
 	private Address address = new Address();
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -191,7 +191,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.firstName + " " + this.lastName;
@@ -285,7 +285,12 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	public List<Page> getPages() {
 		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().map(x -> x.getPage()).collect(Collectors.toList());
+			return this.pageAdministrators.stream().map(x -> {
+				if (x.getPage().getState() != PageState.DELETED)
+					return x.getPage();
+				else
+					return null;
+			}).filter(x -> x != null).collect(Collectors.toList());
 		else
 			return null;
 	}
@@ -293,8 +298,8 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonIgnore
 	public List<Page> getOwningPages() {
 		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
-					.map(x -> x.getPage()).collect(Collectors.toList());
+			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).map(x -> x.getPage())
+					.collect(Collectors.toList());
 		else
 			return null;
 	}

@@ -129,10 +129,10 @@ public class PageController {
 	@GetMapping("/event/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
-			@RequestParam("fromDate") String fromDate) {
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 
 		return ResponseEntity.ok(
-				eventRepository.getByPageFrom(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate));
+				eventRepository.getByPageRange(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate));
 	}
 
 	@PostMapping("/event")

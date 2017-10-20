@@ -181,7 +181,11 @@ export default {
     this.getPages(0);
   },
   components: {
-    Paginator, TabContainer, Tab, HeroUnit, ArticlesList
+    Paginator,
+    TabContainer,
+    Tab,
+    HeroUnit,
+    ArticlesList
   },
   computed: {
     ...mapGetters(['authenticated', 'user', 'followedPages'])
@@ -194,16 +198,20 @@ export default {
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
         var url = ['public/near-events', page, 5].join('/');
-        this.$http.get(url, {
-          params: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-            distance: 20
-          }
-        }).then(response => {
-          this.eventsPaginator = response.body;
-          this.eventsPaginator.content = this.eventsPaginator.content.filter(x => x);
-        });
+        this.$http
+          .get(url, {
+            params: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+              distance: 20
+            }
+          })
+          .then(response => {
+            this.eventsPaginator = response.body;
+            this.eventsPaginator.content = this.eventsPaginator.content.filter(
+              x => x
+            );
+          });
       });
     },
     getHeadlines (page) {
