@@ -28,10 +28,14 @@
 
         <div class="col-md-9">
           <explorer-transition tag="div" class="explore-container">
-            <div class="page-panel" v-for="(page, index) in pagesPaginator.content" :data-index="index" :key="page.id">
+            <div class="page-panel" 
+              v-for="(page, index) in pagesPaginator.content" 
+              :data-index="index" 
+              :key="page.id"
+              :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
               <router-link :to="'page/' + page.id">
-                <img v-if="page.poster != null" :src="page.poster.path">
-                <img v-else src="/bookster_logo.png" style="min-width:auto">
+                <!-- <img v-if="page.poster != null" :src="page.poster.path">
+                <img v-else src="/bookster_logo.png" style="min-width:auto"> -->
 
                 <div class="title">
                   <h5 v-text="page.name"></h5>
@@ -163,28 +167,21 @@ export default {
   overflow: hidden;
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: @color-primary;
+  background-position: center;
+  background-size: cover;
+  transition: all .2s ease-in-out;
 
   & > a {
     display: block;
-  }
-
-  img {
-    min-width: 100%;
-    transition: all .3s ease;
     height: 200px;
-    margin: 0 auto;
-    display: block;
-    max-width: 100%;
   }
 
   .title {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     background: white;
     margin: 0;
     padding: 15px;
+    border-bottom: 1px solid #ccc;
 
     h5 {
       margin: 0;
@@ -192,9 +189,7 @@ export default {
   }
 
   &:hover {
-    img {
-      transform: scale(1.1);
-    }
+    box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
   }
 }
 
