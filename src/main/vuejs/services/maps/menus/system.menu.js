@@ -17,6 +17,11 @@ export default {
       name: 'system.lists',
       code: 'admin.system.news',
       icon: 'inbox'
+    },
+    {
+      name: 'system.page-import',
+      code: 'admin.system.page-import',
+      icon: 'accessibility'
     }
   ]
 };

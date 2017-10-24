@@ -30,6 +30,11 @@ export default [
     component: resolve => require(['../pages/system/Users.vue'], resolve)
   },
   {
+    path: 'page-import',
+    name: 'system.page-import',
+    component: resolve => require(['../pages/system/PageImport.vue'], resolve)
+  },
+  {
     path: 'conference/create',
     component: resolve => require(['../pages/Conference.create.vue'], resolve),
     beforeEnter: (to, from, next) => {

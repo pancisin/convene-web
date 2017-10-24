@@ -137,6 +137,9 @@ public class Page implements IAuthor {
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
 
+	@Column(unique = true)
+	private String facebookId;
+	
 	@Transient
 	@JsonView(Summary.class)
 	public PageAdministrator getPrivilege() {
@@ -296,5 +299,13 @@ public class Page implements IAuthor {
 		}
 
 		this.gallery.add(media);
+	}
+
+	public String getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(String facebookId) {
+		this.facebookId = facebookId;
 	}
 }
