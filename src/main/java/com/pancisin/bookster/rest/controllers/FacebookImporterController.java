@@ -112,7 +112,7 @@ public class FacebookImporterController {
 				fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
 				Reading r = new Reading();
-				r.fields("name", "about", "cover", "location", "picture");
+				r.fields("name", "about", "cover", "location", "picture.width(640)");
 
 				Page page = convertPage(fb.getPage(facebook_id, r));
 				page = pageRepository.save(page);
