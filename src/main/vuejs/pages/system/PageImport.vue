@@ -11,11 +11,11 @@
           <label>Radius (meters)</label>
           <input type="number" class="form-control" v-model="filters.radius">
         </div>
-        <a class="btn btn-block btn-primary" @click="onSearch">Search</a>
+        <a class="btn btn-block btn-primary" @click="searchPlaces(0)">Search</a>
       </panel>
     </div>
     <div class="col-md-8">
-      <panel type="table">
+      <panel type="table" v-loading="loading">
         <span slot="title">Results</span>
         <table class="table">
           <thead>
@@ -25,7 +25,7 @@
               <th class="text-center">Actions</th>
             </tr>
           </thead>
-          <tbody v-loading="loading">
+          <tbody>
             <tr v-for="(place, index) in places" :key="index">
               <td>
                 {{ place.id }}
@@ -40,8 +40,8 @@
           </tbody>
         </table>
 
-        <div class="text-center">
-          <a class="btn btn-rounded btn-default" @click="onLoadMore">Load more</a>
+        <div class="text-center" v-if="!loadMoreDisabled">
+          <a class="btn btn-rounded btn-default" @click="searchPlaces(++filters.offset)">Load more</a>
         </div>
       </panel>
     </div>
@@ -51,6 +51,7 @@
 <script>
 import ImporterApi from 'api/importer.api';
 import GoogleMapsApiLoader from 'google-maps-api-loader';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'page-import',
@@ -58,8 +59,8 @@ export default {
     return {
       places: [],
       subscription: null,
-      selected: null,
       loading: false,
+      loadMoreDisabled: true,
       filters: {
         radius: 1000,
         offset: 0,
@@ -72,17 +73,16 @@ export default {
     };
   },
   watch: {
-    selected (newVal) {
-      console.log(newVal);
-    },
     '$route': 'initialize'
   },
   created () {
     this.connectWM('stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/user/queue/page.import', response => {
-        let data = JSON.parse(response.body);
+        let pageImport = JSON.parse(response.body);
 
-        console.warn(data);
+        if (pageImport.state.name === 'SUCCESS') {
+          this.initializePages();
+        }
       });
     });
 
@@ -92,6 +92,7 @@ export default {
     this.subscription.unsubscribe();
   },
   methods: {
+    ...mapActions(['initializePages']),
     initialize () {
       GoogleMapsApiLoader({
         apiKey: 'AIzaSyBKua_eTxYYK4hJf7sRKeH666HdcH3UlAg',
@@ -102,27 +103,28 @@ export default {
 
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
           const location = autocomplete.getPlace().geometry.location;
-          this.coords = {
+
+          this.searchPlaces(0, {
             lat: location.lat(),
             lng: location.lng()
-          };
-          this.onSearch();
+          });
         });
-      }, err => {
-        console.error(err);
       });
     },
-    onSearch () {
-      this.filters.offset = 0;
-      this.searchPlaces();
-    },
-    onLoadMore () {
-      this.filters.offset += 1;
-      this.searchPlaces();
-    },
-    searchPlaces () {
+    searchPlaces (offset, coords) {
       this.loading = true;
+
+      if (offset != null) {
+        this.filters.offset = offset;
+      }
+
+      if (coords != null) {
+        this.coords = coords;
+      }
+
       ImporterApi.searchPlace(this.coords.lat, this.coords.lng, places => {
+        this.loadMoreDisabled = places.length === 0;
+
         if (this.filters.offset === 0) {
           this.places = places;
         } else this.places.push(...places);

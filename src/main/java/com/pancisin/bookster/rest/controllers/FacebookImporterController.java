@@ -19,6 +19,7 @@ import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
+import com.pancisin.bookster.models.PageImport;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.models.enums.PageRole;
@@ -68,9 +69,10 @@ public class FacebookImporterController {
 
 			Reading r = new Reading();
 			r.fields("name", "categories", "location", "metadata");
-			
-			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius, r.offset(offset).limit(limit));
-			
+
+			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius,
+					r.limit(limit).offset(offset * limit));
+
 			return ResponseEntity.ok(places);
 		} catch (FacebookException e) {
 			e.printStackTrace();
@@ -87,10 +89,7 @@ public class FacebookImporterController {
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
-			Reading r = new Reading();
-			r.fields("name", "about", "cover", "location", "picture");
-
-			facebook4j.Page fb_page = fb.getPage(facebook_id, r);
+			facebook4j.Page fb_page = fb.getPage(facebook_id, new Reading().fields("name", "about", "cover", "location", "picture"));
 			Page page = convertPage(fb_page);
 
 			return ResponseEntity.ok(page);
@@ -108,7 +107,7 @@ public class FacebookImporterController {
 
 		if (facebook_id != null && !facebook_id.equals("")) {
 			try {
-				webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", BotRunState.RUNNING);
+				webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", new PageImport(BotRunState.RUNNING));
 				Facebook fb = new FacebookFactory().getInstance();
 				fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
@@ -129,8 +128,7 @@ public class FacebookImporterController {
 				paRepository.save(pa);
 
 				if (page != null) {
-					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", BotRunState.SUCCESS);
-					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", page);
+					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", new PageImport(BotRunState.SUCCESS, page));
 				}
 			} catch (FacebookException e) {
 				e.printStackTrace();

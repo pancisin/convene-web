@@ -20,7 +20,7 @@ export default {
     },
     {
       name: 'system.page-import',
-      code: 'admin.system.page-import',
+      code: 'admin.system.page_import',
       icon: 'accessibility'
     }
   ]

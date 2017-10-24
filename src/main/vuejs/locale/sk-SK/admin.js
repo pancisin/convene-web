@@ -51,6 +51,7 @@ export default {
   },
   system: {
     users: 'Používatelia',
-    news: 'News'
+    news: 'News',
+    page_import: 'Importovanie stránok'
   }
 };

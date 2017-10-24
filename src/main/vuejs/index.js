@@ -51,6 +51,9 @@ Vue.directive('click-outside', ClickOutside);
 Vue.directive('strip', StripTags);
 Vue.directive('loading', Loading);
 
+import infiniteScroll from 'vue-infinite-scroll';
+Vue.use(infiniteScroll);
+
 Vue.config.devtools = true;
 
 Vue.http.interceptors.push((request, next) => {
