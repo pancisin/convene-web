@@ -4,11 +4,12 @@ const IMPORTER_API_URL = 'api/facebook-importer';
 
 export default {
 
-  searchPlace (latitude, longitude, success) {
+  searchPlace (latitude, longitude, success, filters = {}) {
     Vue.http.get(`${IMPORTER_API_URL}/search`, {
       params: {
         latitude,
-        longitude
+        longitude,
+        ...filters
       }
     }).then(response => {
       success(response.body);

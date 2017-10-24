@@ -31,6 +31,7 @@ import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.GeoLocation;
+import facebook4j.Paging;
 import facebook4j.Place;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
@@ -50,13 +51,16 @@ public class FacebookImporterController {
 
 	@Autowired
 	private PageAdministratorRepository paRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
 	@GetMapping("/search")
 	public ResponseEntity<?> searchPages(@RequestParam(name = "latitude", required = true) Double latitude,
-			@RequestParam(name = "longitude", required = true) Double longitude) {
+			@RequestParam(name = "longitude", required = true) Double longitude,
+			@RequestParam(name = "radius", required = false, defaultValue = "1000") int radius,
+			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
+			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset) {
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
@@ -64,8 +68,9 @@ public class FacebookImporterController {
 
 			Reading r = new Reading();
 			r.fields("name", "categories", "location", "metadata");
-
-			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), 1000, r);
+			
+			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius, r.offset(offset).limit(limit));
+			
 			return ResponseEntity.ok(places);
 		} catch (FacebookException e) {
 			e.printStackTrace();
@@ -118,7 +123,7 @@ public class FacebookImporterController {
 				eventBotRepository.save(bot);
 
 				User user = userRepository.findByEmail(principal.getName());
-				
+
 				PageAdministrator pa = new PageAdministrator(page, user, true);
 				pa.setRole(PageRole.ROLE_OWNER);
 				paRepository.save(pa);
