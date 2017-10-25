@@ -11,7 +11,7 @@
           <label>Radius (meters)</label>
           <input type="number" class="form-control" v-model="filters.radius">
         </div>
-        <a class="btn btn-block btn-primary" @click="searchPlaces(0)">Search</a>
+        <a class="btn btn-block btn-primary" @click="searchPlaces(null)">Search</a>
       </panel>
     </div>
     <div class="col-md-8">
@@ -26,7 +26,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(place, index) in places" :key="index">
+            <tr v-for="(place, index) in paginator.content" :key="index">
               <td>
                 {{ place.id }}
               </td>
@@ -40,8 +40,8 @@
           </tbody>
         </table>
 
-        <div class="text-center" v-if="!loadMoreDisabled">
-          <a class="btn btn-rounded btn-default" @click="searchPlaces(++filters.offset)">Load more</a>
+        <div class="text-center" v-if="paginator.nextCursor != null">
+          <a class="btn btn-rounded btn-default" @click="searchPlaces(paginator.nextCursor)">Load more</a>
         </div>
       </panel>
     </div>
@@ -57,13 +57,11 @@ export default {
   name: 'page-import',
   data () {
     return {
-      places: [],
       subscription: null,
       loading: false,
-      loadMoreDisabled: true,
+      paginator: {},
       filters: {
         radius: 1000,
-        offset: 0,
         limit: 10
       },
       coords: {
@@ -104,31 +102,28 @@ export default {
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
           const location = autocomplete.getPlace().geometry.location;
 
-          this.searchPlaces(0, {
+          this.searchPlaces(null, {
             lat: location.lat(),
             lng: location.lng()
           });
         });
       });
     },
-    searchPlaces (offset, coords) {
+    searchPlaces (after, coords) {
       this.loading = true;
 
-      if (offset != null) {
-        this.filters.offset = offset;
-      }
-
+      this.filters.after = after;
       if (coords != null) {
         this.coords = coords;
       }
 
-      ImporterApi.searchPlace(this.coords.lat, this.coords.lng, places => {
-        this.loadMoreDisabled = places.length === 0;
-
-        if (this.filters.offset === 0) {
-          this.places = places;
-        } else this.places.push(...places);
-
+      ImporterApi.searchPlace(this.coords.lat, this.coords.lng, paginator => {
+        if (this.filters.after != null) {
+          this.paginator = {
+            ...paginator,
+            content: this.paginator.content.concat(paginator.content)
+          };
+        } else this.paginator = paginator;
         this.loading = false;
       }, this.filters);
     },

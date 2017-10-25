@@ -27,7 +27,12 @@
         <ul v-loading="loadingPages" v-if="menus.page.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
 
-          <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
+          <drop-down 
+            v-for="(page, index) in pages" 
+            :key="page.id" 
+            ref="items" 
+            @opened="closeDropdowns">
+
             <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'DEACTIVATED'">visibility_off</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>

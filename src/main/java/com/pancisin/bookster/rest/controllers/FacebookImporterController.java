@@ -27,17 +27,18 @@ import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.utils.GraphApiPagination;
 
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.GeoLocation;
-import facebook4j.Paging;
 import facebook4j.Place;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
 
 @RestController
+// @PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/facebook-importer")
 public class FacebookImporterController {
 
@@ -61,7 +62,8 @@ public class FacebookImporterController {
 			@RequestParam(name = "longitude", required = true) Double longitude,
 			@RequestParam(name = "radius", required = false, defaultValue = "1000") int radius,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
-			@RequestParam(name = "offset", required = false, defaultValue = "0") int offset) {
+			@RequestParam(name = "after", required = false, defaultValue = "") String after,
+			@RequestParam(name = "before", required = false, defaultValue = "") String before) {
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
@@ -70,10 +72,15 @@ public class FacebookImporterController {
 			Reading r = new Reading();
 			r.fields("name", "categories", "location", "metadata");
 
-			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius,
-					r.limit(limit).offset(offset * limit));
+			if (!after.equals("")) {
+				r.after(after);
+			}
 
-			return ResponseEntity.ok(places);
+			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius, r.limit(limit));
+
+			GraphApiPagination<ResponseList<Place>> pagination = new GraphApiPagination<ResponseList<Place>>(places,
+					places.getPaging().getCursors().getAfter());
+			return ResponseEntity.ok(pagination);
 		} catch (FacebookException e) {
 			e.printStackTrace();
 		}
@@ -89,7 +96,8 @@ public class FacebookImporterController {
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
-			facebook4j.Page fb_page = fb.getPage(facebook_id, new Reading().fields("name", "about", "cover", "location", "picture"));
+			facebook4j.Page fb_page = fb.getPage(facebook_id,
+					new Reading().fields("name", "about", "cover", "location", "picture"));
 			Page page = convertPage(fb_page);
 
 			return ResponseEntity.ok(page);
@@ -128,7 +136,8 @@ public class FacebookImporterController {
 				paRepository.save(pa);
 
 				if (page != null) {
-					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", new PageImport(BotRunState.SUCCESS, page));
+					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import",
+							new PageImport(BotRunState.SUCCESS, page));
 				}
 			} catch (FacebookException e) {
 				e.printStackTrace();
