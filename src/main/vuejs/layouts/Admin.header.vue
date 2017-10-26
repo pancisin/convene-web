@@ -13,13 +13,8 @@
           </a>
         </div>
 
-        <div class="logo">
-          <router-link to="/"
-            class="logo">
-            <i class="fa fa-book"></i>
-            <span>Bookster</span>
-          </router-link>
-        </div>
+        <product-logo inline light>
+        </product-logo>
 
         <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
@@ -34,12 +29,12 @@
 </template>
   
 <script>
-import { Notifications, LangSwitcher, UserProfile } from 'elements';
+import { Notifications, LangSwitcher, UserProfile, ProductLogo } from 'elements';
 
 export default {
   name: 'header',
   components: {
-    Notifications, LangSwitcher, UserProfile
+    Notifications, LangSwitcher, UserProfile, ProductLogo
   },
   methods: {
     hamburgerClicked () {

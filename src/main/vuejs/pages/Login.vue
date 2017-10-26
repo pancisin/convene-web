@@ -1,12 +1,6 @@
 <template>
   <div class="wrapper-page container">
-
-    <div class="text-center">
-      <router-link to="/" class="logo-lg">
-        <i class="fa fa-book"></i>
-        <span>Bookster</span>
-      </router-link>
-    </div>
+    <product-logo large />
 
     <form class="form-horizontal m-t-20" @submit.prevent="submit">
 
@@ -60,6 +54,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
+import { ProductLogo } from 'elements';
 
 export default {
   data: function () {
@@ -70,6 +65,9 @@ export default {
       },
       fieldErrors: {}
     };
+  },
+  components: {
+    ProductLogo
   },
   methods: {
     ...mapActions(['login']),

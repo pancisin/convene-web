@@ -2,7 +2,15 @@
   <div class="row">
     <div class="col-md-4">
       <panel type="primary">
-        <span slot="title">Search & filter</span>
+        <span slot="title">Search & filter</span> 
+        <div class="form-group">
+          <label>Keyword</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            v-model="filters.q" 
+            @keyup="onKeywordChange($event)" >
+        </div>
         <div class="form-group">
           <label>Search places</label>
           <input type="text" class="form-control" id="maps_autocomplete">
@@ -40,7 +48,7 @@
           </tbody>
         </table>
 
-        <div class="text-center" v-if="paginator.nextCursor != null">
+        <div class="text-center" v-if="paginator.nextCursor != ''">
           <a class="btn btn-rounded btn-default" @click="searchPlaces(paginator.nextCursor)">Load more</a>
         </div>
       </panel>
@@ -49,6 +57,7 @@
 </template>
 
 <script>
+import debounce from 'debounce';
 import ImporterApi from 'api/importer.api';
 import GoogleMapsApiLoader from 'google-maps-api-loader';
 import { mapActions } from 'vuex';
@@ -65,8 +74,8 @@ export default {
         limit: 10
       },
       coords: {
-        lat: 0,
-        lng: 0
+        lat: null,
+        lng: null
       }
     };
   },
@@ -127,6 +136,9 @@ export default {
         this.loading = false;
       }, this.filters);
     },
+    onKeywordChange: debounce(function () {
+      this.searchPlaces();
+    }, 500),
     importPage (place_id) {
       this.sendWM(`/app/page-import`, JSON.stringify({
         facebook_id: place_id

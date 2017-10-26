@@ -12,7 +12,7 @@
           </panel>
 
           <panel>
-            <span slot="title">Events</span>
+            <span slot="title">Upcoming events</span>
             <events-list :events="events"></events-list>
           </panel>
         </div>

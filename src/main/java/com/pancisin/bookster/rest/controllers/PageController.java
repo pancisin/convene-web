@@ -98,6 +98,7 @@ public class PageController {
 	public ResponseEntity<?> deletePage(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		stored.setState(PageState.DELETED);
+		stored.setFacebookId(null);
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 

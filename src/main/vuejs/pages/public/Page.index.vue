@@ -4,7 +4,10 @@
       <div class="container">
         <ul class="list-inline" v-if="categories != null">
           <li v-for="cat in categories" :key="cat.id">
-            <a class="waves-effect" @click="selectCategory(cat.id)" :class="{ 'active' : filters.categoryId == cat.id }">
+            <a class="waves-effect" 
+              @click="selectCategory(cat.id)" 
+              :class="{ 'active' : filters.categoryId == cat.id }">
+
               {{ $t('category.' + cat.code + '.default') }}
             </a>
           </li>
@@ -15,11 +18,20 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <router-link to="/admin/page/create" class="btn btn-block btn-rounded btn-success">Create page</router-link>
+          <router-link 
+            to="/admin/page/create" 
+            class="btn btn-block btn-rounded btn-success">
+            Create page
+          </router-link>
 
           <div class="list-group m-t-10">
             <stagger-transition>
-              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :class="{ 'active' : filters.branchId == branch.id }" :data-index="index" @click="selectBranch(branch.id)">
+              <a v-for="(branch, index) in branches" 
+                :key="branch.id" 
+                class="list-group-item waves-effect" 
+                :class="{ 'active' : filters.branchId == branch.id }" 
+                :data-index="index" @click="selectBranch(branch.id)">
+
                 {{ $t('category.' + currentCategory.code + '.' + branch.code) }}
               </a>
             </stagger-transition>
@@ -27,16 +39,13 @@
         </div>
 
         <div class="col-md-9">
-          <explorer-transition tag="div" class="explore-container">
-            <div class="page-panel" 
+          <masonry v-loading="loading" :columns="4">
+            <masonry-item class="page-panel"   
               v-for="(page, index) in pagesPaginator.content" 
-              :data-index="index" 
-              :key="page.id"
+              :key="index"
               :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
+              
               <router-link :to="'page/' + page.id">
-                <!-- <img v-if="page.poster != null" :src="page.poster.path">
-                <img v-else src="/bookster_logo.png" style="min-width:auto"> -->
-
                 <div class="title">
                   <h5 v-text="page.name"></h5>
                   <small class="text-muted" v-if="page.category != null">
@@ -44,8 +53,8 @@
                   </small>
                 </div>
               </router-link>
-            </div>
-          </explorer-transition>
+            </masonry-item>
+          </masonry>
 
           <div class="row">
             <div class="col-xs-12 text-center">
@@ -60,8 +69,7 @@
 
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue';
-import ExplorerTransition from '../../functional/ExplorerTransition.vue';
-import { Paginator } from 'elements';
+import { Paginator, Masonry, MasonryItem } from 'elements';
 export default {
   name: 'page-explore',
   data () {
@@ -70,11 +78,12 @@ export default {
       categories: [],
       branches: [],
       pagesPaginator: {},
-      filters: null
+      filters: null,
+      loading: false
     };
   },
   components: {
-    StaggerTransition, Paginator, ExplorerTransition
+    StaggerTransition, Paginator, Masonry, MasonryItem
   },
   created () {
     this.filters = {
@@ -94,9 +103,11 @@ export default {
   },
   methods: {
     getPages (page) {
+      this.loading = true;
       var url = ['public/pages', page, 10].join('/');
       this.$http.get(url, { params: this.filters }).then(response => {
         this.pagesPaginator = response.body;
+        this.loading = false;
       });
     },
     getCategories () {
@@ -105,9 +116,9 @@ export default {
           return c != null;
         });
 
-        if (this.filters.categoryId == null) {
-          this.filters.categoryId = this.categories[0].id;
-        }
+        // if (this.filters.categoryId == null) {
+        //   this.filters.categoryId = this.categories[0].id;
+        // }
 
         this.getBranches(this.filters.categoryId);
       });
@@ -161,9 +172,6 @@ export default {
 }
 
 .page-panel {
-  flex: 250px 1 1;
-  position: relative;
-  margin: 10px;
   overflow: hidden;
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: @color-primary;

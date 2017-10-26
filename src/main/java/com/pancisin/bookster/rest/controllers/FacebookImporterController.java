@@ -63,7 +63,8 @@ public class FacebookImporterController {
 			@RequestParam(name = "radius", required = false, defaultValue = "1000") int radius,
 			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
 			@RequestParam(name = "after", required = false, defaultValue = "") String after,
-			@RequestParam(name = "before", required = false, defaultValue = "") String before) {
+			@RequestParam(name = "before", required = false, defaultValue = "") String before,
+			@RequestParam(name = "q", required = false, defaultValue = "*") String q) {
 		Facebook fb = new FacebookFactory().getInstance();
 
 		try {
@@ -76,10 +77,17 @@ public class FacebookImporterController {
 				r.after(after);
 			}
 
-			ResponseList<Place> places = fb.searchPlaces("*", new GeoLocation(latitude, longitude), radius, r.limit(limit));
+			ResponseList<Place> places = null;
 
-			GraphApiPagination<ResponseList<Place>> pagination = new GraphApiPagination<ResponseList<Place>>(places,
-					places.getPaging().getCursors().getAfter());
+			if (latitude != null && longitude != null) {
+				places = fb.searchPlaces(q, new GeoLocation(latitude, longitude), radius, r.limit(limit));
+			} else {
+				places = fb.searchPlaces(q, r.limit(limit));
+			}
+
+			
+			String cursorAfter = places.getPaging() != null ? places.getPaging().getCursors().getAfter() : "";
+			GraphApiPagination<ResponseList<Place>> pagination = new GraphApiPagination<ResponseList<Place>>(places, cursorAfter);
 			return ResponseEntity.ok(pagination);
 		} catch (FacebookException e) {
 			e.printStackTrace();

@@ -84,6 +84,7 @@ export default {
       padding-bottom: @thumbnail_percentage;
       overflow: hidden;
       position: relative;
+      border-radius: 5px;
 
       img {
         position: absolute;
