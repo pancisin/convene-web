@@ -112,8 +112,8 @@ export default {
 
 .bg-gray {
   background-color: #fafafa;
-  border-bottom: 1px solid #f5f5f5;
-  border-top: 1px solid #f5f5f5;
+  border-bottom: 1px solid @color-light;
+  border-top: 1px solid @color-light;
 }
 
 .bg-dark {

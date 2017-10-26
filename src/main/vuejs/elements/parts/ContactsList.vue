@@ -69,7 +69,7 @@ export default {
   .list-group-item {
     border: none;
     &:hover {
-      background: #f5f5f5;
+      background: @color-light;
     }
   }
   i.offline {
