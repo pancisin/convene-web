@@ -171,7 +171,7 @@ export default {
 
 .home {
   position: relative;
-  margin-top: -15px;
+  margin-top: -20px;
 }
 
 .home-wrapper {

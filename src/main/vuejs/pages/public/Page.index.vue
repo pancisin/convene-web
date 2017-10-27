@@ -18,12 +18,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <router-link 
-            to="/admin/page/create" 
-            class="btn btn-block btn-rounded btn-success">
-            Create page
-          </router-link>
-
           <div class="list-group m-t-10">
             <stagger-transition>
               <a v-for="(branch, index) in branches" 
@@ -45,7 +39,8 @@
               :key="index"
               :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
               
-              <router-link :to="'page/' + page.id">
+              <router-link 
+                :to="{ name: 'page.public', params: { id: page.id } }">
                 <div class="title">
                   <h5 v-text="page.name"></h5>
                   <small class="text-muted" v-if="page.category != null">
@@ -87,8 +82,7 @@ export default {
   },
   created () {
     this.filters = {
-      branchId: this.$route.query.branchId,
-      categoryId: this.$route.query.categoryId
+      ...this.$route.query
     };
 
     this.getCategories();
@@ -104,7 +98,7 @@ export default {
   methods: {
     getPages (page) {
       this.loading = true;
-      var url = ['public/pages', page, 10].join('/');
+      var url = ['public/pages', page, 12].join('/');
       this.$http.get(url, { params: this.filters }).then(response => {
         this.pagesPaginator = response.body;
         this.loading = false;
@@ -115,10 +109,6 @@ export default {
         this.categories = response.body.filter(c => {
           return c != null;
         });
-
-        // if (this.filters.categoryId == null) {
-        //   this.filters.categoryId = this.categories[0].id;
-        // }
 
         this.getBranches(this.filters.categoryId);
       });
@@ -203,8 +193,8 @@ export default {
 
 .categories-nav {
   background: #fff;
-  margin-top: -15px;
-  margin-bottom: 10px;
+  margin-top: -20px;
+  margin-bottom: 20px;
 
   ul {
     margin: 0;
@@ -218,12 +208,12 @@ export default {
         font-weight: 500;
 
         &.active {
-          background-color: #f5f5f5;
+          background-color: @color-light;
           color: @color-primary;
         }
 
         &:hover {
-          background-color: #f5f5f5;
+          background-color: @color-light;
         }
       }
     }
