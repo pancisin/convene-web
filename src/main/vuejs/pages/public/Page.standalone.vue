@@ -30,7 +30,7 @@ export default {
       var page_id = this.$route.params.id;
 
       if (page_id == null) {
-        var reg = new RegExp('www|bookster|localhost:3000');
+        var reg = new RegExp('www|bookster|convene|localhost:3000');
         var parts = window.location.host.split('.');
 
         if (!reg.test(parts[0])) {

@@ -7,7 +7,7 @@
   
     <div>
       <p>
-        This privacy notice discloses the privacy practices for Bookster and our website; http://www.bookster.tk. This privacy notice applies solely to information collected by this website, except where stated otherwise. It will notify you of the following:
+        This privacy notice discloses the privacy practices for cookster and our website; https://www.convene.sk. This privacy notice applies solely to information collected by this website, except where stated otherwise. It will notify you of the following:
       </p>
       <ul>
         <li>

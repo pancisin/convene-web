@@ -1,7 +1,7 @@
  <template>
   <header id="topnav">
-    <div class="topbar-main">
-      <div class="container">
+    <div class="topbar-main bg-inverse">
+      <div class="container-fluid">
         <div class="menu-item">
           <a class="navbar-toggle waves-effect"
             @click="hamburgerClicked">

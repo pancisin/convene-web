@@ -17,7 +17,8 @@ module.exports = {
       'api': path.resolve(__dirname, '../src/main/vuejs/services/api'),
       'elements': path.resolve(__dirname, '../src/main/vuejs/elements'),
       'filters': path.resolve(__dirname, '../src/main/vuejs/filters'),
-      'less': path.resolve(__dirname, '../src/main/vuejs/assets/less')
+      'less': path.resolve(__dirname, '../src/main/vuejs/assets/less'),
+      'assets': path.resolve(__dirname, '../src/main/vuejs/assets')
     }
   },
   module: {

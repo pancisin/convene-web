@@ -46,6 +46,13 @@
             </li>
           </drop-down>
 
+          <!-- <li v-if="pages.length > limit">
+            <router-link :to="{ name: 'admin.pages' }" class="waves-effect text-muted">
+              <i class="material-icons">sort</i>
+              Show all
+            </router-link>
+          </li> -->
+
           <li>
             <router-link to="/admin/page/create" class="waves-effect text-muted">
               <i class="material-icons">add</i>
@@ -112,6 +119,10 @@ export default {
     collapsed: {
       type: Boolean,
       default: true
+    },
+    limit: {
+      type: Number,
+      default: 5
     }
   },
   computed: {

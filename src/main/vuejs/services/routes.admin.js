@@ -17,6 +17,14 @@ export default [
     }
   },
   {
+    path: 'pages',
+    name: 'admin.pages',
+    component: resolve => require(['../pages/Pages.vue'], resolve),
+    meta: {
+      title: 'Pages'
+    }
+  },
+  {
     path: 'media-manager',
     name: 'admin.media-manager',
     component: resolve => require(['../pages/MediaManager.vue'], resolve),

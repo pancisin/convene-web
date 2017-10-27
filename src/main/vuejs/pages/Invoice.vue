@@ -3,10 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="clearfix">
-          <div class="pull-left">
-            <h1 class="text-right">
-              <i class="fa fa-book"></i> Bookster</h1>
-          </div>
+          <product-logo large inline />
           <div class="pull-right">
             <h4>Invoice #
               <br>
@@ -54,7 +51,7 @@
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>Bookster Premium license</td>
+                    <td>convene Premium license</td>
                     <td>per month</td>
                     <td>{{ invoice.subscription.price }}
                       <i class="fa fa-euro"></i>
@@ -106,6 +103,7 @@
 </template>
 
 <script>
+import { ProductLogo } from 'elements';
 export default {
   name: 'invoice',
   data () {
@@ -116,6 +114,9 @@ export default {
   },
   created () {
     this.getInvoice();
+  },
+  components: {
+    ProductLogo
   },
   methods: {
     getInvoice () {
