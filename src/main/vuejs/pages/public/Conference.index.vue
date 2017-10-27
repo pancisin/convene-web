@@ -1,20 +1,21 @@
 <template>
   <div class="container">
-    <ul class="conference-list">
-      <li v-for="conf in conferences" :key="conf.id">
-        <router-link :to="{ name: 'conference', params: { id: conf.id } }">
-          <div class="banner" v-if="conf.poster != null">
-            <img :src="conf.poster.path">
-          </div>
-
-          <div class="data">
+    <masonry :columns="4">
+      <masonry-item class="conference-panel"   
+        v-for="(conference, index) in conferences" 
+        :key="index"
+        :style="{ 'background-image': conference.poster != null ? `url(${conference.poster.path})` : 'none' }">
+        
+        <router-link 
+          :to="{ name: 'conference', params: { id: conference.id } }">
+          <div class="title">
             <h5>
-              {{ conf.name }}
+              {{ conference.name }}
             </h5>
           </div>
         </router-link>
-      </li>
-    </ul>
+      </masonry-item>
+    </masonry>
   </div>
 </template>
 
@@ -22,6 +23,7 @@
 import RootApi from 'api/api';
 import { mapGetters } from 'vuex';
 import PublicApi from 'api/public.api';
+import { Masonry, MasonryItem } from 'elements';
 
 export default {
   name: 'conference-index',
@@ -35,6 +37,9 @@ export default {
   },
   computed: {
     ...mapGetters(['authenticated'])
+  },
+  components: {
+    Masonry, MasonryItem
   },
   methods: {
     getConferences () {
@@ -53,47 +58,34 @@ export default {
 </script>
 
 <style lang="less">
-ul.conference-list {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
+@import (reference) '~less/variables.less';
+.conference-panel {
+  overflow: hidden;
+  box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
+  background: @color-primary;
+  background-position: center;
+  background-size: cover;
+  transition: all .2s ease-in-out;
 
-  li {
-    flex: 250px 1 1;
-    max-width: 530px;
+  & > a {
+    display: block;
+    height: 200px;
   }
 
-  li a {
-    box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
-    margin: 10px;
-    display: block;
-    background-color: #fff;
+  .title {
+    width: 100%;
+    background: white;
+    margin: 0;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
 
-    .banner {
-      height: 150px;
-      overflow: hidden;
+    h5 {
+      margin: 0;
     }
+  }
 
-    .data {
-      padding: 15px;
-
-      h5 {
-        margin: 0;
-      }
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      margin: -14% auto;
-      transition: all .3s ease;
-    }
-
-    &:hover img {
-      transform: scale(1.1);
-    }
+  &:hover {
+    box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
   }
 }
 </style>

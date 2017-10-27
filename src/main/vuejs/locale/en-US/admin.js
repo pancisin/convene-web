@@ -8,7 +8,7 @@ export default {
     page_create: 'Create page',
     conferences: 'Conferences',
     conference_create: 'Create conference',
-    about: 'About Bookster',
+    about: 'About convene',
     faq: 'FAQ',
     terms: 'Terms & Conditions',
     privacy: 'Privacy policy',
@@ -51,6 +51,7 @@ export default {
   },
   system: {
     users: 'Users',
-    news: 'News'
+    news: 'News',
+    page_import: 'Page importer'
   }
 };

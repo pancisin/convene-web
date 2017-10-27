@@ -1,7 +1,7 @@
 <template>
   <div v-if="page != null">
-    <hero-unit :background="page.poster != null ? page.poster.path : null">
-      <h1 class="text-uppercase text-inverse">{{ page.name }}</h1>
+    <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
+      <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
     </hero-unit>  
 
     <div class="container">
@@ -12,7 +12,7 @@
           </panel>
 
           <panel>
-            <span slot="title">Events</span>
+            <span slot="title">Upcoming events</span>
             <events-list :events="events"></events-list>
           </panel>
         </div>
@@ -99,7 +99,7 @@ export default {
       var page_id = this.$route.params.id;
 
       if (page_id == null) {
-        var reg = new RegExp('www|bookster|localhost:3000');
+        var reg = new RegExp('www|bookster|convene|localhost:3000');
         var parts = window.location.host.split('.');
 
         if (!reg.test(parts[0])) {

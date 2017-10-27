@@ -35,6 +35,8 @@ import BotRunIndicator from './BotRunIndicator';
 import Categorizer from './Categorizer';
 import TagInput from './TagInput';
 import GiphySearch from './GiphySearch';
+import ProductLogo from './ProductLogo';
+import PagesList from './PagesList';
 
 import widgets from './widgets';
 
@@ -76,5 +78,7 @@ export {
   BotRunIndicator,
   Categorizer,
   TagInput,
-  GiphySearch
+  GiphySearch,
+  ProductLogo,
+  PagesList
 };

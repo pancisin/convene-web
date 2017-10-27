@@ -3,13 +3,7 @@
     <div class="topbar-main">
       <div class="container">
 
-        <div class="logo">
-          <router-link to="/"
-            class="logo">
-            <i class="fa fa-book"></i>
-            <span>Bookster</span>
-          </router-link>
-        </div>
+        <product-logo inline light />
 
         <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
@@ -91,7 +85,7 @@
 </template>
 
 <script>
-import { Notifications, LangSwitcher, UserProfile } from 'elements';
+import { Notifications, LangSwitcher, UserProfile, ProductLogo } from 'elements';
 import SlideTransition from '../functional/SlideTransition';
 import { mapGetters } from 'vuex';
 import menus from '../services/maps/menus.map';
@@ -113,7 +107,7 @@ export default {
     }
   },
   components: {
-    Notifications, LangSwitcher, SlideTransition, UserProfile
+    Notifications, LangSwitcher, SlideTransition, UserProfile, ProductLogo
   },
   methods: {
     closeNavbar () {

@@ -34,7 +34,7 @@
               <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
               <div class="service-detail">
                 <h4>Manage attendants</h4>
-                <p>With bookster it is easy to see who is going to take place on your event. And even you can notify attendants about programme changes and updates.</p>
+                <p>With convene it is easy to see who is going to take place on your event. And even you can notify attendants about programme changes and updates.</p>
               </div>
             </div>
           </div>

@@ -27,9 +27,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	// @CacheEvict(value = "events", key = "#p0.id")
 	// <S extends Event> S save(S entity);
 
-	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND event.page IS NULL AND event.conference IS NULL")
-	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable);
-
 	@Query("SELECT count(event.id) FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.id = :event_id")
 	public int isAttending(@Param("event_id") Long event_id, @Param("user_id") Long user_id);
 
@@ -58,6 +55,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	@Query("SELECT event FROM Event event JOIN event.page page WHERE event.id != :event_id AND page.id = (SELECT event.page.id FROM Event event WHERE event.id = :event_id) AND DATE(event.date) >= CURDATE()")
 	public Page<Event> getRelated(@Param("event_id") Long event_id, Pageable pageable);
+
+	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.page IS NULL AND event.conference IS NULL")
+	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable, @Param("fromDate") String fromDate,
+			@Param("toDate") String toDate);
 
 	@Query("SELECT event FROM Event event WHERE event.page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.visibility = 'PUBLIC'")
 	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,

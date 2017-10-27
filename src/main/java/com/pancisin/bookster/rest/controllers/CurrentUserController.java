@@ -94,7 +94,7 @@ public class CurrentUserController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -127,9 +127,11 @@ public class CurrentUserController {
 	private EventRepository eventRepository;
 
 	@GetMapping("/event/{page}/{size}")
-	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size,
+			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(eventRepository.getOwned(auth.getId(), new PageRequest(page, size)));
+		
+		return ResponseEntity.ok(eventRepository.getOwned(auth.getId(), new PageRequest(page, size), fromDate, toDate));
 	}
 
 	@PostMapping("/event")
@@ -219,7 +221,7 @@ public class CurrentUserController {
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
 			if (!stored.isVerified())
 				throw new Exception("User email is not verified !");
-			
+
 			if (stored.getRole() != Role.ROLE_AUTHOR) {
 				stored.setRole(Role.ROLE_AUTHOR);
 			}
@@ -240,19 +242,21 @@ public class CurrentUserController {
 			return null;
 	}
 
-//	@PostMapping("/place")
-//	public ResponseEntity<?> postPlace(@RequestBody Place place) {
-//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		place.setUser(auth);
-//		return ResponseEntity.ok(placeRepository.save(place));
-//	}
+	// @PostMapping("/place")
+	// public ResponseEntity<?> postPlace(@RequestBody Place place) {
+	// User auth = (User)
+	// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	// place.setUser(auth);
+	// return ResponseEntity.ok(placeRepository.save(place));
+	// }
 
-//	@GetMapping("/place")
-//	public ResponseEntity<?> getPlace() {
-//		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		User stored = userRepository.findOne(auth.getId());
-//		return ResponseEntity.ok(stored.getPlaces());
-//	}
+	// @GetMapping("/place")
+	// public ResponseEntity<?> getPlace() {
+	// User auth = (User)
+	// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	// User stored = userRepository.findOne(auth.getId());
+	// return ResponseEntity.ok(stored.getPlaces());
+	// }
 
 	@JsonView(Summary.class)
 	@GetMapping("/search")
@@ -287,7 +291,7 @@ public class CurrentUserController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(pageRepository.getFollowed(auth.getId()));
 	}
-	
+
 	@GetMapping("/media")
 	public ResponseEntity<?> getMedias() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

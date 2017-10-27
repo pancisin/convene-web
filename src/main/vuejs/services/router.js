@@ -31,7 +31,7 @@ var router = new VueRouter({
     {
       path: '/',
       component: resolve => {
-        var reg = new RegExp('www|bookster|localhost:3000');
+        var reg = new RegExp('www|bookster|localhost:3000|convene');
         var parts = window.location.host.split('.');
         return reg.test(parts[0]) ? require(['../layouts/Client.vue'], resolve) : require(['../pages/public/Page.standalone.vue'], resolve);
       },
@@ -82,7 +82,7 @@ var router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title ? to.meta.title + ' |' : ''}  Bookster`;
+  document.title = `${to.meta.title ? to.meta.title + ' |' : ''}  Convene`;
   next();
 });
 

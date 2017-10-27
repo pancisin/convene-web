@@ -1,13 +1,12 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-sm-12 text-center m-b-10">
-        <h1 class="title">Pricing for authors</h1>
-        <p class="sub-title">Select subscription that fits your business. We care about you so
-          <b>first month is on us !</b>
-        </p>
-      </div>
+    <div class="text-center m-b-10">
+      <h1 class="title">Pricing for authors</h1>
+      <p class="sub-title">Select subscription that fits your business. We care about you so
+        <b>first month is on us !</b>
+      </p>
     </div>
+
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2">
         <div class="row">

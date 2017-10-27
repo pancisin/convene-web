@@ -1,9 +1,8 @@
 <template>
-  <div class="hero-unit" :class="{ 'hero-unit-fluid': !solid }">
-    <img v-if="background" 
-      :src="background" 
-      class="hero-background" 
-      :style="bg_style">
+  <div class="hero-unit" 
+    :class="{ 'hero-unit-fluid': !solid }" 
+    :style="bg_style">
+
     <div class="container">
       <slot>
       </slot>
@@ -23,7 +22,10 @@ export default {
   },
   data () {
     return {
-      bg_style: {}
+      bg_style: {
+        'background-position': 'center',
+        'background-image': `url(${this.background})`
+      }
     };
   },
   created () {
@@ -35,7 +37,8 @@ export default {
   methods: {
     handleScroll () {
       this.bg_style = {
-        top: `calc(50% + ${window.scrollY * 0.5}px)`
+        ...this.bg_style,
+        'background-position': `center calc(50% + ${-(this.$el.offsetTop - window.scrollY) * 0.5}px)`
       };
     }
   }
@@ -76,20 +79,16 @@ export default {
 .hero-unit {
   color: white;
   padding: 80px 0;
-  margin-bottom: 20px;
   position: relative;
   overflow: hidden;
   animation: backgroundAnimation ease-in-out 60s infinite alternate;
 
-  &.hero-unit-fluid {
-    margin-top: -20px;
+  background-size: cover;
 
-    &:after {
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.4) 0%,
-        rgba(255, 255, 255, 0.4) 100%
-      );
+
+  &.hero-unit-fluid {
+    &:first-child {
+      margin-top: -20px;
     }
 
     &:before {
@@ -106,30 +105,30 @@ export default {
     }
   }
 
+  &:not(.hero-unit-fluid) {
+    .container {
+      width: 98%;
+      margin: 0 auto;
+    }
+  }
+
   & > .container {
     position: relative;
     z-index: 2;
   }
 
-  .hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transform: translateY(-50%);
-    top: calc(50% + 0px);
-    min-height: 100%;
-  }
-
   &:after {
     content: "";
     z-index: 1;
-    background: rgba(0, 0, 0, 0.6);
+    // background: rgba(0, 0, 0, 0.6);
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
+
+    background: linear-gradient(#444F5C, #334159);
+    opacity: .85;
   }
 }
 </style>

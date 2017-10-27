@@ -5,7 +5,7 @@ export default {
     my_events: 'My events',
     explore: 'Explore pages',
     conferences: 'Conferences',
-    about: 'About Bookster',
+    about: 'About convene',
     pricing: 'Pricing',
     faq: 'FAQ',
     terms: 'Terms & conditions',

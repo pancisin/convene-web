@@ -27,7 +27,12 @@
         <ul v-loading="loadingPages" v-if="menus.page.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
 
-          <drop-down v-for="page in pages" :key="page.id" ref="items" @opened="closeDropdowns">
+          <drop-down 
+            v-for="(page, index) in pages" 
+            :key="page.id" 
+            ref="items" 
+            @opened="closeDropdowns">
+
             <i class="material-icons" slot="title" v-if="page.state == 'PUBLISHED'">work</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'DEACTIVATED'">visibility_off</i>
             <i class="material-icons" slot="title" v-else-if="page.state == 'BLOCKED'">highlight_off</i>
@@ -40,6 +45,13 @@
               </router-link>
             </li>
           </drop-down>
+
+          <!-- <li v-if="pages.length > limit">
+            <router-link :to="{ name: 'admin.pages' }" class="waves-effect text-muted">
+              <i class="material-icons">sort</i>
+              Show all
+            </router-link>
+          </li> -->
 
           <li>
             <router-link to="/admin/page/create" class="waves-effect text-muted">
@@ -107,6 +119,10 @@ export default {
     collapsed: {
       type: Boolean,
       default: true
+    },
+    limit: {
+      type: Number,
+      default: 5
     }
   },
   computed: {

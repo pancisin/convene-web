@@ -33,7 +33,7 @@
                   {{ event.name }}
                 </router-link>
               </li>
-              <li>
+              <li v-if="day.month === focusDate.month()">
                 <router-link to="events/create" class="create-event">
                   <i class="fa fa-plus"></i>
                 </router-link>
@@ -247,6 +247,7 @@ table.calendar-table {
 
       li {
         margin-bottom: 1px;
+        overflow: hidden;
 
         a {
           background-color: @color-primary;
@@ -265,16 +266,22 @@ table.calendar-table {
             text-align: center;
             background-color: @color-inverse;
             opacity: 0;
-            transition: opacity .3s ease;
+            transition: opacity .5s ease, transform .2s ease, background-color .3s ease;
+            transform: translateY(-100%);
+
+            &:hover {
+              background-color: @color-inverse-active;
+            }
           }
         }
       }
     }
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba(0, 0, 0, 0.1);
 
       ul li a.create-event {
+        transform: translateY(0px);
         opacity: 1;
       }
     }

@@ -4,7 +4,10 @@
       <div class="container">
         <ul class="list-inline" v-if="categories != null">
           <li v-for="cat in categories" :key="cat.id">
-            <a class="waves-effect" @click="selectCategory(cat.id)" :class="{ 'active' : filters.categoryId == cat.id }">
+            <a class="waves-effect" 
+              @click="selectCategory(cat.id)" 
+              :class="{ 'active' : filters.categoryId == cat.id }">
+
               {{ $t('category.' + cat.code + '.default') }}
             </a>
           </li>
@@ -15,11 +18,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <router-link to="/admin/page/create" class="btn btn-block btn-rounded btn-success">Create page</router-link>
-
           <div class="list-group m-t-10">
             <stagger-transition>
-              <a v-for="(branch, index) in branches" :key="branch.id" class="list-group-item waves-effect" :class="{ 'active' : filters.branchId == branch.id }" :data-index="index" @click="selectBranch(branch.id)">
+              <a v-for="(branch, index) in branches" 
+                :key="branch.id" 
+                class="list-group-item waves-effect" 
+                :class="{ 'active' : filters.branchId == branch.id }" 
+                :data-index="index" @click="selectBranch(branch.id)">
+
                 {{ $t('category.' + currentCategory.code + '.' + branch.code) }}
               </a>
             </stagger-transition>
@@ -27,12 +33,14 @@
         </div>
 
         <div class="col-md-9">
-          <explorer-transition tag="div" class="explore-container">
-            <div class="page-panel" v-for="(page, index) in pagesPaginator.content" :data-index="index" :key="page.id">
-              <router-link :to="'page/' + page.id">
-                <img v-if="page.poster != null" :src="page.poster.path">
-                <img v-else src="/bookster_logo.png" style="min-width:auto">
-
+          <masonry v-loading="loading" :columns="4">
+            <masonry-item class="page-panel"   
+              v-for="(page, index) in pagesPaginator.content" 
+              :key="index"
+              :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
+              
+              <router-link 
+                :to="{ name: 'page.public', params: { id: page.id } }">
                 <div class="title">
                   <h5 v-text="page.name"></h5>
                   <small class="text-muted" v-if="page.category != null">
@@ -40,8 +48,8 @@
                   </small>
                 </div>
               </router-link>
-            </div>
-          </explorer-transition>
+            </masonry-item>
+          </masonry>
 
           <div class="row">
             <div class="col-xs-12 text-center">
@@ -56,8 +64,7 @@
 
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue';
-import ExplorerTransition from '../../functional/ExplorerTransition.vue';
-import { Paginator } from 'elements';
+import { Paginator, Masonry, MasonryItem } from 'elements';
 export default {
   name: 'page-explore',
   data () {
@@ -66,16 +73,16 @@ export default {
       categories: [],
       branches: [],
       pagesPaginator: {},
-      filters: null
+      filters: null,
+      loading: false
     };
   },
   components: {
-    StaggerTransition, Paginator, ExplorerTransition
+    StaggerTransition, Paginator, Masonry, MasonryItem
   },
   created () {
     this.filters = {
-      branchId: this.$route.query.branchId,
-      categoryId: this.$route.query.categoryId
+      ...this.$route.query
     };
 
     this.getCategories();
@@ -90,9 +97,11 @@ export default {
   },
   methods: {
     getPages (page) {
-      var url = ['public/pages', page, 10].join('/');
+      this.loading = true;
+      var url = ['public/pages', page, 12].join('/');
       this.$http.get(url, { params: this.filters }).then(response => {
         this.pagesPaginator = response.body;
+        this.loading = false;
       });
     },
     getCategories () {
@@ -100,10 +109,6 @@ export default {
         this.categories = response.body.filter(c => {
           return c != null;
         });
-
-        if (this.filters.categoryId == null) {
-          this.filters.categoryId = this.categories[0].id;
-        }
 
         this.getBranches(this.filters.categoryId);
       });
@@ -157,34 +162,24 @@ export default {
 }
 
 .page-panel {
-  flex: 250px 1 1;
-  position: relative;
-  margin: 10px;
   overflow: hidden;
   box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: @color-primary;
+  background-position: center;
+  background-size: cover;
+  transition: all .2s ease-in-out;
 
   & > a {
     display: block;
-  }
-
-  img {
-    min-width: 100%;
-    transition: all .3s ease;
     height: 200px;
-    margin: 0 auto;
-    display: block;
-    max-width: 100%;
   }
 
   .title {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     background: white;
     margin: 0;
     padding: 15px;
+    border-bottom: 1px solid #ccc;
 
     h5 {
       margin: 0;
@@ -192,16 +187,14 @@ export default {
   }
 
   &:hover {
-    img {
-      transform: scale(1.1);
-    }
+    box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
   }
 }
 
 .categories-nav {
   background: #fff;
-  margin-top: -15px;
-  margin-bottom: 10px;
+  margin-top: -20px;
+  margin-bottom: 20px;
 
   ul {
     margin: 0;
@@ -215,12 +208,12 @@ export default {
         font-weight: 500;
 
         &.active {
-          background-color: #f5f5f5;
+          background-color: @color-light;
           color: @color-primary;
         }
 
         &:hover {
-          background-color: #f5f5f5;
+          background-color: @color-light;
         }
       }
     }

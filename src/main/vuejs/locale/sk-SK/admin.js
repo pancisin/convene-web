@@ -8,7 +8,7 @@ export default {
     page_create: 'Vytvoriť stránku',
     conferences: 'Konferencie',
     conference_create: 'Vytvoriť konferenciu',
-    about: 'O službe Bookster',
+    about: 'O službe convene',
     faq: 'FAQ',
     terms: 'Terms & Conditions',
     privacy: 'Privacy policy',
@@ -51,6 +51,7 @@ export default {
   },
   system: {
     users: 'Používatelia',
-    news: 'News'
+    news: 'News',
+    page_import: 'Importovanie stránok'
   }
 };

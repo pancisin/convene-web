@@ -48,6 +48,15 @@ public class EventBot {
 	@OneToMany(mappedBy = "bot", orphanRemoval = true)
 	private List<EventBotRun> runs; 
 	
+	public EventBot() {
+		
+	}
+	
+	public EventBot(Page page, String facebookId) {
+		this.page = page;
+		this.fbPageId = facebookId;
+	}
+	
 	public int getRunsCount() {
 		return runs != null ? runs.size() : 0;
 	}

@@ -1,27 +1,26 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-3 m-b-10">
-        <router-link to="/create-event"
-          class="btn btn-block btn-rounded btn-inverse m-b-20">
-          Create event
-        </router-link>
-
-        <h4>Filters:</h4>
-        <div class="checkbox checkbox-primary">
-          <input id="checkbox-mine"
-            type="checkbox"
-            v-model="createdByMe">
-          <label for="checkbox-mine">
-            Created by me only
-          </label>
-        </div>
-
-        <date-picker v-model="filters.timestamp"
-          inline>
+      <div class="col-sm-6 col-md-3 m-b-10">
+        <date-picker 
+          v-model="filters.timestamp"
+          inline
+          class="m-b-20">
         </date-picker>
+
+        <panel type="primary" v-if="authenticated">
+          <span slot="title">Filters</span>
+          <div class="checkbox checkbox-primary">
+            <input id="checkbox-mine"
+              type="checkbox"
+              v-model="createdByMe">
+            <label for="checkbox-mine">
+              Created by me only
+            </label>
+          </div>
+        </panel>
       </div>
-      <div class="col-md-9"
+      <div class="col-sm-6 col-md-9"
         v-loading="loading">
         <div class="events-masonry">
           <router-link v-for="event in eventsPaginator.content"
@@ -103,7 +102,7 @@ export default {
     this.getEvents(0);
   },
   computed: {
-    ...mapGetters(['user']),
+    ...mapGetters(['user', 'authenticated']),
     createdByMe: {
       get () {
         return this.filters.authorType === 'USER' && parseInt(this.filters.authorId, 10) === this.user.id;
@@ -154,17 +153,22 @@ export default {
 
     background: #fff;
     box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
+    transition: box-shadow .2s ease-out;
 
     img {
       width: 100%;
-      transition: all .3s ease;
+      transition: all .2s ease-out;
     }
 
     .image-wrapper {
       overflow: hidden;
+      position: relative;
+      z-index: 2;
     }
 
     &:hover {
+      box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
+      
       img {
         transform: scale(1.1);
       }

@@ -1,7 +1,6 @@
 import UserApi from 'api/user.api';
 import AuthApi from 'api/auth.api';
 import * as types from 'store/mutation-types';
-import moment from 'moment';
 
 const state = {
   user: null,

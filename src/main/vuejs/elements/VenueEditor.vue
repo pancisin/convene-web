@@ -61,7 +61,7 @@
             </a>
 
             <dropdown-menu-item>
-              About Bookster venue editor
+              About convene venue editor
             </dropdown-menu-item>
           </dropdown-menu>
         </ul>

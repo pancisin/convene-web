@@ -2,10 +2,7 @@
   <div class="wrapper-page">
   
     <div class="text-center">
-      <router-link to="/" class="logo-lg">
-        <i class="fa fa-book"></i>
-        <span>Bookster</span>
-      </router-link>
+      <product-logo large />
 
       <p class="text-muted">
         is now verifying your token, please wait...
@@ -16,6 +13,8 @@
 </template>
 
 <script>
+import { ProductLogo } from 'elements';
+
 export default {
   name: 'confirm-email',
   created () {
@@ -23,6 +22,9 @@ export default {
       this.verify(this.$route.query.token);
     }
   },
+  components: {
+    ProductLogo
+  }
   methods: {
     verify (token) {
       this.$http.put('verify', token).then(response => {

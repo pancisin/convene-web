@@ -17,6 +17,14 @@ export default [
     }
   },
   {
+    path: 'pages',
+    name: 'admin.pages',
+    component: resolve => require(['../pages/Pages.vue'], resolve),
+    meta: {
+      title: 'Pages'
+    }
+  },
+  {
     path: 'media-manager',
     name: 'admin.media-manager',
     component: resolve => require(['../pages/MediaManager.vue'], resolve),
@@ -28,6 +36,11 @@ export default [
     path: 'users',
     name: 'system.users',
     component: resolve => require(['../pages/system/Users.vue'], resolve)
+  },
+  {
+    path: 'page-import',
+    name: 'system.page-import',
+    component: resolve => require(['../pages/system/PageImport.vue'], resolve)
   },
   {
     path: 'conference/create',

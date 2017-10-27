@@ -4,7 +4,7 @@
       <div class="col-lg-6 col-lg-offset-2">
         <wizard @finish="submit">
           <wizard-page title="What are pages ?" icon="suitcase" :valid="true">
-            Bookster allows you to create your bussiness page where all information about events and services are displayed. Please keep in mind that there are rules for posting media content to public. All these resctrictions are described in terms & conditions. Please read carefully.
+            Convene allows you to create your bussiness page where all information about events and services are displayed. Please keep in mind that there are rules for posting media content to public. All these resctrictions are described in terms & conditions. Please read carefully.
           </wizard-page>
           <wizard-page title="Basic information" icon="pencil" :valid="valid.basic">
             <form data-vv-scope="basic">
