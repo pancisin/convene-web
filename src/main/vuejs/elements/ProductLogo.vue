@@ -53,8 +53,10 @@ export default {
 }
 
 @media (max-width: 400px) {
-  .product-logo {
-    display: none;
+  #topnav {
+    .product-logo {
+      display: none;
+    }
   }
 }
 
