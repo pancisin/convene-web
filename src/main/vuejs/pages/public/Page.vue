@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-sm-4 col-md-3">
-          <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="toggleFollow">
+          <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="togglePageFollow(page)">
             {{ follows ? 'Unfollow' : 'Follow' }}
           </a>
           <img class="img-poster m-b-20" v-if="page.poster != null" :src="page.poster.path">
@@ -61,7 +61,7 @@ import { EventsList, HeroUnit } from 'elements';
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import PageInjector from '../../services/injectors/page.injector.js';
 
@@ -74,7 +74,6 @@ export default {
   },
   data () {
     return {
-      follows: false,
       page: null,
       services: [],
       events: [],
@@ -92,9 +91,13 @@ export default {
     this.getPage();
   },
   computed: {
-    ...mapGetters(['authenticated'])
+    ...mapGetters(['authenticated', 'pageFollowStatus']),
+    follows () {
+      return this.pageFollowStatus(this.page.id);
+    }
   },
   methods: {
+    ...mapActions(['togglePageFollow']),
     getPage () {
       var page_id = this.$route.params.id;
 
@@ -109,10 +112,6 @@ export default {
         if (this.authenticated) {
           PageApi.getPage(page_id, page => {
             this.page = page;
-
-            PageApi.getFollowStatus(page.id, status => {
-              this.follows = status;
-            });
 
             PageApi.getEvents(this.page.id, 0, 10, paginator => {
               this.events = paginator.content;
@@ -136,11 +135,6 @@ export default {
           });
         }
       }
-    },
-    toggleFollow () {
-      PageApi.toggleFollowStatus(this.page.id, status => {
-        this.follows = status;
-      });
     },
     bookService (service) {
       this.selectedService = service;

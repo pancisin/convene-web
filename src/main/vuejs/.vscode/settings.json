@@ -1,41 +1,49 @@
 {
-  "[javascript]": {
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true
-  },
-  "[vue]": {
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true
-  },
-  "eslint.options": {
-    "extensions": [
-      ".html",
-      ".js",
-      ".vue"
-    ]
-  },
-  "eslint.validate": [
-    {
-      "language": "html",
-      "autoFix": true
+    "java.errors.incompleteClasspath.severity": "ignore",
+
+    // EMMET
+    "emmet.includeLanguages": {
+      "vue-html": "html"
     },
-    {
-      "language": "vue",
-      "autoFix": true
+    "emmet.showSuggestionsAsSnippets": true,
+
+    // ESLINT CONFIGURATION
+    "eslint.options": {
+        "extensions": [
+            ".html",
+            ".js",
+            ".vue"
+        ]
     },
-    {
-      "language": "javascript",
-      "autoFix": true
+    "eslint.validate": [{
+            "language": "html",
+            "autoFix": true
+        },
+        {
+            "language": "vue",
+            "autoFix": true
+        },
+        {
+            "language": "javascript",
+            "autoFix": true
+        }
+    ],
+
+    // FORMATTERS
+    "editor.tabSize": 2,
+    "beautify.tabSize": 2,
+    "editor.insertSpaces": true,
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+
+    // PRETTIER CONFIGURATION
+    "prettier.spaceBeforeFunctionParen": true,
+    "prettier.singleQuote": true,
+
+    // HTML FORMATTER CONFIGURATION
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "vetur.format.defaultFormatterOptions": {
+        "js-beautify-html": {
+            "wrap_attributes": "force"
+        }
     }
-  ],
-  "emmet.includeLanguages": {
-    "vue-html": "html"
-  },
-  "beautify.tabSize": 2,
-  "emmet.showSuggestionsAsSnippets": true,
-  "extensions.ignoreRecommendations": false,
-  "java.errors.incompleteClasspath.severity": "ignore",
-  "vetur.format.html.wrap_attributes": "force",
-  "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
-  "javascript.format.insertSpaceBeforeFunctionParenthesis": true
 }

@@ -71,6 +71,23 @@ export default {
     });
   },
 
+  /**
+   * Get public pages
+   * @param {*} page - paginator page attribute
+   * @param {*} size - paginator size attribute
+   * @param {*} filters - filters
+   * @param {*} success - success callback function
+   */
+  getPages (page, size, filters, success) {
+    Vue.http.get(`public/pages/${page}/${size}`, {
+      params: {
+        ...filters
+      }
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   page: {
 
     /**
@@ -154,23 +171,23 @@ export default {
   },
 
   /**
-   * Get all page categories.
+   * Get available page categories.
    * @param {Function} success - success callback function
    */
   getCategories (success) {
-    Vue.http.get('api/categories').then(response => {
-      success(response.body);
+    Vue.http.get('public/categories').then(response => {
+      const categories = response.body.filter(c => c);
+      success(categories);
     });
   },
 
   /**
-   * Get all page branches for category.
+   * Get available page branches for category.
    * @param {Number} category_id - category id
    * @param {Function} success - success callback function
    */
   getBranches (category_id, success) {
-    var url = ['api/categories', category_id, 'branches'].join('/');
-    Vue.http.get(url).then(response => {
+    Vue.http.get(`public/categories/${category_id}/branches`).then(response => {
       success(response.body);
     });
   },

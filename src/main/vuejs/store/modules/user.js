@@ -1,5 +1,6 @@
 import UserApi from 'api/user.api';
 import AuthApi from 'api/auth.api';
+import PageApi from 'api/page.api';
 import * as types from 'store/mutation-types';
 
 const state = {
@@ -28,7 +29,10 @@ const getters = {
   },
   loadingUser: state => state.loadingUser,
   contacts: state => state.contacts,
-  followedPages: state => state.followedPages
+  followedPages: state => state.followedPages,
+  pageFollowStatus: state => page_id => {
+    return !state.followedPages.every(p => p.id !== page_id);
+  }
 };
 
 const watchers = [
@@ -124,13 +128,25 @@ const actions = {
       });
     });
   },
-
   initializeFollowedPages ({ commit }) {
     return new Promise((resolve) => {
       UserApi.getFollowedPages(pages => {
         commit(types.SET_FOLLOWED_PAGES, { pages });
         resolve();
       });
+    });
+  },
+  togglePageFollow ({ commit, state }, page) {
+    PageApi.toggleFollowStatus(page.id, status => {
+      if (status) {
+        let pages = [...state.followedPages];
+        pages.push(page);
+        commit(types.SET_FOLLOWED_PAGES, { pages });
+      } else {
+        commit(types.SET_FOLLOWED_PAGES, {
+          pages: state.followedPages.filter(p => p.id !== page.id)
+        });
+      }
     });
   }
 };

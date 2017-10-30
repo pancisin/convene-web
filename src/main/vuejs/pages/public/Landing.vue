@@ -75,12 +75,12 @@ import Crowd from 'assets/img/crowd.jpg';
 export default {
   name: 'landing',
   components: {
-    Pricing, 
-    Paginator, 
-    StaggerTransition, 
-    faq, 
-    HowItWorks, 
-    ProductLogo, 
+    Pricing,
+    Paginator,
+    StaggerTransition,
+    faq,
+    HowItWorks,
+    ProductLogo,
     HeroUnit
   },
   data () {

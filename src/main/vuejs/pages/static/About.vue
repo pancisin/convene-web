@@ -24,6 +24,7 @@
 
 <script>
 import { HeroUnit, ProductLogo } from 'elements';
+import Notepad from 'assets/img/notepad.jpg';
 
 export default {
   name: 'about',

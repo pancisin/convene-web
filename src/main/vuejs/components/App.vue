@@ -19,6 +19,7 @@ export default {
         this.$ga.set('userId', user.id);
       });
 
+      this.initializeFollowedPages();
       this.initializeStomp();
       this.initializeNotifications();
     }
@@ -30,7 +31,8 @@ export default {
     ...mapActions([
       'initializeNotifications',
       'addNotification',
-      'initializeUser'
+      'initializeUser',
+      'initializeFollowedPages'
     ]),
     initializeStomp () {
       this.connectWM('stomp').then(frame => {

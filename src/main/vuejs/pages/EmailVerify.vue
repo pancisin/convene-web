@@ -24,7 +24,7 @@ export default {
   },
   components: {
     ProductLogo
-  }
+  },
   methods: {
     verify (token) {
       this.$http.put('verify', token).then(response => {

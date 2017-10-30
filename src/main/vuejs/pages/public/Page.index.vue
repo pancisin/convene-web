@@ -65,6 +65,8 @@
 <script>
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import { Paginator, Masonry, MasonryItem } from 'elements';
+import PublicApi from 'api/public.api';
+
 export default {
   name: 'page-explore',
   data () {
@@ -98,25 +100,20 @@ export default {
   methods: {
     getPages (page) {
       this.loading = true;
-      var url = ['public/pages', page, 12].join('/');
-      this.$http.get(url, { params: this.filters }).then(response => {
-        this.pagesPaginator = response.body;
+      PublicApi.getPages(page, 12, this.filters, paginator => {
+        this.pagesPaginator = paginator;
         this.loading = false;
       });
     },
     getCategories () {
-      this.$http.get('public/categories').then(response => {
-        this.categories = response.body.filter(c => {
-          return c != null;
-        });
-
+      PublicApi.getCategories(categories => {
+        this.categories = categories;
         this.getBranches(this.filters.categoryId);
       });
     },
     getBranches (category_id) {
-      var url = ['public/categories', category_id, 'branches'].join('/');
-      this.$http.get(url).then(response => {
-        this.branches = response.body;
+      PublicApi.getBranches(category_id, branches => {
+        this.branches = branches;
       });
     },
     selectCategory (category_id) {

@@ -16,6 +16,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;
@@ -32,6 +33,7 @@ public class PageAdministrator {
 	private Long id;
 
 	@JsonView(Summary.class)
+	@JsonIgnoreProperties({"address", "license", "role", "authorities", "created", "token", "locale"})
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private User user;
 

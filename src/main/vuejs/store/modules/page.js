@@ -1,6 +1,6 @@
 import UserApi from 'api/user.api';
 import PageApi from 'api/page.api';
-import PublicApi from 'api/public.api';
+import RootApi from 'api/api';
 import * as types from 'store/mutation-types';
 
 const state = {
@@ -92,7 +92,7 @@ const actions = {
   initializeCategories ({ commit }) {
     commit(types.SET_CATEGORIES_LOADING, true);
 
-    PublicApi.getCategories(categories => {
+    RootApi.getCategories(categories => {
       commit(types.SET_CATEGORIES, { categories });
       commit(types.SET_CATEGORIES_LOADING, false);
     });
@@ -100,7 +100,7 @@ const actions = {
   initalizeBranches ({ commit }, category_id) {
     commit(types.SET_BRANCHES_LOADING, true);
 
-    PublicApi.getBranches(category_id, branches => {
+    RootApi.getBranches(category_id, branches => {
       commit(types.SET_BRANCHES, { category_id, branches });
       commit(types.SET_BRANCHES_LOADING, false);
     });

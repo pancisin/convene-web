@@ -64,7 +64,7 @@ import {
   } from 'elements';
 
 import UserApi from 'api/user.api';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 
 export default {
@@ -80,10 +80,6 @@ export default {
     };
   },
   created () {
-    if (this.followedPages.length === 0) {
-      this.initializeFollowedPages();
-    }
-
     if (this.authenticated) {
       UserApi.getAttendingEvents(events => {
         this.attending = events;
@@ -110,7 +106,6 @@ export default {
     'user.locale': 'getHeadlines'
   },
   methods: {
-    ...mapActions(['initializeFollowedPages']),
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
         var url = ['public/near-events', page, 5].join('/');
