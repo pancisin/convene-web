@@ -1,19 +1,19 @@
 <template>
   <ul class="pagination">
     <li v-if="!paginator.first">
-      <a @click="paginatorNavigate(-1, null)">
+      <a @click="navigatePage(paginator.number - 1)">
         <i class="fa fa-angle-left"></i>
       </a>
     </li>
     <li v-for="index in pages"
       :class="{'active' : paginator.number === index}"
       :key="index">
-      <a @click="paginatorNavigate(null, index)">
+      <a @click="navigatePage(index)">
         {{ index + 1}}
       </a>
     </li>
     <li v-if="!paginator.last">
-      <a @click="paginatorNavigate(1, null)">
+      <a @click="navigatePage(paginator.number + 1)">
         <i class="fa fa-angle-right"></i>
       </a>
     </li>
@@ -30,11 +30,24 @@ export default {
     history: {
       type: Boolean,
       default: false
-    }
+    },
+    // fetch expects to be function
+    // and have an page number as parameter.
+    fetch: Function
   },
   created () {
-    if (this.$route.query.page) {
-      this.paginatorNavigate(null, this.$route.query.page);
+    const page = this.$route.query.page || 0;
+    this.navigatePage(page);
+  },
+  watch: {
+    'paginator.number': function (newVal) {
+      if (this.history) {
+        this.$router.replace({
+          query: {
+            page: newVal
+          }
+        });
+      }
     }
   },
   computed: {
@@ -49,19 +62,10 @@ export default {
     }
   },
   methods: {
-    paginatorNavigate (direction, page) {
-      if (this.history) {
-        this.$router.replace({
-          query: {
-            page
-          }
-        });
+    navigatePage (page) {
+      if (this.fetch != null) {
+        this.fetch(page);
       }
-
-      this.$emit('navigate', {
-        direction,
-        page
-      });
     }
   }
 };

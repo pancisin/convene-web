@@ -75,7 +75,7 @@
     </context-menu>
 
     <div class="text-center">
-      <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate"></paginator>
+      <paginator :history="true" :paginator="paginator" :fetch="getEvents"></paginator>
     </div>
 
     <div class="text-center" v-if="editable">
@@ -134,13 +134,6 @@ export default {
           });
         });
       });
-    },
-    paginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getEvents(this.paginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getEvents(e.page);
-      }
     },
     getEvents (page) {
       if (this.api != null) {

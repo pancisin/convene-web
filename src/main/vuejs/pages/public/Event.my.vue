@@ -34,7 +34,7 @@
           </table>
   
           <div class="text-center">
-            <Paginator :paginator="paginator" @navigate="paginatorNavigate" />
+            <Paginator :paginator="paginator" :fetch="getEvents" />
           </div>
   
           <div class="text-center">
@@ -57,9 +57,6 @@ export default {
       paginator: {}
     };
   },
-  created: function () {
-    this.getEvents(0);
-  },
   components: {
     Paginator
   },
@@ -71,13 +68,6 @@ export default {
         this.paginator = response.body;
         this.events = response.body.content;
       });
-    },
-    paginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getEvents(this.paginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getEvents(e.page);
-      }
     }
   }
 };

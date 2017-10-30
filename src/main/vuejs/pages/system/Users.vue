@@ -64,7 +64,7 @@
     </table>
 
     <div class="text-center">
-      <paginator :history="true" :paginator="paginator" @navigate="paginatorNavigate"></paginator>
+      <paginator :history="true" :paginator="paginator" :fetch="getUsers"></paginator>
     </div>
   </panel>
 </template>
@@ -79,13 +79,10 @@ export default {
     return {
       paginator: [],
       loading: false
-    }
+    };
   },
   components: {
     Paginator
-  },
-  created () {
-    this.getUsers(0);
   },
   methods: {
     getUsers (page) {
@@ -93,15 +90,8 @@ export default {
       RootApi.getUsers(page, 10, paginator => {
         this.paginator = paginator;
         this.loading = false;
-      })
-    },
-    paginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getUsers(this.paginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getUsers(e.page);
-      }
-    },
+      });
+    }
   }
-}
+};
 </script>

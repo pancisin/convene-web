@@ -1,6 +1,7 @@
 import UserApi from 'api/user.api';
 import AuthApi from 'api/auth.api';
 import PageApi from 'api/page.api';
+import EventApi from 'api/event.api';
 import * as types from 'store/mutation-types';
 
 const state = {
@@ -9,7 +10,8 @@ const state = {
   notifications: [],
   authenticated: false,
   contacts: [],
-  followedPages: []
+  followedPages: [],
+  attendingEvents: []
 };
 
 const getters = {
@@ -32,6 +34,10 @@ const getters = {
   followedPages: state => state.followedPages,
   pageFollowStatus: state => page_id => {
     return !state.followedPages.every(p => p.id !== page_id);
+  },
+  attendingEvents: state => state.attendingEvents,
+  eventAttendingStatus: state => event_id => {
+    return !state.attendingEvents.every(e => e.id !== event_id);
   }
 };
 
@@ -132,7 +138,7 @@ const actions = {
     return new Promise((resolve) => {
       UserApi.getFollowedPages(pages => {
         commit(types.SET_FOLLOWED_PAGES, { pages });
-        resolve();
+        resolve(pages);
       });
     });
   },
@@ -145,6 +151,29 @@ const actions = {
       } else {
         commit(types.SET_FOLLOWED_PAGES, {
           pages: state.followedPages.filter(p => p.id !== page.id)
+        });
+      }
+    });
+  },
+  initializeAttendingEvents ({ commit }) {
+    return new Promise(resolve => {
+      UserApi.getAttendingEvents(events => {
+        commit(types.SET_ATTENDING_EVENTS, { events });
+        resolve(events);
+      });
+    });
+  },
+  toggleEventAttending ({ commit, state }, event) {
+    EventApi.toggleAttendanceStatus(event.id, status => {
+      event.attendeesCount += status ? 1 : -1;
+
+      if (status) {
+        let events = [...state.attendingEvents];
+        events.push(event);
+        commit(types.SET_ATTENDING_EVENTS, { events });
+      } else {
+        commit(types.SET_ATTENDING_EVENTS, {
+          events: state.attendingEvents.filter(e => e.id !== event.id)
         });
       }
     });
@@ -181,6 +210,10 @@ const mutations = {
 
   [types.SET_FOLLOWED_PAGES] (state, { pages}) {
     state.followedPages = pages;
+  },
+
+  [types.SET_ATTENDING_EVENTS] (state, { events }) {
+    state.attendingEvents = events;
   }
 };
 

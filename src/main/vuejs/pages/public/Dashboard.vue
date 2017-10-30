@@ -5,7 +5,7 @@
         <div class="col-sm-6 col-md-3">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
-            <events-list :events="attending"></events-list>
+            <events-list :events="attendingEvents"></events-list>
           </panel>
 
           <panel type="primary"
@@ -15,7 +15,7 @@
 
             <div class="text-center">
               <paginator :paginator="eventsPaginator"
-                @navigate="eventsPaginatorNavigate" />
+                :fetch="getEvents" />
             </div>
           </panel>
         </div>
@@ -42,11 +42,9 @@
           />
           <div class="text-center">
             <paginator :paginator="headlinesPaginator"
-              @navigate="headlinesPaginatorNavigate" />
+              :fetch="getHeadlines" />
           </div>
         </div>
-
-       
       </div>
     </div>
   </div>
@@ -63,7 +61,6 @@ import {
   PagesList
   } from 'elements';
 
-import UserApi from 'api/user.api';
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 
@@ -71,24 +68,11 @@ export default {
   name: 'dashboard',
   data () {
     return {
-      events: [],
-      attending: [],
       eventsPaginator: {},
       popular: [],
       headlinesPaginator: [],
       loadingHeadlines: false
     };
-  },
-  created () {
-    if (this.authenticated) {
-      UserApi.getAttendingEvents(events => {
-        this.attending = events;
-      });
-    }
-
-    this.getHeadlines();
-    this.getEvents(0);
-    this.getPages(0);
   },
   components: {
     Paginator,
@@ -100,7 +84,12 @@ export default {
     PagesList
   },
   computed: {
-    ...mapGetters(['authenticated', 'user', 'followedPages'])
+    ...mapGetters([
+      'authenticated',
+      'user',
+      'followedPages',
+      'attendingEvents'
+    ])
   },
   watch: {
     'user.locale': 'getHeadlines'
@@ -116,8 +105,7 @@ export default {
               lng: position.coords.longitude,
               distance: 20
             }
-          })
-          .then(response => {
+          }).then(response => {
             this.eventsPaginator = response.body;
             this.eventsPaginator.content = this.eventsPaginator.content.filter(
               x => x
@@ -131,20 +119,6 @@ export default {
         this.headlinesPaginator = paginator;
         this.loadingHeadlines = false;
       });
-    },
-    eventsPaginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getEvents(this.eventsPaginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getEvents(e.page);
-      }
-    },
-    headlinesPaginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getHeadlines(this.headlinesPaginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getHeadlines(e.page);
-      }
     },
     tabNavigation (id, loading) {
       if (id === 1 && (this.popular == null || this.popular.length === 0)) {

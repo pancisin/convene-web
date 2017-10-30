@@ -28,7 +28,7 @@
                   <p class="text-muted">Attendees</p>
                 </div>
 
-                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="attend">
+                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="toggleEventAttending(event)">
                   <span v-if="attending">Cancel</span>
                   <span v-else>Attend</span>
                 </a>
@@ -92,14 +92,13 @@ import { GMap, Masonry, MasonryItem, EventsList, HeroUnit } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'public-event',
   data () {
     return {
       event: null,
-      attending: false,
       relatedEvents: [],
       gallery: []
     };
@@ -116,12 +115,16 @@ export default {
     this.getEvent();
   },
   computed: {
-    ...mapGetters(['authenticated'])
+    ...mapGetters(['authenticated', 'eventAttendingStatus']),
+    attending () {
+      return this.eventAttendingStatus(this.event.id);
+    }
   },
   watch: {
     $route: 'getEvent'
   },
   methods: {
+    ...mapActions(['toggleEventAttending']),
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
@@ -162,16 +165,6 @@ export default {
             getAdditionalData();
           });
         }
-      }
-    },
-    attend () {
-      if (this.authenticated) {
-        EventApi.toggleAttendanceStatus(this.event.id, status => {
-          this.attending = status;
-          this.event.attendeesCount += status ? 1 : -1;
-        });
-      } else {
-        this.$router.push({ name: 'login' });
       }
     }
   }

@@ -20,6 +20,7 @@ export default {
       });
 
       this.initializeFollowedPages();
+      this.initializeAttendingEvents();
       this.initializeStomp();
       this.initializeNotifications();
     }
@@ -32,7 +33,8 @@ export default {
       'initializeNotifications',
       'addNotification',
       'initializeUser',
-      'initializeFollowedPages'
+      'initializeFollowedPages',
+      'initializeAttendingEvents'
     ]),
     initializeStomp () {
       this.connectWM('stomp').then(frame => {

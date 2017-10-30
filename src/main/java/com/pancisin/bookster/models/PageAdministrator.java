@@ -33,7 +33,7 @@ public class PageAdministrator {
 	private Long id;
 
 	@JsonView(Summary.class)
-	@JsonIgnoreProperties({"address", "license", "role", "authorities", "created", "token", "locale"})
+	@JsonIgnoreProperties({"address", "license", "authorities", "created", "token", "locale"})
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private User user;
 

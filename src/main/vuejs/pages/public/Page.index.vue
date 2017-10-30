@@ -53,7 +53,7 @@
 
           <div class="row">
             <div class="col-xs-12 text-center">
-              <paginator :history="true" :paginator="pagesPaginator" @navigate="pagesPaginatorNavigate"></paginator>
+              <paginator :history="true" :paginator="pagesPaginator" :fetch="getPages"></paginator>
             </div>
           </div>
         </div>
@@ -88,7 +88,6 @@ export default {
     };
 
     this.getCategories();
-    this.getPages(0);
   },
   computed: {
     currentCategory () {
@@ -138,13 +137,6 @@ export default {
 
       this.getPages(0);
       this.$router.replace({ query: this.filters });
-    },
-    pagesPaginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getPages(this.pagesPaginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getPages(e.page);
-      }
     }
   }
 };

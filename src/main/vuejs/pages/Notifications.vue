@@ -52,7 +52,7 @@
     </context-menu>
   
     <div class="text-center">
-      <paginator :paginator="paginator" @navigate="paginatorNavigate" />
+      <paginator :paginator="paginator" :fetch="getNotifications"/>
     </div>
   </panel>
 </template>
@@ -70,9 +70,6 @@ export default {
   components: {
     Paginator
   },
-  created () {
-    this.getNotifications(0);
-  },
   methods: {
     getNotifications (page) {
       this.loading = true;
@@ -82,13 +79,6 @@ export default {
         this.loading = false;
         this.paginator = response.body;
       });
-    },
-    paginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getNotifications(this.paginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getNotifications(e.page);
-      }
     },
     toggleSeen (notification) {
       this.$http.patch('api/notification/' + notification.id + '/toggle-seen').then(response => {

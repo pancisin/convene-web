@@ -127,7 +127,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'pages', 'conferences', 'loadingPages', 'loadingConferences', 'user'
+      'pages',
+      'conferences',
+      'loadingPages',
+      'loadingConferences',
+      'user'
     ]),
     menus () {
       return menus;
@@ -142,7 +146,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'initializePages', 'initializeConferences'
+      'initializePages',
+      'initializeConferences'
     ]),
     closeDropdowns (except) {
       if (!except.collapsed) {

@@ -54,7 +54,7 @@
 
     <div class="text-center">
       <paginator :paginator="eventsPaginator"
-        @navigate="eventsPaginatorNavigate"></paginator>
+        :fetch="getEvents"></paginator>
     </div>
   </div>
 </template>
@@ -98,8 +98,6 @@ export default {
       ...this.filters,
       ...this.$route.query
     };
-
-    this.getEvents(0);
   },
   computed: {
     ...mapGetters(['user', 'authenticated']),
@@ -124,13 +122,6 @@ export default {
         this.eventsPaginator = paginator;
         this.loading = false;
       });
-    },
-    eventsPaginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getEvents(this.eventsPaginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getEvents(e.page);
-      }
     }
   }
 };

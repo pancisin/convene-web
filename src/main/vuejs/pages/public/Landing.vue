@@ -44,7 +44,7 @@
             </div>
 
             <div class="text-center">
-              <paginator :paginator="eventsPaginator" @navigate="eventsPaginatorNavigate" />
+              <paginator :paginator="eventsPaginator" :fetch="getEvents" />
             </div>
           </div>
         </div>
@@ -88,9 +88,6 @@ export default {
       eventsPaginator: {}
     };
   },
-  created () {
-    this.getEvents(0);
-  },
   computed: {
     notepad () {
       return Notepad;
@@ -105,13 +102,6 @@ export default {
       this.$http.get(url).then(response => {
         this.eventsPaginator = response.body;
       });
-    },
-    eventsPaginatorNavigate (e) {
-      if (e.direction != null) {
-        this.getEvents(this.eventsPaginator.number + e.direction);
-      } else if (e.page != null) {
-        this.getEvents(e.page);
-      }
     }
   }
 };
