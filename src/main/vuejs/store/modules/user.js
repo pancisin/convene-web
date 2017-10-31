@@ -112,6 +112,9 @@ const actions = {
       commit(types.LOADING_USER, false);
       commit(types.SET_PAGES, { pages: [] });
       commit(types.SET_CONFERENCES, { conferences: [] });
+      commit(types.SET_CONTACTS, { contacts: [] });
+      commit(types.SET_ATTENDING_EVENTS, { events: [] });
+      commit(types.SET_FOLLOWED_PAGES, { pages: [] });
       resolve();
     });
   },

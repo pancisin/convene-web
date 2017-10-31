@@ -48,6 +48,13 @@ const actions = {
 
     commit(types.LOADING_PAGES, true);
   },
+  updatePages ({ commit, state }, page) {
+    if (state.pages.every(p => p.id !== page.id)) {
+      commit(types.ADD_PAGE, { page });
+    } else {
+      commit(types.UPDATE_PAGE, { page });
+    }
+  },
   createPage ({ commit }, page) {
     return new Promise((resolve, reject) => {
       UserApi.postPage(page, result => {

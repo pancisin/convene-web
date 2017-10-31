@@ -47,7 +47,7 @@
       </panel>
     </div>
     <div class="col-md-2 hidden-sm hidden-xs">
-      <img src="event_bot.png" style="width: 100%; padding: 20px;">
+      <img :src="eventBotImage" style="width: 100%; padding: 20px;">
     </div>
   </div>
 </template>
@@ -55,6 +55,7 @@
 <script>
 import EventBotApi from 'api/event-bot.api';
 import { BotRunIndicator } from 'elements';
+import EventBotImg from 'assets/img/event_bot.png';
 
 export default {
   name: 'bots',
@@ -74,6 +75,9 @@ export default {
       if (this.provider != null) {
         return this.provider.api;
       }
+    },
+    eventBotImage () {
+      return EventBotImg;
     }
   },
   components: {

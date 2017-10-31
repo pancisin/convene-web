@@ -18,15 +18,20 @@ export default {
         this.$i18n.locale = user.locale.name;
         this.$ga.set('userId', user.id);
       });
-
-      this.initializeFollowedPages();
-      this.initializeAttendingEvents();
-      this.initializeStomp();
-      this.initializeNotifications();
     }
   },
   computed: {
-    ...mapGetters(['authenticated'])
+    ...mapGetters(['authenticated', 'user'])
+  },
+  watch: {
+    user (newVal) {
+      if (this.authenticated) {
+        this.initializeFollowedPages();
+        this.initializeAttendingEvents();
+        this.initializeStomp();
+        this.initializeNotifications();
+      }
+    }
   },
   methods: {
     ...mapActions([

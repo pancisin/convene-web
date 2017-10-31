@@ -19,6 +19,16 @@
           <label>Radius (meters)</label>
           <input type="number" class="form-control" v-model="filters.radius">
         </div>
+
+        <div class="form-group">
+          <label>Import state</label>
+          <div class="radio radio-primary" v-for="(show, index) in showFilters" :key="index">
+            <input :id="`radio-${show}`" type="radio" v-model="filters.show" :value="show">
+            <label :for="`radio-${show}`">
+              {{ $t(`filter.${show}`) }} 
+            </label>
+          </div>
+        </div>
         <a class="btn btn-block btn-primary" @click="searchPlaces(null)">Search</a>
       </panel>
     </div>
@@ -42,7 +52,8 @@
                 {{ place.name }}
               </td>
               <td class="text-center"> 
-                <a class="btn btn-default btn-xs" @click="importPage(place.id)">Import</a> 
+                <a v-if="place.imported != 'true'" class="btn btn-default btn-xs" @click="importPage(place.id)">Import</a> 
+                <a v-else class="btn btn-inverse btn-xs" @click="updatePage(place.pageImportId)">Update</a> 
               </td>
             </tr>
           </tbody>
@@ -71,13 +82,21 @@ export default {
       paginator: {},
       filters: {
         radius: 1000,
-        limit: 10
+        limit: 10,
+        show: 'all'
       },
       coords: {
         lat: null,
         lng: null
       }
     };
+  },
+  computed: {
+    showFilters () {
+      return [
+        'all', 'imported', 'notimported'
+      ];
+    }
   },
   watch: {
     '$route': 'initialize'
@@ -89,6 +108,7 @@ export default {
 
         if (pageImport.state.name === 'SUCCESS') {
           this.initializePages();
+          this.updateSearchResults(pageImport);
         }
       });
     });
@@ -99,7 +119,7 @@ export default {
     this.subscription.unsubscribe();
   },
   methods: {
-    ...mapActions(['initializePages']),
+    ...mapActions(['initializePages', 'updatePages']),
     initialize () {
       GoogleMapsApiLoader({
         apiKey: 'AIzaSyBKua_eTxYYK4hJf7sRKeH666HdcH3UlAg',
@@ -143,6 +163,24 @@ export default {
       this.sendWM(`/app/page-import`, JSON.stringify({
         facebook_id: place_id
       }));
+    },
+    updatePage (importId) {
+      this.sendWM('/app/import-replay', JSON.stringify({
+        id: importId
+      }));
+    },
+    updateSearchResults (pageImport) {
+      this.paginator.content = this.paginator.content.map(place => {
+        if (place.id === pageImport.sourceId) {
+          return {
+            ...place,
+            imported: 'true',
+            pageImportId: pageImport.id
+          };
+        } else {
+          return place;
+        }
+      });
     }
   }
 };

@@ -73,7 +73,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'removePage', 'updatePage', 'togglePagePublished', 'deletePage'
+      'removePage',
+      'updatePage',
+      'togglePagePublished',
+      'deletePage'
     ]),
     submit () {
       this.updatePage(this.page).then(page => {

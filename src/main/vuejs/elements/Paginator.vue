@@ -5,7 +5,8 @@
         <i class="fa fa-angle-left"></i>
       </a>
     </li>
-    <li v-for="index in pages"
+    <li 
+      v-for="index in pages"
       :class="{'active' : paginator.number === index}"
       :key="index">
       <a @click="navigatePage(index)">
@@ -63,7 +64,7 @@ export default {
   },
   methods: {
     navigatePage (page) {
-      if (this.fetch != null) {
+      if (page !== this.paginator.number && this.fetch != null) {
         this.fetch(page);
       }
     }
