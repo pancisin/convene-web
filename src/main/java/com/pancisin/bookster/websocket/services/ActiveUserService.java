@@ -31,14 +31,18 @@ public class ActiveUserService {
 
 				@Override
 				public UserStats load(String key) throws Exception {
-					User user = userRepository.findByEmail(key);
-					Set<String> contacts = paRepository.getContacts(user.getId()).stream().map(u -> u.getEmail()).collect(Collectors.toSet());
-					return new UserStats(key, contacts);
+					return getUserStats(key);
 				}
 			});
 
 	public void mark(String username) {
 		statsByUser.getUnchecked(username).mark();
+	}
+	
+	public UserStats getUserStats(String email) {
+		User user = userRepository.findByEmail(email);
+		Set<String> contacts = paRepository.getContacts(user.getId()).stream().map(u -> u.getEmail()).collect(Collectors.toSet());
+		return new UserStats(email, contacts);
 	}
 
 	public List<UserStats> getActiveUsers() {

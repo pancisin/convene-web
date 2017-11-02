@@ -26,7 +26,8 @@ public class ActiveUserPinger {
 
 		activeUsers.stream().forEach(user -> {
 			Set<String> activeContacts = user.getContacts().stream()
-					.filter(c -> activeUsers.stream().anyMatch(u -> u.getEmail() == c)).collect(Collectors.toSet());
+					.filter(c -> activeUsers.stream().anyMatch(u -> u.getEmail().equals(c)))
+					.collect(Collectors.toSet());
 			template.convertAndSendToUser(user.getEmail(), "/queue/chat.activeUsers", activeContacts);
 		});
 	}
