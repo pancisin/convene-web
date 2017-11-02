@@ -21,5 +21,4 @@ public class ActiveUserController {
     Principal user = message.getHeaders().get(SimpMessageHeaderAccessor.USER_HEADER, Principal.class);
     activeUserService.mark(user.getName());
   }
-
 }

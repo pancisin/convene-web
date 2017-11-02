@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +44,7 @@ import facebook4j.Reading;
 import facebook4j.ResponseList;
 
 @RestController
-// @PreAuthorize("hasRole('SUPERADMIN')")
+//@PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/facebook-importer")
 public class FacebookImporterController {
 

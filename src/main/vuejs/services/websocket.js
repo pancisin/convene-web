@@ -47,7 +47,7 @@ export default {
         }
 
         this.$stompClient.send(target, data, {
-          // 'Authorization': 'Bearer ' + Auth.getAuthHeader(),
+          // 'Authorization': 'Bearer ' + window.localStorage.getItem('id_token')
         });
         resolve();
       });
