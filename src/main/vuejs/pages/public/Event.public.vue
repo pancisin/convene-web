@@ -77,13 +77,16 @@
 
         <panel type="primary" class="panel-p-0">
           <span slot="title">Live chat</span>
-          <chat type="event" :recipient="event" />
+          <chat v-if="authenticated" type="event" :recipient="event" />
+          <div v-else class="p-20 text-center text-muted">You must be logged in to use live chat !</div>
         </panel>
       </div>
 
       <div class="col-sm-12 col-md-3 col-md-pull-9">
         <panel type="default">
-          <span slot="title">Also created by {{ event.author.displayName }}</span>
+          <span slot="title">
+            Also created by {{ event.author.displayName }}
+          </span>
           <events-list :events="relatedEvents" />
         </panel>
       </div>

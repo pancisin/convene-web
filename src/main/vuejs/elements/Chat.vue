@@ -17,11 +17,13 @@
       </li>
     </ul>
 
-    <form class="form" @submit.prevent="send">
+    <form class="form conversation-composer" @submit.prevent="send">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Type something" v-model="message">
         <span class="input-group-btn">
-          <button type="button" class="btn waves-effect waves-light btn-primary" @click="send">Send</button>
+          <button type="button" class="btn waves-effect waves-light btn-default" @click="send">
+            <i class="fa fa-paper-plane"></i>            
+          </button>
         </span>
       </div>
     </form>
@@ -49,13 +51,15 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'authenticated'])
   },
   watch: {
     'recipient': 'initialize'
   },
   mounted () {
-    this.initialize();
+    if (this.authenticated) {
+      this.initialize();
+    }
   },
   beforeDestroy () {
     this.subscription.unsubscribe();
@@ -81,7 +85,7 @@ export default {
       this.$http.get(`api/message/${this.type}/${this.recipient.id}/0`).then(response => {
         let messages = response.body;
         messages.sort((a, b) => {
-          return a.created > b.created;
+          return a.created - b.created;
         });
 
         this.addMessage(messages);

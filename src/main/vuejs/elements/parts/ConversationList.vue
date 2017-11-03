@@ -14,7 +14,7 @@
       </li>
     </ul>
 
-    <form class="form" @submit.prevent="send">
+    <form class="form conversation-composer" @submit.prevent="send">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Type something" v-model="message">
         <span class="input-group-btn">
