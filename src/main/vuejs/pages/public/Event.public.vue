@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-6 col-sm-push-3" :class="{ 'col-sm-9' : event.poster }">
+      <div class="col-sm-6 col-md-push-3">
 
         <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
@@ -71,15 +71,17 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-sm-push-3">
+
+      <div class="col-sm-6 col-md-3 col-md-push-3">
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
 
         <panel type="primary" class="panel-p-0">
-          <span slot="title">Chat</span>
+          <span slot="title">Live chat</span>
           <chat type="event" :recipient="event" />
         </panel>
       </div>
-      <div class="col-sm-3 col-sm-pull-9">
+
+      <div class="col-sm-12 col-md-3 col-md-pull-9">
         <panel type="default">
           <span slot="title">Also created by {{ event.author.displayName }}</span>
           <events-list :events="relatedEvents" />

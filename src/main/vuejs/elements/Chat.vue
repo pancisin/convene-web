@@ -52,10 +52,9 @@ export default {
     ...mapGetters(['user'])
   },
   watch: {
-    'recipient': 'getMessages'
+    'recipient': 'initialize'
   },
   mounted () {
-    this.getMessages();
     this.initialize();
   },
   beforeDestroy () {
@@ -63,6 +62,7 @@ export default {
   },
   methods: {
     initialize () {
+      this.getMessages();
       this.loadingStomp = true;
       this.connectWM('stomp').then(() => {
         this.subscription = this.$stompClient.subscribe(`/topic/${this.type}/${this.recipient.id}/chat`, response => {
