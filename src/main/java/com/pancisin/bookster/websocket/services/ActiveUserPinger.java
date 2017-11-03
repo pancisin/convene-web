@@ -22,12 +22,9 @@ public class ActiveUserPinger {
 	@Scheduled(fixedDelay = 10000)
 	public void pingUsers() {
 		List<UserStats> activeUsers = activeUserService.getActiveUsers();
-		template.convertAndSend("/topic/active", activeUsers);
-
 		activeUsers.stream().forEach(user -> {
 			Set<String> activeContacts = user.getContacts().stream()
-					.filter(c -> activeUsers.stream().anyMatch(u -> u.getEmail().equals(c)))
-					.collect(Collectors.toSet());
+					.filter(c -> activeUsers.stream().anyMatch(u -> u.getEmail().equals(c))).collect(Collectors.toSet());
 			template.convertAndSendToUser(user.getEmail(), "/queue/chat.activeUsers", activeContacts);
 		});
 	}

@@ -16,6 +16,8 @@
             Email
           </th>
           <th>
+          </th>
+          <th>
             License
           </th>
           <th>
@@ -34,8 +36,7 @@
             {{ user.id }}
           </td>
           <td>
-            <i class="fa fa-check text-success" v-if="user.verified"></i>
-            <i class="fa fa-book text-warning" v-else></i>
+            <i class="fa fa-circle" :class="{ 'text-success' : user.online }"></i>
           </td>
           <td>
             {{ user.displayName }}
@@ -44,6 +45,10 @@
             <a :href="'mailto:' + user.email">
               {{ user.email }}
             </a>
+          </td>
+          <td>
+            <i class="fa fa-check text-success" v-if="user.verified"></i>
+            <i class="fa fa-book text-warning" v-else></i>
           </td>
           <td>
             {{ $t(user.license.subscription.code) }}
@@ -77,12 +82,31 @@ export default {
   name: 'users',
   data () {
     return {
-      paginator: [],
-      loading: false
+      paginator: {},
+      loading: false,
+      subsctription: null
     };
   },
   components: {
     Paginator
+  },
+  created () {
+    this.connectWM('stomp').then(frame => {
+      this.subscription = this.$stompClient.subscribe('/topic/active', response => {
+        let activeUsers = JSON.parse(response.body);
+        console.log(activeUsers);
+
+        this.paginator.content = this.paginator.content.map(u => {
+          return {
+            ...u,
+            online: activeUsers.includes(u.email)
+          };
+        });
+      });
+    });
+  },
+  beforeDestroy () {
+    this.subscription.unsubscribe();
   },
   methods: {
     getUsers (page) {
