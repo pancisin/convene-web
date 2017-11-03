@@ -10,6 +10,7 @@
         </div>
         <div class="conversation-text">
           <div class="ctext-wrap">
+            <i v-if="message.sender.email != user.email">{{ message.sender.firstName }}</i>
             <p v-text="message.content"></p>
             <small>{{ getTimeString(message.created) }}</small>
           </div>
