@@ -20,7 +20,7 @@
 
     <form class="form conversation-composer" @submit.prevent="send">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Type something" v-model="message">
+        <input type="text" class="form-control" placeholder="Type something" v-model.trim="message">
         <span class="input-group-btn">
           <button type="button" class="btn waves-effect waves-light btn-default" @click="send">
             <i class="fa fa-paper-plane"></i>            
@@ -145,6 +145,10 @@ export default {
 }
 
 .conversation-list {
+  &::-webkit-scrollbar { 
+    width: 0 !important 
+  }
+
   max-height: 380px;
   min-height: 380px;
 

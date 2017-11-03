@@ -1,13 +1,9 @@
 {
     "java.errors.incompleteClasspath.severity": "ignore",
-
-    // EMMET
     "emmet.includeLanguages": {
       "vue-html": "html"
     },
     "emmet.showSuggestionsAsSnippets": true,
-
-    // ESLINT CONFIGURATION
     "eslint.options": {
         "extensions": [
             ".html",
@@ -29,17 +25,14 @@
         }
     ],
 
-    // FORMATTERS
     "editor.tabSize": 2,
     "beautify.tabSize": 2,
     "editor.insertSpaces": true,
     "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
 
-    // PRETTIER CONFIGURATION
     "prettier.spaceBeforeFunctionParen": true,
     "prettier.singleQuote": true,
 
-    // HTML FORMATTER CONFIGURATION
     "vetur.format.defaultFormatter.html": "js-beautify-html",
     "vetur.format.defaultFormatterOptions": {
         "js-beautify-html": {

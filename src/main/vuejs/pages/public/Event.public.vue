@@ -75,7 +75,7 @@
       <div class="col-sm-6 col-md-3 col-md-push-3">
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
 
-        <panel type="primary" class="panel-p-0">
+        <panel type="default" class="panel-p-0">
           <span slot="title">Live chat</span>
           <chat v-if="authenticated" type="event" :recipient="event" />
           <div v-else class="p-20 text-center text-muted">You must be logged in to use live chat !</div>
