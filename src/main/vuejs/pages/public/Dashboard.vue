@@ -70,7 +70,7 @@ export default {
     return {
       eventsPaginator: {},
       popular: [],
-      headlinesPaginator: [],
+      headlinesPaginator: {},
       loadingHeadlines: false
     };
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="event != null">
     <div class="row">
-      <div class="col-sm-6 col-sm-push-3" :class="{ 'col-sm-9' : event.poster }">
+      <div class="col-sm-6 col-md-push-3">
 
         <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
@@ -71,12 +71,22 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3 col-sm-push-3">
+
+      <div class="col-sm-6 col-md-3 col-md-push-3">
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
+
+        <panel type="primary" class="panel-p-0">
+          <span slot="title">Live chat</span>
+          <chat v-if="authenticated" type="event" :recipient="event" />
+          <div v-else class="p-20 text-center text-muted">You must be logged in to use live chat !</div>
+        </panel>
       </div>
-      <div class="col-sm-3 col-sm-pull-9">
+
+      <div class="col-sm-12 col-md-3 col-md-pull-9">
         <panel type="default">
-          <span slot="title">Also created by {{ event.author.displayName }}</span>
+          <span slot="title">
+            Also created by {{ event.author.displayName }}
+          </span>
           <events-list :events="relatedEvents" />
         </panel>
       </div>
@@ -88,7 +98,7 @@
 </template>
 
 <script>
-import { GMap, Masonry, MasonryItem, EventsList, HeroUnit } from 'elements';
+import { GMap, Masonry, MasonryItem, EventsList, HeroUnit, Chat } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -109,7 +119,8 @@ export default {
     Masonry,
     MasonryItem,
     EventsList,
-    HeroUnit
+    HeroUnit,
+    Chat
   },
   created () {
     this.getEvent();
@@ -142,10 +153,6 @@ export default {
 
               EventApi.getRelated(this.event.id, paginator => {
                 this.relatedEvents = paginator.content;
-              });
-
-              EventApi.getAttendanceStatus(event_id, status => {
-                this.attending = status;
               });
 
               getAdditionalData();
@@ -211,6 +218,12 @@ export default {
       color: #fff;
       font-size: 21px;
     }
+  }
+}
+
+.panel-p-0 {
+  .panel-body {
+    padding: 0;
   }
 }
 </style>

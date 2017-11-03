@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.enums.RecipientType;
 import com.pancisin.bookster.models.views.Compact;
 
 @Entity
@@ -26,9 +29,12 @@ public class Message {
 	@JsonView(Compact.class)
 	private User sender;
 
-	@ManyToOne
 	@JsonView(Compact.class)
-	private User recipient;
+	@Enumerated(EnumType.STRING)
+	private RecipientType recipientType;
+	
+	@JsonView(Compact.class)
+	private Long recipientId;
 
 	@JsonView(Compact.class)
 	private String content;
@@ -43,14 +49,6 @@ public class Message {
 
 	public void setSender(User sender) {
 		this.sender = sender;
-	}
-
-	public User getRecipient() {
-		return recipient;
-	}
-
-	public void setRecipient(User recipient) {
-		this.recipient = recipient;
 	}
 
 	public String getContent() {
@@ -71,5 +69,21 @@ public class Message {
 
 	public Long getId() {
 		return id;
+	}
+
+	public RecipientType getRecipientType() {
+		return recipientType;
+	}
+
+	public void setRecipientType(RecipientType recipientType) {
+		this.recipientType = recipientType;
+	}
+
+	public Long getRecipientId() {
+		return recipientId;
+	}
+
+	public void setRecipientId(Long recipientId) {
+		this.recipientId = recipientId;
 	}
 }

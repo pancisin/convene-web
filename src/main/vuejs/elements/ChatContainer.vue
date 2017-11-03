@@ -57,7 +57,7 @@ export default {
         }
       });
 
-      this.$stompClient.subscribe('/topic/active', response => {
+      this.$stompClient.subscribe('/user/queue/chat.activeUsers', response => {
         this.sendWM('/app/activeUsers', {});
         let active_us = JSON.parse(response.body);
         if (this.activeUsers.length !== active_us.length) {
@@ -65,6 +65,8 @@ export default {
           this.activeUsers = active_us;
         }
       });
+
+      this.sendWM('/app/activeUsers', {});
     }, frame => {
       // console.log(frame);
     });

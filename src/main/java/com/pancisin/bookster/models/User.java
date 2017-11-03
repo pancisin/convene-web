@@ -58,13 +58,13 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@NotNull
 	@Field
-	@JsonView(Summary.class)
+	@JsonView(Compact.class)
 	@Column(name = "first_name")
 	private String firstName;
 
 	@NotNull
 	@Field
-	@JsonView(Summary.class)
+	@JsonView(Compact.class)
 	@Column(name = "last_name")
 	private String lastName;
 

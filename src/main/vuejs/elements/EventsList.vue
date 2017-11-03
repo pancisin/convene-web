@@ -27,7 +27,6 @@ export default {
     }
   },
   created () {
-    console.log(this.events);
   }
 };
 </script>

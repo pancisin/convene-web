@@ -2,12 +2,15 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
+// IMPORT MODULES
 import user from './modules/user';
 import page from './modules/page';
 import conference from './modules/conference';
 
+// IMPORT MUTATION TYPES
 import * as types from 'store/mutation-types';
 
+// IMPORT APIS
 import PublicApi from 'api/public.api';
 
 const store = new Vuex.Store({
