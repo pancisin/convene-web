@@ -14,13 +14,15 @@ import com.pancisin.bookster.models.User;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-	@Query("SELECT message FROM Message message WHERE (message.sender.id = :user_id AND message.recipient.id = :participant_id) OR (message.recipient.id = :user_id AND message.sender.id = :participant_id) ORDER BY message.created DESC")
+	@Query("SELECT message FROM Message message WHERE message.recipientType = 'USER' AND (message.sender.id = :user_id AND message.recipientId = :participant_id) OR (message.recipientId = :user_id AND message.sender.id = :participant_id) ORDER BY message.created DESC")
 	public List<Message> getPrivate(@Param("user_id") Long user_id, @Param("participant_id") Long participant_id, Pageable pageable);
 	
-	
-//	@Query("SELECT message FROM Message message WHERE message.recipient.id IS NULL && sender.id IN (:company.users)")
-//	public List<Message> getPublic(@Param("company") Company company);
-	
-	@Query("SELECT message FROM Message message WHERE message.recipient.id IS NULL AND message.sender.id IN (:users) ORDER BY message.created DESC")
+	@Query("SELECT message FROM Message message WHERE message.recipientId IS NULL AND message.sender.id IN (:users) ORDER BY message.created DESC")
 	public List<Message> getPublicUser(@Param("users") List<Long> users, Pageable pageable);
+	
+	@Query("SELECT message FROM Message message WHERE message.recipientType = 'PAGE' AND message.recipientId = :page_id ORDER BY message.created DESC")
+	public List<Message> getPageMessages(@Param("page_id") Long page_id, Pageable pageable);
+
+	@Query("SELECT message FROM Message message WHERE message.recipientType = 'EVENT' AND message.recipientId = :event_id ORDER BY message.created DESC")
+	public List<Message> getEventMessages(@Param("event_id") Long event_id, Pageable pageable);
 }

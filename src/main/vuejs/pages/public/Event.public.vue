@@ -73,6 +73,11 @@
       </div>
       <div class="col-sm-3 col-sm-push-3">
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
+
+        <panel type="primary" class="panel-p-0">
+          <span slot="title">Chat</span>
+          <chat type="event" :recipient="event" />
+        </panel>
       </div>
       <div class="col-sm-3 col-sm-pull-9">
         <panel type="default">
@@ -88,7 +93,7 @@
 </template>
 
 <script>
-import { GMap, Masonry, MasonryItem, EventsList, HeroUnit } from 'elements';
+import { GMap, Masonry, MasonryItem, EventsList, HeroUnit, Chat } from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -109,7 +114,8 @@ export default {
     Masonry,
     MasonryItem,
     EventsList,
-    HeroUnit
+    HeroUnit,
+    Chat
   },
   created () {
     this.getEvent();
@@ -142,10 +148,6 @@ export default {
 
               EventApi.getRelated(this.event.id, paginator => {
                 this.relatedEvents = paginator.content;
-              });
-
-              EventApi.getAttendanceStatus(event_id, status => {
-                this.attending = status;
               });
 
               getAdditionalData();
@@ -211,6 +213,12 @@ export default {
       color: #fff;
       font-size: 21px;
     }
+  }
+}
+
+.panel-p-0 {
+  .panel-body {
+    padding: 0;
   }
 }
 </style>

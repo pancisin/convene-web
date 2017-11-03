@@ -82,7 +82,9 @@ export default {
     };
   },
   components: {
-    ServiceBook, EventsList, HeroUnit
+    ServiceBook,
+    EventsList,
+    HeroUnit
   },
   watch: {
     '$route': 'getPage'

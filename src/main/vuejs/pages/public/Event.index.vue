@@ -83,7 +83,7 @@ export default {
   watch: {
     filters: {
       handler () {
-        this.getEvents(this.eventsPaginator.number);
+        this.getEvents(this.eventsPaginator.number || 0);
         this.$router.replace({
           query: {
             ...this.filters
