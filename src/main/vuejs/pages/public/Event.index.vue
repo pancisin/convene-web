@@ -34,14 +34,14 @@
 
             <div class="content">
               <h4 v-text="event.name"></h4>
-              <small>By {{ event.author.displayName }}</small>
+              <small class="text-muted">By {{ event.author.displayName }}</small>
               <br>
               <small v-if="event.place != null"
                 v-text="event.place.address.formatted"></small>
 
-              <small class="date">
+              <small class="text-muted">
                 {{ event.date | moment('L') }}
-                <span class="time"
+                <span
                   v-if="event.startsAt != null">
                   at {{ event.startsAt }}
                 </span>
@@ -148,28 +148,18 @@ export default {
 
     img {
       width: 100%;
-      transition: all .2s ease-out;
-    }
-
-    .image-wrapper {
-      overflow: hidden;
-      position: relative;
-      z-index: 2;
     }
 
     &:hover {
       box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
-      
-      img {
-        transform: scale(1.1);
-      }
     }
 
     .content {
+      line-height: 18px;
       padding: 0px 10px 10px 10px;
-      color: #000;
 
       h4 {
+        color: #000;
         text-transform: uppercase;
         font-size: 15px;
         line-height: 18px;

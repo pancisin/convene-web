@@ -201,6 +201,7 @@ export default {
 .event-hero-unit {
   p {
     color: #fff;
+    display: inline-block;
   }
 
   h1 {
@@ -217,6 +218,11 @@ export default {
     a {
       color: #fff;
       font-size: 21px;
+      transition: all .3s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 }

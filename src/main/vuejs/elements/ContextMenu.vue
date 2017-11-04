@@ -1,7 +1,14 @@
 <template>
   <div>
     <transition name="zoom-in">
-      <div v-if="visible" class="context-menu" :style="style" tabindex="-1" @contextmenu.capture.prevent @blur="close" @click="close" v-click-outside="close">
+      <div v-if="visible"
+        class="context-menu"
+        :style="style"
+        tabindex="-1"
+        @contextmenu.capture.prevent
+        @blur="close"
+        @click="close"
+        v-click-outside="close">
         <slot :data="data"></slot>
       </div>
     </transition>

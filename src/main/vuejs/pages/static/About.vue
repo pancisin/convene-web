@@ -37,6 +37,11 @@ export default {
     HeroUnit,
     ProductLogo
   },
+  computed: {
+    notepad () {
+      return Notepad;
+    }
+  },
   created () {
     console.warn(Notepad);
   },

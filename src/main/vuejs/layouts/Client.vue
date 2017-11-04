@@ -1,6 +1,5 @@
 <template>
   <div id="wrapper">
-    <toast-container />
     <header-component></header-component>
   
     <div class="content">
@@ -18,14 +17,12 @@
 <script>
 import HeaderComponent from './Client.header.vue';
 import FooterComponent from './Footer.vue';
-import { ToastContainer } from 'elements';
 
 export default {
   name: 'layout',
   components: {
     HeaderComponent,
-    FooterComponent,
-    ToastContainer
+    FooterComponent
   }
 };
 </script>

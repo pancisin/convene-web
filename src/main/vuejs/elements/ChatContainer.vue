@@ -1,31 +1,41 @@
 <template>
   <div class="conversation-container">
-    <transition name="fade-up" mode="out-in">
-      <div class="chat-conversation" v-if="!collapsed">
+    <transition name="fade-up"
+      mode="out-in">
+      <div class="chat-conversation"
+        v-if="!collapsed">
         <div class="chat-header">
-          <a @click="navigateBack" v-if="currentView == 'conversation-list'">
+          <a @click="navigateBack"
+            v-if="currentView == 'conversation-list'">
             <i class="fa fa-angle-left fa-lg m-r-15"></i>
           </a>
 
           <span v-if="user != null">
             {{ user.displayName }}
-            <i class="fa fa-circle status" :class="{ 'online' : isOnline(user.email) }"></i>
+            <i class="fa fa-circle status"
+              :class="{ 'online' : isOnline(user.email) }"></i>
           </span>
           <span v-else>Conversations</span>
-          <a @click="collapsed = true" class="pull-right">
+          <a @click="collapsed = true"
+            class="pull-right">
             <i class="fa fa-times"></i>
           </a>
         </div>
 
         <div class="chat-wrapper">
-          <transition name="fade-down" mode="out-in">
+          <transition name="fade-down"
+            mode="out-in">
             <keep-alive>
-              <component :is="currentView" :recipient="user" @selected="userSelected"></component>
+              <component :is="currentView"
+                :recipient="user"
+                @selected="userSelected"></component>
             </keep-alive>
           </transition>
         </div>
       </div>
-      <a class="btn btn-primary btn-rounded btn-chat pull-right waves-effect" @click="collapsed = !collapsed" v-else>
+      <a class="btn btn-primary btn-rounded btn-chat pull-right waves-effect"
+        @click="collapsed = !collapsed"
+        v-else>
         <i class="fa fa-comment-o fa-lg"></i>
       </a>
     </transition>
@@ -46,45 +56,51 @@ export default {
       activeUsers: []
     };
   },
-  created () {
-    this.connectWM('stomp').then(frame => {
-      this.$stompClient.subscribe('/user/queue/chat.message', response => {
-        let message = JSON.parse(response.body);
-        this.$emit('messageReceived', message);
+  created() {
+    this.connectWM('stomp').then(
+      frame => {
+        this.$stompClient.subscribe('/user/queue/chat.message', response => {
+          let message = JSON.parse(response.body);
+          this.$emit('messageReceived', message);
 
-        if (this.collapsed) {
-          this.$info('notification.chat.message', message.content);
-        }
-      });
+          if (this.collapsed) {
+            this.$info('notification.chat.message', message.content);
+          }
+        });
 
-      this.$stompClient.subscribe('/user/queue/chat.activeUsers', response => {
+        this.$stompClient.subscribe(
+          '/user/queue/chat.activeUsers',
+          response => {
+            this.sendWM('/app/activeUsers', {});
+            let active_us = JSON.parse(response.body);
+            if (this.activeUsers.length !== active_us.length) {
+              this.$emit('activityChanged', active_us);
+              this.activeUsers = active_us;
+            }
+          }
+        );
+
         this.sendWM('/app/activeUsers', {});
-        let active_us = JSON.parse(response.body);
-        if (this.activeUsers.length !== active_us.length) {
-          this.$emit('activityChanged', active_us);
-          this.activeUsers = active_us;
-        }
-      });
-
-      this.sendWM('/app/activeUsers', {});
-    }, frame => {
-      // console.log(frame);
-    });
+      },
+      frame => {
+        // console.log(frame);
+      }
+    );
   },
   components: {
     ContactsList,
     ConversationList
   },
   methods: {
-    userSelected (user) {
+    userSelected(user) {
       this.user = user;
       this.currentView = 'conversation-list';
     },
-    navigateBack () {
+    navigateBack() {
       this.currentView = 'contacts-list';
       this.user = null;
     },
-    isOnline (email) {
+    isOnline(email) {
       return this.activeUsers.indexOf(email) !== -1;
     }
   }
@@ -140,7 +156,7 @@ export default {
   border-radius: 30px;
 }
 
-@media(max-width: 768px) {
+@media (max-width: 768px) {
   .conversation-container {
     left: 0;
     width: auto;

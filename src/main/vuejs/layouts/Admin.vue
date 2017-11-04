@@ -1,13 +1,12 @@
 <template>
   <div id="wrapper">
-    <chat-container />
-    <toast-container />
     <header-component @hamburgerClicked="toggleSidebar" />
     <sidebar-component :collapsed="sidebarCollapsed" />
-  
+
     <div class="content-page">
       <div class="content">
-        <transition name="fade-down" mode="out-in">
+        <transition name="fade-down"
+          mode="out-in">
           <router-view></router-view>
         </transition>
         <footer-component></footer-component>
@@ -19,38 +18,35 @@
 <script>
 import HeaderComponent from './Admin.header.vue';
 import FooterComponent from './Footer.vue';
-import { ToastContainer, ChatContainer } from 'elements';
 import SidebarComponent from './Admin.sidebar.vue';
 
 export default {
   name: 'app',
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     next(vm => {
       if (!vm.$store.getters.isAdmin) {
         next('/');
       }
     });
   },
-  data () {
+  data() {
     return {
       sidebarCollapsed: true
     };
   },
   watch: {
-    '$route': 'closeSidebar'
+    $route: 'closeSidebar'
   },
   components: {
     HeaderComponent,
     FooterComponent,
-    ToastContainer,
-    ChatContainer,
     SidebarComponent
   },
   methods: {
-    toggleSidebar () {
+    toggleSidebar() {
       this.sidebarCollapsed = !this.sidebarCollapsed;
     },
-    closeSidebar () {
+    closeSidebar() {
       this.sidebarCollapsed = true;
     }
   }

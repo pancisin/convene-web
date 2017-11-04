@@ -1,17 +1,24 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <router-view>
-    </router-view>
-  </transition>
+  <div>
+    <chat-container v-if="authenticated" />
+    <toast-container />
+
+    <transition name="fade"
+        mode="out-in">
+      <router-view>
+      </router-view>
+    </transition>
+  </div>
 </template>
 
 <script>
 import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
+import { ToastContainer, ChatContainer } from 'elements';
 
 export default {
   name: 'app-root',
-  created () {
+  created() {
     if (this.authenticated) {
       this.initializeUser().then(user => {
         moment.locale(user.locale.name);
@@ -20,11 +27,15 @@ export default {
       });
     }
   },
+  components: {
+    ToastContainer,
+    ChatContainer
+  },
   computed: {
     ...mapGetters(['authenticated', 'user'])
   },
   watch: {
-    user (newVal) {
+    user(newVal) {
       if (this.authenticated) {
         this.initializeFollowedPages();
         this.initializeAttendingEvents();
@@ -41,7 +52,7 @@ export default {
       'initializeFollowedPages',
       'initializeAttendingEvents'
     ]),
-    initializeStomp () {
+    initializeStomp() {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);

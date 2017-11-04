@@ -47,7 +47,7 @@ export default {
 #topnav {
   .product-logo {
     a, & a.active {
-      color: #fff;
+      color: #fff !important;
     }
   }
 }

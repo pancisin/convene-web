@@ -219,7 +219,7 @@ table.calendar-table {
     padding-top: 40px;
 
     &.current {
-      background: #e0ffae;
+      background: rgba(31, 171, 137, 0.2);
     }
 
     &.disabled {

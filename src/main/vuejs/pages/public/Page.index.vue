@@ -172,6 +172,9 @@ export default {
 
     h5 {
       margin: 0;
+      text-transform: uppercase;
+      color: #000;
+      line-height: 18px;
     }
   }
 
