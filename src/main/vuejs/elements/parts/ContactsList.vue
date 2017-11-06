@@ -7,7 +7,7 @@
             <img :src="getAvatar(user)" alt="">
           </div>
           <span class="name" v-text="user.displayName"></span>
-          <i class="fa fa-circle" :class="{ 'online' : isOnline(user.email) }"></i>
+          <i class="fa fa-circle" :class="{ 'online' : user.active }"></i>
         </a>
         <span class="clearfix"></span>
       </li>
@@ -17,7 +17,7 @@
 
 <script>
 import gravatar from 'gravatar';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'contacts-list',
@@ -27,7 +27,6 @@ export default {
     };
   },
   created () {
-    this.initializeContacts();
     this.$parent.$on('activityChanged', (userNames) => {
       this.activeUsers = userNames;
     });
@@ -36,7 +35,6 @@ export default {
     ...mapGetters(['contacts'])
   },
   methods: {
-    ...mapActions(['initializeContacts']),
     selectUser (user) {
       this.$emit('selected', user);
     },

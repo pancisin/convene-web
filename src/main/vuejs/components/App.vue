@@ -18,7 +18,7 @@ import { ToastContainer, ChatContainer } from 'elements';
 
 export default {
   name: 'app-root',
-  created() {
+  created () {
     if (this.authenticated) {
       this.initializeUser().then(user => {
         moment.locale(user.locale.name);
@@ -35,12 +35,23 @@ export default {
     ...mapGetters(['authenticated', 'user'])
   },
   watch: {
-    user(newVal) {
+    user (newVal) {
       if (this.authenticated) {
         this.initializeFollowedPages();
         this.initializeAttendingEvents();
         this.initializeStomp();
         this.initializeNotifications();
+        this.initializeContacts().then(() => {
+          this.$stompClient.subscribe(
+            '/user/queue/chat.activeUsers',
+            response => {
+              this.sendWM('/app/activeUsers', {});
+              this.updateContactsActivityState(JSON.parse(response.body));
+            }
+          );
+
+          this.sendWM('/app/activeUsers', {});
+        });
       }
     }
   },
@@ -50,9 +61,11 @@ export default {
       'addNotification',
       'initializeUser',
       'initializeFollowedPages',
-      'initializeAttendingEvents'
+      'initializeAttendingEvents',
+      'initializeContacts',
+      'updateContactsActivityState'
     ]),
-    initializeStomp() {
+    initializeStomp () {
       this.connectWM('stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);

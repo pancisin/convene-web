@@ -5,7 +5,7 @@ export default Vue => {
   var connecting = null;
 
   const connectWM = function (serverEndPoint) {
-    var promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       if (this.$stompClient != null && this.$stompClient.connected) {
         connecting = null;
         resolve();
@@ -45,7 +45,7 @@ export default Vue => {
       resolve();
     });
   };
-  
+
   Vue.connectWM = connectWM;
 
   Object.defineProperties(Vue.prototype, {

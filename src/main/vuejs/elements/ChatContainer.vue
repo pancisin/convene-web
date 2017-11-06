@@ -56,7 +56,7 @@ export default {
       activeUsers: []
     };
   },
-  created() {
+  created () {
     this.connectWM('stomp').then(
       frame => {
         this.$stompClient.subscribe('/user/queue/chat.message', response => {
@@ -67,20 +67,6 @@ export default {
             this.$info('notification.chat.message', message.content);
           }
         });
-
-        this.$stompClient.subscribe(
-          '/user/queue/chat.activeUsers',
-          response => {
-            this.sendWM('/app/activeUsers', {});
-            let active_us = JSON.parse(response.body);
-            if (this.activeUsers.length !== active_us.length) {
-              this.$emit('activityChanged', active_us);
-              this.activeUsers = active_us;
-            }
-          }
-        );
-
-        this.sendWM('/app/activeUsers', {});
       },
       frame => {
         // console.log(frame);
@@ -92,15 +78,15 @@ export default {
     ConversationList
   },
   methods: {
-    userSelected(user) {
+    userSelected (user) {
       this.user = user;
       this.currentView = 'conversation-list';
     },
-    navigateBack() {
+    navigateBack () {
       this.currentView = 'contacts-list';
       this.user = null;
     },
-    isOnline(email) {
+    isOnline (email) {
       return this.activeUsers.indexOf(email) !== -1;
     }
   }

@@ -137,6 +137,21 @@ const actions = {
       });
     });
   },
+  updateContactsActivityState ({ commit, state }, contactsActivityList) {
+    const contacts = [ ...state.contacts ].map(c => {
+      let active = false;
+      if (contactsActivityList.includes(c.email)) {
+        active = true;
+      };
+
+      return {
+        ...c,
+        active
+      };
+    });
+
+    commit(types.SET_CONTACTS, { contacts });
+  },
   initializeFollowedPages ({ commit }) {
     return new Promise((resolve) => {
       UserApi.getFollowedPages(pages => {
