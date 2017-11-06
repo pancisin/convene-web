@@ -42,15 +42,17 @@ export default {
         this.initializeStomp();
         this.initializeNotifications();
         this.initializeContacts().then(() => {
-          this.$stompClient.subscribe(
-            '/user/queue/chat.activeUsers',
-            response => {
-              this.sendWM('/app/activeUsers', {});
-              this.updateContactsActivityState(JSON.parse(response.body));
-            }
-          );
+          this.connectWM('stomp').then(frame => {
+            this.$stompClient.subscribe(
+              '/user/queue/chat.activeUsers',
+              response => {
+                this.sendWM('/app/activeUsers', {});
+                this.updateContactsActivityState(JSON.parse(response.body));
+              }
+            );
 
-          this.sendWM('/app/activeUsers', {});
+            this.sendWM('/app/activeUsers', {});
+          });
         });
       }
     }

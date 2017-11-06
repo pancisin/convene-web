@@ -21,16 +21,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'contacts-list',
-  data () {
-    return {
-      activeUsers: []
-    };
-  },
-  created () {
-    this.$parent.$on('activityChanged', (userNames) => {
-      this.activeUsers = userNames;
-    });
-  },
   computed: {
     ...mapGetters(['contacts'])
   },
@@ -43,9 +33,6 @@ export default {
         protocol: 'https',
         size: 30
       });
-    },
-    isOnline (email) {
-      return this.activeUsers.indexOf(email) !== -1;
     }
   }
 };

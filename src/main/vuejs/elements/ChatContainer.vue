@@ -13,7 +13,7 @@
           <span v-if="user != null">
             {{ user.displayName }}
             <i class="fa fa-circle status"
-              :class="{ 'online' : isOnline(user.email) }"></i>
+              :class="{ 'online' : user.active }"></i>
           </span>
           <span v-else>Conversations</span>
           <a @click="collapsed = true"
@@ -52,8 +52,7 @@ export default {
     return {
       collapsed: true,
       currentView: 'contacts-list',
-      user: null,
-      activeUsers: []
+      user: null
     };
   },
   created () {
@@ -85,9 +84,6 @@ export default {
     navigateBack () {
       this.currentView = 'contacts-list';
       this.user = null;
-    },
-    isOnline (email) {
-      return this.activeUsers.indexOf(email) !== -1;
     }
   }
 };
