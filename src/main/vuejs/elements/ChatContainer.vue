@@ -7,11 +7,13 @@
         <div class="chat-header">
           <a @click="navigateBack"
             v-if="currentView == 'conversation-list'">
-            <i class="fa fa-angle-left fa-lg m-r-15"></i>
+            <i class="fa fa-angle-left fa-lg"></i>
           </a>
 
           <span v-if="user != null">
-            {{ user.displayName }}
+            <span>
+              {{ user.displayName }}
+            </span>
             <i class="fa fa-circle status"
               :class="{ 'online' : user.active }"></i>
           </span>
@@ -23,7 +25,7 @@
         </div>
 
         <div class="chat-wrapper">
-          <transition name="fade-down"
+          <transition name="fade"
             mode="out-in">
             <keep-alive>
               <component :is="currentView"
@@ -102,13 +104,27 @@ export default {
   width: 320px;
 
   .chat-header {
-    padding: 15px;
-    background: @color-primary;
+    background-color: @color-primary;
     color: white;
     font-weight: bold;
 
+    & > * {
+      padding: 10px 15px;
+      display: inline-block;
+    }
+
     a {
       color: #fff;
+      display: inline-block;
+      transition: background-color .3s ease;
+
+      &:hover {
+        background-color: @color-primary-active;
+      }
+    }
+
+    span > span {
+      vertical-align: middle;
     }
 
     i.status {

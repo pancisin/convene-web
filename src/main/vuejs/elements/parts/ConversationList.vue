@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <ul class="conversation-list" ref="conversationList">
       <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id">
         <div class="chat-avatar">
@@ -38,7 +38,8 @@ export default {
   data () {
     return {
       messages: [],
-      message: null
+      message: null,
+      loading: false,
     };
   },
   computed: {
@@ -57,6 +58,7 @@ export default {
   },
   methods: {
     getMessages () {
+      this.loading = true;
       this.messages = [];
       this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => {
         let messages = response.body;
@@ -65,6 +67,7 @@ export default {
         });
 
         this.addMessage(messages);
+        this.loading = false;
       });
     },
     getAvatar (recipient) {
