@@ -59,38 +59,6 @@ public class PublicRestController {
 	@Autowired
 	private MediaRepository mediaRepository;
 
-	@GetMapping("/events/{page}/{limit}")
-	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
-			@RequestParam(name = "timestamp", required = false) String timestamp,
-			@RequestParam(name = "authorType", required = false, defaultValue = "") String authorType,
-			@RequestParam(name = "authorId", required = false, defaultValue = "0") String authorId) {
-
-		Date date = null;
-		try {
-			date = new Date(Long.parseLong(timestamp));
-		} catch (NumberFormatException ex) {
-			date = new Date();
-		}
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-
-		switch (authorType) {
-		case "PAGE":
-			// TODO
-			return null;
-		case "USER":
-			Long userId = Long.parseLong(authorId);
-			return ResponseEntity.ok(eventRepository.getPublicByUser(userId, cal, new PageRequest(page, limit)));
-		case "CONFERENCE":
-			// TODO
-			return null;
-		default:
-			return ResponseEntity
-					.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
-		}
-	}
-
 	@GetMapping("/near-events/{page}/{limit}")
 	public ResponseEntity<?> getNearEvents(@PathVariable int page, @PathVariable int limit,
 			@RequestParam(name = "lat") BigDecimal lat, @RequestParam(name = "lng") BigDecimal lng,
@@ -118,25 +86,6 @@ public class PublicRestController {
 	@GetMapping("/event/{event_id}/gallery")
 	public ResponseEntity<?> getEventGallery(@PathVariable Long event_id) {
 		return ResponseEntity.ok(mediaRepository.getByEvent(event_id));
-	}
-
-	@GetMapping("/pages/{page}/{limit}")
-	public ResponseEntity<?> getPages(@PathVariable int page, @PathVariable int limit,
-			@RequestParam(name = "categoryId", required = false) Long categoryId,
-			@RequestParam(name = "branchId", required = false) Long branchId) {
-
-		org.springframework.data.domain.Page<Page> pages = null;
-		Pageable pageable = new PageRequest(page, limit, new Sort(Sort.Direction.ASC, "name"));
-
-		if (branchId != null) {
-			pages = pageRepository.findByBranch(branchId, pageable);
-		} else if (categoryId != null) {
-			pages = pageRepository.findByCategory(categoryId, pageable);
-		} else {
-			pages = pageRepository.findAllVisible(pageable);
-		}
-
-		return ResponseEntity.ok(pages);
 	}
 
 	@GetMapping("/popular-pages/{page}/{limit}")

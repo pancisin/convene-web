@@ -2,6 +2,23 @@ import Vue from 'vue';
 
 export default {
 
+   /**
+   * Get pages
+   * @param {*} page - paginator page attribute
+   * @param {*} size - paginator size attribute
+   * @param {*} filters - filters
+   * @param {*} success - success callback function
+   */
+  getPages (page, size, filters, success) {
+    Vue.http.get(`api/pages/${page}/${size}`, {
+      params: {
+        ...filters
+      }
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   /**
    * Get conferences
    * @param {*} page - paginator page property

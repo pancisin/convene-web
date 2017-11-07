@@ -66,6 +66,8 @@
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import { Paginator, Masonry, MasonryItem } from 'elements';
 import PublicApi from 'api/public.api';
+import { mapGetters } from 'vuex';
+import RootApi from 'api/api';
 
 export default {
   name: 'page-explore',
@@ -90,6 +92,7 @@ export default {
     this.getCategories();
   },
   computed: {
+    ...mapGetters(['authenticated']),
     currentCategory () {
       return this.categories.filter(x => {
         return x.id === this.filters.categoryId;
@@ -99,7 +102,9 @@ export default {
   methods: {
     getPages (page) {
       this.loading = true;
-      PublicApi.getPages(page, 12, this.filters, paginator => {
+
+      const getPages = this.authenticated ? RootApi.getPages : PublicApi.getPages;
+      getPages(page, 12, this.filters, paginator => {
         this.pagesPaginator = paginator;
         this.loading = false;
       });
