@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.events.OnPaymentEvent;
 import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
@@ -14,6 +15,7 @@ import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
+@Component
 public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 
 	@Autowired
@@ -25,17 +27,23 @@ public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 	@Override
 	public void onApplicationEvent(OnPaymentEvent event) {
 		if (event.getState() == PaymentState.SUCCESS) {
-
+			Long user_id = event.getUs().getUser().getId();
+			
+			List<Page> pages = pageRepository.getByOwner(user_id);
+			
 			List<Page> updatedPages = new ArrayList<Page>();
-			event.getUs().getUser().getOwningPages().stream().filter(x -> {
+			pages.stream().filter(x -> {
 				return x.getState() == PageState.BLOCKED;
 			}).forEach(x -> {
 				x.setState(PageState.PUBLISHED);
 				updatedPages.add(x);
 			});
 			
+			
+			List<Conference> conferences = conferenceRepository.getByOwner(user_id);
+			
 			List<Conference> updatedConferences = new ArrayList<Conference>();
-			event.getUs().getUser().getOwningConferences().stream().filter(x -> {
+			conferences.stream().filter(x -> {
 				return x.getState() == PageState.BLOCKED;
 			}).forEach(x -> {
 				x.setState(PageState.PUBLISHED);
@@ -44,6 +52,7 @@ public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 			
 			pageRepository.save(updatedPages);
 			conferenceRepository.save(updatedConferences);
+			
 			// Send approval email to the customer. Log transactions as well !
 		} else if (event.getState() == PaymentState.ERROR) {
 			// send warning error about unsuccessful transaction.

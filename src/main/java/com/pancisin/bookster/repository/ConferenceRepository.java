@@ -1,5 +1,7 @@
 package com.pancisin.bookster.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +21,7 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
 	@Query("SELECT conference FROM Conference conference WHERE conference.id = :conference_id AND conference.visibility = 'PUBLIC' AND (conference.state = 'PUBLISHED' OR conference.state = 'BLOCKED')")
 	public Conference getPublicConference(@Param("conference_id") Long conference_id);
+	
+	@Query("SELECT conference FROM Conference conference JOIN conference.conferenceAdministrators admin WHERE admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id")
+	public List<Conference> getByOwner(@Param("user_id") Long user_id);
 }
