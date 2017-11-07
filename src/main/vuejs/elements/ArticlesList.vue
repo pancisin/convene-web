@@ -54,7 +54,9 @@ export default {
   props: {
     articles: {
       type: Array,
-      default: []
+      default () {
+        return [];
+      }
     },
     hasHeadline: Boolean
   },
@@ -65,11 +67,19 @@ export default {
       articlesList: []
     };
   },
+  watch: {
+    'articles': 'initialize'
+  },
   created () {
-    this.articlesList = [...this.articles];
+    this.initialize();
+  },
+  methods: {
+    initialize () {
+      this.articlesList = [...this.articles];
 
-    if (this.hasHeadline) {
-      this.headline = this.articlesList.shift();
+      if (this.hasHeadline) {
+        this.headline = this.articlesList.shift();
+      }
     }
   }
 };
