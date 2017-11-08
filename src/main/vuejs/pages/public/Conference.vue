@@ -1,17 +1,21 @@
 <template>
   <div v-if="conference != null">
-    <hero-unit :background="conference.poster != null ? conference.poster.path : null">
-      <h1 class="text-uppercase text-inverse">{{ conference.name }}</h1>
+    <hero-unit :background="conference.poster != null ? conference.poster.path : null" class="m-b-20">
+      <h1 class="text-uppercase text-primary">{{ conference.name }}</h1>
     </hero-unit>
 
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-          <div v-html="conference.summary"></div>
+          <panel>
+            <div v-html="conference.summary" class="m-b-20"></div>
+          </panel>
 
           <panel>
             <span slot="title">News</span>
-            <articles-list></articles-list>
+            <articles-list 
+              :articles="articles">
+            </articles-list>
           </panel>
         </div>
 
@@ -68,7 +72,8 @@ export default {
     return {
       conference: null,
       attend_status: false,
-      surveys: []
+      surveys: [],
+      articles: []
     };
   },
   created () {
@@ -83,6 +88,10 @@ export default {
 
     injector.getPublicSurveys(surveys => {
       this.surveys = surveys;
+    });
+
+    injector.getArticles(articles => {
+      this.articles = articles;
     });
   },
   methods: {

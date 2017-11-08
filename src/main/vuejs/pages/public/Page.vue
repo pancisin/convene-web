@@ -6,7 +6,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-8 col-md-5 col-md-offset-2">
+        <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
           <panel>
             <div v-html="page.summary" class="m-b-20"></div>
           </panel>

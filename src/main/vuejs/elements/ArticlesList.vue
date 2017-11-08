@@ -51,19 +51,20 @@
 <script>
 export default {
   name: 'articles-list',
-  // inject: ['api'],
   props: {
     articles: {
       type: Array,
-      default: null
+      default () {
+        return [];
+      }
     },
     hasHeadline: Boolean
   },
   data () {
     return {
-      articlesList: [],
       headline: null,
-      loading: false
+      loading: false,
+      articlesList: []
     };
   },
   watch: {
@@ -74,16 +75,7 @@ export default {
   },
   methods: {
     initialize () {
-      if (this.articles == null) {
-        this.loading = true;
-        this.api.getArticles(articles => {
-          this.articlesList = articles;
-          this.loading = false;
-        });
-      } else {
-        this.articlesList = [ ...this.articles ];
-        this.loading = false;
-      }
+      this.articlesList = [...this.articles];
 
       if (this.hasHeadline) {
         this.headline = this.articlesList.shift();
