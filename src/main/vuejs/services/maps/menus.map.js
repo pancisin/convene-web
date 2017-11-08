@@ -43,5 +43,6 @@ export default {
   conference: validateMenu(menus.ConferenceMenu),
   footer: validateMenu(menus.FooterMenu),
   system: validateMenu(menus.SystemMenu),
-  client: validateMenu(menus.ClientMenu)
+  client: validateMenu(menus.ClientMenu),
+  about: validateMenu(menus.AboutMenu)
 };

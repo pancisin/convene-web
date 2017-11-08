@@ -39,6 +39,10 @@
               :key="index"
               :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
               
+              <span class="text-danger" v-if="page.privilege != null">
+                You are administrator
+              </span>
+
               <router-link 
                 :to="{ name: 'page.public', params: { id: page.id } }">
                 <div class="title">
@@ -103,8 +107,8 @@ export default {
     getPages (page) {
       this.loading = true;
 
-      const getPages = this.authenticated ? RootApi.getPages : PublicApi.getPages;
-      getPages(page, 12, this.filters, paginator => {
+      const fetch = this.authenticated ? RootApi.getPages : PublicApi.getPages;
+      fetch(page, 12, this.filters, paginator => {
         this.pagesPaginator = paginator;
         this.loading = false;
       });

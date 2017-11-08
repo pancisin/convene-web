@@ -9,7 +9,6 @@
           mode="out-in">
           <router-view></router-view>
         </transition>
-        <footer-component></footer-component>
       </div>
     </div>
   </div>
@@ -22,14 +21,14 @@ import SidebarComponent from './Admin.sidebar.vue';
 
 export default {
   name: 'app',
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter (to, from, next) {
     next(vm => {
       if (!vm.$store.getters.isAdmin) {
         next('/');
       }
     });
   },
-  data() {
+  data () {
     return {
       sidebarCollapsed: true
     };
@@ -43,10 +42,10 @@ export default {
     SidebarComponent
   },
   methods: {
-    toggleSidebar() {
+    toggleSidebar () {
       this.sidebarCollapsed = !this.sidebarCollapsed;
     },
-    closeSidebar() {
+    closeSidebar () {
       this.sidebarCollapsed = true;
     }
   }

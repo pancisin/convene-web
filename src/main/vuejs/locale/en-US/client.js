@@ -19,5 +19,13 @@ export default {
     suggested: 'Suggested',
     followed: 'Followed',
     popular: 'Popular'
+  },
+  footer: {
+    about: 'About convene',
+    features: 'Features',
+    pricing: 'Pricing',
+    faq: 'FAQ',
+    terms: 'Terms & conditions',
+    privacy: 'Privacy policy'
   }
 };

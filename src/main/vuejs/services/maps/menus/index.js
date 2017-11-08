@@ -4,6 +4,7 @@ import ConferenceMenu from './conference.menu';
 import FooterMenu from './footer.menu';
 import SystemMenu from './system.menu';
 import ClientMenu from './client.menu';
+import AboutMenu from './about.menu';
 
 export {
   MainMenu,
@@ -11,5 +12,6 @@ export {
   ConferenceMenu,
   FooterMenu,
   SystemMenu,
-  ClientMenu
-}
+  ClientMenu,
+  AboutMenu
+};
