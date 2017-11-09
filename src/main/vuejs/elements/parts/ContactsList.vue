@@ -4,7 +4,7 @@
       Recent conversations
     </div>
     <ul class="list-group contacts-list">
-      <li class="list-group-item" v-for="(conversation, index) in conversations" :key="index">
+      <li class="list-group-item" v-for="(conversation, index) in conv" :key="index">
         <a @click="selectUser(conversation.participant)">
           <div class="avatar">
             <img :src="getAvatar(conversation.participant)" alt="">
@@ -66,6 +66,13 @@ export default {
   name: 'contacts-list',
   computed: {
     ...mapGetters(['contacts', 'conversations']),
+    conv () {
+      let conversations = [ ...this.conversations ];
+      conversations.sort((a, b) => {
+        return b.recentMessages[0].created - a.recentMessages[0].created;
+      });
+      return conversations;
+    },
     onlineContacts () {
       return this.contacts.filter(c => c.active);
     },
