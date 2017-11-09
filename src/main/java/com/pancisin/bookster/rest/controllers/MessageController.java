@@ -3,8 +3,10 @@ package com.pancisin.bookster.rest.controllers;
 import java.security.Principal;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -56,6 +58,13 @@ public class MessageController {
 	@GetMapping("/event/{event_id}/{page}")
 	public ResponseEntity<?> getEventConversations(@PathVariable Long event_id, @PathVariable int page) {
 		return ResponseEntity.ok(messageRepository.getEventMessages(event_id, new PageRequest(page, pageLimit)));
+	}
+	
+	@GetMapping("/conversations")
+	public ResponseEntity<?> getConversations() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User auth_user = (User) auth.getPrincipal();
+		return ResponseEntity.ok(messageRepository.getConversations(auth_user.getId()));
 	}
 	
 	@MessageMapping("/chat.private.{username}")

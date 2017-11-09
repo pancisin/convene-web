@@ -144,5 +144,11 @@ export default {
     Vue.http.get(`${USER_API_URL}/media`).then(response => {
       success(response.body);
     });
+  },
+
+  getConversations (success) {
+    Vue.http.get('api/message/conversations').then(response => {
+      success(response.body);
+    });
   }
 };

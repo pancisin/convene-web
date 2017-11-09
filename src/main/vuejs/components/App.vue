@@ -54,6 +54,7 @@ export default {
             this.sendWM('/app/activeUsers', {});
           });
         });
+        this.initializeConversations();
       }
     }
   },
@@ -65,6 +66,7 @@ export default {
       'initializeFollowedPages',
       'initializeAttendingEvents',
       'initializeContacts',
+      'initializeConversations',
       'updateContactsActivityState'
     ]),
     initializeStomp () {

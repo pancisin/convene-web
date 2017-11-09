@@ -11,7 +11,8 @@ const state = {
   authenticated: false,
   contacts: [],
   followedPages: [],
-  attendingEvents: []
+  attendingEvents: [],
+  conversations: []
 };
 
 const getters = {
@@ -38,7 +39,8 @@ const getters = {
   attendingEvents: state => state.attendingEvents,
   eventAttendingStatus: state => event_id => {
     return !state.attendingEvents.every(e => e.id !== event_id);
-  }
+  },
+  conversations: state => state.conversations
 };
 
 const watchers = [
@@ -137,6 +139,14 @@ const actions = {
       });
     });
   },
+  initializeConversations ({ commit }) {
+    return new Promise(resolve => {
+      UserApi.getConversations(conversations => {
+        commit(types.SET_CONVERSATIONS, { conversations });
+        resolve();
+      });
+    });
+  },
   updateContactsActivityState ({ commit, state }, contactsActivityList) {
     const contacts = [ ...state.contacts ].map(c => {
       let active = false;
@@ -224,6 +234,10 @@ const mutations = {
 
   [types.SET_CONTACTS] (state, { contacts }) {
     state.contacts = contacts;
+  },
+
+  [types.SET_CONVERSATIONS] (state, { conversations }) {
+    state.conversations = conversations;
   },
 
   [types.SET_FOLLOWED_PAGES] (state, { pages}) {

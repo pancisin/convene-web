@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.pancisin.bookster.models.Conversation;
 import com.pancisin.bookster.models.Message;
-import com.pancisin.bookster.models.User;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
@@ -25,4 +25,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 	@Query("SELECT message FROM Message message WHERE message.recipientType = 'EVENT' AND message.recipientId = :event_id ORDER BY message.created DESC")
 	public List<Message> getEventMessages(@Param("event_id") Long event_id, Pageable pageable);
+	
+
+//	@Query("SELECT new com.pancisin.bookster.models.Conversation(user, message) FROM Message message, User user WHERE user.id = message.recipientId AND message.id IN (SELECT message.id as id, max(message.created) FROM Message message WHERE message.recipientType = 'USER' AND (message.sender.id = :user_id OR message.recipientId = :user_id) GROUP BY id)")
+	@Query("SELECT new com.pancisin.bookster.models.Conversation(user, message) FROM Message message, User user WHERE user.id = message.recipientId AND message.recipientType = 'USER' AND (message.sender.id = :user_id OR message.recipientId = :user_id) GROUP BY user")
+	public List<Conversation> getConversations(@Param("user_id") Long user_id);
+
 }

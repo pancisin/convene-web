@@ -1,5 +1,32 @@
 <template>
   <div class="contact-list">
+    <div class="contact-list-separator">
+      Recent conversations
+    </div>
+    <ul class="list-group contacts-list">
+      <li class="list-group-item" v-for="(conversation, index) in conversations" :key="index">
+        <a @click="selectUser(conversation.participant)">
+          <div class="avatar">
+            <img :src="getAvatar(conversation.participant)" alt="">
+          </div>
+          <div class="content">
+            <span class="name">
+              {{ conversation.participant.displayName }}
+            </span>
+            <br >
+            <small class="text-muted">
+              {{ conversation.recentMessages[0].content }}
+            </small>
+          </div>
+            <i class="fa fa-circle" :class="{ 'online' : conversation.participant.active }"></i>
+        </a>
+        <span class="clearfix"></span>
+      </li>
+    </ul>
+
+    <div class="contact-list-separator">
+      Contacts
+    </div>
     <ul class="list-group contacts-list">
       <li class="list-group-item" v-for="user in contacts" :key="user.id">
         <a @click="selectUser(user)">
@@ -22,7 +49,7 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'contacts-list',
   computed: {
-    ...mapGetters(['contacts'])
+    ...mapGetters(['contacts', 'conversations'])
   },
   methods: {
     selectUser (user) {
@@ -40,6 +67,7 @@ export default {
 
 <style lang="less" scoped>
 @import (reference) '~less/variables.less';
+@color-dark: #707780;
 
 .conversation-container .contact-list {
   max-height: 380px;
@@ -51,6 +79,13 @@ export default {
 
 .contact-list {
   max-height: 600px;
+
+  .contact-list-separator {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    color: @color-dark;
+  }
+
   .list-group-item {
     border: none;
     &:hover {
@@ -76,13 +111,17 @@ export default {
       width: 100%;
     }
   }
+  .content {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 5px;
+  }
   .list-group-item {
     padding: 15px 20px;
     span.name {
-      color: #707780;
+      color: @color-dark;
       display: inline-block;
       overflow: hidden;
-      padding-left: 5px;
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 130px;
