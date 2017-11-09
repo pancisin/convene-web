@@ -7,10 +7,10 @@ export default {
       name: 'about',
       code: 'client.footer.about'
     },
-    {
-      name: 'about',
-      code: 'client.footer.features'
-    },
+    // {
+    //   name: 'about',
+    //   code: 'client.footer.features'
+    // },
     {
       name: 'pricing',
       code: 'client.footer.pricing'

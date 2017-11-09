@@ -38,15 +38,20 @@
               v-for="(page, index) in pagesPaginator.content" 
               :key="index"
               :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
-              
-              <span class="text-danger" v-if="page.privilege != null">
-                You are administrator
-              </span>
-
+            
               <router-link 
                 :to="{ name: 'page.public', params: { id: page.id } }">
                 <div class="title">
-                  <h5 v-text="page.name"></h5>
+                  <h5>
+                    {{ page.name }}
+                    <router-link 
+                      :to="{ name: 'page.settings', params: { id: page.id } }" 
+                      v-if="page.privilege && page.privilege.role.level >= 60" 
+                      class="pull-right text-primary">
+
+                      <i class="fa fa-pencil"></i>
+                    </router-link>
+                  </h5>
                   <small class="text-muted" v-if="page.category != null">
                     {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
                   </small>

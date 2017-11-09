@@ -6,8 +6,9 @@ import com.pancisin.bookster.models.views.Compact;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PageRole {
-	ROLE_OWNER("ROLE_OWNER", "role.owner", 100), ROLE_ADMINISTRATOR("ROLE_ADMINISTRATOR", "role.administrator",
-			60), ROLE_MODERATOR("ROLE_MODERATOR", "role.moderator", 40);
+	ROLE_OWNER("ROLE_OWNER", "role.owner", 100),
+	ROLE_ADMINISTRATOR("ROLE_ADMINISTRATOR", "role.administrator", 60),
+	ROLE_MODERATOR("ROLE_MODERATOR", "role.moderator", 40);
 
 	PageRole(String name, String code, int level) {
 		this.name = name;

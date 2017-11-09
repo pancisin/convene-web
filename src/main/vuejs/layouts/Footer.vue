@@ -26,19 +26,19 @@
         </div>
 
         <div class="col-sm-4 col-md-2 text-center">
-          <nav>
+          <!-- <nav>
             <span>Products</span>
             <ul>
               <li><a href="">ARTIST PORTFOLIO</a></li>
             </ul>
-          </nav>
+          </nav> -->
         </div>
 
         <div class="col-sm-4 col-md-2 text-center">
           <nav>
             <span>Contacts</span>
             <ul>
-              <li><a href="">support@convene.sk</a></li>
+              <li><a href="mailto:support@convene.sk">support@convene.sk</a></li>
             </ul>
           </nav>
         </div>
