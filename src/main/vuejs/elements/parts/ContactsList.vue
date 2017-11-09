@@ -18,17 +18,33 @@
               {{ conversation.recentMessages[0].content }}
             </small>
           </div>
-            <i class="fa fa-circle" :class="{ 'online' : conversation.participant.active }"></i>
+            <i class="fa fa-circle" :class="{ 'online' : isOnline(conversation.participant.id) }"></i>
         </a>
         <span class="clearfix"></span>
       </li>
     </ul>
 
     <div class="contact-list-separator">
-      Contacts
+      Contacts online
     </div>
     <ul class="list-group contacts-list">
-      <li class="list-group-item" v-for="user in contacts" :key="user.id">
+      <li class="list-group-item" v-for="user in onlineContacts" :key="user.id">
+        <a @click="selectUser(user)">
+          <div class="avatar">
+            <img :src="getAvatar(user)" alt="">
+          </div>
+          <span class="name" v-text="user.displayName"></span>
+          <i class="fa fa-circle" :class="{ 'online' : user.active }"></i>
+        </a>
+        <span class="clearfix"></span>
+      </li>
+    </ul>
+
+    <div class="contact-list-separator">
+      Contacts offline
+    </div>
+    <ul class="list-group contacts-list">
+      <li class="list-group-item" v-for="user in offlineContacts" :key="user.id">
         <a @click="selectUser(user)">
           <div class="avatar">
             <img :src="getAvatar(user)" alt="">
@@ -49,11 +65,20 @@ import { mapGetters } from 'vuex';
 export default {
   name: 'contacts-list',
   computed: {
-    ...mapGetters(['contacts', 'conversations'])
+    ...mapGetters(['contacts', 'conversations']),
+    onlineContacts () {
+      return this.contacts.filter(c => c.active);
+    },
+    offlineContacts () {
+      return this.contacts.filter(c => !c.active);
+    }
   },
   methods: {
+    isOnline (userId) {
+      return this.contacts.filter(u => u.id === userId && u.active).length > 0;
+    },
     selectUser (user) {
-      this.$emit('selected', user);
+      this.$emit('selected', user.id);
     },
     getAvatar (user) {
       return gravatar.url(user.email, {
@@ -81,15 +106,21 @@ export default {
   max-height: 600px;
 
   .contact-list-separator {
-    padding: 15px 20px;
+    padding: 10px 20px;
     border-bottom: 1px solid #eee;
     color: @color-dark;
   }
 
   .list-group-item {
+    padding: 0 !important;
     border: none;
     &:hover {
       background: @color-light;
+    }
+
+    & > a {
+      display: block;
+      padding: 15px 20px;
     }
   }
   i.offline {
@@ -101,6 +132,7 @@ export default {
 }
 
 .contacts-list {
+  margin-bottom: 0;
   .avatar {
     display: inline-block;
     margin-right: 5px;
@@ -115,6 +147,7 @@ export default {
     display: inline-block;
     vertical-align: middle;
     padding-left: 5px;
+    line-height: 14px;
   }
   .list-group-item {
     padding: 15px 20px;

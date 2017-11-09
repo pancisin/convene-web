@@ -40,7 +40,16 @@ const getters = {
   eventAttendingStatus: state => event_id => {
     return !state.attendingEvents.every(e => e.id !== event_id);
   },
-  conversations: state => state.conversations
+  conversations: state => state.conversations,
+  getContactById: state => id => {
+    let index = state.contacts.findIndex(c => {
+      return c.id === id;
+    });
+
+    if (index !== -1) {
+      return state.contacts[index];
+    } else return null;
+  },
 };
 
 const watchers = [

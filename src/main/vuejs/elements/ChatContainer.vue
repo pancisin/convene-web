@@ -10,7 +10,7 @@
             <i class="fa fa-angle-left fa-lg"></i>
           </a>
 
-          <span v-if="user != null">
+          <span v-if="selectedUserId != null">
             <span>
               {{ user.displayName }}
             </span>
@@ -47,6 +47,7 @@
 <script>
 import ContactsList from './parts/ContactsList.vue';
 import ConversationList from './parts/ConversationList.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'conversation-container',
@@ -54,8 +55,14 @@ export default {
     return {
       collapsed: true,
       currentView: 'contacts-list',
-      user: null
+      selectedUserId: null
     };
+  },
+  computed: {
+    ...mapGetters(['getContactById']),
+    user () {
+      return this.getContactById(this.selectedUserId);
+    }
   },
   created () {
     this.connectWM('stomp').then(
@@ -79,13 +86,13 @@ export default {
     ConversationList
   },
   methods: {
-    userSelected (user) {
-      this.user = user;
+    userSelected (userId) {
+      this.selectedUserId = userId;
       this.currentView = 'conversation-list';
     },
     navigateBack () {
       this.currentView = 'contacts-list';
-      this.user = null;
+      this.selectedUserId = null;
     }
   }
 };
