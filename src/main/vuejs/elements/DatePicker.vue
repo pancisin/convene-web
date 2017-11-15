@@ -11,7 +11,7 @@
       @focus="focusChanged"
       @blur="focusChanged">
 
-    <transition name="slide-down">
+    <slide-transition>
       <div class="date-picker"
         v-show="display || inline"
         :class="{ 'date-picker-inline' : inline }">
@@ -58,12 +58,13 @@
           </table>
         </div>
       </div>
-    </transition>
+    </slide-transition>
   </div>
 </template>
 <script>
 import moment from 'moment';
 import { mapGetters } from 'vuex';
+import SlideTransition from '../functional/SlideTransition';
 
 export default {
   props: {
@@ -89,8 +90,12 @@ export default {
       return wkds;
     }
   },
+  components: {
+    SlideTransition
+  },
   created: function () {
-    this.selected = this.value;
+    this.selected = moment(parseInt(this.value, 10)).startOf('day');
+    this.focusDate = moment(parseInt(this.value, 10));
     moment.locale('sk');
     this.updateCalendar();
   },
@@ -99,7 +104,9 @@ export default {
       if (newVal) this.display = true;
     },
     value (newVal) {
-      this.selected = newVal;
+      this.selected = moment(parseInt(this.value, 10)).startOf('day');
+      this.focusDate = moment(parseInt(this.value, 10));
+      this.updateCalendar();
     },
     locale (newVal) {
       moment.locale(newVal.name);

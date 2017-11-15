@@ -30,7 +30,8 @@
             <keep-alive>
               <component :is="currentView"
                 :recipient="user"
-                @selected="userSelected"></component>
+                @selected="userSelected">
+              </component>
             </keep-alive>
           </transition>
         </div>

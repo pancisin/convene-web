@@ -104,9 +104,7 @@ export default {
 .conversation-container .contact-list {
   max-height: 380px;
   min-height: 380px;
-
   overflow-y: auto;
-  // padding: 10px;
 }
 
 .contact-list {

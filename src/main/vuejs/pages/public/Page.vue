@@ -37,20 +37,20 @@
               </tbody>
             </table>
           </panel>
-        </div>
 
-        <div class="col-sm-3">
-
+          <div class="m-b-20">
+            <a href="#" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
+          </div>
         </div>
       </div>
-
-      <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
-        <h4 slot="header">Book a service</h4>
-        <div slot="body">
-          <service-book :service="selectedService" @submitted="submitted" />
-        </div>
-      </modal>
     </div>
+
+    <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
+      <h4 slot="header">Book a service</h4>
+      <div slot="body">
+        <service-book :service="selectedService" @submitted="submitted" />
+      </div>
+    </modal>
   </div>
 </template>
 

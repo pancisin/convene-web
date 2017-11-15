@@ -49,12 +49,12 @@
             </div>
           </router-link>
         </div>
-      </div>
-    </div>
 
-    <div class="text-center">
-      <paginator :paginator="eventsPaginator"
-        :fetch="getEvents"></paginator>
+        <div class="text-center">
+          <paginator :paginator="eventsPaginator"
+            :fetch="getEvents"></paginator>
+        </div>  
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +63,7 @@
 import { Paginator, DatePicker, Masonry, MasonryItem } from 'elements';
 import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 
 export default {
   name: 'events',
@@ -70,7 +71,7 @@ export default {
     return {
       eventsPaginator: {},
       filters: {
-        timestamp: Date.now(),
+        timestamp: moment().startOf('day').valueOf(),
         authorType: '',
         authorId: '0'
       },

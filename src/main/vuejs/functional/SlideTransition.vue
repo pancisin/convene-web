@@ -7,14 +7,14 @@ export default {
       },
       enter (el, done) {
         Velocity(el, 'slideDown', {
-          duration: 250,
+          duration: 500,
           easing: 'ease-in-out',
           complete: done
         });
       },
       leave (el, done) {
         Velocity(el, 'slideUp', {
-          duration: 250,
+          duration: 500,
           easing: 'ease-in-out',
           complete: done
         });

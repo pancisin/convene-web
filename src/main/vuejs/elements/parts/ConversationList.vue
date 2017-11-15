@@ -39,7 +39,7 @@ export default {
     return {
       messages: [],
       message: null,
-      loading: false,
+      loading: false
     };
   },
   computed: {
