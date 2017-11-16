@@ -26,6 +26,15 @@ export default {
   },
 
   /**
+   * Post new event for user.
+   */
+  postEvent (event, success) {
+    Vue.http.post(`${USER_API_URL}/event`, event).then(response => {
+      success(response.body);
+    });
+  },
+ 
+  /**
    * Get user owned pages.
    * @param {Function} success callback function
    */

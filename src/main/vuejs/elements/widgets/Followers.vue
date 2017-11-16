@@ -17,14 +17,6 @@ export default {
         return 'page';
       }
     }
-  },
-  data () {
-    return {
-
-    };
-  },
-  methods: {
-
   }
 };
 </script>

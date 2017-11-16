@@ -7,6 +7,8 @@
           inline
           class="m-b-20">
         </date-picker>
+        
+        <a class="btn btn-primary btn-block m-b-20" v-if="authenticated" @click="displayEventCreateModal = true">Create event</a>
 
         <panel type="primary" v-if="authenticated">
           <span slot="title">Filters</span>
@@ -20,9 +22,8 @@
           </div>
         </panel>
       </div>
-      <div class="col-sm-6 col-md-9"
-        v-loading="loading">
-        <div class="events-masonry">
+      <div class="col-sm-6 col-md-9">
+        <div class="events-masonry" v-loading="loading">
           <router-link v-for="event in eventsPaginator.content"
             :to="'/event/' + event.id"
             class="event-item"
@@ -56,14 +57,22 @@
         </div>  
       </div>
     </div>
+
+    <modal :show.sync="displayEventCreateModal" @close="displayEventCreateModal = false">
+      <h4 slot="header">Create an event</h4>
+      <div slot="body">
+        <event-create-wizard :postFunc="UserApi.postEvent"></event-create-wizard>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
-import { Paginator, DatePicker, Masonry, MasonryItem } from 'elements';
+import { Paginator, DatePicker, Masonry, MasonryItem, EventCreateWizard } from 'elements';
 import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
+import UserApi from 'api/user.api';
 
 export default {
   name: 'events',
@@ -75,11 +84,12 @@ export default {
         authorType: '',
         authorId: '0'
       },
-      loading: false
+      loading: false,
+      displayEventCreateModal: false
     };
   },
   components: {
-    Paginator, DatePicker, Masonry, MasonryItem
+    Paginator, DatePicker, Masonry, MasonryItem, EventCreateWizard
   },
   watch: {
     filters: {
@@ -113,6 +123,9 @@ export default {
           authorType: value ? 'USER' : ''
         };
       }
+    },
+    UserApi() {
+      return UserApi;
     }
   },
   methods: {

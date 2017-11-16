@@ -1,7 +1,7 @@
 <template>
   <div class="inbox-widget">
     <router-link 
-      :to="{ name: 'event.public', params: { id: event.id }}" 
+      :to="{ name: administrator ? 'event' : 'event.public', params: { id: event.id }}" 
       v-for="(event, index) in events" :key="event.id" 
       class="inbox-item">
 
@@ -24,6 +24,12 @@ export default {
     events: {
       type: Array,
       default: []
+    },
+    administrator: {
+      type: Boolean,
+      default () {
+        return false;
+      }
     }
   },
   created () {

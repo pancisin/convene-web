@@ -1,7 +1,7 @@
 <template>
-  <transition name="fade-up">
-    <div class="modal" v-click-outside="outside" role="dialog" v-show="show">
-      <div class="modal-dialog" :class="{ 'modal-full' : full }">
+  <transition name="fade">
+    <div class="modal" role="dialog" v-show="show">
+      <div class="modal-dialog" :class="{ 'modal-full' : full }" v-click-outside="outside">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" @click="close">×</button>
@@ -31,6 +31,11 @@ export default {
       default: false
     }
   },
+  watch: {
+    show (newVal) { 
+      document.body.classList.toggle('noscroll', newVal);
+    }
+  },
   methods: {
     accept () {
       this.$emit('accept');
@@ -39,8 +44,8 @@ export default {
       this.$emit('close');
     },
     outside () {
-      // if (this.show)
-      //   this.$emit('close');
+      if (this.show)
+        this.$emit('close');
     }
   }
 };
@@ -50,6 +55,9 @@ export default {
 @import (reference) '~less/variables.less';
 .modal {
   display: block;
+  background: rgba(0, 0, 0, 0.4);
+  overflow-y: auto !important;
+  max-height: 100%;
   .modal-dialog {
     .modal-content {
       -moz-box-shadow: none;

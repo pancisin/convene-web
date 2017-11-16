@@ -2,6 +2,7 @@ package com.pancisin.bookster.components.aspects;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -52,7 +53,8 @@ public class LicenseLimiter {
 		if (limit.parent() == null || limit.parent().equals("") || limit.parent().equals("user")) {
 			switch (limit.entity()) {
 			case "event":
-				if (stored.getLicense().getSubscription().getEventLimit() > stored.getEvents().size())
+				if (stored.getLicense().getSubscription().getEventLimit() > stored.getEvents().stream()
+						.filter(e -> e.getDate().after(Calendar.getInstance())).count())
 					return pjp.proceed();
 				break;
 			case "page":
@@ -65,8 +67,7 @@ public class LicenseLimiter {
 			}
 		} else if (limit.parent().equals("page")) {
 			try {
-				Page page = pageRepository
-						.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, limit.parentId())]);
+				Page page = pageRepository.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, limit.parentId())]);
 
 				switch (limit.entity()) {
 				case "event":
@@ -87,8 +88,8 @@ public class LicenseLimiter {
 
 	private int getPathVariableIndex(Method method, String argName) throws Exception {
 		for (int i = 0; i < method.getParameterAnnotations().length; i++) {
-			if (Arrays.stream(method.getParameterAnnotations()[i]).anyMatch(
-					x -> x.annotationType() == PathVariable.class && ((PathVariable) x).value().equals(argName))) {
+			if (Arrays.stream(method.getParameterAnnotations()[i])
+					.anyMatch(x -> x.annotationType() == PathVariable.class && ((PathVariable) x).value().equals(argName))) {
 				return i;
 			}
 		}
@@ -112,8 +113,7 @@ public class LicenseLimiter {
 				return pjp.proceed();
 			}
 		} else if (subscription.parent().equals("page")) {
-			Page page = pageRepository
-					.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
+			Page page = pageRepository.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
 
 			if (page.getOwner().getLicense().getSubscription() == subscription.value()) {
 				return pjp.proceed();
@@ -121,7 +121,7 @@ public class LicenseLimiter {
 		} else if (subscription.parent().equals("conference")) {
 			Conference conference = conferenceRepository
 					.findOne((Long) pjp.getArgs()[getPathVariableIndex(method, subscription.parentId())]);
-			
+
 			if (conference.getOwner().getLicense().getSubscription() == subscription.value()) {
 				return pjp.proceed();
 			}

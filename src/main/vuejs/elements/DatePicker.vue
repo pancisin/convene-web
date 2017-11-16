@@ -94,8 +94,12 @@ export default {
     SlideTransition
   },
   created: function () {
-    this.selected = moment(parseInt(this.value, 10)).startOf('day');
-    this.focusDate = moment(parseInt(this.value, 10));
+    const value = moment(parseInt(this.value, 10));
+    if (value.isValid()) {
+      this.selected = value.startOf('day');
+      this.focusDate = value.clone();
+    }
+
     moment.locale('sk');
     this.updateCalendar();
   },
@@ -104,9 +108,12 @@ export default {
       if (newVal) this.display = true;
     },
     value (newVal) {
-      this.selected = moment(parseInt(this.value, 10)).startOf('day');
-      this.focusDate = moment(parseInt(this.value, 10));
-      this.updateCalendar();
+      const value = moment(parseInt(newVal, 10));
+      if (value.isValid()) {
+        this.selected = value.startOf('day');
+        this.focusDate = value.clone();
+        this.updateCalendar();
+      }
     },
     locale (newVal) {
       moment.locale(newVal.name);
