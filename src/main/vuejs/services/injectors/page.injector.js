@@ -11,6 +11,10 @@ export default class PageInjector {
     };
   }
 
+  get parent_type () {
+    return 'page';
+  }
+
   constructor (page_id) {
     this.page_id = page_id;
   }

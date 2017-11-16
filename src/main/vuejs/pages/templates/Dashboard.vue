@@ -26,8 +26,25 @@
       </div>
     </transition>
 
-    <grid-layout :layout="widgets" :col-num="6" :row-height="100" :is-draggable="editMode" :is-resizable="editMode" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
-      <grid-item v-for="(item, index) in widgets" :key="index" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
+    <grid-layout 
+      :layout="widgets" 
+      :col-num="6" 
+      :row-height="100" 
+      :is-draggable="editMode" 
+      :is-resizable="editMode" 
+      :vertical-compact="true" 
+      :margin="[10, 10]" 
+      :use-css-transforms="true">
+
+      <grid-item 
+        v-for="(item, index) in widgets" 
+        :key="index" 
+        :x="item.x" 
+        :y="item.y" 
+        :w="item.w" 
+        :h="item.h" 
+        :i="item.i">
+
         <div class="widget-wrapper" :class="{ 'edit-mode' : editMode }">
           <transition name="fade">
             <a class="pull-right text-danger widget-delete" @click="removeWidget(item)" v-show="editMode">
@@ -35,8 +52,14 @@
             </a>
           </transition>
 
-          <component class="widget-wrapper-content" :is="item.type.component" :title="$t(item.type.code)"></component>
+          <component 
+            class="widget-wrapper-content" 
+            :is="item.type.component" 
+            :title="$t(item.type.code)" 
+            :parent="api.parent_type">
+          </component>
         </div>
+        
       </grid-item>
     </grid-layout>
   </div>

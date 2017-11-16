@@ -8,6 +8,16 @@
 <script>
 export default {
   name: 'followers-widget',
+  props: {
+    parent: {
+      validator (value) { 
+        return ['event', 'page', 'conference'].includes(value);
+      },
+      default() {
+        return 'page';
+      }
+    }
+  },
   data () {
     return {
 

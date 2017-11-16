@@ -1,6 +1,20 @@
 import ConferenceApi from 'api/conference.api';
 
 export default class ConferenceInjector {
+ 
+  get base_route () {
+    return {
+      name: 'conference',
+      props: {
+        id: this.conference_id
+      }
+    };
+  }
+
+  get parent_type () {
+    return 'conference';
+  }
+
   constructor (conference_id) {
     this.conference_id = conference_id;
   }

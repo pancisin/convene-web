@@ -1,5 +1,5 @@
 <template>
-  <panel type="primary">
+  <panel type="primary" v-loading="loading">
     <span slot="title">
       {{ title }}
     </span>
@@ -24,7 +24,8 @@ export default {
   inject: ['provider'],
   data () {
     return {
-      events: []
+      events: [],
+      loading: false
     };
   },
   watch: {
@@ -42,8 +43,10 @@ export default {
   },
   methods: {
     getActiveEvents () {
+      this.loading = true;
       this.api.getEvents(0, 10, paginator => {
         this.events = paginator.content;
+        this.loading = false;
       });
     }
   }
