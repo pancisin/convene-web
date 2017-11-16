@@ -164,6 +164,16 @@ export default {
     z-index: 1;
   }
 
+  .widget-wrapper-content {
+    margin-bottom: 0;
+    overflow: hidden;
+
+    .panel-body {
+      overflow: auto;
+      height: 91%;
+    }
+  }
+
   &.edit-mode {
     .widget-wrapper-content {
       pointer-events: none;

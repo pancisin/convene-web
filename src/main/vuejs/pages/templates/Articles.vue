@@ -44,7 +44,7 @@
     </table>
 
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li>
             <router-link :to="{ name: 'article.public', params: { article_id: props.data.id } }">

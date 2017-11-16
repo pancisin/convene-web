@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-          <panel>
+          <panel v-if="page.summary != null && page.summary.length > 0">
             <div v-html="page.summary" class="m-b-20"></div>
           </panel>
 

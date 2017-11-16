@@ -40,7 +40,7 @@
     </table>
   
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li>
             <a @click="toggleSeen(props.data)">

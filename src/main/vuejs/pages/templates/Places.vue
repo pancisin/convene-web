@@ -27,7 +27,7 @@
         </table>
 
         <context-menu ref="menu">
-          <template scope="props">
+          <template slot-scope="props">
             <ul>
               <li v-if="editable">
                 <router-link :to="{ name: 'place', params: { place_id: props.data.id } }">

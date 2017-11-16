@@ -35,7 +35,7 @@
     </table>
 
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li>
             <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">

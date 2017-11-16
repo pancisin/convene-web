@@ -6,8 +6,10 @@
         <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
 
-          <p class="panel-sub-title font-13">{{ event.date | moment('LL') }} {{ event.startsAt }}
-                <br>Usporiadatel : {{ event.author.displayName }}</p>
+          <p class="panel-sub-title font-13">
+            {{ event.date | moment('LL') }} {{ event.startsAt }}
+            <br>Usporiadatel : {{ event.author.displayName }}
+          </p>
        
           <div class="socials">
             <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank" v-if="event.facebookId != null">

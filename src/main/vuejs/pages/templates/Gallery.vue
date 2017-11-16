@@ -58,7 +58,7 @@
     </masonry>
 
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li :class="{ 'disabled' : !editable }">
             <a>

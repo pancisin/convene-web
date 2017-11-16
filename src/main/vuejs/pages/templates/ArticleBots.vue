@@ -43,7 +43,7 @@
     </table>
 
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li v-if="editable">
             <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: props.data.id } }">

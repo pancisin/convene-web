@@ -47,7 +47,7 @@
     </table>
 
     <context-menu ref="menu">
-      <template scope="props">
+      <template slot-scope="props">
         <ul>
           <li :class="{ 'disabled' : !editable || !hasPermission(props.data) }">
             <a @click="toggleActive(props.data)">
