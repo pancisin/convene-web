@@ -12,24 +12,21 @@
       </a>
     </div>
   
-    <div class="steps-container row">
+    <div class="steps-container">
       <div id="bar" class="progress progress-striped">
         <div class="bar progress-bar progress-bar-primary" :style="progressBarStyle"></div>
       </div>
   
-      <div class="col-md-12">
-        <slot>
-        </slot>
+      <slot>
+      </slot>
   
-        <div class="wizard-navigation-buttons clearfix m-b-10 m-t-10">
-          <a class="btn btn-primary btn-rounded" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
-          <a class="btn btn-primary btn-rounded pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
-  
-          <a class="btn btn-success btn-rounded pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
-        </div>
+      <div class="wizard-navigation-buttons clearfix m-b-10 m-t-10">
+        <a class="btn btn-primary btn-rounded" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
+        <a class="btn btn-primary btn-rounded pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
+
+        <a class="btn btn-success btn-rounded pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
       </div>
     </div>
-  
   </div>
 </template>
 

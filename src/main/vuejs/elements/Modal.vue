@@ -4,7 +4,7 @@
       <div class="modal-dialog" :class="{ 'modal-full' : full }" v-click-outside="outside">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" @click="close">×</button>
+            <button type="button" class="close" data-dismiss="modal" @click="close"><i class="fa fa-times"></i></button>
             <h4 class="modal-title">
               <slot name="header">Header</slot>
             </h4>
@@ -44,8 +44,8 @@ export default {
       this.$emit('close');
     },
     outside () {
-      if (this.show)
-        this.$emit('close');
+      // if (this.show)
+        // this.$emit('close');
     }
   }
 };
@@ -63,17 +63,27 @@ export default {
       -moz-box-shadow: none;
       -webkit-box-shadow: none;
       border-color: #DDDDDD;
-      border-radius: 2px;
+      border-radius: 0;
+      border: none;
       box-shadow: none;
-      padding: 30px;
       .modal-header {
-        border-bottom-width: 2px;
-        margin: 0;
-        padding: 0;
-        padding-bottom: 15px;
+        // border-bottom-width: 2px;
+        padding: 15px 30px;
+        // background-color: #fafafa;
+        background-color: @color-primary;
+        color: #fff;
+
+        h4 {
+          color: #fff;
+        }
+
+        .close {
+          margin: 0;
+          text-shadow: none;
+        }
       }
       .modal-body {
-        padding: 20px 0;
+        padding: 30px;
       }
       .modal-footer {
         padding: 0;

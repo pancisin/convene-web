@@ -59,7 +59,7 @@
     </div>
 
     <modal :show.sync="displayEventCreateModal" @close="displayEventCreateModal = false">
-      <h4 slot="header">Create an event</h4>
+      <span slot="header">Create an event</span>
       <div slot="body">
         <event-create-wizard :postFunc="UserApi.postEvent"></event-create-wizard>
       </div>
