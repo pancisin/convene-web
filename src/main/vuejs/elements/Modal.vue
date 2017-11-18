@@ -12,6 +12,9 @@
           <div class="modal-body">
             <slot name="body"></slot>
           </div>
+          <!-- <div class="modal-footer">
+            <slot name="footer"></slot>
+          </div> -->
         </div>
       </div>
     </div>
@@ -67,9 +70,7 @@ export default {
       border: none;
       box-shadow: none;
       .modal-header {
-        // border-bottom-width: 2px;
         padding: 15px 30px;
-        // background-color: #fafafa;
         background-color: @color-primary;
         color: #fff;
 
@@ -86,8 +87,7 @@ export default {
         padding: 30px;
       }
       .modal-footer {
-        padding: 0;
-        padding-top: 15px;
+        padding: 15px 30px;
       }
     }
   }

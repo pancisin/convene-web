@@ -1,6 +1,8 @@
 const updateLoader = (el, value) => {
-  const loader = el.getElementsByClassName('loader')[0];
-  const percentage = el.getElementsByClassName('percentage')[0];
+  const children = Array.from(el.childNodes);
+  const loader = children.filter(e => e.classList != null && e.classList.contains('loader'))[0];
+
+  const percentage = loader.getElementsByClassName('percentage')[0];
   percentage.style = {
     display: value && value !== true ? 'inline-block' : 'none'
   };

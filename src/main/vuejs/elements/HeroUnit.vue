@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     handleScroll () {
-      console.log(this.$el.offsetTop + ' - ' + window.scrollY);
       this.bg_style = {
         ...this.bg_style,
         'background-position': `center calc(50% + ${-(this.$el.offsetTop - window.scrollY) * 0.5}px)`

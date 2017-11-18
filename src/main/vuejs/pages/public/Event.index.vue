@@ -24,31 +24,35 @@
       </div>
       <div class="col-sm-6 col-md-9">
         <div class="events-masonry" v-loading="loading">
-          <router-link v-for="event in eventsPaginator.content"
-            :to="'/event/' + event.id"
+          <div v-for="event in eventsPaginator.content"
             class="event-item"
             :key="event.id">
-            <div class="image-wrapper">
-              <img v-if="event.poster != null"
-                :src="event.poster.path">
-            </div>
+            <router-link :to="'/event/' + event.id">
+              <div class="image-wrapper">
+                <img v-if="event.poster != null"
+                  :src="event.poster.path">
+              </div>
 
-            <div class="content">
-              <h4 v-text="event.name"></h4>
-              <small class="text-muted">By {{ event.author.displayName }}</small>
-              <br>
-              <small v-if="event.place != null"
-                v-text="event.place.address.formatted"></small>
+              <div class="content">
+                <h4 v-text="event.name"></h4>
+                <small class="text-muted">By {{ event.author.displayName }}</small>
+                <br>
+                <small v-if="event.place != null"
+                  v-text="event.place.address.formatted"></small>
 
-              <small class="text-muted">
-                {{ event.date | moment('L') }}
-                <span
-                  v-if="event.startsAt != null">
-                  at {{ event.startsAt }}
-                </span>
-              </small>
+                <small class="text-muted">
+                  {{ event.date | moment('L') }}
+                  <span
+                    v-if="event.startsAt != null">
+                    at {{ event.startsAt }}
+                  </span>
+                </small>
+              </div>
+            </router-link>
+            <div class="actions" v-if="event.author.id === user.id">
+              <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-pencil"></i></a>
             </div>
-          </router-link>
+          </div>
         </div>
 
         <div class="text-center">
@@ -64,6 +68,16 @@
         <event-create-wizard :postFunc="UserApi.postEvent"></event-create-wizard>
       </div>
     </modal>
+
+    <modal :show.sync="displayEventEditModal" @close="displayEventEditModal = false">
+      <span slot="header">Edit event</span>
+      <div slot="body">
+        <event-overview :event="editedEvent" edit></event-overview>
+      </div>
+      <!-- <div slot="footer">
+        <a class="btn btn-success" href="#">Save & close</a> 
+      </div> -->
+    </modal>
   </div>
 </template>
 
@@ -73,6 +87,7 @@ import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import UserApi from 'api/user.api';
+import EventOverview from '../event/Editor';
 
 export default {
   name: 'events',
@@ -85,11 +100,18 @@ export default {
         authorId: '0'
       },
       loading: false,
-      displayEventCreateModal: false
+      displayEventCreateModal: false,
+      displayEventEditModal: false,
+      editedEvent: {}
     };
   },
   components: {
-    Paginator, DatePicker, Masonry, MasonryItem, EventCreateWizard
+    Paginator, 
+    DatePicker, 
+    Masonry, 
+    MasonryItem,
+    EventCreateWizard, 
+    EventOverview
   },
   watch: {
     filters: {
@@ -136,6 +158,10 @@ export default {
         this.eventsPaginator = paginator;
         this.loading = false;
       });
+    },
+    editEvent (event) {
+      this.editedEvent = event;
+      this.displayEventEditModal = true;
     }
   }
 };
@@ -177,6 +203,22 @@ export default {
         text-transform: uppercase;
         font-size: 15px;
         line-height: 18px;
+      }
+    }
+    
+    .actions {
+      border-top: 1px solid #eee;
+      text-align: right;
+
+      & > a {
+        transition: background-color .3s ease-in-out;
+        color: #000;
+        padding: 5px 10px;
+        display: inline-block;
+
+        &:hover {
+          background-color: #eee;
+        }
       }
     }
   }

@@ -34,7 +34,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	public List<Event> getAttending(@Param("user_id") Long user_id);
 
 	@Query("SELECT event FROM Event event WHERE event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date)")
-	@Cacheable("events") // here is second level cache problem.
+//	@Cacheable("events") // here is second level cache problem.
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
 
 	@Query("SELECT event FROM User user JOIN user.events event WHERE user.id = :userId AND event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date) AND event.page IS NULL AND event.conference IS NULL")
