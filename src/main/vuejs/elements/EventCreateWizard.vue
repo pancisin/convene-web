@@ -36,14 +36,15 @@
 
 <script>
 import Wizard from './Wizard';
-import WizardPage from './WIzardPage';
+import WizardPage from './WizardPage';
 import DatePicker from './DatePicker';
 import TextEditor from './TextEditor';
 
 export default {
   name: 'event-create-wizard',
   props: {
-    postFunc: Function
+    postFunc: Function,
+    date: [ String, Number ]
   },
   data () {
     return {
@@ -51,7 +52,10 @@ export default {
       valid: {
         basic: false
       }
-    }
+    };
+  },
+  created () {
+    this.event.date = parseInt(this.date, 10);
   },
   components: {
     Wizard,
@@ -71,14 +75,14 @@ export default {
   methods: {
     submit () {
       this.postFunc(this.event, event => {
-        console.log(event);
+        this.$emit('success', this.event);
       });
     },
     validate (scope) {
       this.$validator.validateAll(scope).then(result => {
         this.valid[scope] = result;
       });
-    },
+    }
   }
-}
+};
 </script>

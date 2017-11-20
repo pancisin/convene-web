@@ -39,16 +39,26 @@
           </panel>
 
           <div class="m-b-20">
-            <a href="#" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
+            <a @click="displayReportModal = true" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
           </div>
         </div>
       </div>
     </div>
 
-    <modal :show.sync="displayBookModal" @close="displayBookModal = false" :full="false">
-      <h4 slot="header">Book a service</h4>
+    <modal :show.sync="displayBookModal">
+      <span slot="header">Book a service</span>
       <div slot="body">
-        <service-book :service="selectedService" @submitted="submitted" />
+        <service-book 
+          :service="selectedService" 
+          @submitted="displayBookModal = false" 
+        />
+      </div>
+    </modal>
+
+    <modal :show.sync="displayReportModal">
+      <span slot="header">Report abuse or illegal activity</span>
+      <div slot="body">
+        <abuse-report v-if="displayReportModal" />
       </div>
     </modal>
   </div>
@@ -56,7 +66,7 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
-import { EventsList, HeroUnit } from 'elements';
+import { EventsList, HeroUnit, AbuseReport } from 'elements';
 
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
@@ -78,13 +88,15 @@ export default {
       services: [],
       events: [],
       selectedService: null,
-      displayBookModal: false
+      displayBookModal: false,
+      displayReportModal: false
     };
   },
   components: {
     ServiceBook,
     EventsList,
-    HeroUnit
+    HeroUnit,
+    AbuseReport
   },
   watch: {
     '$route': 'getPage'
@@ -141,9 +153,6 @@ export default {
     bookService (service) {
       this.selectedService = service;
       this.displayBookModal = true;
-    },
-    submitted: function (bookRequest) {
-      this.displayBookModal = false;
     }
   }
 };

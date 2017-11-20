@@ -37,11 +37,6 @@ var router = new VueRouter({
       },
       children: publicRoutes.concat([
         {
-          path: 'create-event',
-          component: resolve => require(['../pages/public/Event.create.vue'], resolve),
-          beforeEnter: require_auth
-        },
-        {
           path: 'subscribe/:subscription',
           name: 'sub.signup',
           component: resolve => require(['../pages/public/Subscribe.vue'], resolve),

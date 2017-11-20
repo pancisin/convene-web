@@ -20,11 +20,13 @@
       <slot>
       </slot>
   
-      <div class="wizard-navigation-buttons clearfix m-b-10 m-t-10">
-        <a class="btn btn-primary btn-rounded" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
-        <a class="btn btn-primary btn-rounded pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
-
-        <a class="btn btn-success btn-rounded pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
+      <div class="wizard-navigation-buttons clearfix m-t-10">
+        <a class="btn btn-primary" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
+        
+        <div class="text-right">
+          <a class="btn btn-primary pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
+          <a class="btn btn-success pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
+        </div>
       </div>
     </div>
   </div>
@@ -112,6 +114,9 @@ export default {
         margin-bottom: 15px;
         transition: .5s ease;
         color: #505458;
+
+        border: 1px solid #dfdfdf;
+        background: #fafafa;
       }
 
       &.active {

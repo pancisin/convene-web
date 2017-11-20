@@ -17,6 +17,7 @@
     "font-awesome": "^4.7.0",
     "google-maps-api-loader": "^0.3.0",
     "gravatar": "^1.6.0",
+    "html2canvas": "^0.5.0-beta4",
     "jquery": "^3.2.1",
     "later": "github:rickcarlino/later",
     "moment": "^2.18.0",

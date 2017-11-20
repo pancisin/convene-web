@@ -32,23 +32,22 @@ export default {
     full: {
       type: Boolean,
       default: false
-    }
+    },
+    accept: Function
   },
   watch: {
-    show (newVal) { 
+    show (newVal) {
       document.body.classList.toggle('noscroll', newVal);
     }
   },
   methods: {
-    accept () {
-      this.$emit('accept');
-    },
     close () {
-      this.$emit('close');
+      this.$emit('update:show', false);
     },
     outside () {
-      // if (this.show)
-        // this.$emit('close');
+      if (this.show) {
+        this.close();
+      }
     }
   }
 };
@@ -61,7 +60,24 @@ export default {
   background: rgba(0, 0, 0, 0.4);
   overflow-y: auto !important;
   max-height: 100%;
+
+  padding: 0;
+  text-align: center;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+  }
+
   .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+    margin: 15px;
+
     .modal-content {
       -moz-box-shadow: none;
       -webkit-box-shadow: none;

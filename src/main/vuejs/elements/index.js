@@ -39,6 +39,7 @@ import ProductLogo from './ProductLogo';
 import PagesList from './PagesList';
 import Chat from './Chat';
 import EventCreateWizard from './EventCreateWizard';
+import AbuseReport from './AbuseReport';
 
 import widgets from './widgets';
 
@@ -84,5 +85,6 @@ export {
   ProductLogo,
   PagesList,
   Chat,
-  EventCreateWizard
+  EventCreateWizard,
+  AbuseReport
 };

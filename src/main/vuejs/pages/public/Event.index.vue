@@ -35,7 +35,7 @@
 
               <div class="content">
                 <h4 v-text="event.name"></h4>
-                <small class="text-muted">By {{ event.author.displayName }}</small>
+                <small class="text-muted" v-if="event.author">By {{ event.author.displayName }}</small>
                 <br>
                 <small v-if="event.place != null"
                   v-text="event.place.address.formatted"></small>
@@ -49,7 +49,7 @@
                 </small>
               </div>
             </router-link>
-            <div class="actions" v-if="event.author.id === user.id">
+            <div class="actions" v-if="event.author && event.author.id === user.id">
               <a @click="editEvent(event)"><i class="fa fa-pencil"></i></a>
               <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
             </div>
@@ -63,17 +63,25 @@
       </div>
     </div>
 
-    <modal :show.sync="displayEventCreateModal" @close="displayEventCreateModal = false">
+    <modal :show.sync="displayEventCreateModal">
       <span slot="header">Create an event</span>
       <div slot="body">
-        <event-create-wizard :postFunc="UserApi.postEvent"></event-create-wizard>
+        <event-create-wizard 
+          :postFunc="UserApi.postEvent" 
+          @success="updateContent" 
+          :date="filters.timestamp"
+          v-if="displayEventCreateModal"
+        ></event-create-wizard>
       </div>
     </modal>
 
-    <modal :show.sync="displayEventEditModal" @close="displayEventEditModal = false">
+    <modal :show.sync="displayEventEditModal">
       <span slot="header">Edit event</span>
       <div slot="body">
-        <event-overview :event="editedEvent" edit></event-overview>
+        <event-editor 
+          :event="editedEvent" 
+          @updated="updateContent"
+        ></event-editor>
       </div>
     </modal>
   </div>
@@ -85,7 +93,7 @@ import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import UserApi from 'api/user.api';
-import EventOverview from '../event/Editor';
+import EventEditor from '../event/Editor';
 
 export default {
   name: 'events',
@@ -104,12 +112,12 @@ export default {
     };
   },
   components: {
-    Paginator, 
-    DatePicker, 
-    Masonry, 
+    Paginator,
+    DatePicker,
+    Masonry,
     MasonryItem,
-    EventCreateWizard, 
-    EventOverview
+    EventCreateWizard,
+    EventEditor
   },
   watch: {
     filters: {
@@ -144,7 +152,7 @@ export default {
         };
       }
     },
-    UserApi() {
+    UserApi () {
       return UserApi;
     }
   },
@@ -160,6 +168,22 @@ export default {
     editEvent (event) {
       this.editedEvent = event;
       this.displayEventEditModal = true;
+    },
+    updateContent (event) {
+      const index = this.eventsPaginator.content.findIndex(e => e.id === event.id);
+      const remove = moment(event.date).startOf('day').valueOf() !== this.filters.timestamp;
+
+      if (index === -1) {
+        if (!remove) {
+          this.eventsPaginator.content.push(event);
+        }
+      } else {
+        this.eventsPaginator.content.splice(index, 1, remove ? null : { ...event });
+        this.eventsPaginator.content = this.eventsPaginator.content.filter(x => x);
+      }
+
+      this.displayEventCreateModal = false;
+      this.displayEventEditModal = false;
     }
   }
 };
