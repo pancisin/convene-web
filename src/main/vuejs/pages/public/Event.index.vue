@@ -50,7 +50,8 @@
               </div>
             </router-link>
             <div class="actions" v-if="event.author.id === user.id">
-              <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-pencil"></i></a>
+              <a @click="editEvent(event)"><i class="fa fa-pencil"></i></a>
+              <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
             </div>
           </div>
         </div>
@@ -74,9 +75,6 @@
       <div slot="body">
         <event-overview :event="editedEvent" edit></event-overview>
       </div>
-      <!-- <div slot="footer">
-        <a class="btn btn-success" href="#">Save & close</a> 
-      </div> -->
     </modal>
   </div>
 </template>
@@ -168,6 +166,7 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .events-masonry {
   padding: 0;
   -moz-column-gap: 1.5em;
@@ -209,15 +208,19 @@ export default {
     .actions {
       border-top: 1px solid #eee;
       text-align: right;
+      display: flex;
 
       & > a {
-        transition: background-color .3s ease-in-out;
+        transition: all .3s ease-in-out;
         color: #000;
-        padding: 5px 10px;
+        padding: 10px;
         display: inline-block;
+        flex: 1 1 auto;
+        text-align: center;
 
         &:hover {
-          background-color: #eee;
+          background-color: @color-primary;
+          color: #fff;
         }
       }
     }
