@@ -40,7 +40,7 @@
               :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
             
               <router-link 
-                :to="{ name: 'page.public', params: { id: page.id } }">
+                :to="{ name: 'page.public', params: { id: page.slug || page.id } }">
                 <div class="title">
                   <h5>
                     {{ page.name }}

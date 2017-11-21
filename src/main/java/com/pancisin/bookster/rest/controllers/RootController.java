@@ -41,7 +41,7 @@ public class RootController {
 
 	@Autowired
 	private EventRepository eventRepository;
-	
+
 	@Autowired
 	private ConferenceRepository conferenceRepository;
 
@@ -87,6 +87,11 @@ public class RootController {
 		return ResponseEntity.ok(pages);
 	}
 
+	@GetMapping({ "/api/page/s/{slug}", "/public/page/s/{slug}" })
+	public ResponseEntity<?> getPageBySlug(@PathVariable String slug) {
+		return ResponseEntity.ok(pageRepository.findBySlug(slug));
+	}
+
 	@GetMapping({ "/api/events/{page}/{limit}", "/public/events/{page}/{limit}" })
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
 			@RequestParam(name = "timestamp", required = false) String timestamp,
@@ -122,7 +127,7 @@ public class RootController {
 	@GetMapping({ "/api/conferences/{page}/{size}", "/public/conferences/{page}/{size}" })
 	public ResponseEntity<?> getConferences(@PathVariable int page, @PathVariable int size) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		if (auth != null) {
 			return ResponseEntity.ok(conferenceRepository.getForUser(auth.getId(), new PageRequest(page, size)));
 		} else {

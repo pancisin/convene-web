@@ -92,11 +92,23 @@
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
     </dependency>
-   <dependency>
-    <groupId>com.google.guava</groupId>
-    <artifactId>guava</artifactId>
-    <version>23.0</version>
-</dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>23.0</version>
+    </dependency>
+
+
+    <dependency>
+        <groupId>com.github.dfabulich</groupId>
+        <artifactId>sitemapgen4j</artifactId>
+        <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.slugify</groupId>
+      <artifactId>slugify</artifactId>
+      <version>2.2</version>
+    </dependency>
   </dependencies>
 
   <build>

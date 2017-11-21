@@ -1,6 +1,6 @@
 <template>
    <div class="inbox-widget">
-    <router-link :to="{ name: 'page.public', params: { id: page.id }}"
+    <router-link :to="{ name: 'page.public', params: { id: page.slug || page.id }}"
       v-for="(page, index) in pages"
       :key="index"
       class="inbox-item">

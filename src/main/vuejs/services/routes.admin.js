@@ -38,6 +38,11 @@ export default [
     component: resolve => require(['../pages/system/Users.vue'], resolve)
   },
   {
+    path: 'maintenance',
+    name: 'system.maintenance',
+    component: resolve => require(['../pages/system/Maintenance.vue'], resolve)
+  },
+  {
     path: 'page-import',
     name: 'system.page-import',
     component: resolve => require(['../pages/system/PageImport.vue'], resolve)

@@ -22,6 +22,11 @@ export default {
       name: 'system.page-import',
       code: 'admin.system.page_import',
       icon: 'accessibility'
+    },
+    {
+      name: 'system.maintenance',
+      code: 'admin.system.maintenance',
+      icon: 'build'
     }
   ]
 };

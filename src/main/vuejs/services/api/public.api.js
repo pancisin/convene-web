@@ -61,17 +61,6 @@ export default {
   },
 
   /**
-   * Get public page data.
-   * @param {Number} id - page id
-   * @param {Function} success - success callback function
-   */
-  getPage (id, success) {
-    Vue.http.get(`${PAGE_PUBLIC_URL}/${id}`).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
    * Get public pages
    * @param {*} page - paginator page attribute
    * @param {*} size - paginator size attribute
@@ -89,6 +78,27 @@ export default {
   },
 
   page: {
+    /**
+     * Get public page data.
+     * @param {Number} id - page id
+     * @param {Function} success - success callback function
+     */
+    getPage (id, success) {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/${id}`).then(response => {
+        success(response.body);
+      });
+    },
+
+    /**
+     * Get page object by slug string
+     * @param {*} slug - slug string
+     * @param {*} success - success callback function
+     */
+    getPageBySlug (slug, success) {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/s/${slug}`).then(response => {
+        success(response.body);
+      });
+    },
 
     /**
      * Get public accessible events for page.

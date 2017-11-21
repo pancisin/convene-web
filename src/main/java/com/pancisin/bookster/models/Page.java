@@ -26,9 +26,12 @@ import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -37,6 +40,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.github.slugify.Slugify;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
@@ -62,6 +66,10 @@ public class Page implements IAuthor {
 	private String name;
 
 	@JsonView(Compact.class)
+	@JsonProperty(access = Access.READ_ONLY)
+	@GenericGenerator(name = "unique_slug_generator", strategy = "com.pancisin.bookster.utils.UniqueSlugGenerator")
+	@GeneratedValue(generator = "unique_slug_generator")
+	@Column(unique = true, updatable = true)
 	private String slug;
 
 	@Lob
@@ -173,7 +181,16 @@ public class Page implements IAuthor {
   @Column(name = "meta_value")
   @CollectionTable(name = "pages_metadata")
 	private Map<String, String> metadata = new HashMap<String, String>(); 
-	
+
+	@PreUpdate
+	private void onUpdate() {
+		Slugify s = new Slugify();
+
+		if (this.slug == null || this.slug.equals("")) {
+			this.setSlug(s.slugify(this.name));
+		}
+	}
+  
 	public Long getId() {
 		return id;
 	}

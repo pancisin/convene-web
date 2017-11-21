@@ -23,6 +23,17 @@ export default {
   },
 
   /**
+   * Get page object by slug string
+   * @param {*} slug - slug string
+   * @param {*} success - success callback function
+   */
+  getPageBySlug (slug, success) {
+    Vue.http.get(`${PAGE_API_URL}/s/${slug}`).then(response => {
+      success(response.body);
+    }, errorHandler);
+  },
+
+  /**
    * Update page data
    * @param {*} page - page data object
    * @param {*} success - success callback function

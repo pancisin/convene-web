@@ -52,6 +52,7 @@ export default {
   system: {
     users: 'Users',
     news: 'News',
-    page_import: 'Page importer'
+    page_import: 'Page importer',
+    maintenance: 'Maintenance'
   }
 };

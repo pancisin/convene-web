@@ -73,15 +73,8 @@ import PublicApi from 'api/public.api';
 
 import { mapGetters, mapActions } from 'vuex';
 
-import PageInjector from '../../services/injectors/page.injector.js';
-
 export default {
   name: 'page',
-  provide () {
-    return {
-      api: new PageInjector(this.$route.params.id)
-    };
-  },
   data () {
     return {
       page: null,
@@ -99,10 +92,10 @@ export default {
     AbuseReport
   },
   watch: {
-    '$route': 'getPage'
+    '$route': 'initialize'
   },
   created () {
-    this.getPage();
+    this.initialize();
   },
   computed: {
     ...mapGetters(['authenticated', 'pageFollowStatus']),
@@ -112,43 +105,25 @@ export default {
   },
   methods: {
     ...mapActions(['togglePageFollow']),
-    getPage () {
-      var page_id = this.$route.params.id;
+    initialize () {
+      const page_id = this.$route.params.id;
+      const id = parseInt(this.$route.params.id, 10);
 
-      if (page_id == null) {
-        var reg = new RegExp('www|bookster|convene|localhost:3000');
-        var parts = window.location.host.split('.');
+      const api = this.authenticated ? PageApi : PublicApi.page;
+      const fetchFunc = isNaN(id) ? api.getPageBySlug : api.getPage;
 
-        if (!reg.test(parts[0])) {
-          page_id = parts[0];
-        }
-      } else {
-        if (this.authenticated) {
-          PageApi.getPage(page_id, page => {
-            this.page = page;
-
-            PageApi.getEvents(this.page.id, 0, 10, paginator => {
-              this.events = paginator.content;
-            });
-
-            PageApi.getServices(this.page.id, services => {
-              this.services = services;
-            });
+      fetchFunc(page_id, page => {
+        if (page.id) {
+          this.page = page;
+          api.getEvents(page.id, 0, 10, paginator => {
+            this.events = paginator.content;
           });
-        } else {
-          PublicApi.getPage(page_id, page => {
-            this.page = page;
 
-            PublicApi.page.getEvents(page.id, 0, 10, paginator => {
-              this.events = paginator.content;
-            });
-
-            PublicApi.page.getServices(this.page.id, services => {
-              this.services = services;
-            });
+          api.getServices(page.id, services => {
+            this.services = services;
           });
         }
-      }
+      });
     },
     bookService (service) {
       this.selectedService = service;

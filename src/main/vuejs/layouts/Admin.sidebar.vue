@@ -2,7 +2,7 @@
   <transition name="fade-left">
     <div class="left side-menu" v-show="!collapsed">
       <div id="sidebar-menu">
-        <ul v-if="menus.main.hasPermission(user)">
+        <!-- <ul v-if="menus.main.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.main') }}</li>
 
           <li v-for="(route, index) in menus.main.routes" :key="index" v-if="route.hasPermission(user)">
@@ -11,7 +11,7 @@
               <span>{{ $t(route.code) }}</span>
             </router-link>
           </li>
-        </ul>
+        </ul> -->
 
         <ul v-if="menus.system.hasPermission(user)">
           <li class="menu-title">{{ $t('admin.menu.system') }}</li>
