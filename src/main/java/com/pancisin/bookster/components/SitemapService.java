@@ -1,6 +1,8 @@
 package com.pancisin.bookster.components;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,9 @@ public class SitemapService {
 
 	@Autowired
 	private ConferenceRepository conferenceRepository;
+
+	private final String[] staticRoutes = { "about", "pricing", "faq", "terms", "privacy-policy", "events", "explore",
+			"conferences" };
 
 	public String createSitemap() throws MalformedURLException {
 		WebSitemapGenerator sitemap = new WebSitemapGenerator(BASE_URL);
@@ -71,6 +76,17 @@ public class SitemapService {
 				}).filter(x -> x != null).collect(Collectors.toList());
 
 		sitemap.addUrls(conferences);
+		
+		List<WebSitemapUrl> staticUrls = Arrays.asList(staticRoutes).stream().map(r -> {
+			try {
+				String url = String.join("/", BASE_URL, r);
+				return new WebSitemapUrl(url);
+			} catch (MalformedURLException e1) {
+				return null;
+			}
+		}).filter(x -> x != null).collect(Collectors.toList());
+		
+		sitemap.addUrls(staticUrls);
 
 		return String.join("", sitemap.writeAsStrings());
 	}
