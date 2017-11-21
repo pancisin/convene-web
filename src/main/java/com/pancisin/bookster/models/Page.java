@@ -31,6 +31,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,7 @@ import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.utils.UniqueSlugGenerator;
 
 @Entity
 @Table(name = "pages")
@@ -67,9 +69,8 @@ public class Page implements IAuthor {
 
 	@JsonView(Compact.class)
 	@JsonProperty(access = Access.READ_ONLY)
-	@GenericGenerator(name = "unique_slug_generator", strategy = "com.pancisin.bookster.utils.UniqueSlugGenerator")
-	@GeneratedValue(generator = "unique_slug_generator")
 	@Column(unique = true, updatable = true)
+	@GeneratorType(type = UniqueSlugGenerator.class)
 	private String slug;
 
 	@Lob

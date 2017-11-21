@@ -1,41 +1,44 @@
 package com.pancisin.bookster.utils;
 
-import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.Session;
+import org.hibernate.tuple.ValueGenerator;
 
 import com.github.slugify.Slugify;
 import com.pancisin.bookster.models.Page;
 
-public class UniqueSlugGenerator implements IdentifierGenerator {
+public class UniqueSlugGenerator implements ValueGenerator<String> {
+
+	private String slug;
 
 	@Override
-	public Serializable generate(SessionImplementor session, Object object) throws HibernateException {
-		Page page = (Page) object;
+	public String generateValue(Session session, Object owner) {
+		Page page = (Page) owner;
 		Slugify s = new Slugify();
-		String slug = s.slugify(page.getName());
+		slug = s.slugify(page.getName());
 		
-		Connection connection = session.connection();
+		session.doWork(connection -> {
+			try {
+				Statement statement = connection.createStatement();
+				String query = "select count(id) as slug_count from pages WHERE slug LIKE '" + slug + "%'";
 
-		try {
-			Statement statement = connection.createStatement();
-			String query = "select count(id) as slug_count from pages WHERE slug LIKE '" + slug + "%'";
+				ResultSet rs = statement.executeQuery(query);
 
-			ResultSet rs = statement.executeQuery(query);
-
-			if (rs.next()) {
-				slug = String.join("-", slug, String.valueOf(rs.getInt(1)));
+				if (rs.next()) {
+					int number = rs.getInt(1);
+					
+					if (number > 0) {
+						slug = String.join("-", slug, String.valueOf(rs.getInt(1)));
+					}
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
 			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-
+		});
+		
 		return slug;
 	}
 
