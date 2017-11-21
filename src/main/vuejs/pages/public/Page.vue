@@ -75,6 +75,19 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'page',
+  head: {
+    title () {
+      return 'test';
+    },
+    meta () {
+      return [
+        {
+          name: 'description',
+          content: this.page.summary
+        }
+      ];
+    }
+  },
   data () {
     return {
       page: null,
@@ -121,6 +134,11 @@ export default {
 
           api.getServices(page.id, services => {
             this.services = services;
+          });
+
+          this.$updateMeta({
+            title: page.name,
+            description: page.summary
           });
         }
       });
