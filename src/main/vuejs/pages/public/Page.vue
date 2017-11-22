@@ -1,5 +1,5 @@
 <template>
-  <div v-if="page != null">
+  <div>
     <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
       <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
     </hero-unit>  
@@ -75,22 +75,9 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'page',
-  head: {
-    title () {
-      return 'test';
-    },
-    meta () {
-      return [
-        {
-          name: 'description',
-          content: this.page.summary
-        }
-      ];
-    }
-  },
   data () {
     return {
-      page: null,
+      page: {},
       services: [],
       events: [],
       selectedService: null,
@@ -146,6 +133,20 @@ export default {
     bookService (service) {
       this.selectedService = service;
       this.displayBookModal = true;
+    }
+  },
+  head: {
+    title () {
+      return this.page.name;
+    },
+    meta () {
+      return {
+        description: this.page.summary,
+        'og:title': this.page.name,
+        'og:image': this.page.poster != null ? this.page.poster.path : '',
+        'og:site_name': 'Convene',
+        'og:description': this.page.summary
+      };
     }
   }
 };

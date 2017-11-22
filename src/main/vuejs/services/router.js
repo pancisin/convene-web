@@ -76,9 +76,4 @@ var router = new VueRouter({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title ? to.meta.title + ' |' : ''}  Convene`;
-  next();
-});
-
 export default router;
