@@ -42,7 +42,7 @@ export default {
         this.initializeStomp();
         this.initializeNotifications();
         this.initializeContacts().then(() => {
-          this.connectWM('stomp').then(frame => {
+          this.connectWM('/stomp').then(frame => {
             this.$stompClient.subscribe(
               '/user/queue/chat.activeUsers',
               response => {
@@ -70,7 +70,7 @@ export default {
       'updateContactsActivityState'
     ]),
     initializeStomp () {
-      this.connectWM('stomp').then(frame => {
+      this.connectWM('/stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
           this.addNotification(notification);

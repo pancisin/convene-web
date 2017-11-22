@@ -91,7 +91,7 @@ export default {
     Paginator
   },
   created () {
-    this.connectWM('stomp').then(frame => {
+    this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/topic/active', response => {
         let activeUsers = JSON.parse(response.body);
         console.log(activeUsers);

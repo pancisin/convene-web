@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     initializeChatStomp: function () {
-      this.connectWM('stomp').then(frame => {
+      this.connectWM('/stomp').then(frame => {
         this.subscriptions.push(
           this.$stompClient.subscribe('/queue/chat', response => this.addMessage(JSON.parse(response.body)))
         );

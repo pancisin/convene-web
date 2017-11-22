@@ -69,7 +69,7 @@ export default {
     initialize () {
       this.getMessages();
       this.loadingStomp = true;
-      this.connectWM('stomp').then(() => {
+      this.connectWM('/stomp').then(() => {
         this.subscription = this.$stompClient.subscribe(`/topic/${this.type}/${this.recipient.id}/chat`, response => {
           let message = JSON.parse(response.body);
           if (message.sender.id !== this.user.id) {
@@ -83,7 +83,7 @@ export default {
     getMessages () {
       this.loadingMessages = true;
       this.messages = [];
-      this.$http.get(`/apimessage/${this.type}/${this.recipient.id}/0`).then(response => {
+      this.$http.get(`/api/message/${this.type}/${this.recipient.id}/0`).then(response => {
         let messages = response.body;
         messages.sort((a, b) => {
           return a.created - b.created;
