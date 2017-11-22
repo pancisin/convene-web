@@ -121,7 +121,6 @@ export default {
     getCategories () {
       PublicApi.getCategories(categories => {
         this.categories = categories;
-        this.getBranches(this.filters.categoryId);
       });
     },
     getBranches (category_id) {

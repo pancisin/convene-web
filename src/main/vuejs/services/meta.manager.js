@@ -43,7 +43,10 @@ MetaManager.install = (Vue, options) => {
     });
 
     customElements.forEach(m => {
-      document.head.querySelector(`meta[name="${m}"]`).remove();
+      const element = document.head.querySelector(`meta[name="${m}"]`);
+      if (element) {
+        element.remove();
+      }
     });
   });
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="event != null">
+  <div class="container">
     <div class="row">
       <div class="col-sm-6 col-md-push-3">
 
@@ -8,7 +8,7 @@
 
           <p class="panel-sub-title font-13">
             {{ event.date | moment('LL') }} {{ event.startsAt }}
-            <br>Usporiadatel : {{ event.author.displayName }}
+            <br>Usporiadatel : {{ event.author != null ? event.author.displayName : '' }}
           </p>
        
           <div class="socials">
@@ -79,7 +79,7 @@
 
         <panel type="default" class="panel-p-0">
           <span slot="title">Live chat</span>
-          <chat v-if="authenticated" type="event" :recipient="event" />
+          <chat v-if="authenticated && event.id != null" type="event" :recipient="event" />
           <div v-else class="p-20 text-center text-muted">You must be logged in to use live chat !</div>
         </panel>
       </div>
@@ -87,15 +87,12 @@
       <div class="col-sm-12 col-md-3 col-md-pull-9">
         <panel type="default">
           <span slot="title">
-            Also created by {{ event.author.displayName }}
+            Also created by {{ event.author != null ? event.author.displayName : '' }}
           </span>
           <events-list :events="relatedEvents" />
         </panel>
       </div>
     </div>
-  </div>
-  <div v-else>
-
   </div>
 </template>
 
@@ -110,7 +107,7 @@ export default {
   name: 'public-event',
   data () {
     return {
-      event: null,
+      event: {},
       relatedEvents: [],
       gallery: []
     };
@@ -175,6 +172,20 @@ export default {
           });
         }
       }
+    }
+  },
+  head: {
+    title () {
+      return this.event.name;
+    },
+    meta () {
+      return {
+        description: this.event.summary,
+        'og:title': this.event.name,
+        'og:image': this.event.poster != null ? this.event.poster.path : '',
+        'og:site_name': 'Convene',
+        'og:description': this.event.summary
+      };
     }
   }
 };

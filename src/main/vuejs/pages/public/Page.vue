@@ -122,11 +122,6 @@ export default {
           api.getServices(page.id, services => {
             this.services = services;
           });
-
-          this.$updateMeta({
-            title: page.name,
-            description: page.summary
-          });
         }
       });
     },
