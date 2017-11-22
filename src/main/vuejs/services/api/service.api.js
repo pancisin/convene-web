@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const SERVICE_API_URL = 'api/service';
+const SERVICE_API_URL = '/api/service';
 
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');

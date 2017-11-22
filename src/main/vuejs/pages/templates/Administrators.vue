@@ -120,7 +120,7 @@ export default {
       }
     },
     getRoles () {
-      this.$http.get('api/roles').then(response => {
+      this.$http.get('/api/roles').then(response => {
         this.roles = response.body.filter(r => {
           return r.level < this.current_pa.role.level;
         });

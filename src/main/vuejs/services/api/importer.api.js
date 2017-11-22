@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const IMPORTER_API_URL = 'api/facebook-importer';
+const IMPORTER_API_URL = '/api/facebook-importer';
 
 export default {
 

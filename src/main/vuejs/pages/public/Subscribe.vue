@@ -90,7 +90,7 @@ export default {
       'initializeUser'
     ]),
     getSubscriptions () {
-      this.$http.get('public/subscriptions').then(response => {
+      this.$http.get('/public/subscriptions').then(response => {
         this.subscriptions = response.body;
 
         this.subscription = this.getByName(this.$route.params.subscription);
@@ -112,7 +112,7 @@ export default {
 
       data.user.role = data.user.role.name;
       data.user.locale = data.user.locale.code;
-      this.$http.post('api/user/subscription', data).then(response => {
+      this.$http.post('/api/user/subscription', data).then(response => {
         this.initializeUser();
         console.log('FINE !');
       });

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const EVENT_API_URL = 'api/event';
+const EVENT_API_URL = '/api/event';
 export default {
 
   /**

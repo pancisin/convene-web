@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const ARTICLES_LIST_API_URL = 'api/articles-list';
+const ARTICLES_LIST_API_URL = '/api/articles-list';
 export default {
 
   /**

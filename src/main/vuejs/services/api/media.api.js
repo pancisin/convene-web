@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const MEDIA_API_URL = 'api/media';
+const MEDIA_API_URL = '/api/media';
 
 export default {
 

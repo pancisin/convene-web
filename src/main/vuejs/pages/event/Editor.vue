@@ -107,7 +107,7 @@ export default {
         if (result) {
           this.loading = true;
 
-          this.$http.put(`api/event/${this.event.id}`, this.eventClone, {
+          this.$http.put(`/api/event/${this.event.id}`, this.eventClone, {
             progress (e) {
               if (e.lengthComputable) {
                 this.loading = (e.loaded / e.total) * 100;

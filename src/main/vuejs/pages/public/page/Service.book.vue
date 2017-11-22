@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post('api/service/' + this.service.id + '/request', this.bookRequest).then(response => {
+      this.$http.post('/api/service/' + this.service.id + '/request', this.bookRequest).then(response => {
         this.$emit('submitted', response.body);
       });
     }

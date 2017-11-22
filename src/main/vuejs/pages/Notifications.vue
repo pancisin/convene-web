@@ -74,14 +74,14 @@ export default {
     getNotifications (page) {
       this.loading = true;
       var size = 8;
-      var url = ['api/user/notification', page, size].join('/');
+      var url = ['/api/user/notification', page, size].join('/');
       this.$http.get(url).then(response => {
         this.loading = false;
         this.paginator = response.body;
       });
     },
     toggleSeen (notification) {
-      this.$http.patch('api/notification/' + notification.id + '/toggle-seen').then(response => {
+      this.$http.patch('/api/notification/' + notification.id + '/toggle-seen').then(response => {
         var index = this.paginator.content.indexOf(notification);
 
         this.paginator.content.splice(index, 1, response.body);

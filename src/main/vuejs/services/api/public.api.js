@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import moment from 'moment';
 
-const EVENT_PUBLIC_URL = 'public/event';
-const PAGE_PUBLIC_URL = 'public/page';
-const CONFERENCE_PUBLIC_URL = 'public/conference';
+const EVENT_PUBLIC_URL = '/public/event';
+const PAGE_PUBLIC_URL = '/public/page';
+const CONFERENCE_PUBLIC_URL = '/public/conference';
 
 export default {
 
@@ -19,7 +19,7 @@ export default {
   },
 
   getEvents (page, size, filters, success) {
-    Vue.http.get(`public/events/${page}/${size}`, {
+    Vue.http.get(`/public/events/${page}/${size}`, {
       params: filters
     }).then(response => {
       success(response.body);
@@ -55,7 +55,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getPopularPages (success) {
-    Vue.http.get('api/public/popular-pages/').then(response => {
+    Vue.http.get('/api/public/popular-pages/').then(response => {
       success(response.body);
     });
   },
@@ -68,7 +68,7 @@ export default {
    * @param {*} success - success callback function
    */
   getPages (page, size, filters, success) {
-    Vue.http.get(`public/pages/${page}/${size}`, {
+    Vue.http.get(`/public/pages/${page}/${size}`, {
       params: {
         ...filters
       }
@@ -185,7 +185,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getCategories (success) {
-    Vue.http.get('public/categories').then(response => {
+    Vue.http.get('/public/categories').then(response => {
       const categories = response.body.filter(c => c);
       success(categories);
     });
@@ -197,7 +197,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getBranches (category_id, success) {
-    Vue.http.get(`public/categories/${category_id}/branches`).then(response => {
+    Vue.http.get(`/public/categories/${category_id}/branches`).then(response => {
       success(response.body);
     });
   },
@@ -207,7 +207,7 @@ export default {
    * @param {*} success - success callback function
    */
   getMetaTypes (success) {
-    Vue.http.get('public/meta-types').then(response => {
+    Vue.http.get('/public/meta-types').then(response => {
       success(response.body);
     });
   },
@@ -217,13 +217,13 @@ export default {
    * @param {*} success - success callback function
    */
   getWidgetTypes (success) {
-    Vue.http.get('public/widget-types').then(response => {
+    Vue.http.get('/public/widget-types').then(response => {
       success(response.body);
     });
   },
 
   getLocales (success) {
-    Vue.http.get('public/locales').then(response => {
+    Vue.http.get('/public/locales').then(response => {
       success(response.body);
     });
   }

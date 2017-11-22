@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import moment from 'moment';
 
-const PAGE_API_URL = 'api/page';
+const PAGE_API_URL = '/api/page';
 
 function errorHandler (response) {
   console.error(response);
@@ -207,7 +207,7 @@ export default {
    * @param {*} success - success callback function
    */
   putAdministrator (administrator_id, administrator, success) {
-    Vue.http.put(`api/page-administrator/${administrator_id}`, administrator).then(response => {
+    Vue.http.put(`/api/page-administrator/${administrator_id}`, administrator).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -218,7 +218,7 @@ export default {
    * @param {*} success - success callback function
    */
   deleteAdministrator (administrator_id, success) {
-    Vue.http.delete(`api/page-administrator/${administrator_id}`).then(response => {
+    Vue.http.delete(`/api/page-administrator/${administrator_id}`).then(response => {
       success(response.body);
     }, errorHandler);
   },

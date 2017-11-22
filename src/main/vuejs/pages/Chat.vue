@@ -109,15 +109,15 @@ export default {
       });
     },
     fetchCompanyUsers: function () {
-      this.$http.get('api/company/' + this.user.company.id + '/users').then(response => {
+      this.$http.get('/api/company/' + this.user.company.id + '/users').then(response => {
         this.users = response.body;
       });
     },
     fetchMessages: function () {
       if (this.recipient != null) {
-        this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => this.addMessage(response.body.reverse()));
+        this.$http.get('/api/message/user/' + this.recipient.id + '/0').then(response => this.addMessage(response.body.reverse()));
       } else {
-        this.$http.get('api/message/0').then(response => this.addMessage(response.body.reverse()));
+        this.$http.get('/api/message/0').then(response => this.addMessage(response.body.reverse()));
       }
     },
     sendMessage: function () {

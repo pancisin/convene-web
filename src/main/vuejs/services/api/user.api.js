@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const USER_API_URL = 'api/user';
+const USER_API_URL = '/api/user';
 
 export default {
 
@@ -156,7 +156,7 @@ export default {
   },
 
   getConversations (success) {
-    Vue.http.get('api/message/conversations').then(response => {
+    Vue.http.get('/api/message/conversations').then(response => {
       success(response.body);
     });
   }

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const ARTICLE_BOT_API_URL = 'api/article-bot';
+const ARTICLE_BOT_API_URL = '/api/article-bot';
 
 export default {
 

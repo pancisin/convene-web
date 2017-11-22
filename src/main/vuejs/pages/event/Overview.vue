@@ -104,7 +104,7 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           if (this.edit) {
-            let url = ['api/event', this.event.id].join('/');
+            let url = ['/api/event', this.event.id].join('/');
             this.loading = true;
             this.$http.put(url, this.event, {
               progress (e) {
@@ -126,11 +126,11 @@ export default {
           } else {
             let url = null;
             if (this.page_id != null) {
-              url = ['api/page', this.page_id, 'event'].join('/');
+              url = ['/api/page', this.page_id, 'event'].join('/');
             } else if (this.conference_id != null) {
-              url = ['api/conference', this.conference_id, 'event'].join('/');
+              url = ['/api/conference', this.conference_id, 'event'].join('/');
             } else {
-              url = 'api/user/event';
+              url = '/api/user/event';
             }
 
             this.$http.post(url, this.event).then(response => {
@@ -154,13 +154,13 @@ export default {
 
       switch (this.event.author.type) {
         case 'page':
-          var url = ['api/page', this.event.author.id, 'place'].join('/');
+          var url = ['/api/page', this.event.author.id, 'place'].join('/');
           this.$http.get(url).then(response => {
             this.places = response.body;
           });
           break;
         case 'user':
-          this.$http.get('api/user/place').then(response => {
+          this.$http.get('/api/user/place').then(response => {
             this.places = response.body;
           });
           break;
