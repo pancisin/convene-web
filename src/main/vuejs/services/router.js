@@ -27,6 +27,7 @@ const afterAuth = (to, from, next) => {
 
 var router = new VueRouter({
   linkActiveClass: 'active',
+  mode: 'history',
   routes: [
     {
       path: '/',

@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${entity.name}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" th:content="${entity.summary}" />
+    
+	<meta property="og:title" th:content="${entity.name}" />
+	<meta property="og:description" th:content="${entity.summary}" />
+	<meta property="og:type" content="article" />
+	<meta th:if="${entity.poster != null}" property="og:image" th:content="${entity.poster.path}" />
+
+    <meta property="og:url" th:content="${#httpServletRequest.requestURI}" />
+</head>
+<body>
+</body>
+</html>

@@ -11,7 +11,7 @@ config.devServer = {
   noInfo: true,
   contentBase: 'src/main/resources/static/',
   proxy: {
-    '/*': 'http://localhost:8180/'
+    '**': 'http://localhost:8180'
   }
 };
 
