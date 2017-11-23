@@ -1,10 +1,14 @@
 package com.pancisin.bookster.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.pancisin.bookster.components.SitemapView;
@@ -25,15 +29,16 @@ public class IndexController {
 	@Autowired
 	private SitemapView sitemapView;
 
-	private final String crawlersPatters = "facebookexternalhit\\/[0-9](\\.[0-9])?|Facebot|Twitterbot|Pinterest|Google.*snippet";
+	private final String crawlersPatters = ".*(facebookexternalhit|Facebot|Twitterbot|Pinterest|Google.*snippet|Googlebot).*";
 
+	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping("/")
 	public String getRoot() {
 		return this.mainPage();
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/**/{[path:[^\\.]*}")
+	@GetMapping("/**/{[path:[^\\.]*}")
 	public String mainPage() {
 		final String url = request.getRequestURI();
 
@@ -47,8 +52,13 @@ public class IndexController {
 			return "forward://index.html";
 		}
 	}
+	
+	@GetMapping("/info/user-agent")
+	public @ResponseBody String getUserAgent() {
+		return request.getHeader("user-agent");
+	}
 
-	@RequestMapping(path = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
 	public SitemapView create() {
 		return sitemapView;
 	}
