@@ -39,11 +39,11 @@ public class IndexController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/{leader:(?!stomp).*}/**/{path:[^\\.]*}")
+	@GetMapping("/{leader:(?!stomp|static).*}/**/{path:[^\\.]*}")
 	public String mainPage() {
 		final String url = request.getRequestURI();
 
-		if (request.getHeader("user-agent").matches(crawlersPatters) && !url.contains("static")) {
+		if (request.getHeader("user-agent").matches(crawlersPatters)) {
 			return String.format("forward://static/%s", url);
 		}
 

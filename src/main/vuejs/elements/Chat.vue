@@ -128,7 +128,9 @@ export default {
 
       this.$nextTick(() => {
         let container = this.$refs.conversationList;
-        container.scrollTop = container.scrollHeight;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
       });
     },
     getTimeString (timestamp) {

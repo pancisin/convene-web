@@ -7,17 +7,6 @@ const CONFERENCE_PUBLIC_URL = '/public/conference';
 
 export default {
 
-  /**
-   * Get event public data.
-   * @param {Number} id - event id
-   * @param {Function} success - success callback function
-   */
-  getEvent (id, success) {
-    Vue.http.get(`${EVENT_PUBLIC_URL}/${id}`).then(response => {
-      success(response.body);
-    });
-  },
-
   getEvents (page, size, filters, success) {
     Vue.http.get(`/public/events/${page}/${size}`, {
       params: filters
@@ -27,6 +16,18 @@ export default {
   },
 
   event: {
+    
+    /**
+    * Get event public data.
+    * @param {Number} id - event id
+    * @param {Function} success - success callback function
+    */
+    getEvent (id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${id}`).then(response => {
+        success(response.body);
+      });
+    },
+
     /**
      * Get events related events
      * @param {*} event_id - event id

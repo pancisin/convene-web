@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <div class="row">
+  <div class="container" v-loading="loading">
+    <div class="row" v-show="event.id">
       <div class="col-sm-6 col-md-push-3">
 
-        <hero-unit :background="event.banner != null ? event.banner.path : event.poster != null ? event.poster.path : null" solid class="event-hero-unit">
+        <hero-unit :background="hero" solid class="event-hero-unit">
           <h1 class="text-pink">{{ event.name }}</h1>
 
           <p class="panel-sub-title font-13">
@@ -109,7 +109,8 @@ export default {
     return {
       event: {},
       relatedEvents: [],
-      gallery: []
+      gallery: [],
+      loading: false
     };
   },
   components: {
@@ -128,6 +129,17 @@ export default {
     ...mapGetters(['authenticated', 'eventAttendingStatus']),
     attending () {
       return this.eventAttendingStatus(this.event.id);
+    },
+    hero () {
+      if (this.event != null) {
+        if (this.event.banner != null ) {
+          return this.event.banner.path;
+        } else if (this.event.poster != null) {
+          return this.event.poster.path;
+        }
+      }
+
+      return null;
     }
   },
   watch: {
@@ -138,39 +150,24 @@ export default {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-        const getAdditionalData = () => {
+        const api = this.authenticated ? EventApi : PublicApi;
+
+        this.loading = true;
+        api.getEvent(event_id, event => {
+          this.event = event;
+
+          api.getRelated(this.event.id, paginator => {
+            this.relatedEvents = paginator.content;
+          });
+
           PublicApi.event.getGallery(event_id, gallery => {
             this.gallery = gallery;
           });
-        };
 
-        if (this.authenticated) {
-          EventApi.getEvent(
-            event_id,
-            event => {
-              this.event = event;
-
-              EventApi.getRelated(this.event.id, paginator => {
-                this.relatedEvents = paginator.content;
-              });
-
-              getAdditionalData();
-            },
-            error => {
-              this.$error(error.error, error.message);
-            }
-          );
-        } else {
-          PublicApi.getEvent(event_id, event => {
-            this.event = event;
-
-            PublicApi.event.getRelated(this.event.id, paginator => {
-              this.relatedEvents = paginator.content;
-            });
-
-            getAdditionalData();
-          });
-        }
+          this.loading = false;
+        }, error => {
+          this.$error(error.error, error.message);
+        });
       }
     }
   },

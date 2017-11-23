@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
       <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
     </hero-unit>  
@@ -82,7 +82,8 @@ export default {
       events: [],
       selectedService: null,
       displayBookModal: false,
-      displayReportModal: false
+      displayReportModal: false,
+      loading: false
     };
   },
   components: {
@@ -112,6 +113,7 @@ export default {
       const api = this.authenticated ? PageApi : PublicApi.page;
       const fetchFunc = isNaN(id) ? api.getPageBySlug : api.getPage;
 
+      this.loading = true;
       fetchFunc(page_id, page => {
         if (page.id) {
           this.page = page;
@@ -123,6 +125,7 @@ export default {
             this.services = services;
           });
         }
+        this.loading = false;
       });
     },
     bookService (service) {
