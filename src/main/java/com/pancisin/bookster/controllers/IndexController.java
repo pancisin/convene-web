@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,7 +39,7 @@ public class IndexController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/**/{[path:[^\\.]*}")
+	@GetMapping("/{leader:(?!stomp).*}/**/{path:[^\\.]*}")
 	public String mainPage() {
 		final String url = request.getRequestURI();
 
