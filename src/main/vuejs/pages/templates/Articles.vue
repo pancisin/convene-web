@@ -22,7 +22,7 @@
       </thead>
 
       <tbody>
-        <tr v-for="(article, index) in articles" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
+        <tr v-for="(article, index) in articlesPaginator.content" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
           <td>
             {{ index + 1 }}
           </td>
@@ -77,6 +77,10 @@
       </template>
     </context-menu>
 
+    <div class="text-center">
+      <paginator :paginator="articlesPaginator" :fetch="getArticles" />
+    </div>
+
     <div class="text-center" v-if="editable && insertable">
       <router-link to="create-article" class="btn btn-primary btn-rounded">
         Create article
@@ -87,6 +91,8 @@
 
 <script>
 import ArticleApi from 'api/article.api';
+import { Paginator } from 'elements';
+
 export default {
   name: 'articles-template',
   inject: ['provider'],
@@ -95,12 +101,16 @@ export default {
     insertable: {
       type: Boolean,
       default: true
-    }
+    },
+    paginated: Boolean
+  },
+  components: {
+    Paginator
   },
   data () {
     return {
-      articles: [],
-      loading: false
+      loading: false,
+      articlesPaginator: {}
     };
   },
   computed: {
@@ -109,24 +119,24 @@ export default {
     }
   },
   watch: {
-    '$route': 'getArticles'
-  },
-  created () {
-    this.getArticles();
+    'api': 'initialize'
   },
   methods: {
-    getArticles () {
+    initialize () {
+      this.getArticles(0);
+    },
+    getArticles (page) {
       this.loading = true;
-      this.api.getArticles(articles => {
-        this.articles = articles;
+      this.api.getArticles(page, 8, paginator => {
+        this.articlesPaginator = paginator;
         this.loading = false;
       });
     },
     togglePublished (article_id) {
       ArticleApi.togglePublished(article_id, article => {
-        this.articles.forEach((a, index) => {
+        this.articlesPaginator.content.forEach((a, index) => {
           if (a.id === article_id) {
-            this.articles.splice(index, 1, article);
+            this.articlesPaginator.content.splice(index, 1, article);
           }
         });
       });
@@ -134,7 +144,7 @@ export default {
     deleteArticle (article) {
       this.$prompt('notification.article.delete_prompt', () => {
         ArticleApi.deleteArticle(article.id, result => {
-          this.articles = this.articles.filter(x => {
+          this.articlesPaginator.content = this.articles.filter(x => {
             x.id !== article.id;
           });
         });

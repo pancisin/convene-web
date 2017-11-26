@@ -164,9 +164,9 @@ public class PublicRestController {
 		return ResponseEntity.ok(eventsPaginator.getContent());
 	}
 
-	@GetMapping("/conference/{conference_id/article")
-	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(articleRepository.getByConference(conference_id));
+	@GetMapping("/conference/{conference_id}/article/{page}/{size}")
+	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@GetMapping("/conference/{page}/{size}")

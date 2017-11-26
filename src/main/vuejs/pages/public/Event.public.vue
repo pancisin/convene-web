@@ -160,7 +160,7 @@ export default {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-        const api = this.authenticated ? EventApi : PublicApi;
+        const api = this.authenticated ? EventApi : PublicApi.event;
 
         this.loading = true;
         api.getEvent(event_id, event => {

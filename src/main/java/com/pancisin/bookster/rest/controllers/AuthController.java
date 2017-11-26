@@ -47,7 +47,7 @@ public class AuthController {
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/public/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody User user, BindingResult bindingResult) {
 		User stored = userRepository.findByEmail(user.getEmail());
 		user.setHashedPassword(hashPassword(user.getPassword()));
@@ -68,7 +68,7 @@ public class AuthController {
 		return ResponseEntity.ok(stored);
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/public/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult,
 			HttpServletRequest request) {
 		if (bindingResult.hasErrors())
@@ -98,7 +98,7 @@ public class AuthController {
 		}
 	}
 
-	@PutMapping(value = "/verify")
+	@PutMapping(value = "/public/verify")
 	private ResponseEntity<?> verifyEmail(@RequestBody String token) {
 		User user = null;
 		try {

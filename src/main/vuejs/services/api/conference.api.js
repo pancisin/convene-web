@@ -196,9 +196,9 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getArticles (id, success) {
+  getArticles (id, page, size, success) {
     checkId(id);
-    Vue.http.get(`${CONFERENCE_API_URL}/${id}/article`).then(response => {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/article/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

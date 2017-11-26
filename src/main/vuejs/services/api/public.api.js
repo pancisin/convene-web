@@ -16,7 +16,6 @@ export default {
   },
 
   event: {
-    
     /**
     * Get event public data.
     * @param {Number} id - event id

@@ -39,7 +39,7 @@ public class IndexController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/{leader:(?!stomp|static|api|public).*}/**/{path:[^\\.]*}")
+	@GetMapping("/{leader:(?!stomp|static|api|public|login|register).*}/**/{path:[^\\.]*}")
 	public String mainPage() {
 		final String url = request.getRequestURI();
 
