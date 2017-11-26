@@ -85,7 +85,7 @@
       </div>
 
       <div class="col-sm-12 col-md-3 col-md-pull-9">
-        <panel type="default">
+        <panel type="default" v-if="relatedEvents.length > 0">
           <span slot="title">
             Also created by {{ event.author != null ? event.author.displayName : '' }}
           </span>
@@ -97,11 +97,21 @@
 </template>
 
 <script>
-import { GMap, Masonry, MasonryItem, EventsList, HeroUnit, Chat } from 'elements';
+import {
+  GMap,
+  Masonry,
+  MasonryItem,
+  EventsList,
+  HeroUnit,
+  Chat
+} from 'elements';
 import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
-import { mapGetters, mapActions } from 'vuex';
+import {
+  mapGetters,
+  mapActions
+} from 'vuex';
 
 export default {
   name: 'public-event',
@@ -132,7 +142,7 @@ export default {
     },
     hero () {
       if (this.event != null) {
-        if (this.event.banner != null ) {
+        if (this.event.banner) {
           return this.event.banner.path;
         } else if (this.event.poster != null) {
           return this.event.poster.path;
@@ -157,7 +167,8 @@ export default {
           this.event = event;
 
           api.getRelated(this.event.id, paginator => {
-            this.relatedEvents = paginator.content;
+            const events = this.randomize(paginator.content);
+            this.relatedEvents = events.slice(0, 8);
           });
 
           PublicApi.event.getGallery(event_id, gallery => {
@@ -169,6 +180,13 @@ export default {
           this.$error(error.error, error.message);
         });
       }
+    },
+    randomize (array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
     }
   },
   head: {
