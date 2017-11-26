@@ -1,5 +1,5 @@
 <template>
-  <div class="wizard">
+  <div class="wizard" :style="style">
     <div class="wizard-navigation">
       <a class="wizard-navigation-step" :class="{ 'disabled' : !canNavigate(index) && index > activePage, 'active' : index == activePage }" v-for="(page, index) in pages" :key="page.title" @click="navigateTo(index)">
         <div class="number-circle">

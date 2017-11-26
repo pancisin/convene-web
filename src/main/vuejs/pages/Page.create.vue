@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 col-lg-offset-2">
-        <wizard @finish="submit">
+        <wizard @finish="submit" style="padding: 30px; background: #fff">
           <wizard-page title="What are pages ?" icon="suitcase" :valid="true">
             Convene allows you to create your bussiness page where all information about events and services are displayed. Please keep in mind that there are rules for posting media content to public. All these resctrictions are described in terms & conditions. Please read carefully.
           </wizard-page>

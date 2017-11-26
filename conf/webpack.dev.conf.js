@@ -24,6 +24,10 @@ config.devServer = {
     '/stomp/**': {
       target: 'http://localhost:8180',
       secure: false
+    },
+    '/files/**': {
+      target: 'http://localhost:8180',
+      secure: false
     }
   }
 };
