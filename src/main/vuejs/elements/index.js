@@ -41,6 +41,7 @@ import Chat from './Chat';
 import EventCreateWizard from './EventCreateWizard';
 import AbuseReport from './AbuseReport';
 import CookieLaw from './CookieLaw';
+import Payment from './Payment';
 
 import widgets from './widgets';
 
@@ -88,5 +89,6 @@ export {
   Chat,
   EventCreateWizard,
   AbuseReport,
-  CookieLaw
+  CookieLaw,
+  Payment
 };

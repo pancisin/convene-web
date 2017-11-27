@@ -15,7 +15,14 @@
                   {{ key }}
                 </dt>
                 <dd :key="key">
-                  {{ value }}
+                  <a target="_blank" 
+                    :href="value"
+                    v-if="validUrl(value)">
+                    {{ value }}
+                  </a>
+                  <span v-else>
+                    {{ value }}
+                  </span>
                 </dd>
               </template>
             </dl>
@@ -86,6 +93,7 @@ import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
 
 import { mapGetters, mapActions } from 'vuex';
+import { validUrl } from '../../services/helpers';
 
 export default {
   name: 'page',
@@ -145,6 +153,9 @@ export default {
     bookService (service) {
       this.selectedService = service;
       this.displayBookModal = true;
+    },
+    validUrl (value) {
+      return validUrl(value);
     }
   },
   head: {
