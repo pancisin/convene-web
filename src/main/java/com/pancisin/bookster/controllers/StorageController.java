@@ -10,6 +10,7 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,7 @@ public class StorageController {
 	private StorageService storageService;
 
 	@GetMapping("/files/**/{filename:.+}")
+	@CrossOrigin
 	@ResponseBody
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpServletRequest request) {
 		String url = request.getRequestURL().toString();

@@ -94,6 +94,7 @@ public class Event {
 	@ManyToMany
 	private List<User> attendees = new ArrayList<User>();
 
+	@JsonProperty(access = Access.READ_ONLY)
 	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
 	private Media poster;

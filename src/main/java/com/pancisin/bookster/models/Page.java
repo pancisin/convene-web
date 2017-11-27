@@ -93,6 +93,7 @@ public class Page implements IAuthor {
 	@OneToMany(mappedBy = "page")
 	private List<Service> services;
 
+	@JsonProperty(access = Access.READ_ONLY)
 	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
 	private Media poster;
@@ -151,6 +152,7 @@ public class Page implements IAuthor {
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Widget> widgets;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
 

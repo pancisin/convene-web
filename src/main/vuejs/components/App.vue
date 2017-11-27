@@ -8,13 +8,15 @@
       <router-view>
       </router-view>
     </transition>
+
+    <!-- <cookie-law /> -->
   </div>
 </template>
 
 <script>
 import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
-import { ToastContainer, ChatContainer } from 'elements';
+import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 
 export default {
   name: 'app-root',
@@ -29,7 +31,8 @@ export default {
   },
   components: {
     ToastContainer,
-    ChatContainer
+    ChatContainer,
+    CookieLaw
   },
   computed: {
     ...mapGetters(['authenticated', 'user'])

@@ -39,6 +39,13 @@ public class IndexController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/{leader:(?!stomp|static|api|public|files).*}/{path:[^\\.]*}")
+	public String shit() {
+		return this.mainPage();
+	}
+	
+	
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{leader:(?!stomp|static|api|public|files).*}/**/{path:[^\\.]*}")
 	public String mainPage() {
 		final String url = request.getRequestURI();
