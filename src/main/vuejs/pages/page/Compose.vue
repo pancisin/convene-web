@@ -22,27 +22,25 @@
           <text-editor v-model="page.summary"></text-editor>
         </div>
 
-        {{ metadata }}
-
         <div class="form-group" v-for="(meta, index) in metadata" :key="index">
           <div class="input-group">
-            <input class="form-control required" :value="meta.key" type="text">
+            <input class="form-control required" 
+              v-model.trim="meta.key" 
+              type="text"
+              placeholder="new meta name">
             <span class="input-group-addon">
-              <i class="fa fa-code"></i>
+              :
             </span>
-            <input class="form-control required" :value="meta.value" type="text">
+            <input class="form-control required" 
+              v-model.trim="meta.value" 
+              type="text"
+              placeholder="new meta value">
             <span class="input-group-btn">
-              <button class="btn btn-danger" type="button">
+              <button class="btn btn-danger" type="button" @click="removeMeta(meta)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </span>
           </div>
-        </div>
-
-        <div class="text-center">
-          <a class="btn btn-xs btn-primary btn-rounded">
-            <i class="fa fa-plus"></i>
-          </a>
         </div>
 
         <div class="text-center">
@@ -97,7 +95,24 @@ export default {
     };
   },
   watch: {
-    'page': 'initializeMeta'
+    'page': 'initializeMeta',
+    metadata: {
+      handler (newVal) {
+        const emptyEval = meta =>  meta.key == null || meta.key === '';
+
+        const emptyCount = newVal.filter(emptyEval).length;
+
+        if (emptyCount > 1) {
+          this.metadata = this.metadata.filter(m => m.key !== '');
+        } else if (emptyCount === 0) {
+          this.metadata.push({
+            key: '',
+            value: ''
+          });
+        }
+      },
+      deep: true
+    }
   },
   components: {
     TextEditor, ImageUpload, Categorizer
@@ -120,15 +135,24 @@ export default {
           value: this.page.metadata[key]
         });
       }
+
+      result.push({
+        key: '',
+        value: ''
+      });
+
       this.metadata = result;
     },
     submit () {
       const data = {
         ...this.page,
         metadata: this.metadata.reduce((map, obj) => {
-          map[obj.key] = obj.value;
+          if (obj.key != null && obj.key != '' && obj.value != null && obj.value != '') {
+            map[obj.key] = obj.value;
+          }
+          
           return map;
-        })
+        }, {})
       };
 
       this.updatePage(data).then(page => {
@@ -141,6 +165,12 @@ export default {
           console.log('test');
         });
       });
+    },
+    removeMeta (meta) {
+      if (meta.key != null && meta.key != '') {
+        const index = this.metadata.findIndex(m => m.key === meta.key);
+        this.metadata.splice(index, 1);
+      }
     }
   }
 };

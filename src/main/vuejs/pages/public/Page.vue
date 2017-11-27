@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-          <panel>
+          <panel type="default">
             <span slot="title">Information</span>
             <dl class="dl-horizontal">
               <template v-for="(value, key) in page.metadata">
