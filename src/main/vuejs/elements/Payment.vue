@@ -34,7 +34,7 @@
     </div>
 
     <div class="text-center">
-      <button type="submit" class="btn btn-success btn-rounded">Submit payment</button>
+      <button type="submit" class="btn btn-success">Submit payment</button>
     </div>
   </form>
 </template>
@@ -43,25 +43,16 @@
 import LicenseApi from 'api/license.api';
 
 export default {
-  name: 'invoice',
+  name: 'payment-form',
   props: {
-    invoiceId: null
+    license: Object
   },
   data () {
     return {
-      license: {},
       card: {}
     };
   },
-  created () {
-    this.getLicense();
-  },
   methods: {
-    getLicense () {
-      LicenseApi.getLicense(this.invoiceId, license => {
-        this.license = license;
-      });
-    },
     submitPayment () {
       this.$validator.validateAll().then(valid => {
         if (valid) {

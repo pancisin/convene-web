@@ -31,7 +31,7 @@
             <td>{{ sub.expires | moment('L') }}</td>
             <td>{{ $t(sub.state.code) }}</td>
             <td>
-              <a @click="displayPayment = true" 
+              <a @click="doPayment(sub)" 
                 class="btn btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
                 {{ $t('subscription.pay') }}
               </a>
@@ -44,7 +44,7 @@
     <modal :show.sync="displayPayment">
       <span slot="header">Payment</span>
       <div slot="body">
-        <payment invoice-id="5"></payment>
+        <payment :license="selectedLicense"></payment>
       </div>
     </modal>
   </div>
@@ -57,7 +57,8 @@ export default {
   data () {
     return {
       subscriptions: [],
-      displayPayment: false
+      displayPayment: false,
+      selectedLicense: null
     };
   },
   components: {
@@ -71,6 +72,10 @@ export default {
       this.$http.get('/api/user/subscription').then(response => {
         this.subscriptions = response.body;
       });
+    },
+    doPayment (license) {
+      this.displayPayment = true;
+      this.selectedLicense = license;
     }
   }
 };
