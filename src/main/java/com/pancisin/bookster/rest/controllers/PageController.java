@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,7 +111,8 @@ public class PageController {
 		stored.setName(page.getName());
 		stored.setBranch(page.getBranch());
 		stored.setSummary(page.getSummary());
-
+		stored.setMetadata(page.getMetadata());
+		
 		if (page.getPosterData() != null && storageService.isBinary(page.getPosterData())) {
 			Media poster = new Media();
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -343,4 +345,13 @@ public class PageController {
 		return ResponseEntity.ok(eventBotRepository.save(eventBot));
 	}
 
+	@PutMapping("/meta")
+	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
+	public ResponseEntity<?> putMetaData(@PathVariable Long page_id, HashMap<String, String> metadata) {
+		Page stored = pageRepository.findOne(page_id);
+		
+		stored.setMetadata(metadata);
+		pageRepository.save(stored);
+		return ResponseEntity.ok(metadata);
+	}
 }

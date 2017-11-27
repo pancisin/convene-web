@@ -183,7 +183,8 @@ public class Page implements IAuthor {
   @MapKeyColumn(name = "meta_key")
   @Column(name = "meta_value")
   @CollectionTable(name = "pages_metadata")
-	private Map<String, String> metadata = new HashMap<String, String>(); 
+	@JsonView(Summary.class)
+  private Map<String, String> metadata = new HashMap<String, String>(); 
 
 	@PreUpdate
 	private void onUpdate() {

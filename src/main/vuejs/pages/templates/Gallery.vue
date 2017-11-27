@@ -203,7 +203,7 @@ export default {
     width: 100%;
     overflow: hidden;
     bottom: 0;
-    z-index: 1;
+    z-index: 10;
 
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;

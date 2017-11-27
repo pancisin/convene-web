@@ -7,6 +7,20 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
+          <panel>
+            <span slot="title">Information</span>
+            <dl class="dl-horizontal">
+              <template v-for="(value, key) in page.metadata">
+                <dt :key="key">
+                  {{ key }}
+                </dt>
+                <dd :key="key">
+                  {{ value }}
+                </dd>
+              </template>
+            </dl>
+          </panel>
+          
           <panel v-if="page.summary != null && page.summary.length > 0">
             <div v-html="page.summary" class="m-b-20"></div>
           </panel>

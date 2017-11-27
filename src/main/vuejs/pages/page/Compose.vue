@@ -22,6 +22,29 @@
           <text-editor v-model="page.summary"></text-editor>
         </div>
 
+        {{ metadata }}
+
+        <div class="form-group" v-for="(meta, index) in metadata" :key="index">
+          <div class="input-group">
+            <input class="form-control required" :value="meta.key" type="text">
+            <span class="input-group-addon">
+              <i class="fa fa-code"></i>
+            </span>
+            <input class="form-control required" :value="meta.value" type="text">
+            <span class="input-group-btn">
+              <button class="btn btn-danger" type="button">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <a class="btn btn-xs btn-primary btn-rounded">
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
+
         <div class="text-center">
           <button class="btn btn-rounded btn-danger" @click="togglePagePublished(page)" v-if="page.state == 'PUBLISHED'">Deactivate</button>
           <a class="btn btn-rounded btn-success" @click="togglePagePublished(page)" v-if="page.state == 'DEACTIVATED'">
@@ -55,7 +78,11 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload, Categorizer } from 'elements';
+import {
+  TextEditor,
+  ImageUpload,
+  Categorizer
+} from 'elements';
 import { mapActions } from 'vuex';
 
 export default {
@@ -65,11 +92,18 @@ export default {
   },
   data () {
     return {
-      deleteConfirm: null
+      deleteConfirm: null,
+      metadata: []
     };
+  },
+  watch: {
+    'page': 'initializeMeta'
   },
   components: {
     TextEditor, ImageUpload, Categorizer
+  },
+  created () {
+    this.initializeMeta(this.page);
   },
   methods: {
     ...mapActions([
@@ -78,8 +112,26 @@ export default {
       'togglePagePublished',
       'deletePage'
     ]),
+    initializeMeta (newVal) {
+      const result = [];
+      for (let key in newVal.metadata) {
+        result.push({
+          key,
+          value: this.page.metadata[key]
+        });
+      }
+      this.metadata = result;
+    },
     submit () {
-      this.updatePage(this.page).then(page => {
+      const data = {
+        ...this.page,
+        metadata: this.metadata.reduce((map, obj) => {
+          map[obj.key] = obj.value;
+          return map;
+        })
+      };
+
+      this.updatePage(data).then(page => {
         this.$success('notification.page.updated' + page.name);
       });
     },
