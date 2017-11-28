@@ -29,9 +29,15 @@ public class StaticController {
 	}
 	
 	@RequestMapping("/static/page/{page_id}")
-	public String getPage(@PathVariable Long page_id, Model model) {
-		model.addAttribute("entity", pageRepository.findOne(page_id));
-		return "crawlerBotStaticTemplate";
+	public String getPage(@PathVariable String page_id, Model model) {
+		try {
+			Long page_id_parsed = Long.parseLong(page_id);
+			model.addAttribute("entity", pageRepository.findOne(page_id_parsed));
+			return "crawlerBotStaticTemplate";
+		} catch (NumberFormatException ex) {
+			model.addAttribute("entity", pageRepository.findBySlug(page_id));
+			return "crawlerBotStaticTemplate";
+		}
 	}
 	
 	@RequestMapping("/static/conference/{conference_id}")
