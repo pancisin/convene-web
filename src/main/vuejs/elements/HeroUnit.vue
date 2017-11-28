@@ -20,6 +20,14 @@ export default {
     },
     solid: Boolean
   },
+  watch: {
+    background (newVal) {
+      this.bg_style = {
+        ...this.bg_style,
+        'background-image': `url(${this.background})`
+      }
+    }
+  },
   data () {
     return {
       bg_style: {

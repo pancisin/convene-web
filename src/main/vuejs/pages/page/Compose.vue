@@ -22,6 +22,27 @@
           <text-editor v-model="page.summary"></text-editor>
         </div>
 
+        <div class="form-group" v-for="(meta, index) in metadata" :key="index">
+          <div class="input-group">
+            <input class="form-control required" 
+              v-model.trim="meta.key" 
+              type="text"
+              placeholder="new meta name">
+            <span class="input-group-addon">
+              :
+            </span>
+            <input class="form-control required" 
+              v-model.trim="meta.value" 
+              type="text"
+              placeholder="new meta value">
+            <span class="input-group-btn">
+              <button class="btn btn-danger" type="button" @click="removeMeta(meta)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+
         <div class="text-center">
           <button class="btn btn-rounded btn-danger" @click="togglePagePublished(page)" v-if="page.state == 'PUBLISHED'">Deactivate</button>
           <a class="btn btn-rounded btn-success" @click="togglePagePublished(page)" v-if="page.state == 'DEACTIVATED'">
@@ -55,7 +76,11 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload, Categorizer } from 'elements';
+import {
+  TextEditor,
+  ImageUpload,
+  Categorizer
+} from 'elements';
 import { mapActions } from 'vuex';
 
 export default {
@@ -65,11 +90,35 @@ export default {
   },
   data () {
     return {
-      deleteConfirm: null
+      deleteConfirm: null,
+      metadata: []
     };
+  },
+  watch: {
+    'page': 'initializeMeta',
+    metadata: {
+      handler (newVal) {
+        const emptyEval = meta =>  meta.key == null || meta.key === '';
+
+        const emptyCount = newVal.filter(emptyEval).length;
+
+        if (emptyCount > 1) {
+          this.metadata = this.metadata.filter(m => m.key !== '');
+        } else if (emptyCount === 0) {
+          this.metadata.push({
+            key: '',
+            value: ''
+          });
+        }
+      },
+      deep: true
+    }
   },
   components: {
     TextEditor, ImageUpload, Categorizer
+  },
+  created () {
+    this.initializeMeta(this.page);
   },
   methods: {
     ...mapActions([
@@ -78,8 +127,35 @@ export default {
       'togglePagePublished',
       'deletePage'
     ]),
+    initializeMeta (newVal) {
+      const result = [];
+      for (let key in newVal.metadata) {
+        result.push({
+          key,
+          value: this.page.metadata[key]
+        });
+      }
+
+      result.push({
+        key: '',
+        value: ''
+      });
+
+      this.metadata = result;
+    },
     submit () {
-      this.updatePage(this.page).then(page => {
+      const data = {
+        ...this.page,
+        metadata: this.metadata.reduce((map, obj) => {
+          if (obj.key != null && obj.key != '' && obj.value != null && obj.value != '') {
+            map[obj.key] = obj.value;
+          }
+          
+          return map;
+        }, {})
+      };
+
+      this.updatePage(data).then(page => {
         this.$success('notification.page.updated' + page.name);
       });
     },
@@ -89,6 +165,12 @@ export default {
           console.log('test');
         });
       });
+    },
+    removeMeta (meta) {
+      if (meta.key != null && meta.key != '') {
+        const index = this.metadata.findIndex(m => m.key === meta.key);
+        this.metadata.splice(index, 1);
+      }
     }
   }
 };

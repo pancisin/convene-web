@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     getEvents (page) {
-      var url = ['public/events', page, 5].join('/');
+      var url = ['/public/events', page, 5].join('/');
       this.$http.get(url).then(response => {
         this.eventsPaginator = response.body;
       });

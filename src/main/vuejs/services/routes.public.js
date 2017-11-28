@@ -103,10 +103,5 @@ export default [
     path: 'invoice/:invoice_id',
     name: 'invoice',
     component: resolve => require(['../pages/Invoice.vue'], resolve)
-  },
-  {
-    path: 'invoice/:invoice_id/payment',
-    name: 'invoice.payment',
-    component: resolve => require(['../pages/Payment.vue'], resolve)
   }
 ];

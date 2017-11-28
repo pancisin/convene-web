@@ -1,6 +1,5 @@
 package com.pancisin.bookster.repository;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -16,7 +15,7 @@ import com.pancisin.bookster.models.Article;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 	
 	@Query("SELECT article FROM Article article JOIN article.conference conference WHERE conference.id = :conference_id")
-	public List<Article> getByConference(@Param("conference_id") Long conference_id);
+	public Page<Article> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
 	
 	@Query("SELECT article FROM Article article WHERE article.articlesList.id = :articles_list_id")
 	public Page<Article> getByArticlesList(@Param("articles_list_id") UUID articles_list_id, Pageable pageable);

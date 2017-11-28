@@ -9,10 +9,12 @@
         <img :src="event.poster.path" class="img-circle" alt="">
       </div>
       
-      <p class="inbox-item-author" v-text="event.name"></p>
-      <p class="inbox-item-text">
-        {{ event.date | moment('L') }} {{ event.startsAt }}
-      </p>
+      <div>
+        <p class="inbox-item-author" v-text="event.name"></p>
+        <p class="inbox-item-text">
+          {{ event.date | moment('L') }} {{ event.startsAt }}
+        </p>
+      </div>
     </router-link>
   </div>
 </template>

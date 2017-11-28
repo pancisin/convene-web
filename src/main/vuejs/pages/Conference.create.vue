@@ -2,7 +2,7 @@
   <div class="container conference-bg">
     <div class="row">
       <div class="col-lg-6 col-lg-offset-2">
-        <wizard @finish="submit">
+        <wizard @finish="submit" style="padding: 30px; background: #fff">
           <wizard-page title="About conferences" icon="suitcase" :valid="true">
             As enterprise subscriber you have an ability to create conferences. These are prepared for managing company conferences and massive meetings.
           </wizard-page>

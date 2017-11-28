@@ -97,7 +97,7 @@ export default {
   methods: {
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
-        var url = ['public/near-events', page, 5].join('/');
+        var url = ['/public/near-events', page, 5].join('/');
         this.$http
           .get(url, {
             params: {
@@ -123,7 +123,7 @@ export default {
     tabNavigation (id, loading) {
       if (id === 1 && (this.popular == null || this.popular.length === 0)) {
         loading(true);
-        this.$http.get('public/popular-pages/0/5').then(response => {
+        this.$http.get('/public/popular-pages/0/5').then(response => {
           this.popular = response.body.content;
           loading(false);
         });

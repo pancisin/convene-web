@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
       <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
     </hero-unit>  
@@ -7,6 +7,27 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
+          <panel type="default">
+            <span slot="title">Information</span>
+            <dl class="dl-horizontal">
+              <template v-for="(value, key) in page.metadata">
+                <dt :key="key">
+                  {{ key }}
+                </dt>
+                <dd :key="key">
+                  <a target="_blank" 
+                    :href="value"
+                    v-if="validUrl(value)">
+                    {{ value }}
+                  </a>
+                  <span v-else>
+                    {{ value }}
+                  </span>
+                </dd>
+              </template>
+            </dl>
+          </panel>
+          
           <panel v-if="page.summary != null && page.summary.length > 0">
             <div v-html="page.summary" class="m-b-20"></div>
           </panel>
@@ -72,6 +93,7 @@ import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
 
 import { mapGetters, mapActions } from 'vuex';
+import { validUrl } from '../../services/helpers';
 
 export default {
   name: 'page',
@@ -82,7 +104,8 @@ export default {
       events: [],
       selectedService: null,
       displayBookModal: false,
-      displayReportModal: false
+      displayReportModal: false,
+      loading: false
     };
   },
   components: {
@@ -112,6 +135,7 @@ export default {
       const api = this.authenticated ? PageApi : PublicApi.page;
       const fetchFunc = isNaN(id) ? api.getPageBySlug : api.getPage;
 
+      this.loading = true;
       fetchFunc(page_id, page => {
         if (page.id) {
           this.page = page;
@@ -123,11 +147,15 @@ export default {
             this.services = services;
           });
         }
+        this.loading = false;
       });
     },
     bookService (service) {
       this.selectedService = service;
       this.displayBookModal = true;
+    },
+    validUrl (value) {
+      return validUrl(value);
     }
   },
   head: {

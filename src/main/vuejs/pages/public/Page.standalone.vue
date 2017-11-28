@@ -40,14 +40,14 @@ export default {
 
       if (page_id != null) {
         if (this.authenticated) {
-          this.$http.get('api/page/' + page_id).then(response => {
+          this.$http.get('/api/page/' + page_id).then(response => {
             this.page = response.body;
             this.checkFollow();
             this.getServices('api');
             this.getEvents('api');
           });
         } else {
-          this.$http.get('public/page/' + page_id).then(response => {
+          this.$http.get('/public/page/' + page_id).then(response => {
             this.page = response.body;
             this.getServices('public');
             this.getEvents('public');
@@ -56,7 +56,7 @@ export default {
       }
     },
     checkFollow () {
-      var url = ['api/page', this.page.id, 'follow-status'].join('/');
+      var url = ['/api/page', this.page.id, 'follow-status'].join('/');
       this.$http.get(url).then(response => {
         this.follows = response.body;
       });
@@ -72,7 +72,7 @@ export default {
       });
     },
     toggleFollow () {
-      var url = ['api/page', this.page.id, 'toggle-follow'].join('/');
+      var url = ['/api/page', this.page.id, 'toggle-follow'].join('/');
       this.$http.patch(url).then(response => {
         this.follows = response.body;
       });

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const ARTICLES_LIST_API_URL = 'api/articles-list';
+const ARTICLES_LIST_API_URL = '/api/articles-list';
 export default {
 
   /**
@@ -63,8 +63,8 @@ export default {
    * @param {*} id - articles list id
    * @param {*} success - success callback function
    */
-  getArticles (id, success) {
-    Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/article`).then(response => {
+  getArticles (id, page, size, success) {
+    Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/article/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const EVENT_BOT_API_URL = 'api/event-bot';
+const EVENT_BOT_API_URL = '/api/event-bot';
 
 export default {
 

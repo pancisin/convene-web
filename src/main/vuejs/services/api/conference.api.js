@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const CONFERENCE_API_URL = 'api/conference';
+const CONFERENCE_API_URL = '/api/conference';
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');
 }
@@ -138,7 +138,7 @@ export default {
    * @param {*} success - success callback function
    */
   putAdministrator (administrator_id, administrator, success) {
-    Vue.http.put(`api/conference-administrator/${administrator_id}`, administrator).then(response => {
+    Vue.http.put(`/api/conference-administrator/${administrator_id}`, administrator).then(response => {
       success(response.body);
     });
   },
@@ -149,7 +149,7 @@ export default {
    * @param {*} success - success callback function
    */
   deleteAdministrator (administrator_id, success) {
-    Vue.http.delete(`api/conference-administrator/${administrator_id}`).then(response => {
+    Vue.http.delete(`/api/conference-administrator/${administrator_id}`).then(response => {
       success(response.body);
     });
   },
@@ -196,9 +196,9 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getArticles (id, success) {
+  getArticles (id, page, size, success) {
     checkId(id);
-    Vue.http.get(`${CONFERENCE_API_URL}/${id}/article`).then(response => {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/article/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

@@ -10,7 +10,7 @@ export default {
    * @param {*} success - success callback function
    */
   getPages (page, size, filters, success) {
-    Vue.http.get(`api/pages/${page}/${size}`, {
+    Vue.http.get(`/api/pages/${page}/${size}`, {
       params: {
         ...filters
       }
@@ -26,7 +26,7 @@ export default {
    * @param {*} success - success callback function
    */
   getConferences (page, size, success) {
-    Vue.http.get(`api/conferences/${page}/${size}`).then(response => {
+    Vue.http.get(`/api/conferences/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
@@ -38,7 +38,7 @@ export default {
    * @param {*} success - success callback function
    */
   getUsers (page, size, success) {
-    Vue.http.get(`api/user`, {
+    Vue.http.get(`/api/user`, {
       params: {
         page, size
       }
@@ -52,13 +52,13 @@ export default {
    * @param {*} success - success callback function
    */
   getUnits (success) {
-    Vue.http.get('api/enum/unit').then(response => {
+    Vue.http.get('/api/enum/unit').then(response => {
       success(response.body);
     });
   },
 
   getHeadlines (language, page, size, success, error) {
-    Vue.http.get('api/articles', {
+    Vue.http.get('/api/articles', {
       params: {
         tags: `language:${language || 'en'}, headlines`,
         page: page || 0,
@@ -78,7 +78,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getCategories (success) {
-    Vue.http.get('api/categories').then(response => {
+    Vue.http.get('/api/categories').then(response => {
       success(response.body);
     });
   },
@@ -89,7 +89,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getBranches (category_id, success) {
-    Vue.http.get(`api/categories/${category_id}/branches`).then(response => {
+    Vue.http.get(`/api/categories/${category_id}/branches`).then(response => {
       success(response.body);
     });
   }

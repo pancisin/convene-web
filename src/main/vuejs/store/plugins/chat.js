@@ -10,7 +10,7 @@ export default store => {
   //   }
   // })
 
-  Vue.connectWM('stomp').then(frame => {
+  Vue.connectWM('/stomp').then(frame => {
     Vue.$stompClient.subscribe('/user/queue/chat.message', response => {
       let message = JSON.parse(response.body);
       console.warn(message);

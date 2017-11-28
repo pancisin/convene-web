@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const META_FIELD_API_URL = 'api/meta-field';
+const META_FIELD_API_URL = '/api/meta-field';
 
 export default {
 

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const PLACE_API_URL = 'api/place';
+const PLACE_API_URL = '/api/place';
 
 export default {
 

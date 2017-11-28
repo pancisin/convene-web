@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/public")
 public class PublicRestController {
 
@@ -164,9 +166,9 @@ public class PublicRestController {
 		return ResponseEntity.ok(eventsPaginator.getContent());
 	}
 
-	@GetMapping("/conference/{conference_id/article")
-	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(articleRepository.getByConference(conference_id));
+	@GetMapping("/conference/{conference_id}/article/{page}/{size}")
+	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@GetMapping("/conference/{page}/{size}")

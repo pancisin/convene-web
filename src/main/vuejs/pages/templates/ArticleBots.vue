@@ -108,7 +108,7 @@ export default {
   created () {
     this.getBots();
 
-    this.connectWM('stomp').then(frame => {
+    this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/user/queue/list.bots', response => {
         let run = JSON.parse(response.body);
 

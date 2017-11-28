@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const PROGRAMME_API_URL = 'api/programme';
+const PROGRAMME_API_URL = '/api/programme';
 export default {
 
   /**

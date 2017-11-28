@@ -19,7 +19,7 @@ import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 @Service
 public class SitemapService {
-	private static final String BASE_URL = "https://convene.sk/#";
+	private static final String BASE_URL = "https://convene.sk";
 
 	@Autowired
 	private EventRepository eventRepository;

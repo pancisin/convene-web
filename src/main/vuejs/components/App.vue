@@ -8,13 +8,15 @@
       <router-view>
       </router-view>
     </transition>
+
+    <!-- <cookie-law /> -->
   </div>
 </template>
 
 <script>
 import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
-import { ToastContainer, ChatContainer } from 'elements';
+import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 
 export default {
   name: 'app-root',
@@ -29,7 +31,8 @@ export default {
   },
   components: {
     ToastContainer,
-    ChatContainer
+    ChatContainer,
+    CookieLaw
   },
   computed: {
     ...mapGetters(['authenticated', 'user'])
@@ -42,7 +45,7 @@ export default {
         this.initializeStomp();
         this.initializeNotifications();
         this.initializeContacts().then(() => {
-          this.connectWM('stomp').then(frame => {
+          this.connectWM('/stomp').then(frame => {
             this.$stompClient.subscribe(
               '/user/queue/chat.activeUsers',
               response => {
@@ -70,7 +73,7 @@ export default {
       'updateContactsActivityState'
     ]),
     initializeStomp () {
-      this.connectWM('stomp').then(frame => {
+      this.connectWM('/stomp').then(frame => {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
           this.addNotification(notification);

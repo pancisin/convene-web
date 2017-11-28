@@ -10,16 +10,18 @@
         <img :src="page.poster.path"
           class="img-circle">
       </div>
-      <p class="inbox-item-author">
-        {{ page.name }}
-        <span class="pull-right label label-default" v-if="followers">
-          {{ page.followersCount }} followers
-        </span>
-      </p>
-      <p class="inbox-item-text"
-        v-if="page.category != null">
-        {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-      </p>
+      <div>
+        <p class="inbox-item-author">
+          {{ page.name }}
+          <span class="pull-right label label-default" v-if="followers">
+            {{ page.followersCount }} followers
+          </span>
+        </p>
+        <p class="inbox-item-text"
+          v-if="page.category != null">
+          {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+        </p>
+      </div>
     </router-link>
   </div>
 </template>

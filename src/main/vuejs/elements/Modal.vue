@@ -45,9 +45,9 @@ export default {
       this.$emit('update:show', false);
     },
     outside () {
-      if (this.show) {
-        this.close();
-      }
+      // if (this.show) {
+      //   this.close();
+      // }
     }
   }
 };

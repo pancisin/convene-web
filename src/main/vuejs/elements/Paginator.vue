@@ -26,7 +26,9 @@ export default {
   props: {
     paginator: {
       type: Object,
-      default: {}
+      default () {
+        return {};
+      }
     },
     history: {
       type: Boolean,

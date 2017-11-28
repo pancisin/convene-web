@@ -78,6 +78,7 @@ spring:
     host: localhost
 server: 
   port: 8080
+  context-path: /bookster
 storage:
   path: /uploads/bookster/
 mailing: 

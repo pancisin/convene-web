@@ -102,7 +102,7 @@ export default {
     '$route': 'initialize'
   },
   created () {
-    this.connectWM('stomp').then(frame => {
+    this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/user/queue/page.import', response => {
         let pageImport = JSON.parse(response.body);
 

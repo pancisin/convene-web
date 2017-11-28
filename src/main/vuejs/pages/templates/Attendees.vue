@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     cancel (invitation_id) {
-      this.$http.delete('api/invitation/' + invitation_id).then(response => {
+      this.$http.delete('/api/invitation/' + invitation_id).then(response => {
         this.invitations = this.invitations.filter(x => {
           return x.id !== invitation_id;
         });

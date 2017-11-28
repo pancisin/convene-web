@@ -60,7 +60,7 @@ export default {
     getMessages () {
       this.loading = true;
       this.messages = [];
-      this.$http.get('api/message/user/' + this.recipient.id + '/0').then(response => {
+      this.$http.get('/api/message/user/' + this.recipient.id + '/0').then(response => {
         let messages = response.body;
         messages.sort((a, b) => {
           return a.created - b.created;

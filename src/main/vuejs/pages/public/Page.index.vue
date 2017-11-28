@@ -44,19 +44,20 @@
                 <div class="title">
                   <h5>
                     {{ page.name }}
-                    <router-link 
-                      :to="{ name: 'page.settings', params: { id: page.id } }" 
-                      v-if="page.privilege && page.privilege.role.level >= 60" 
-                      class="pull-right text-primary">
-
-                      <i class="fa fa-pencil"></i>
-                    </router-link>
                   </h5>
                   <small class="text-muted" v-if="page.category != null">
                     {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
                   </small>
                 </div>
               </router-link>
+              <div class="actions">
+                <router-link 
+                  :to="{ name: 'page.settings', params: { id: page.id } }" 
+                  v-if="page.privilege && page.privilege.role.level >= 60" 
+                  class="pull-right text-primary">
+                  <i class="fa fa-pencil"></i>
+                </router-link>
+              </div>
             </masonry-item>
           </masonry>
 
@@ -188,6 +189,27 @@ export default {
       text-transform: uppercase;
       color: #000;
       line-height: 18px;
+    }
+  }
+
+  .actions {
+    border-top: 1px solid #ccc;
+    text-align: right;
+    display: flex;
+    background: #fff;
+
+    & > a {
+      transition: all .3s ease-in-out;
+      color: #000;
+      padding: 10px;
+      display: inline-block;
+      flex: 1 1 auto;
+      text-align: center;
+
+      &:hover {
+        background-color: @color-primary;
+        color: #fff;
+      }
     }
   }
 

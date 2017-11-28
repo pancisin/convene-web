@@ -1,7 +1,7 @@
 import ConferenceApi from 'api/conference.api';
 
 export default class ConferenceInjector {
- 
+
   get base_route () {
     return {
       name: 'conference',
@@ -83,8 +83,8 @@ export default class ConferenceInjector {
     ConferenceApi.putCancelAttend(this.conference_id, success);
   }
 
-  getArticles (success) {
-    ConferenceApi.getArticles(this.conference_id, success);
+  getArticles (page, size, success) {
+    ConferenceApi.getArticles(this.conference_id, page, size, success);
   }
 
   postArticle (article, success) {

@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,9 +55,9 @@ public class ArticlesListController {
 		return ResponseEntity.ok(alRepository.save(stored));
 	}
 
-	@GetMapping("/article")
-	public ResponseEntity<?> getArticles(@PathVariable UUID articlesListId) {
-		return ResponseEntity.ok(alRepository.findOne(articlesListId).getArticles());
+	@GetMapping("/article/{page}/{size}")
+	public ResponseEntity<?> getArticles(@PathVariable UUID articlesListId, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(articleRepository.getByArticlesList(articlesListId, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@Transactional

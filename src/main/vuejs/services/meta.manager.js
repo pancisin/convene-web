@@ -53,7 +53,7 @@ MetaManager.install = (Vue, options) => {
   Vue.mixin({
     created () {
       const head = this.$options.head;
-      if (head != null) {
+      if (head) {
         this.$watch(head.title, newVal => {
           document.title = `${newVal ? newVal + ' |' : ''}  Convene`;
         });

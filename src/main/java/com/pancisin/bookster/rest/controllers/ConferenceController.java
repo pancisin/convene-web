@@ -284,11 +284,10 @@ public class ConferenceController {
 		return ResponseEntity.ok(articleRepository.save(article));
 	}
 
-	@GetMapping("/article")
+	@GetMapping("/article/{page}/{size}")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
-	public ResponseEntity<?> getArticles(@PathVariable Long conference_id) {
-		Conference stored = conferenceRepository.findOne(conference_id);
-		return ResponseEntity.ok(stored.getArticles());
+	public ResponseEntity<?> getArticles(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@PatchMapping("/toggle-published")

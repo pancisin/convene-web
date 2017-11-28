@@ -66,7 +66,7 @@ export default {
     }
   },
   created () {
-    this.connectWM('stomp').then(
+    this.connectWM('/stomp').then(
       frame => {
         this.$stompClient.subscribe('/user/queue/chat.message', response => {
           let message = JSON.parse(response.body);
