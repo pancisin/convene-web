@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,28 +32,30 @@ public class IndexController {
 	private SitemapView sitemapView;
 
 	private final String crawlersPatters = ".*(facebookexternalhit|Facebot|Twitterbot|Pinterest|Google.*snippet|Googlebot).*";
-
+	private final String forwardPaths = "(event|page|conference)";
+	
+	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping("/")
 	public String getRoot() {
-		return this.mainPage();
+		return this.mainPage("");
 	}
-	
+
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{leader:(?!stomp|static|api|public|files)[^\\.]*}")
-	public String shit() {
-		return this.mainPage();
+	public String shit(@PathVariable String leader) {
+		return this.mainPage(leader);
 	}
-	
+
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{leader:(?!stomp|static|api|public|files).*}/**/{path:[^\\.]*}")
-	public String mainPage() {
+	public String mainPage(@PathVariable String leader) {
 		String url = request.getRequestURI();
 
-		if (request.getHeader("user-agent").matches(crawlersPatters)) {
+		if (leader.matches(forwardPaths) && request.getHeader("user-agent").matches(crawlersPatters)) {
 			Pattern p = Pattern.compile(request.getContextPath());
 			Matcher m = p.matcher(url);
-			
+
 			if (m.find()) {
 				url = url.substring(m.end(), url.length());
 			}
@@ -66,7 +69,7 @@ public class IndexController {
 			return "forward:/index.html";
 		}
 	}
-	
+
 	@GetMapping("/info/user-agent")
 	public @ResponseBody String getUserAgent() {
 		return request.getHeader("user-agent");
