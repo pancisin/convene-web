@@ -1,13 +1,13 @@
 package com.pancisin.bookster.controllers;
 
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,25 +39,31 @@ public class IndexController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping("/{leader:(?!stomp|static|api|public|files).*}/{path:[^\\.]*}")
+	@GetMapping("/{leader:(?!stomp|static|api|public|files)[^\\.]*}")
 	public String shit() {
 		return this.mainPage();
 	}
 	
-	
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{leader:(?!stomp|static|api|public|files).*}/**/{path:[^\\.]*}")
 	public String mainPage() {
-		final String url = request.getRequestURI();
+		String url = request.getRequestURI();
 
 		if (request.getHeader("user-agent").matches(crawlersPatters)) {
-			return String.format("forward://static/%s", url);
+			Pattern p = Pattern.compile(request.getContextPath());
+			Matcher m = p.matcher(url);
+			
+			if (m.find()) {
+				url = url.substring(m.end(), url.length());
+			}
+
+			return String.format("forward:/static/%s", url);
 		}
 
 		if (environmentProvider.isProduction()) {
-			return "forward://dist/index.html";
+			return "forward:/dist/index.html";
 		} else {
-			return "forward://index.html";
+			return "forward:/index.html";
 		}
 	}
 	
