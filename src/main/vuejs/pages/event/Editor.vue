@@ -19,14 +19,15 @@
           </select>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('visibility') }}</span>
         </div>
-      <div class="form-group">
-        <label class="control-label">Location</label>
-        <place-picker v-model="location"></place-picker>
-      </div>
       </div>
       <div class="col-md-6">
         <image-upload v-model="eventClone.posterData" :media="event.poster"></image-upload>
       </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label">Location</label>
+      <place-picker v-model="location"></place-picker>
     </div>
     
     <div class="form-group">

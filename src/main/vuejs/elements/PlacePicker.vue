@@ -21,7 +21,7 @@ export default {
     this.initialize();
   },
   watch: {
-    'route': 'initialize'
+    'value': 'initialize'
   },
   methods: {
     initialize () {
@@ -29,12 +29,16 @@ export default {
         context.autocomplete(this.$refs.place_picker, location => {
           this.$emit('input', location);
         });
+
+        if (this.value.lat != null && this.value.lng != null) {
+          context.geocode(this.value, result => {
+            this.$refs.place_picker.value = result.address;
+          });
+        } else {
+          this.$refs.place_picker.value = '';
+        }
       });
     }
   }
 };
 </script>
-
-<style>
-
-</style>

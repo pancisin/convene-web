@@ -54,11 +54,11 @@ GoogleMapsApi.install = (Vue, options) => {
       return atcmpl;
     },
 
-    geocode (address, callback) {
+    geocode (location, callback) {
       const geocoder = new googleApi.maps.Geocoder();
 
       geocoder.geocode({
-        address
+        location
       }, (result, status) => {
         if (status !== 'OK') return;
 

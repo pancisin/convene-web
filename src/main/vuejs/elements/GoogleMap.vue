@@ -37,7 +37,8 @@ export default {
     this.$googleMapApi.load(context => {
       this.map = context.map(this.$refs.google_map_canvas, {
         disableDefaultUI: true,
-        style: gmapStyle
+        style: gmapStyle,
+        zoom: 12
       });
     });
   }
