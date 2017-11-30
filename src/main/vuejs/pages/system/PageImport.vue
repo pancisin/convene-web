@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Search places</label>
-          <input type="text" class="form-control" id="maps_autocomplete">
+          <place-picker @input="pickerUpdate"></place-picker>
         </div>
         <div class="form-group">
           <label>Radius (meters)</label>
@@ -70,8 +70,8 @@
 <script>
 import debounce from 'debounce';
 import ImporterApi from 'api/importer.api';
-import GoogleMapsApiLoader from 'google-maps-api-loader';
 import { mapActions } from 'vuex';
+import { PlacePicker } from 'elements';
 
 export default {
   name: 'page-import',
@@ -90,6 +90,9 @@ export default {
         lng: null
       }
     };
+  },
+  components: {
+    PlacePicker
   },
   computed: {
     showFilters () {
@@ -112,31 +115,14 @@ export default {
         }
       });
     });
-
-    this.initialize();
   },
   beforeDestroy () {
     this.subscription.unsubscribe();
   },
   methods: {
     ...mapActions(['initializePages', 'updatePages']),
-    initialize () {
-      GoogleMapsApiLoader({
-        apiKey: 'AIzaSyBKua_eTxYYK4hJf7sRKeH666HdcH3UlAg',
-        libraries: [ 'places' ]
-      }).then(google => {
-        var input = document.getElementById('maps_autocomplete');
-        const autocomplete = new google.maps.places.Autocomplete(input);
-
-        google.maps.event.addListener(autocomplete, 'place_changed', () => {
-          const location = autocomplete.getPlace().geometry.location;
-
-          this.searchPlaces(null, {
-            lat: location.lat(),
-            lng: location.lng()
-          });
-        });
-      });
+    pickerUpdate (location) {
+      this.searchPlaces(null, location);
     },
     searchPlaces (after, coords) {
       this.loading = true;

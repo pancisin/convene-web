@@ -52,15 +52,15 @@
               </div>
             </div>
 
-            <div v-if="event.place != null" class="map-container">
-              <address class="event-address">
+            <div v-if="event.latitude != null && event.longitude != null" class="map-container">
+              <!-- <address class="event-address">
                 <strong v-text="event.place.name"></strong>
                 <br> {{ event.place.address.street + " " + event.place.address.number }}
                 <br> {{ event.place.address.zip + " " + event.place.address.city }}
                 <br> {{ event.place.address.state }}
-              </address>
+              </address> -->
 
-              <g-map :lat="event.place.address.latitude" :lng="event.place.address.longitude"></g-map>
+              <google-map :location="{ lat: event.latitude, lng: event.longitude }"></google-map>
             </div>
 
             <masonry columns="4">
@@ -98,7 +98,7 @@
 
 <script>
 import {
-  GMap,
+  GoogleMap,
   Masonry,
   MasonryItem,
   EventsList,
@@ -124,7 +124,7 @@ export default {
     };
   },
   components: {
-    GMap,
+    GoogleMap,
     StaggerTransition,
     Masonry,
     MasonryItem,

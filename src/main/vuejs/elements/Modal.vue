@@ -63,6 +63,7 @@ export default {
 
   padding: 0;
   text-align: center;
+  z-index: 999;
 
   &:before {
     content: '';

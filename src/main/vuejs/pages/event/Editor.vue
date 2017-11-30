@@ -19,6 +19,10 @@
           </select>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('visibility') }}</span>
         </div>
+      <div class="form-group">
+        <label class="control-label">Location</label>
+        <place-picker v-model="location"></place-picker>
+      </div>
       </div>
       <div class="col-md-6">
         <image-upload v-model="eventClone.posterData" :media="event.poster"></image-upload>
@@ -43,7 +47,8 @@ import {
   TextEditor,
   DatePicker,
   ImageUpload,
-  GiphySearch
+  GiphySearch,
+  PlacePicker
 } from 'elements';
 
 export default {
@@ -66,13 +71,29 @@ export default {
           'AUTHENTICATED'
         ];
       }
+    },
+    location: {
+      get () {
+        return {
+          lat: this.event.latitude,
+          lng: this.event.longitude
+        };
+      },
+      set (value) {
+        this.eventClone = {
+          ...this.eventClone,
+          latitude: value.lat,
+          longitude: value.lng
+        };
+      }
     }
   },
   components: {
     TextEditor,
     DatePicker,
     ImageUpload,
-    GiphySearch
+    GiphySearch,
+    PlacePicker
   },
   data () {
     return {

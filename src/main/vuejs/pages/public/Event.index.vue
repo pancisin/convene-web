@@ -50,7 +50,9 @@
               </div>
             </router-link>
             <div class="actions" v-if="event.author && user && event.author.id === user.id">
-              <a @click="editEvent(event)"><i class="fa fa-pencil"></i></a>
+              <a @click="editEvent(event)">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
               <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
             </div>
           </div>

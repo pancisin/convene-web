@@ -98,7 +98,7 @@ export default {
     'page': 'initializeMeta',
     metadata: {
       handler (newVal) {
-        const emptyEval = meta =>  meta.key == null || meta.key === '';
+        const emptyEval = meta => meta.key == null || meta.key === '';
 
         const emptyCount = newVal.filter(emptyEval).length;
 
@@ -147,10 +147,10 @@ export default {
       const data = {
         ...this.page,
         metadata: this.metadata.reduce((map, obj) => {
-          if (obj.key != null && obj.key != '' && obj.value != null && obj.value != '') {
+          if (obj.key != null && obj.key !== '' && obj.value != null && obj.value !== '') {
             map[obj.key] = obj.value;
           }
-          
+
           return map;
         }, {})
       };
@@ -167,7 +167,7 @@ export default {
       });
     },
     removeMeta (meta) {
-      if (meta.key != null && meta.key != '') {
+      if (meta.key != null && meta.key !== '') {
         const index = this.metadata.findIndex(m => m.key === meta.key);
         this.metadata.splice(index, 1);
       }

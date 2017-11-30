@@ -1,5 +1,6 @@
 package com.pancisin.bookster.models;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,6 +133,12 @@ public class Event {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
+	
+	@Column(precision = 10, scale = 8)
+	private BigDecimal latitude;
+
+	@Column(precision = 10, scale = 8)
+	private BigDecimal longitude;
 	
 //	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
@@ -289,5 +296,21 @@ public class Event {
 		}
 		
 		this.gallery.add(media);
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
 	}
 }

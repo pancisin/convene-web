@@ -7,7 +7,7 @@ import ContextMenu from './ContextMenu';
 import DatePicker from './DatePicker';
 import DropdownMenu from './DropdownMenu';
 import DropdownMenuItem from './DropdownMenuItem';
-import GMap from './GMap';
+import GoogleMap from './GoogleMap';
 import ImageUpload from './ImageUpload';
 import LangSwitcher from './header/LangSwitcher';
 import Notifications from './header/Notifications';
@@ -42,6 +42,7 @@ import EventCreateWizard from './EventCreateWizard';
 import AbuseReport from './AbuseReport';
 import CookieLaw from './CookieLaw';
 import Payment from './Payment';
+import PlacePicker from './PlacePicker';
 
 import widgets from './widgets';
 
@@ -56,7 +57,7 @@ export {
   DatePicker,
   DropdownMenu,
   DropdownMenuItem,
-  GMap,
+  GoogleMap,
   ImageUpload,
   LangSwitcher,
   Modal,
@@ -90,5 +91,6 @@ export {
   EventCreateWizard,
   AbuseReport,
   CookieLaw,
-  Payment
+  Payment,
+  PlacePicker
 };

@@ -11,7 +11,7 @@
 
         <div class="form-group">
           <label class="control-label">Description</label>
-          <input class="form-control required" v-model="place.description" type="text">
+          <textarea class="form-control required" v-model="place.description" rows="3"></textarea>
         </div>
 
         <div class="form-group">
@@ -20,37 +20,13 @@
         </div>
 
       </div>
-      <div class="col-md-6" v-if="place.address != null">
-        <div class="form-group" :class="{ 'has-error' : errors.name }">
-          <label class="control-label">City</label>
-          <input class="form-control required" v-model="place.address.city" type="text">
-        </div>
+      <div class="col-md-6">
+        <label class="control-label">Location</label>
+        <place-picker v-model="location" class="m-b-20"></place-picker>
 
-        <div class="row">
-          <div class="col-xs-8">
-            <div class="form-group" :class="{ 'has-error' : errors.name }">
-              <label class="control-label">Street</label>
-              <input class="form-control required" v-model="place.address.street" type="text">
-            </div>
-          </div>
-          <div class="col-xs-4">
-            <div class="form-group">
-              <label class="control-label">Number</label>
-              <input class="form-control required" v-model="place.address.number" type="number">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" :class="{ 'has-error' : errors.state }">
-          <label class="control-label">State</label>
-          <input class="form-control required" v-model="place.address.state" type="text">
-        </div>
-
+        <google-map :location="location"></google-map>
       </div>
     </div>
-
-    <label>Please verify that map points to the correct place</label>
-    <g-map :address="place.address" :lat="place.address.latitude" :lng="place.address.longitude" @updated="mapUpdated"></g-map>
 
     <div class="text-center m-t-20">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
@@ -61,7 +37,7 @@
 </template>
 
 <script>
-import { GMap } from 'elements';
+import { GoogleMap, PlacePicker } from 'elements';
 import PlaceApi from 'api/place.api';
 
 export default {
@@ -71,9 +47,7 @@ export default {
     place: {
       type: Object,
       default () {
-        return {
-          address: {}
-        };
+        return {};
       }
     },
     edit: {
@@ -82,16 +56,32 @@ export default {
     }
   },
   components: {
-    GMap
+    GoogleMap,
+    PlacePicker
   },
   computed: {
     api () {
       return this.provider.api;
+    },
+    location: {
+      get () {
+        return {
+          lat: this.place.latitude,
+          lng: this.place.longitude
+        };
+      },
+      set (value) {
+        this.place = {
+          ...this.place,
+          latitude: value.lat,
+          longitude: value.lng
+        };
+      }
     }
   },
   data () {
     return {
-      errors: []
+      // errors: []
     };
   },
   methods: {

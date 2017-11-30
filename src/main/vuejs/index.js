@@ -6,6 +6,7 @@ import VueWebsocket from './services/websocket.js';
 import VueAnalytics from 'vue-analytics';
 import VeeValidate from 'vee-validate';
 import MetaManager from './services/meta.manager';
+import GoogleMapsApi from './services/google-maps-api';
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment';
@@ -32,6 +33,7 @@ require('./assets/less/components.less');
 require('./assets/less/responsive.less');
 
 Vue.use(MetaManager);
+Vue.use(GoogleMapsApi);
 Vue.use(VueResource);
 Vue.use(VueI18n);
 Vue.use(VueWebsocket);

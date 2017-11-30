@@ -15,6 +15,11 @@
           <date-picker v-model="event.date" v-validate data-vv-rules="required" name="date"  @change="validate('basic')"></date-picker>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('date') }}</span>
         </div>
+        <div class="form-group" :class="{ 'has-error' : errors.has('location') }">
+          <label class="control-label">Location</label>
+          <place-picker v-model="location"  v-validate data-vv-rules="required" name="location" @change="validate('basic')"></place-picker>
+          <span class="text-danger" v-if="errors.has('location')">{{ errors.first('location') }}</span>
+        </div>
         <div class="form-group" :class="{ 'has-error' : errors.has('visibility') }">
           <label class="control-label">Visibility: </label>
           <select v-model="event.visibility" class="form-control" name="visibility" v-validate data-vv-rules="required" @change="validate('basic')">
@@ -39,6 +44,7 @@ import Wizard from './Wizard';
 import WizardPage from './WizardPage';
 import DatePicker from './DatePicker';
 import TextEditor from './TextEditor';
+import PlacePicker from './PlacePicker';
 
 export default {
   name: 'event-create-wizard',
@@ -61,14 +67,33 @@ export default {
     Wizard,
     WizardPage,
     DatePicker,
-    TextEditor
+    TextEditor,
+    PlacePicker
   },
   computed: {
     visibility_options: {
       get () {
         return [
-          'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
+          'PUBLIC',
+          'PRIVATE',
+          'INVITED',
+          'AUTHENTICATED'
         ];
+      }
+    },
+    location: {
+      get () {
+        return {
+          lat: this.event.latitude,
+          lng: this.event.longitude
+        };
+      },
+      set (value) {
+        this.event = {
+          ...this.event,
+          latitude: value.lat,
+          longitude: value.lng
+        };
       }
     }
   },

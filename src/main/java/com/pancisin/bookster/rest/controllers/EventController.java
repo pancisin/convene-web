@@ -85,6 +85,8 @@ public class EventController {
 		stored.setVisibility(event.getVisibility());
 		stored.setDate(event.getDate());
 		stored.setPlace(event.getPlace());
+		stored.setLatitude(event.getLatitude());
+		stored.setLongitude(event.getLongitude());
 
 		// HERE weGo
 		stored.setBanner(event.getBanner());
