@@ -9,6 +9,7 @@
           <p class="panel-sub-title font-13">
             {{ event.date | moment('LL') }} {{ event.startsAt }}
             <br>Usporiadatel : {{ event.author != null ? event.author.displayName : '' }}
+            <br>Place: {{ address }}
           </p>
        
           <div class="socials">
@@ -60,7 +61,7 @@
                 <br> {{ event.place.address.state }}
               </address> -->
 
-              <google-map :location="{ lat: event.latitude, lng: event.longitude }"></google-map>
+              <google-map :location="location"></google-map>
             </div>
 
             <masonry columns="4">
@@ -120,7 +121,8 @@ export default {
       event: {},
       relatedEvents: [],
       gallery: [],
-      loading: false
+      loading: false,
+      address: null
     };
   },
   components: {
@@ -150,6 +152,12 @@ export default {
       }
 
       return null;
+    },
+    location () {
+      return {
+        lat: parseFloat(this.event.latitude),
+        lng: parseFloat(this.event.longitude)
+      };
     }
   },
   watch: {
@@ -173,6 +181,12 @@ export default {
 
           PublicApi.event.getGallery(event_id, gallery => {
             this.gallery = gallery;
+          });
+
+          this.$googleMapApi.load(context => {
+            context.geocode(this.location, result => {
+              this.address = result.address;
+            });
           });
 
           this.loading = false;

@@ -21,12 +21,18 @@
           </select>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('visibility') }}</span>
         </div>
+
         <div class="form-group">
+          <label class="control-label">Location</label>
+          <place-picker v-model="location" ></place-picker>
+        </div>
+
+        <!-- <div class="form-group">
           <label class="control-label">Place</label>
           <select v-model="event.place" class="form-control">
             <option :value="place" v-for="place in places" v-text="place.name" :key="place.id"></option>
           </select>
-        </div>
+        </div> -->
 
         <div class="form-group">
           <label>Banner</label>
@@ -53,7 +59,13 @@
 </template>
 
 <script>
-import { TextEditor, DatePicker, ImageUpload, GiphySearch } from 'elements';
+import {
+  TextEditor,
+  DatePicker,
+  ImageUpload,
+  GiphySearch,
+  PlacePicker
+} from 'elements';
 
 export default {
   inject: ['provider'],
@@ -82,10 +94,29 @@ export default {
           'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
         ];
       }
+    },
+    location: {
+      get () {
+        return {
+          lat: this.event.latitude,
+          lng: this.event.longitude
+        };
+      },
+      set (value) {
+        this.event = {
+          ...this.event,
+          latitude: value.lat,
+          longitude: value.lng
+        };
+      }
     }
   },
   components: {
-    TextEditor, DatePicker, ImageUpload, GiphySearch
+    TextEditor,
+    DatePicker,
+    ImageUpload,
+    GiphySearch,
+    PlacePicker
   },
   data () {
     return {

@@ -9,7 +9,8 @@ export default {
   name: 'google-map',
   data () {
     return {
-      map: null
+      map: null,
+      loading: false
     };
   },
   props: {
@@ -34,12 +35,17 @@ export default {
     }
   },
   created () {
+    this.loading = true;
     this.$googleMapApi.load(context => {
       this.map = context.map(this.$refs.google_map_canvas, {
         disableDefaultUI: true,
-        style: gmapStyle,
-        zoom: 12
+        styles: gmapStyle,
+        zoom: 12,
+        draggable: false,
+        center: this.location
       });
+
+      this.loading = false;
     });
   }
 };
