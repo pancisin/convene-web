@@ -43,6 +43,10 @@ export default class ConferenceInjector {
     ConferenceApi.getEvents(this.conference_id, page, size, success);
   }
 
+  postEvent (event, success) {
+    ConferenceApi.postEvent(this.conference_id, event, success);
+  }
+
   getInvitations (success) {
     ConferenceApi.getInvitations(this.conference_id, success);
   }

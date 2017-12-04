@@ -44,6 +44,13 @@ export default {
     });
   },
 
+  postEvent (id, event, success) {
+    checkId(id);
+    Vue.http.post(`${CONFERENCE_API_URL}/${id}/event`, event).then(response => {
+      success(response.body);
+    });
+  },
+
   /**
    * Get conference invitations
    * @param {*} id - conference id

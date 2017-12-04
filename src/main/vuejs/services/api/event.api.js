@@ -26,9 +26,13 @@ export default {
    * @param {*} event - event object data
    * @param {*} success - success callback function
    */
-  putEvent (id, event, success) {
+  putEvent (id, event, success, error) {
     Vue.http.put(`${EVENT_API_URL}/${id}`, event).then(response => {
       success(response.body);
+    }, response => {
+      if (error) {
+        error(response.body);
+      };
     });
   },
 

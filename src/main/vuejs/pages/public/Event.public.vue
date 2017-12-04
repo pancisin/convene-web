@@ -8,8 +8,8 @@
 
           <p class="panel-sub-title font-13">
             {{ event.date | moment('LL') }} {{ event.startsAt }}
-            <br>Usporiadatel : {{ event.author != null ? event.author.displayName : '' }}
-            <br>Place: {{ address }}
+            <br><b>Usporiadatel:</b> {{ event.author != null ? event.author.displayName : '' }}
+            <br><b>Place:</b> {{ address }}
           </p>
        
           <div class="socials">

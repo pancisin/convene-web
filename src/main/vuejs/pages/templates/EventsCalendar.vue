@@ -3,14 +3,34 @@
     <div class="col-xs-12 col-lg-8 col-lg-offset-2">
       <panel type="primary" v-loading="loading">
         <span slot="title">Events calendar</span>
-        <calendar :events="paginator.content" @navigate="getEvents" ref="calendar" :editable="editable"></calendar>
+        <calendar 
+          :events="paginator.content" 
+          @navigate="getEvents" 
+          ref="calendar" 
+          :editable="editable"
+          @selectDate="selectDate"></calendar>
       </panel>
     </div>
+
+    <modal :show.sync="displayEventCreateModal">
+      <span slot="header">Create an event</span>
+      <div slot="body">
+        <event-create-wizard 
+          :postFunc="postEvent" 
+          @success="updateContent" 
+          :date="date"
+          v-if="displayEventCreateModal"
+        ></event-create-wizard>
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
-import { Calendar } from 'elements';
+import {
+  Calendar,
+  EventCreateWizard
+} from 'elements';
 import EventApi from 'api/event.api';
 
 export default {
@@ -22,11 +42,14 @@ export default {
   data () {
     return {
       paginator: {},
-      loading: false
+      loading: false,
+      displayEventCreateModal: false,
+      date: null
     };
   },
   components: {
-    Calendar
+    Calendar,
+    EventCreateWizard
   },
   computed: {
     api () {
@@ -61,6 +84,17 @@ export default {
           to
         });
       }
+    },
+    postEvent (event, success) {
+      this.api.postEvent(event, success);
+    },
+    selectDate (timestamp) {
+      this.date = timestamp;
+      this.displayEventCreateModal = true;
+    },
+    updateContent (event) {
+      this.paginator.content.push(event);
+      this.displayEventCreateModal = false;
     }
   }
 };

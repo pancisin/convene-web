@@ -39,6 +39,10 @@ export default class PageInjector {
     PageApi.getEvents(this.page_id, page, size, success, params);
   }
 
+  postEvent (event, success) {
+    PageApi.postEvent(this.page_id, event, success);
+  }
+
   getAdministrators (page, size, success) {
     PageApi.getAdministrators(this.page_id, page, size, success);
   }

@@ -3,7 +3,7 @@
     <span slot="title">Overview</span>
 
     <div class="row">
-      <div :class="{ 'col-md-6' : edit, 'col-xs-12' : !edit }">
+      <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
           <label class="control-label">Name</label>
           <input class="form-control required" v-model="event.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
@@ -40,7 +40,7 @@
         </div>
 
       </div>
-      <div class="col-md-6" v-if="edit">
+      <div class="col-md-6">
         <image-upload v-model="event.posterData" :media="event.poster"></image-upload>
       </div>
     </div>
@@ -52,8 +52,8 @@
 
     <div class="text-center">
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
-        <span v-if="edit">Save</span>
-        <span v-else>Submit</span> {{ event.name }}</button>
+        Save
+      </button>
     </div>
   </panel>
 </template>
@@ -66,6 +66,7 @@ import {
   GiphySearch,
   PlacePicker
 } from 'elements';
+import EventApi from 'api/event.api';
 
 export default {
   inject: ['provider'],
@@ -76,13 +77,7 @@ export default {
       default () {
         return {};
       }
-    },
-    edit: {
-      type: Boolean,
-      default: false
-    },
-    page_id: String,
-    conference_id: String
+    }
   },
   computed: {
     api () {
@@ -91,7 +86,10 @@ export default {
     visibility_options: {
       get () {
         return [
-          'PUBLIC', 'PRIVATE', 'INVITED', 'AUTHENTICATED'
+          'PUBLIC',
+          'PRIVATE',
+          'INVITED',
+          'AUTHENTICATED'
         ];
       }
     },
@@ -134,49 +132,19 @@ export default {
     submit: function () {
       this.$validator.validateAll().then(result => {
         if (result) {
-          if (this.edit) {
-            let url = ['/api/event', this.event.id].join('/');
-            this.loading = true;
-            this.$http.put(url, this.event, {
-              progress (e) {
-                if (e.lengthComputable) {
-                  this.loading = (e.loaded / e.total) * 100;
-                }
-              }
-            }).then(response => {
-              this.$emit('updated', response.body);
-              this.$success('notification.event.updated', this.event.name);
-              this.loading = false;
-            }, response => {
-              response.body.fieldErrors.forEach((e) => {
-                this.$set(this.errors, e.field, e);
-              });
-              this.$error('notification.event.error.updated', this.event.name);
-              this.loading = false;
-            });
-          } else {
-            let url = null;
-            if (this.page_id != null) {
-              url = ['/api/page', this.page_id, 'event'].join('/');
-            } else if (this.conference_id != null) {
-              url = ['/api/conference', this.conference_id, 'event'].join('/');
-            } else {
-              url = '/api/user/event';
-            }
 
-            this.$http.post(url, this.event).then(response => {
-              var event = response.body;
-              this.$success('notification.event.created', event.name);
-              this.$router.push('/admin/event/' + event.id);
-            }, response => {
-              if (response.body != null) {
-                response.body.fieldErrors.forEach((e) => {
-                  this.$set(this.errors, e.field, e);
-                });
-                this.$error('notification.event.error.created', this.event.name);
-              } else this.$error('notification.event.error.created', response.bodyText);
+          this.loading = true;
+          EventApi.putEvent(this.event.id, this.event, event => {
+            this.$emit('updated', event);
+            this.$success('notification.event.updated', event.name);
+            this.loading = false;
+          }, ({ fieldErrors }) => {
+            fieldErrors.forEach((e) => {
+              this.$set(this.errors, e.field, e);
             });
-          }
+            this.$error('notification.event.error.updated', this.event.name);
+            this.loading = false;
+          });
         }
       });
     },

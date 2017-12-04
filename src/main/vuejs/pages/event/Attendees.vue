@@ -8,9 +8,9 @@ export default {
     this.initialize();
   },
   computed: {
-    api() {
+    api () {
       return this.provider.api;
-    },
+    }
   },
   watch: {
     'api': 'initialize'

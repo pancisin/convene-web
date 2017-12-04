@@ -81,6 +81,7 @@ export default {
         };
       },
       set (value) {
+        console.log(value);
         this.eventClone = {
           ...this.eventClone,
           latitude: value.lat,
@@ -121,7 +122,9 @@ export default {
         date: this.event.date,
         summary: this.event.summary,
         visibility: this.event.visibility,
-        posterData: this.event.posterData
+        posterData: this.event.posterData,
+        latitude: this.event.latitude,
+        longitude: this.event.longitude
       };
     },
     submit () {

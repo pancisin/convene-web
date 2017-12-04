@@ -79,15 +79,29 @@
     </div>
 
     <div class="text-center" v-if="editable">
-      <router-link to="events/create" class="btn btn-default btn-rounded text-center">
+      <a @click="displayEventCreateModal = true" class="btn btn-default btn-rounded text-center">
         Create event
-      </router-link>
+      </a>
     </div>
+
+    <modal :show.sync="displayEventCreateModal">
+      <span slot="header">Create an event</span>
+      <div slot="body">
+        <event-create-wizard 
+          :postFunc="postEvent" 
+          @success="updateContent" 
+          v-if="displayEventCreateModal"
+        ></event-create-wizard>
+      </div>
+    </modal>
   </panel>
 </template>
 
 <script>
-import { Paginator } from 'elements';
+import {
+  Paginator,
+  EventCreateWizard
+} from 'elements';
 import EventApi from 'api/event.api';
 
 export default {
@@ -99,11 +113,13 @@ export default {
   data () {
     return {
       paginator: {},
-      loading: false
+      loading: false,
+      displayEventCreateModal: false
     };
   },
   components: {
-    Paginator
+    Paginator,
+    EventCreateWizard
   },
   computed: {
     api () {
@@ -143,6 +159,13 @@ export default {
           this.loading = false;
         });
       }
+    },
+    postEvent (event, success) {
+      this.api.postEvent(event, success);
+    },
+    updateContent (event) {
+      this.paginator.content.push(event);
+      this.displayEventCreateModal = false;
     }
   }
 };

@@ -89,6 +89,14 @@ export default {
     }, errorHandler);
   },
 
+  postEvent (id, event, success) {
+    if (id == null || id === '') throw new Error('missing entity id');
+
+    Vue.http.post(`${PAGE_API_URL}/${id}/event`, event).then(response => {
+      success(response.body);
+    }, errorHandler);
+  },
+
   /**
    * Get page services
    * @param {*} id - page id

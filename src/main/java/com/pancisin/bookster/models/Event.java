@@ -135,9 +135,11 @@ public class Event {
 	private List<Media> gallery;
 	
 	@Column(precision = 10, scale = 8)
+	@JsonView(Summary.class)
 	private BigDecimal latitude;
 
 	@Column(precision = 10, scale = 8)
+	@JsonView(Summary.class)
 	private BigDecimal longitude;
 	
 //	@JsonSerialize(using = ToStringSerializer.class)

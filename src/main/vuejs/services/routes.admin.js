@@ -100,19 +100,6 @@ export default [
         }
       },
       {
-        path: 'events/create',
-        component: resolve => require(['../pages/event/Overview.vue'], resolve),
-        props: (route) => (
-          {
-            conference_id: route.params.id,
-            edit: false
-          }
-        ),
-        meta: {
-          title: 'Create event'
-        }
-      },
-      {
         path: 'settings',
         name: 'conference.settings',
         component: resolve => require(['../pages/conference/Settings.vue'], resolve),
@@ -200,13 +187,6 @@ export default [
     path: 'survey/:survey_id',
     name: 'survey',
     component: resolve => require(['../pages/Survey.vue'], resolve)
-  },
-  {
-    path: 'events/create',
-    component: resolve => require(['../pages/event/Overview.vue'], resolve),
-    meta: {
-      title: 'Create event'
-    }
   },
   {
     path: 'event/:id',
@@ -300,23 +280,6 @@ export default [
         meta: {
           titlle: 'Page events'
         }
-      },
-      {
-        path: 'events/create',
-        component: resolve => require(['../pages/event/Overview.vue'], resolve),
-        props: (route) => (
-          {
-            page_id: route.params.id,
-            edit: false
-          }
-        ),
-        meta: {
-          titlle: 'Create event'
-        }
-      },
-      {
-        path: 'calendar',
-        component: resolve => require(['../pages/page/Calendar.vue'], resolve)
       },
       {
         path: 'services',

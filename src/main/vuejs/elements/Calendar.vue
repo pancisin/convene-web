@@ -34,9 +34,9 @@
                 </router-link>
               </li>
               <li v-if="day.month === focusDate.month()">
-                <router-link to="events/create" class="create-event">
+                <a @click="selectDate(day)" class="create-event">
                   <i class="fa fa-plus"></i>
-                </router-link>
+                </a>
               </li>
             </ul>
           </td>
@@ -186,6 +186,9 @@ export default {
     },
     isCurrent: function (day, month) {
       return moment().date() === day && moment().month() === month;
+    },
+    selectDate (day) {
+      this.$emit('selectDate', day.timestamp);
     }
   }
 };
