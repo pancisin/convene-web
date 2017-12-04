@@ -55,6 +55,7 @@ Vue.directive('strip', StripTags);
 Vue.directive('loading', Loading);
 
 Vue.config.devtools = true;
+Vue.config.productionTip = false;
 
 Vue.http.interceptors.push((request, next) => {
   request.headers.set('Authorization', 'Bearer ' + window.localStorage.getItem('id_token'));

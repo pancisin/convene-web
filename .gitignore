@@ -82,3 +82,5 @@ typings/
 # dotenv environment variables file
 .env
 node/node.exe
+
+src/main/resources/static/
