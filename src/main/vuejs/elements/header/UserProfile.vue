@@ -2,9 +2,7 @@
   <dropdown-menu>
     <span slot="button"
       class="profile">
-      <img :src="avatar"
-        alt="user-img"
-        class="img-circle">
+      <profile-picture :user="user" class="img-circle" />
     </span>
 
     <dropdown-menu-item header>
@@ -28,9 +26,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import gravatar from 'gravatar';
 import DropdownMenu from '../DropdownMenu';
 import DropdownMenuItem from '../DropdownMenuItem';
+import ProfilePicture from '../ProfilePicture';
 
 export default {
   name: 'user-profile',
@@ -40,18 +38,12 @@ export default {
     };
   },
   components: {
-    DropdownMenu, DropdownMenuItem
+    DropdownMenu,
+    DropdownMenuItem,
+    ProfilePicture
   },
   computed: {
-    ...mapGetters(['user']),
-    avatar () {
-      if (this.user.email != null) {
-        return gravatar.url(this.user.email, {
-          protocol: 'https',
-          size: 36
-        });
-      } else return 'https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png';
-    }
+    ...mapGetters(['user'])
   },
   methods: {
     ...mapActions(['logout']),

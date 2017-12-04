@@ -3,12 +3,10 @@ package com.pancisin.bookster.rest.controllers;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -29,14 +27,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
+import com.pancisin.bookster.components.storage.StorageService;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.PageAdministrator;
-import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.UserSubscription;
 import com.pancisin.bookster.models.enums.Locale;
@@ -52,7 +50,6 @@ import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.PageAdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
-import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.repository.UserSearchRepository;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
@@ -75,13 +72,7 @@ public class CurrentUserController {
 	private ConferenceRepository conferenceRepository;
 
 	@Autowired
-	private EmailService emailService;
-
-	@Autowired
 	private PageAdministratorRepository paRepository;
-
-	@Autowired
-	private PlaceRepository placeRepository;
 
 	@Autowired
 	private UserSearchRepository userSearchRepository;
@@ -95,6 +86,9 @@ public class CurrentUserController {
 	@Autowired
 	private MediaRepository mediaRepository;
 
+	@Autowired
+	private StorageService storageService;
+	
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -104,6 +98,7 @@ public class CurrentUserController {
 	}
 
 	@PutMapping
+	@Transactional
 	public ResponseEntity<User> updateMe(@RequestBody User user) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -112,6 +107,18 @@ public class CurrentUserController {
 		stored.setLastName(user.getLastName());
 		stored.setAddress(user.getAddress());
 
+		if (user.getProfilePictureData() != null && storageService.isBinary(user.getProfilePictureData())) {
+			Media profilePicture = new Media();
+//			profilePicture.setAuthor(stored);
+			profilePicture = mediaRepository.save(profilePicture);
+			String url = "images/users/" + profilePicture.getId().toString();
+			
+			profilePicture.setPath("/files/" + url + ".jpg");
+			Long size = storageService.storeBinary(user.getProfilePictureData(), url);
+			profilePicture.setSize(size);
+			stored.setProfilePicture(profilePicture);
+		}
+		
 		userRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}

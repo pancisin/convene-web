@@ -49,7 +49,7 @@ const getters = {
     if (index !== -1) {
       return state.contacts[index];
     } else return null;
-  },
+  }
 };
 
 const watchers = [
@@ -80,7 +80,7 @@ const actions = {
       commit(types.LOADING_USER, true);
 
       UserApi.putUser(user, result => {
-        commit(types.SET_USER, { result });
+        commit(types.SET_USER, { user: result });
         commit(types.LOADING_USER, false);
         resolve(user);
       });

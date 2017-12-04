@@ -14,21 +14,7 @@
     <transition name="fade-up">
       <div class="suggest-box"
         v-show="!collapsed">
-        <div class="inbox-widget">
-          <a @click="select(user)"
-            v-for="(user, index) in users"
-            class="inbox-item"
-            :key="index">
-            <div class="inbox-item-img">
-              <img :src="getAvatar(user)"
-                class="img-circle">
-            </div>
-            <p class="inbox-item-author">{{ user.firstName }} {{ user.lastName }}</p>
-            <p class="inbox-item-text"
-              v-text="user.email">
-            </p>
-          </a>
-        </div>
+        <user-list :users="users" @select="select" />
       </div>
     </transition>
   </div>
@@ -36,8 +22,10 @@
 
 <script>
 import debounce from 'debounce';
-import gravatar from 'gravatar';
 import UserApi from 'api/user.api';
+import ProfilePicture from './ProfilePicture';
+
+import UserList from './UserList';
 
 export default {
   name: 'user-search',
@@ -49,6 +37,10 @@ export default {
     value (v) {
       this.selected = v;
     }
+  },
+  components: {
+    ProfilePicture,
+    UserList
   },
   data () {
     return {
@@ -75,12 +67,6 @@ export default {
     },
     update (value) {
       this.$emit('input', value);
-    },
-    getAvatar (user) {
-      return gravatar.url(user.email, {
-        protocol: 'https',
-        size: 30
-      });
     }
   }
 };

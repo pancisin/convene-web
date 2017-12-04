@@ -159,9 +159,18 @@ public class User implements UserDetails, Principal, IAuthor {
 		}
 	}
 
-	@OneToOne(optional = true, cascade = CascadeType.ALL)
+	@OneToOne(optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
 	private Address address = new Address();
 
+	@JsonProperty(access = Access.READ_ONLY)
+	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
+	@JsonView(Summary.class)
+	private Media profilePicture;
+	
+	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private String profilePictureData;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -377,5 +386,21 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	public List<Page> getFollowed() {
 		return followed;
+	}
+
+	public Media getProfilePicture() {
+		return profilePicture;
+	}
+	
+	public void setProfilePicture(Media profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public void setProfilePictureData(String profilePictureData) {
+		this.profilePictureData = profilePictureData;
+	}
+
+	public String getProfilePictureData() {
+		return profilePictureData;
 	}
 }

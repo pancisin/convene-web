@@ -7,7 +7,7 @@
       <li class="list-group-item" v-for="(conversation, index) in conv" :key="index">
         <a @click="selectUser(conversation.participant)">
           <div class="avatar">
-            <img :src="getAvatar(conversation.participant)" alt="">
+            <profile-picture :user="conversation.participant" />
           </div>
           <div class="content">
             <span class="name">
@@ -31,7 +31,7 @@
       <li class="list-group-item" v-for="user in onlineContacts" :key="user.id">
         <a @click="selectUser(user)">
           <div class="avatar">
-            <img :src="getAvatar(user)" alt="">
+            <profile-picture :user="user" />
           </div>
           <span class="name" v-text="user.displayName"></span>
           <i class="fa fa-circle" :class="{ 'online' : user.active }"></i>
@@ -47,7 +47,7 @@
       <li class="list-group-item" v-for="user in offlineContacts" :key="user.id">
         <a @click="selectUser(user)">
           <div class="avatar">
-            <img :src="getAvatar(user)" alt="">
+            <profile-picture :user="user" />
           </div>
           <span class="name" v-text="user.displayName"></span>
           <i class="fa fa-circle" :class="{ 'online' : user.active }"></i>
@@ -59,11 +59,14 @@
 </template>
 
 <script>
-import gravatar from 'gravatar';
 import { mapGetters } from 'vuex';
+import ProfilePicture from '../ProfilePicture';
 
 export default {
   name: 'contacts-list',
+  components: {
+    ProfilePicture
+  },
   computed: {
     ...mapGetters(['contacts', 'conversations']),
     conv () {
@@ -86,12 +89,6 @@ export default {
     },
     selectUser (user) {
       this.$emit('selected', user.id);
-    },
-    getAvatar (user) {
-      return gravatar.url(user.email, {
-        protocol: 'https',
-        size: 30
-      });
     }
   }
 };

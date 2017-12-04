@@ -104,7 +104,6 @@ public class EventController {
 			stored.setPoster(poster);
 		}
 		
-
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 

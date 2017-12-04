@@ -53,40 +53,25 @@
       </panel>
     </div>
     <div class="col-md-6">
-
       <panel type="table">
         <span slot="title">Attendees</span>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(attender, index) in attendees"
-              :key="index">
-              <td>
-                {{ attender.firstName + " " + attender.lastName }}
-              </td>
-            </tr>
-            <tr v-if="attendees.length == 0">
-              <td>There's nothing to display</td>
-            </tr>
-          </tbody>
-        </table>
+        <user-list :users="attendees"></user-list>
       </panel>
-
     </div>
   </div>
 </template>
 
 <script>
-import { UserSearch } from 'elements';
+import {
+  UserSearch,
+  UserList
+} from 'elements';
 
 export default {
   name: 'event-attendees',
   components: {
-    UserSearch
+    UserSearch,
+    UserList
   },
   props: {
     editable: Boolean

@@ -1,8 +1,14 @@
 <template>
-  <div class="row">
+  <div class="row" v-loading="loading">
     <div class="col-md-6">
-      <panel type="primary">
+      <panel type="primary" v-if="user">
         <span slot="title">Information</span>
+
+
+        <div class="form-group">
+          <image-upload v-model="user.profilePictureData" :media="user.profilePicture"></image-upload>
+        </div>
+
         <div class="form-group">
           <label>{{ $t('user.email') }}</label>
   
@@ -20,7 +26,6 @@
               </a>
             </span>
           </div>
-
         </div>
         <div class="form-group">
           <label>{{ $t('user.firstName') }}</label>
@@ -33,7 +38,7 @@
       </panel>
     </div>
     <div class="col-md-6">
-      <panel type="default">
+      <panel type="default" v-if="user">
         <span slot="title">Billing address</span>
         <div class="row">
           <div class="form-group col-xs-8">
@@ -70,11 +75,25 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {
+  mapGetters,
+  mapActions
+} from 'vuex';
+
+import { ImageUpload } from 'elements';
+
 export default {
   name: 'account',
+  data () {
+    return {
+      loading: false
+    };
+  },
   computed: {
     ...mapGetters(['user'])
+  },
+  components: {
+    ImageUpload
   },
   methods: {
     ...mapActions([
@@ -84,11 +103,15 @@ export default {
       var data = {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
-        address: this.user.address
+        address: this.user.address,
+        profilePictureData: this.user.profilePictureData
       };
 
+      this.loading = true;
       this.updateUser(data).then(user => {
         this.$success('notification.account.updated');
+
+        this.loading = false;
       });
     }
   }

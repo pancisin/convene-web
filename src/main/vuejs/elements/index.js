@@ -43,6 +43,8 @@ import AbuseReport from './AbuseReport';
 import CookieLaw from './CookieLaw';
 import Payment from './Payment';
 import PlacePicker from './PlacePicker';
+import UserList from './UserList';
+import ProfilePicture from './ProfilePicture';
 
 import widgets from './widgets';
 
@@ -92,5 +94,7 @@ export {
   AbuseReport,
   CookieLaw,
   Payment,
-  PlacePicker
+  PlacePicker,
+  UserList,
+  ProfilePicture
 };
