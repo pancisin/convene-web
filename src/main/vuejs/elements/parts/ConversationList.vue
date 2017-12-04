@@ -2,8 +2,8 @@
   <div v-loading="loading">
     <ul class="conversation-list" ref="conversationList">
       <li class="clearfix" v-for="message in messages" :class="{ 'odd' : message.sender.email === user.email }" :key="message.id">
-        <div class="chat-avatar">
-          <img :src="getAvatar(message.sender)" alt="male">
+        <div class="chat-avatar" v-if="message.sender.email !== user.email">
+          <profile-picture :user="recipient" />
         </div>
         <div class="conversation-text">
           <div class="ctext-wrap">
@@ -27,8 +27,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import gravatar from 'gravatar';
 import moment from 'moment';
+import ProfilePicture from '../ProfilePicture';
 
 export default {
   name: 'conversation',
@@ -41,6 +41,9 @@ export default {
       message: null,
       loading: false
     };
+  },
+  components: {
+    ProfilePicture
   },
   computed: {
     ...mapGetters(['user'])
@@ -68,12 +71,6 @@ export default {
 
         this.addMessage(messages);
         this.loading = false;
-      });
-    },
-    getAvatar (recipient) {
-      return gravatar.url(recipient.email, {
-        protocol: 'https',
-        size: 30
       });
     },
     send () {
