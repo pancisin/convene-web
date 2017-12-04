@@ -50,11 +50,17 @@
         </div>
       </div>
     </form>
+
+    <a @click="facebookLogin">
+      Login with facebook
+    </a>
+
   </div>
 </template>
 <script>
 import { mapActions } from 'vuex';
 import { ProductLogo } from 'elements';
+// import { Facebook } from 'fb';
 
 export default {
   data: function () {
@@ -82,6 +88,15 @@ export default {
           this.$set(this.fieldErrors, e.field, e);
         });
       });
+    },
+    facebookLogin () {
+      // const FB = new Facebook();
+      // FB.getLoginStatus(response => {
+      //   if (response.status === 'connected') {
+      //     const accessToken = response.authResponse.accessToken;
+      //     console.warn(accessToken);
+      //   }
+      // });
     }
   }
 };

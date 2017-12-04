@@ -1,10 +1,22 @@
-{
-  "env": {
-    "browser": true,
-    "node": true
-  },
+// https://eslint.org/docs/user-guide/configuring
 
-  "ecmaFeatures": {
+module.exports = {
+  root: true,
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
+  },
+  env: {
+    browser: true,
+  },
+  // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+  // extends: 'standard',
+  // required to lint *.vue files
+  plugins: [
+    'html'
+  ],
+
+  ecmaFeatures: {
     "arrowFunctions": true,
     "destructuring": true,
     "classes": true,
@@ -23,19 +35,8 @@
     "experimentalObjectRestSpread": true
   },
 
-  "globals": {
-    "$": true,
-    "jQuery": true,
-    "window.jQuery": true,
-    "Tether": true,
-    "window.Tether": true
-  },
-
-  "plugins": [
-      "html"
-  ],
-
-  "rules": {
+  // add your custom rules here
+  rules: {
     "accessor-pairs": 2,
     "array-bracket-spacing": 0,
     "block-scoped-var": 0,

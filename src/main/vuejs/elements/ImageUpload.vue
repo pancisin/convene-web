@@ -30,8 +30,8 @@ export default {
   },
   data () {
     return {
-      reader: null,
-    }
+      reader: null
+    };
   },
   computed: {
     source: {

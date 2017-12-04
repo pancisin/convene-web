@@ -30,14 +30,14 @@ export default {
     };
   },
   methods: {
-    open() {
+    open () {
       this.display = true;
-      const dropdown = this.$el.getElementsByClassName("dropdown-menu")[0];
-      
+      const dropdown = this.$el.getElementsByClassName('dropdown-menu')[0];
+
       this.style = {
         left: 0,
         top: 0
-      }
+      };
 
       this.$nextTick(() => {
         const rec = dropdown.getBoundingClientRect();

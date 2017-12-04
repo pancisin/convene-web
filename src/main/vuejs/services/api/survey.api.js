@@ -35,7 +35,7 @@ export default {
   deleteSurvey (id, success) {
     Vue.http.delete(`${SURVEY_API_URL}/${id}`).then(response => {
       success(response.body);
-    })
+    });
   },
 
   /**
@@ -99,6 +99,6 @@ export default {
   togglePublished (id, success) {
     Vue.http.patch(`${SURVEY_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);
-    })
+    });
   }
 };

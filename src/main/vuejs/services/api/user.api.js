@@ -33,7 +33,7 @@ export default {
       success(response.body);
     });
   },
- 
+
   /**
    * Get user owned pages.
    * @param {Function} success callback function

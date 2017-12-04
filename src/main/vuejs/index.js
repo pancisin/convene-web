@@ -13,7 +13,7 @@ import VueMoment from 'vue-moment';
 import { Modal, Panel, ContextMenu } from 'elements';
 import Fullscreen from 'vue-fullscreen';
 
-require('font-awesome/css/font-awesome.css');
+import 'font-awesome/css/font-awesome.css';
 
 // SERVICES
 import store from 'store/index.js';
@@ -21,16 +21,15 @@ import router from './services/router.js';
 import notifier from './services/notifier.js';
 
 // LOAD STYLES
-require('bootstrap');
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Waves from 'node-waves';
 Waves.init();
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-require('./assets/less/core.less');
-require('node-waves/src/less/waves.less');
-require('./assets/less/components.less');
-require('./assets/less/responsive.less');
+import 'assets/less/core.less';
+import 'assets/less/components.less';
+import 'assets/less/responsive.less';
+import 'node-waves/src/less/waves.less';
 
 Vue.use(MetaManager);
 Vue.use(GoogleMapsApi);

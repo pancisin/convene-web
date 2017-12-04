@@ -106,7 +106,6 @@ import {
   HeroUnit,
   Chat
 } from 'elements';
-import StaggerTransition from '../../functional/StaggerTransition.vue';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
 import {
@@ -127,7 +126,6 @@ export default {
   },
   components: {
     GoogleMap,
-    StaggerTransition,
     Masonry,
     MasonryItem,
     EventsList,

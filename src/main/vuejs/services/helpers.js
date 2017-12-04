@@ -15,8 +15,8 @@ export function compareHash (a, b) {
   return calculateHash(a) === calculateHash(b);
 }
 
-export function validUrl(str) {
-  var pattern = new RegExp("((http|https)(:\/\/))?([a-zA-Z0-9]+[.]{1}){2}[a-zA-z0-9]+(\/{1}[a-zA-Z0-9]+)*\/?", "i");
+export function validUrl (str) {
+  var pattern = new RegExp('((http|https)(:\/\/))?([a-zA-Z0-9]+[.]{1}){2}[a-zA-z0-9]+(\/{1}[a-zA-Z0-9]+)*\/?', 'i');
   if(!pattern.test(str)) {
     return false;
   } else {

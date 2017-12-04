@@ -30,7 +30,7 @@
             </div>
 
             <div class="inbox-widget">
-              <stagger-transition tag="span">
+              <span>
                 <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
                   <div class="inbox-item-img" v-if="event.poster != null">
                     <img :src="event.poster.path" class="img-circle" alt="">
@@ -39,8 +39,7 @@
                   <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
                   <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
                 </router-link>
-              </stagger-transition>
-
+              </span>
             </div>
 
             <div class="text-center">
@@ -65,7 +64,6 @@
 <script>
 import Pricing from '../static/Pricing.vue';
 import { Paginator, ProductLogo, HeroUnit } from 'elements';
-import StaggerTransition from '../../functional/StaggerTransition.vue';
 import faq from '../static/FAQ';
 import HowItWorks from '../static/HowItWorks';
 
@@ -77,7 +75,6 @@ export default {
   components: {
     Pricing,
     Paginator,
-    StaggerTransition,
     faq,
     HowItWorks,
     ProductLogo,
