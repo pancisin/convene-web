@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          
+          <a class="btn btn-default btn-block" @click="showChangePasswordModal = true">Change password</a>
         </div>
       </div>
     </panel>
@@ -78,6 +78,17 @@
         <i class="fa fa-floppy-o"></i>
       </a>
     </div>
+
+    <modal :show.sync="showChangePasswordModal">
+      <span slot="header">Change password</span>
+      <div slot="body">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <password-change @updated="showChangePasswordModal = false" />
+          </div>
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -87,12 +98,16 @@ import {
   mapActions
 } from 'vuex';
 
-import { ImageUpload } from 'elements';
+import {
+  ImageUpload,
+  PasswordChange
+} from 'elements';
 
 export default {
   name: 'account',
   data () {
     return {
+      showChangePasswordModal: false,
       loading: false
     };
   },
@@ -100,7 +115,8 @@ export default {
     ...mapGetters(['user'])
   },
   components: {
-    ImageUpload
+    ImageUpload,
+    PasswordChange
   },
   methods: {
     ...mapActions([

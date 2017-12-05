@@ -44,6 +44,7 @@ import Payment from './Payment';
 import PlacePicker from './PlacePicker';
 import UserList from './UserList';
 import ProfilePicture from './ProfilePicture';
+import PasswordChange from './PasswordChange';
 
 import widgets from './widgets';
 
@@ -94,5 +95,6 @@ export {
   Payment,
   PlacePicker,
   UserList,
-  ProfilePicture
+  ProfilePicture,
+  PasswordChange
 };

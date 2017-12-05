@@ -2,6 +2,7 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;

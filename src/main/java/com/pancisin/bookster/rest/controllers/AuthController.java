@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -163,6 +164,24 @@ public class AuthController {
 		}
 
 		return ResponseEntity.ok(user);
+	}
+	
+	@PostMapping("/api/user/changePassword")
+	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> requestData) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User stored = userRepository.findOne(auth.getId());
+		
+		String currentPassword = requestData.get("currentPassword");
+		String newPassword = requestData.get("newPassword");
+		
+		if (hashPassword(currentPassword).equals(stored.getHashedPassword())) {
+			stored.setHashedPassword(this.hashPassword(newPassword));
+			stored = userRepository.save(stored);
+		} else {
+			return new ResponseEntity<String>("Bad data", HttpStatus.BAD_REQUEST);
+		}
+		
+		return ResponseEntity.ok(stored);
 	}
 
 	private String hashPassword(String password) {

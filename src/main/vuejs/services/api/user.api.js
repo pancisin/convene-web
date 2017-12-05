@@ -159,5 +159,13 @@ export default {
     Vue.http.get('/api/message/conversations').then(response => {
       success(response.body);
     });
+  },
+
+  changePassword (data, success, error) {
+    Vue.http.post(`${USER_API_URL}/changePassword`, data).then(response => {
+      success(response.body);
+    }, response => {
+      error(response.body);
+    });
   }
 };
