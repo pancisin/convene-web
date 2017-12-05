@@ -225,6 +225,14 @@ export default [
         meta: {
           title: 'Gallery'
         }
+      },
+      {
+        path: 'advanced',
+        name: 'event.advanced',
+        component: resolve => require(['../pages/event/Advanced.vue'], resolve),
+        meta: {
+          title: 'Advanced'
+        }
       }
     ]
   },

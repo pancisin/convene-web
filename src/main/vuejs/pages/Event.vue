@@ -10,7 +10,7 @@
       <div class="list-group mail-list">
         <router-link :to="{ name: 'event.overview' }" class="list-group-item waves-effect">
           <i class="fa fa-dashboard"></i>
-          Overview
+          Edit
         </router-link>
         <router-link :to="{ name: 'event.programme' }" class="list-group-item waves-effect">
           <i class="fa fa-list" aria-hidden="true"></i>
@@ -23,6 +23,10 @@
         <router-link :to="{ name: 'event.attendees' }" class="list-group-item waves-effect">
           <i class="fa fa-users" aria-hidden="true"></i>
           Attendees
+        </router-link>
+         <router-link :to="{ name: 'event.advanced' }" class="list-group-item waves-effect">
+          <i class="fa fa-wrench" aria-hidden="true"></i>
+          Advanced settings
         </router-link>
       </div>
       <div class="widget-simple-chart text-right card-box">
