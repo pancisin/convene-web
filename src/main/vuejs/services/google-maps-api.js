@@ -23,11 +23,9 @@ GoogleMapsApi.install = (Vue, options) => {
           });
         }
       });
-
-      return loadingPromise;
-    } else {
-      return loadingPromise;
     }
+
+    return loadingPromise;
   };
 
   const googleMapApiContext = {

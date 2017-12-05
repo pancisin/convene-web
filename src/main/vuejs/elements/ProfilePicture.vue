@@ -8,6 +8,7 @@
 import ProfilePicturePlaceholder from 'assets/img/profile_picture_placeholder.png';
 
 export default {
+  name: 'profile-picture',
   props: {
     user: {
       type: Object,

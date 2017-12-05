@@ -1,5 +1,3 @@
-// https://eslint.org/docs/user-guide/configuring
-
 module.exports = {
   root: true,
   parser: 'babel-eslint',
@@ -10,15 +8,11 @@ module.exports = {
     browser: true,
     es6: true
   },
-  // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-  // extends: 'standard',
-  // required to lint *.vue files
   plugins: [
     'html'
   ],
-
   ecmaFeatures: {
-    "arrowFunctions": true,
+    arrowFunctions: true,
     "destructuring": true,
     "classes": true,
     "defaultParams": true,
@@ -35,8 +29,6 @@ module.exports = {
     "superInFunctions": true,
     "experimentalObjectRestSpread": true
   },
-
-  // add your custom rules here
   rules: {
     "accessor-pairs": 2,
     "array-bracket-spacing": 0,

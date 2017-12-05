@@ -30,6 +30,12 @@ export default {
     });
   },
 
+  /**
+   * Login using facebook graph api data provider.
+   * @param {*} loginData - user login data containing userID and user access token
+   * @param {*} success - success callback function
+   * @param {*} error - error callback function
+   */
   loginFacebook (loginData, success, error) {
     Vue.http.post('public/login-facebook', loginData).then(response => {
       success(response.body);

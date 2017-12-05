@@ -2,7 +2,7 @@
   <div class="articles-list"
     v-loading="loading">
 
-    <div v-if="hasHeadline" class="articles-list-headline" :style="{ 'background-image': `url(${headline.thumbnail.path})` }">
+    <div v-if="hasHeadline && headline != null" class="articles-list-headline" :style="{ 'background-image': `url(${headline.thumbnail.path})` }">
       <div class="title">
         <router-link :to="{ name: 'article.public', params: { article_id: headline.id } }">
           <h3>

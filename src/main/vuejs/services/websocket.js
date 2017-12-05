@@ -2,29 +2,29 @@ import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 
 export default Vue => {
-  var connecting = null;
+  let connectPromise = null;
+  let stompClient = null;
 
-  const connectWM = function (serverEndPoint) {
-    const promise = new Promise((resolve, reject) => {
-      if (this.$stompClient != null && this.$stompClient.connected) {
-        connecting = null;
-        resolve();
-      } else if (this.$stompClient != null && !this.$stompClient.connected && connecting != null) {
-        connecting.then(resolve);
-      } else {
-        connecting = promise;
-        let socket = new SockJS(serverEndPoint);
+  const connectWM = serverEndpoint => {
+    if (!connectPromise) {
+      connectPromise = new Promise((resolve, reject) => {
+        if (stompClient && stompClient.connected) {
+          resolve(stompClient);
+        } else if (stompClient && !stompClient.connected) {
+          return connectPromise;
+        } else {
+          let socket = new SockJS(serverEndpoint);
+          stompClient = Stomp.over(socket);
+          Vue.prototype.$stompClient = stompClient;
 
-        let stompClient = Stomp.over(socket);
-        Vue.prototype.$stompClient = stompClient;
+          stompClient.connect({
+            'Authorization': 'Bearer ' + window.localStorage.getItem('id_token')
+          }, resolve, reject);
+        }
+      });
+    }
 
-        this.$stompClient.connect({
-          'Authorization': 'Bearer ' + window.localStorage.getItem('id_token')
-        }, resolve, reject);
-      }
-    });
-
-    return promise;
+    return connectPromise;
   };
 
   const disconnectWM = function () {
