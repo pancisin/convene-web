@@ -25,7 +25,9 @@ export default {
   props: {
     events: {
       type: Array,
-      default: []
+      default () {
+        return [];
+      }
     },
     administrator: {
       type: Boolean,

@@ -3,7 +3,7 @@ export default {
     home: 'Domov',
     events: 'Podujatia',
     my_events: 'Moje podujatia',
-    explore: 'Preskúmať stránky',
+    explore: 'Stránky',
     conferences: 'Konferencie',
     about: 'O aplikácií',
     pricing: 'Cenník',

@@ -59,6 +59,7 @@
 
 <script>
 import { Paginator } from 'elements';
+import NotificationApi from 'api/notification.api';
 export default {
   name: 'notifications',
   data () {
@@ -80,11 +81,10 @@ export default {
         this.paginator = response.body;
       });
     },
-    toggleSeen (notification) {
-      this.$http.patch('/api/notification/' + notification.id + '/toggle-seen').then(response => {
-        var index = this.paginator.content.indexOf(notification);
-
-        this.paginator.content.splice(index, 1, response.body);
+    toggleSeen (not) {
+      NotificationApi.toggleSeen(not.id, notification => {
+        const index = this.paginator.content.findIndex(n => n.id === notification.id);
+        this.paginator.content.splice(index, 1, notification);
       });
     }
   }

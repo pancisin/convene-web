@@ -1,7 +1,7 @@
 <template>
   <dropdown-menu large>
     <span slot="button">
-      <i class="material-icons">notifications</i>
+      <i class="fa fa-bell-o"></i>
       <span class="badge badge-xs"
         v-text="notifications.length"></span>
     </span>
@@ -31,12 +31,11 @@
       </div>
     </dropdown-menu-item>
     <dropdown-menu-item>
-      <a href="javascript:void(0);"
-        class=" text-right">
+      <router-link :to="{ name: 'settings.notifications' }" class="text-right">
         <small>
           <b>See all notifications</b>
         </small>
-      </a>
+      </router-link>
     </dropdown-menu-item>
   </dropdown-menu>
 </template>

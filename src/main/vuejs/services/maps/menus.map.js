@@ -44,5 +44,6 @@ export default {
   footer: validateMenu(menus.FooterMenu),
   system: validateMenu(menus.SystemMenu),
   client: validateMenu(menus.ClientMenu),
-  about: validateMenu(menus.AboutMenu)
+  about: validateMenu(menus.AboutMenu),
+  discover: validateMenu(menus.DiscoverMenu)
 };

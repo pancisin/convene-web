@@ -28,7 +28,7 @@ const getters = {
   license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
   authenticated: state => {
-    return state.authenticated || window.localStorage.getItem('id_token') != null;
+    return state.authenticated || window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token');
   },
   loadingUser: state => state.loadingUser,
   contacts: state => state.contacts,
@@ -86,12 +86,14 @@ const actions = {
       });
     });
   },
-  login ({ commit }, credentials) {
+  login ({ commit }, credentials, remember) {
     return new Promise((resolve, reject) => {
       commit(types.LOADING_USER, true);
+      const storage = remember ? window.localStorage : window.sessionStorage;
 
       AuthApi.login(credentials, user => {
-        window.localStorage.setItem('id_token', user.token);
+        storage.setItem('id_token', user.token);
+
         commit(types.SET_USER, { user });
         commit(types.LOADING_USER, false);
         resolve(user);
@@ -105,7 +107,7 @@ const actions = {
       commit(types.LOADING_USER, true);
 
       AuthApi.register(user_data, user => {
-        window.localStorage.setItem('id_token', user.token);
+        window.sessionStorage.setItem('id_token', user.token);
         commit(types.SET_USER, { user });
         commit(types.LOADING_USER, false);
         resolve(user);
@@ -135,6 +137,8 @@ const actions = {
 
     return new Promise((resolve) => {
       window.localStorage.removeItem('id_token');
+      window.sessionStorage.removeItem('id_token');
+
       commit(types.SET_USER, { user: null });
       commit(types.LOADING_USER, false);
       commit(types.SET_PAGES, { pages: [] });
@@ -146,7 +150,7 @@ const actions = {
     });
   },
   initializeNotifications ({ commit }) {
-    UserApi.getNotifications((notifications) => {
+    UserApi.getNotifications(0, 5, notifications => {
       commit(types.SET_NOTIFICATIONS, { notifications });
     });
   },

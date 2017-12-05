@@ -89,7 +89,7 @@ public class CurrentUserController {
 
 	@Autowired
 	private StorageService storageService;
-	
+
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -110,22 +110,24 @@ public class CurrentUserController {
 
 		if (user.getProfilePictureData() != null && storageService.isBinary(user.getProfilePictureData())) {
 			Media profilePicture = new Media();
-//			profilePicture.setAuthor(stored);
+			// profilePicture.setAuthor(stored);
 			profilePicture = mediaRepository.save(profilePicture);
 			String url = "images/users/" + profilePicture.getId().toString();
-			
+
 			profilePicture.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(user.getProfilePictureData(), url);
 			profilePicture.setSize(size);
 			stored.setProfilePicture(profilePicture);
 		}
-		
+
 		userRepository.save(stored);
 		return ResponseEntity.ok(stored);
 	}
 
 	@GetMapping("/notification/{page}/{size}")
-	public ResponseEntity<?> getNotifications(@PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<?> getNotifications(@PathVariable int page, @PathVariable int size,
+			@RequestParam(name = "filterSeen", defaultValue = "false") boolean test) {
+		
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(notificationRepository.findByRecipientId(auth.getId(),
 				new PageRequest(page, size, new Sort(Direction.DESC, "created"))));
@@ -138,7 +140,7 @@ public class CurrentUserController {
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int size,
 			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		return ResponseEntity.ok(eventRepository.getOwned(auth.getId(), new PageRequest(page, size), fromDate, toDate));
 	}
 

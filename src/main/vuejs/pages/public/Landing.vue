@@ -8,7 +8,7 @@
               <product-logo large />
               <p>Our goal is to provide clean, fast and simple way for managing events, conferences and even booking services of your business. Everything on one place and available for everybody.
               </p>
-              <a class="btn btn-primary btn-rounded">Try it right now !</a>
+              <!-- <a class="btn btn-primary btn-rounded">Try it right now !</a> -->
             </div>
           </div>
         </div>
@@ -23,24 +23,12 @@
       <hero-unit :background="crowd">
         <div class="row">
           <div class="col-md-6 col-md-offset-3 content bg-gray">
-
             <div class="text-center">
               <h2 class="title">Still don't know what to do today ? </h2>
               <p class="sub-title">Convene is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
             </div>
 
-            <div class="inbox-widget">
-              <span>
-                <router-link :to="'event/' + event.id" v-for="(event, index) in eventsPaginator.content" :key="event.id" :data-index="index" class="inbox-item">
-                  <div class="inbox-item-img" v-if="event.poster != null">
-                    <img :src="event.poster.path" class="img-circle" alt="">
-                  </div>
-                  <p class="inbox-item-author" v-text="event.name"></p>
-                  <p class="inbox-item-text" v-if="event.author != null" v-text="event.author.displayName"></p>
-                  <p class="inbox-item-date">{{ event.date | moment('L') }}</p>
-                </router-link>
-              </span>
-            </div>
+            <events-list :events="eventsPaginator.content" />
 
             <div class="text-center">
               <paginator :paginator="eventsPaginator" :fetch="getEvents" />
@@ -57,13 +45,17 @@
     <section class="section bg-gray" id="faq">
       <faq />
     </section>
-
   </div>
 </template>
 
 <script>
 import Pricing from '../static/Pricing.vue';
-import { Paginator, ProductLogo, HeroUnit } from 'elements';
+import {
+  Paginator,
+  ProductLogo,
+  HeroUnit,
+  EventsList
+} from 'elements';
 import faq from '../static/FAQ';
 import HowItWorks from '../static/HowItWorks';
 
@@ -78,7 +70,8 @@ export default {
     faq,
     HowItWorks,
     ProductLogo,
-    HeroUnit
+    HeroUnit,
+    EventsList
   },
   data () {
     return {

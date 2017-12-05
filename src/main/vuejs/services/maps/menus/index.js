@@ -5,6 +5,7 @@ import FooterMenu from './footer.menu';
 import SystemMenu from './system.menu';
 import ClientMenu from './client.menu';
 import AboutMenu from './about.menu';
+import DiscoverMenu from './discover.menu';
 
 export {
   MainMenu,
@@ -13,5 +14,6 @@ export {
   FooterMenu,
   SystemMenu,
   ClientMenu,
-  AboutMenu
+  AboutMenu,
+  DiscoverMenu
 };

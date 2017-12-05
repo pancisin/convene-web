@@ -23,7 +23,7 @@
       <div class="form-group">
         <div class="col-xs-12">
           <div class="checkbox checkbox-primary">
-            <input id="checkbox-signup" type="checkbox">
+            <input id="checkbox-signup" type="checkbox" v-model="remember">
             <label for="checkbox-signup">
               Remember me
             </label>
@@ -74,7 +74,8 @@ export default {
         email: null,
         password: null
       },
-      fieldErrors: {}
+      fieldErrors: {},
+      remember: false
     };
   },
   components: {
@@ -82,11 +83,11 @@ export default {
   },
   methods: {
     ...mapActions(['login', 'loginFacebook' ]),
-    submit: function () {
+    submit () {
       this.fieldErrors = {};
 
       var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-      this.login(this.user).then(result => {
+      this.login(this.user, this.remember).then(result => {
         this.$router.push({ path: redirect });
       }, fieldErrors => {
         fieldErrors.forEach((e) => {

@@ -80,9 +80,9 @@ export default {
    * Get notifications for current user.
    * @param {*} success - callback function
    */
-  getNotifications (success) {
-    Vue.http.get(`${USER_API_URL}/notification/0/5`).then(response => {
-      success(response.body.content);
+  getNotifications (page, size, success) {
+    Vue.http.get(`${USER_API_URL}/notification/${page}/${size}`).then(response => {
+      success(response.body);
     });
   },
 

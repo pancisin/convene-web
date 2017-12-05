@@ -26,12 +26,16 @@
         </div>
 
         <div class="col-sm-4 col-md-2 text-center">
-          <!-- <nav>
-            <span>Products</span>
+          <nav>
+            <span>Discover</span>
             <ul>
-              <li><a href="">ARTIST PORTFOLIO</a></li>
+              <li v-for="(item, index) in menus.discover.routes" :key="index">
+                <router-link :to="{ name: item.name }">
+                  {{ $t(item.code) }}
+                </router-link>
+              </li>
             </ul>
-          </nav> -->
+          </nav>
         </div>
 
         <div class="col-sm-4 col-md-2 text-center">

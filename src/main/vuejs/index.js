@@ -60,7 +60,9 @@ Vue.config.devtools = true;
 Vue.config.productionTip = false;
 
 Vue.http.interceptors.push((request, next) => {
-  request.headers.set('Authorization', 'Bearer ' + window.localStorage.getItem('id_token'));
+  const token = window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token');
+
+  request.headers.set('Authorization', 'Bearer ' + token);
   next(response => {
     if (response.status === 401) {
       // should be logged out or something...

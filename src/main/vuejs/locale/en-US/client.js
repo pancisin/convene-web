@@ -3,7 +3,7 @@ export default {
     home: 'Home',
     events: 'Events',
     my_events: 'My events',
-    explore: 'Explore pages',
+    explore: 'Pages',
     conferences: 'Conferences',
     about: 'About convene',
     pricing: 'Pricing',
