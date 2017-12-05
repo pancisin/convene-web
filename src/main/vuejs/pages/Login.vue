@@ -51,7 +51,13 @@
       </div>
     </form>
 
-    <a @click="facebookLogin">
+    <div class="text-center text-muted m-b-20">
+      <hr />
+      OR
+    </div>
+
+    <a @click="facebookLogin" class="btn btn-block btn-facebook">
+      <i class="fa fa-facebook"></i>
       Login with facebook
     </a>
 
@@ -60,7 +66,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { ProductLogo } from 'elements';
-// import { Facebook } from 'fb';
 
 export default {
   data: function () {
@@ -76,7 +81,7 @@ export default {
     ProductLogo
   },
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'loginFacebook' ]),
     submit: function () {
       this.fieldErrors = {};
 
@@ -90,14 +95,37 @@ export default {
       });
     },
     facebookLogin () {
-      // const FB = new Facebook();
-      // FB.getLoginStatus(response => {
-      //   if (response.status === 'connected') {
-      //     const accessToken = response.authResponse.accessToken;
-      //     console.warn(accessToken);
-      //   }
-      // });
+      var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
+
+      this.$facebookApi.load(context => {
+        context.login(response => {
+          this.loginFacebook({
+            userId: response.authResponse.userID,
+            accessToken: response.authResponse.accessToken
+          }).then(user => {
+            this.$router.push({ path: redirect });
+          });
+        });
+      });
     }
   }
 };
 </script>
+
+<style lang="less">
+.btn-facebook {
+  background-color: 	#3b5998;
+  color: #fff;
+  transition: background-color .2s ease;
+
+  i {
+    float: left;
+    margin: 3px;
+  }
+
+  &:hover {
+    background-color: darken(	#3b5998, 5%);
+    color: #fff;
+  }
+}
+</style>

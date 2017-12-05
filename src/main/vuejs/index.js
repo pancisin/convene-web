@@ -7,6 +7,7 @@ import VueAnalytics from 'vue-analytics';
 import VeeValidate from 'vee-validate';
 import MetaManager from './services/meta.manager';
 import GoogleMapsApi from './services/google-maps-api';
+import FacebookApi from './services/facebook-api';
 
 // GLOBAL COMPONENTS
 import VueMoment from 'vue-moment';
@@ -32,6 +33,7 @@ import 'assets/less/responsive.less';
 import 'node-waves/src/less/waves.less';
 
 Vue.use(MetaManager);
+Vue.use(FacebookApi);
 Vue.use(GoogleMapsApi);
 Vue.use(VueResource);
 Vue.use(VueI18n);

@@ -171,6 +171,9 @@ public class User implements UserDetails, Principal, IAuthor {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String profilePictureData;
 	
+	@JsonProperty(access = Access.READ_ONLY)
+	private Long facebookId;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -402,5 +405,13 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	public String getProfilePictureData() {
 		return profilePictureData;
+	}
+
+	public Long getFacebookId() {
+		return facebookId;
+	}
+
+	public void setFacebookId(Long facebookId) {
+		this.facebookId = facebookId;
 	}
 }

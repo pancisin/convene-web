@@ -20,4 +20,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //	
 //	@Cacheable("users")
 	User findByEmail(String email);
+	User findByFacebookId(Long facebookId);
 }

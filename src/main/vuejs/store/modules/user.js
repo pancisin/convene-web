@@ -114,6 +114,22 @@ const actions = {
       });
     });
   },
+
+  loginFacebook ({ commit }, login_data) {
+    return new Promise((resolve) => {
+      commit(types.LOADING_USER, true);
+
+      AuthApi.loginFacebook(login_data, user => {
+        window.localStorage.setItem('id_token', user.token);
+        commit(types.SET_USER, { user });
+        commit(types.LOADING_USER, false);
+        resolve(user);
+      }, response => {
+        reject(response.fieldErrors);
+      });
+    });
+  },
+
   logout ({ commit }) {
     commit(types.LOADING_USER, true);
 

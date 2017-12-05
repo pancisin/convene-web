@@ -28,5 +28,13 @@ export default {
     }, response => {
       error(response.body);
     });
+  },
+
+  loginFacebook (loginData, success, error) {
+    Vue.http.post('public/login-facebook', loginData).then(response => {
+      success(response.body);
+    }, response => {
+      error(response.body);
+    });
   }
 };
