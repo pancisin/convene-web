@@ -116,7 +116,7 @@ const actions = {
   },
 
   loginFacebook ({ commit }, login_data) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       commit(types.LOADING_USER, true);
 
       AuthApi.loginFacebook(login_data, user => {

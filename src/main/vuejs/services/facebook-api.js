@@ -43,7 +43,9 @@ FacebookApi.install = (Vue, options) => {
       facebookApi.getLoginStatus(callback);
     },
     login (callback) {
-      facebookApi.login(callback);
+      facebookApi.login(callback, {
+        scope: 'email'
+      });
     }
   };
 
