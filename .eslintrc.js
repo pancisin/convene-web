@@ -1,11 +1,18 @@
-{
-  "env": {
-    "browser": true,
-    "node": true
+module.exports = {
+  root: true,
+  parser: 'babel-eslint',
+  parserOptions: {
+    sourceType: 'module'
   },
-
-  "ecmaFeatures": {
-    "arrowFunctions": true,
+  env: {
+    browser: true,
+    es6: true
+  },
+  plugins: [
+    'html'
+  ],
+  ecmaFeatures: {
+    arrowFunctions: true,
     "destructuring": true,
     "classes": true,
     "defaultParams": true,
@@ -22,20 +29,7 @@
     "superInFunctions": true,
     "experimentalObjectRestSpread": true
   },
-
-  "globals": {
-    "$": true,
-    "jQuery": true,
-    "window.jQuery": true,
-    "Tether": true,
-    "window.Tether": true
-  },
-
-  "plugins": [
-      "html"
-  ],
-
-  "rules": {
+  rules: {
     "accessor-pairs": 2,
     "array-bracket-spacing": 0,
     "block-scoped-var": 0,
@@ -86,7 +80,7 @@
     "no-else-return": 0,
     "no-empty": 0,
     "no-empty-character-class": 2,
-    "no-empty-label": 2,
+    "no-labels": 2,
     "no-eq-null": 0,
     "no-eval": 2,
     "no-ex-assign": 2,
@@ -173,12 +167,12 @@
     "semi": [1, "always"],
     "semi-spacing": 0,
     "sort-vars": 0,
-    "space-after-keywords": [2, "always"],
+    "space-after-keywords": "off",
+    "keyword-spacing": [2, {"before": true, "after": true}],
     "space-before-blocks": [2, "always"],
     "space-before-function-paren": [2, "always"],
     "space-in-parens": [2, "never"],
     "space-infix-ops": 2,
-    "space-return-throw-case": 2,
     "space-unary-ops": [2, { "words": true, "nonwords": false }],
     "spaced-comment": [2, "always", { "markers": ["global", "globals", "eslint", "eslint-disable", "*package", "!"] }],
     "strict": 0,

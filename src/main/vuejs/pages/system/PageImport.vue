@@ -146,7 +146,7 @@ export default {
       this.searchPlaces();
     }, 500),
     importPage (place_id) {
-      this.sendWM(`/app/page-import`, JSON.stringify({
+      this.sendWM('/app/page-import', JSON.stringify({
         facebook_id: place_id
       }));
     },

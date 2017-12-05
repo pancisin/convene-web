@@ -68,7 +68,7 @@ MetaManager.install = (Vue, options) => {
       }
 
       if (!headAvailable) {
-        const route_title = this.$route.meta.title;
+        const route_title = this.$route ? this.$route.meta.title : null;
         document.title = `${route_title ? route_title + ' |' : ''}  Convene`;
       }
     }

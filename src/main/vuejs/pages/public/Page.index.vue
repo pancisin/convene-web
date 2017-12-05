@@ -19,16 +19,14 @@
       <div class="row">
         <div class="col-md-3">
           <div class="list-group m-t-10">
-            <stagger-transition>
-              <a v-for="(branch, index) in branches" 
-                :key="branch.id" 
-                class="list-group-item waves-effect" 
-                :class="{ 'active' : filters.branchId == branch.id }" 
-                :data-index="index" @click="selectBranch(branch.id)">
+            <a v-for="(branch, index) in branches" 
+              :key="branch.id" 
+              class="list-group-item waves-effect" 
+              :class="{ 'active' : filters.branchId == branch.id }" 
+              :data-index="index" @click="selectBranch(branch.id)">
 
-                {{ $t('category.' + currentCategory.code + '.' + branch.code) }}
-              </a>
-            </stagger-transition>
+              {{ $t('category.' + currentCategory.code + '.' + branch.code) }}
+            </a>
           </div>
         </div>
 
@@ -73,7 +71,6 @@
 </template>
 
 <script>
-import StaggerTransition from '../../functional/StaggerTransition.vue';
 import { Paginator, Masonry, MasonryItem } from 'elements';
 import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
@@ -92,7 +89,9 @@ export default {
     };
   },
   components: {
-    StaggerTransition, Paginator, Masonry, MasonryItem
+    Paginator,
+    Masonry,
+    MasonryItem
   },
   created () {
     this.filters = {

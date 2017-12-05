@@ -38,7 +38,7 @@ export default {
    * @param {*} success - success callback function
    */
   getUsers (page, size, success) {
-    Vue.http.get(`/api/user`, {
+    Vue.http.get('/api/user', {
       params: {
         page, size
       }

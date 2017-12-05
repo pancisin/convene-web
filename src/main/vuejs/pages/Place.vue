@@ -60,7 +60,7 @@ export default {
       this.injector = new PlaceInjector(place_id);
       this.injector.getPlace(place => {
         this.place = place;
-      })
+      });
     }
   }
 };

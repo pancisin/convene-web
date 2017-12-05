@@ -1,4 +1,3 @@
-import Accordion from './Accordion';
 import ArticlesList from './ArticlesList';
 import Calendar from './Calendar';
 import ChatContainer from './ChatContainer';
@@ -50,7 +49,6 @@ import widgets from './widgets';
 
 export {
   widgets,
-  Accordion,
   ArticlesList,
   Calendar,
   ChatContainer,

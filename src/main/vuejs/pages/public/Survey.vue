@@ -19,14 +19,14 @@ export default {
   data () {
     return {
       loading: false,
-      survey: null,
+      survey: null
     };
   },
   components: {
     SurveyForm
   },
   created () {
-      this.getSurvey();
+    this.getSurvey();
   },
   methods: {
     getSurvey () {
@@ -34,7 +34,7 @@ export default {
       SurveyApi.getSurvey(this.$route.params.survey_id, survey => {
         this.survey = survey;
         this.loading = false;
-      })
+      });
     }
   }
 };

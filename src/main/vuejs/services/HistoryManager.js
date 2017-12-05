@@ -9,7 +9,7 @@ export default class HistoryManager {
   }
 
   get historyLength () {
-    return this.history.length > 1 ? this.history.length - 1 : 0; 
+    return this.history.length > 1 ? this.history.length - 1 : 0;
   }
 
   get currentVersion () {

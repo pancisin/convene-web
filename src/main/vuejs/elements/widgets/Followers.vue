@@ -10,10 +10,10 @@ export default {
   name: 'followers-widget',
   props: {
     parent: {
-      validator (value) { 
+      validator (value) {
         return ['event', 'page', 'conference'].includes(value);
       },
-      default() {
+      default () {
         return 'page';
       }
     }

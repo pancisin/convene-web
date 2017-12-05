@@ -2,6 +2,7 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
+import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
 
+import facebook4j.Facebook;
+import facebook4j.FacebookException;
+import facebook4j.FacebookFactory;
+import facebook4j.Reading;
+import facebook4j.auth.AccessToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -40,7 +48,7 @@ public class AuthController {
 
 	@Value("${jwt.verificationSecret}")
 	private String verificationSecret;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -53,13 +61,15 @@ public class AuthController {
 		user.setHashedPassword(hashPassword(user.getPassword()));
 
 		if (user == null || stored == null) {
-			bindingResult.rejectValue("email", "error.user_not_found");;
+			bindingResult.rejectValue("email", "error.user_not_found");
+			;
 		}
-		
+
 		if (!stored.getHashedPassword().equals(user.getHashedPassword())) {
-			bindingResult.rejectValue("password", "error.password");;
+			bindingResult.rejectValue("password", "error.password");
+			;
 		}
-		
+
 		if (bindingResult.hasErrors()) {
 			throw new InvalidRequestException("Invalid data", bindingResult);
 		}
@@ -76,7 +86,7 @@ public class AuthController {
 
 		java.util.Locale locale = LocaleContextHolder.getLocale();
 		Locale l = Locale.valueOf(locale.toLanguageTag());
-		
+
 		if (l != null)
 			user.setLocale(l);
 		else
@@ -96,6 +106,46 @@ public class AuthController {
 
 			return ResponseEntity.ok(stored);
 		}
+	}
+
+	@PostMapping("/public/login-facebook")
+	public ResponseEntity<?> loginFacebook(@RequestBody Map<String, String> requestMap) {
+		String accessToken = requestMap.get("accessToken");
+		String userId = requestMap.get("userId");
+
+		Facebook fb = new FacebookFactory().getInstance();
+		User stored = null;
+		
+		try {
+			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+
+			facebook4j.User user = fb.getUser(userId,
+					new Reading().fields("name", "email", "first_name", "last_name", "locale", "picture.width(640)"));
+
+			Long user_id = Long.parseLong(user.getId());
+			stored = userRepository.findByFacebookId(user_id);
+			
+			if (stored == null) {
+				stored = new User();
+				
+				stored.setLocale(Locale.en);
+				
+				stored.setFacebookId(user_id);
+				stored.setLocked(false);
+				stored.setFirstName(user.getFirstName());
+				stored.setLastName(user.getLastName());
+				stored.setEmail(user.getEmail());
+				stored.setProfilePicture(new Media(user.getPicture().getURL().toString()));
+			}
+			
+			userRepository.save(stored);
+			stored.setToken(JwtAuthenticationToken.generateToken(stored, secret));
+		} catch (FacebookException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.ok(stored);
 	}
 
 	@PutMapping(value = "/public/verify")

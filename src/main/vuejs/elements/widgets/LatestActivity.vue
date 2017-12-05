@@ -23,10 +23,10 @@ export default {
   props: {
     title: String,
     parent: {
-      validator (value) { 
+      validator (value) {
         return ['event', 'page', 'conference'].includes(value);
       },
-      default() {
+      default () {
         return 'page';
       }
     }
@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       activities: [],
-      loading: false,
+      loading: false
     };
   },
   computed: {

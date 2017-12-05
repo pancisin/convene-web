@@ -63,11 +63,7 @@ public class IndexController {
 			return String.format("forward:/static/%s", url);
 		}
 
-		if (environmentProvider.isProduction()) {
-			return "forward:/dist/index.html";
-		} else {
-			return "forward:/index.html";
-		}
+		return "forward:/index.html";
 	}
 
 	@GetMapping("/info/user-agent")

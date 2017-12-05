@@ -25,7 +25,7 @@ export default {
       this.bg_style = {
         ...this.bg_style,
         'background-image': `url(${this.background})`
-      }
+      };
     }
   },
   data () {
