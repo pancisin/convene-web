@@ -40,7 +40,6 @@ export default {
       this.map = context.map(this.$refs.google_map_canvas, {
         disableDefaultUI: true,
         styles: gmapStyle,
-        zoom: 12,
         draggable: false,
         center: this.location
       });

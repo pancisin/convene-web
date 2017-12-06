@@ -208,15 +208,15 @@ export default {
     -webkit-box-sizing: border-box;
 
     background: #fff;
-    box-shadow: 3px 3px 10px 0px rgba(111, 110, 110, 0.3);
-    transition: box-shadow .2s ease-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
     img {
       width: 100%;
     }
 
     &:hover {
-      box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     }
 
     .content {

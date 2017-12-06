@@ -45,6 +45,7 @@ import PlacePicker from './PlacePicker';
 import UserList from './UserList';
 import ProfilePicture from './ProfilePicture';
 import PasswordChange from './PasswordChange';
+import SharePanel from './SharePanel';
 
 import widgets from './widgets';
 
@@ -96,5 +97,6 @@ export {
   PlacePicker,
   UserList,
   ProfilePicture,
-  PasswordChange
+  PasswordChange,
+  SharePanel
 };

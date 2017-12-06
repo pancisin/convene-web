@@ -12,14 +12,14 @@
             <br><b>Place:</b> {{ address }}
           </p>
        
-          <div class="socials">
+          <!-- <div class="socials">
             <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank" v-if="event.facebookId != null">
               <i class="fa fa-facebook"></i>
             </a>
             <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank">
               <i class="fa fa-twitter"></i>
             </a>
-          </div>
+          </div> -->
         </hero-unit>
 
         <div class="panel panel-primary">
@@ -86,6 +86,11 @@
       </div>
 
       <div class="col-sm-12 col-md-3 col-md-pull-9">
+        <share-panel 
+          class="m-b-20" 
+          :title="event.name" 
+          :description="event.summary"
+          :media="event.poster != null ? event.poster.path : ''" />
         <panel type="default" v-if="relatedEvents.length > 0">
           <span slot="title">
             Also created by {{ event.author != null ? event.author.displayName : '' }}
@@ -104,7 +109,8 @@ import {
   MasonryItem,
   EventsList,
   HeroUnit,
-  Chat
+  Chat,
+  SharePanel
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -130,7 +136,8 @@ export default {
     MasonryItem,
     EventsList,
     HeroUnit,
-    Chat
+    Chat,
+    SharePanel
   },
   created () {
     this.getEvent();

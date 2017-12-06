@@ -165,11 +165,12 @@ export default {
 
 .page-panel {
   overflow: hidden;
-  box-shadow: 5px 3px 15px 0px rgba(111, 110, 110, 0.3);
   background: @color-primary;
   background-position: center;
   background-size: cover;
-  transition: all .2s ease-in-out;
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 
   & > a {
     display: block;
@@ -213,7 +214,7 @@ export default {
   }
 
   &:hover {
-    box-shadow: 0px 0px 15px 2px rgba(111, 110, 110, 0.3);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   }
 }
 
