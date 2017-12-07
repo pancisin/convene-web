@@ -52,17 +52,19 @@
 </template>
 
 <script>
-import ConferenceInjector from '../../services/injectors/conference.injector.js';
 import AttendForm from './conference/Attend.form.vue';
 import { ArticlesList, HeroUnit } from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 
+import ConferenceApi from 'api/conference.api';
+import InjectorGenerator from '../../services/InjectorGenerator';
+
 export default {
   name: 'conference',
   provide () {
     return {
-      api: new ConferenceInjector(this.$route.params.id)
+      api: InjectorGenerator.generate(ConferenceApi, this.$route.params.id)
     };
   },
   components: {
@@ -77,7 +79,7 @@ export default {
     };
   },
   created () {
-    var injector = new ConferenceInjector(this.$route.params.id);
+    var injector = InjectorGenerator.generate(ConferenceApi, this.$route.params.id);
     injector.getConference(conference => {
       this.conference = conference;
     });

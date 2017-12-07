@@ -43,7 +43,8 @@
 </template>
 
 <script>
-import EventInjector from '../services/injectors/event.injector.js';
+import EventApi from 'api/event.api';
+import InjectorGenerator from '../services/InjectorGenerator';
 
 export default {
   name: 'event',
@@ -71,9 +72,9 @@ export default {
   },
   methods: {
     getEvent () {
-      this.injector = new EventInjector(this.$route.params.id);
+      this.injector = InjectorGenerator.generate(EventApi, this.$route.params.id);
 
-      this.injector.getEvent(true, event => {
+      this.injector.getEvent(event => {
         this.event = event;
         this.edit = event.id != null;
       });

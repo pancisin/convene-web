@@ -38,26 +38,26 @@ export default {
     ...mapGetters(['authenticated', 'user'])
   },
   watch: {
-    user (newVal) {
+    async user (newVal) {
       if (this.authenticated) {
         this.initializeFollowedPages();
         this.initializeAttendingEvents();
         this.initializeStomp();
         this.initializeNotifications();
-        this.initializeContacts().then(() => {
-          this.connectWM('/stomp').then(frame => {
-            this.$stompClient.subscribe(
-              '/user/queue/chat.activeUsers',
-              response => {
-                this.sendWM('/app/activeUsers', {});
-                this.updateContactsActivityState(JSON.parse(response.body));
-              }
-            );
-
-            this.sendWM('/app/activeUsers', {});
-          });
-        });
         this.initializeConversations();
+
+        await this.initializeContacts();
+        this.connectWM('/stomp').then(frame => {
+          this.$stompClient.subscribe(
+            '/user/queue/chat.activeUsers',
+            response => {
+              this.sendWM('/app/activeUsers', {});
+              this.updateContactsActivityState(JSON.parse(response.body));
+            }
+          );
+
+          this.sendWM('/app/activeUsers', {});
+        });
       }
     }
   },

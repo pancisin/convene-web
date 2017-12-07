@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import ArticlesListInjector from '../services/injectors/articles-list.injector';
+import ArticlesListApi from 'api/articles-list.api';
+import InjectorGenerator from '../services/InjectorGenerator';
 
 export default {
   name: 'news',
@@ -57,7 +58,7 @@ export default {
     initializeInjector () {
       var list_id = this.$route.params.list_id;
 
-      this.injector = new ArticlesListInjector(list_id);
+      this.injector = InjectorGenerator.generate(ArticlesListApi, list_id);
       this.injector.getArticlesList(articlesList => {
         this.list = articlesList;
       });

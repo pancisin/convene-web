@@ -21,7 +21,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import PageInjector from '../services/injectors/page.injector.js';
+import PageApi from 'api/page.api';
+import InjectorGenerator from '../services/InjectorGenerator';
 
 export default {
   name: 'page',
@@ -50,7 +51,7 @@ export default {
 
       if (page != null) {
         this.edit = true;
-        this.injector = new PageInjector(page_id);
+        this.injector = InjectorGenerator.generate(PageApi, page_id);
       }
 
       return page;

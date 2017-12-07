@@ -7,6 +7,10 @@ function checkId (id) {
 
 export default {
 
+  get parent_type () {
+    return 'conference';
+  },
+
   /**
    * Get conference by id
    * @param {*} id - conference id

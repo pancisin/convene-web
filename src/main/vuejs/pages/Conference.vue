@@ -19,7 +19,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ConferenceInjector from '../services/injectors/conference.injector.js';
+import ConferenceApi from 'api/conference.api';
+import InjectorGenerator from '../services/InjectorGenerator';
 
 export default {
   name: 'conference',
@@ -48,7 +49,7 @@ export default {
 
       if (conference !== null) {
         this.edit = true;
-        this.injector = new ConferenceInjector(conference_id);
+        this.injector = InjectorGenerator.generate(ConferenceApi, conference_id);
       };
 
       return conference;

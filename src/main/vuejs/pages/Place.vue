@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import PlaceInjector from '../services/injectors/place.injector.js';
+import PlaceApi from 'api/place.api';
+import InjectorGenerator from '../services/InjectorGenerator';
 
 export default {
   name: 'place-layout',
@@ -57,7 +58,7 @@ export default {
     initializeInjector () {
       var place_id = this.$route.params.place_id;
 
-      this.injector = new PlaceInjector(place_id);
+      this.injector = InjectorGenerator.generate(PlaceApi, place_id);
       this.injector.getPlace(place => {
         this.place = place;
       });

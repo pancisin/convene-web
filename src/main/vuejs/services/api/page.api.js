@@ -9,6 +9,10 @@ function errorHandler (response) {
 
 export default {
 
+  get parent_type () {
+    return 'page';
+  },
+
   /**
    * Get page data
    * @param {*} id - page id
