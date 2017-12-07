@@ -103,27 +103,33 @@ export default {
     BotRunIndicator
   },
   watch: {
-    'api': 'getBots'
+    api: 'getBots'
   },
   created () {
     this.getBots();
 
     this.connectWM('/stomp').then(frame => {
-      this.subscription = this.$stompClient.subscribe('/user/queue/list.bots', response => {
-        let run = JSON.parse(response.body);
+      this.subscription = this.$stompClient.subscribe(
+        '/user/queue/list.bots',
+        response => {
+          let run = JSON.parse(response.body);
 
-        if (run != null) {
-          this.bots.forEach((bot, index) => {
-            if (bot.id === run.bot.id) {
-              this.bots.splice(index, 1, {
-                ...bot,
-                lastRun: run,
-                runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
-              });
-            }
-          });
+          if (run != null) {
+            this.bots.forEach((bot, index) => {
+              if (bot.id === run.bot.id) {
+                this.bots.splice(index, 1, {
+                  ...bot,
+                  lastRun: run,
+                  runsCount:
+                    run.state.name === 'SUCCESS'
+                      ? bot.runsCount + 1
+                      : bot.runsCount
+                });
+              }
+            });
+          }
         }
-      });
+      );
     });
   },
   beforeDestroy () {

@@ -118,6 +118,7 @@ import {
   mapGetters,
   mapActions
 } from 'vuex';
+import InjectorGenerator from '../../services/InjectorGenerator';
 
 export default {
   name: 'public-event',
@@ -173,18 +174,21 @@ export default {
     getEvent () {
       var event_id = this.$route.params.id;
       if (event_id != null) {
-        const api = this.authenticated ? EventApi : PublicApi.event;
+
+        const api = this.authenticated
+          ? InjectorGenerator.generate(EventApi, event_id)
+          : InjectorGenerator.generate(PublicApi.event, event_id);
 
         this.loading = true;
-        api.getEvent(event_id, event => {
+        api.getEvent(event => {
           this.event = event;
 
-          api.getRelated(this.event.id, paginator => {
+          api.getRelated(paginator => {
             const events = this.randomize(paginator.content);
             this.relatedEvents = events.slice(0, 8);
           });
 
-          PublicApi.event.getGallery(event_id, gallery => {
+          api.getGallery(gallery => {
             this.gallery = gallery;
           });
 

@@ -29,22 +29,22 @@ export default {
 
     /**
      * Get events related events
-     * @param {*} event_id - event id
+     * @param {*} id - event id
      * @param {*} success - success callback function
      */
-    getRelated (event_id, success) {
-      Vue.http.get(`${EVENT_PUBLIC_URL}/${event_id}/related`).then(response => {
+    getRelated (id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/related`).then(response => {
         success(response.body);
       });
     },
 
     /**
      * Get public accessible gallery for event
-     * @param {*} event_id - event id
+     * @param {*} id - event id
      * @param {*} success - success callback function
      */
-    getGallery (event_id, success) {
-      Vue.http.get(`${EVENT_PUBLIC_URL}/${event_id}/gallery`).then(response => {
+    getGallery (id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/gallery`).then(response => {
         success(response.body);
       });
     }
@@ -102,13 +102,13 @@ export default {
 
     /**
      * Get public accessible events for page.
-     * @param {Number} page_id - page id
+     * @param {Number} id - page id
      * @param {Number} page - paginator page property
      * @param {Number} size - paginator size property
      * @param {Function} success - success callback function
      */
-    getEvents (page_id, page, size, success) {
-      Vue.http.get(`${PAGE_PUBLIC_URL}/${page_id}/event/${page}/${size}`, {
+    getEvents (id, page, size, success) {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/${id}/event/${page}/${size}`, {
         params: {
           fromDate: moment().format('YYYY-MM-DD'),
           toDate: moment().add(1, 'M').format('YYYY-MM-DD'),
