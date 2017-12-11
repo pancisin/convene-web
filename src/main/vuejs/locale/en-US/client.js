@@ -1,4 +1,6 @@
 export default {
+  login: 'Login',
+  register: 'Register',
   menu: {
     home: 'Home',
     events: 'Events',
@@ -22,7 +24,6 @@ export default {
   },
   footer: {
     about: 'About convene',
-    features: 'Features',
     pricing: 'Pricing',
     faq: 'FAQ',
     terms: 'Terms & conditions',

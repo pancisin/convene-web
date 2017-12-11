@@ -32,11 +32,6 @@ import ProfilePicture from '../ProfilePicture';
 
 export default {
   name: 'user-profile',
-  data () {
-    return {
-
-    };
-  },
   components: {
     DropdownMenu,
     DropdownMenuItem,
@@ -49,7 +44,7 @@ export default {
     ...mapActions(['logout']),
     logoutUser () {
       this.logout().then(response => {
-        this.$router.push({ path: '/' });
+        // this.$router.push({ path: '/' });
       });
     }
   }

@@ -40,23 +40,19 @@ export default {
       get () {
         return this.authenticated ? this.storeLocale : this.$i18n.locale;
       },
-      set (value) {
+      async set (value) {
         if (this.authenticated) {
-          this.$http.put('api/user/locale', JSON.stringify(value.name)).then(response => {
-            this.initializeUser();
-            moment.locale(value.name);
-            this.$i18n.locale = value.name;
-          });
-        } else {
-          moment.locale(value.name);
-          this.$i18n.locale = value.name;
+          await this.setLocale(JSON.stringify(value.name));
         }
+
+        moment.locale(value.name);
+        this.$i18n.locale = value.name;
       }
     }
   },
   methods: {
     ...mapActions([
-      'initializeUser', 'initializeLocales'
+      'initializeUser', 'initializeLocales', 'setLocale'
     ]),
     selectLoc (locale) {
       this.locale = locale;

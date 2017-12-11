@@ -167,5 +167,11 @@ export default {
     }, response => {
       error(response.body);
     });
+  },
+
+  setLocale (locale, success) {
+    Vue.http.put(`${USER_API_URL}/locale`, locale).then(response => {
+      success(response.body);
+    });
   }
 };

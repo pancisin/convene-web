@@ -39,7 +39,11 @@
         </div>
 
         <div class="col-sm-4 col-md-3">
-          <a class="btn btn-block m-b-20 waves-effect" :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" @click="togglePageFollow(page)">
+          <a 
+            class="btn btn-block m-b-20 waves-effect" 
+            :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
+            @click="toggleFollow">
+
             {{ follows ? 'Unfollow' : 'Follow' }}
           </a>
           <img class="img-poster m-b-20" v-if="page.poster != null" :src="page.poster.path">
@@ -58,6 +62,12 @@
               </tbody>
             </table>
           </panel>
+
+          <share-panel 
+            class="m-b-20" 
+            :title="page.name" 
+            :description="page.summary"
+            :media="page.poster != null ? page.poster.path : ''" />
 
           <div class="m-b-20">
             <a @click="displayReportModal = true" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
@@ -87,7 +97,7 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
-import { EventsList, HeroUnit, AbuseReport } from 'elements';
+import { EventsList, HeroUnit, AbuseReport, SharePanel } from 'elements';
 
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
@@ -112,7 +122,8 @@ export default {
     ServiceBook,
     EventsList,
     HeroUnit,
-    AbuseReport
+    AbuseReport,
+    SharePanel
   },
   watch: {
     '$route': 'initialize'
@@ -156,6 +167,18 @@ export default {
     },
     validUrl (value) {
       return validUrl(value);
+    },
+    toggleFollow () {
+      if (this.authenticated) {
+        this.togglePageFollow(this.page);
+      } else {
+        this.$router.push({
+          name: 'login',
+          query: {
+            redirect: this.$route.path
+          }
+        });
+      }
     }
   },
   head: {

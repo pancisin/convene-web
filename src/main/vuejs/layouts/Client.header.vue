@@ -24,7 +24,7 @@
             <user-profile v-if="authenticated" />
             <template v-else>
               <li>
-                <router-link :to="{ name: 'login' }"
+                <router-link :to="{ name: 'login', query: { redirect: $route.path } }"
                   class="waves-effect">Login</router-link>
               </li>
               <li>

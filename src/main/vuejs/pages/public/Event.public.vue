@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="container" v-loading="loading">
     <div class="row" v-show="event.id">
       <div class="col-sm-6 col-md-push-3">
@@ -8,8 +8,8 @@
 
           <p class="panel-sub-title font-13">
             {{ event.date | moment('LL') }} {{ event.startsAt }}
-            <br><b>Usporiadatel:</b> {{ event.author != null ? event.author.displayName : '' }}
-            <br><b>Place:</b> {{ address }}
+            <br><b>{{ $t('event.convener') }}: </b> {{ event.author != null ? event.author.displayName : '' }}
+            <br><b>{{ $t('event.place') }}: </b> {{ address }}
           </p>
        
           <!-- <div class="socials">
@@ -28,12 +28,12 @@
               <div class="col-md-4">
                 <div class="widget-simple text-center card-box">
                   <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
-                  <p class="text-muted">Attendees</p>
+                  <p class="text-muted">{{ $t('event.attendees') }}</p>
                 </div>
 
-                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="toggleEventAttending(event)">
-                  <span v-if="attending">Cancel</span>
-                  <span v-else>Attend</span>
+                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="toggleAttending">
+                  <span v-if="attending">{{ $t('event.cancel_attending') }}</span>
+                  <span v-else>{{ $t('event.attend') }}</span>
                 </a>
 
                 <div class="timeline-2 m-t-20">
@@ -79,9 +79,9 @@
         <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
 
         <panel type="default" class="panel-p-0">
-          <span slot="title">Live chat</span>
+          <span slot="title">{{ $t('event.live_chat.header') }}</span>
           <chat v-if="authenticated && event.id != null" type="event" :recipient="event" />
-          <div v-else class="p-20 text-center text-muted">You must be logged in to use live chat !</div>
+          <div v-else class="p-20 text-center text-muted">{{ $t('event.live_chat.authentication') }}</div>
         </panel>
       </div>
 
@@ -93,7 +93,7 @@
           :media="event.poster != null ? event.poster.path : ''" />
         <panel type="default" v-if="relatedEvents.length > 0">
           <span slot="title">
-            Also created by {{ event.author != null ? event.author.displayName : '' }}
+            {{ $t('event.related_events') }} {{ event.author != null ? event.author.displayName : '' }}
           </span>
           <events-list :events="relatedEvents" />
         </panel>
@@ -210,6 +210,18 @@ export default {
         [array[i], array[j]] = [array[j], array[i]];
       }
       return array;
+    },
+    toggleAttending () {
+      if (this.authenticated) {
+        this.toggleEventAttending(this.event);
+      } else {
+        this.$router.push({
+          name: 'login',
+          query: {
+            redirect: this.$route.path
+          }
+        });
+      }
     }
   },
   head: {

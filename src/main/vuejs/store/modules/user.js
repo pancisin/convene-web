@@ -234,6 +234,23 @@ const actions = {
         });
       }
     });
+  },
+  setLocale ({ commit, state }, locale) {
+    return new Promise(resolve => {
+      commit(types.LOADING_USER, true);
+
+      UserApi.setLocale(locale, user => {
+        commit(types.SET_USER, {
+          user: {
+            ...state.user,
+            locale: user.locale
+          }
+        });
+        commit(types.LOADING_USER, false);
+
+        resolve(user.locale);
+      });
+    });
   }
 };
 

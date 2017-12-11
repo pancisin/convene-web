@@ -32,13 +32,13 @@
 
         <div class="col-md-9">
           <masonry v-loading="loading" :columns="4">
-            <masonry-item class="page-panel"   
+            <masonry-item class="card"   
               v-for="(page, index) in pagesPaginator.content" 
-              :key="index"
-              :style="{ 'background-image': page.poster != null ? `url(${page.poster.path})` : 'none' }">
+              :key="page.id">
             
               <router-link 
                 :to="{ name: 'page.public', params: { id: page.slug || page.id } }">
+                
                 <div class="title">
                   <h5>
                     {{ page.name }}
@@ -47,11 +47,12 @@
                     {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
                   </small>
                 </div>
+
+                <img v-if="page.poster" :src="page.poster.path">
               </router-link>
-              <div class="actions">
+              <div class="actions" v-if="page.privilege && page.privilege.role.level >= 60">
                 <router-link 
                   :to="{ name: 'page.settings', params: { id: page.id } }" 
-                  v-if="page.privilege && page.privilege.role.level >= 60" 
                   class="pull-right text-primary">
                   <i class="fa fa-pencil"></i>
                 </router-link>
@@ -161,61 +162,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-}
-
-.page-panel {
-  overflow: hidden;
-  background: @color-primary;
-  background-position: center;
-  background-size: cover;
-
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
-  & > a {
-    display: block;
-    height: 200px;
-  }
-
-  .title {
-    width: 100%;
-    background: white;
-    margin: 0;
-    padding: 15px;
-    border-bottom: 1px solid #ccc;
-
-    h5 {
-      margin: 0;
-      text-transform: uppercase;
-      color: #000;
-      line-height: 18px;
-    }
-  }
-
-  .actions {
-    border-top: 1px solid #ccc;
-    text-align: right;
-    display: flex;
-    background: #fff;
-
-    & > a {
-      transition: all .3s ease-in-out;
-      color: #000;
-      padding: 10px;
-      display: inline-block;
-      flex: 1 1 auto;
-      text-align: center;
-
-      &:hover {
-        background-color: @color-primary;
-        color: #fff;
-      }
-    }
-  }
-
-  &:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
 }
 
 .categories-nav {

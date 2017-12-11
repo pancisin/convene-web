@@ -1,6 +1,8 @@
 package com.pancisin.bookster.models.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.pancisin.bookster.models.views.Summary;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Locale {
@@ -18,18 +20,22 @@ public enum Locale {
 	final String dateFormat;
 	final String timeFormat;
 
+	@JsonView(Summary.class)
 	public String getName() {
 		return name;
 	}
 
+	@JsonView(Summary.class)
 	public String getCode() {
 		return code;
 	}
 
+	@JsonView(Summary.class)
 	public String getDateFormat() {
 		return dateFormat;
 	}
 
+	@JsonView(Summary.class)
 	public String getTimeFormat() {
 		return timeFormat;
 	}

@@ -1,4 +1,6 @@
 export default {
+  login: 'Prihlásiť sa',
+  register: 'Registrovať',
   menu: {
     home: 'Domov',
     events: 'Podujatia',
@@ -19,5 +21,12 @@ export default {
     suggested: 'Odporúčané',
     followed: 'Nasledované',
     popular: 'Populárne'
+  },
+  footer: {
+    about: 'O convene',
+    pricing: 'Cenník',
+    faq: 'FAQ',
+    terms: 'Terms & conditions',
+    privacy: 'Privacy policy'
   }
 };

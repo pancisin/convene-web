@@ -1,10 +1,9 @@
 <template>
   <div class="container">
     <masonry :columns="4">
-      <masonry-item class="conference-panel"   
+      <masonry-item class="card"   
         v-for="(conference, index) in conferences" 
-        :key="index"
-        :style="{ 'background-image': conference.poster != null ? `url(${conference.poster.path})` : 'none' }">
+        :key="index">
         
         <router-link 
           :to="{ name: 'conference', params: { id: conference.id } }">
@@ -13,6 +12,8 @@
               {{ conference.name }}
             </h5>
           </div>
+
+          <img v-if="conference.poster" :src="conference.poster.path" >
         </router-link>
       </masonry-item>
     </masonry>
@@ -56,39 +57,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-@import (reference) '~less/variables.less';
-.conference-panel {
-  overflow: hidden;
-  background: @color-primary;
-  background-position: center;
-  background-size: cover;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-
-
-  & > a {
-    display: block;
-    height: 200px;
-  }
-
-  .title {
-    width: 100%;
-    background: white;
-    margin: 0;
-    padding: 15px;
-    border-bottom: 1px solid #ccc;
-
-    h5 {
-      margin: 0;
-      text-transform: uppercase;
-      color: #000;
-    }
-  }
-
-  &:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  }
-}
-</style>

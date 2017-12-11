@@ -1,0 +1,59 @@
+@import (reference) '../variables.less';
+.card {
+  overflow: hidden;
+  background: @color-primary;
+  background-position: center;
+  background-size: cover;
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+  & > img {
+    width: 100%;
+  }
+
+  & > a {
+    & > * ~ * {
+      border-top: 1px solid #ccc;
+    }
+  }
+
+  .title {
+    width: 100%;
+    background: white;
+    margin: 0;
+    padding: 15px;
+
+    h5 {
+      margin: 0;
+      text-transform: uppercase;
+      color: #000;
+      line-height: 18px;
+    }
+  }
+
+  .actions {
+    border-top: 1px solid #ccc;
+    text-align: right;
+    display: flex;
+    background: #fff;
+
+    & > a {
+      transition: all .1s ease;
+      color: #000;
+      padding: 10px;
+      display: inline-block;
+      flex: 1 1 auto;
+      text-align: center;
+
+      &:hover {
+        background-color: @color-primary;
+        color: #fff;
+      }
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+}

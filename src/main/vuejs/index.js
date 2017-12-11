@@ -71,10 +71,10 @@ Vue.http.interceptors.push((request, next) => {
 });
 
 // TRANSLATIONS
-import * as translations from './locale';
+import translations from './locale';
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: navigator.language || 'en',
   fallbackLocale: 'en',
   messages: translations
 });

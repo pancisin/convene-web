@@ -47,10 +47,7 @@ import ProfilePicture from './ProfilePicture';
 import PasswordChange from './PasswordChange';
 import SharePanel from './SharePanel';
 
-import widgets from './widgets';
-
 export {
-  widgets,
   ArticlesList,
   Calendar,
   ChatContainer,
