@@ -2,12 +2,13 @@ import UserApi from 'api/user.api';
 import AuthApi from 'api/auth.api';
 import PageApi from 'api/page.api';
 import EventApi from 'api/event.api';
+import NotificationApi from 'api/notification.api';
 import * as types from 'store/mutation-types';
 
 const state = {
   user: null,
   loadingUser: false,
-  notifications: [],
+  notifications: {},
   authenticated: false,
   contacts: [],
   followedPages: [],
@@ -27,6 +28,13 @@ const getters = {
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
   license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
+  unread_notifications: state => {
+    if (state.notifications.content != null) {
+      return state.notifications.content.filter(n => !n.seen);
+    };
+
+    return [];
+  },
   authenticated: state => {
     return state.authenticated || window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token');
   },
@@ -150,8 +158,20 @@ const actions = {
     });
   },
   initializeNotifications ({ commit }) {
-    UserApi.getNotifications(0, 5, notifications => {
+    UserApi.getNotifications(0, 100, notifications => {
       commit(types.SET_NOTIFICATIONS, { notifications });
+    });
+  },
+  toggleSeenNotification ({ commit, state}, not) {
+    NotificationApi.toggleSeen(not.id, notification => {
+      const index = state.notifications.content.findIndex(n => n.id === not.id);
+      const notifications = Object.create(state.notifications);
+
+      notifications.content.splice(index, 1, notification);
+
+      commit(types.SET_NOTIFICATIONS, {
+        notifications
+      });
     });
   },
   addNotification ({ commit }, notification) {

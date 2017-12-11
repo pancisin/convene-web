@@ -22,12 +22,10 @@
           </div>
         </panel>
       </div>
-      <div class="col-sm-6 col-md-9">
-
+      <div class="col-sm-6 col-md-9" v-loading="loading">
         <masonry 
           class="events-masonry" 
           :columns="4">
-
           <masonry-item 
             class="card"
             v-for="event in eventsPaginator.content"
