@@ -79,7 +79,12 @@ export default {
       this.fieldErrors = {};
 
       var redirect = this.$route.query.redirect ? this.$route.query.redirect : '/';
-      this.login(this.user, this.remember).then(result => {
+      const data = {
+        credentials: this.user,
+        remember: this.remember
+      };
+
+      this.login(data).then(result => {
         this.$router.push({ path: redirect });
       }, fieldErrors => {
         fieldErrors.forEach((e) => {

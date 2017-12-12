@@ -17,7 +17,7 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" v-if="branches.length > 0">
           <div class="list-group m-t-10">
             <a v-for="(branch, index) in branches" 
               :key="branch.id" 
@@ -30,8 +30,8 @@
           </div>
         </div>
 
-        <div class="col-md-9">
-          <masonry v-loading="loading" :columns="4">
+        <div class="col-md-12" :class="{ 'col-md-9': branches.length > 0 }">
+          <masonry v-loading="loading" :columns="branches.length > 0 ? 4 : 5">
             <masonry-item class="card"   
               v-for="(page, index) in pagesPaginator.content" 
               :key="page.id">
@@ -116,7 +116,7 @@ export default {
       this.loading = true;
 
       const fetch = this.authenticated ? RootApi.getPages : PublicApi.getPages;
-      fetch(page, 12, this.filters, paginator => {
+      fetch(page, 15, this.filters, paginator => {
         this.pagesPaginator = paginator;
         this.loading = false;
       });

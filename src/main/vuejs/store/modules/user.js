@@ -94,11 +94,10 @@ const actions = {
       });
     });
   },
-  login ({ commit }, credentials, remember) {
+  login ({ commit }, { credentials, remember }) {
     return new Promise((resolve, reject) => {
       commit(types.LOADING_USER, true);
       const storage = remember ? window.localStorage : window.sessionStorage;
-
       AuthApi.login(credentials, user => {
         storage.setItem('id_token', user.token);
 
