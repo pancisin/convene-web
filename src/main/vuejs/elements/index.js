@@ -46,6 +46,7 @@ import UserList from './UserList';
 import ProfilePicture from './ProfilePicture';
 import PasswordChange from './PasswordChange';
 import SharePanel from './SharePanel';
+import LightBox from './LightBox';
 
 export {
   ArticlesList,
@@ -95,5 +96,6 @@ export {
   UserList,
   ProfilePicture,
   PasswordChange,
-  SharePanel
+  SharePanel,
+  LightBox
 };

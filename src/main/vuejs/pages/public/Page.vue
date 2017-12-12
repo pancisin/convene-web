@@ -46,7 +46,10 @@
 
             {{ follows ? 'Unfollow' : 'Follow' }}
           </a>
-          <img class="img-poster m-b-20" v-if="page.poster != null" :src="page.poster.path">
+
+          <light-box v-if="page.poster != null" :image="page.poster.path">
+            <img class="img-poster m-b-20" :src="page.poster.path">
+          </light-box>
 
           <panel type="table" v-if="services && services.length > 0">
             <span slot="title">Services</span>
@@ -97,7 +100,7 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
-import { EventsList, HeroUnit, AbuseReport, SharePanel } from 'elements';
+import { EventsList, HeroUnit, AbuseReport, SharePanel, LightBox } from 'elements';
 
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
@@ -123,7 +126,8 @@ export default {
     EventsList,
     HeroUnit,
     AbuseReport,
-    SharePanel
+    SharePanel,
+    LightBox
   },
   watch: {
     '$route': 'initialize'

@@ -20,7 +20,10 @@
         </div>
 
         <div class="col-sm-4 col-md-3">
-          <img v-if="conference.poster != null" :src="conference.poster.path" class="img-poster">
+          <light-box v-if="conference.poster != null" :image="conference.poster.path">
+            <img :src="conference.poster.path" class="img-poster">
+          </light-box>        
+          
           <panel v-if="attend_status != 'ACTIVE'" type="primary">
             <span slot="title">Join conference</span>
             <attend-form @statusChanged="statusChanged"></attend-form>
@@ -53,7 +56,7 @@
 
 <script>
 import AttendForm from './conference/Attend.form.vue';
-import { ArticlesList, HeroUnit } from 'elements';
+import { ArticlesList, HeroUnit, LightBox } from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 
@@ -68,7 +71,12 @@ export default {
     };
   },
   components: {
-    AttendForm, ArticlesList, EventsList, SurveyForm, HeroUnit
+    AttendForm,
+    ArticlesList,
+    EventsList,
+    SurveyForm,
+    HeroUnit,
+    LightBox
   },
   data () {
     return {

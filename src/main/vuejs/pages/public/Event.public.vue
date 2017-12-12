@@ -16,9 +16,6 @@
             <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank" v-if="event.facebookId != null">
               <i class="fa fa-facebook"></i>
             </a>
-            <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank">
-              <i class="fa fa-twitter"></i>
-            </a>
           </div> -->
         </hero-unit>
 
@@ -54,29 +51,22 @@
             </div>
 
             <div v-if="event.latitude != null && event.longitude != null" class="map-container">
-              <!-- <address class="event-address">
-                <strong v-text="event.place.name"></strong>
-                <br> {{ event.place.address.street + " " + event.place.address.number }}
-                <br> {{ event.place.address.zip + " " + event.place.address.city }}
-                <br> {{ event.place.address.state }}
-              </address> -->
-
               <google-map :location="location"></google-map>
             </div>
 
-            <masonry columns="4">
-              <masonry-item v-for="media in gallery" :key="media.id">
+            <div class="event-gallery">
+              <light-box :image="media.path" v-for="media in gallery" :key="media.id">
                 <img :src="media.path" class="img-thumbnail">
-                <h5>{{ media.title }}</h5>
-                <p>{{ media.description }}</p>
-              </masonry-item>
-            </masonry>
+              </light-box>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="col-sm-6 col-md-3 col-md-push-3">
-        <img class="img-poster m-b-20" v-if="event.poster != null" :src="event.poster.path">
+        <light-box v-if="event.poster != null" :image="event.poster.path">
+          <img class="img-poster m-b-20" :src="event.poster.path">
+        </light-box>
 
         <panel type="default" class="panel-p-0">
           <span slot="title">{{ $t('event.live_chat.header') }}</span>
@@ -110,7 +100,8 @@ import {
   EventsList,
   HeroUnit,
   Chat,
-  SharePanel
+  SharePanel,
+  LightBox
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -138,7 +129,8 @@ export default {
     EventsList,
     HeroUnit,
     Chat,
-    SharePanel
+    SharePanel,
+    LightBox
   },
   created () {
     this.getEvent();
@@ -293,6 +285,27 @@ export default {
 .panel-p-0 {
   .panel-body {
     padding: 0;
+  }
+}
+
+.event-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  & > * {
+    flex: 0 0 25%;
+
+    a {
+      display: block;
+      height: 100%;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
   }
 }
 </style>

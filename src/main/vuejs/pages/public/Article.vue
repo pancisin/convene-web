@@ -2,7 +2,9 @@
   <div class="container">
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" v-loading="loading">
       <div class="article-banner" v-if="article.thumbnail != null">
-        <img :src="article.thumbnail.path">
+        <light-box :image="article.thumbnail.path">
+          <img :src="article.thumbnail.path">
+        </light-box>
       </div>
   
       <h3 v-if="article != null">
@@ -26,6 +28,7 @@
 </template>
 
 <script>
+import { LightBox } from 'elements';
 import ArticleApi from 'api/article.api';
 
 export default {
@@ -35,6 +38,9 @@ export default {
       article: {},
       loading: false
     };
+  },
+  components: {
+    LightBox
   },
   created () {
     this.loading = true;
