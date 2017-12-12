@@ -50,8 +50,12 @@
       <text-editor v-model="event.summary"></text-editor>
     </div>
 
-    <div class="text-center">
-      <button class="btn btn-rounded btn-primary" type="submit" @click="submit">
+    <div class="text-right">
+      <button class="btn btn-danger" @click="togglePublished" v-if="event.state == 'PUBLISHED'">Deactivate</button>
+      <button class="btn btn-success" @click="togglePublished" v-if="event.state == 'DEACTIVATED'">
+        Publish
+      </button>
+      <button class="btn btn-primary" type="submit" @click="submit">
         Save
       </button>
     </div>
@@ -66,7 +70,6 @@ import {
   GiphySearch,
   PlacePicker
 } from 'elements';
-import EventApi from 'api/event.api';
 
 export default {
   inject: ['provider'],
@@ -134,7 +137,7 @@ export default {
         if (result) {
 
           this.loading = true;
-          EventApi.putEvent(this.event.id, this.event, event => {
+          this.api.putEvent(this.event, event => {
             this.$emit('updated', event);
             this.$success('notification.event.updated', event.name);
             this.loading = false;
@@ -164,6 +167,11 @@ export default {
           });
           break;
       }
+    },
+    togglePublished () {
+      this.api.togglePublished(event => {
+        this.event.state = event.state;
+      });
     }
   }
 };

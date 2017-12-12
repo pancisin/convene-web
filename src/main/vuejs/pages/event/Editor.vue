@@ -36,6 +36,14 @@
     </div>
 
     <div class="text-right">
+      <button 
+        class="btn btn-default" 
+        @click="togglePublished" 
+        :class="{ 'btn-danger': event.state == 'PUBLISHED' }">
+        
+        {{ event.state == 'PUBLISHED' ? 'Deactivate' : 'Publish' }}
+      </button>
+  
       <button class="btn btn-primary" type="submit" @click="submit">
         Save
       </button>
@@ -51,6 +59,7 @@ import {
   GiphySearch,
   PlacePicker
 } from 'elements';
+import EventApi from 'api/event.api';
 
 export default {
   props:
@@ -154,6 +163,11 @@ export default {
             this.loading = false;
           });
         }
+      });
+    },
+    togglePublished () {
+      EventApi.togglePublished(this.event.id, event => {
+        this.event.state = event.state;
       });
     }
   }

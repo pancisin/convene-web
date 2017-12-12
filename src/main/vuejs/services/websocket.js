@@ -17,8 +17,10 @@ export default Vue => {
           stompClient = Stomp.over(socket);
           Vue.prototype.$stompClient = stompClient;
 
+          const token = window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token');
+
           stompClient.connect({
-            'Authorization': 'Bearer ' + window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token')
+            'Authorization': `Bearer ${token}`
           }, resolve, reject);
         }
       });

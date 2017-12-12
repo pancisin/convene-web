@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
@@ -68,6 +69,10 @@ public class Event {
 	@JsonView(Summary.class)
 	private Visibility visibility;
 
+	@JsonView(Summary.class)
+	@Enumerated(EnumType.STRING)
+	private PageState state = PageState.DEACTIVATED;
+	
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
@@ -314,5 +319,13 @@ public class Event {
 
 	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
+	}
+
+	public PageState getState() {
+		return state;
+	}
+
+	public void setState(PageState state) {
+		this.state = state;
 	}
 }

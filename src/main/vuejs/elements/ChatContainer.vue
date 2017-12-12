@@ -163,10 +163,10 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .conversation-container {
-    left: 0;
-    width: auto;
-    z-index: 9999;
-  }
+  // .conversation-container {
+  //   left: 0;
+  //   width: auto;
+  //   z-index: 9999;
+  // }
 }
 </style>

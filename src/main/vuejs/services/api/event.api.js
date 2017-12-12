@@ -168,5 +168,16 @@ export default {
     }).then(response => {
       success(response.body);
     });
+  },
+
+  /**
+   * Toggle publish state of event.
+   * @param {*} id - event id
+   * @param {*} success - success callback function
+   */
+  togglePublished (id, success) {
+    Vue.http.patch(`${EVENT_API_URL}/${id}/toggle-published`).then(response => {
+      success(response.body);
+    });
   }
 };

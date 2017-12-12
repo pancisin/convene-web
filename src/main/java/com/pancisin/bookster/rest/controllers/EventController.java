@@ -25,13 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
-import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
 import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -219,5 +218,19 @@ public class EventController {
 		eventRepository.save(stored);
 		
 		return ResponseEntity.ok(galleryItem);
+	}
+	
+	@PatchMapping("/toggle-published")
+	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+	public ResponseEntity<?> togglePublishState(@PathVariable Long event_id) {
+		Event stored = eventRepository.findOne(event_id);
+
+		if (stored.getState() == PageState.DEACTIVATED) {
+			stored.setState(PageState.PUBLISHED);
+		} else if (stored.getState() == PageState.PUBLISHED) {
+			stored.setState(PageState.DEACTIVATED);
+		}
+
+		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 }

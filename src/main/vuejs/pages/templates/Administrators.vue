@@ -69,7 +69,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import { UserSearch } from 'elements';
-import PageAdministratorApi from 'api/page-administrator.api';
 
 export default {
   name: 'conference-administrators',

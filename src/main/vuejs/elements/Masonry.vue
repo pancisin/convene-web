@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import debounce from 'debounce';
 export default {
   name: 'masonry',
   props: {
@@ -21,20 +22,23 @@ export default {
       cols: 1
     };
   },
-  created () {
-    this.cols = this.columns;
+  mounted () {
 
-    window.matchMedia('(min-width: 700px)').addListener((data) => {
-      this.cols = 1;
-    });
+    const recalculate = (width) => {
+      if (width > 1100) {
+        this.cols = this.columns;
+      } else if (width > 900) {
+        this.cols = this.columns - 1;
+      } else if (width > 600) {
+        this.cols = 2;
+      } else this.cols = 1;
+    };
 
-    window.matchMedia('(min-width: 900px)').addListener((data) => {
-      this.cols = this.columns - 1;
-    });
+    window.onresize = debounce((event) => {
+      recalculate(event.target.innerWidth);
+    }, 200);
 
-    window.matchMedia('(min-width: 1100px)').addListener((data) => {
-      this.cols = this.columns;
-    });
+    recalculate(window.innerWidth);
   },
   computed: {
     style () {

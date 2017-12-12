@@ -9,23 +9,24 @@
     <dropdown-menu-item class="notifi-title">
       Notification
     </dropdown-menu-item>
-    <dropdown-menu-item class="list-group notifications-list">
-      <div v-for="not in notifications"
-        :key="not.id">
-        <em class="fa fa-diamond"></em>
-        <div class="notification-body">
-          <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
-          <p class="m-0">
-            <small>{{ $t(not.code + '.message') }}</small>
-          </p>
+    <dropdown-menu-item class="notifications-list">
+      <transition-group name="fade">
+        <div v-for="not in notifications"
+          :key="not.id"
+          class="notification-item">
+          <!-- <em class="fa fa-diamond"></em> -->
+          <div class="notification-body">
+            <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
+            <p class="m-0">
+              <small>{{ $t(not.code + '.message') }}</small>
+              <br> <small>{{ not.created | moment('from') }}</small>
+            </p>
+          </div>
+          <a @click="toggleSeenNotification(not)" class="toggle-seen-button">
+            <i class="fa fa-times"></i>
+          </a>
         </div>
-        <a @click="toggleSeenNotification(not)" class="toggle-seen-button">
-          <transition name="fade-down" mode="out-in">
-            <i class="material-icons" v-if="not.seen" key="1">done</i>
-            <i class="material-icons" v-else key="0">radio_button_unchecked</i>
-          </transition>
-        </a>
-      </div>
+      </transition-group>
 
       <div v-if="notifications.length == 0"
         class="text-center m-t-10 text-muted">There's nothing to display
@@ -80,18 +81,19 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .notifications-list {
-  max-height: 230px;
+  max-height: 300px;
   overflow-y: auto;
   padding: 10px;
 
-  & > div {
+  .notification-item {
     display: flex;
     align-items: center;
 
     em {
-      color: #1FAB89;
-      border: 2px solid #1FAB89;
+      color: @color-primary;
+      border: 2px solid @color-primary;
 
       width: 30px;
       text-align: center;
@@ -102,7 +104,7 @@ export default {
       margin-right: 10px;
     }
 
-    .notification-body { 
+    .notification-body {
       flex-grow: 1;
     
       h5 {
@@ -116,6 +118,11 @@ export default {
       p {
         color: #828282;
       }
+    }
+
+    .toggle-seen-button {
+      margin-left: 10px;
+      color: @color-primary;
     }
 
     & ~ div {
