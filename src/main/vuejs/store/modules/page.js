@@ -79,7 +79,7 @@ const actions = {
   },
   updatePage ({ commit }, page) {
     return new Promise((resolve) => {
-      PageApi.putPage(page, result => {
+      PageApi.putPage(page.id, page, result => {
         commit(types.UPDATE_PAGE, { page: result });
         commit(types.LOADING_PAGES, false);
         resolve(result);

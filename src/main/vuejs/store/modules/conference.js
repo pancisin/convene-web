@@ -57,7 +57,7 @@ const actions = {
   },
   updateConference ({ commit }, conference) {
     return new Promise(resolve => {
-      ConferenceApi.putConference(conference, result => {
+      ConferenceApi.putConference(conference.id, conference, result => {
         commit(types.UPDATE_CONFERENCE, { conference: result });
         commit(types.LOADING_CONFERENCES, false);
         resolve(result);

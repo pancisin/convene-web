@@ -69,6 +69,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { UserSearch } from 'elements';
+import PageAdministratorApi from 'api/page-administrator.api';
 
 export default {
   name: 'conference-administrators',
@@ -138,7 +139,7 @@ export default {
         role: admin.role.name
       };
 
-      this.api.putAdministrator(admin.id, data, administrator => {
+      this.api.administrator.putAdministrator(admin.id, data, administrator => {
         admin = administrator;
       });
     },
@@ -146,7 +147,7 @@ export default {
       return admin.role.level < this.current_pa.role.level;
     },
     deleteAdministrator (admin) {
-      this.api.deleteAdministrator(admin.id, result => {
+      this.api.administrator.deleteAdministrator(admin.id, result => {
         this.administrators = this.administrators.filter(a => {
           return a.id !== admin.id;
         });

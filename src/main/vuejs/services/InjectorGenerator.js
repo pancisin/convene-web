@@ -1,10 +1,5 @@
 const InjectorGenerator = {};
 
-function getFnParamNames (fn) {
-  var fstr = fn.toString();
-  return fstr.match(/\(.*?\)/)[0].replace(/[()]/gi, '').replace(/\s/gi, '').split(',');
-}
-
 InjectorGenerator.generate = (apiReference, resourceId) => {
   return new Proxy(apiReference, {
     get (target, propKey, receiver) {
@@ -12,7 +7,7 @@ InjectorGenerator.generate = (apiReference, resourceId) => {
 
       if (typeof property === 'function') {
         return (...args) => {
-          if (getFnParamNames(property).includes('id')) {
+          if (apiReference.hasOwnProperty(property.name)) {
             args.unshift(resourceId);
           }
 

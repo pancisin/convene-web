@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import moment from 'moment';
+import PageAdministratorApi from './page-administrator.api';
 
 const PAGE_API_URL = '/api/page';
 
@@ -11,6 +12,10 @@ export default {
 
   get parent_type () {
     return 'page';
+  },
+
+  get administrator () {
+    return PageAdministratorApi;
   },
 
   /**
@@ -42,8 +47,8 @@ export default {
    * @param {*} page - page data object
    * @param {*} success - success callback function
    */
-  putPage (page, success) {
-    Vue.http.put(`${PAGE_API_URL}/${page.id}`, page).then(response => {
+  putPage (id, page, success) {
+    Vue.http.put(`${PAGE_API_URL}/${id}`, page).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -208,29 +213,6 @@ export default {
       id: administrator.id,
       email: administrator.email
     }).then(response => {
-      success(response.body);
-    }, errorHandler);
-  },
-
-  /**
-   * Update page administrator object (relation to page as administrator)
-   * @param {*} administrator_id - page administrator id
-   * @param {*} administrator - page administrator data object
-   * @param {*} success - success callback function
-   */
-  putAdministrator (administrator_id, administrator, success) {
-    Vue.http.put(`/api/page-administrator/${administrator_id}`, administrator).then(response => {
-      success(response.body);
-    }, errorHandler);
-  },
-
-  /**
-   * Delete page administrator object
-   * @param {*} administrator_id - page administrator id
-   * @param {*} success - success callback function
-   */
-  deleteAdministrator (administrator_id, success) {
-    Vue.http.delete(`/api/page-administrator/${administrator_id}`).then(response => {
       success(response.body);
     }, errorHandler);
   },

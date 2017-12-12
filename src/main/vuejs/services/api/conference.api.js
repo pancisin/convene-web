@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import ConferenceAdministratorApi from './conference-administrator.api';
 
 const CONFERENCE_API_URL = '/api/conference';
 function checkId (id) {
@@ -9,6 +10,10 @@ export default {
 
   get parent_type () {
     return 'conference';
+  },
+
+  get administrator () {
+    return ConferenceAdministratorApi;
   },
 
   /**
@@ -28,8 +33,8 @@ export default {
    * @param {*} conference - conference data object
    * @param {*} success - success callback function
    */
-  putConference (conference, success) {
-    Vue.http.put(`${CONFERENCE_API_URL}/${conference.id}`, conference).then(response => {
+  putConference (id, conference, success) {
+    Vue.http.put(`${CONFERENCE_API_URL}/${id}`, conference).then(response => {
       success(response.body);
     });
   },
@@ -138,29 +143,6 @@ export default {
   postAdministrator (id, administrator, success) {
     checkId(id);
     Vue.http.post(`${CONFERENCE_API_URL}/${id}/administrator`, { id: administrator.id, email: administrator.email }).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Update conference administrator.
-   * @param {*} administrator_id - conference administrator id
-   * @param {*} administrator - administrator data object
-   * @param {*} success - success callback function
-   */
-  putAdministrator (administrator_id, administrator, success) {
-    Vue.http.put(`/api/conference-administrator/${administrator_id}`, administrator).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Delete conference adminsitrator.
-   * @param {*} administrator_id - conference administrator id
-   * @param {*} success - success callback function
-   */
-  deleteAdministrator (administrator_id, success) {
-    Vue.http.delete(`/api/conference-administrator/${administrator_id}`).then(response => {
       success(response.body);
     });
   },
