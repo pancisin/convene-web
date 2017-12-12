@@ -13,7 +13,9 @@
             </h5>
           </div>
 
-          <img v-if="conference.poster" :src="conference.poster.path" >
+          <div class="image-wrapper" v-if="conference.poster"> 
+            <img :src="conference.poster.path" >
+          </div>
         </router-link>
       </masonry-item>
     </masonry>

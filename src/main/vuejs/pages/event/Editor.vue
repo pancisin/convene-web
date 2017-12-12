@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <form class="form" v-loading="loading" @submit.prevent="submit">
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
@@ -44,11 +44,11 @@
         {{ event.state == 'PUBLISHED' ? 'Deactivate' : 'Publish' }}
       </button>
   
-      <button class="btn btn-primary" type="submit" @click="submit">
+      <button class="btn btn-primary" type="submit">
         Save
       </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -90,7 +90,6 @@ export default {
         };
       },
       set (value) {
-        console.log(value);
         this.eventClone = {
           ...this.eventClone,
           latitude: value.lat,

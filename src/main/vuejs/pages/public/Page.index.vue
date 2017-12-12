@@ -48,7 +48,9 @@
                   </small>
                 </div>
 
-                <img v-if="page.poster" :src="page.poster.path">
+                <div class="image-wrapper" v-if="page.poster">
+                  <img :src="page.poster.path">
+                </div>
               </router-link>
               <div class="actions" v-if="page.privilege && page.privilege.role.level >= 60">
                 <router-link 

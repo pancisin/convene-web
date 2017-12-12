@@ -31,10 +31,11 @@
             v-for="event in eventsPaginator.content"
             :key="event.id">
 
-            <router-link :to="'/event/' + event.id">
-              <img v-if="event.poster != null"
-                :src="event.poster.path">
-
+            <router-link :to="{ name: 'event.public', params: { id: event.id }}">
+              <div v-if="event.poster != null" class="image-wrapper">
+                <img :src="event.poster.path">
+              </div>
+  
               <div class="title">
                 <h5 v-text="event.name"></h5>
                 <small class="text-muted" v-if="event.author">
