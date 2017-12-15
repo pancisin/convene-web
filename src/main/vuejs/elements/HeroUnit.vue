@@ -3,9 +3,14 @@
     :class="{ 'hero-unit-fluid': !solid }" 
     :style="bg_style">
 
-    <div class="container">
-      <slot>
-      </slot>
+    <div class="hero-unit-content" 
+      :style="content_style" 
+      ref="hero_unit_content">
+
+      <div class="container">
+        <slot>
+        </slot>
+      </div>
     </div>
   </div>
 </template>
@@ -33,20 +38,36 @@ export default {
       bg_style: {
         'background-position': 'center',
         'background-image': `url(${this.background})`
+      },
+      content_style: {
+        top: '50%',
+        transform: 'translateY(-50%)'
       }
     };
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     handleScroll () {
+      let offset = -(this.$el.offsetTop - window.scrollY);
+
+      if (this.$el.offsetHeight < this.$el.offsetTop) {
+        offset = -(this.$el.offsetTop - (window.innerHeight - this.$el.offsetHeight) / 2 - window.scrollY);
+      }
+
       this.bg_style = {
         ...this.bg_style,
-        'background-position': `center calc(50% + ${-(this.$el.offsetTop - window.scrollY) * 0.5}px)`
+        'background-position': `center calc(50% + ${offset * 0.5}px)`,
+        height: `${this.$refs.hero_unit_content.offsetHeight + 160}px`
+      };
+      this.content_style = {
+        ...this.content_style,
+        top: `calc(50% + ${offset * 0.4}px)`
       };
     }
   }
@@ -54,7 +75,7 @@ export default {
 </script>
 
 <style lang="less">
-@import (reference) "~less/variables.less";
+@import (reference) '~less/variables.less';
 @original_transform: rotateZ(-20deg) translateY(-50%);
 
 @keyframes movingAnimation {
@@ -86,13 +107,14 @@ export default {
 
 .hero-unit {
   color: white;
-  padding: 80px 0;
-  position: relative;
+  // padding: 80px 0;
   overflow: hidden;
   animation: backgroundAnimation ease-in-out 60s infinite alternate;
 
   background-size: cover;
 
+  min-height: 225px;
+  position: relative;
 
   &.hero-unit-fluid {
     &:first-child {
@@ -100,7 +122,7 @@ export default {
     }
 
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       background-color: rgba(255, 255, 255, 0.6);
       z-index: 1;
@@ -120,13 +142,14 @@ export default {
     }
   }
 
-  & > .container {
-    position: relative;
+  & > .hero-unit-content {
+    position: absolute;
     z-index: 2;
+    width: 100%;
   }
 
   &:after {
-    content: "";
+    content: '';
     z-index: 1;
     // background: rgba(0, 0, 0, 0.6);
     position: absolute;
@@ -135,8 +158,8 @@ export default {
     top: 0;
     left: 0;
 
-    background: linear-gradient(#444F5C, #334159);
-    opacity: .85;
+    background: linear-gradient(#444f5c, #334159);
+    opacity: 0.85;
   }
 }
 </style>
