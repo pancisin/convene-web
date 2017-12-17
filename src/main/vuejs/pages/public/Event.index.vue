@@ -40,7 +40,7 @@
               <div class="title">
                 <h5 v-text="event.name"></h5>
                 <small class="text-muted" v-if="event.author">
-                  By {{ event.author.displayName }}
+                  {{ event.author.displayName }}
                   <br>
                   {{ event.date | moment('L') }}
                   <span

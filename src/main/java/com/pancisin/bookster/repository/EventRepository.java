@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,16 +18,15 @@ import com.pancisin.bookster.models.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-	// @Override
-	// @Cacheable("events")
-	// Event findOne(Long id);
-	//
-	// @Override
-	// @CacheEvict(value = "events", key = "#p0.id")
-	// <S extends Event> S save(S entity);
+	 @Override
+	 @Cacheable("events")
+	 Event findOne(Long id);
+	
+	 @Override
+	 @CacheEvict(value = "events", key = "#p0.id")
+	 <S extends Event> S save(S entity);
 
 	@Query("SELECT event FROM Event event WHERE event.state = 'PUBLISHED' AND DATE(event.date) = DATE(:date)")
-	// @Cacheable("events") // here is second level cache problem.
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
 
 	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.pageAdministrators administrator LEFT JOIN event.conference conference LEFT JOIN conference.conferenceAdministrators cAdmin WHERE (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId OR cAdmin.user.id = :userId) AND DATE(event.date) = DATE(:date)")

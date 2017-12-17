@@ -52,11 +52,11 @@
                   <vue-image :src="page.poster.path" />
                 </div>
               </router-link>
-              <div class="actions" v-if="page.privilege && page.privilege.role.level >= 60">
+              <div class="actions" v-if="page.privilege && page.privilege.active">
                 <router-link 
                   :to="{ name: 'page.settings', params: { id: page.id } }" 
                   class="pull-right text-primary">
-                  <i class="fa fa-pencil"></i>
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 </router-link>
               </div>
             </masonry-item>

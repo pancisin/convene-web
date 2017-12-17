@@ -17,6 +17,13 @@
             <vue-image :src="conference.poster.path" />
           </div>
         </router-link>
+        <div class="actions" v-if="conference.privilege && conference.privilege.active">
+          <router-link 
+            :to="{ name: 'conference.settings', params: { id: conference.id } }" 
+            class="pull-right text-primary">
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          </router-link>
+        </div>
       </masonry-item>
     </masonry>
 

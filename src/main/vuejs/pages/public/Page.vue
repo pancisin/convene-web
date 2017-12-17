@@ -39,13 +39,21 @@
         </div>
 
         <div class="col-sm-4 col-md-3">
-          <a 
-            class="btn btn-block m-b-20 waves-effect" 
-            :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
-            @click="toggleFollow">
+          <div class="btn-group-vertical btn-block m-b-20">
+            <a 
+              class="btn waves-effect" 
+              :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
+              @click="toggleFollow">
 
-            {{ follows ? 'Unfollow' : 'Follow' }}
-          </a>
+              {{ follows ? 'Unfollow' : 'Follow' }}
+            </a>
+            <router-link 
+              :to="{ name: 'page.settings', params: { id: page.id }}" 
+              v-if="page.privilege && page.privilege.active"
+              class="btn btn-primary waves-effect">
+              Settings
+            </router-link>
+          </div>
 
           <light-box v-if="page.poster != null" :image="page.poster.path">
             <vue-image class="img-poster m-b-20" :src="page.poster.path" />

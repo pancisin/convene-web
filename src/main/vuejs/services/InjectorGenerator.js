@@ -1,23 +1,23 @@
-const InjectorGenerator = {};
 
-InjectorGenerator.generate = (apiReference, resourceId) => {
-  return new Proxy(apiReference, {
-    get (target, propKey, receiver) {
-      const property = target[propKey];
+export default class InjectorGenerator {
 
-      if (typeof property === 'function') {
-        return (...args) => {
-          if (apiReference.hasOwnProperty(property.name)) {
-            args.unshift(resourceId);
-          }
+  static generate (apiReference, resourceId) {
+    return new Proxy({ ...apiReference }, {
+      get (target, propKey, receiver) {
+        const property = target[propKey];
 
-          return property.apply(this, args);
-        };
-      } else {
-        return property;
+        if (typeof property === 'function') {
+          return function (...args) {
+            if (target.hasOwnProperty(property.name)) {
+              return property.apply(null, [resourceId, ...args]);
+            }
+
+            return property.apply(null, args);
+          };
+        } else {
+          return property;
+        }
       }
-    }
-  });
+    });
+  };
 };
-
-export default InjectorGenerator;

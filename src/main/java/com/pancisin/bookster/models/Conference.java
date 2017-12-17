@@ -132,7 +132,7 @@ public class Conference implements IAuthor {
 	
 	@Transient
 	@JsonView(Summary.class)
-	@JsonIgnoreProperties({"role", "user"}) 
+	@JsonIgnoreProperties({"user"}) 
 	public ConferenceAdministrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()

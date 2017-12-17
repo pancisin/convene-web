@@ -168,7 +168,7 @@ public class Event {
 	
 	@Transient
 	@JsonView(Summary.class)
-	@JsonIgnoreProperties({"role", "user"})
+	@JsonIgnoreProperties({"user"})
 	public Object getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()

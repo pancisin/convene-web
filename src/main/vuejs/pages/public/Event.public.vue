@@ -1,6 +1,6 @@
  <template>
   <div class="container" v-loading="loading">
-    <div class="alert alert-danger" v-if="event && event.state != 'PUBLISHED'">
+    <div class="alert alert-danger" v-if="event.id && event.state != 'PUBLISHED'">
       This event is not published yet so it's not visible for other users.
     </div>
 
@@ -12,8 +12,29 @@
 
           <p class="panel-sub-title font-13">
             {{ event.date | moment('LL') }} {{ event.startsAt }}
-            <br><b>{{ $t('event.convener') }}: </b> {{ event.author != null ? event.author.displayName : '' }}
-            <br><b>{{ $t('event.place') }}: </b> {{ address }}
+            
+            <span v-if="event.author">
+              <br>
+              <b>{{ $t('event.convener') }}: </b> 
+              <router-link 
+                v-if="event.author.type == 'page'"
+                :to="{ name: 'page.public', params: { id: event.author.id }}"
+                class="text-primary">
+                {{ event.author.displayName }}
+              </router-link>
+              <router-link v-else-if="event.author.type == 'conference'"
+                :to="{ name: 'conference', params: { id: event.author.id }}"
+                class="text-pink">
+                {{ event.author.displayName }}
+              </router-link>
+              <span v-else>
+                {{ event.author.displayName }}
+              </span>
+            </span>
+
+            <span v-if="address">
+              <br><b>{{ $t('event.place') }}: </b> {{ address }}
+            </span>
           </p>
        
           <!-- <div class="socials">

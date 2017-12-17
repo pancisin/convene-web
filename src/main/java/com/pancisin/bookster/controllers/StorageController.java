@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,9 +30,13 @@ public class StorageController {
 	public ResponseEntity<Resource> serveFile(@PathVariable String filename, HttpServletRequest request) {
 		String url = request.getRequestURL().toString();
 		Resource file = storageService.loadAsResource(url.split("/files/")[1]);
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-				.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).body(file);
+		
+		if (file != null) {
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+					.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS)).body(file);
+		} else {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		}
 	}
-
 }

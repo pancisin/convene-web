@@ -52,14 +52,17 @@ export default {
     return {
       event: {},
       edit: false,
-      injector: null
+      injector: null,
+      revoke: null
     };
   },
   provide () {
     const provider = {};
 
     Object.defineProperty(provider, 'api', {
-      get: () => this.injector
+      get () {
+        return this.injector;
+      }
     });
 
     return { provider };

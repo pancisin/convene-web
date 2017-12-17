@@ -69,7 +69,7 @@ public class Page implements IAuthor {
 
 	@JsonView(Compact.class)
 	@JsonProperty(access = Access.READ_ONLY)
-	@Column(unique = true, updatable = true)
+	@Column(unique = true, updatable = false)
 	@GeneratorType(type = UniqueSlugGenerator.class)
 	private String slug;
 
@@ -161,7 +161,7 @@ public class Page implements IAuthor {
 	
 	@Transient
 	@JsonView(Summary.class)
-	@JsonIgnoreProperties({"role", "user"}) 
+//	@JsonIgnoreProperties({"user"}) 
 	public PageAdministrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
@@ -187,14 +187,14 @@ public class Page implements IAuthor {
 	@JsonView(Summary.class)
   private Map<String, String> metadata = new HashMap<String, String>(); 
 
-	@PreUpdate
-	private void onUpdate() {
-		Slugify s = new Slugify();
-
-		if (this.slug == null || this.slug.equals("")) {
-			this.setSlug(s.slugify(this.name));
-		}
-	}
+//	@PreUpdate
+//	private void onUpdate() {
+//		Slugify s = new Slugify();
+//
+//		if (this.slug == null || this.slug.equals("")) {
+//			this.setSlug(s.slugify(this.name));
+//		}
+//	}
   
 	public Long getId() {
 		return id;
