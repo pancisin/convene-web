@@ -32,6 +32,10 @@
             v-for="event in eventsPaginator.content"
             :key="event.id">
 
+            <div class="card-state" v-if="event.state != 'PUBLISHED'">
+              {{ event.state }}
+            </div> 
+
             <router-link :to="{ name: 'event.public', params: { id: event.id }}">
               <div v-if="event.poster != null" class="image-wrapper">
                 <vue-image :src="event.poster.path" />
@@ -55,11 +59,7 @@
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </a>
               <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
-            </div>
-
-            <div class="text-center text-danger m-t-5" v-if="event.state != 'PUBLISHED'">
-              {{ event.state }}
-            </div>  
+            </div> 
           </masonry-item>
         </masonry>
 
