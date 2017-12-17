@@ -1,6 +1,6 @@
  <template>
   <div class="container" v-loading="loading">
-    <div class="alert alert-danger" v-if="event.state != 'PUBLISHED'">
+    <div class="alert alert-danger" v-if="event && event.state != 'PUBLISHED'">
       This event is not published yet so it's not visible for other users.
     </div>
 
@@ -73,7 +73,7 @@
 
       <div class="col-sm-6 col-md-3 col-md-push-3">
         <light-box v-if="event.poster != null" :image="event.poster.path">
-          <img class="img-poster m-b-20" :src="event.poster.path">
+          <vue-image :src="event.poster.path" class="img-poster m-b-20" />
         </light-box>
 
         <panel type="default" class="panel-p-0">
@@ -109,7 +109,8 @@ import {
   HeroUnit,
   Chat,
   SharePanel,
-  LightBox
+  LightBox,
+  VueImage
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -138,7 +139,8 @@ export default {
     HeroUnit,
     Chat,
     SharePanel,
-    LightBox
+    LightBox,
+    VueImage
   },
   created () {
     this.getEvent();

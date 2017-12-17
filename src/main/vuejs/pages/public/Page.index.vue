@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="image-wrapper" v-if="page.poster">
-                  <img :src="page.poster.path">
+                  <vue-image :src="page.poster.path" />
                 </div>
               </router-link>
               <div class="actions" v-if="page.privilege && page.privilege.role.level >= 60">
@@ -74,7 +74,12 @@
 </template>
 
 <script>
-import { Paginator, Masonry, MasonryItem } from 'elements';
+import {
+  Paginator,
+  Masonry,
+  MasonryItem,
+  VueImage
+} from 'elements';
 import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
@@ -94,7 +99,8 @@ export default {
   components: {
     Paginator,
     Masonry,
-    MasonryItem
+    MasonryItem,
+    VueImage
   },
   created () {
     this.filters = {

@@ -3,7 +3,7 @@
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" v-loading="loading">
       <div class="article-banner" v-if="article.thumbnail != null">
         <light-box :image="article.thumbnail.path">
-          <img :src="article.thumbnail.path">
+          <vue-image :src="article.thumbnail.path" />
         </light-box>
       </div>
   
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { LightBox } from 'elements';
+import { LightBox, VueImage } from 'elements';
 import ArticleApi from 'api/article.api';
 
 export default {
@@ -40,7 +40,8 @@ export default {
     };
   },
   components: {
-    LightBox
+    LightBox,
+    VueImage
   },
   created () {
     this.loading = true;

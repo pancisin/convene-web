@@ -47,6 +47,7 @@ import ProfilePicture from './ProfilePicture';
 import PasswordChange from './PasswordChange';
 import SharePanel from './SharePanel';
 import LightBox from './LightBox';
+import VueImage from './VueImage';
 
 export {
   ArticlesList,
@@ -97,5 +98,6 @@ export {
   ProfilePicture,
   PasswordChange,
   SharePanel,
-  LightBox
+  LightBox,
+  VueImage
 };

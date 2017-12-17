@@ -27,7 +27,7 @@
 
         <div class="col-sm-4 col-md-3">
           <light-box v-if="conference.poster != null" :image="conference.poster.path">
-            <img :src="conference.poster.path" class="img-poster">
+            <vue-image :src="conference.poster.path" class="img-poster" />
           </light-box>        
           
           <panel v-if="attend_status != 'ACTIVE'" type="primary">
@@ -68,7 +68,13 @@
 
 <script>
 import AttendForm from './conference/Attend.form.vue';
-import { ArticlesList, HeroUnit, LightBox, Paginator } from 'elements';
+import {
+  ArticlesList,
+  HeroUnit,
+  LightBox,
+  Paginator,
+  VueImage
+} from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 
@@ -93,7 +99,8 @@ export default {
     SurveyForm,
     HeroUnit,
     LightBox,
-    Paginator
+    Paginator,
+    VueImage
   },
   data () {
     return {
@@ -124,7 +131,7 @@ export default {
       this.attend_status = status;
     },
     getEvents (page) {
-      this.injector.getEvents(page, 5, paginator => {
+      this.injector.getEvents(page, 3, paginator => {
         this.eventsPaginator = paginator;
       });
     },

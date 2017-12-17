@@ -161,6 +161,7 @@ public class Page implements IAuthor {
 	
 	@Transient
 	@JsonView(Summary.class)
+	@JsonIgnoreProperties({"role", "user"}) 
 	public PageAdministrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()

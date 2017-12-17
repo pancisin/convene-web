@@ -7,8 +7,7 @@
 
       <div class="inbox-item-img"
         v-if="page.poster != null">
-        <img :src="page.poster.path"
-          class="img-circle">
+        <vue-image :src="page.poster.path" class="img-circle" />
       </div>
       <div>
         <p class="inbox-item-author">
@@ -27,11 +26,15 @@
 </template>
 
 <script>
+import VueImage from './VueImage';
 export default {
   name: 'pages-list',
   props: {
     pages: Array,
     followers: Boolean
+  },
+  components: {
+    VueImage
   }
 };
 </script>

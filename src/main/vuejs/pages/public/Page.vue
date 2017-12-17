@@ -48,7 +48,7 @@
           </a>
 
           <light-box v-if="page.poster != null" :image="page.poster.path">
-            <img class="img-poster m-b-20" :src="page.poster.path">
+            <vue-image class="img-poster m-b-20" :src="page.poster.path" />
           </light-box>
 
           <panel type="table" v-if="services && services.length > 0">
@@ -100,8 +100,14 @@
 
 <script>
 import ServiceBook from './page/Service.book.vue';
-import { EventsList, HeroUnit, AbuseReport, SharePanel, LightBox } from 'elements';
-
+import {
+  EventsList,
+  HeroUnit,
+  AbuseReport,
+  SharePanel,
+  LightBox,
+  VueImage
+} from 'elements';
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
 
@@ -127,7 +133,8 @@ export default {
     HeroUnit,
     AbuseReport,
     SharePanel,
-    LightBox
+    LightBox,
+    VueImage
   },
   watch: {
     '$route': 'initialize'

@@ -21,7 +21,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -124,6 +128,27 @@ public class Conference implements IAuthor {
 			this.articles = new ArrayList<Article>();
 
 		this.articles.add(article);
+	}
+	
+	@Transient
+	@JsonView(Summary.class)
+	@JsonIgnoreProperties({"role", "user"}) 
+	public ConferenceAdministrator getPrivilege() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (this.conferenceAdministrators == null || user == null)
+				return null;
+
+			Optional<ConferenceAdministrator> pUser = this.conferenceAdministrators.stream()
+					.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+
+			if (pUser.isPresent())
+				return pUser.get();
+		}
+
+		return null;
 	}
 
 	public void addMetaField(MetaField field) {

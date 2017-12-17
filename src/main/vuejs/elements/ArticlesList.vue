@@ -27,7 +27,7 @@
         :key="article.id">
         <div class="article-image-container"
           v-if="article.thumbnail != null">
-          <img :src="article.thumbnail.path">
+          <vue-image :src="article.thumbnail.path" /> 
         </div>
 
         <router-link :to="{ name: 'article.public', params: { article_id: article.id } }">
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import VueImage from './VueImage';
 export default {
   name: 'articles-list',
   props: {
@@ -59,6 +60,9 @@ export default {
       }
     },
     hasHeadline: Boolean
+  },
+  components: {
+    VueImage
   },
   data () {
     return {

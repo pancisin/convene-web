@@ -66,7 +66,9 @@ export default {
     }
   },
   beforeDestroy () {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   },
   methods: {
     initialize () {

@@ -37,6 +37,7 @@
 
     <div class="text-right">
       <button 
+        type="button"
         class="btn btn-default" 
         @click="togglePublished" 
         :class="{ 'btn-danger': event.state == 'PUBLISHED' }">
@@ -44,7 +45,10 @@
         {{ event.state == 'PUBLISHED' ? 'Deactivate' : 'Publish' }}
       </button>
   
-      <button class="btn btn-primary" type="submit">
+      <button 
+        class="btn btn-primary" 
+        type="submit">
+
         Save
       </button>
     </div>
@@ -167,6 +171,7 @@ export default {
     togglePublished () {
       EventApi.togglePublished(this.event.id, event => {
         this.event.state = event.state;
+        this.$emit('updated', this.event);
       });
     }
   }

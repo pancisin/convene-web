@@ -34,7 +34,7 @@
 
             <router-link :to="{ name: 'event.public', params: { id: event.id }}">
               <div v-if="event.poster != null" class="image-wrapper">
-                <img :src="event.poster.path">
+                <vue-image :src="event.poster.path" />
               </div>
   
               <div class="title">
@@ -50,7 +50,7 @@
                 </small>
               </div>
             </router-link>
-            <div class="actions" v-if="event.author && user && event.author.id === user.id">
+            <div class="actions" v-if="event.privilege && event.privilege.active">
               <a @click="editEvent(event)">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </a>
@@ -100,7 +100,8 @@ import {
   DatePicker,
   Masonry,
   MasonryItem,
-  EventCreateWizard
+  EventCreateWizard,
+  VueImage
 } from 'elements';
 import PublicApi from 'api/public.api';
 import RootApi from 'api/api';
@@ -133,7 +134,8 @@ export default {
     Masonry,
     MasonryItem,
     EventCreateWizard,
-    EventEditor
+    EventEditor,
+    VueImage
   },
   watch: {
     filters: {

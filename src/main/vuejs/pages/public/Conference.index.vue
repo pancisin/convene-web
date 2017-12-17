@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="loading">
     <masonry :columns="4">
       <masonry-item class="card"   
-        v-for="(conference, index) in conferences" 
+        v-for="(conference, index) in paginator.content" 
         :key="index">
         
         <router-link 
@@ -14,11 +14,15 @@
           </div>
 
           <div class="image-wrapper" v-if="conference.poster"> 
-            <img :src="conference.poster.path" >
+            <vue-image :src="conference.poster.path" />
           </div>
         </router-link>
       </masonry-item>
     </masonry>
+
+    <div class="text-center">
+      <paginator :paginator="paginator" :fetch="getConferences" />
+    </div>
   </div>
 </template>
 
@@ -26,13 +30,19 @@
 import RootApi from 'api/api';
 import { mapGetters } from 'vuex';
 import PublicApi from 'api/public.api';
-import { Masonry, MasonryItem } from 'elements';
+import {
+  Masonry,
+  MasonryItem,
+  VueImage,
+  Paginator
+} from 'elements';
 
 export default {
   name: 'conference-index',
   data () {
     return {
-      conferences: []
+      paginator: {},
+      loading: false
     };
   },
   created () {
@@ -42,19 +52,20 @@ export default {
     ...mapGetters(['authenticated'])
   },
   components: {
-    Masonry, MasonryItem
+    Masonry,
+    MasonryItem,
+    VueImage,
+    Paginator
   },
   methods: {
-    getConferences () {
-      if (this.authenticated) {
-        RootApi.getConferences(0, 10, paginator => {
-          this.conferences = paginator.content;
-        });
-      } else {
-        PublicApi.getConferences(0, 10, paginator => {
-          this.conferences = paginator.content;
-        });
-      }
+    getConferences (page) {
+      this.loading = true;
+
+      const api = this.authenticated ? RootApi : PublicApi;
+      api.getConferences(page, 6, paginator => {
+        this.paginator = paginator;
+        this.loading = false;
+      });
     }
   }
 };

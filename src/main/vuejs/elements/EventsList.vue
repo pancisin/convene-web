@@ -6,7 +6,7 @@
       class="inbox-item">
 
       <div class="inbox-item-img" v-if="event.poster != null">
-        <img :src="event.poster.path" class="img-circle" alt="">
+        <vue-image :src="event.poster.path" class="img-circle" />
       </div>
       
       <div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import VueImage from './VueImage';
 export default {
   name: 'events-list',
   props: {
@@ -36,7 +37,8 @@ export default {
       }
     }
   },
-  created () {
+  components: {
+    VueImage
   }
 };
 </script>

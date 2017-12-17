@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +31,12 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -159,6 +164,31 @@ public class Event {
 			return page;
 
 		return owner;
+	}
+	
+	@Transient
+	@JsonView(Summary.class)
+	@JsonIgnoreProperties({"role", "user"})
+	public Object getPrivilege() {
+		if (SecurityContextHolder.getContext().getAuthentication() != null
+				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
+				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
+			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			
+			if (user != null) {
+				if (this.page != null && this.page.getPageAdministrators() != null) {
+					return this.page.getPrivilege();
+				} else if (this.conference != null && this.conference.getConferenceAdministrators() != null) {
+					return this.conference.getPrivilege();
+				} else if (this.owner != null && this.owner.getId() == user.getId()) {
+					HashMap<String, String> result = new HashMap<String, String>();
+					result.put("active", "true");
+					return result;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public int getAttendeesCount() {
