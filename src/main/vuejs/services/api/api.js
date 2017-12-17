@@ -31,6 +31,14 @@ export default {
     });
   },
 
+  getEvents (page, size, filters, success) {
+    Vue.http.get(`/api/events/${page}/${size}`, {
+      params: filters
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   /**
    * Get all users for system maintanance
    * @param {*} page - paginator page attribute

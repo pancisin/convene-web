@@ -16,6 +16,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -83,10 +85,12 @@ public class Event {
 
 	@JsonIgnore
 	@ManyToOne
+	@JoinTable(name = "conferences_events", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "conference_id"))
 	private Conference conference;
 
-	@ManyToOne
 	@JsonIgnore
+	@ManyToOne
+	@JoinTable(name = "pages_events", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "page_id"))
 	private Page page;
 
 	@Lob

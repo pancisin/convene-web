@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div>
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
         <h4>{{ format(key, 'LL') }}</h4>
@@ -31,18 +31,18 @@
 import moment from 'moment';
 export default {
   name: 'events-list',
-  inject: ['api'],
+  props: {
+    events: Array
+  },
   data () {
     return {
-      sorted_events: [],
-      loading: false
+      sorted_events: []
     };
   },
-  created () {
-    this.loading = true;
-    this.api.getEvents(0, 100, events => {
+  watch: {
+    events (newVal) {
       let data = {};
-      events.content.forEach(e => {
+      newVal.forEach(e => {
         if (data[e.date] == null) {
           data[e.date] = [];
         }
@@ -51,8 +51,7 @@ export default {
       });
 
       this.sorted_events = data;
-      this.loading = false;
-    });
+    }
   },
   methods: {
     format (timestamp, pattern) {

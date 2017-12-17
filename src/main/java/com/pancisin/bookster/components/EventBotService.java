@@ -17,6 +17,7 @@ import com.pancisin.bookster.models.EventBotRun;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventBotRunRepository;
@@ -100,6 +101,7 @@ public class EventBotService {
 			com.pancisin.bookster.models.Event event = buildEvent(ev);
 			event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
 			event.setPage(bot.getPage());
+			event.setState(PageState.PUBLISHED);
 
 			if (ev.getVenue() != null) {
 				Place place = placeRepository.findByFacebookId(ev.getVenue().getId());

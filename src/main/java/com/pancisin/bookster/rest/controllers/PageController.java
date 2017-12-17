@@ -134,8 +134,10 @@ public class PageController {
 	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
 			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
 
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 		return ResponseEntity.ok(
-				eventRepository.getByPageRange(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate));
+				eventRepository.getByPageRange(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate, user.getId()));
 	}
 
 	@PostMapping("/event")

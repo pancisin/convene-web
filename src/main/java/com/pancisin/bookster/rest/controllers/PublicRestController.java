@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.models.enums.WidgetType;
@@ -70,7 +71,7 @@ public class PublicRestController {
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
 		Event event = eventRepository.findOne(event_id);
 
-		if (event.getVisibility() == Visibility.PUBLIC)
+		if (event.getVisibility() == Visibility.PUBLIC && event.getState() == PageState.PUBLISHED)
 			return ResponseEntity.ok(event);
 		else
 			return null;
@@ -109,9 +110,8 @@ public class PublicRestController {
 	@GetMapping("/page/{page_id}/event/{page}/{size}")
 	public ResponseEntity<?> getEvents(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size,
 			@RequestParam("fromDate") String fromDate, @RequestParam("toDate") String toDate) {
-
 		return ResponseEntity.ok(eventRepository.getByPageRange(page_id,
-				new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate));
+				new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate, null));
 	}
 
 	@GetMapping("/user/{user_id}/event")
@@ -163,8 +163,10 @@ public class PublicRestController {
 	}
 
 	@GetMapping("/conference/{conference_id}/article/{page}/{size}")
-	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
-		return ResponseEntity.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
+	public ResponseEntity<?> getConferenceArticles(@PathVariable Long conference_id, @PathVariable int page,
+			@PathVariable int size) {
+		return ResponseEntity
+				.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@GetMapping("/conference/{page}/{size}")

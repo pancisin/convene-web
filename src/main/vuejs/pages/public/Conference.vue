@@ -14,8 +14,14 @@
           <panel>
             <span slot="title">News</span>
             <articles-list 
-              :articles="articles">
+              :articles="articlesPaginator.content">
             </articles-list>
+            
+            <div class="text-center">
+              <paginator 
+                :paginator="articlesPaginator" 
+                :fetch="getArticles" />
+            </div>
           </panel>
         </div>
 
@@ -45,7 +51,13 @@
               </div>
             </panel>
 
-            <events-list></events-list>
+            <events-list :events="eventsPaginator.content"></events-list>
+            
+            <div class="text-center">
+              <paginator 
+                :fetch="getEvents" 
+                :paginator="eventsPaginator" />
+            </div>
           </div>
         </div>
 
@@ -56,7 +68,7 @@
 
 <script>
 import AttendForm from './conference/Attend.form.vue';
-import { ArticlesList, HeroUnit, LightBox } from 'elements';
+import { ArticlesList, HeroUnit, LightBox, Paginator } from 'elements';
 import EventsList from './conference/Events.list.vue';
 import SurveyForm from './survey/Survey.form';
 
@@ -66,9 +78,13 @@ import InjectorGenerator from '../../services/InjectorGenerator';
 export default {
   name: 'conference',
   provide () {
-    return {
-      api: InjectorGenerator.generate(ConferenceApi, this.$route.params.id)
-    };
+    const provider = {};
+
+    Object.defineProperty(provider, 'api', {
+      get: () => this.injector
+    });
+
+    return { provider };
   },
   components: {
     AttendForm,
@@ -76,37 +92,46 @@ export default {
     EventsList,
     SurveyForm,
     HeroUnit,
-    LightBox
+    LightBox,
+    Paginator
   },
   data () {
     return {
       conference: null,
       attend_status: false,
       surveys: [],
-      articles: []
+      articlesPaginator: {},
+      injector: null,
+      eventsPaginator: {}
     };
   },
   created () {
-    var injector = InjectorGenerator.generate(ConferenceApi, this.$route.params.id);
-    injector.getConference(conference => {
+    this.injector = InjectorGenerator.generate(ConferenceApi, this.$route.params.id);
+    this.injector.getConference(conference => {
       this.conference = conference;
     });
 
-    injector.getAttendStatus(status => {
+    this.injector.getAttendStatus(status => {
       this.attend_status = status;
     });
 
-    injector.getPublicSurveys(surveys => {
+    this.injector.getPublicSurveys(surveys => {
       this.surveys = surveys;
-    });
-
-    injector.getArticles(articles => {
-      this.articles = articles;
     });
   },
   methods: {
     statusChanged (status) {
       this.attend_status = status;
+    },
+    getEvents (page) {
+      this.injector.getEvents(page, 5, paginator => {
+        this.eventsPaginator = paginator;
+      });
+    },
+    getArticles (page) {
+      this.injector.getArticles(page, 5, paginator => {
+        this.articlesPaginator = paginator;
+      });
     }
   }
 };

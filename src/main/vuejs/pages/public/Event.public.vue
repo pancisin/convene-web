@@ -1,5 +1,9 @@
  <template>
   <div class="container" v-loading="loading">
+    <div class="alert alert-danger" v-if="event.state != 'PUBLISHED'">
+      This event is not published yet so it's not visible for other users.
+    </div>
+
     <div class="row" v-show="event.id">
       <div class="col-sm-6 col-md-push-3">
 
@@ -28,7 +32,11 @@
                   <p class="text-muted">{{ $t('event.attendees') }}</p>
                 </div>
 
-                <a class="btn btn-primary btn-block waves-effect" :class="{ 'btn-danger' : attending }" @click="toggleAttending">
+                <a class="btn btn-primary btn-block waves-effect" 
+                  :class="{ 'btn-danger' : attending }" 
+                  @click="toggleAttending"
+                  v-if="event.state == 'PUBLISHED'">
+
                   <span v-if="attending">{{ $t('event.cancel_attending') }}</span>
                   <span v-else>{{ $t('event.attend') }}</span>
                 </a>

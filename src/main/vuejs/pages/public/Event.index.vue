@@ -28,6 +28,7 @@
           :columns="4">
           <masonry-item 
             class="card"
+            :class="{ 'card-danger': event.state != 'PUBLISHED' }"
             v-for="event in eventsPaginator.content"
             :key="event.id">
 
@@ -55,6 +56,10 @@
               </a>
               <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
             </div>
+
+            <div class="text-center text-danger m-t-5" v-if="event.state != 'PUBLISHED'">
+              {{ event.state }}
+            </div>  
           </masonry-item>
         </masonry>
 
@@ -98,6 +103,7 @@ import {
   EventCreateWizard
 } from 'elements';
 import PublicApi from 'api/public.api';
+import RootApi from 'api/api';
 import { mapGetters } from 'vuex';
 import moment from 'moment';
 import UserApi from 'api/user.api';
@@ -173,7 +179,8 @@ export default {
     getEvents (page) {
       this.loading = true;
 
-      PublicApi.getEvents(page, 100, this.filters, paginator => {
+      const api = this.authenticated ? RootApi : PublicApi;
+      api.getEvents(page, 100, this.filters, paginator => {
         this.eventsPaginator = paginator;
         this.loading = false;
       });

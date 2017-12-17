@@ -156,7 +156,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean checkEventVisibility(Event event, User user) {
-		return event.getVisibility() == Visibility.PUBLIC || checkEventOwnership(event, user)
+		return (event.getVisibility() == Visibility.PUBLIC && event.getState() == PageState.PUBLISHED) || checkEventOwnership(event, user)
 				|| event.getInvitations().stream().anyMatch(x -> x.getUser().getId() == user.getId());
 	}
 

@@ -67,7 +67,7 @@ export default {
       };
       this.content_style = {
         ...this.content_style,
-        top: `calc(50% + ${offset * 0.4}px)`
+        top: `calc(50% + ${offset * 0.3}px)`
       };
     }
   }

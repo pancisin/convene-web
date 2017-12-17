@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -105,8 +106,12 @@ public class RootController {
 			date = new Date();
 		}
 
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
+
+		Pageable pageable = new PageRequest(page, limit, new Sort(Direction.ASC, "date"));
 
 		switch (authorType) {
 		case "PAGE":
@@ -114,13 +119,17 @@ public class RootController {
 			return null;
 		case "USER":
 			Long userId = Long.parseLong(authorId);
-			return ResponseEntity.ok(eventRepository.getPublicByUser(userId, cal, new PageRequest(page, limit)));
+			return ResponseEntity.ok(eventRepository.getPublicCreatedByUser(userId, cal, pageable));
 		case "CONFERENCE":
 			// TODO
 			return null;
 		default:
-			return ResponseEntity
-					.ok(eventRepository.getPublicByDate(cal, new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
+			if (principal instanceof String) {
+				return ResponseEntity.ok(eventRepository.getPublicByDate(cal, pageable));
+			} else {
+				Long id = ((User) principal).getId();
+				return ResponseEntity.ok(eventRepository.getForUserByDate(id, cal, pageable));
+			}
 		}
 	}
 

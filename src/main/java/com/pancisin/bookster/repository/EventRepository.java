@@ -2,11 +2,8 @@ package com.pancisin.bookster.repository;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,24 +24,34 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	// @CacheEvict(value = "events", key = "#p0.id")
 	// <S extends Event> S save(S entity);
 
+	@Query("SELECT event FROM Event event WHERE event.state = 'PUBLISHED' AND DATE(event.date) = DATE(:date)")
+	// @Cacheable("events") // here is second level cache problem.
+	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
+
+	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.pageAdministrators administrator LEFT JOIN event.conference conference LEFT JOIN conference.conferenceAdministrators cAdmin WHERE (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId OR cAdmin.user.id = :userId) AND DATE(event.date) = DATE(:date)")
+	public Page<Event> getForUserByDate(@Param("userId") Long userId, @Param("date") Calendar date, Pageable pageable);
+
+	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.pageAdministrators administrator WHERE page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId)")
+	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,
+			@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("userId") Long userId);
+
+	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.pageAdministrators administrator WHERE user.id = :userId AND event.date >= CURDATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
+	public List<Event> getAttending(@Param("userId") Long userId);
+
+	// CHECKED LINE
+
 	@Query("SELECT count(event.id) FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.id = :event_id")
 	public int isAttending(@Param("event_id") Long event_id, @Param("user_id") Long user_id);
 
-	@Query("SELECT event FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.date >= CURDATE() ORDER BY event.date ASC")
-	public List<Event> getAttending(@Param("user_id") Long user_id);
-
-	@Query("SELECT event FROM Event event WHERE event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date)")
-//	@Cacheable("events") // here is second level cache problem.
-	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
-
-	@Query("SELECT event FROM User user JOIN user.events event WHERE user.id = :userId AND event.visibility = 'PUBLIC' AND DATE(event.date) = DATE(:date) AND event.page IS NULL AND event.conference IS NULL")
-	public Page<Event> getPublicByUser(@Param("userId") Long userId, @Param("date") Calendar date, Pageable pageable);
+	@Query("SELECT event FROM User user JOIN user.events event WHERE user.id = :userId AND (event.state = 'PUBLISHED' OR event.owner.id = :userId) AND DATE(event.date) = DATE(:date) AND event.page IS NULL AND event.conference IS NULL")
+	public Page<Event> getPublicCreatedByUser(@Param("userId") Long userId, @Param("date") Calendar date,
+			Pageable pageable);
 
 	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
 			@Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 
-	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.visibility = 'PUBLIC' AND event.conference IS NULL AND event.page IS NULL AND DATE(event.date) >= CURDATE()")
+	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.state = 'PUBLISHED' AND event.conference IS NULL AND event.page IS NULL AND DATE(event.date) >= CURDATE()")
 	public Page<Event> getByUser(@Param("user_id") Long user_id, Pageable pageable);
 
 	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id AND DATE(event.date) >= CURDATE()")
@@ -59,8 +66,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.page IS NULL AND event.conference IS NULL")
 	public Page<Event> getOwned(@Param("user_id") Long user_id, Pageable pageable, @Param("fromDate") String fromDate,
 			@Param("toDate") String toDate);
-
-	@Query("SELECT event FROM Event event WHERE event.page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.visibility = 'PUBLIC'")
-	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,
-			@Param("fromDate") String fromDate, @Param("toDate") String toDate);
 }
