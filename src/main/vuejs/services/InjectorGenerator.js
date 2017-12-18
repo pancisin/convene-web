@@ -1,4 +1,3 @@
-
 export default class InjectorGenerator {
 
   static generate (apiReference, resourceId) {

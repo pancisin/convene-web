@@ -14,8 +14,8 @@ export default {
     Vue.http.get(`${EVENT_API_URL}/${id}`).then(response => {
       success(response.body);
     }, response => {
-      if (error != null) {
-        error(response.body);
+      if (error) {
+        error(response);
       }
     });
   },

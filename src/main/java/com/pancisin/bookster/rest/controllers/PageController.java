@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -86,11 +88,16 @@ public class PageController {
 
 	@Autowired
 	private EventBotRepository eventBotRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
-		return ResponseEntity.ok(pageRepository.findOne(page_id));
+		Page page = pageRepository.findOne(page_id);
+
+		if (page == null)
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		else 
+			return ResponseEntity.ok(page);
 	}
 
 	@DeleteMapping
@@ -112,7 +119,7 @@ public class PageController {
 		stored.setBranch(page.getBranch());
 		stored.setSummary(page.getSummary());
 		stored.setMetadata(page.getMetadata());
-		
+
 		if (page.getPosterData() != null && storageService.isBinary(page.getPosterData())) {
 			Media poster = new Media();
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -136,8 +143,8 @@ public class PageController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		return ResponseEntity.ok(
-				eventRepository.getByPageRange(page_id, new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate, user.getId()));
+		return ResponseEntity.ok(eventRepository.getByPageRange(page_id,
+				new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate, user.getId()));
 	}
 
 	@PostMapping("/event")
@@ -338,7 +345,7 @@ public class PageController {
 	public ResponseEntity<?> getEventBots(@PathVariable Long page_id) {
 		return ResponseEntity.ok(eventBotRepository.getByPage(page_id));
 	}
-	
+
 	@PostMapping("/bot")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update') AND hasRole('SUPERADMIN')")
 	public ResponseEntity<?> postEventBot(@PathVariable Long page_id, @RequestBody EventBot eventBot) {
@@ -351,7 +358,7 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> putMetaData(@PathVariable Long page_id, HashMap<String, String> metadata) {
 		Page stored = pageRepository.findOne(page_id);
-		
+
 		stored.setMetadata(metadata);
 		pageRepository.save(stored);
 		return ResponseEntity.ok(metadata);

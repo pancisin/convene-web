@@ -48,6 +48,7 @@ import PasswordChange from './PasswordChange';
 import SharePanel from './SharePanel';
 import LightBox from './LightBox';
 import VueImage from './VueImage';
+import Error from './Error';
 
 export {
   ArticlesList,
@@ -99,5 +100,6 @@ export {
   PasswordChange,
   SharePanel,
   LightBox,
-  VueImage
+  VueImage,
+  Error
 };

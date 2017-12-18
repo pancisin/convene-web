@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -67,7 +68,13 @@ public class EventController {
 	@GetMapping
 	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
-		return ResponseEntity.ok(eventRepository.findOne(event_id));
+		Event event = eventRepository.findOne(event_id);
+		
+		if (event == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		} else {
+			return ResponseEntity.ok(event);
+		}
 	}
 
 	@PutMapping

@@ -1,108 +1,112 @@
 <template>
   <div v-loading="loading">
-    <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
-      <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
-    </hero-unit>  
+    <div v-if="page.id">
+      <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
+        <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
+      </hero-unit>  
 
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-          <panel type="default">
-            <span slot="title">Information</span>
-            <dl class="dl-horizontal">
-              <template v-for="(value, key) in page.metadata">
-                <dt :key="key">
-                  {{ key }}
-                </dt>
-                <dd :key="key">
-                  <a target="_blank" 
-                    :href="value"
-                    v-if="validUrl(value)">
-                    {{ value }}
-                  </a>
-                  <span v-else>
-                    {{ value }}
-                  </span>
-                </dd>
-              </template>
-            </dl>
-          </panel>
-          
-          <panel v-if="page.summary != null && page.summary.length > 0">
-            <div v-html="page.summary" class="m-b-20"></div>
-          </panel>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
+            <panel type="default">
+              <span slot="title">Information</span>
+              <dl class="dl-horizontal">
+                <template v-for="(value, key) in page.metadata">
+                  <dt :key="key">
+                    {{ key }}
+                  </dt>
+                  <dd :key="key">
+                    <a target="_blank" 
+                      :href="value"
+                      v-if="validUrl(value)">
+                      {{ value }}
+                    </a>
+                    <span v-else>
+                      {{ value }}
+                    </span>
+                  </dd>
+                </template>
+              </dl>
+            </panel>
+            
+            <panel v-if="page.summary != null && page.summary.length > 0">
+              <div v-html="page.summary" class="m-b-20"></div>
+            </panel>
 
-          <panel>
-            <span slot="title">Upcoming events</span>
-            <events-list :events="events"></events-list>
-          </panel>
-        </div>
-
-        <div class="col-sm-4 col-md-3">
-          <div class="btn-group-vertical btn-block m-b-20">
-            <a 
-              class="btn waves-effect" 
-              :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
-              @click="toggleFollow">
-
-              {{ follows ? 'Unfollow' : 'Follow' }}
-            </a>
-            <router-link 
-              :to="{ name: 'page.settings', params: { id: page.id }}" 
-              v-if="page.privilege && page.privilege.active"
-              class="btn btn-primary waves-effect">
-              Settings
-            </router-link>
+            <panel>
+              <span slot="title">Upcoming events</span>
+              <events-list :events="events"></events-list>
+            </panel>
           </div>
 
-          <light-box v-if="page.poster != null" :image="page.poster.path">
-            <vue-image class="img-poster m-b-20" :src="page.poster.path" />
-          </light-box>
+          <div class="col-sm-4 col-md-3">
+            <div class="btn-group-vertical btn-block m-b-20">
+              <a 
+                class="btn waves-effect" 
+                :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
+                @click="toggleFollow">
 
-          <panel type="table" v-if="services && services.length > 0">
-            <span slot="title">Services</span>
+                {{ follows ? 'Unfollow' : 'Follow' }}
+              </a>
+              <router-link 
+                :to="{ name: 'page.settings', params: { id: page.id }}" 
+                v-if="page.privilege && page.privilege.active"
+                class="btn btn-primary waves-effect">
+                Settings
+              </router-link>
+            </div>
 
-            <table class="table table-striped">
-              <tbody>
-                <tr v-for="(service, index) in services" :key="index">
-                  <td v-text="service.name"></td>
-                  <td class="text-right">
-                    <a class="btn btn-rounded btn-primary btn-xs" @click="bookService(service)">Book</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </panel>
+            <light-box v-if="page.poster != null" :image="page.poster.path">
+              <vue-image class="img-poster m-b-20" :src="page.poster.path" />
+            </light-box>
 
-          <share-panel 
-            class="m-b-20" 
-            :title="page.name" 
-            :description="page.summary"
-            :media="page.poster != null ? page.poster.path : ''" />
+            <panel type="table" v-if="services && services.length > 0">
+              <span slot="title">Services</span>
 
-          <div class="m-b-20">
-            <a @click="displayReportModal = true" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
+              <table class="table table-striped">
+                <tbody>
+                  <tr v-for="(service, index) in services" :key="index">
+                    <td v-text="service.name"></td>
+                    <td class="text-right">
+                      <a class="btn btn-rounded btn-primary btn-xs" @click="bookService(service)">Book</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </panel>
+
+            <share-panel 
+              class="m-b-20" 
+              :title="page.name" 
+              :description="page.summary"
+              :media="page.poster != null ? page.poster.path : ''" />
+
+            <div class="m-b-20">
+              <a @click="displayReportModal = true" class="btn btn-link btn-xs text-danger">Report abuse or illegal activity</a>
+            </div>
           </div>
         </div>
       </div>
+
+      <modal :show.sync="displayBookModal">
+        <span slot="header">Book a service</span>
+        <div slot="body">
+          <service-book 
+            :service="selectedService" 
+            @submitted="displayBookModal = false" 
+          />
+        </div>
+      </modal>
+
+      <modal :show.sync="displayReportModal">
+        <span slot="header">Report abuse or illegal activity</span>
+        <div slot="body">
+          <abuse-report v-if="displayReportModal" />
+        </div>
+      </modal>
     </div>
 
-    <modal :show.sync="displayBookModal">
-      <span slot="header">Book a service</span>
-      <div slot="body">
-        <service-book 
-          :service="selectedService" 
-          @submitted="displayBookModal = false" 
-        />
-      </div>
-    </modal>
-
-    <modal :show.sync="displayReportModal">
-      <span slot="header">Report abuse or illegal activity</span>
-      <div slot="body">
-        <abuse-report v-if="displayReportModal" />
-      </div>
-    </modal>
+    <error v-if="error" :status="error.status" />
   </div>
 </template>
 
@@ -114,7 +118,8 @@ import {
   AbuseReport,
   SharePanel,
   LightBox,
-  VueImage
+  VueImage,
+  Error
 } from 'elements';
 import PageApi from 'api/page.api';
 import PublicApi from 'api/public.api';
@@ -132,7 +137,8 @@ export default {
       selectedService: null,
       displayBookModal: false,
       displayReportModal: false,
-      loading: false
+      loading: false,
+      error: null
     };
   },
   components: {
@@ -142,7 +148,8 @@ export default {
     AbuseReport,
     SharePanel,
     LightBox,
-    VueImage
+    VueImage,
+    Error
   },
   watch: {
     '$route': 'initialize'
@@ -177,6 +184,9 @@ export default {
             this.services = services;
           });
         }
+        this.loading = false;
+      }, error => {
+        this.error = error;
         this.loading = false;
       });
     },

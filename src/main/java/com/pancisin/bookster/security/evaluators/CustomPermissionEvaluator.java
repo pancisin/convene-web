@@ -100,6 +100,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		case "event":
 			Event event = eventRepository.findOne((Long) targetId);
 
+			if (event == null) return true;
+			
 			if (permission.equals("update")) {
 				return checkEventOwnership(event, stored);
 			} else
@@ -114,15 +116,21 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		case "page":
 			Page page = pageRepository.findOne((Long) targetId);
+			
+			if (page == null) return true;
+			
 			if (permission.equals("admin-read")) {
 				return checkPageOwnership(page, stored);
 			} else if (permission.equals("update")) {
 				return page.getState() != PageState.BLOCKED && checkPageOwnership(page, stored);
 			} else
-				return true;
+				return page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED;
 
 		case "conference":
 			Conference conference = conferenceRepository.findOne((Long) targetId);
+			
+			if (conference == null) return true;
+			
 			if (permission.equals("admin-read"))
 				return checkConferenceOwnership(conference, stored);
 			else if (permission.equals("update"))

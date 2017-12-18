@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.PageState;
@@ -68,13 +71,16 @@ public class PublicRestController {
 	}
 
 	@GetMapping("/event/{event_id}")
-	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
+	public ResponseEntity<Event> getEvent(@PathVariable Long event_id) {
 		Event event = eventRepository.findOne(event_id);
+
+		if (event == null)
+			return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
 
 		if (event.getVisibility() == Visibility.PUBLIC && event.getState() == PageState.PUBLISHED)
 			return ResponseEntity.ok(event);
 		else
-			return null;
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 	}
 
 	@GetMapping("/event/{event_id}/related")
@@ -94,11 +100,21 @@ public class PublicRestController {
 
 	@GetMapping("/page/{page_identifier}")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
+		Page page = null;
+		
 		try {
 			Long page_id = Long.parseLong((String) page_identifier);
-			return ResponseEntity.ok(pageRepository.findOne(page_id));
+			page = pageRepository.findOne(page_id);
 		} catch (NumberFormatException ex) {
-			return ResponseEntity.ok(pageRepository.findBySlug((String) page_identifier));
+			page = pageRepository.findBySlug((String) page_identifier);
+		}
+		
+		if (page == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+		
+		if (page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED) {
+			return ResponseEntity.ok(page);
+		} else {
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
 		}
 	}
 
@@ -151,8 +167,16 @@ public class PublicRestController {
 	}
 
 	@GetMapping("/conference/{conference_id}")
-	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(conferenceRepository.getPublicConference(conference_id));
+	public ResponseEntity<Conference> getConference(@PathVariable Long conference_id) {
+		Conference conference = conferenceRepository.findOne(conference_id);
+		
+		if (conference == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+		
+		if (conference.getVisibility() == Visibility.PUBLIC && (conference.getState() == PageState.PUBLISHED || conference.getState() == PageState.BLOCKED)) {
+			return ResponseEntity.ok(conference);
+		} else {
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		}
 	}
 
 	@GetMapping("/conference/{conference_id}/event")

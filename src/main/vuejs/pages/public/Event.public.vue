@@ -18,7 +18,7 @@
               <b>{{ $t('event.convener') }}: </b> 
               <router-link 
                 v-if="event.author.type == 'page'"
-                :to="{ name: 'page.public', params: { id: event.author.id }}"
+                :to="{ name: 'page.public', params: { id: event.author.slug || event.author.id }}"
                 class="text-primary">
                 {{ event.author.displayName }}
               </router-link>
@@ -118,6 +118,8 @@
         </panel>
       </div>
     </div>
+
+    <error v-if="error" :status="error.status" />
   </div>
 </template>
 
@@ -131,7 +133,8 @@ import {
   Chat,
   SharePanel,
   LightBox,
-  VueImage
+  VueImage,
+  Error
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -149,7 +152,8 @@ export default {
       relatedEvents: [],
       gallery: [],
       loading: false,
-      address: null
+      address: null,
+      error: null
     };
   },
   components: {
@@ -161,7 +165,8 @@ export default {
     Chat,
     SharePanel,
     LightBox,
-    VueImage
+    VueImage,
+    Error
   },
   created () {
     this.getEvent();
@@ -223,7 +228,8 @@ export default {
 
           this.loading = false;
         }, error => {
-          this.$error(error.error, error.message);
+          this.error = error;
+          this.loading = false;
         });
       }
     },

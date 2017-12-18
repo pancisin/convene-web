@@ -107,7 +107,13 @@ public class ConferenceController {
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
-		return ResponseEntity.ok(conferenceRepository.findOne(conference_id));
+		Conference conference = conferenceRepository.findOne(conference_id);
+		
+		if (conference == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		} else {
+			return ResponseEntity.ok(conference);
+		}
 	}
 
 	@PutMapping

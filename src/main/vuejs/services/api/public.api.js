@@ -21,9 +21,13 @@ export default {
     * @param {Number} id - event id
     * @param {Function} success - success callback function
     */
-    getEvent (id, success) {
+    getEvent (id, success, error) {
       Vue.http.get(`${EVENT_PUBLIC_URL}/${id}`).then(response => {
         success(response.body);
+      }, response => {
+        if (error) {
+          error(response);
+        }
       });
     },
 
@@ -83,9 +87,13 @@ export default {
      * @param {Number} id - page id
      * @param {Function} success - success callback function
      */
-    getPage (id, success) {
+    getPage (id, success, error) {
       Vue.http.get(`${PAGE_PUBLIC_URL}/${id}`).then(response => {
         success(response.body);
+      }, response => {
+        if (error) {
+          error(response);
+        }
       });
     },
 
@@ -132,17 +140,6 @@ export default {
   },
 
   /**
-   * Get public data for conference
-   * @param {*} conference_id - conference id
-   * @param {*} success - success callback function
-   */
-  getConference (conference_id, success) {
-    Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}`).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
  * Get conferences
  * @param {*} page - paginator page property
  * @param {*} size - paginator size property
@@ -156,6 +153,21 @@ export default {
   },
 
   conference: {
+
+    /**
+     * Get public data for conference
+     * @param {*} conference_id - conference id
+     * @param {*} success - success callback function
+     */
+    getConference (conference_id, success, error) {
+      Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}`).then(response => {
+        success(response.body);
+      }, response => {
+        if (error) {
+          error(response);
+        }
+      });
+    },
 
     /**
      * Get conference events
@@ -173,8 +185,8 @@ export default {
      * @param {Number} conference_id - conference id
      * @param {Function} success - success callback function
      */
-    getArticles (conference_id, success) {
-      Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}/article`).then(response => {
+    getArticles (conference_id, page, size, success) {
+      Vue.http.get(`${CONFERENCE_PUBLIC_URL}/${conference_id}/article/${page}/${size}`).then(response => {
         success(response.body);
       });
     }

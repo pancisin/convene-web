@@ -23,12 +23,16 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getPage (id, success) {
+  getPage (id, success, error) {
     if (id == null || id === '') throw new Error('missing entity id');
 
     Vue.http.get(`${PAGE_API_URL}/${id}`).then(response => {
       success(response.body);
-    }, errorHandler);
+    }, response => {
+      if (error) {
+        error(response);
+      }
+    });
   },
 
   /**

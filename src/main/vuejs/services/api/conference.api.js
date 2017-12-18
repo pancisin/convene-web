@@ -21,10 +21,14 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getConference (id, success) {
+  getConference (id, success, error) {
     checkId(id);
     Vue.http.get(`${CONFERENCE_API_URL}/${id}`).then(response => {
       success(response.body);
+    }, response => {
+      if (error) {
+        error(response);
+      }
     });
   },
 
