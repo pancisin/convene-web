@@ -103,7 +103,7 @@ export default {
      * @param {*} success - success callback function
      */
     getPageBySlug (slug, success) {
-      Vue.http.get(`${PAGE_PUBLIC_URL}/s/${slug}`).then(response => {
+      Vue.http.get(`${PAGE_PUBLIC_URL}/${slug}`).then(response => {
         success(response.body);
       });
     },

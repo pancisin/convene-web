@@ -19,9 +19,11 @@ export default {
   },
   computed: {
     src () {
-      return this.user.profilePicture
+      if (this.user) {
+        return this.user.profilePicture
         ? this.user.profilePicture.path
         : ProfilePicturePlaceholder;
+      }
     }
   }
 };

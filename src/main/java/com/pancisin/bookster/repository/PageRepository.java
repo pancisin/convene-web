@@ -13,11 +13,11 @@ import com.pancisin.bookster.models.Page;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 
-	@Override
-	@CacheEvict(value = "pages", key = "#p0.slug")
-	<S extends Page> S save(S entity);
+//	@Override
+//	@CacheEvict(value = "pages", key = "#p0.slug")
+//	<S extends Page> S save(S entity);
 
-	@Cacheable("pages")
+//	@Cacheable("pages")
 	public Page findBySlug(String slug);
 	
 	@Query("SELECT page FROM Page page JOIN page.branch branch JOIN branch.category category WHERE category.id = :category_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")

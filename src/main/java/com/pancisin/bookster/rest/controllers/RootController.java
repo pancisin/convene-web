@@ -11,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticlesList;
 import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -142,5 +145,22 @@ public class RootController {
 		} else {
 			return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
 		}
+	}
+	
+	@GetMapping({ "/api/page/{page_identifier}", "/public/page/{page_identifier}" })
+	@PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
+	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
+		com.pancisin.bookster.models.Page page = null;
+		
+		try {
+			Long page_id = Long.parseLong((String) page_identifier);
+			page = pageRepository.findOne(page_id);
+		} catch (NumberFormatException ex) {
+			page = pageRepository.findBySlug((String) page_identifier);
+		}
+		
+		if (page == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+		
+		return ResponseEntity.ok(page);
 	}
 }

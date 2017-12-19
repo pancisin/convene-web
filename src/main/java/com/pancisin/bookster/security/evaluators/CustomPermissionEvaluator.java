@@ -87,66 +87,90 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
 			Object permission) {
 
-		User user = (User) authentication.getPrincipal();
-		final User stored = userRepository.findOne(user.getId());
+		boolean authenticated = !(authentication.getPrincipal() instanceof String);
+		Long userId = authenticated ? ((User) authentication.getPrincipal()).getId() : null;
 
 		switch (targetType) {
-
 		case "book_request":
 			BookRequest bookRequest = bookRequestRepository.findOne((Long) targetId);
 			return bookRequest.getService().getPage().getPageAdministrators().stream()
-					.anyMatch(x -> x.getUser().getId() == stored.getId());
+					.anyMatch(x -> x.getUser().getId() == userId);
 
 		case "event":
 			Event event = eventRepository.findOne((Long) targetId);
 
-			if (event == null) return true;
-			
-			if (permission.equals("update")) {
-				return checkEventOwnership(event, stored);
-			} else
-				return checkEventVisibility(event, stored);
+			if (event == null)
+				return true;
+
+			if (authenticated) {
+				if (permission.equals("update")) {
+					return checkEventOwnership(event, userId);
+				} else
+					return checkEventVisibility(event, userId);
+			} else {
+				return event.getVisibility() == Visibility.PUBLIC
+						&& (event.getState() == PageState.PUBLISHED || event.getState() == PageState.BLOCKED);
+			}
 
 		case "license":
-			return true;
+			return authenticated;
 
 		case "notification":
+			if (!authenticated)
+				return false;
+
 			Notification notification = notificationRepository.findById((UUID) targetId);
-			return notification.getRecipient().getId() == stored.getId();
+			return notification.getRecipient().getId() == userId;
 
 		case "page":
-			Page page = pageRepository.findOne((Long) targetId);
-			
-			if (page == null) return true;
-			
-			if (permission.equals("admin-read")) {
-				return checkPageOwnership(page, stored);
-			} else if (permission.equals("update")) {
-				return page.getState() != PageState.BLOCKED && checkPageOwnership(page, stored);
-			} else
-				return page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED;
+			Page page = null;
+			if (targetId instanceof String) {
+				page = pageRepository.findBySlug((String) targetId);
+			} else {
+				page = pageRepository.findOne((Long) targetId);
+			}
 
+			if (page == null)
+				return true;
+
+			if (authenticated) {
+				if (permission.equals("admin-read")) {
+					return checkPageOwnership(page, userId);
+				} else if (permission.equals("update")) {
+					return page.getState() != PageState.BLOCKED && checkPageOwnership(page, userId);
+				}
+			}
+
+			if (permission.equals("read")) {
+				return page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED;
+			}
 		case "conference":
 			Conference conference = conferenceRepository.findOne((Long) targetId);
-			
-			if (conference == null) return true;
-			
-			if (permission.equals("admin-read"))
-				return checkConferenceOwnership(conference, stored);
-			else if (permission.equals("update"))
-				return conference.getState() != PageState.BLOCKED && checkConferenceOwnership(conference, stored);
-			else
-				return checkConferenceVisibility(conference, stored) || checkConferenceOwnership(conference, stored);
+
+			if (conference == null)
+				return true;
+
+			if (authenticated) {
+				if (permission.equals("admin-read"))
+					return checkConferenceOwnership(conference, userId);
+				else if (permission.equals("update"))
+					return conference.getState() != PageState.BLOCKED && checkConferenceOwnership(conference, userId);
+				else
+					return checkConferenceVisibility(conference, userId) || checkConferenceOwnership(conference, userId);
+			} else {
+				return conference.getVisibility() == Visibility.PUBLIC
+						&& (conference.getState() == PageState.PUBLISHED || conference.getState() == PageState.BLOCKED);
+			}
 
 		case "programme":
 			Programme programme = programmeRepository.findOne((Long) targetId);
-			return checkEventOwnership(programme.getEvent(), stored);
+			return checkEventOwnership(programme.getEvent(), userId);
 
 		case "service":
 			Service service = serviceRepository.findOne((Long) targetId);
 
 			if (permission == "update")
-				return service.getPage().getPageAdministrators().stream().anyMatch(x -> x.getUser().getId() == stored.getId());
+				return service.getPage().getPageAdministrators().stream().anyMatch(x -> x.getUser().getId() == userId);
 			else
 				return true;
 
@@ -163,25 +187,26 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	private boolean checkEventVisibility(Event event, User user) {
-		return (event.getVisibility() == Visibility.PUBLIC && event.getState() == PageState.PUBLISHED) || checkEventOwnership(event, user)
-				|| event.getInvitations().stream().anyMatch(x -> x.getUser().getId() == user.getId());
+	private boolean checkEventVisibility(Event event, Long userId) {
+		return (event.getVisibility() == Visibility.PUBLIC && event.getState() == PageState.PUBLISHED)
+				|| checkEventOwnership(event, userId)
+				|| event.getInvitations().stream().anyMatch(x -> x.getUser().getId() == userId);
 	}
 
-	private boolean checkEventOwnership(Event event, User user) {
+	private boolean checkEventOwnership(Event event, Long userId) {
 		if (event.getOwner() != null)
-			return event.getOwner().getId() == user.getId();
+			return event.getOwner().getId() == userId;
 		else if (event.getPage() != null)
-			return checkPageOwnership(event.getPage(), user);
+			return checkPageOwnership(event.getPage(), userId);
 		else if (event.getConference() != null)
-			return checkConferenceOwnership(event.getConference(), user);
+			return checkConferenceOwnership(event.getConference(), userId);
 		else
 			return false;
 	}
 
-	private boolean checkPageOwnership(Page page, User user) {
-		Optional<PageAdministrator> oPa = page.getPageAdministrators().stream()
-				.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+	private boolean checkPageOwnership(Page page, Long userId) {
+		Optional<PageAdministrator> oPa = page.getPageAdministrators().stream().filter(x -> x.getUser().getId() == userId)
+				.findFirst();
 
 		if (oPa.isPresent()) {
 			PageAdministrator pa = oPa.get();
@@ -191,9 +216,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	private boolean checkConferenceOwnership(Conference conference, User user) {
+	private boolean checkConferenceOwnership(Conference conference, Long userId) {
 		Optional<ConferenceAdministrator> oCa = conference.getConferenceAdministrators().stream()
-				.filter(x -> x.getUser().getId() == user.getId()).findFirst();
+				.filter(x -> x.getUser().getId() == userId).findFirst();
 
 		if (oCa.isPresent()) {
 			ConferenceAdministrator ca = oCa.get();
@@ -203,11 +228,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	private boolean checkConferenceVisibility(Conference conference, User user) {
+	private boolean checkConferenceVisibility(Conference conference, Long userId) {
 		if (conference.getVisibility() == Visibility.PUBLIC) {
 			return true;
 		} else if (conference.getVisibility() == Visibility.INVITED) {
-			return conference.getInvitations().stream().anyMatch(i -> i.getUser().getId() == user.getId());
+			return conference.getInvitations().stream().anyMatch(i -> i.getUser().getId() == userId);
 		}
 
 		return false;

@@ -98,26 +98,6 @@ public class PublicRestController {
 		return ResponseEntity.ok(pageRepository.getPopular(new PageRequest(page, limit)));
 	}
 
-	@GetMapping("/page/{page_identifier}")
-	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
-		Page page = null;
-		
-		try {
-			Long page_id = Long.parseLong((String) page_identifier);
-			page = pageRepository.findOne(page_id);
-		} catch (NumberFormatException ex) {
-			page = pageRepository.findBySlug((String) page_identifier);
-		}
-		
-		if (page == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-		
-		if (page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED) {
-			return ResponseEntity.ok(page);
-		} else {
-			return new ResponseEntity(HttpStatus.FORBIDDEN);
-		}
-	}
-
 	@GetMapping("/page/{page_id}/service")
 	public ResponseEntity<?> getPageServices(@PathVariable Long page_id) {
 		return ResponseEntity.ok(pageRepository.findOne(page_id).getServices());

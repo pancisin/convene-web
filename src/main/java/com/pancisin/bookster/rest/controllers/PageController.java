@@ -89,16 +89,16 @@ public class PageController {
 	@Autowired
 	private EventBotRepository eventBotRepository;
 
-	@GetMapping
-	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
-		Page page = pageRepository.findOne(page_id);
-
-		if (page == null)
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		else 
-			return ResponseEntity.ok(page);
-	}
+//	@GetMapping
+//	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
+//	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
+//		Page page = pageRepository.findOne(page_id);
+//
+//		if (page == null)
+//			return new ResponseEntity(HttpStatus.NOT_FOUND);
+//		else 
+//			return ResponseEntity.ok(page);
+//	}
 
 	@DeleteMapping
 	@ActivityLog(type = ActivityType.DELETE)

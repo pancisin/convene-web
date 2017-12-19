@@ -167,13 +167,10 @@ export default {
     ...mapActions(['togglePageFollow']),
     initialize () {
       const page_id = this.$route.params.id;
-      const id = parseInt(this.$route.params.id, 10);
-
       const api = this.authenticated ? PageApi : PublicApi.page;
-      const fetchFunc = isNaN(id) ? api.getPageBySlug : api.getPage;
 
       this.loading = true;
-      fetchFunc(page_id, page => {
+      api.getPage(page_id, page => {
         if (page.id) {
           this.page = page;
           api.getEvents(page.id, 0, 10, paginator => {

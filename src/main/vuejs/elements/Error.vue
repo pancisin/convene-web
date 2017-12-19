@@ -2,7 +2,16 @@
   <div class="error-component">
     <div class="error-component-content">
       <h1>{{ status }}</h1>
-      <p><b>We are so sorry. {{ message }}</b></p>
+
+      <panel class="m-b-20">
+        <p>
+          We are so sorry. {{ message }} Or try it later, it might help sometimes.
+        </p>
+        <br />
+        <a @click="goBack" class="btn btn-primary">
+          Go back
+        </a>
+      </panel>
     </div>
   </div>
 </template>
@@ -24,6 +33,11 @@ export default {
           return 'Internal server error ! We are so sorry.';
       }
     }
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1);
+    }
   }
 };
 </script>
@@ -38,7 +52,7 @@ export default {
     margin: 0 auto;
     width: 40vw;
 
-    color: @color-pink;
+    // color: @color-pink;
     text-align: center;
 
     h1 {

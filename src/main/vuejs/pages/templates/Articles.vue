@@ -24,7 +24,7 @@
       <tbody>
         <tr v-for="(article, index) in articlesPaginator.content" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
           <td>
-            {{ index + 1 }}
+            {{ articlesPaginator.number * articlesPaginator.size + index + 1 }}
           </td>
           <td>
             <img :src="article.thumbnail.path" v-if="article.thumbnail != null" style="height:50px">

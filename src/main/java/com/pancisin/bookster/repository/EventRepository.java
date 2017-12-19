@@ -18,13 +18,13 @@ import com.pancisin.bookster.models.Event;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-	@Override
-	@Cacheable("events")
-	Event findOne(Long id);
-
-	@Override
-	@CacheEvict(value = "events", key = "#p0.id")
-	<S extends Event> S save(S entity);
+//	@Override
+//	@Cacheable("events")
+//	Event findOne(Long id);
+//
+//	@Override
+//	@CacheEvict(value = "events", key = "#p0.id")
+//	<S extends Event> S save(S entity);
 
 	@Query("SELECT event FROM Event event WHERE event.state = 'PUBLISHED' AND DATE(event.date) = DATE(:date)")
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
