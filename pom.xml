@@ -83,12 +83,6 @@
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.paylane.client</groupId>
-      <artifactId>paylane-java-client</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>com.jayway.jsonpath</groupId>
       <artifactId>json-path</artifactId>
     </dependency>
@@ -97,17 +91,21 @@
       <artifactId>guava</artifactId>
       <version>23.0</version>
     </dependency>
-
-
     <dependency>
-        <groupId>com.github.dfabulich</groupId>
-        <artifactId>sitemapgen4j</artifactId>
-        <version>1.0.4</version>
+      <groupId>com.github.dfabulich</groupId>
+      <artifactId>sitemapgen4j</artifactId>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
       <groupId>com.github.slugify</groupId>
       <artifactId>slugify</artifactId>
       <version>2.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.paylane.client</groupId>
+      <artifactId>paylane-java-client</artifactId>
+      <version>LATEST</version>
     </dependency>
   </dependencies>
 

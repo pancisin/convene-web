@@ -1,5 +1,8 @@
 <template>
-  <img :src="source" @error.prevent="error" />
+  <img 
+    :src="source" 
+    @error.prevent="error" 
+    @load="load"/>
 </template>
 
 <script>
@@ -20,6 +23,9 @@ export default {
   methods: {
     error (event) {
       this.source = Placeholder;
+    },
+    load (event) {
+
     }
   }
 };
