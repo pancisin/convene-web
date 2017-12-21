@@ -110,7 +110,7 @@
           :title="event.name" 
           :description="event.summary"
           :media="event.poster != null ? event.poster.path : ''" />
-        <panel type="default" v-if="relatedEvents.length > 0">
+        <panel type="default">
           <span slot="title">
             {{ $t('event.related_events') }} {{ event.author != null ? event.author.displayName : '' }}
           </span>

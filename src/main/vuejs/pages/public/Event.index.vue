@@ -192,6 +192,7 @@ export default {
       const api = this.authenticated ? RootApi : PublicApi;
       api.getEvents(page, 100, this.filters, paginator => {
         this.eventsPaginator = paginator;
+        this.sortEvents();
         this.loading = false;
       });
     },
@@ -223,6 +224,8 @@ export default {
         );
       }
 
+      this.sortEvents();
+
       this.displayEventCreateModal = false;
       this.displayEventEditModal = false;
     },
@@ -235,7 +238,7 @@ export default {
     },
     sortEvents () {
       this.eventsPaginator.content.sort((a, b) => {
-        return b.featured || a.date - b.date;
+        return b.featured || (a.date - b.date);
       });
     }
   }
