@@ -32,6 +32,10 @@
             v-for="event in eventsPaginator.content"
             :key="event.id">
 
+            <div class="ribbon" v-if="event.featured">
+              <span>{{ $t('event.featured') }}</span>
+            </div>
+
             <div class="card-state" v-if="event.state != 'PUBLISHED'">
               {{ event.state }}
             </div> 
@@ -46,7 +50,7 @@
                 <small class="text-muted" v-if="event.author">
                   {{ event.author.displayName }}
                   <br>
-                  {{ event.date | moment('L') }}
+                  {{ event.date | moment('L LT') }}
                   <span
                     v-if="event.startsAt != null">
                     at {{ event.startsAt }}
@@ -54,9 +58,12 @@
                 </small>
               </div>
             </router-link>
-            <div class="actions" v-if="event.privilege && event.privilege.active">
+            <div class="actions" v-if="isSuperAdmin || (event.privilege && event.privilege.active)">
               <a @click="editEvent(event)">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+              </a>
+              <a @click="toggleFeatured(event)" v-if="isSuperAdmin">
+                <i class="fa" :class="{ 'fa-star' : event.featured, 'fa-star-o' : !event.featured }" aria-hidden="true"></i>
               </a>
               <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
             </div> 
@@ -109,6 +116,7 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import UserApi from 'api/user.api';
 import EventEditor from '../event/Editor';
+import EventApi from 'api/event.api';
 
 export default {
   name: 'events',
@@ -157,7 +165,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['user', 'authenticated']),
+    ...mapGetters(['user', 'authenticated', 'isSuperAdmin']),
     createdByMe: {
       get () {
         return (
@@ -217,6 +225,18 @@ export default {
 
       this.displayEventCreateModal = false;
       this.displayEventEditModal = false;
+    },
+    toggleFeatured (event) {
+      EventApi.toggleFeatured(event.id, event => {
+        const index = this.eventsPaginator.content.findIndex(e => e.id === event.id);
+        this.eventsPaginator.content.splice(index, 1, event);
+        this.sortEvents();
+      });
+    },
+    sortEvents () {
+      this.eventsPaginator.content.sort((a, b) => {
+        return b.featured || a.date - b.date;
+      });
     }
   }
 };

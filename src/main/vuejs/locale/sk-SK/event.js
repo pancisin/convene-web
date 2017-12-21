@@ -5,6 +5,7 @@ export default {
   place: 'Miesto',
   related_events: 'Tiež vytvoril',
   attendees: 'Účastníkov',
+  featured: 'Odporúčaný',
   live_chat: {
     header: 'Živý chat',
     authentication: 'Musíte byť prihlásený aby ste mohli chatovať !'

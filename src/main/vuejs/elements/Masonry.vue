@@ -59,6 +59,6 @@ export default {
   -webkit-column-gap: 1.5em;
   column-gap: 1.5em;
 
-  overflow: hidden;
+  // overflow: hidden;
 }
 </style>

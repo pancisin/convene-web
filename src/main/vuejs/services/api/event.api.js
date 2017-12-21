@@ -179,5 +179,11 @@ export default {
     Vue.http.patch(`${EVENT_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);
     });
+  },
+
+  toggleFeatured (id, success) {
+    Vue.http.patch(`${EVENT_API_URL}/${id}/toggle-featured`).then(response => {
+      success(response.body);
+    });
   }
 };

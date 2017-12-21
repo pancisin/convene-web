@@ -156,6 +156,9 @@ public class Event {
 	@JsonView(Summary.class)
 	private BigDecimal longitude;
 	
+	@JsonProperty(access = Access.READ_ONLY)
+	private boolean featured = false;
+	
 //	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
 		if (conference != null)
@@ -361,5 +364,13 @@ public class Event {
 
 	public void setState(PageState state) {
 		this.state = state;
+	}
+
+	public boolean isFeatured() {
+		return featured;
+	}
+
+	public void setFeatured(boolean featured) {
+		this.featured = featured;
 	}
 }

@@ -26,6 +26,7 @@ const getters = {
   },
   locale: state => state.user ? state.user.locale : null,
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
+  isSuperAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 100,
   license: state => state.user ? state.user.license : null,
   notifications: state => state.notifications,
   unread_notifications: state => {

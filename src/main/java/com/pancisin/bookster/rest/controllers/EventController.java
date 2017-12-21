@@ -240,4 +240,12 @@ public class EventController {
 
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
+	
+	@PatchMapping("/toggle-featured")
+	@PreAuthorize("hasRole('SUPERADMIN')")
+	public ResponseEntity<Event> toggleFeatured(@PathVariable Long event_id) {
+		Event stored = eventRepository.findOne(event_id);
+		stored.setFeatured(!stored.isFeatured());
+		return ResponseEntity.ok(eventRepository.save(stored));
+	}
 }
