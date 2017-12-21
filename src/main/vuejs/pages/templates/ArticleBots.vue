@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(bot, index) in bots" :key="bot.id" @contextmenu.prevent="$refs.menu.open($event, bot)">
+        <tr v-for="(bot, index) in paginator.content" :key="bot.id" @contextmenu.prevent="$refs.menu.open($event, bot)">
           <td>
             <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: bot.id } }">
               {{ bot.name }}
@@ -41,6 +41,10 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="text-center">
+      <paginator :paginator="paginator" :fetch="getBots" />
+    </div>
 
     <context-menu ref="menu">
       <template slot-scope="props">
@@ -72,7 +76,10 @@
 </template>
 
 <script>
-import { BotRunIndicator } from 'elements';
+import {
+  BotRunIndicator,
+  Paginator
+} from 'elements';
 import ArtcleBotApi from 'api/article-bot.api';
 export default {
   name: 'article-bots',
@@ -87,7 +94,7 @@ export default {
   },
   data () {
     return {
-      bots: [],
+      paginator: {},
       loading: false,
       subscription: null
     };
@@ -100,14 +107,10 @@ export default {
     }
   },
   components: {
-    BotRunIndicator
-  },
-  watch: {
-    api: 'getBots'
+    BotRunIndicator,
+    Paginator
   },
   created () {
-    this.getBots();
-
     this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe(
         '/user/queue/list.bots',
@@ -115,9 +118,9 @@ export default {
           let run = JSON.parse(response.body);
 
           if (run != null) {
-            this.bots.forEach((bot, index) => {
+            this.paginator.content.forEach((bot, index) => {
               if (bot.id === run.bot.id) {
-                this.bots.splice(index, 1, {
+                this.paginator.content.splice(index, 1, {
                   ...bot,
                   lastRun: run,
                   runsCount:
@@ -136,18 +139,18 @@ export default {
     this.subscription.unsubscribe();
   },
   methods: {
-    getBots () {
+    getBots (page) {
       this.loading = true;
-      this.api.getBots(bots => {
-        this.bots = bots;
+      this.api.getBots(page, 10, paginator => {
+        this.paginator = paginator;
         this.loading = false;
       });
     },
     toggleActive (bot_id) {
       ArtcleBotApi.toggleActive(bot_id, bot => {
-        this.bots.forEach((b, index) => {
+        this.paginator.content.forEach((b, index) => {
           if (b.id === bot_id) {
-            this.bots.splice(index, 1, bot);
+            this.paginator.content.splice(index, 1, bot);
           }
         });
       });
@@ -155,7 +158,7 @@ export default {
     deleteBot (bot_id) {
       this.$prompt('notification.article-bot.delete_prompt', () => {
         ArtcleBotApi.deleteArticleBot(bot_id, result => {
-          this.bots = this.bots.filter(bot => bot.id !== bot_id);
+          this.paginator.content = this.paginator.content.filter(bot => bot.id !== bot_id);
         });
       });
     },

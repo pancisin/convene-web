@@ -21,7 +21,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(bot, index) in bots" :key="bot.id">
+            <tr v-for="(bot, index) in paginator.content" :key="index">
               <td>
                 <router-link :to="{ name: 'event-bot', params: { bot_id: bot.id } }">
                   {{ bot.fbPageId }}
@@ -41,6 +41,10 @@
           </tbody>
         </table>
 
+        <div class="text-center">
+          <paginator :paginator="paginator" :fetch="getBots" />
+        </div>
+
         <div class="text-center" v-if="editable">
           <router-link to="create-event-bot" class="btn btn-default btn-rounded">Create event bot</router-link>
         </div>
@@ -54,7 +58,7 @@
 
 <script>
 import EventBotApi from 'api/event-bot.api';
-import { BotRunIndicator } from 'elements';
+import { BotRunIndicator, Paginator } from 'elements';
 import EventBotImg from 'assets/img/event_bot.png';
 
 export default {
@@ -65,7 +69,7 @@ export default {
   },
   data () {
     return {
-      bots: [],
+      paginator: {},
       loading: false,
       subscription: null
     };
@@ -81,22 +85,19 @@ export default {
     }
   },
   components: {
-    BotRunIndicator
+    BotRunIndicator,
+    Paginator
   },
-  watch: {
-    'api': 'getBots'
-  },
-  created () {
-    this.getBots();
 
+  created () {
     this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/user/queue/page.bots', response => {
         let run = JSON.parse(response.body);
 
         if (run != null) {
-          this.bots.forEach((bot, index) => {
+          this.paginator.content.forEach((bot, index) => {
             if (bot.id === run.bot.id) {
-              this.bots.splice(index, 1, {
+              this.paginator.content.splice(index, 1, {
                 ...bot,
                 lastRun: run,
                 runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
@@ -113,25 +114,25 @@ export default {
     this.subscription.unsubscribe();
   },
   methods: {
-    getBots () {
+    getBots (page) {
       this.loading = true;
-      this.api.getBots(bots => {
-        this.bots = bots;
+      this.api.getBots(page, 10, paginator => {
+        this.paginator = paginator;
         this.sortBots();
         this.loading = false;
       });
     },
     toggleActive (bot_id) {
       EventBotApi.toggleActive(bot_id, bot => {
-        let index = this.bots.map(b => b.id).indexOf(bot_id);
-        this.bots.splice(index, 1, bot);
+        let index = this.paginator.content.map(b => b.id).indexOf(bot_id);
+        this.paginator.content.splice(index, 1, bot);
       });
     },
     run (bot_id) {
       this.sendWM(`/app/bot/${bot_id}/run`, JSON.stringify({}));
     },
     sortBots () {
-      this.bots.sort((a, b) => {
+      this.paginator.content.sort((a, b) => {
         if (a.lastRun == null) {
           return 1;
         } else if (b.lastRun == null) {

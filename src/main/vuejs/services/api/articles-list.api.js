@@ -86,8 +86,8 @@ export default {
    * @param {*} id - articles list id
    * @param {*} success - success callback function
    */
-  getBots (id, success) {
-    Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/bot`).then(response => {
+  getBots (id, page, size, success) {
+    Vue.http.get(`${ARTICLES_LIST_API_URL}/${id}/bot/${page}/${size}`).then(response => {
       success(response.body);
     });
   }

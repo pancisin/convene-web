@@ -99,6 +99,7 @@ export default {
     height: 300px;
     margin-bottom: 20px;
     position: relative;
+    width: 100%;
 
     overflow: hidden;
     border-radius: 5px;

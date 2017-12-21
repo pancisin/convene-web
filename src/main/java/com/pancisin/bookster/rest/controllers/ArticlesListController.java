@@ -31,24 +31,25 @@ public class ArticlesListController {
 
 	@Autowired
 	private ArticlesListRepository alRepository;
-	
+
 	@Autowired
 	private ArticleRepository articleRepository;
 
 	@Autowired
 	private ArticleBotRepository abRepository;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getArticlesList(@PathVariable UUID articlesListId) {
 		return ResponseEntity.ok(alRepository.findOne(articlesListId));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> putArticlesList(@PathVariable UUID articlesListId, @RequestBody @Valid ArticlesList articlesList, BindingResult bindingResult) {
+	public ResponseEntity<?> putArticlesList(@PathVariable UUID articlesListId,
+			@RequestBody @Valid ArticlesList articlesList, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 
 		}
-		
+
 		ArticlesList stored = alRepository.findOne(articlesListId);
 		stored.setName(articlesList.getName());
 		stored.setTags(articlesList.getTags());
@@ -56,8 +57,10 @@ public class ArticlesListController {
 	}
 
 	@GetMapping("/article/{page}/{size}")
-	public ResponseEntity<?> getArticles(@PathVariable UUID articlesListId, @PathVariable int page, @PathVariable int size) {
-		return ResponseEntity.ok(articleRepository.getByArticlesList(articlesListId, new PageRequest(page, size, Direction.DESC, "created")));
+	public ResponseEntity<?> getArticles(@PathVariable UUID articlesListId, @PathVariable int page,
+			@PathVariable int size) {
+		return ResponseEntity.ok(
+				articleRepository.getByArticlesList(articlesListId, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@Transactional
@@ -65,10 +68,10 @@ public class ArticlesListController {
 	public ResponseEntity<?> postArticle(@PathVariable UUID articlesListId, @RequestBody Article article) {
 		ArticlesList stored = alRepository.findOne(articlesListId);
 		article.setArticlesList(stored);
-		
+
 		return ResponseEntity.ok(articleRepository.save(article));
 	}
-	
+
 	@PostMapping("/bot")
 	public ResponseEntity<?> postArticleBot(@PathVariable UUID articlesListId, @RequestBody ArticleBot bot) {
 		ArticlesList stored = alRepository.findOne(articlesListId);
@@ -76,8 +79,9 @@ public class ArticlesListController {
 		return ResponseEntity.ok(abRepository.save(bot));
 	}
 
-	@GetMapping("/bot")
-	public ResponseEntity<?> getArticleBots(@PathVariable UUID articlesListId) {
-		return ResponseEntity.ok(abRepository.getByList(articlesListId));
+	@GetMapping("/bot/{page}/{size}")
+	public ResponseEntity<?> getArticleBots(@PathVariable UUID articlesListId, @PathVariable int page,
+			@PathVariable int size) {
+		return ResponseEntity.ok(abRepository.getByList(articlesListId, new PageRequest(page, size)));
 	}
 }

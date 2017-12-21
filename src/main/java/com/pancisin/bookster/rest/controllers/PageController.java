@@ -341,10 +341,10 @@ public class PageController {
 		return ResponseEntity.ok(galleryItem);
 	}
 
-	@GetMapping("/bot")
+	@GetMapping("/bot/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read') AND hasRole('SUPERADMIN')")
-	public ResponseEntity<?> getEventBots(@PathVariable Long page_id) {
-		return ResponseEntity.ok(eventBotRepository.getByPage(page_id));
+	public ResponseEntity<?> getEventBots(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
+		return ResponseEntity.ok(eventBotRepository.getByPage(page_id, new PageRequest(page, size)));
 	}
 
 	@PostMapping("/bot")

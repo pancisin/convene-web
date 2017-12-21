@@ -289,8 +289,8 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getBots (id, success) {
-    Vue.http.get(`${PAGE_API_URL}/${id}/bot`).then(response => {
+  getBots (id, page, size, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/bot/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
