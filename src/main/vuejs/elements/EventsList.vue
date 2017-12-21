@@ -2,7 +2,7 @@
   <div class="inbox-widget">
     <router-link 
       :to="{ name: administrator ? 'event' : 'event.public', params: { id: event.id }}" 
-      v-for="(event, index) in events" :key="event.id" 
+      v-for="(event, index) in events" :key="index" 
       class="inbox-item">
 
       <div class="inbox-item-img" v-if="event.poster != null">
@@ -16,6 +16,10 @@
         </p>
       </div>
     </router-link>
+
+    <div v-if="events.length == 0">
+      There's nothing to display.
+    </div>
   </div>
 </template>
 

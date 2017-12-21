@@ -50,7 +50,7 @@ export default {
     ...mapActions(['logout']),
     logoutUser () {
       this.logout().then(response => {
-        // this.$router.push({ path: '/' });
+        this.$router.push({ path: '/' });
       });
     }
   }

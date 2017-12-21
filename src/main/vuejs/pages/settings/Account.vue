@@ -44,18 +44,24 @@
               class="form-control" 
               placeholder="Last name">
           </div>
-          <div class="form-group">
-            <label>{{ $t('user.about_me') }}</label>
-            <textarea 
-              v-model="user.about" 
-              class="form-control" 
-              placeholder="About me">
-            </textarea>
-          </div>
         </div>
         <div class="col-md-3">
-          <a class="btn btn-default btn-block" @click="showChangePasswordModal = true">Change password</a>
+          <a 
+            class="btn btn-default btn-block" 
+            @click="showChangePasswordModal = true">
+            Change password
+          </a>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>{{ $t('user.about_me') }}</label>
+        <textarea 
+          v-model="user.metadata.about" 
+          class="form-control" 
+          placeholder="About me"
+          rows="5">
+        </textarea>
       </div>
     </panel>
 
@@ -143,13 +149,13 @@ export default {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         address: this.user.address,
-        profilePictureData: this.user.profilePictureData
+        profilePictureData: this.user.profilePictureData,
+        metadata: this.user.metadata
       };
 
       this.loading = true;
       this.updateUser(data).then(user => {
         this.$success('notification.account.updated');
-
         this.loading = false;
       });
     }

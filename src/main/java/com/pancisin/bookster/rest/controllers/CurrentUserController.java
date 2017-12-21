@@ -107,7 +107,8 @@ public class CurrentUserController {
 		stored.setFirstName(user.getFirstName());
 		stored.setLastName(user.getLastName());
 		stored.setAddress(user.getAddress());
-
+		stored.setMetadata(user.getMetadata());
+		
 		if (user.getProfilePictureData() != null && storageService.isBinary(user.getProfilePictureData())) {
 			Media profilePicture = new Media();
 			// profilePicture.setAuthor(stored);

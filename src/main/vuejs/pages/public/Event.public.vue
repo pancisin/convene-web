@@ -27,9 +27,9 @@
                 class="text-pink">
                 {{ event.author.displayName }}
               </router-link>
-              <span v-else>
+              <router-link v-else :to="{ name: 'user', params: { user_id: event.author.id} }" class="text-pink">
                 {{ event.author.displayName }}
-              </span>
+              </router-link>
             </span>
 
             <span v-if="address">

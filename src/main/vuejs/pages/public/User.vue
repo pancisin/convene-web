@@ -1,31 +1,35 @@
 <template>
   <div>
-    <div v-if="user.id">
-      <hero-unit class="m-b-20">
-        <h1 class="text-uppercase text-primary">{{ user.displayName }}</h1>
-      </hero-unit>
+    <div class="container" v-if="user.id">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <h1 class="text-uppercase m-b-20">{{ user.displayName }}</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
+          <panel>
+            <span slot="title">About me</span>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-          </div>
-          <div class="col-sm-4 col-md-3">
-            <light-box :image="user.profilePicture.path" v-if="user.profilePicture">
-              <vue-image :src="user.profilePicture.path" class="img-poster" />
-            </light-box>
+            {{ user.metadata.about }}
+          </panel>
+        </div>
+        <div class="col-sm-4 col-md-3">
+          <light-box :image="user.profilePicture.path" v-if="user.profilePicture">
+            <vue-image :src="user.profilePicture.path" class="img-poster" />
+          </light-box>
 
-            <panel type="default" v-loading="loadingEvents">
-              <span slot="title">
-                Events
-              </span>
+          <panel type="default" v-loading="loadingEvents">
+            <span slot="title">
+              Events
+            </span>
 
-              <events-list :events="eventsPaginator.content" />
+            <events-list :events="eventsPaginator.content" />
 
-              <div class="text-center">
-                <paginator :paginator="eventsPaginator" :fetch="getEvents" />
-              </div>
-            </panel>
-          </div>
+            <div class="text-center">
+              <paginator :paginator="eventsPaginator" :fetch="getEvents" />
+            </div>
+          </panel>
         </div>
       </div>
     </div>
