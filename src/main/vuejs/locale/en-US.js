@@ -62,7 +62,8 @@ export default {
       zip: 'ZIP',
       city: 'City',
       state: 'State'
-    }
+    },
+    about_me: 'About me'
   },
   locale: {
     en: 'English',

@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div>
     <div class="row">
       <div class="col-lg-4 col-lg-offset-4">

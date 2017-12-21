@@ -189,8 +189,8 @@ export default {
    * @param {*} id - page id
    * @param {*} success - success callback function
    */
-  getRequests (id, success) {
-    Vue.http.get(`${PAGE_API_URL}/${id}/requests`).then(response => {
+  getRequests (id, page, size, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/requests/${page}/${size}`).then(response => {
       success(response.body);
     }, errorHandler);
   },
@@ -226,8 +226,8 @@ export default {
    * @param {Number} id - page id
    * @param {Function} success - success callback function
    */
-  getActivities (id, success) {
-    Vue.http.get(`${PAGE_API_URL}/${id}/activity`).then(response => {
+  getActivities (id, page, size, success) {
+    Vue.http.get(`${PAGE_API_URL}/${id}/activity/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

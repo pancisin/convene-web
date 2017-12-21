@@ -1,6 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +21,14 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@JsonView(Summary.class)
-	@GetMapping("")
-	public ResponseEntity<?> getUserData(@PathVariable Long user_id) {
-		return ResponseEntity.ok(userRepository.findOne(user_id));
+	@GetMapping()
+	public ResponseEntity<User> getUserData(@PathVariable Long user_id) {
+		User user = userRepository.findOne(user_id);
+		
+		if (user != null) 
+			return ResponseEntity.ok(user);
+		else 
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 
 	@GetMapping("event")

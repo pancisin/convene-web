@@ -268,8 +268,8 @@ export default {
    * @param {*} id - conference id
    * @param {*} success - success callback function
    */
-  getActivities (id, success) {
-    Vue.http.get(`${CONFERENCE_API_URL}/${id}/activity`).then(response => {
+  getActivities (id, page, size, success) {
+    Vue.http.get(`${CONFERENCE_API_URL}/${id}/activity/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

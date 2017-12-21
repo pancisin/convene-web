@@ -1,5 +1,5 @@
 <template>
-  <ul class="pagination">
+  <ul class="pagination" v-show="paginator.totalPages > 1">
     <li v-if="!paginator.first">
       <a @click="navigatePage(paginator.number - 1)">
         <i class="fa fa-angle-left"></i>

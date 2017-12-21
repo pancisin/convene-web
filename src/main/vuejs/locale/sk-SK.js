@@ -61,7 +61,8 @@ export default {
       zip: 'PSČ',
       city: 'Mesto',
       state: 'Štát'
-    }
+    },
+    about_me: 'O mne'
   },
   locale: {
     en: 'Anglický',

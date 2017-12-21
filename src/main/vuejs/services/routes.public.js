@@ -103,5 +103,10 @@ export default [
     path: 'invoice/:invoice_id',
     name: 'invoice',
     component: resolve => require(['../pages/Invoice.vue'], resolve)
+  },
+  {
+    path: 'user/:user_id',
+    name: 'user',
+    component: resolve => require(['../pages/public/User.vue'], resolve)
   }
 ];

@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.Visibility;
-import com.pancisin.bookster.models.enums.WidgetType;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.BranchRepository;
 import com.pancisin.bookster.repository.CategoryRepository;
@@ -34,6 +34,7 @@ import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PageRepository;
+import com.pancisin.bookster.repository.UserRepository;
 
 @RestController
 @CrossOrigin
@@ -60,6 +61,9 @@ public class PublicRestController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping("/near-events/{page}/{limit}")
 	public ResponseEntity<?> getNearEvents(@PathVariable int page, @PathVariable int limit,
@@ -110,10 +114,20 @@ public class PublicRestController {
 				new PageRequest(page, size, new Sort(Direction.ASC, "date")), fromDate, toDate, null));
 	}
 
-	@GetMapping("/user/{user_id}/event")
-	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id) {
+	@GetMapping("/user/{user_id}")
+	public ResponseEntity<User> getUser(@PathVariable Long user_id) {
+		User user = userRepository.findOne(user_id);
+		
+		if (user != null)
+			return ResponseEntity.ok(user);
+		else 
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	}
+
+	@GetMapping("/user/{user_id}/event/{page}/{size}")
+	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id, @PathVariable int page, @PathVariable int size) {
 		return ResponseEntity
-				.ok(eventRepository.getByUser(user_id, new PageRequest(0, 100, new Sort(Direction.ASC, "date"))));
+				.ok(eventRepository.getByUser(user_id, new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/categories")
@@ -141,18 +155,15 @@ public class PublicRestController {
 		return ResponseEntity.ok(MetaType.values());
 	}
 
-	@GetMapping("/widget-types")
-	public ResponseEntity<?> getWidgetTypes() {
-		return ResponseEntity.ok(WidgetType.values());
-	}
-
 	@GetMapping("/conference/{conference_id}")
 	public ResponseEntity<Conference> getConference(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
-		
-		if (conference == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-		
-		if (conference.getVisibility() == Visibility.PUBLIC && (conference.getState() == PageState.PUBLISHED || conference.getState() == PageState.BLOCKED)) {
+
+		if (conference == null)
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+		if (conference.getVisibility() == Visibility.PUBLIC
+				&& (conference.getState() == PageState.PUBLISHED || conference.getState() == PageState.BLOCKED)) {
 			return ResponseEntity.ok(conference);
 		} else {
 			return new ResponseEntity(HttpStatus.FORBIDDEN);

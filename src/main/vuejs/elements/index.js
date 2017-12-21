@@ -49,6 +49,7 @@ import SharePanel from './SharePanel';
 import LightBox from './LightBox';
 import VueImage from './VueImage';
 import Error from './Error';
+import WidgetSelector from './WidgetSelector';
 
 export {
   ArticlesList,
@@ -101,5 +102,6 @@ export {
   SharePanel,
   LightBox,
   VueImage,
-  Error
+  Error,
+  WidgetSelector
 };

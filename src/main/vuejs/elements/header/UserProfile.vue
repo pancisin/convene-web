@@ -9,6 +9,12 @@
       User profile
     </dropdown-menu-item>
     <dropdown-menu-item>
+      <router-link :to="{ name: 'user', params: { user_id: user.id } }"
+        class="waves-effect waves-light">
+        <i class="fa fa-user m-r-10"></i> Profile
+      </router-link>
+    </dropdown-menu-item>
+    <dropdown-menu-item>
       <router-link :to="{ name: 'settings' }"
         class="waves-effect waves-light">
         <i class="fa fa-cog m-r-10"></i> Settings

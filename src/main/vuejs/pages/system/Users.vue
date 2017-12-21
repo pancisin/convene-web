@@ -39,7 +39,9 @@
             <i class="fa fa-circle" :class="{ 'text-success' : user.online }"></i>
           </td>
           <td>
-            {{ user.displayName }}
+            <router-link :to="{ name:'user', params: { user_id: user.id }}">
+              {{ user.displayName }}
+            </router-link>
           </td>
           <td>
             <a :href="'mailto:' + user.email">

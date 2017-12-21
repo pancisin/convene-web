@@ -11,14 +11,19 @@
           <h5>Available widgets: </h5>
 
           <ul class="widget-types-list">
-            <li v-for="w_type in widgetTypes" :key="w_type.name">
+            <li v-for="(w_type, index) in widgetTypes" :key="index">
               {{ $t(w_type.code) }}
-              <a class="btn btn-default btn-block" @click="addWidget(w_type)">Add</a>
+              <a class="btn btn-default btn-block" @click="addWidget(w_type)">
+                Add
+              </a>
+
+              <img :src="w_type.thumbnail" />
             </li>
           </ul>
 
         </div>
       </div>
+      
       <div v-else key="pending" class="clearfix">
         <a class="btn btn-link pull-right" @click="editModeSwitch(true)">
           Edit dashboard
@@ -68,8 +73,8 @@
 <script>
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import * as WidgetComponents from 'elements/widgets';
-import PublicApi from 'api/public.api';
 import { calculateHash } from '../../services/helpers';
+import DashboardWidgetsMap from '../../services/maps/dashboard-widgets.map';
 
 export default {
   name: 'dashboard',
@@ -79,7 +84,6 @@ export default {
       activities: [],
       widgets: [],
       editMode: false,
-      widgetTypes: [],
       original_widgets: null
     };
   },
@@ -88,6 +92,9 @@ export default {
     GridLayout, GridItem
   },
   computed: {
+    widgetTypes () {
+      return DashboardWidgetsMap;
+    },
     touched () {
       return calculateHash(JSON.stringify(this.widgets)) !== calculateHash(this.original_widgets);
     },
@@ -102,19 +109,19 @@ export default {
   },
   created () {
     this.getWidgets();
-    this.getWidgetTypes();
   },
   methods: {
     getWidgets () {
       this.editMode = false;
       this.api.getWidgets(widgets => {
-        this.widgets = widgets;
         this.original_widgets = JSON.stringify(widgets);
-      });
-    },
-    getWidgetTypes () {
-      PublicApi.getWidgetTypes(widgetTypes => {
-        this.widgetTypes = widgetTypes;
+        this.widgets = widgets.map(widget => {
+          const type = this.evaluateWidget(widget.type);
+          return {
+            ...widget,
+            type
+          };
+        });
       });
     },
     addWidget (type) {
@@ -144,8 +151,15 @@ export default {
       });
 
       this.api.putWidgets(data, widgets => {
-        this.widgets = widgets;
         this.original_widgets = JSON.stringify(widgets);
+        this.widgets = widgets.map(w => {
+          const type = this.evaluateWidget(w.type);
+          return {
+            ...w,
+            type
+          };
+        });
+
         this.editMode = false;
         this.$success('notification.dashboard.saved');
       });
@@ -153,12 +167,27 @@ export default {
     editModeSwitch (enabled) {
       if (!enabled && this.touched) {
         this.$prompt('notification.dashboard.leave_prompt', () => {
-          this.widgets = JSON.parse(this.original_widgets);
+          const widgets = JSON.parse(this.original_widgets);
+          this.widgets = widgets.map(w => {
+            const type = this.evaluateWidget(w.type);
+            return {
+              ...w,
+              type
+            };
+          });
+
           this.editMode = false;
         });
       } else {
         this.editMode = enabled;
       }
+    },
+    evaluateWidget (type) {
+      const widget = this.widgetTypes.filter(w => w.name === type);
+
+      if (widget && widget.length > 0) {
+        return widget[0];
+      } else return {};
     }
   }
 };
@@ -229,6 +258,10 @@ export default {
     display: inline-block;
     width: 150px;
     height: 150px;
+
+    img {
+      width: 100%;
+    }
 
     &~li {
       margin-left: 10px;

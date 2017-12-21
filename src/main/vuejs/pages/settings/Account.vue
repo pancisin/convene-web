@@ -30,11 +30,27 @@
           </div>
           <div class="form-group">
             <label>{{ $t('user.firstName') }}</label>
-            <input type="email" v-model="user.firstName" class="form-control" placeholder="First name">
+            <input 
+              type="email" 
+              v-model="user.firstName" 
+              class="form-control" 
+              placeholder="First name">
           </div>
           <div class="form-group">
             <label>{{ $t('user.lastName') }}</label>
-            <input type="email" v-model="user.lastName" class="form-control" placeholder="Last name">
+            <input 
+              type="email" 
+              v-model="user.lastName" 
+              class="form-control" 
+              placeholder="Last name">
+          </div>
+          <div class="form-group">
+            <label>{{ $t('user.about_me') }}</label>
+            <textarea 
+              v-model="user.about" 
+              class="form-control" 
+              placeholder="About me">
+            </textarea>
           </div>
         </div>
         <div class="col-md-3">

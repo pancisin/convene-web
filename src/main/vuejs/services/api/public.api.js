@@ -4,6 +4,7 @@ import moment from 'moment';
 const EVENT_PUBLIC_URL = '/public/event';
 const PAGE_PUBLIC_URL = '/public/page';
 const CONFERENCE_PUBLIC_URL = '/public/conference';
+const USER_PUBLIC_URL = '/public/user';
 
 export default {
 
@@ -13,6 +14,26 @@ export default {
     }).then(response => {
       success(response.body);
     });
+  },
+
+  user: {
+    getUser (id, success, error) {
+      Vue.http.get(`${USER_PUBLIC_URL}/${id}`).then(response => {
+        success(response.body);
+      }, response => {
+        if (error) {
+          error(response);
+        }
+      });
+    },
+
+    getEvents (id, page, size, success) {
+      Vue.http.get(`${USER_PUBLIC_URL}/${id}/event/${page}/${size}`).then(response => {
+        success(response.body);
+      }, response => {
+
+      });
+    }
   },
 
   event: {

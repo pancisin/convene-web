@@ -46,6 +46,7 @@ import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
+import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
@@ -89,16 +90,19 @@ public class PageController {
 	@Autowired
 	private EventBotRepository eventBotRepository;
 
-//	@GetMapping
-//	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
-//	public ResponseEntity<?> getPage(@PathVariable Long page_id) {
-//		Page page = pageRepository.findOne(page_id);
-//
-//		if (page == null)
-//			return new ResponseEntity(HttpStatus.NOT_FOUND);
-//		else 
-//			return ResponseEntity.ok(page);
-//	}
+	@Autowired
+	private BookRequestRepository bookRequestRepository;
+	
+	// @GetMapping
+	// @PreAuthorize("hasPermission(#page_id, 'page', 'read')")
+	// public ResponseEntity<?> getPage(@PathVariable Long page_id) {
+	// Page page = pageRepository.findOne(page_id);
+	//
+	// if (page == null)
+	// return new ResponseEntity(HttpStatus.NOT_FOUND);
+	// else
+	// return ResponseEntity.ok(page);
+	// }
 
 	@DeleteMapping
 	@ActivityLog(type = ActivityType.DELETE)
@@ -208,14 +212,10 @@ public class PageController {
 		return ResponseEntity.ok(stored.getFollowers());
 	}
 
-	@GetMapping("/requests")
+	@GetMapping("/requests/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
-	public ResponseEntity<?> getRequests(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
-
-		List<BookRequest> requests = stored.getServices().stream().flatMap(s -> s.getRequests().stream())
-				.collect(Collectors.toList());
-
+	public ResponseEntity<?> getRequests(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
+		org.springframework.data.domain.Page<BookRequest> requests = bookRequestRepository.getByPage(page_id, new PageRequest(page, size));
 		return ResponseEntity.ok(requests);
 	}
 
@@ -283,11 +283,12 @@ public class PageController {
 		return ResponseEntity.ok(pageRepository.save(stored));
 	}
 
-	@GetMapping("/activity")
+	@GetMapping("/activity/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
-	public ResponseEntity<?> getActivity(@PathVariable Long page_id) {
+	public ResponseEntity<?> getActivity(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
 		Page stored = pageRepository.findOne(page_id);
-		return ResponseEntity.ok(activityRepository.getByPage(stored.getId()));
+		return ResponseEntity
+				.ok(activityRepository.getByPage(stored.getId(), new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@GetMapping("/widget")

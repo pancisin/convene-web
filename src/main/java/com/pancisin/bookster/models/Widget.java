@@ -13,8 +13,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.pancisin.bookster.models.enums.WidgetType;
-
 @Entity
 @Table(name = "widgets")
 public class Widget {
@@ -40,8 +38,7 @@ public class Widget {
 	@Column
 	private int i;
 
-	@Enumerated(EnumType.STRING)
-	private WidgetType type;
+	private String type;
 	
 	public int getX() {
 		return x;
@@ -87,11 +84,12 @@ public class Widget {
 		return id;
 	}
 
-	public WidgetType getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(WidgetType type) {
+	public void setType(String type) {
 		this.type = type;
 	}
+	
 }

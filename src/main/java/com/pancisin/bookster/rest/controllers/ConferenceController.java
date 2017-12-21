@@ -100,15 +100,15 @@ public class ConferenceController {
 
 	@Autowired
 	private PlaceRepository placeRepository;
-	
+
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
 		Conference conference = conferenceRepository.findOne(conference_id);
-		
+
 		if (conference == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		} else {
@@ -129,7 +129,7 @@ public class ConferenceController {
 			Media poster = new Media();
 			poster = mediaRepository.save(poster);
 			String url = "banners/conferences/" + poster.getId().toString();
-			
+
 			poster.setPath("/files/" + url + ".jpg");
 			storageService.storeBinary(conference.getPosterData(), url);
 			stored.setPoster(poster);
@@ -292,8 +292,10 @@ public class ConferenceController {
 
 	@GetMapping("/article/{page}/{size}")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
-	public ResponseEntity<?> getArticles(@PathVariable Long conference_id, @PathVariable int page, @PathVariable int size) {
-		return ResponseEntity.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
+	public ResponseEntity<?> getArticles(@PathVariable Long conference_id, @PathVariable int page,
+			@PathVariable int size) {
+		return ResponseEntity
+				.ok(articleRepository.getByConference(conference_id, new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@PatchMapping("/toggle-published")
@@ -343,11 +345,13 @@ public class ConferenceController {
 	@Autowired
 	private ActivityRepository activityRepository;
 
-	@GetMapping("/activity")
+	@GetMapping("/activity/{page}/{size}")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
-	public ResponseEntity<?> getActivity(@PathVariable Long conference_id) {
+	public ResponseEntity<?> getActivity(@PathVariable Long conference_id, @PathVariable int page,
+			@PathVariable int size) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		return ResponseEntity.ok(activityRepository.getByConference(stored.getId()));
+		return ResponseEntity
+				.ok(activityRepository.getByConference(stored.getId(), new PageRequest(page, size, Direction.DESC, "created")));
 	}
 
 	@GetMapping("/widget")
@@ -362,13 +366,13 @@ public class ConferenceController {
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postWidgets(@PathVariable Long conference_id, @RequestBody List<Widget> widgets) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		
+
 		stored.setWidgets(widgets);
 		conferenceRepository.save(stored);
 
 		return ResponseEntity.ok(stored.getWidgets());
 	}
-	
+
 	@GetMapping("/place")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getPlaces(@PathVariable Long conference_id) {
@@ -382,11 +386,11 @@ public class ConferenceController {
 	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long conference_id, @RequestBody Place place) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		
+
 		place = placeRepository.save(place);
 		stored.addPlace(place);
 		conferenceRepository.save(stored);
-		
+
 		return ResponseEntity.ok(place);
 	}
 }
