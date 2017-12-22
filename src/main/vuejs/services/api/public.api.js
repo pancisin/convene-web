@@ -16,6 +16,16 @@ export default {
     });
   },
 
+  getFeaturedEvents (page, size, filters, success) {
+    Vue.http.get(`/public/featured-events/${page}/${size}`, {
+      params: {
+        ...filters
+      }
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   user: {
     getUser (id, success, error) {
       Vue.http.get(`${USER_PUBLIC_URL}/${id}`).then(response => {

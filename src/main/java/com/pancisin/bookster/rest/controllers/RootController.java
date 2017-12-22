@@ -91,11 +91,6 @@ public class RootController {
 		return ResponseEntity.ok(pages);
 	}
 
-	@GetMapping({ "/api/page/s/{slug}", "/public/page/s/{slug}" })
-	public ResponseEntity<?> getPageBySlug(@PathVariable String slug) {
-		return ResponseEntity.ok(pageRepository.findBySlug(slug));
-	}
-
 	@GetMapping({ "/api/events/{page}/{limit}", "/public/events/{page}/{limit}" })
 	public ResponseEntity<?> getEvents(@PathVariable int page, @PathVariable int limit,
 			@RequestParam(name = "timestamp", required = false) String timestamp,
@@ -146,21 +141,36 @@ public class RootController {
 			return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
 		}
 	}
-	
+
 	@GetMapping({ "/api/page/{page_identifier}", "/public/page/{page_identifier}" })
 	@PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
 		com.pancisin.bookster.models.Page page = null;
-		
+
 		try {
 			Long page_id = Long.parseLong((String) page_identifier);
 			page = pageRepository.findOne(page_id);
 		} catch (NumberFormatException ex) {
 			page = pageRepository.findBySlug((String) page_identifier);
 		}
-		
-		if (page == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-		
+
+		if (page == null)
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+
 		return ResponseEntity.ok(page);
+	}
+
+	@GetMapping({ "/api/featured-events/{page}/{size}", "/public/featured-events/{page}/{size}" })
+	public ResponseEntity<?> getFeaturedEvents(@PathVariable int page, @PathVariable int size,
+			@RequestParam(name = "fromDate", required = false) Long fromDateTimestamp, 
+			@RequestParam(name = "toDate", required = false) Long toDateTimestamp) {
+		
+		Calendar fromDate = Calendar.getInstance();
+		Calendar toDate = Calendar.getInstance();
+		
+		fromDate.setTimeInMillis(fromDateTimestamp);
+		toDate.setTimeInMillis(toDateTimestamp);
+		
+		return ResponseEntity.ok(eventRepository.getFeaturedEvents(fromDate, toDate, new PageRequest(page, size)));
 	}
 }

@@ -39,6 +39,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.pageAdministrators administrator WHERE user.id = :userId AND event.date >= CURDATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
 	public List<Event> getAttending(@Param("userId") Long userId);
 
+	@Query("SELECT event FROM Event event WHERE DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.state = 'PUBLISHED' AND event.featured = 1")
+	public Page<Event> getFeaturedEvents(@Param("fromDate") Calendar fromDate, @Param("toDate") Calendar toDate, Pageable pageable);
 	// CHECKED LINE
 
 	@Query("SELECT count(event.id) FROM Event event JOIN event.attendees user WHERE user.id = :user_id AND event.id = :event_id")

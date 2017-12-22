@@ -8,6 +8,9 @@
             <events-list :events="attendingEvents"></events-list>
           </panel>
 
+          <h3 class="text-uppercase">Featured</h3>
+          <featured-events />
+          
           <panel type="primary"
             v-if="eventsPaginator.content != null">
             <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
@@ -64,6 +67,8 @@ import {
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 
+import { FeaturedEvents } from 'components';
+
 export default {
   name: 'dashboard',
   data () {
@@ -81,7 +86,8 @@ export default {
     HeroUnit,
     ArticlesList,
     EventsList,
-    PagesList
+    PagesList,
+    FeaturedEvents
   },
   computed: {
     ...mapGetters([

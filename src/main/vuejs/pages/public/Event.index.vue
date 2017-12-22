@@ -32,15 +32,15 @@
             v-for="event in eventsPaginator.content"
             :key="event.id">
 
-            <div class="ribbon" v-if="event.featured">
-              <span>{{ $t('event.featured') }}</span>
-            </div>
-
             <div class="card-state" v-if="event.state != 'PUBLISHED'">
               {{ event.state }}
             </div> 
 
             <router-link :to="{ name: 'event.public', params: { id: event.id }}">
+              <div class="ribbon" v-if="event.featured">
+                <span>{{ $t('event.featured') }}</span>
+              </div>
+              
               <div v-if="event.poster != null" class="image-wrapper">
                 <vue-image :src="event.poster.path" />
               </div>
