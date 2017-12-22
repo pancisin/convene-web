@@ -11,7 +11,7 @@
           <h1 class="text-pink">{{ event.name }}</h1>
 
           <p class="panel-sub-title font-13">
-            {{ event.date | luxon('fff') }} {{ event.startsAt }}
+            {{ event.date | luxon('DDDD, T') }} {{ event.startsAt }}
             
             <span v-if="event.author">
               <br>

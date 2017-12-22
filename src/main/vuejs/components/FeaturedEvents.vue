@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <!-- <events-list :events="paginator.content" /> -->
-
-
+  <div v-loading="loading">
     <router-link 
       class="featured-event" 
       v-for="(event, index) in paginator.content" 
@@ -46,7 +43,8 @@ export default {
   name: 'featured-events',
   data () {
     return {
-      paginator: {}
+      paginator: {},
+      loading: false
     };
   },
   components: {
@@ -56,11 +54,13 @@ export default {
   },
   methods: {
     getFeaturedEvents (page) {
+      this.loading = true;
       PublicApi.getFeaturedEvents(page, 4, {
         fromDate: DateTime.utc().valueOf(),
         toDate: DateTime.utc().plus({ months: 1 }).valueOf()
       }, paginator => {
         this.paginator = paginator;
+        this.loading = false;
       });
     }
   }

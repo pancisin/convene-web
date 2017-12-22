@@ -162,15 +162,16 @@ public class RootController {
 
 	@GetMapping({ "/api/featured-events/{page}/{size}", "/public/featured-events/{page}/{size}" })
 	public ResponseEntity<?> getFeaturedEvents(@PathVariable int page, @PathVariable int size,
-			@RequestParam(name = "fromDate", required = false) Long fromDateTimestamp, 
+			@RequestParam(name = "fromDate", required = false) Long fromDateTimestamp,
 			@RequestParam(name = "toDate", required = false) Long toDateTimestamp) {
-		
+
 		Calendar fromDate = Calendar.getInstance();
 		Calendar toDate = Calendar.getInstance();
-		
+
 		fromDate.setTimeInMillis(fromDateTimestamp);
 		toDate.setTimeInMillis(toDateTimestamp);
-		
-		return ResponseEntity.ok(eventRepository.getFeaturedEvents(fromDate, toDate, new PageRequest(page, size)));
+
+		return ResponseEntity
+				.ok(eventRepository.getFeaturedEvents(fromDate, toDate, new PageRequest(page, size, Direction.ASC, "date")));
 	}
 }

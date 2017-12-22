@@ -111,7 +111,7 @@ export default {
     updateFocusDate (timestamp) {
       const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
         zone: 'utc'
-      }).toLocal().startOf('day');
+      }).startOf('day');
 
       if (dateTime.isValid) {
         this.selected = dateTime.valueOf();
@@ -157,7 +157,7 @@ export default {
     },
     select (day) {
       this.selected = day.timestamp;
-      const utc_timestamp = DateTime.fromMillis(day.timestamp).setZone('utc').valueOf();
+      const utc_timestamp = DateTime.fromMillis(day.timestamp).valueOf();
 
       this.display = false;
       this.$emit('input', utc_timestamp);

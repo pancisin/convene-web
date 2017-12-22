@@ -119,10 +119,6 @@ export default {
   },
   methods: {
     updateFocusDate (timestamp) {
-      // const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
-      //   zone: 'utc'
-      // }).toLocal().startOf('day');
-
       const dateTime = DateTime.local().startOf('day');
 
       if (dateTime.isValid) {

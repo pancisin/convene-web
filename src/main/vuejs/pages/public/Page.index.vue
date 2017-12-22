@@ -30,8 +30,8 @@
           </div>
         </div>
 
-        <div class="col-md-12" :class="{ 'col-md-9': branches.length > 0 }">
-          <masonry v-loading="loading" :columns="branches.length > 0 ? 4 : 5">
+        <div class="col-md-9" :class="{ 'col-md-6': branches.length > 0 }">
+          <masonry v-loading="loading" :columns="branches.length > 0 ? 3 : 4">
             <masonry-item class="card"   
               v-for="(page, index) in pagesPaginator.content" 
               :key="page.id">
@@ -68,6 +68,10 @@
             </div>
           </div>
         </div>
+        <div class="col-md-3">
+          <h3 class="text-uppercase">Featured events</h3>
+          <featured-events />
+        </div>
       </div>
     </div>
   </div>
@@ -83,6 +87,7 @@ import {
 import PublicApi from 'api/public.api';
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
+import { FeaturedEvents } from 'components';
 
 export default {
   name: 'page-explore',
@@ -100,7 +105,8 @@ export default {
     Paginator,
     Masonry,
     MasonryItem,
-    VueImage
+    VueImage,
+    FeaturedEvents
   },
   created () {
     this.filters = {
