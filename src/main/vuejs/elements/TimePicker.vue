@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { DateTime } from 'luxon';
+
 export default {
   name: 'time-picker',
   props: ['value', 'placeholder'],
@@ -39,7 +40,7 @@ export default {
     return {
       displayTimePicker: false,
       time: {
-        hour: parseInt(moment().format('HH')),
+        hour: DateTime.local().hour,
         minute: 0,
         second: 0
       },

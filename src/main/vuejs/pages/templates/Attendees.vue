@@ -33,7 +33,7 @@
               <td v-else>
                 {{ inv.user.firstName }} {{ inv.user.lastName }}
               </td>
-              <td class="text-right">{{ inv.created | moment('L') }}</td>
+              <td class="text-right">{{ inv.created | luxon('fff') }}</td>
               <th class="text-right">
                 <a class="text-danger btn btn-link btn-xs"
                   @click="cancel(inv.id)">

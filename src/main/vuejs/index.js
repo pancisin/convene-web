@@ -56,6 +56,13 @@ Vue.directive('click-outside', ClickOutside);
 Vue.directive('strip', StripTags);
 Vue.directive('loading', Loading);
 
+import { DateTime } from 'luxon';
+Vue.filter('luxon', (value, arg) => {
+  return DateTime.fromMillis(value, {
+    zone: 'utc'
+  }).toLocal().toFormat(arg);
+});
+
 Vue.config.devtools = true;
 Vue.config.productionTip = false;
 

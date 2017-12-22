@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import * as types from '../mutation-types';
-import moment from 'moment';
 
 export default store => {
   // store.subscribe(mutation => {

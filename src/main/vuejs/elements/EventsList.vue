@@ -12,7 +12,7 @@
       <div>
         <p class="inbox-item-author" v-text="event.name"></p>
         <p class="inbox-item-text">
-          {{ event.date | moment('L') }} {{ event.startsAt }}
+          {{ event.date | luxon('D') }} {{ event.startsAt }}
         </p>
       </div>
     </router-link>

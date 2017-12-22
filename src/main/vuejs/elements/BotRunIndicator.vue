@@ -4,7 +4,7 @@
     <i class="fa fa-clock-o text-warning" v-else-if="run.state.name === 'RUNNING'"></i>
     <i class="fa fa-exclamation-triangle text-danger" v-else></i>
 
-    <b v-if="run.state.name !== 'RUNNING'">{{ run.date | moment('L LT') }}</b>
+    <b v-if="run.state.name !== 'RUNNING'">{{ run.date | luxon('fff') }}</b>
     <b v-else>Running...</b>
   </div>
 </template>

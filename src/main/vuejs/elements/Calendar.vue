@@ -3,7 +3,7 @@
     <div class="calendar-header">
       <a class="btn btn-link" @click="moveCursor(-1)">
         <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('calendar.prev') }}</a>
-      <h3 class="text-center">{{ focusDate.format('MMMM YYYY') }}</h3>
+      <h3 class="text-center">{{ focusDate.toFormat('MMMM yyyy') }}</h3>
       <a class="btn btn-link" @click="moveCursor(1)">{{ $t('calendar.next') }}
         <i class="fa fa-arrow-right" aria-hidden="true"></i>
       </a>
@@ -22,8 +22,8 @@
           <td v-for="(day, column) in week" 
             :key="column" 
             :class="{ 
-              'current' : isCurrent(day.day, day.month), 
-              'disabled' : day.month != focusDate.month() 
+              'current' : selected == day.timestamp, 
+              'disabled' : day.month != focusDate.month
             }">
             <span class="monthday" v-text="day.day"></span>
             
@@ -33,7 +33,7 @@
                   {{ event.name }}
                 </router-link>
               </li>
-              <li v-if="day.month === focusDate.month()">
+              <li v-if="day.month === focusDate.month">
                 <a @click="selectDate(day)" class="create-event">
                   <i class="fa fa-plus"></i>
                 </a>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { DateTime, Info } from 'luxon';
 import EventApi from 'api/event.api';
 export default {
   props: {
@@ -102,69 +102,76 @@ export default {
   data: function () {
     return {
       weeks: [],
-      focusDate: moment()
+      focusDate: {}
     };
   },
   computed: {
-    weekdays: function () {
-      var wkds = moment.weekdays();
-      wkds.push(wkds.shift());
-      return wkds;
+    weekdays () {
+      return Info.weekdays('short');
     }
   },
   watch: {
     'events': 'updateCalendar'
   },
   created: function () {
-    this.updateCalendar();
-    const query_focus = parseInt(this.$route.query.focus, 10);
-    if (query_focus) {
-      this.focusDate = moment(query_focus);
-    }
-
+    this.updateFocusDate();
     this.navigate();
   },
   methods: {
+    updateFocusDate (timestamp) {
+      // const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
+      //   zone: 'utc'
+      // }).toLocal().startOf('day');
+
+      const dateTime = DateTime.local().startOf('day');
+
+      if (dateTime.isValid) {
+        this.selected = dateTime.valueOf();
+        this.focusDate = dateTime;
+      }
+
+      this.updateCalendar();
+    },
     updateCalendar () {
-      var start = this.focusDate.clone().startOf('month').startOf('isoweek');
-      var end = this.focusDate.clone().endOf('month').endOf('isoweek');
+      var start = this.focusDate.startOf('month').startOf('week');
+      var end = this.focusDate.endOf('month').endOf('week');
 
       this.weeks = [];
-      var first_week = start.week();
+      const first_week = start.weekNumber;
 
-      while (start.diff(end, 'days') < 1) {
-        var week_index = start.week() - first_week;
+      while (start.diff(end, 'days').days <= 0) {
+        var week_index = start.weekNumber - first_week;
 
         if (this.weeks[week_index] == null) {
           this.weeks[week_index] = [];
         }
 
         const events = this.events.filter(e => {
-          return moment(e.date).startOf('day').valueOf() === start.startOf('day').valueOf();
+          return DateTime.fromMillis(e.date).startOf('day').valueOf() === start.startOf('day').valueOf();
         });
 
         this.weeks[week_index].push({
-          day: start.date(),
-          timestamp: start.valueOf(),
-          month: start.month(),
-          year: start.year(),
+          day: start.day,
+          timestamp: start.startOf('day').valueOf(),
+          month: start.month,
           events
         });
-        start.add(1, 'days');
+
+        start = start.plus({
+          days: 1
+        });
       }
     },
     navigate () {
       this.$emit('navigate', {
-        from: this.focusDate.clone().startOf('month').startOf('isoWeek').valueOf(),
-        to: this.focusDate.clone().endOf('month').endOf('isoWeek').valueOf()
+        from: this.focusDate.startOf('month').startOf('week').valueOf(),
+        to: this.focusDate.endOf('month').endOf('week').valueOf()
       });
     },
     moveCursor (i) {
-      if (i > 0) {
-        this.focusDate.add(1, 'M');
-      } else {
-        this.focusDate.subtract(1, 'M');
-      }
+      this.focusDate = this.focusDate.plus({
+        months: i
+      });
 
       this.updateCalendar();
       this.navigate();
@@ -183,9 +190,6 @@ export default {
           this.updateCalendar();
         });
       });
-    },
-    isCurrent: function (day, month) {
-      return moment().date() === day && moment().month() === month;
     },
     selectDate (day) {
       this.$emit('selectDate', day.timestamp);

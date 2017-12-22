@@ -25,7 +25,6 @@ export default {
     if (this.authenticated) {
       this.initializeUser().then(user => {
         Settings.defaultLocale = user.locale.name;
-        moment.locale(user.locale.name);
         this.$i18n.locale = user.locale.name;
         this.$ga.set('userId', user.id);
       });

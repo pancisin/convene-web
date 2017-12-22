@@ -2,7 +2,7 @@
   <div>
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
-        <h4>{{ format(key, 'LL') }}</h4>
+        <h4>{{ key | luxon('ff') }}</h4>
 
         <ul class="events-list">
           <li v-for="event in date" :key="event.id">
@@ -14,7 +14,7 @@
                   {{ event.name }}
                 </h4>
                 <small class="text-muted">
-                  {{ event.date | moment('LL') }} - {{ event.startsAt }}
+                  {{ event.date | luxon('ff') }} - {{ event.startsAt }}
                 </small>
                 <p v-if="event.summary != null" v-strip="event.summary.substring(0, 200)">
                 </p>
@@ -51,12 +51,6 @@ export default {
       });
 
       this.sorted_events = data;
-    }
-  },
-  methods: {
-    format (timestamp, pattern) {
-      let t = parseInt(timestamp, 10);
-      return moment(t).format(pattern);
     }
   }
 };

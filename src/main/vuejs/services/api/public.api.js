@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 const EVENT_PUBLIC_URL = '/public/event';
 const PAGE_PUBLIC_URL = '/public/page';
@@ -149,8 +149,8 @@ export default {
     getEvents (id, page, size, success) {
       Vue.http.get(`${PAGE_PUBLIC_URL}/${id}/event/${page}/${size}`, {
         params: {
-          fromDate: moment().format('YYYY-MM-DD'),
-          toDate: moment().add(1, 'M').format('YYYY-MM-DD'),
+          fromDate: DateTime.local().toSQLDate(),
+          toDate: DateTime.local().plus({ months: 1 }).toSQLDate(),
           orderBy: 'date ASC'
         }
       }).then(response => {

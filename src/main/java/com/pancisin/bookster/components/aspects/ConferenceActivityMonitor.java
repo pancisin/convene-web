@@ -46,8 +46,10 @@ public class ConferenceActivityMonitor {
 		Conference stored = conferenceRepository.findOne(conference_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Activity activity = activityRepository.save(new Activity(auth, activityLog.type()));
-		stored.addActivity(activity);
+		
+		Activity activity = new Activity(auth, activityLog.type());
+		activity.setConference(stored);
+		activity = activityRepository.save(activity);
 
 		if (activityLog.type() == ActivityType.ATTENDING) {
 			stored.getConferenceAdministrators().stream().forEach(ca -> {
@@ -75,7 +77,5 @@ public class ConferenceActivityMonitor {
 				notifier.notifyUser(att.getUser(), "notification.conference.article_created", article.getTitle());
 			});
 		}
-
-		conferenceRepository.save(stored);
 	}
 }

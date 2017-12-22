@@ -15,7 +15,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(sub, index) in subscriptions" :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }">
+          <tr 
+            v-for="(sub, index) in subscriptions" 
+            :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }"
+            :key="index">
             <td>
               <router-link :to="{ name: 'invoice', params: { invoice_id : sub.id }}" v-text="sub.id">
               </router-link>
@@ -27,8 +30,8 @@
               <b>{{ sub.subscription.price }}</b>
               <i class="fa fa-euro"></i>
             </td>
-            <td>{{ sub.acquired | moment('L') }}</td>
-            <td>{{ sub.expires | moment('L') }}</td>
+            <td>{{ sub.acquired | luxon('ff') }}</td>
+            <td>{{ sub.expires | luxon('ff') }}</td>
             <td>{{ $t(sub.state.code) }}</td>
             <td>
               <a @click="doPayment(sub)" 

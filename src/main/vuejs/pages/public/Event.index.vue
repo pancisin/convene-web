@@ -50,7 +50,7 @@
                 <small class="text-muted" v-if="event.author">
                   {{ event.author.displayName }}
                   <br>
-                  {{ event.date | moment('L LT') }}
+                  {{ event.date | luxon('f') }}
                   <span
                     v-if="event.startsAt != null">
                     at {{ event.startsAt }}

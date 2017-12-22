@@ -36,12 +36,12 @@
         </div>
         <ul class="chat" ref="chatContainer" is="transition-group" name="fade">
           <li class="line" v-if="messages[0] != null" :key="-1">
-            <div class="title">{{ messages[0].created | moment("llll") }}</div>
+            <div class="title">{{ messages[0].created | luxon("fff") }}</div>
           </li>
           <li v-for="(mes, index) in messages" :class="{ 'right' : mes.sender.id == user.id }" :key="index">
             <div class="message" v-text="mes.content"></div>
             <div class="info">
-              <div class="datetime">{{ mes.created | moment("L LT") }}</div>
+              <div class="datetime">{{ mes.created | luxon("ff") }}</div>
               <div class="status" v-if="recipient != null && recipient.id != mes.sender.id && mes.sender.id != user.id" v-text="mes.sender.name"></div>
             </div>
           </li>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -135,7 +135,7 @@ export default {
           content: self.message,
           sender: self.user,
           recipient: self.recipient,
-          created: moment()
+          created: DateTime.local().valueOf()
         };
 
         self.addMessage(mes);

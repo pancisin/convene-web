@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +133,8 @@ public class EventBotService {
 
 		Calendar starts = Calendar.getInstance();
 		starts.setTime(ev.getStartTime());
-
+		starts.setTimeZone(TimeZone.getTimeZone("UTC"));
+		
 		event.setDate(starts);
 		event.setFacebookId(ev.getId());
 		event.setVisibility(Visibility.PUBLIC);

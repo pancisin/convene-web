@@ -26,7 +26,7 @@
             </div>
             <div class="pull-right m-t-30">
               <p>
-                <strong>Order Date: </strong> {{ invoice.acquired | moment('L') }}</p>
+                <strong>Order Date: </strong> {{ invoice.acquired | luxon('ff') }}</p>
               <p class="m-t-10">
                 <strong>Order Status: </strong>
                 {{ $t(invoice.state.code) }}

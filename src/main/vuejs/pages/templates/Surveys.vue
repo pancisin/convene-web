@@ -21,8 +21,8 @@
               {{ survey.name }}
             </router-link>
           </td>
-          <td>{{ survey.start_date | moment('L') }}</td>
-          <td>{{ survey.end_date | moment('L') }}</td>
+          <td>{{ survey.start_date | luxon('D') }}</td>
+          <td>{{ survey.end_date | luxon('D') }}</td>
           <td class="text-center">{{ survey.submissionsCount }}</td>
           <td class="text-center">
             <i class="fa fa-clock-o text-warning" aria-hidden="true" v-if="survey.state == 'IN_PROGRESS'"></i>

@@ -11,9 +11,9 @@
 
       <div class="featured-event-image">
         <div class="featured-event-date">
-          <span class="day">{{ event.date | moment('D') }}.</span>
-          <span class="month">{{ event.date | moment('MMMM') }}</span>
-          <span class="year">{{ event.date | moment('YYYY') }}</span>
+          <span class="day">{{ event.date | luxon('d') }}.</span>
+          <span class="month">{{ event.date | luxon('LLLL') }}</span>
+          <span class="year">{{ event.date | luxon('yyyy') }}</span>
         </div>
 
         <vue-image v-if="event.poster" :src="event.poster.path" />
@@ -34,7 +34,8 @@
 
 <script>
 import PublicApi from 'api/public.api';
-import moment from 'moment';
+import { DateTime } from 'luxon';
+
 import {
   Paginator,
   EventsList,
@@ -56,8 +57,8 @@ export default {
   methods: {
     getFeaturedEvents (page) {
       PublicApi.getFeaturedEvents(page, 4, {
-        fromDate: moment().valueOf(),
-        toDate: moment().add(1, 'month').valueOf()
+        fromDate: DateTime.utc().valueOf(),
+        toDate: DateTime.utc().plus({ months: 1 }).valueOf()
       }, paginator => {
         this.paginator = paginator;
       });

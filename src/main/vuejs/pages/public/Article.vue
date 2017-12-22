@@ -17,7 +17,7 @@
         </small>
 
         <small class="pull-right text-muted">
-          {{ article.created | moment('LLLL') }}
+          {{ article.created | luxon('fff') }}
         </small>
       </div>
       <hr />

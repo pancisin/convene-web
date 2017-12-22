@@ -27,8 +27,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import ProfilePicture from '../ProfilePicture';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'conversation',
@@ -86,7 +86,7 @@ export default {
           content: this.message,
           sender: this.user,
           recipient: this.recipient,
-          created: moment().toISOString()
+          created: DateTime.local().valueOf()
         };
 
         this.addMessage(mes);
@@ -106,7 +106,9 @@ export default {
       });
     },
     getTimeString (timestamp) {
-      return moment().isSame(timestamp, 'd') ? moment(timestamp).format('LT') : moment(timestamp).format('L LT');
+      const dateTime = DateTime.fromMillis(timestamp);
+      const format = DateTime.local().day === dateTime.day ? 'T' : 'F';
+      return dateTime.toFormat(format);
     }
   }
 };

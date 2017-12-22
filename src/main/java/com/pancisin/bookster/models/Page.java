@@ -137,8 +137,8 @@ public class Page implements IAuthor {
 		return null;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "page")
 	private List<Activity> activities;
 
 	public void addActivity(Activity activity) {

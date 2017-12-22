@@ -30,7 +30,7 @@ export default {
     }
 
     if (!this.authenticated) {
-      moment.locale(navigator.language || 'en');
+      Settings.defaultLocale = navigator.language || 'en';
     }
   },
   components: {
@@ -50,7 +50,6 @@ export default {
           await this.setLocale(JSON.stringify(value.name));
         }
 
-        moment.locale(value.name);
         Settings.defaultLocale = value.name;
         this.$i18n.locale = value.name;
       }

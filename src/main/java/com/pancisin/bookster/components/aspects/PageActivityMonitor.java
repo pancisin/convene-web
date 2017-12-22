@@ -44,8 +44,10 @@ public class PageActivityMonitor {
 		Page stored = pageRepository.findOne(page_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Activity activity = activityRepository.save(new Activity(auth, activityLog.type()));
-		stored.addActivity(activity);
+		
+		Activity activity = new Activity(auth, activityLog.type());
+		activity.setPage(stored);
+		activity = activityRepository.save(activity);
 
 		if (activityLog.type() == ActivityType.CREATE_EVENT) {
 			Event event = (Event) response.getBody();
@@ -67,7 +69,5 @@ public class PageActivityMonitor {
 				notifier.notifyUser(user, "notification.page.service_created", service.getName());
 			});
 		}
-
-		pageRepository.save(stored);
 	}
 }

@@ -18,8 +18,8 @@
             <router-link :to="{ name: 'event', params: { id: ev.id } }" v-text="ev.name">
             </router-link>
           </td>
-          <td>{{ ev.date | moment('L') }} {{ ev.startsAt }}</td>
-          <td>{{ ev.created | moment('L') }}</td>
+          <td>{{ ev.date | luxon('D') }} {{ ev.startsAt }}</td>
+          <td>{{ ev.created | luxon('F') }}</td>
           <td>
             <span v-if="ev.place != null" v-text="ev.place.name">
             </span>

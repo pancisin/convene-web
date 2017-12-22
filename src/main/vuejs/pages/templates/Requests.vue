@@ -12,7 +12,7 @@
       <tbody>
         <tr v-for="(request, index) in paginator.content" :key="index">
           <td v-text="request.email"></td>
-          <td>{{ request.date | moment('L') }}</td>
+          <td>{{ request.date | luxon('D') }}</td>
         </tr>
         <tr v-if="paginator.content && paginator.content.length == 0">
           <td colspan="2" class="text-center">There's nothing to display.</td>

@@ -34,7 +34,7 @@
               {{ article.title }}
             </router-link>
           </td>
-          <td>{{ article.created | moment('L') }}</td>
+          <td>{{ article.created | luxon('F') }}</td>
           <td class="text-center">
             <i class="fa fa-check text-success" aria-hidden="true" v-if="article.published"></i>
             <i class="fa fa-eye-slash text-warning" aria-hidden="true" v-else></i>

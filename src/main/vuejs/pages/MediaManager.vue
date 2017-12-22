@@ -19,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(media, index) in medias" :key="media.id">
+        <tr v-for="media in medias" :key="media.id">
           <td>
             <img :src="media.path" class="img-thumbnail" style="width: 100px">
           </td>
@@ -30,7 +30,7 @@
             {{ media.size | bytes }}
           </td>
           <td>
-            {{ media.created | moment('L') }}
+            {{ media.created | luxon('ff') }}
           </td>
         </tr>
       </tbody>

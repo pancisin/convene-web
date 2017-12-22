@@ -15,7 +15,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 	@Query("SELECT activity FROM Page page JOIN page.activities activity WHERE page.id = :page_id")
 	public Page<Activity> getByPage(@Param("page_id") Long page_id, Pageable pageable);
 	
-	@Query("SELECT activity FROM Conference conference JOIN conference.activities activity WHERE conference.id = :conference_id")
+	@Query("SELECT activity FROM Activity activity WHERE activity.conference.id = :conference_id")
 	public Page<Activity> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
 	
 	@Query("SELECT activity FROM Activity activity WHERE activity.user.id = :user_id")

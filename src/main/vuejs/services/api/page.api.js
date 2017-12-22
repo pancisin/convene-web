@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import PageAdministratorApi from './page-administrator.api';
 
 const PAGE_API_URL = '/api/page';
@@ -94,8 +94,8 @@ export default {
     Vue.http.get(`${PAGE_API_URL}/${id}/event/${page}/${size}`, {
       params: {
         orderBy: 'date ASC',
-        fromDate: params.from != null ? moment(params.from).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
-        toDate: params.to != null ? moment(params.to).format('YYYY-MM-DD') : moment().add(1, 'M').format('YYYY-MM-DD')
+        fromDate: params.from != null ? DateTime.fromMillis(params.from).toSQLDate() : DateTime.local().toSQLDate(),
+        toDate: params.to != null ? DateTime.fromMillis(params.to).toSQLDate() : DateTime.local().plus({ months: 1 }).toSQLDate()
       }
     }).then(response => {
       success(response.body);

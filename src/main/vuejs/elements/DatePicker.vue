@@ -8,7 +8,7 @@
       ref="input"
       :placeholder="placeholder"
       :name="name"
-      :value="selected | moment('L')"
+      :value="selected | luxon('D')"
       class="form-control"
       @focus="focusChanged"
       @blur="focusChanged">
@@ -24,7 +24,7 @@
             <i class="fa fa-arrow-left"
               aria-hidden="true"></i>
           </a>
-          <h4 class="text-center">{{ focusDate.toFormat('MMMM yyyy') }}</h4>
+          <h4 class="text-center">{{ focusDate.valueOf() | luxon('LLLL yyyy') }}</h4>
           <a class="btn btn-link waves-effect waves-light"
             @click="moveCursor(1)">
             <i class="fa fa-arrow-right"
@@ -92,7 +92,7 @@ export default {
   computed: {
     ...mapGetters(['locale']),
     weekdays () {
-      return Info.weekdays();
+      return Info.weekdays('short');
     }
   },
   components: {
@@ -111,10 +111,10 @@ export default {
     updateFocusDate (timestamp) {
       const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
         zone: 'utc'
-      }).startOf('day');
+      }).toLocal().startOf('day');
 
       if (dateTime.isValid) {
-        this.selected = dateTime;
+        this.selected = dateTime.valueOf();
         this.focusDate = dateTime;
       }
 
@@ -157,8 +157,10 @@ export default {
     },
     select (day) {
       this.selected = day.timestamp;
+      const utc_timestamp = DateTime.fromMillis(day.timestamp).setZone('utc').valueOf();
+
       this.display = false;
-      this.$emit('input', day.timestamp);
+      this.$emit('input', utc_timestamp);
     },
     outside: function () {
       if (focus) this.display = false;
