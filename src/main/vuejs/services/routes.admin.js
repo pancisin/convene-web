@@ -213,7 +213,7 @@ export default [
       {
         path: 'attendees',
         name: 'event.attendees',
-        component: resolve => require(['../pages/event/Attendees.vue'], resolve),
+        component: resolve => require(['../pages/templates/Attendees.vue'], resolve),
         meta: {
           title: 'Attendees'
         }

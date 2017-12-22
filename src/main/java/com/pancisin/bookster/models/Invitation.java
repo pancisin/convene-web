@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.views.Compact;
 
 @Entity
-@Table(name = "invitations", uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "event_id" }) })
+@Table(name = "invitations")
 public class Invitation {
 
 	@Id
@@ -39,11 +41,13 @@ public class Invitation {
 	private Calendar created;
 
 	@JsonIgnore
-	@ManyToOne(optional = true)
+	@ManyToOne
+	@JoinTable(name = "events_invitations", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
 	private Event event;
-	
+
 	@JsonIgnore
-	@ManyToOne(optional = true)
+	@ManyToOne
+	@JoinTable(name = "conferences_invitations", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "conference_id"))
 	private Conference conference;
 
 	public Invitation() {

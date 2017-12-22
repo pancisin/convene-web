@@ -12,7 +12,8 @@
             <!--<input type="email" v-model="invitation.email" class="form-control" placeholder="Email">-->
             <span class="input-group-btn">
               <input type="submit"
-                class="btn waves-effect waves-light btn-primary">Invite</input>
+                class="btn waves-effect waves-light btn-primary">
+                Invite
             </span>
           </div>
         </form>
@@ -33,7 +34,7 @@
               <td v-else>
                 {{ inv.user.firstName }} {{ inv.user.lastName }}
               </td>
-              <td class="text-right">{{ inv.created | luxon('fff') }}</td>
+              <td class="text-right">{{ inv.created | luxon('FF') }}</td>
               <th class="text-right">
                 <a class="text-danger btn btn-link btn-xs"
                   @click="cancel(inv.id)">
@@ -68,13 +69,17 @@ import {
 } from 'elements';
 
 export default {
-  name: 'event-attendees',
+  name: 'attendees',
+  inject: ['provider'],
   components: {
     UserSearch,
     UserList
   },
   props: {
     editable: Boolean
+  },
+  created () {
+    this.initialize();
   },
   data () {
     return {
@@ -83,12 +88,31 @@ export default {
       invitation: {}
     };
   },
+  computed: {
+    api () {
+      return this.provider.api;
+    }
+  },
   methods: {
     cancel (invitation_id) {
       this.$http.delete('/api/invitation/' + invitation_id).then(response => {
         this.invitations = this.invitations.filter(x => {
           return x.id !== invitation_id;
         });
+      });
+    },
+    initialize () {
+      this.api.getAttendees(attendees => {
+        this.attendees = attendees;
+      });
+      this.api.getInvitations(invitations => {
+        this.invitations = invitations;
+      });
+    },
+    invite () {
+      this.api.postInvitation(this.invitation, invitation => {
+        this.invitations.push(invitation);
+        this.invitation = {};
       });
     }
   }

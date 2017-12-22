@@ -60,9 +60,7 @@ export default {
     const provider = {};
 
     Object.defineProperty(provider, 'api', {
-      get () {
-        return this.injector;
-      }
+      get: () => this.injector
     });
 
     return { provider };

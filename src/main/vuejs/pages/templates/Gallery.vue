@@ -115,7 +115,9 @@ export default {
     };
   },
   components: {
-    ImageUpload, Masonry, MasonryItem
+    ImageUpload,
+    Masonry,
+    MasonryItem
   },
   created () {
     this.getGallery();
