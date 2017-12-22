@@ -113,10 +113,10 @@ import {
 import PublicApi from 'api/public.api';
 import RootApi from 'api/api';
 import { mapGetters } from 'vuex';
-import moment from 'moment';
 import UserApi from 'api/user.api';
 import EventEditor from '../event/Editor';
 import EventApi from 'api/event.api';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'events',
@@ -124,9 +124,7 @@ export default {
     return {
       eventsPaginator: {},
       filters: {
-        timestamp: moment()
-          .startOf('day')
-          .valueOf(),
+        timestamp: DateTime.utc().startOf('day').valueOf(),
         authorType: '',
         authorId: '0'
       },
@@ -204,10 +202,10 @@ export default {
       const index = this.eventsPaginator.content.findIndex(
         e => e.id === event.id
       );
-      const remove =
-        moment(event.date)
-          .startOf('day')
-          .valueOf() !== this.filters.timestamp;
+
+      const remove = DateTime.fromMillis(event.date, {
+        zone: 'utc'
+      }).startOf('day').valueOf() !== this.filters.timestamp;
 
       if (index === -1) {
         if (!remove) {

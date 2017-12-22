@@ -20,12 +20,17 @@ import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
 import DropdownMenu from '../DropdownMenu';
 import DropdownMenuItem from '../DropdownMenuItem';
+import { Settings } from 'luxon';
 
 export default {
   name: 'lang-switcher',
   created () {
     if (this.locales.length === 0) {
       this.initializeLocales();
+    }
+
+    if (!this.authenticated) {
+      moment.locale(navigator.language || 'en');
     }
   },
   components: {
@@ -46,6 +51,7 @@ export default {
         }
 
         moment.locale(value.name);
+        Settings.defaultLocale = value.name;
         this.$i18n.locale = value.name;
       }
     }

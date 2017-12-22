@@ -16,7 +16,7 @@
           <span class="year">{{ event.date | moment('YYYY') }}</span>
         </div>
 
-        <img :src="event.poster.path" />
+        <vue-image v-if="event.poster" :src="event.poster.path" />
       </div>
 
       <div class="featured-event-content">

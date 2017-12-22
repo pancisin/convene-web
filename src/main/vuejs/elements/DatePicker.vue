@@ -1,6 +1,8 @@
 <template>
-  <div class="date-picker-container"
+  <div 
+    class="date-picker-container"
     v-click-outside="outside">
+
     <input v-show="!inline"
       type="text"
       ref="input"
@@ -22,7 +24,7 @@
             <i class="fa fa-arrow-left"
               aria-hidden="true"></i>
           </a>
-          <h4 class="text-center">{{ focusDate.format('MMMM YYYY') }}</h4>
+          <h4 class="text-center">{{ focusDate.toFormat('MMMM yyyy') }}</h4>
           <a class="btn btn-link waves-effect waves-light"
             @click="moveCursor(1)">
             <i class="fa fa-arrow-right"
@@ -43,11 +45,11 @@
             <tbody>
               <tr v-for="(week, index) in weeks"
                 :key="index">
-                <td v-for="(day, i) in week"
-                  :key="i"
+                <td v-for="(day, index) in week"
+                  :key="index"
                   :class="{ 
                       'current' : selected == day.timestamp, 
-                      'disabled' : day.month != focusDate.month()
+                      'disabled' : day.month != focusDate.month
                     }">
                   <a class="monthday"
                     v-text="day.day"
@@ -62,13 +64,18 @@
   </div>
 </template>
 <script>
-import moment from 'moment';
 import { mapGetters } from 'vuex';
 import SlideTransition from '../functional/SlideTransition';
+import { DateTime, Info } from 'luxon';
 
 export default {
   props: {
-    value: [ Number, String ],
+    value: {
+      type: [ Number, String ],
+      default () {
+        return DateTime.utc().startOf('day').valueOf();
+      }
+    },
     placeholder: String,
     inline: Boolean,
     name: String
@@ -79,77 +86,69 @@ export default {
       display: false,
       selected: null,
       focus: false,
-      focusDate: moment()
+      focusDate: {}
     };
   },
   computed: {
     ...mapGetters(['locale']),
-    weekdays: function () {
-      var wkds = moment.weekdays();
-      wkds.push(wkds.shift());
-      return wkds;
+    weekdays () {
+      return Info.weekdays();
     }
   },
   components: {
     SlideTransition
   },
-  created: function () {
-    const value = moment(parseInt(this.value, 10));
-    if (value.isValid()) {
-      this.selected = value.startOf('day');
-      this.focusDate = value.clone();
-    }
-
-    moment.locale('sk');
-    this.updateCalendar();
+  created () {
+    this.updateFocusDate(this.value);
   },
   watch: {
     focus (newVal) {
       if (newVal) this.display = true;
     },
-    value (newVal) {
-      const value = moment(parseInt(newVal, 10));
-      if (value.isValid()) {
-        this.selected = value.startOf('day');
-        this.focusDate = value.clone();
-        this.updateCalendar();
-      }
-    },
-    locale (newVal) {
-      moment.locale(newVal.name);
-      this.updateCalendar();
-    }
+    value: 'updateFocusDate'
   },
   methods: {
+    updateFocusDate (timestamp) {
+      const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
+        zone: 'utc'
+      }).startOf('day');
+
+      if (dateTime.isValid) {
+        this.selected = dateTime;
+        this.focusDate = dateTime;
+      }
+
+      this.updateCalendar();
+    },
     updateCalendar () {
-      var start = this.focusDate.clone().startOf('month').startOf('isoweek');
-      var end = this.focusDate.clone().endOf('month').endOf('isoweek');
+      var start = this.focusDate.startOf('month').startOf('week');
+      var end = this.focusDate.endOf('month').endOf('week');
 
       this.weeks = [];
-      var first_week = start.week();
+      const first_week = start.weekNumber;
 
-      while (start.diff(end, 'days') < 1) {
-        var week_index = start.week() - first_week;
+      while (start.diff(end, 'days').days <= 0) {
+        var week_index = start.weekNumber - first_week;
 
         if (this.weeks[week_index] == null) {
           this.weeks[week_index] = [];
         }
 
         this.weeks[week_index].push({
-          day: start.date(),
-          timestamp: start.valueOf(),
-          month: start.month(),
-          year: start.year()
+          day: start.day,
+          timestamp: start.startOf('day').valueOf(),
+          month: start.month
         });
-        start.add(1, 'days');
+
+        start = start.plus({
+          days: 1
+        });
       }
     },
     moveCursor (i) {
-      if (i > 0) {
-        this.focusDate.add(1, 'M');
-      } else {
-        this.focusDate.subtract(1, 'M');
-      }
+      this.focusDate = this.focusDate.plus({
+        months: i
+      });
 
       this.updateCalendar();
     },

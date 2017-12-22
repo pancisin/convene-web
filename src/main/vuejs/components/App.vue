@@ -17,12 +17,14 @@
 import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
 import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
+import { Settings } from 'luxon';
 
 export default {
   name: 'app-root',
   created () {
     if (this.authenticated) {
       this.initializeUser().then(user => {
+        Settings.defaultLocale = user.locale.name;
         moment.locale(user.locale.name);
         this.$i18n.locale = user.locale.name;
         this.$ga.set('userId', user.id);
