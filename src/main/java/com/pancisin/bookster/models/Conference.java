@@ -44,8 +44,8 @@ public class Conference implements IAuthor {
 	private Long id;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "conference", cascade = CascadeType.REMOVE)
-	private List<ConferenceAdministrator> conferenceAdministrators;
+	@OneToMany(mappedBy = "conference")
+	private List<Administrator> administrators;
 
 	@Column
 	private String name;
@@ -99,7 +99,7 @@ public class Conference implements IAuthor {
 	
 	@JsonIgnore
 	public User getOwner() {
-		Optional<ConferenceAdministrator> owner = this.conferenceAdministrators.stream()
+		Optional<Administrator> owner = this.administrators.stream()
 				.filter(x -> x.getRole() == PageRole.ROLE_OWNER).findFirst();
 
 		if (owner.isPresent())
@@ -133,15 +133,15 @@ public class Conference implements IAuthor {
 	@Transient
 	@JsonView(Summary.class)
 	@JsonIgnoreProperties({"user"}) 
-	public ConferenceAdministrator getPrivilege() {
+	public Administrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
 				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (this.conferenceAdministrators == null || user == null)
+			if (this.administrators == null || user == null)
 				return null;
 
-			Optional<ConferenceAdministrator> pUser = this.conferenceAdministrators.stream()
+			Optional<Administrator> pUser = this.administrators.stream()
 					.filter(x -> x.getUser().getId() == user.getId()).findFirst();
 
 			if (pUser.isPresent())
@@ -229,8 +229,8 @@ public class Conference implements IAuthor {
 		return invitations;
 	}
 
-	public List<ConferenceAdministrator> getConferenceAdministrators() {
-		return conferenceAdministrators;
+	public List<Administrator> getAdministrators() {
+		return administrators;
 	}
 
 	public List<ConferenceAttendee> getAttendees() {

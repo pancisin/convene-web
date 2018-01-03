@@ -28,9 +28,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
+import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.ConferenceAttendee;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
@@ -47,8 +47,8 @@ import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
+import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
-import com.pancisin.bookster.repository.ConferenceAdministratorRepository;
 import com.pancisin.bookster.repository.ConferenceAttendeeRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
@@ -81,9 +81,6 @@ public class ConferenceController {
 	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
-	private ConferenceAdministratorRepository caRepository;
-
-	@Autowired
 	private MetaFieldRepository cmfRepository;
 
 	@Autowired
@@ -104,6 +101,9 @@ public class ConferenceController {
 	@Autowired
 	private MediaRepository mediaRepository;
 
+	@Autowired
+	private AdministratorRepository administratorRepository;
+	
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {
@@ -257,7 +257,7 @@ public class ConferenceController {
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long conference_id) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-		return ResponseEntity.ok(stored.getConferenceAdministrators());
+		return ResponseEntity.ok(stored.getAdministrators());
 	}
 
 	@PostMapping("/administrator")
@@ -270,10 +270,10 @@ public class ConferenceController {
 
 		User existing = userRepository.findByEmail(user.getEmail());
 		if (existing != null) {
-			ConferenceAdministrator pa = new ConferenceAdministrator(stored, existing, false);
+			Administrator pa = new Administrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
 
-			caRepository.save(pa);
+			administratorRepository.save(pa);
 			return ResponseEntity.ok(pa);
 		}
 

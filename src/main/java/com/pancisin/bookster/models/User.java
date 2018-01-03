@@ -128,14 +128,6 @@ public class User implements UserDetails, Principal, IAuthor {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
-	private List<PageAdministrator> pageAdministrators;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
-	private List<ConferenceAdministrator> conferenceAdministrators;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
 	private List<UserSubscription> subscriptions = new ArrayList<UserSubscription>();
 
 	@NotNull
@@ -308,59 +300,12 @@ public class User implements UserDetails, Principal, IAuthor {
 		return this.email;
 	}
 
-	@JsonIgnore
-	public List<Page> getPages() {
-		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().map(x -> {
-				if (x.getPage().getState() != PageState.DELETED)
-					return x.getPage();
-				else
-					return null;
-			}).filter(x -> x != null).collect(Collectors.toList());
-		else
-			return null;
-	}
-
-	@JsonIgnore
-	public List<Page> getOwningPages() {
-		if (this.pageAdministrators != null)
-			return this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER).map(x -> x.getPage())
-					.collect(Collectors.toList());
-		else
-			return null;
-	}
-
-	@JsonIgnore
-	public List<Conference> getConferences() {
-		if (this.conferenceAdministrators != null)
-			return this.conferenceAdministrators.stream().map(x -> x.getConference()).collect(Collectors.toList());
-		else
-			return null;
-	}
-
-	@JsonIgnore
-	public List<Conference> getOwningConferences() {
-		if (this.conferenceAdministrators != null)
-			return this.conferenceAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
-					.map(x -> x.getConference()).collect(Collectors.toList());
-		else
-			return null;
-	}
-
 	public Locale getLocale() {
 		return locale;
 	}
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
-	}
-
-	public List<PageAdministrator> getPageAdministrators() {
-		return pageAdministrators;
-	}
-
-	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
-		this.pageAdministrators = pageAdministrators;
 	}
 
 	public List<UserSubscription> getSubscriptions() {

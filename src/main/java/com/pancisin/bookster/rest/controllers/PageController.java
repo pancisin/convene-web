@@ -31,12 +31,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
+import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
@@ -50,7 +50,7 @@ import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
-import com.pancisin.bookster.repository.PageAdministratorRepository;
+import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
@@ -73,7 +73,7 @@ public class PageController {
 	private StorageServiceImpl storageService;
 
 	@Autowired
-	private PageAdministratorRepository paRepository;
+	private AdministratorRepository paRepository;
 
 	@Autowired
 	private PlaceRepository placeRepository;
@@ -224,7 +224,7 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
-		return ResponseEntity.ok(stored.getPageAdministrators());
+		return ResponseEntity.ok(stored.getAdministrators());
 	}
 
 	@PostMapping("/administrator")
@@ -237,7 +237,12 @@ public class PageController {
 
 		User existing = userRepository.findByEmail(user.getEmail());
 		if (existing != null) {
-			PageAdministrator pa = new PageAdministrator(stored, existing, false);
+				
+			if (stored.getAdministrators().stream().anyMatch(a -> a.getUser().getId() == existing.getId())) {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+			
+			Administrator pa = new Administrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
 
 			paRepository.save(pa);

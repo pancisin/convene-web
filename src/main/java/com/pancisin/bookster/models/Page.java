@@ -61,7 +61,7 @@ public class Page implements IAuthor {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "page")
-	private List<PageAdministrator> pageAdministrators;
+	private List<Administrator> administrators;
 
 	@Column
 	@JsonView(Compact.class)
@@ -116,7 +116,7 @@ public class Page implements IAuthor {
 
 	@JsonIgnore
 	public User getOwner() {
-		Optional<PageAdministrator> owner = this.pageAdministrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
+		Optional<Administrator> owner = this.administrators.stream().filter(x -> x.getRole() == PageRole.ROLE_OWNER)
 				.findFirst();
 
 		if (owner.isPresent())
@@ -162,15 +162,15 @@ public class Page implements IAuthor {
 	@Transient
 	@JsonView(Summary.class)
 //	@JsonIgnoreProperties({"user"}) 
-	public PageAdministrator getPrivilege() {
+	public Administrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
 				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (this.pageAdministrators == null || user == null)
+			if (this.administrators == null || user == null)
 				return null;
 
-			Optional<PageAdministrator> pUser = this.pageAdministrators.stream()
+			Optional<Administrator> pUser = this.administrators.stream()
 					.filter(x -> x.getUser().getId() == user.getId()).findFirst();
 
 			if (pUser.isPresent())
@@ -260,12 +260,12 @@ public class Page implements IAuthor {
 		this.posterData = posterData;
 	}
 
-	public List<PageAdministrator> getPageAdministrators() {
-		return pageAdministrators;
+	public List<Administrator> getAdministrators() {
+		return administrators;
 	}
 
-	public void setPageAdministrators(List<PageAdministrator> pageAdministrators) {
-		this.pageAdministrators = pageAdministrators;
+	public void setAdmistrators(List<Administrator> administrators) {
+		this.administrators = administrators;
 	}
 
 	public List<Place> getPlaces() {

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.views.Summary;
+import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
 @RestController
@@ -20,6 +21,9 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PageRepository pageRepository;
+	
 	@JsonView(Summary.class)
 	@GetMapping()
 	public ResponseEntity<User> getUserData(@PathVariable Long user_id) {
@@ -40,8 +44,7 @@ public class UserController {
 	@JsonView(Summary.class)
 	@GetMapping("/page")
 	public ResponseEntity<?> getPage(@PathVariable Long user_id) {
-		User stored = userRepository.findOne(user_id);
-		return ResponseEntity.ok(stored.getPages());
+		return ResponseEntity.ok(pageRepository.getByOwner(user_id));
 	}
 
 	@GetMapping("/followed-pages")

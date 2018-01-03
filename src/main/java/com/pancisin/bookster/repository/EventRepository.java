@@ -29,14 +29,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	@Query("SELECT event FROM Event event WHERE event.state = 'PUBLISHED' AND DATE(event.date) = DATE(:date)")
 	public Page<Event> getPublicByDate(@Param("date") Calendar date, Pageable pageable);
 
-	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.pageAdministrators administrator LEFT JOIN event.conference conference LEFT JOIN conference.conferenceAdministrators cAdmin WHERE (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId OR cAdmin.user.id = :userId) AND DATE(event.date) = DATE(:date)")
+	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.administrators administrator LEFT JOIN event.conference conference LEFT JOIN conference.administrators cAdmin WHERE (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId OR cAdmin.user.id = :userId) AND DATE(event.date) = DATE(:date)")
 	public Page<Event> getForUserByDate(@Param("userId") Long userId, @Param("date") Calendar date, Pageable pageable);
 
-	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.pageAdministrators administrator WHERE page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId)")
+	@Query("SELECT DISTINCT event FROM Event event LEFT JOIN event.page page LEFT JOIN page.administrators administrator WHERE page.id = :page_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND (event.state = 'PUBLISHED' OR event.owner.id = :userId OR administrator.user.id = :userId)")
 	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,
 			@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("userId") Long userId);
 
-	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.pageAdministrators administrator WHERE user.id = :userId AND event.date >= CURDATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
+	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.administrators administrator WHERE user.id = :userId AND event.date >= CURDATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
 	public List<Event> getAttending(@Param("userId") Long userId);
 
 	@Query("SELECT event FROM Event event WHERE DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.state = 'PUBLISHED' AND event.featured = 1")

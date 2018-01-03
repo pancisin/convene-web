@@ -14,7 +14,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Sets;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.repository.PageAdministratorRepository;
+import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
 @Component
@@ -24,7 +24,7 @@ public class ActiveUserService {
 	private UserRepository userRepository;
 	
 	@Autowired
-	private PageAdministratorRepository paRepository;
+	private AdministratorRepository paRepository;
 	
 	private LoadingCache<String, UserStats> statsByUser = CacheBuilder.newBuilder()
 			.build(new CacheLoader<String, UserStats>() {

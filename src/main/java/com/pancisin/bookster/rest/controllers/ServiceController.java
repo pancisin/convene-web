@@ -72,7 +72,7 @@ public class ServiceController {
 
 		String message = "User " + auth.getUsername() + " requested " + request.getUnits() + " units of "
 				+ service.getName();
-		service.getPage().getPageAdministrators().stream().forEach(x -> {
+		service.getPage().getAdministrators().stream().forEach(x -> {
 			emailService.sendSimpleMessage(x.getUser().getEmail(), "Service request", message);
 			notifier.notifyUser(x.getUser(), "Service request", message);
 		});

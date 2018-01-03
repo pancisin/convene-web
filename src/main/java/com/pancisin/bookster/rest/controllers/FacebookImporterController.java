@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.EventBot;
 import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.PageImport;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.repository.EventBotRepository;
-import com.pancisin.bookster.repository.PageAdministratorRepository;
+import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.PageImportRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
@@ -58,7 +58,7 @@ public class FacebookImporterController {
 	private EventBotRepository eventBotRepository;
 
 	@Autowired
-	private PageAdministratorRepository paRepository;
+	private AdministratorRepository administratorRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -168,9 +168,9 @@ public class FacebookImporterController {
 
 					User user = userRepository.findByEmail(principal.getName());
 
-					PageAdministrator pa = new PageAdministrator(page, user, true);
+					Administrator pa = new Administrator(page, user, true);
 					pa.setRole(PageRole.ROLE_OWNER);
-					paRepository.save(pa);
+					administratorRepository.save(pa);
 				} catch (DataIntegrityViolationException ex) {
 					page = pageRepository.findByFacebookId(facebook_id);
 					ex.printStackTrace();

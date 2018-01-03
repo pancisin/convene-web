@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import ConferenceAdministratorApi from './conference-administrator.api';
-
 const CONFERENCE_API_URL = '/api/conference';
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');
@@ -10,10 +8,6 @@ export default {
 
   get parent_type () {
     return 'conference';
-  },
-
-  get administrator () {
-    return ConferenceAdministratorApi;
   },
 
   /**

@@ -179,9 +179,9 @@ public class Event {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			
 			if (user != null) {
-				if (this.page != null && this.page.getPageAdministrators() != null) {
+				if (this.page != null && this.page.getAdministrators() != null) {
 					return this.page.getPrivilege();
-				} else if (this.conference != null && this.conference.getConferenceAdministrators() != null) {
+				} else if (this.conference != null && this.conference.getAdministrators() != null) {
 					return this.conference.getPrivilege();
 				} else if (this.owner != null && this.owner.getId() == user.getId()) {
 					HashMap<String, String> result = new HashMap<String, String>();

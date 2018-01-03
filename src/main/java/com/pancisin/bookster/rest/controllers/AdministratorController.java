@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.PageAdministrator;
-import com.pancisin.bookster.repository.PageAdministratorRepository;
+import com.pancisin.bookster.models.Administrator;
+import com.pancisin.bookster.repository.AdministratorRepository;
 
 @RestController
-@RequestMapping("/api/page-administrator/{pa_id}")
-@PreAuthorize("hasPermission(#pa_id, 'page-administrator', 'update')")
-public class PageAdministratorController {
+@RequestMapping("/api/administrator/{pa_id}")
+@PreAuthorize("hasPermission(#pa_id, 'administrator', 'update')")
+public class AdministratorController {
 
 	@Autowired
-	private PageAdministratorRepository paRepository;
+	private AdministratorRepository administratorRepository;
 
 	@GetMapping
-	public ResponseEntity<?> getPageAdministrator(@PathVariable Long pa_id) {
-		return ResponseEntity.ok(paRepository.findOne(pa_id));
+	public ResponseEntity<?> getAdministrator(@PathVariable Long pa_id) {
+		return ResponseEntity.ok(administratorRepository.findOne(pa_id));
 	}
 
 	@PutMapping
-	public ResponseEntity<?> putAdministrator(@PathVariable Long pa_id, @RequestBody PageAdministrator pa) {
-		PageAdministrator stored = paRepository.findOne(pa_id);
+	public ResponseEntity<?> putAdministrator(@PathVariable Long pa_id, @RequestBody Administrator pa) {
+		Administrator stored = administratorRepository.findOne(pa_id);
 
 		stored.setRole(pa.getRole());
 		stored.setActive(pa.getActive());
 
-		return ResponseEntity.ok(paRepository.save(stored));
+		return ResponseEntity.ok(administratorRepository.save(stored));
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> deletePageAdministrator(@PathVariable Long pa_id) {
-		paRepository.delete(pa_id);
+	public ResponseEntity<?> deleteAdministrator(@PathVariable Long pa_id) {
+		administratorRepository.delete(pa_id);
 		return ResponseEntity.ok("success");
 	}
 }

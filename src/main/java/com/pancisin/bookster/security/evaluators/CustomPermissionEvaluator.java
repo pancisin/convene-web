@@ -8,13 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
+import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.ConferenceAdministrator;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Notification;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.PageAdministrator;
 import com.pancisin.bookster.models.Programme;
 import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
@@ -26,7 +25,7 @@ import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
-import com.pancisin.bookster.repository.PageAdministratorRepository;
+import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.ProgrammeRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
@@ -59,7 +58,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	private ServiceRepository serviceRepository;
 
 	@Autowired
-	private PageAdministratorRepository paRepository;
+	private AdministratorRepository paRepository;
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -93,7 +92,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		switch (targetType) {
 		case "book_request":
 			BookRequest bookRequest = bookRequestRepository.findOne((Long) targetId);
-			return bookRequest.getService().getPage().getPageAdministrators().stream()
+			return bookRequest.getService().getPage().getAdministrators().stream()
 					.anyMatch(x -> x.getUser().getId() == userId);
 
 		case "event":
@@ -119,7 +118,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			if (!authenticated)
 				return false;
 
-			Notification notification = notificationRepository.findById((UUID) targetId);
+			Notification notification = notificationRepository.findOne((UUID) targetId);
 			return notification.getRecipient().getId() == userId;
 
 		case "page":
@@ -142,7 +141,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			}
 
 			if (permission.equals("read")) {
-				return page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED;
+				return page.getState() == PageState.PUBLISHED || page.getState() == PageState.BLOCKED || checkPageOwnership(page, userId);
 			}
 		case "conference":
 			Conference conference = conferenceRepository.findOne((Long) targetId);
@@ -170,18 +169,16 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			Service service = serviceRepository.findOne((Long) targetId);
 
 			if (permission == "update")
-				return service.getPage().getPageAdministrators().stream().anyMatch(x -> x.getUser().getId() == userId);
+				return service.getPage().getAdministrators().stream().anyMatch(x -> x.getUser().getId() == userId);
 			else
 				return true;
 
-		case "page-administrator":
+		case "administrator":
 			return true;
 
 		case "invitation":
 			return true;
 
-		case "conference-administrator":
-			return true;
 		}
 
 		return false;
@@ -205,11 +202,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean checkPageOwnership(Page page, Long userId) {
-		Optional<PageAdministrator> oPa = page.getPageAdministrators().stream().filter(x -> x.getUser().getId() == userId)
+		Optional<Administrator> oPa = page.getAdministrators().stream().filter(x -> x.getUser().getId() == userId)
 				.findFirst();
 
 		if (oPa.isPresent()) {
-			PageAdministrator pa = oPa.get();
+			Administrator pa = oPa.get();
 			return pa.getActive() && (pa.getRole() == PageRole.ROLE_ADMINISTRATOR || pa.getRole() == PageRole.ROLE_OWNER);
 		}
 
@@ -217,12 +214,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean checkConferenceOwnership(Conference conference, Long userId) {
-		Optional<ConferenceAdministrator> oCa = conference.getConferenceAdministrators().stream()
+		Optional<Administrator> oCa = conference.getAdministrators().stream()
 				.filter(x -> x.getUser().getId() == userId).findFirst();
 
 		if (oCa.isPresent()) {
-			ConferenceAdministrator ca = oCa.get();
-			return ca.isActive() && (ca.getRole() == PageRole.ROLE_ADMINISTRATOR || ca.getRole() == PageRole.ROLE_OWNER);
+			Administrator ca = oCa.get();
+			return ca.getActive() && (ca.getRole() == PageRole.ROLE_ADMINISTRATOR || ca.getRole() == PageRole.ROLE_OWNER);
 		}
 
 		return false;

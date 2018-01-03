@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { DateTime } from 'luxon';
-import PageAdministratorApi from './page-administrator.api';
 
 const PAGE_API_URL = '/api/page';
 
@@ -12,10 +11,6 @@ export default {
 
   get parent_type () {
     return 'page';
-  },
-
-  get administrator () {
-    return PageAdministratorApi;
   },
 
   /**

@@ -52,7 +52,7 @@ public class ConferenceActivityMonitor {
 		activity = activityRepository.save(activity);
 
 		if (activityLog.type() == ActivityType.ATTENDING) {
-			stored.getConferenceAdministrators().stream().forEach(ca -> {
+			stored.getAdministrators().stream().forEach(ca -> {
 				notifier.notifyUser(ca.getUser(), "notification.conference.new_attender");
 			});
 		}
