@@ -113,7 +113,7 @@ export default {
 
   .featured-event-content {
     background-color: #fff;
-    padding: 15px;
+    padding: 10px 15px;
 
     h4 {
       margin: 0;

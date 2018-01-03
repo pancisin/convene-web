@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
 import DropdownMenu from '../DropdownMenu';
 import DropdownMenuItem from '../DropdownMenuItem';

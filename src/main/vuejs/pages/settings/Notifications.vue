@@ -20,8 +20,14 @@
       <tbody>
         <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)" :key="not.id">
           <td>{{ not.created | moment('from') }}</td>
-          <td>{{ $t(not.code + '.title') }}</td>
-          <td>{{ $t(not.code + '.message') }}</td>
+          <td>
+            <span v-t="{ path: not.code + '.title', args: { subject: not.target }}">
+            </span>
+          </td>
+          <td>
+            <span v-t="{ path: not.code + '.message', args: { subject: not.target }}">
+            </span>
+          </td>
           <td class="text-center">
             <a @click="toggleSeen(not)">
               <transition name="fade-down" mode="out-in">

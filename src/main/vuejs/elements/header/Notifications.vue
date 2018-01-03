@@ -16,9 +16,9 @@
           class="notification-item">
           <!-- <em class="fa fa-diamond"></em> -->
           <div class="notification-body">
-            <h5 class="media-heading">{{ $t(not.code + '.title') }}</h5>
+            <h5 class="media-heading" v-t="{ path: not.code + '.title', args: { subject: not.target }}"></h5>
             <p class="m-0">
-              <small>{{ $t(not.code + '.message') }}</small>
+              <small v-t="{ path: not.code + '.message', args: { subject: not.target }}"></small>
               <br> <small>{{ not.created | moment('from') }}</small>
             </p>
           </div>

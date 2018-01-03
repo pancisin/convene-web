@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import { mapGetters, mapActions } from 'vuex';
 import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 import { Settings } from 'luxon';

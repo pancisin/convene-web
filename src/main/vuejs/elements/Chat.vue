@@ -35,7 +35,6 @@
 import { mapGetters } from 'vuex';
 import { DateTime } from 'luxon';
 import ProfilePicture from './ProfilePicture';
-import moment from 'moment';
 
 export default {
   name: 'chat',
