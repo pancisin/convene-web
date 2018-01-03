@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.pancisin.bookster.model.Message;
 import com.pancisin.bookster.models.Conversation;
-import com.pancisin.bookster.models.Message;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {

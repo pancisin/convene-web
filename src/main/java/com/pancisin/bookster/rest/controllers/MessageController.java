@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.models.Message;
+import com.pancisin.bookster.model.Message;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.RecipientType;
 import com.pancisin.bookster.models.views.Compact;
@@ -39,7 +39,6 @@ public class MessageController {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@JsonView(Compact.class)
 	@GetMapping("/user/{user_id}/{page}")
 	public ResponseEntity<?> getPrivateConversation(@PathVariable Long user_id, @PathVariable int page) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -48,13 +47,11 @@ public class MessageController {
 				.ok(messageRepository.getPrivate(auth_user.getId(), user_id, new PageRequest(page, pageLimit)));
 	}
 	
-	@JsonView(Compact.class)
 	@GetMapping("/page/{page_id}/{page}")
 	public ResponseEntity<?> getPageConversations(@PathVariable Long page_id, @PathVariable int page) {
 		return ResponseEntity.ok(messageRepository.getPageMessages(page_id, new PageRequest(page, pageLimit)));
 	}
 
-	@JsonView(Compact.class)
 	@GetMapping("/event/{event_id}/{page}")
 	public ResponseEntity<?> getEventConversations(@PathVariable Long event_id, @PathVariable int page) {
 		return ResponseEntity.ok(messageRepository.getEventMessages(event_id, new PageRequest(page, pageLimit)));
@@ -86,7 +83,7 @@ public class MessageController {
 		message.setSender((User) principal);
 		message.setRecipientType(RecipientType.PAGE);
 		message.setRecipientId(page_id);
-		
+
 		return messageRepository.save(message);
 	}
 
@@ -97,7 +94,7 @@ public class MessageController {
 		message.setSender((User) principal);
 		message.setRecipientType(RecipientType.EVENT);
 		message.setRecipientId(event_id);
-		
+
 		return messageRepository.save(message);
 	}
 }
