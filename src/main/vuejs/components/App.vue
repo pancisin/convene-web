@@ -77,7 +77,10 @@ export default {
         this.$stompClient.subscribe('/user/queue/notifier', response => {
           var notification = JSON.parse(response.body);
           this.addNotification(notification);
-          this.$info(notification.code, notification.target);
+          this.$info(notification.code, {
+            target: notification.target,
+            subject: notification.subject
+          });
         });
       });
     }

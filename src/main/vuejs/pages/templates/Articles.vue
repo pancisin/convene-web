@@ -142,7 +142,7 @@ export default {
       });
     },
     deleteArticle (article) {
-      this.$prompt('notification.article.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', article.title, () => {
         ArticleApi.deleteArticle(article.id, result => {
           this.articlesPaginator.content = this.articles.filter(x => {
             x.id !== article.id;

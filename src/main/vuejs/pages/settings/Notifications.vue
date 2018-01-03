@@ -1,13 +1,12 @@
 <template>
  <panel type="table" v-loading="loading">
     <span slot="title">Notifications</span>
+    <button type="button" class="btn btn-link pull-right" @click="setAllSeen">Set all as seen</button>
+    
     <table class="table table-striped">
       <thead>
         <tr>
           <th>
-          </th>
-          <th>
-            Title
           </th>
           <th>
             Message
@@ -21,25 +20,20 @@
         <tr v-for="not in paginator.content" @contextmenu.prevent="$refs.menu.open($event, not)" :key="not.id">
           <td>{{ not.created | moment('from') }}</td>
           <td>
-            <span v-t="{ path: not.code + '.title', args: { subject: not.target }}">
-            </span>
-          </td>
-          <td>
-            <span v-t="{ path: not.code + '.message', args: { subject: not.target }}">
+            <span>
+              {{ $t(not.code, { object: not.target, subject: not.subject }) }}
             </span>
           </td>
           <td class="text-center">
             <a @click="toggleSeen(not)">
-              <transition name="fade-down" mode="out-in">
-                <i class="material-icons" v-if="not.seen" key="1">done</i>
-                <i class="material-icons" v-else key="0">radio_button_unchecked</i>
-              </transition>
+              <i class="material-icons" v-if="not.seen" key="1">radio_button_checked</i>
+              <i class="material-icons" v-else key="0">radio_button_unchecked</i>
             </a>
           </td>
         </tr>
       </tbody>
     </table>
-  
+
     <context-menu ref="menu">
       <template slot-scope="props">
         <ul>
@@ -61,7 +55,7 @@
 <script>
 import UserApi from 'api/user.api';
 import { Paginator } from 'elements';
-import NotificationApi from 'api/notification.api';
+import { mapActions } from 'vuex';
 
 export default {
   data () {
@@ -74,16 +68,21 @@ export default {
     Paginator
   },
   methods: {
+    ...mapActions(['toggleSeenNotification', 'setAllNotificationsSeen']),
     getNotifications (page) {
-      UserApi.getNotifications(page, 7, paginator => {
+      UserApi.getNotifications(page, 7, { seen: true }, paginator => {
         this.paginator = paginator;
       });
     },
-    toggleSeen (not) {
-      NotificationApi.toggleSeen(not.id, notification => {
-        const index = this.paginator.content.findIndex(n => n.id === notification.id);
-        this.paginator.content.splice(index, 1, notification);
-      });
+    async toggleSeen (not) {
+      const notification = await this.toggleSeenNotification(not);
+
+      const index = this.paginator.content.findIndex(n => n.id === notification.id);
+      this.paginator.content.splice(index, 1, notification);
+    },
+    async setAllSeen () {
+      await this.setAllNotificationsSeen();
+      this.getNotifications(0);
     }
   }
 };

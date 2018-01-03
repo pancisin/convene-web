@@ -104,7 +104,7 @@ export default {
       }
     },
     deleteSurvey (survey) {
-      this.$prompt('notification.survey.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', survey.name, () => {
         SurveyApi.deleteSurvey(survey.id, result => {
           this.surveys.forEach((s, index) => {
             if (s.id === result.id) {

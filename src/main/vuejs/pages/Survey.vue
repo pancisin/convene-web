@@ -161,7 +161,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.touched) {
-      this.$prompt('notification.survey.leave_prompt', () => {
+      this.$prompt('notification.leave_prompt', null, () => {
         next();
       });
     } else {

@@ -25,6 +25,11 @@ public class Notifier {
 		Notification notification = new Notification(code, target);
 		this.notifyUser(user, notification);
 	}
+	
+	public void notifyUser(User user, String code, String object, String subject) {
+		Notification notification = new Notification(code, object, subject);
+		this.notifyUser(user, notification);
+	}
 
 	public void notifyUser(User user, Notification notification) {
 		notification.setRecipient(user);

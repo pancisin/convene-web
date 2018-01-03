@@ -104,7 +104,7 @@ export default {
       }
     },
     deleteService (service) {
-      this.$prompt('notification.service.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', service.name, () => {
         ServiceApi.deleteService(service.id, result => {
           this.services = this.services.filter(s => {
             return s.id !== service.id;

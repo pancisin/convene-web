@@ -156,7 +156,7 @@ export default {
       });
     },
     deleteBot (bot_id) {
-      this.$prompt('notification.article-bot.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', bot_id, () => {
         ArtcleBotApi.deleteArticleBot(bot_id, result => {
           this.paginator.content = this.paginator.content.filter(bot => bot.id !== bot_id);
         });

@@ -9,6 +9,13 @@
     <dropdown-menu-item class="notifi-title">
       Notification
     </dropdown-menu-item>
+    <dropdown-menu-item v-if="notifications.length > 0">
+      <a class="btn btn-link btn-block text-primary text-right" @click="setAllNotificationsSeen">
+        <small>
+          Set all as seen
+        </small>
+      </a>
+    </dropdown-menu-item>
     <dropdown-menu-item class="notifications-list">
       <transition-group name="fade">
         <div v-for="not in notifications"
@@ -16,9 +23,8 @@
           class="notification-item">
           <!-- <em class="fa fa-diamond"></em> -->
           <div class="notification-body">
-            <h5 class="media-heading" v-t="{ path: not.code + '.title', args: { subject: not.target }}"></h5>
             <p class="m-0">
-              <small v-t="{ path: not.code + '.message', args: { subject: not.target }}"></small>
+              {{ $t(not.code, { object: not.target, subject: not.subject }) }}
               <br> <small>{{ not.created | moment('from') }}</small>
             </p>
           </div>
@@ -46,7 +52,6 @@
 import { mapGetters, mapActions } from 'vuex';
 import DropdownMenu from '../DropdownMenu';
 import DropdownMenuItem from '../DropdownMenuItem';
-import NotificationApi from 'api/notification.api';
 
 export default {
   name: 'notifications',
@@ -56,21 +61,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      notifications: 'unread_notifications'
-    })
+    ...mapGetters(['notifications'])
   },
   components: {
     DropdownMenu, DropdownMenuItem
   },
   methods: {
-    ...mapActions(['toggleSeenNotification']),
-    toggleSeen (not) {
-      NotificationApi.toggleSeen(not.id, notification => {
-        const index = this.notifications.findIndex(n => n.id === notification.id);
-        this.notifications.splice(index, 1, notification);
-      });
-    },
+    ...mapActions(['toggleSeenNotification', 'setAllNotificationsSeen']),
     closeNotifications (e) {
       if (this.display) {
         this.display = false;
@@ -106,6 +103,7 @@ export default {
 
     .notification-body {
       flex-grow: 1;
+      font-size: 13px;
     
       h5 {
         text-overflow: ellipsis;
@@ -116,17 +114,31 @@ export default {
       }
 
       p {
-        color: #828282;
+        small {
+          color: #828282;
+        }
       }
     }
 
     .toggle-seen-button {
       margin-left: 10px;
-      color: @color-primary;
+      color: #ccc;
+      transition: opacity .2s ease;
+      opacity: 0;
+
+      &:hover {
+        color: @color-primary;  
+      }
+    }
+
+    &:hover .toggle-seen-button {
+      opacity: 1;
     }
 
     & ~ div {
-      margin-top: 15px;
+      margin-top: 7px;
+      padding-top: 7px;
+      // border-top: 1px solid #ddd;
     }
   }
 }

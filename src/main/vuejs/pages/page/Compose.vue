@@ -156,11 +156,11 @@ export default {
       };
 
       this.updatePage(data).then(page => {
-        this.$success('notification.page.updated' + page.name);
+        this.$success('notification.page.updated', page.name);
       });
     },
     deleteP () {
-      this.$prompt('notification.page.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', this.page.name, () => {
         this.deletePage(this.page).then(() => {
           console.log('test');
         });

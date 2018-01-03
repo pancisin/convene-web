@@ -40,10 +40,19 @@ public class Notification {
 	@Column
 	private String target;
 	
+	@Column
+	private String subject;
+	
 	public Notification() {
 
 	}
 
+	public Notification(String code, String target, String subject) {
+		this.code = code;
+		this.target = target;
+		this.subject = subject;
+	}
+	
 	public Notification(String code, String target) {
 		this.code = code;
 		this.target = target;
@@ -83,5 +92,9 @@ public class Notification {
 
 	public String getCode() {
 		return code;
+	}
+
+	public String getSubject() {
+		return subject;
 	}
 }

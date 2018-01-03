@@ -1,5 +1,8 @@
 package com.pancisin.bookster.components.aspects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.transaction.Transactional;
 
 import org.aspectj.lang.annotation.AfterReturning;
@@ -56,14 +59,15 @@ public class PageActivityMonitor {
 		if (activityLog.type() == ActivityType.CREATE_EVENT) {
 			Event event = (Event) response.getBody();
 			stored.getFollowers().stream().forEach(user -> {
-				notifier.notifyUser(user, "notification.page.event_created", event.getName());
+				notifier.notifyUser(user, "notification.page.event_created", event.getName(), stored.getDisplayName());
 			});
 		}
 
 		if (activityLog.type() == ActivityType.FOLLOWING) {
 			User user = userRepository.findOne(auth.getId());
+			
 			stored.getAdministrators().stream().forEach(x -> {
-				notifier.notifyUser(x.getUser(), "notification.page.new_follower", user.getDisplayName());
+				notifier.notifyUser(x.getUser(), "notification.page.new_follower", user.getDisplayName(), stored.getDisplayName());
 			});
 		}
 
@@ -71,7 +75,7 @@ public class PageActivityMonitor {
 			Service service = (Service) response.getBody();
 
 			stored.getFollowers().stream().forEach(user -> {
-				notifier.notifyUser(user, "notification.page.service_created", service.getName());
+				notifier.notifyUser(user, "notification.page.service_created", service.getName(), stored.getDisplayName());
 			});
 		}
 	}

@@ -166,7 +166,7 @@ export default {
     },
     editModeSwitch (enabled) {
       if (!enabled && this.touched) {
-        this.$prompt('notification.dashboard.leave_prompt', () => {
+        this.$prompt('notification.leave_prompt', null, () => {
           const widgets = JSON.parse(this.original_widgets);
           this.widgets = widgets.map(w => {
             const type = this.evaluateWidget(w.type);

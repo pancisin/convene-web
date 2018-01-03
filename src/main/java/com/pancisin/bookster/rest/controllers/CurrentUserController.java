@@ -1,6 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -103,7 +105,7 @@ public class CurrentUserController {
 		stored.setLastName(user.getLastName());
 		stored.setAddress(user.getAddress());
 		stored.setMetadata(user.getMetadata());
-		
+
 		if (user.getProfilePictureData() != null && storageService.isBinary(user.getProfilePictureData())) {
 			Media profilePicture = new Media();
 			// profilePicture.setAuthor(stored);
@@ -122,10 +124,10 @@ public class CurrentUserController {
 
 	@GetMapping("/notification/{page}/{size}")
 	public ResponseEntity<?> getNotifications(@PathVariable int page, @PathVariable int size,
-			@RequestParam(name = "filterSeen", defaultValue = "false") boolean test) {
-		
+			@RequestParam(name = "seen", defaultValue = "false") boolean seen) {
+
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(notificationRepository.findByRecipientId(auth.getId(),
+		return ResponseEntity.ok(notificationRepository.findByRecipientId(auth.getId(), seen,
 				new PageRequest(page, size, new Sort(Direction.DESC, "created"))));
 	}
 
@@ -300,5 +302,20 @@ public class CurrentUserController {
 	public ResponseEntity<?> getMedias() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(mediaRepository.getByAuthor(auth.getId()));
+	}
+
+	@Transactional
+	@PatchMapping("/set-notifications-seen")
+	public ResponseEntity<?> setNotificationsSeen(@RequestParam("since") Long sinceTimestamp,
+			@RequestParam("until") Long untilTimestamp, @RequestParam("seen") boolean seen) {
+		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		Calendar sinceCal = Calendar.getInstance();
+		sinceCal.setTimeInMillis(sinceTimestamp);
+
+		Calendar untilCal = Calendar.getInstance();
+		untilCal.setTimeInMillis(untilTimestamp);
+
+		return ResponseEntity.ok(notificationRepository.setSeen(auth.getId(), sinceCal, untilCal, seen));
 	}
 }

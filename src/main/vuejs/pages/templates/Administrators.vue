@@ -15,7 +15,7 @@
           <td>
             {{ admin.user.firstName + ' ' + admin.user.lastName }}
           </td>
-          <td>{{ admin.created | luxon('ff') }}</td>
+          <td>{{ admin.granted | luxon('ff') }}</td>
           <td class="text-center">
             <select v-model="admin.role" class="form-control" @change="putAdministrator(admin)" v-if="hasPermission(admin) && editable">
               <option v-for="role in roles" :value="role">{{ $t(role.code) }}</option>

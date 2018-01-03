@@ -4,6 +4,7 @@ import PageApi from 'api/page.api';
 import EventApi from 'api/event.api';
 import NotificationApi from 'api/notification.api';
 import * as types from 'store/mutation-types';
+import { DateTime } from 'luxon';
 
 const state = {
   user: null,
@@ -28,14 +29,7 @@ const getters = {
   isAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 40,
   isSuperAdmin: state => state.user != null && state.user.role != null && state.user.role.level >= 100,
   license: state => state.user ? state.user.license : null,
-  notifications: state => state.notifications,
-  unread_notifications: state => {
-    if (state.notifications.content != null) {
-      return state.notifications.content.filter(n => !n.seen);
-    };
-
-    return [];
-  },
+  notifications: state => state.notifications.content,
   authenticated: state => {
     return state.authenticated || window.localStorage.getItem('id_token') || window.sessionStorage.getItem('id_token');
   },
@@ -158,19 +152,49 @@ const actions = {
     });
   },
   initializeNotifications ({ commit }) {
-    UserApi.getNotifications(0, 100, notifications => {
-      commit(types.SET_NOTIFICATIONS, { notifications });
+    UserApi.getNotifications(0, 100, {
+      seen: false
+    }, paginator => {
+      commit(types.SET_NOTIFICATIONS, { paginator });
     });
   },
-  toggleSeenNotification ({ commit, state}, not) {
-    NotificationApi.toggleSeen(not.id, notification => {
-      const index = state.notifications.content.findIndex(n => n.id === not.id);
-      const notifications = Object.create(state.notifications);
+  toggleSeenNotification ({ commit, state }, not) {
+    return new Promise(resolve => {
+      NotificationApi.toggleSeen(not.id, notification => {
+        const index = state.notifications.content.findIndex(n => n.id === not.id);
+        const paginator = Object.create(state.notifications);
 
-      notifications.content.splice(index, 1, notification);
+        if (index === -1) {
+          paginator.content.push(notification);
+        } else {
+          paginator.content.splice(index, 1, notification);
+        }
 
-      commit(types.SET_NOTIFICATIONS, {
-        notifications
+        paginator.content = paginator.content.filter(n => !n.seen);
+
+        commit(types.SET_NOTIFICATIONS, {
+          paginator
+        });
+
+        resolve(notification);
+      });
+    });
+  },
+  setAllNotificationsSeen ({ commit, state }) {
+    return new Promise(resolve => {
+      UserApi.setNotificationsSeen({
+        since: DateTime.utc().plus({ years: -50 }).valueOf(),
+        until: DateTime.utc().valueOf(),
+        seen: true
+      }, () => {
+        commit(types.SET_NOTIFICATIONS, {
+          paginator: {
+            ...state.notifications,
+            content: []
+          }
+        });
+
+        resolve();
       });
     });
   },
@@ -280,18 +304,18 @@ const mutations = {
     state.authenticated = user != null;
   },
 
-  [types.SET_NOTIFICATIONS] (state, { notifications }) {
-    state.notifications = notifications;
+  [types.SET_NOTIFICATIONS] (state, { paginator }) {
+    state.notifications = paginator;
   },
 
   [types.REMOVE_NOTIFICATION] (state, { notification }) {
-    state.notifications = state.notifications.filter(n => {
+    state.notifications.content = state.notifications.content.filter(n => {
       return n.id !== notification.id;
     });
   },
 
   [types.ADD_NOTIFICATION] (state, { notification }) {
-    state.notifications.push(notification);
+    state.notifications.content.unshift(notification);
   },
 
   [types.LOADING_USER] (state, loading_state) {

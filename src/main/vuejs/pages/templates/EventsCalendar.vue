@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     deleteEvent (event) {
-      this.$prompt('notification.event.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', event.name, () => {
         EventApi.deleteEvent(event.id, result => {
           this.paginator.content = this.paginator.content.filter(e => {
             return e.id !== event.id;

@@ -20,8 +20,7 @@ public class InvitationListener implements ApplicationListener<OnInviteEvent> {
 	@Override
 	public void onApplicationEvent(OnInviteEvent event) {
 		if (event.getInvitation().getUser() != null) {
-			notifier.notifyUser(event.getInvitation().getUser(), "Invitation",
-					"You've been invited to " + event.getInvitation().getEvent().getName());
+			notifier.notifyUser(event.getInvitation().getUser(), "notification.event.invitation", event.getInvitation().getEvent().getName());
 			emailService.sendSimpleMessage(event.getInvitation().getUser().getEmail(), "Invitation",
 					"You've been invited to " + event.getInvitation().getEvent().getName());
 		} else {

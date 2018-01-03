@@ -41,7 +41,7 @@ export default {
 
       this.$nextTick(() => {
         const rec = dropdown.getBoundingClientRect();
-        const xoff = window.innerWidth - (rec.left + rec.width);
+        const xoff = window.innerWidth - (rec.left + rec.width) - 30;
         this.style = {
           left: xoff < 0 ? `${xoff}px` : 0
         };

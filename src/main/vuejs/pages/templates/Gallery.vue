@@ -170,7 +170,7 @@ export default {
       });
     },
     deleteImage (uuid) {
-      this.$prompt('notification.media.delete_prompt', () => {
+      this.$prompt('notification.delete_prompt', uuid, () => {
         MediaApi.deleteMedia(uuid, gallery_item => {
           this.gallery = this.gallery.filter(g => {
             return g.id !== uuid;
