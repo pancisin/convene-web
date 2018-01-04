@@ -12,7 +12,7 @@ import javax.persistence.OneToMany
 import javax.persistence.Table
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.enums.MetaType
+import com.pancisin.bookster.model.enums.MetaType
 
 @Entity @Table(name = "meta_fields")
 data class MetaField(

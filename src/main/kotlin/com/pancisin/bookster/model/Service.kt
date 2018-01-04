@@ -13,8 +13,7 @@ import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.Page
-import com.pancisin.bookster.models.enums.Unit
+import com.pancisin.bookster.model.enums.Unit
 
 @Entity
 @Table(name = "services")

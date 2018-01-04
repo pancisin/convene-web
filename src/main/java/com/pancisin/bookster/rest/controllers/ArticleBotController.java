@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.components.ArticleBotService;
 import com.pancisin.bookster.model.ArticleBot;
 import com.pancisin.bookster.model.ArticleBotRun;
-import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.model.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 
 @RestController

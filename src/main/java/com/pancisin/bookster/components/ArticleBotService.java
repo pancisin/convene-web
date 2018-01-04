@@ -20,7 +20,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
 import com.pancisin.bookster.model.ArticleBot;
 import com.pancisin.bookster.model.ArticleBotRun;
-import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.model.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleBotRunRepository;
 import com.pancisin.bookster.repository.ArticleRepository;

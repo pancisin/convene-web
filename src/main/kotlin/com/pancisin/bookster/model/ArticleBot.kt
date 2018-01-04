@@ -22,7 +22,7 @@ import javax.persistence.Table
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.enums.BotSourceType
+import com.pancisin.bookster.model.enums.BotSourceType
 
 @Entity
 @Table(name = "article_bots")

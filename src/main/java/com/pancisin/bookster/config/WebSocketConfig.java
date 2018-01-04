@@ -43,7 +43,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/stomp").setAllowedOrigins("*").withSockJS();
 	}
-	
+
 	@Override
 	public void configureClientInboundChannel(ChannelRegistration registration) {
 		registration.setInterceptors(new ChannelInterceptorAdapter() {
@@ -58,7 +58,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 					User parsedUser = jwtUtil.parseToken(token.substring(token.lastIndexOf(" ") + 1));
 
 					String[] roleArray = new String[1];
-					roleArray[0] = parsedUser.getRole().getName();
+					roleArray[0] = parsedUser.getRole().getProp();
 
 					List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(roleArray);
 

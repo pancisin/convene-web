@@ -23,7 +23,7 @@ import com.pancisin.bookster.model.MetaValue;
 import com.pancisin.bookster.model.Survey;
 import com.pancisin.bookster.model.SurveySubmission;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.SurveyState;
+import com.pancisin.bookster.model.enums.SurveyState;
 import com.pancisin.bookster.repository.MetaFieldRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.SurveySubmissionRepository;

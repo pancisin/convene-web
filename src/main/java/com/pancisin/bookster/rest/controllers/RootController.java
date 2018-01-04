@@ -75,7 +75,7 @@ public class RootController {
 			@RequestParam(name = "categoryId", required = false) Long categoryId,
 			@RequestParam(name = "branchId", required = false) Long branchId) {
 
-		org.springframework.data.domain.Page<com.pancisin.bookster.models.Page> pages = null;
+		org.springframework.data.domain.Page<com.pancisin.bookster.model.Page> pages = null;
 		Pageable pageable = new PageRequest(page, limit, new Sort(Sort.Direction.ASC, "name"));
 
 		if (branchId != null) {
@@ -143,7 +143,7 @@ public class RootController {
 	@GetMapping({ "/api/page/{page_identifier}", "/public/page/{page_identifier}" })
 	@PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
-		com.pancisin.bookster.models.Page page = null;
+		com.pancisin.bookster.model.Page page = null;
 
 		try {
 			Long page_id = Long.parseLong((String) page_identifier);

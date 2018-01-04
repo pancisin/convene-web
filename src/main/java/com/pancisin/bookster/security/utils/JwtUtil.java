@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.Role;
+import com.pancisin.bookster.model.enums.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -20,7 +20,7 @@ public class JwtUtil {
 	public User parseToken(String token) {
 		try {
 			Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-      
+
 			User u = new User();
       u.setEmail(body.getSubject());
       u.setId(Long.parseLong((String) body.get("userId")));
@@ -37,7 +37,7 @@ public class JwtUtil {
 	public String generateToken(User u) {
 		Claims claims = Jwts.claims().setSubject(u.getUsername());
 		claims.put("userId", u.getId() + "");
-		claims.put("role", u.getRole().getName());
+		claims.put("role", u.getRole().getProp());
 
 		return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
 	}

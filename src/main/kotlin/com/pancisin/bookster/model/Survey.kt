@@ -17,7 +17,7 @@ import javax.persistence.Table
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.models.enums.SurveyState
+import com.pancisin.bookster.model.enums.SurveyState
 
 @Entity @Table(name = "surveys")
 data class Survey(

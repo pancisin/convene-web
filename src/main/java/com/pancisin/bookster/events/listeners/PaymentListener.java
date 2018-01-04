@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import com.pancisin.bookster.events.OnPaymentEvent;
 import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
 import com.pancisin.bookster.model.Conference;
-import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.enums.PageState;
+import com.pancisin.bookster.model.Page;
+import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 

@@ -14,7 +14,6 @@ import javax.persistence.Table
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.Page
 
 @Entity
 @Table(name = "eventBots")

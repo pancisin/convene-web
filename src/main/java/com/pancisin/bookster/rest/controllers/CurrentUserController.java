@@ -29,19 +29,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageService;
 import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.model.Event;
-import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.model.UserSubscription;
-import com.pancisin.bookster.models.enums.Locale;
-import com.pancisin.bookster.models.enums.PageRole;
-import com.pancisin.bookster.models.enums.Role;
-import com.pancisin.bookster.models.enums.Subscription;
-import com.pancisin.bookster.models.enums.SubscriptionState;
+import com.pancisin.bookster.model.enums.Locale;
+import com.pancisin.bookster.model.enums.PageRole;
+import com.pancisin.bookster.model.enums.Role;
+import com.pancisin.bookster.model.enums.Subscription;
+import com.pancisin.bookster.model.enums.SubscriptionState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
@@ -159,7 +158,6 @@ public class CurrentUserController {
 		return ResponseEntity.ok(eventRepository.getAttending(auth.getId()));
 	}
 
-	@JsonView(Summary.class)
 	@GetMapping("/page")
 	public ResponseEntity<?> getPage() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -201,7 +199,6 @@ public class CurrentUserController {
 	}
 
 	@PutMapping("/locale")
-	@JsonView(Summary.class)
 	public ResponseEntity<?> changeLocale(@RequestBody Locale locale) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
@@ -262,7 +259,6 @@ public class CurrentUserController {
 	// return ResponseEntity.ok(stored.getPlaces());
 	// }
 
-	@JsonView(Summary.class)
 	@GetMapping("/search")
 	public ResponseEntity<?> searchUser(@RequestParam String q) {
 		List<User> result = null;
@@ -283,14 +279,12 @@ public class CurrentUserController {
 	}
 
 	@GetMapping("/contacts")
-	@JsonView(Summary.class)
 	public ResponseEntity<?> getContacts() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(administratorRepository.getContacts(auth.getId()));
 	}
 
 	@GetMapping("/followed-pages")
-	@JsonView(Summary.class)
 	public ResponseEntity<?> getFollowedPages() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(pageRepository.getFollowed(auth.getId()));

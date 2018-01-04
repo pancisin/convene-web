@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.model.Conference;
-import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.UserSubscription;
-import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.SubscriptionState;
+import com.pancisin.bookster.model.enums.PageState;
+import com.pancisin.bookster.model.enums.SubscriptionState;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;

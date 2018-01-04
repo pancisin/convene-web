@@ -13,13 +13,12 @@ import javax.persistence.ManyToOne
 import javax.persistence.PrePersist
 import javax.persistence.Table
 
-import com.pancisin.bookster.model.ArticleBot
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.models.enums.BotRunState
+import com.pancisin.bookster.model.enums.BotRunState
 
 @Entity
 @Table(name = "article_bots_runs")

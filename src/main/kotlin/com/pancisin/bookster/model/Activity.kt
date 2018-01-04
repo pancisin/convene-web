@@ -12,11 +12,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.pancisin.bookster.models.User
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import javax.persistence.Enumerated
-import com.pancisin.bookster.models.enums.ActivityType
+import com.pancisin.bookster.model.enums.ActivityType
 import java.util.Calendar
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.JoinTable
-import com.pancisin.bookster.models.Page
 import javax.persistence.JoinColumn
 import javax.persistence.EnumType
 

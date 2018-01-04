@@ -13,8 +13,7 @@ import javax.persistence.Transient
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.pancisin.bookster.models.Page
-import com.pancisin.bookster.models.enums.BotRunState
+import com.pancisin.bookster.model.enums.BotRunState
 
 @Entity
 @Table(name = "pages_imports")

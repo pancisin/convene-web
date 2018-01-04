@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.events.OnPaymentEvent;
 import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
 import com.pancisin.bookster.model.UserSubscription;
-import com.pancisin.bookster.models.enums.SubscriptionState;
+import com.pancisin.bookster.model.enums.SubscriptionState;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
 import com.paylane.client.PayLaneClientBuilder;
 import com.paylane.client.api.models.Card;
@@ -54,7 +54,7 @@ public class LicenseController {
 		if (us.getState() == SubscriptionState.ACTIVE || us.getState() == SubscriptionState.EXPIRED)
 			throw new Exception("");
 
-		CardSale sale = new CardSale((double) us.getSubscription().getPrice(), "EUR", us.getSubscription().getName());
+		CardSale sale = new CardSale((double) us.getSubscription().getPrice(), "EUR", us.getSubscription().getProp());
 		Customer customer = new Customer(us.getUser().getEmail(), request.getRemoteAddr(),
 				us.getUser().getAddress().getPaylaneAddress());
 

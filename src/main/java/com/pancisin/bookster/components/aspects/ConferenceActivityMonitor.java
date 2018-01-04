@@ -18,7 +18,7 @@ import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Survey;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.ActivityType;
+import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.UserRepository;

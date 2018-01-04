@@ -31,7 +31,7 @@ import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Invitation;
 import com.pancisin.bookster.model.Programme;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.PageState;
+import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;

@@ -26,9 +26,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.models.enums.PageRole
-import com.pancisin.bookster.models.enums.PageState
-import com.pancisin.bookster.models.enums.Visibility
+import com.pancisin.bookster.model.enums.PageRole
+import com.pancisin.bookster.model.enums.PageState
+import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Summary
@@ -92,7 +92,7 @@ class Conference : IAuthor {
 
   val owner: User?
     @JsonIgnore @Transient
-    get() = this.administrators!!.first { a -> a.user!!.role == PageRole.ROLE_OWNER }.user
+    get() = this.administrators!!.first { a -> a.role === PageRole.ROLE_OWNER }.user
 
   val privilege: Administrator?
     @Transient
@@ -103,7 +103,8 @@ class Conference : IAuthor {
         && SecurityContextHolder.getContext().authentication.isAuthenticated
         && SecurityContextHolder.getContext().authentication !is AnonymousAuthenticationToken) {
         val user = SecurityContextHolder.getContext().authentication.principal as User
-        return administrators!!.first { a -> a.user!!.id == user.id }
+
+        return administrators?.firstOrNull { a -> a.user?.id == user.id }
       }
 
       return null
