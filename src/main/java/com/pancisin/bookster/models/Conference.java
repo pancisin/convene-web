@@ -20,9 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.pancisin.bookster.model.Administrator;
-import com.pancisin.bookster.model.Article;
-import com.pancisin.bookster.model.Media;
+import com.pancisin.bookster.model.*;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -31,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;

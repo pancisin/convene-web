@@ -16,7 +16,7 @@ import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Survey;
+import com.pancisin.bookster.model.Survey;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;

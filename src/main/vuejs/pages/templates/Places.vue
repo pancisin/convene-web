@@ -9,8 +9,6 @@
             <tr>
               <th>Name</th>
               <th>Capacity</th>
-              <th>City</th>
-              <th>Street</th>
             </tr>
           </thead>
           <tbody>
@@ -20,8 +18,6 @@
                 </router-link>
               </td>
               <td v-text="place.capacity"></td>
-              <td v-text="place.address.city"></td>
-              <td>{{ place.address.street + " " + place.address.number }}</td>
             </tr>
           </tbody>
         </table>

@@ -15,8 +15,7 @@ import java.util.Calendar
 import com.pancisin.bookster.models.User
 import javax.persistence.GenerationType
 
-@Entity
-@Table(name = "messages")
+@Entity @Table(name = "messages")
 data class Message(
 
 		@Id @GeneratedValue(strategy = GenerationType.AUTO)

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.MetaField;
+import com.pancisin.bookster.model.MetaField;
 import com.pancisin.bookster.models.MetaValue;
-import com.pancisin.bookster.models.Survey;
+import com.pancisin.bookster.model.Survey;
 import com.pancisin.bookster.models.SurveySubmission;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.SurveyState;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.storage.StorageService;
-import com.pancisin.bookster.models.Place;
+import com.pancisin.bookster.model.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.PlaceRepository;

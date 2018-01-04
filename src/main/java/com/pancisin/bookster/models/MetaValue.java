@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.pancisin.bookster.model.MetaField;
 
 @Entity
 @Table(name = "meta_values")
@@ -22,7 +22,7 @@ public class MetaValue {
 	@ManyToOne
 	@JsonRawValue
 	private MetaField field;
-	
+
 	@Column
 	private String value;
 
