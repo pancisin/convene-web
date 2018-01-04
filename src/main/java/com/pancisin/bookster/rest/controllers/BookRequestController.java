@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.BookRequest;
+import com.pancisin.bookster.model.BookRequest;
 import com.pancisin.bookster.repository.BookRequestRepository;
 
 @RestController
@@ -19,14 +19,14 @@ public class BookRequestController {
 
 	@Autowired
 	private BookRequestRepository bookRequestRepository;
-	
+
 	@PatchMapping
 	public ResponseEntity<?> approveBookRequest(@PathVariable Long book_request_id) {
 		BookRequest request = bookRequestRepository.findOne(book_request_id);
 		request.setApproved(true);
 		return ResponseEntity.ok(bookRequestRepository.save(request));
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<?> getBookRequest(@PathVariable Long book_request_id) {
 		return ResponseEntity.ok(bookRequestRepository.findOne(book_request_id));

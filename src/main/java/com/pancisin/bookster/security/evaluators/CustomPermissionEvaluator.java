@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-import com.pancisin.bookster.models.BookRequest;
+import com.pancisin.bookster.model.BookRequest;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Notification;
+import com.pancisin.bookster.model.Notification;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.Programme;
-import com.pancisin.bookster.models.Service;
+import com.pancisin.bookster.model.Programme;
+import com.pancisin.bookster.model.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;

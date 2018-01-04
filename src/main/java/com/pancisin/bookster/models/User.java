@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -32,6 +31,7 @@ import javax.validation.constraints.Size;
 
 import com.pancisin.bookster.model.Address;
 import com.pancisin.bookster.model.Media;
+import com.pancisin.bookster.model.UserSubscription;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Email;
@@ -42,8 +42,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.Locale;
-import com.pancisin.bookster.models.enums.PageRole;
-import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;

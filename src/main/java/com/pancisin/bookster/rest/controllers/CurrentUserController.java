@@ -36,7 +36,7 @@ import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.model.UserSubscription;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.Role;

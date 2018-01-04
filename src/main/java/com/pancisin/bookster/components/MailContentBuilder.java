@@ -6,7 +6,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.model.UserSubscription;
 
 @Service
 public class MailContentBuilder {
@@ -30,7 +30,7 @@ public class MailContentBuilder {
 		context.setVariable("us", us);
 		return templateEngine.process("invoiceEmailTemplate", context);
 	}
-	
+
 	public String buildVerification(User user, String url) {
 		Context context = new Context();
 		context.setVariable("user", user);

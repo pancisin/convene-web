@@ -29,8 +29,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.pancisin.bookster.model.Invitation;
 import com.pancisin.bookster.model.Media;
 import com.pancisin.bookster.model.Place;
+import com.pancisin.bookster.model.Programme;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

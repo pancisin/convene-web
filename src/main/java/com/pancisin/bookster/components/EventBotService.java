@@ -14,8 +14,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.model.Address;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.EventBotRun;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.EventBotRun;
 import com.pancisin.bookster.model.Place;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.models.enums.PageState;

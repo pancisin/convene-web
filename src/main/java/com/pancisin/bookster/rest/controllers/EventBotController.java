@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.EventBotService;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.EventBotRun;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.EventBotRun;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.EventBotRepository;
 

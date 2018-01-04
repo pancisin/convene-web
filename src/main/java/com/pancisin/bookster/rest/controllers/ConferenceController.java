@@ -32,11 +32,11 @@ import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
 import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.ConferenceAttendee;
+import com.pancisin.bookster.model.ConferenceAttendee;
 import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Invitation;
+import com.pancisin.bookster.model.Invitation;
 import com.pancisin.bookster.model.MetaField;
-import com.pancisin.bookster.models.MetaValue;
+import com.pancisin.bookster.model.MetaValue;
 import com.pancisin.bookster.model.Place;
 import com.pancisin.bookster.model.Survey;
 import com.pancisin.bookster.models.User;
@@ -205,7 +205,7 @@ public class ConferenceController {
 		if (attendee == null)
 			return ResponseEntity.ok("INACTIVE");
 
-		return ResponseEntity.ok(attendee.isActive() ? "ACTIVE" : "CANCELED");
+		return ResponseEntity.ok(attendee.getActive() ? "ACTIVE" : "CANCELED");
 	}
 
 	@GetMapping("/meta-field")

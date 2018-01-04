@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.pancisin.bookster.models.ConferenceAttendee;
+import com.pancisin.bookster.model.ConferenceAttendee;
 
 public interface ConferenceAttendeeRepository extends JpaRepository<ConferenceAttendee, Long> {
 

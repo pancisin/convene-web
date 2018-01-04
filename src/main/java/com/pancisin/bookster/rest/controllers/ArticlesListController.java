@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.ArticleBot;
-import com.pancisin.bookster.models.ArticlesList;
+import com.pancisin.bookster.model.ArticleBot;
+import com.pancisin.bookster.model.ArticlesList;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;

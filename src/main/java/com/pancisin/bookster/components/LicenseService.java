@@ -5,15 +5,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.model.UserSubscription;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -56,14 +54,14 @@ public class LicenseService {
 					p.setState(PageState.BLOCKED);
 					return p;
 				}).collect(Collectors.toList());
-				
+
 				pageRepository.save(pages);
 
 				List<Conference> conferences = conferenceRepository.getByOwner(user_id).stream().map(c -> {
 					c.setState(PageState.BLOCKED);
 					return c;
 				}).collect(Collectors.toList());
-				
+
 				conferenceRepository.save(conferences);
 			}
 		});

@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.events.OnPaymentEvent;
-import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
-import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.model.UserSubscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
 import com.pancisin.bookster.repository.UserSubscriptionRepository;
 import com.paylane.client.PayLaneClientBuilder;
@@ -42,7 +41,7 @@ public class LicenseController {
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getLicense(@PathVariable String license_id) {
 		return ResponseEntity.ok(usRepository.findById(license_id));
@@ -68,9 +67,9 @@ public class LicenseController {
 				us.setState(SubscriptionState.ACTIVE);
 				us.setIdSale(result.body().getIdSale());
 				usRepository.save(us);
-				
+
 				eventPublisher.publishEvent(new OnPaymentEvent(us, PaymentState.SUCCESS));
-				
+
 				return ResponseEntity.ok(result);
 			} else {
 				eventPublisher.publishEvent(new OnPaymentEvent(us, PaymentState.ERROR));

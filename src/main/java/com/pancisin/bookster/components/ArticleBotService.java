@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
-import com.pancisin.bookster.models.ArticleBot;
-import com.pancisin.bookster.models.ArticleBotRun;
+import com.pancisin.bookster.model.ArticleBot;
+import com.pancisin.bookster.model.ArticleBotRun;
 import com.pancisin.bookster.models.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 import com.pancisin.bookster.repository.ArticleBotRunRepository;
@@ -45,7 +45,7 @@ public class ArticleBotService {
 	public int run() {
 		List<ArticleBot> bots = abRepository.findAll();
 		bots.stream().forEach(b -> {
-			if (b.isActive())
+			if (b.getActive())
 				this.run(b);
 		});
 

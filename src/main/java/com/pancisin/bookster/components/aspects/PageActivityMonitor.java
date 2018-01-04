@@ -1,8 +1,5 @@
 package com.pancisin.bookster.components.aspects;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.transaction.Transactional;
 
 import org.aspectj.lang.annotation.AfterReturning;
@@ -18,7 +15,7 @@ import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.Service;
+import com.pancisin.bookster.model.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
@@ -37,7 +34,7 @@ public class PageActivityMonitor {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private Notifier notifier;
 
@@ -51,7 +48,7 @@ public class PageActivityMonitor {
 		Page stored = pageRepository.findOne(page_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		Activity activity = new Activity(auth, activityLog.type());
 		activity.setPage(stored);
 		activity = activityRepository.save(activity);
@@ -65,7 +62,7 @@ public class PageActivityMonitor {
 
 		if (activityLog.type() == ActivityType.FOLLOWING) {
 			User user = userRepository.findOne(auth.getId());
-			
+
 			stored.getAdministrators().stream().forEach(x -> {
 				notifier.notifyUser(x.getUser(), "notification.page.new_follower", user.getDisplayName(), stored.getDisplayName());
 			});

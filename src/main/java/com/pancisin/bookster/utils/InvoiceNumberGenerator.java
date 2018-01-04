@@ -12,7 +12,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
-import com.pancisin.bookster.models.UserSubscription;
+import com.pancisin.bookster.model.UserSubscription;
 
 public class InvoiceNumberGenerator implements IdentifierGenerator {
 
