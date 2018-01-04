@@ -51,14 +51,18 @@ public class LicenseService {
 				Long user_id = s.getUser().getId();
 
 				List<Page> pages = pageRepository.getByOwner(user_id).stream().map(p -> {
-					p.setState(PageState.BLOCKED);
+				  if (p.getState() == PageState.PUBLISHED || p.getState() == PageState.DEACTIVATED) {
+            p.setState(PageState.BLOCKED);
+          }
 					return p;
 				}).collect(Collectors.toList());
 
 				pageRepository.save(pages);
 
 				List<Conference> conferences = conferenceRepository.getByOwner(user_id).stream().map(c -> {
-					c.setState(PageState.BLOCKED);
+          if (c.getState() == PageState.PUBLISHED || c.getState() == PageState.DEACTIVATED) {
+            c.setState(PageState.BLOCKED);
+          }
 					return c;
 				}).collect(Collectors.toList());
 

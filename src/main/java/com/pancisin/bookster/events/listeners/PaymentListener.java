@@ -32,20 +32,15 @@ public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 			List<Page> pages = pageRepository.getByOwner(user_id);
 
 			List<Page> updatedPages = new ArrayList<Page>();
-			pages.stream().filter(x -> {
-				return x.getState() == PageState.BLOCKED;
-			}).forEach(x -> {
+			pages.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
 				x.setState(PageState.PUBLISHED);
 				updatedPages.add(x);
 			});
 
-
 			List<Conference> conferences = conferenceRepository.getByOwner(user_id);
 
 			List<Conference> updatedConferences = new ArrayList<Conference>();
-			conferences.stream().filter(x -> {
-				return x.getState() == PageState.BLOCKED;
-			}).forEach(x -> {
+			conferences.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
 				x.setState(PageState.PUBLISHED);
 				updatedConferences.add(x);
 			});
