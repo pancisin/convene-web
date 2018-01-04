@@ -5,7 +5,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.model.Notification;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.NotificationRepository;
 
 @Component

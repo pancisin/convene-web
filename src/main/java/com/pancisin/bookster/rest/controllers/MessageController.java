@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.model.Message;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.RecipientType;
 import com.pancisin.bookster.repository.MessageRepository;
 import com.pancisin.bookster.repository.UserRepository;

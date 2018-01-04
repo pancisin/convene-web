@@ -39,7 +39,7 @@ import com.pancisin.bookster.model.MetaField;
 import com.pancisin.bookster.model.MetaValue;
 import com.pancisin.bookster.model.Place;
 import com.pancisin.bookster.model.Survey;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.Widget;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.model.enums.PageRole;

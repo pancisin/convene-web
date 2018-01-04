@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonView
-import com.pancisin.bookster.models.User
 import com.pancisin.bookster.model.enums.PageRole
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary

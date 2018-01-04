@@ -15,7 +15,6 @@ import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.models.User
 import com.pancisin.bookster.model.enums.Subscription
 import com.pancisin.bookster.model.enums.SubscriptionState
 

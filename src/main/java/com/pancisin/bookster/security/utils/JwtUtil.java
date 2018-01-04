@@ -3,7 +3,7 @@ package com.pancisin.bookster.security.utils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.Role;
 
 import io.jsonwebtoken.Claims;

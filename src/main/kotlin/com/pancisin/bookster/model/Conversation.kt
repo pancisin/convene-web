@@ -3,8 +3,6 @@ package com.pancisin.bookster.model
 import java.util.ArrayList
 import java.util.Comparator
 
-import com.pancisin.bookster.models.User
-
 data class Conversation(
   var participant: User? = null,
   var recentMessages: MutableList<Message> = ArrayList<Message>()

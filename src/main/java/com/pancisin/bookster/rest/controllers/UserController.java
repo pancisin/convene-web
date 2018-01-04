@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
@@ -23,15 +23,15 @@ public class UserController {
 
 	@Autowired
 	private PageRepository pageRepository;
-	
+
 	@JsonView(Summary.class)
 	@GetMapping()
 	public ResponseEntity<User> getUserData(@PathVariable Long user_id) {
 		User user = userRepository.findOne(user_id);
-		
-		if (user != null) 
+
+		if (user != null)
 			return ResponseEntity.ok(user);
-		else 
+		else
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 

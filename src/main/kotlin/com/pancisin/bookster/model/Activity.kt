@@ -9,7 +9,6 @@ import javax.persistence.Column
 import java.util.UUID
 import javax.persistence.ManyToOne
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.pancisin.bookster.models.User
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import javax.persistence.Enumerated
 import com.pancisin.bookster.model.enums.ActivityType

@@ -10,7 +10,6 @@ import javax.persistence.Enumerated
 import javax.persistence.EnumType
 import javax.persistence.Column
 import java.util.Calendar
-import com.pancisin.bookster.models.User
 import javax.persistence.GenerationType
 
 @Entity @Table(name = "messages")

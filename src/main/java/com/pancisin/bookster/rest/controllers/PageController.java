@@ -37,7 +37,7 @@ import com.pancisin.bookster.model.EventBot;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.Place;
 import com.pancisin.bookster.model.Service;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.Widget;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.model.enums.PageRole;

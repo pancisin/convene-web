@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.User
 
 @Entity @Table(name = "book_requests")
 data class BookRequest(

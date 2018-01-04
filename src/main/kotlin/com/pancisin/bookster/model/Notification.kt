@@ -13,7 +13,6 @@ import javax.persistence.Table
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.User
 
 @Entity
 @Table(name = "notifications")

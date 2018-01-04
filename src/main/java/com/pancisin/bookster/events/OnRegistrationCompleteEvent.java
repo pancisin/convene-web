@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
 

@@ -16,7 +16,7 @@ import com.pancisin.bookster.model.Notification;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.Programme;
 import com.pancisin.bookster.model.Service;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.model.enums.Visibility;

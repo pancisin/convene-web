@@ -3,7 +3,6 @@ package com.pancisin.bookster.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
-import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Summary
 import org.hibernate.annotations.GenericGenerator
 import java.util.*

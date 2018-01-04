@@ -39,7 +39,6 @@ import com.fasterxml.jackson.annotation.JsonView
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
-import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
 

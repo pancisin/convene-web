@@ -17,7 +17,7 @@ import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.model.BookRequest;
 import com.pancisin.bookster.model.Service;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
 

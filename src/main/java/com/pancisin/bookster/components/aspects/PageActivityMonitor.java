@@ -16,7 +16,7 @@ import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.Service;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.PageRepository;

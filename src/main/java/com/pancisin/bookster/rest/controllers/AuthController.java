@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.Locale;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;

@@ -1,10 +1,8 @@
 package com.pancisin.bookster.security.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

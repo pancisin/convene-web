@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.model.EventBot;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.PageImport;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.BotRunState;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.repository.EventBotRepository;

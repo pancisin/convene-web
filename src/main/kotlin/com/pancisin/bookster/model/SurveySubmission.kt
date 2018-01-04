@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
-import com.pancisin.bookster.models.User
 
 @Entity
 @Table(name = "surveys_submissions", uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("user_id", "survey_id"))))

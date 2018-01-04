@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.model.Event;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.Locale;
 import com.pancisin.bookster.model.enums.MetaType;
 import com.pancisin.bookster.model.enums.PageState;
