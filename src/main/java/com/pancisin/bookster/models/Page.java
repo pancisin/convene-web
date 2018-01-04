@@ -31,6 +31,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Media;
 import org.hibernate.annotations.GeneratorType;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -43,6 +45,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.github.slugify.Slugify;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.interfaces.IAuthor;
@@ -158,10 +161,10 @@ public class Page implements IAuthor {
 
 	@Column(unique = true)
 	private String facebookId;
-	
+
 	@Transient
 	@JsonView(Summary.class)
-//	@JsonIgnoreProperties({"user"}) 
+//	@JsonIgnoreProperties({"user"})
 	public Administrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
@@ -185,7 +188,7 @@ public class Page implements IAuthor {
   @Column(name = "meta_value")
   @CollectionTable(name = "pages_metadata")
 	@JsonView(Summary.class)
-  private Map<String, String> metadata = new HashMap<String, String>(); 
+  private Map<String, String> metadata = new HashMap<String, String>();
 
 //	@PreUpdate
 //	private void onUpdate() {
@@ -195,7 +198,7 @@ public class Page implements IAuthor {
 //			this.setSlug(s.slugify(this.name));
 //		}
 //	}
-  
+
 	public Long getId() {
 		return id;
 	}

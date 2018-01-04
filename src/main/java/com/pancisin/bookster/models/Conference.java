@@ -15,12 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Article;
+import com.pancisin.bookster.model.Media;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -29,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
 import com.pancisin.bookster.models.enums.Visibility;
@@ -96,7 +99,7 @@ public class Conference implements IAuthor {
 	@JsonIgnore
 	@OneToMany(cascade = { CascadeType.MERGE, CascadeType.DETACH }, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Place> places;
-	
+
 	@JsonIgnore
 	public User getOwner() {
 		Optional<Administrator> owner = this.administrators.stream()
@@ -129,10 +132,10 @@ public class Conference implements IAuthor {
 
 		this.articles.add(article);
 	}
-	
+
 	@Transient
 	@JsonView(Summary.class)
-	@JsonIgnoreProperties({"user"}) 
+	@JsonIgnoreProperties({"user"})
 	public Administrator getPrivilege() {
 		if (SecurityContextHolder.getContext().getAuthentication() != null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
@@ -164,7 +167,7 @@ public class Conference implements IAuthor {
 
 		this.surveys.add(survey);
 	}
-	
+
 	public void addPlace(Place place) {
 		if (this.places == null)
 			this.places = new ArrayList<Place>();

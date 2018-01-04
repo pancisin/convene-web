@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import com.pancisin.bookster.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticlesList;
 import com.pancisin.bookster.repository.ArticleBotRepository;

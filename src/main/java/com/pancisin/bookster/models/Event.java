@@ -30,6 +30,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import com.pancisin.bookster.model.Media;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,7 +80,7 @@ public class Event {
 	@JsonView(Summary.class)
 	@Enumerated(EnumType.STRING)
 	private PageState state = PageState.DEACTIVATED;
-	
+
 	@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 	private Calendar created;
 
@@ -117,11 +118,11 @@ public class Event {
 	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
 	private Media banner;
-	
+
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String posterData;
-	
+
 	@OneToOne
 	private Place place;
 
@@ -147,7 +148,7 @@ public class Event {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST })
 	private List<Media> gallery;
-	
+
 	@Column(precision = 10, scale = 8)
 	@JsonView(Summary.class)
 	private BigDecimal latitude;
@@ -155,10 +156,10 @@ public class Event {
 	@Column(precision = 10, scale = 8)
 	@JsonView(Summary.class)
 	private BigDecimal longitude;
-	
+
 	@JsonProperty(access = Access.READ_ONLY)
 	private boolean featured = false;
-	
+
 //	@JsonSerialize(using = ToStringSerializer.class)
 	public IAuthor getAuthor() {
 		if (conference != null)
@@ -168,7 +169,7 @@ public class Event {
 
 		return owner;
 	}
-	
+
 	@Transient
 	@JsonView(Summary.class)
 	@JsonIgnoreProperties({"user"})
@@ -177,7 +178,7 @@ public class Event {
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
 				&& !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			
+
 			if (user != null) {
 				if (this.page != null && this.page.getAdministrators() != null) {
 					return this.page.getPrivilege();
@@ -329,7 +330,7 @@ public class Event {
 	public void setPosterData(String posterData) {
 		this.posterData = posterData;
 	}
-	
+
 	public List<Media> getGallery() {
 		return gallery;
 	}
@@ -338,7 +339,7 @@ public class Event {
 		if (this.gallery == null) {
 			this.gallery = new ArrayList<Media>();
 		}
-		
+
 		this.gallery.add(media);
 	}
 

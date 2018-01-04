@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.pancisin.bookster.model.Administrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
@@ -19,7 +19,6 @@ import com.pancisin.bookster.models.Service;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Visibility;
 import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;

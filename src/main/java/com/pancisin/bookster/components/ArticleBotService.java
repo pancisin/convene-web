@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.pancisin.bookster.model.Article;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
-import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.ArticleBot;
 import com.pancisin.bookster.models.ArticleBotRun;
 import com.pancisin.bookster.models.enums.BotRunState;

@@ -1,7 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
 import com.pancisin.bookster.models.Survey;

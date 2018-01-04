@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -31,11 +31,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
-import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.BookRequest;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Service;
@@ -92,7 +90,7 @@ public class PageController {
 
 	@Autowired
 	private BookRequestRepository bookRequestRepository;
-	
+
 	// @GetMapping
 	// @PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	// public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -237,11 +235,11 @@ public class PageController {
 
 		User existing = userRepository.findByEmail(user.getEmail());
 		if (existing != null) {
-				
+
 			if (stored.getAdministrators().stream().anyMatch(a -> a.getUser().getId() == existing.getId())) {
 				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			}
-			
+
 			Administrator pa = new Administrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
 

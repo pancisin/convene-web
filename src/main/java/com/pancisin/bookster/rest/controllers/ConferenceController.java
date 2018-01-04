@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Article;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
@@ -28,16 +31,12 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
-import com.pancisin.bookster.models.Administrator;
-import com.pancisin.bookster.models.Article;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.ConferenceAttendee;
 import com.pancisin.bookster.models.Event;
 import com.pancisin.bookster.models.Invitation;
-import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.MetaField;
 import com.pancisin.bookster.models.MetaValue;
-import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.Survey;
 import com.pancisin.bookster.models.User;
@@ -59,7 +58,6 @@ import com.pancisin.bookster.repository.MetaValueRepository;
 import com.pancisin.bookster.repository.PlaceRepository;
 import com.pancisin.bookster.repository.SurveyRepository;
 import com.pancisin.bookster.repository.UserRepository;
-import com.pancisin.bookster.repository.WidgetRepository;
 
 @RestController
 @RequestMapping("/api/conference/{conference_id}")
@@ -103,7 +101,7 @@ public class ConferenceController {
 
 	@Autowired
 	private AdministratorRepository administratorRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'read')")
 	public ResponseEntity<?> getConference(@PathVariable Long conference_id) {

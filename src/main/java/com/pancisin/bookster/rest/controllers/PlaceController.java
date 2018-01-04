@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.storage.StorageService;
-import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Place;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.repository.MediaRepository;
@@ -33,7 +33,7 @@ public class PlaceController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getPlace(@PathVariable Long place_id) {
 		Place place = placeRepository.findOne(place_id);
@@ -52,7 +52,7 @@ public class PlaceController {
 	public ResponseEntity<?> putPlace(@PathVariable Long place_id, @RequestBody Place place) {
 		Place stored = placeRepository.findOne(place_id);
 
-		stored.setAddress(place.getAddress());
+//		stored.setAddress(place.getAddress());
 		stored.setCapacity(place.getCapacity());
 		stored.setDescription(place.getDescription());
 		stored.setName(place.getName());
@@ -79,34 +79,34 @@ public class PlaceController {
 
 			return ResponseEntity.ok(stored.getVenueJsonUrl());
 		}
-		
+
 		return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/gallery")
 	public ResponseEntity<?> getGallery(@PathVariable Long place_id) {
 		return ResponseEntity.ok(mediaRepository.getByPlace(place_id));
 	}
-	
-	@PostMapping("/gallery") 
+
+	@PostMapping("/gallery")
 	public ResponseEntity<?> postGallery(@PathVariable Long place_id, @RequestBody Media galleryItem) {
 		Place stored = placeRepository.findOne(place_id);
 
 		if (storageService.isBinary(galleryItem.getData())) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			galleryItem.setAuthor(user);
-			
+
 			galleryItem = mediaRepository.save(galleryItem);
 			String url = "images/places/" + galleryItem.getId().toString();
-			
+
 			galleryItem.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(galleryItem.getData(), url);
 			galleryItem.setSize(size);
 			stored.AddGallery(galleryItem);
 		}
-		
+
 		placeRepository.save(stored);
-		
+
 		return ResponseEntity.ok(galleryItem);
 	}
 }

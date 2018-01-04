@@ -50,7 +50,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	public Page<Event> getPublicCreatedByUser(@Param("userId") Long userId, @Param("date") Calendar date,
 			Pageable pageable);
 
-	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
+	@Query("SELECT event FROM Event event WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(event.latitude)) * COS(RADIANS(event.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(event.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
 			@Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 

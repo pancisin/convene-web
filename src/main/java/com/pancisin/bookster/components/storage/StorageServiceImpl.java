@@ -12,16 +12,12 @@ import java.util.Base64;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.repository.MediaRepository;
 
 @Component
 public class StorageServiceImpl implements StorageService {
@@ -47,10 +43,10 @@ public class StorageServiceImpl implements StorageService {
 
 		return file.length();
 	}
-	
+
 	public String storeText(String text, String filename, String extension) {
 		String relative_path = storagePath + filename + "." + extension;
-		
+
 		File file = new File(relative_path);
 		file.getParentFile().mkdirs();
 

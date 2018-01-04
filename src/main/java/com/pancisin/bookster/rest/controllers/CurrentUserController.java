@@ -1,13 +1,13 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,10 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageService;
-import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.models.Conference;
 import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.UserSubscription;

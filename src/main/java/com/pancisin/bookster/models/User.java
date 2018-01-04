@@ -30,6 +30,8 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.pancisin.bookster.model.Address;
+import com.pancisin.bookster.model.Media;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.Email;
@@ -164,22 +166,22 @@ public class User implements UserDetails, Principal, IAuthor {
 	@OneToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH })
 	@JsonView(Summary.class)
 	private Media profilePicture;
-	
+
 	@Transient
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String profilePictureData;
-	
+
   @ElementCollection
   @Lob
   @MapKeyColumn(name = "meta_key")
   @Column(name = "meta_value")
   @CollectionTable(name = "users_metadata")
 	@JsonView(Summary.class)
-  private Map<String, String> metadata = new HashMap<String, String>(); 
-	
+  private Map<String, String> metadata = new HashMap<String, String>();
+
 	@JsonProperty(access = Access.READ_ONLY)
 	private Long facebookId;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
@@ -353,7 +355,7 @@ public class User implements UserDetails, Principal, IAuthor {
 	public Media getProfilePicture() {
 		return profilePicture;
 	}
-	
+
 	public void setProfilePicture(Media profilePicture) {
 		this.profilePicture = profilePicture;
 	}
