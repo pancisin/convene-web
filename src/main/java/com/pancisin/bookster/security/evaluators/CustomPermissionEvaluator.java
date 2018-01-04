@@ -10,8 +10,8 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
 import com.pancisin.bookster.model.BookRequest;
-import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.model.Conference;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Notification;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.model.Programme;

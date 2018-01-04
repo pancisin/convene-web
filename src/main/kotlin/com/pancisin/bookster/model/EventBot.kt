@@ -45,7 +45,7 @@ data class EventBot(
     get() = runs?.size ?: 0
 
   val lastRun: EventBotRun?
-    get() = runs!!.reduce { a, b -> if (a.date.compareTo(b.date) > 0) a else b }
+    get() = runs!!.maxBy { r -> r.date!!.timeInMillis }
 
   constructor(page: Page, facebookId: String) : this(null, facebookId, page)
 }

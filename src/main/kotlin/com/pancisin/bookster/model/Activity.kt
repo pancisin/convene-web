@@ -16,7 +16,6 @@ import com.pancisin.bookster.models.enums.ActivityType
 import java.util.Calendar
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.JoinTable
-import com.pancisin.bookster.models.Conference
 import com.pancisin.bookster.models.Page
 import javax.persistence.JoinColumn
 import javax.persistence.EnumType
@@ -25,22 +24,22 @@ import javax.persistence.EnumType
 @Table(name = "activities")
 data class Activity(
 
-		@Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
 		@Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
 		var id: UUID? = UUID.randomUUID(),
 
-		@ManyToOne(optional = true)
+  @ManyToOne(optional = true)
 		@JsonSerialize(using = ToStringSerializer::class)
 		var user: User? = null,
 
-		@Column
+  @Column
 		@Enumerated(EnumType.STRING)
 		var type: ActivityType? = null,
 
-		@Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+  @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
 		var created: Calendar? = null,
 
-		@JsonIgnore
+  @JsonIgnore
 		@ManyToOne
 		@JoinTable(
 				name = "conferences_activities",
@@ -49,7 +48,7 @@ data class Activity(
 		)
 		var conference: Conference? = null,
 
-		@JsonIgnore
+  @JsonIgnore
 		@ManyToOne
 		@JoinTable(
 				name = "pages_activities",

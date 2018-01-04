@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.pancisin.bookster.models.enums.PageRole;
 import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.interfaces.IAuthor;
+import com.pancisin.bookster.model.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.utils.UniqueSlugGenerator;

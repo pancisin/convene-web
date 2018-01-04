@@ -32,7 +32,7 @@ import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.model.BookRequest;
-import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.EventBot;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.model.Place;

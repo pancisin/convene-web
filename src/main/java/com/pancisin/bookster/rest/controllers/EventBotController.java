@@ -49,7 +49,7 @@ public class EventBotController {
 	@PatchMapping("/toggle-active")
 	public ResponseEntity<?> toggleActive(@PathVariable UUID bot_id) {
 		EventBot stored = eventBotRepository.findOne(bot_id);
-		stored.setActive(!stored.isActive());
+		stored.setActive(!stored.getActive());
 		return ResponseEntity.ok(eventBotRepository.save(stored));
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.models.Conference;
+import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.model.UserSubscription;
 import com.pancisin.bookster.models.enums.PageState;

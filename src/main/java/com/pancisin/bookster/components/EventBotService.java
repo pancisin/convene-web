@@ -60,7 +60,7 @@ public class EventBotService {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
 			bots.stream().forEach(b -> {
-				if (b.isActive()) {
+				if (b.getActive()) {
 					try {
 						runs.add(this.run(b, fb));
 					} catch (FacebookException e) {
@@ -99,7 +99,7 @@ public class EventBotService {
 
 		for (int j = 0; j < events.size(); j++) {
 			Event ev = events.get(j);
-			com.pancisin.bookster.models.Event event = buildEvent(ev);
+			com.pancisin.bookster.model.Event event = buildEvent(ev);
 			event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
 			event.setPage(bot.getPage());
 			event.setState(PageState.PUBLISHED);
@@ -126,8 +126,8 @@ public class EventBotService {
 		return run;
 	}
 
-	private com.pancisin.bookster.models.Event buildEvent(Event ev) {
-		com.pancisin.bookster.models.Event event = new com.pancisin.bookster.models.Event();
+	private com.pancisin.bookster.model.Event buildEvent(Event ev) {
+		com.pancisin.bookster.model.Event event = new com.pancisin.bookster.model.Event();
 		event.setName(ev.getName());
 		event.setSummary(ev.getDescription());
 

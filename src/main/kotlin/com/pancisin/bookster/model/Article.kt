@@ -3,7 +3,6 @@ package com.pancisin.bookster.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
-import com.pancisin.bookster.models.Conference
 import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Summary
 import java.util.*
@@ -67,7 +66,7 @@ data class Article(
     if (this.articlesList != null) {
       values.add(this.articlesList!!.id.toString())
     } else if (this.conference != null) {
-      values.add(this.conference!!.getId()!!.toString())
+      values.add(this.conference!!.id!!.toString())
     }
 
     this.identifier = values.hashCode()

@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.pancisin.bookster.model.Address;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Media;
 import com.pancisin.bookster.model.UserSubscription;
 import org.hibernate.search.annotations.Field;
@@ -45,7 +46,7 @@ import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.Role;
 import com.pancisin.bookster.models.enums.Subscription;
 import com.pancisin.bookster.models.enums.SubscriptionState;
-import com.pancisin.bookster.models.interfaces.IAuthor;
+import com.pancisin.bookster.model.interfaces.IAuthor;
 import com.pancisin.bookster.models.views.Compact;
 import com.pancisin.bookster.models.views.Summary;
 import com.fasterxml.jackson.annotation.JsonView;

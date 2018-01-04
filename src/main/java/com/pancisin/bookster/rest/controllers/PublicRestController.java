@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.model.Conference;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.models.User;
 import com.pancisin.bookster.models.enums.Locale;
 import com.pancisin.bookster.models.enums.MetaType;
@@ -117,10 +116,10 @@ public class PublicRestController {
 	@GetMapping("/user/{user_id}")
 	public ResponseEntity<User> getUser(@PathVariable Long user_id) {
 		User user = userRepository.findOne(user_id);
-		
+
 		if (user != null)
 			return ResponseEntity.ok(user);
-		else 
+		else
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 	}
 

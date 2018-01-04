@@ -12,7 +12,6 @@ import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.models.Event
 
 @Entity
 @Table(name = "programmes")

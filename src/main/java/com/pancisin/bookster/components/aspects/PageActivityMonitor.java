@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.model.Activity;
-import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.models.Page;
 import com.pancisin.bookster.model.Service;
 import com.pancisin.bookster.models.User;

@@ -17,8 +17,6 @@ import org.hibernate.validator.constraints.Email
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
-import com.pancisin.bookster.models.Conference
-import com.pancisin.bookster.models.Event
 import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Compact
 

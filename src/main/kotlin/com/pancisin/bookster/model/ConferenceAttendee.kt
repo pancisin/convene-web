@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonView
-import com.pancisin.bookster.models.Conference
 import com.pancisin.bookster.models.User
 import com.pancisin.bookster.models.views.Compact
 

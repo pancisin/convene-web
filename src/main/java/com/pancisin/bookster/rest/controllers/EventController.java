@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
-import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Invitation;
 import com.pancisin.bookster.model.Programme;
 import com.pancisin.bookster.models.User;
@@ -219,7 +219,7 @@ public class EventController {
 			galleryItem.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(galleryItem.getData(), url);
 			galleryItem.setSize(size);
-			stored.AddGallery(galleryItem);
+			stored.addGallery(galleryItem);
 		}
 
 		eventRepository.save(stored);
@@ -245,7 +245,7 @@ public class EventController {
 	@PreAuthorize("hasRole('SUPERADMIN')")
 	public ResponseEntity<Event> toggleFeatured(@PathVariable Long event_id) {
 		Event stored = eventRepository.findOne(event_id);
-		stored.setFeatured(!stored.isFeatured());
+		stored.setFeatured(!stored.getFeatured());
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 }
