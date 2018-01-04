@@ -13,7 +13,8 @@ export default {
     updated: 'Page {object} has been updated successfuly.',
     new_follower: '{object} started to following your page {subject}.',
     event_created: 'Page {subject} has created event {object}.',
-    service_created: 'Page {subject} offers new service {object}.'
+    service_created: 'Page {subject} offers new service {object}.',
+    administrator_created: 'Page {subject} assigned you a administrator privilege.'
   },
   conference: {
     created: 'Conference {object} has been created successfuly.',

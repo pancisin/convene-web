@@ -55,3 +55,41 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.dropdown-menu {
+  padding: 4px 0;
+  display: initial;
+  border: 0;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  margin-top: 2px !important;
+  > li {
+    > a {
+      padding: 6px 20px;
+    }
+  }
+
+  .divider {
+    margin: 0;
+  }
+
+  &.dropdown-menu-lg {
+    width: 300px;
+    .list-group {
+      margin-bottom: 0px;
+    }
+    .list-group-item {
+      border: none;
+      padding: 10px 20px;
+    }
+    .media-heading {
+      margin-bottom: 0px;
+    }
+    .media-body {
+      p {
+        color: #828282;
+      }
+    }
+  }
+}
+</style>

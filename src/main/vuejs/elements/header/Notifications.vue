@@ -1,12 +1,12 @@
 <template>
-  <dropdown-menu large>
+  <dropdown-menu large v-if="notifications">
     <span slot="button">
       <i class="fa fa-bell-o"></i>
       <span class="badge badge-xs"
         v-text="notifications.length"></span>
     </span>
 
-    <dropdown-menu-item class="notifi-title">
+    <dropdown-menu-item header>
       Notification
     </dropdown-menu-item>
     <dropdown-menu-item v-if="notifications.length > 0">
