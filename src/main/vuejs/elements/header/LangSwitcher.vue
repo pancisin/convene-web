@@ -46,11 +46,11 @@ export default {
       },
       async set (value) {
         if (this.authenticated) {
-          await this.setLocale(JSON.stringify(value.name));
+          await this.setLocale(JSON.stringify(value.prop));
         }
 
-        Settings.defaultLocale = value.name;
-        this.$i18n.locale = value.name;
+        Settings.defaultLocale = value.prop;
+        this.$i18n.locale = value.prop;
       }
     }
   },

@@ -1,6 +1,6 @@
 export default {
   hasPermission: (user) => {
-    return user.role.name === 'ROLE_SUPERADMIN';
+    return user.role.prop === 'ROLE_SUPERADMIN';
   },
   routes: [
     {

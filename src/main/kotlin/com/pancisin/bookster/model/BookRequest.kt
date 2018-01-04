@@ -32,6 +32,6 @@ data class BookRequest(
   @Column
   var approved: Boolean? = null
 ) {
-  val email: String
-    get() = user!!.email
+  val email: String?
+    get() = user?.email
 }

@@ -37,7 +37,7 @@
                   </div>
 
                   <div class="pr-button">
-                    <a @click="selectSubscription('STARTER')" class="btn btn-primary btn-rounded" v-if="cur_sub.name != 'STARTER'">
+                    <a @click="selectSubscription('STARTER')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'STARTER'">
                       Sign up now !
                     </a>
                   </div>
@@ -78,7 +78,7 @@
                   </div>
 
                   <div class="pr-button">
-                    <a @click="selectSubscription('PROFESSIONAL')" class="btn btn-primary btn-rounded" v-if="cur_sub.name != 'PROFESSIONAL'">
+                    <a @click="selectSubscription('PROFESSIONAL')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'PROFESSIONAL'">
                       Sign up now !
                     </a>
                   </div>
@@ -117,7 +117,7 @@
                   </div>
 
                   <div class="pr-button">
-                    <a @click="selectSubscription('ENTERPRISE')" class="btn btn-primary btn-rounded" v-if="cur_sub.name != 'ENTERPRISE'">
+                    <a @click="selectSubscription('ENTERPRISE')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'ENTERPRISE'">
                       Sign up now !
                     </a>
                   </div>

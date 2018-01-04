@@ -121,7 +121,7 @@ export default {
     },
     getHeadlines (page) {
       this.loadingHeadlines = true;
-      RootApi.getHeadlines(this.user.locale.name, page, 6, paginator => {
+      RootApi.getHeadlines(this.user.locale.prop, page, 6, paginator => {
         this.headlinesPaginator = paginator;
         this.loadingHeadlines = false;
       });

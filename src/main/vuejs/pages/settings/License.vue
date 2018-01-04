@@ -17,7 +17,7 @@
         <tbody>
           <tr 
             v-for="(sub, index) in subscriptions" 
-            :class="{ 'danger' : sub.state.name == 'UNPAID', 'info' : sub.state.name == 'NEW', 'success' : sub.state.name == 'ACTIVE' }"
+            :class="{ 'danger' : sub.state.prop == 'UNPAID', 'info' : sub.state.prop == 'NEW', 'success' : sub.state.prop == 'ACTIVE' }"
             :key="index">
             <td>
               <router-link :to="{ name: 'invoice', params: { invoice_id : sub.id }}" v-text="sub.id">
@@ -35,7 +35,7 @@
             <td>{{ $t(sub.state.code) }}</td>
             <td>
               <a @click="doPayment(sub)" 
-                class="btn btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.name == 'UNPAID' }" v-if="sub.state.name == 'NEW' || sub.state.name == 'UNPAID'">
+                class="btn btn-primary btn-xs" :class="{ 'btn-danger' : sub.state.prop == 'UNPAID' }" v-if="sub.state.prop == 'NEW' || sub.state.prop == 'UNPAID'">
                 {{ $t('subscription.pay') }}
               </a>
             </td>

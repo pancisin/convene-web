@@ -219,7 +219,7 @@ public class CurrentUserController {
 		User stored = userRepository.findOne(auth.getId());
 
 		if (stored.getLicense() == null || stored.getLicense().getSubscription() == Subscription.FREE) {
-			if (!stored.isVerified())
+			if (!stored.getVerified())
 				throw new Exception("User email is not verified !");
 
 			if (stored.getRole() != Role.ROLE_AUTHOR) {

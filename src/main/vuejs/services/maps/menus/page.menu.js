@@ -60,7 +60,7 @@ export default {
       name: 'page.bots',
       code: 'admin.page.bots',
       hasPermission: (pa) => {
-        return pa.user.role.name === 'ROLE_SUPERADMIN';
+        return pa.user.role.prop === 'ROLE_SUPERADMIN';
       }
     }
   ]

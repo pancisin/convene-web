@@ -26,7 +26,7 @@
         <input type="text" class="form-control text-center" v-model="service.pricePerUnit">
         <span class="input-group-addon">/</span>
         <select class="form-control" v-model="service.unit">
-          <option v-for="(unit, index) in units" :value="unit.name" :selected="service.unit != null && service.unit.name == unit.name" :key="index">
+          <option v-for="(unit, index) in units" :value="unit.prop" :selected="service.unit != null && service.unit.prop == unit.prop" :key="index">
             {{ $t(unit.code) }}
           </option>
         </select>
@@ -69,7 +69,7 @@ export default {
         ServiceApi.getService(service_id, service => {
           this.service = {
             ...service,
-            unit: service.unit != null ? service.unit.name : null
+            unit: service.unit != null ? service.unit.prop : null
           };
         });
       }
@@ -79,14 +79,14 @@ export default {
         this.api.postService(this.service, service => {
           this.service = {
             ...service,
-            unit: service.unit != null ? service.unit.name : null
+            unit: service.unit != null ? service.unit.prop : null
           };
         });
       } else {
         ServiceApi.putService(this.service.id, this.service, service => {
           this.service = {
             ...service,
-            unit: service.unit != null ? service.unit.name : null
+            unit: service.unit != null ? service.unit.prop : null
           };
         });
       }

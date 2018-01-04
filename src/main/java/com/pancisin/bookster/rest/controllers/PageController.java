@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
@@ -218,7 +217,6 @@ public class PageController {
 	}
 
 	@GetMapping("/administrator")
-	@JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
