@@ -90,7 +90,7 @@ export default {
       );
       position: absolute;
       padding: 20px 20px;
-      font-weight: bold;
+      font-size: 21px;
       width: 100%;
       bottom: 0;
     }

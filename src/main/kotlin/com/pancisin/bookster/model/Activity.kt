@@ -23,37 +23,37 @@ import javax.persistence.EnumType
 data class Activity(
 
   @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
-		@Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
-		var id: UUID? = UUID.randomUUID(),
+  @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+  var id: UUID? = UUID.randomUUID(),
 
   @ManyToOne(optional = true)
-		@JsonSerialize(using = ToStringSerializer::class)
-		var user: User? = null,
+  @JsonSerialize(using = ToStringSerializer::class)
+  var user: User? = null,
 
   @Column
-		@Enumerated(EnumType.STRING)
-		var type: ActivityType? = null,
+  @Enumerated(EnumType.STRING)
+  var type: ActivityType? = null,
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-		var created: Calendar? = null,
+  var created: Calendar? = null,
 
   @JsonIgnore
-		@ManyToOne
-		@JoinTable(
-				name = "conferences_activities",
-				joinColumns = arrayOf(JoinColumn(name = "activity_id")),
-				inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
-		)
-		var conference: Conference? = null,
+  @ManyToOne
+  @JoinTable(
+    name = "conferences_activities",
+    joinColumns = arrayOf(JoinColumn(name = "activity_id")),
+    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+  )
+  var conference: Conference? = null,
 
   @JsonIgnore
-		@ManyToOne
-		@JoinTable(
-				name = "pages_activities",
-				joinColumns = arrayOf(JoinColumn(name = "activity_id")),
-				inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
-		)
-		var page: Page? = null
+  @ManyToOne
+  @JoinTable(
+    name = "pages_activities",
+    joinColumns = arrayOf(JoinColumn(name = "activity_id")),
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
+  )
+  var page: Page? = null
 ) {
-	constructor (user: User, type: ActivityType) : this (null, user, type, null, null, null)
+  constructor (user: User, type: ActivityType) : this(null, user, type, null, null, null)
 }
