@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pancisin.bookster.models.Event;
+import com.pancisin.bookster.model.Event;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -50,7 +48,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	public Page<Event> getPublicCreatedByUser(@Param("userId") Long userId, @Param("date") Calendar date,
 			Pageable pageable);
 
-	@Query("SELECT event FROM Event event RIGHT JOIN event.place place JOIN place.address address WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(address.latitude)) * COS(RADIANS(address.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(address.latitude))))) < :distance")
+	@Query("SELECT event FROM Event event WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(event.latitude)) * COS(RADIANS(event.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(event.latitude))))) < :distance")
 	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
 			@Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 

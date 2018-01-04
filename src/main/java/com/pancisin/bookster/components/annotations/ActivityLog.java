@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.pancisin.bookster.models.enums.ActivityType;
+import com.pancisin.bookster.model.enums.ActivityType;
 
 @Target(value = { ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)

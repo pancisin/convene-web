@@ -23,8 +23,8 @@ export default {
   created () {
     if (this.authenticated) {
       this.initializeUser().then(user => {
-        Settings.defaultLocale = user.locale.name;
-        this.$i18n.locale = user.locale.name;
+        Settings.defaultLocale = user.locale.prop;
+        this.$i18n.locale = user.locale.prop;
         this.$ga.set('userId', user.id);
       });
     }

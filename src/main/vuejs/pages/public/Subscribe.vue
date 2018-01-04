@@ -97,7 +97,7 @@ export default {
       });
     },
     getByName (name) {
-      var filter = this.subscriptions.filter(x => x.name === name);
+      var filter = this.subscriptions.filter(x => x.prop === name);
       if (filter.length > 0) {
         return filter[0];
       }
@@ -107,10 +107,10 @@ export default {
     submit () {
       var data = {
         user: this.user,
-        subscription: this.subscription.name
+        subscription: this.subscription.prop
       };
 
-      data.user.role = data.user.role.name;
+      data.user.role = data.user.role.prop;
       data.user.locale = data.user.locale.code;
       this.$http.post('/api/user/subscription', data).then(response => {
         this.initializeUser();

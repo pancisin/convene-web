@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
@@ -23,15 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.events.OnInviteEvent;
-import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Invitation;
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.Programme;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.PageState;
+import com.pancisin.bookster.model.Event;
+import com.pancisin.bookster.model.Invitation;
+import com.pancisin.bookster.model.Programme;
+import com.pancisin.bookster.model.User;
+import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.InvitationRepository;
@@ -64,12 +63,12 @@ public class EventController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping
 	@PreAuthorize("hasPermission(#event_id, 'event', 'read')")
 	public ResponseEntity<?> getEvent(@PathVariable Long event_id) {
 		Event event = eventRepository.findOne(event_id);
-		
+
 		if (event == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		} else {
@@ -103,13 +102,13 @@ public class EventController {
 			poster.setAuthor(user);
 			poster = mediaRepository.save(poster);
 			String url = "banners/events/" + poster.getId().toString();
-			
+
 			poster.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(event.getPosterData(), url);
 			poster.setSize(size);
 			stored.setPoster(poster);
 		}
-		
+
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 
@@ -125,7 +124,7 @@ public class EventController {
 		Event event = eventRepository.findOne(event_id);
 		return ResponseEntity.ok(event.getProgramme());
 	}
-	
+
 	@PostMapping("/programme")
 	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> postProgramme(@PathVariable Long event_id, @RequestBody Programme programme) {
@@ -166,7 +165,6 @@ public class EventController {
 	}
 
 	@GetMapping("/attendees")
-	@JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> getAttendees(@PathVariable Long event_id) {
 		Event stored = eventRepository.findOne(event_id);
@@ -199,34 +197,34 @@ public class EventController {
 	public ResponseEntity<?> getRelatedEvents(@PathVariable Long event_id) {
 		return ResponseEntity.ok(eventRepository.getRelated(event_id, new PageRequest(0, 100)));
 	}
-	
+
 	@GetMapping("/gallery")
 	public ResponseEntity<?> getGallery(@PathVariable Long event_id) {
 		return ResponseEntity.ok(mediaRepository.getByEvent(event_id));
 	}
-	
-	@PostMapping("/gallery") 
+
+	@PostMapping("/gallery")
 	public ResponseEntity<?> postGallery(@PathVariable Long event_id, @RequestBody Media galleryItem) {
 		Event stored = eventRepository.findOne(event_id);
 
 		if (storageService.isBinary(galleryItem.getData())) {
 			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			galleryItem.setAuthor(user);
-			
+
 			galleryItem = mediaRepository.save(galleryItem);
 			String url = "images/event/" + galleryItem.getId().toString();
-			
+
 			galleryItem.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(galleryItem.getData(), url);
 			galleryItem.setSize(size);
-			stored.AddGallery(galleryItem);
+			stored.addGallery(galleryItem);
 		}
-		
+
 		eventRepository.save(stored);
-		
+
 		return ResponseEntity.ok(galleryItem);
 	}
-	
+
 	@PatchMapping("/toggle-published")
 	@PreAuthorize("hasPermission(#event_id, 'event', 'update')")
 	public ResponseEntity<?> togglePublishState(@PathVariable Long event_id) {
@@ -240,12 +238,12 @@ public class EventController {
 
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
-	
+
 	@PatchMapping("/toggle-featured")
 	@PreAuthorize("hasRole('SUPERADMIN')")
 	public ResponseEntity<Event> toggleFeatured(@PathVariable Long event_id) {
 		Event stored = eventRepository.findOne(event_id);
-		stored.setFeatured(!stored.isFeatured());
+		stored.setFeatured(!stored.getFeatured());
 		return ResponseEntity.ok(eventRepository.save(stored));
 	}
 }

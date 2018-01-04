@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Sets;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.UserRepository;
 
@@ -22,10 +21,10 @@ public class ActiveUserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private AdministratorRepository paRepository;
-	
+
 	private LoadingCache<String, UserStats> statsByUser = CacheBuilder.newBuilder()
 			.build(new CacheLoader<String, UserStats>() {
 
@@ -38,7 +37,7 @@ public class ActiveUserService {
 	public void mark(String username) {
 		statsByUser.getUnchecked(username).mark();
 	}
-	
+
 	public UserStats getUserStats(String email) {
 		User user = userRepository.findByEmail(email);
 		Set<String> contacts = paRepository.getContacts(user.getId()).stream().map(u -> u.getEmail()).collect(Collectors.toSet());
@@ -47,19 +46,19 @@ public class ActiveUserService {
 
 	public List<UserStats> getActiveUsers() {
 //		Set<UserStats> active = Sets.newTreeSet();
-		
+
 		List<UserStats> active = new ArrayList<UserStats>();
-		
+
 		for (String user : statsByUser.asMap().keySet()) {
 			if ((System.currentTimeMillis() - statsByUser.getUnchecked(user).lastAccess()) < 15000) {
 //				active.add(user);
 				active.add(statsByUser.getUnchecked(user));
 			}
 		}
-		
+
 		return active;
 	}
-	
+
 	public boolean isActive(String user) {
 		try {
 			return statsByUser.get(user) != null;

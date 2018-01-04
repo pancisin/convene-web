@@ -1,10 +1,8 @@
 package com.pancisin.bookster.security.models;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.repository.UserRepository;
+import com.pancisin.bookster.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,7 +35,7 @@ public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken 
 	public static String generateToken(User u, String secret) {
 		Claims claims = Jwts.claims().setSubject(u.getUsername());
 		claims.put("userId", u.getId() + "");
-		claims.put("role", u.getRole().getName());
+		claims.put("role", u.getRole().getProp());
 
 		return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, secret).compact();
 	}

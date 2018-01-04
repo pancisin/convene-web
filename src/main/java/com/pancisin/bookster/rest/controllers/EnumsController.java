@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.enums.Unit;
+import com.pancisin.bookster.model.enums.Unit;
 
 @RestController
 @RequestMapping("/api/enum")

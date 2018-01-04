@@ -12,7 +12,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 
 @Repository
 @Transactional

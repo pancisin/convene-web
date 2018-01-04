@@ -2,6 +2,7 @@ package com.pancisin.bookster.components.aspects;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.Article;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -12,13 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
-import com.pancisin.bookster.models.Activity;
-import com.pancisin.bookster.models.Article;
-import com.pancisin.bookster.models.Conference;
-import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Survey;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.ActivityType;
+import com.pancisin.bookster.model.Activity;
+import com.pancisin.bookster.model.Conference;
+import com.pancisin.bookster.model.Event;
+import com.pancisin.bookster.model.Survey;
+import com.pancisin.bookster.model.User;
+import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.UserRepository;
@@ -38,7 +38,7 @@ public class ConferenceActivityMonitor {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Pointcut("execution(* com.pancisin.bookster.rest.controllers.ConferenceController.*(..)) && args(conference_id,..)")
 	public void conferenceController(Long conference_id) {
 
@@ -50,7 +50,7 @@ public class ConferenceActivityMonitor {
 		Conference stored = conferenceRepository.findOne(conference_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		Activity activity = new Activity(auth, activityLog.type());
 		activity.setConference(stored);
 		activity = activityRepository.save(activity);

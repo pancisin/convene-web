@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.EmailService;
 import com.pancisin.bookster.components.Notifier;
-import com.pancisin.bookster.models.BookRequest;
-import com.pancisin.bookster.models.Service;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.BookRequest;
+import com.pancisin.bookster.model.Service;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.ServiceRepository;
 
@@ -79,7 +79,7 @@ public class ServiceController {
 
 		return ResponseEntity.ok(bookRequestRepository.save(request));
 	}
-	
+
 	@GetMapping("/request")
 	@PreAuthorize("hasPermission(#service_id, 'service', 'read')")
 	public ResponseEntity<?> getRequests(@PathVariable Long service_id) {

@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.security.exceptions.JwtTokenMalformedException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
 import com.pancisin.bookster.security.utils.JwtUtil;
@@ -41,10 +41,10 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 		if (parsedUser == null) {
 			throw new JwtTokenMalformedException("JWT token is not valid");
 		}
-		
+
 		String[] roleArray = new String[1];
-		roleArray[0] = parsedUser.getRole().getName();
-		
+		roleArray[0] = parsedUser.getRole().getProp();
+
 		List<GrantedAuthority> authorityList = AuthorityUtils.createAuthorityList(roleArray);
 		return new User(parsedUser.getId(), parsedUser.getEmail(), token, authorityList);
 	}

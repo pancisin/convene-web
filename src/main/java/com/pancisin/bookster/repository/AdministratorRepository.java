@@ -1,14 +1,13 @@
 package com.pancisin.bookster.repository;
 
 import java.util.List;
-import java.util.UUID;
 
+import com.pancisin.bookster.model.Administrator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.pancisin.bookster.models.Administrator;
-import com.pancisin.bookster.models.User;
+import com.pancisin.bookster.model.User;
 
 public interface AdministratorRepository extends JpaRepository<Administrator, Long> {
 

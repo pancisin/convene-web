@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;
 
 import com.github.slugify.Slugify;
-import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.model.Page;
 
 public class UniqueSlugGenerator implements ValueGenerator<String> {
 
@@ -19,7 +19,7 @@ public class UniqueSlugGenerator implements ValueGenerator<String> {
 		Page page = (Page) owner;
 		Slugify s = new Slugify();
 		slug = s.slugify(page.getName());
-		
+
 		session.doWork(connection -> {
 			try {
 				Statement statement = connection.createStatement();
@@ -29,7 +29,7 @@ public class UniqueSlugGenerator implements ValueGenerator<String> {
 
 				if (rs.next()) {
 					int number = rs.getInt(1);
-					
+
 					if (number > 0) {
 						slug = String.join("-", slug, String.valueOf(rs.getInt(1)));
 					}
@@ -38,7 +38,7 @@ public class UniqueSlugGenerator implements ValueGenerator<String> {
 				ex.printStackTrace();
 			}
 		});
-		
+
 		return slug;
 	}
 

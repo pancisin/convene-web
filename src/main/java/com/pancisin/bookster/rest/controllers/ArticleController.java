@@ -1,5 +1,7 @@
 package com.pancisin.bookster.rest.controllers;
 
+import com.pancisin.bookster.model.Article;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
-import com.pancisin.bookster.models.Article;
-import com.pancisin.bookster.models.Media;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.MediaRepository;
 
@@ -29,7 +29,7 @@ public class ArticleController {
 
 	@Autowired
 	private MediaRepository mediaRepository;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getArticle(@PathVariable Long article_id) {
 		return ResponseEntity.ok(articleRepository.findOne(article_id));
@@ -46,7 +46,7 @@ public class ArticleController {
 			Media thumbnail = new Media();
 			thumbnail = mediaRepository.save(thumbnail);
 			String url = "banners/articles/" + thumbnail.getId().toString();
-			
+
 			thumbnail.setPath("/files/" + url + ".jpg");
 			storageService.storeBinary(article.getThumbnailData(), url);
 			stored.setThumbnail(thumbnail);
@@ -64,7 +64,7 @@ public class ArticleController {
 	@PatchMapping("/toggle-published")
 	public ResponseEntity<?> togglePublished(@PathVariable Long article_id) {
 		Article stored = articleRepository.findOne(article_id);
-		stored.setPublished(!stored.isPublished());
+		stored.setPublished(!stored.getPublished());
 		return ResponseEntity.ok(articleRepository.save(stored));
 	}
 }

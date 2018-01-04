@@ -6,20 +6,20 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.pancisin.bookster.model.Media;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.models.Address;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.EventBotRun;
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.Place;
-import com.pancisin.bookster.models.enums.BotRunState;
-import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.model.Address;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.EventBotRun;
+import com.pancisin.bookster.model.Place;
+import com.pancisin.bookster.model.enums.BotRunState;
+import com.pancisin.bookster.model.enums.PageState;
+import com.pancisin.bookster.model.enums.Visibility;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.EventBotRunRepository;
 import com.pancisin.bookster.repository.EventRepository;
@@ -60,7 +60,7 @@ public class EventBotService {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
 			bots.stream().forEach(b -> {
-				if (b.isActive()) {
+				if (b.getActive()) {
 					try {
 						runs.add(this.run(b, fb));
 					} catch (FacebookException e) {
@@ -99,7 +99,7 @@ public class EventBotService {
 
 		for (int j = 0; j < events.size(); j++) {
 			Event ev = events.get(j);
-			com.pancisin.bookster.models.Event event = buildEvent(ev);
+			com.pancisin.bookster.model.Event event = buildEvent(ev);
 			event.setPoster(new Media(fb.getEventPictureURL(ev.getId(), PictureSize.large).toString()));
 			event.setPage(bot.getPage());
 			event.setState(PageState.PUBLISHED);
@@ -126,15 +126,15 @@ public class EventBotService {
 		return run;
 	}
 
-	private com.pancisin.bookster.models.Event buildEvent(Event ev) {
-		com.pancisin.bookster.models.Event event = new com.pancisin.bookster.models.Event();
+	private com.pancisin.bookster.model.Event buildEvent(Event ev) {
+		com.pancisin.bookster.model.Event event = new com.pancisin.bookster.model.Event();
 		event.setName(ev.getName());
 		event.setSummary(ev.getDescription());
 
 		Calendar starts = Calendar.getInstance();
 		starts.setTime(ev.getStartTime());
 		starts.setTimeZone(TimeZone.getTimeZone("UTC"));
-		
+
 		event.setDate(starts);
 		event.setFacebookId(ev.getId());
 		event.setVisibility(Visibility.PUBLIC);
@@ -155,7 +155,7 @@ public class EventBotService {
 		a.setZip(venue.getZip());
 		a.setState(venue.getState());
 
-		place.setAddress(a);
+//		place.setAddress(a);
 		return place;
 	}
 }

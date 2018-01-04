@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.pancisin.bookster.models.ArticleBot;
+import com.pancisin.bookster.model.ArticleBot;
 
 @Repository
 public interface ArticleBotRepository extends JpaRepository<ArticleBot, UUID> {

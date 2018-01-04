@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
+import com.pancisin.bookster.model.Administrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Administrator;
 import com.pancisin.bookster.repository.AdministratorRepository;
 
 @RestController

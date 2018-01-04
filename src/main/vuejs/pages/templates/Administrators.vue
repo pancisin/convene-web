@@ -136,7 +136,7 @@ export default {
     putAdministrator (admin) {
       var data = {
         active: admin.active,
-        role: admin.role.name
+        role: admin.role.prop
       };
 
       AdministratorApi.putAdministrator(admin.id, data, administrator => {

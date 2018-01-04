@@ -3,7 +3,7 @@ package com.pancisin.bookster.repository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.pancisin.bookster.models.Programme;
+import com.pancisin.bookster.model.Programme;
 
 public interface ProgrammeRepository extends JpaRepository<Programme, Long> {
 

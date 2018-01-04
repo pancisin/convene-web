@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,19 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
 
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.Locale;
+import com.pancisin.bookster.model.User;
+import com.pancisin.bookster.model.enums.Locale;
 import com.pancisin.bookster.repository.UserRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
@@ -36,7 +34,6 @@ import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.Reading;
-import facebook4j.auth.AccessToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -116,7 +113,7 @@ public class AuthController {
 
 		Facebook fb = new FacebookFactory().getInstance();
 		User stored = null;
-		
+
 		try {
 			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
@@ -125,12 +122,12 @@ public class AuthController {
 
 			Long user_id = Long.parseLong(user.getId());
 			stored = userRepository.findByFacebookId(user_id);
-			
+
 			if (stored == null) {
 				stored = new User();
-				
+
 				stored.setLocale(Locale.en);
-				
+
 				stored.setFacebookId(user_id);
 				stored.setLocked(false);
 				stored.setFirstName(user.getFirstName());
@@ -138,7 +135,7 @@ public class AuthController {
 				stored.setEmail(user.getEmail());
 				stored.setProfilePicture(new Media(user.getPicture().getURL().toString()));
 			}
-			
+
 			userRepository.save(stored);
 			stored.setToken(JwtAuthenticationToken.generateToken(stored, secret));
 		} catch (FacebookException e) {
@@ -165,22 +162,22 @@ public class AuthController {
 
 		return ResponseEntity.ok(user);
 	}
-	
+
 	@PostMapping("/api/user/changePassword")
 	public ResponseEntity<?> changePassword(@RequestBody Map<String, String> requestData) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User stored = userRepository.findOne(auth.getId());
-		
+
 		String currentPassword = requestData.get("currentPassword");
 		String newPassword = requestData.get("newPassword");
-		
+
 		if (hashPassword(currentPassword).equals(stored.getHashedPassword())) {
 			stored.setHashedPassword(this.hashPassword(newPassword));
 			stored = userRepository.save(stored);
 		} else {
 			return new ResponseEntity<String>("Bad data", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return ResponseEntity.ok(stored);
 	}
 

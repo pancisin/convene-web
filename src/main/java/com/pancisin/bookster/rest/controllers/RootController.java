@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.pancisin.bookster.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,17 +15,14 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Article;
-import com.pancisin.bookster.models.ArticlesList;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.PageState;
+import com.pancisin.bookster.model.ArticlesList;
+import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
 import com.pancisin.bookster.repository.ConferenceRepository;
@@ -77,7 +75,7 @@ public class RootController {
 			@RequestParam(name = "categoryId", required = false) Long categoryId,
 			@RequestParam(name = "branchId", required = false) Long branchId) {
 
-		org.springframework.data.domain.Page<com.pancisin.bookster.models.Page> pages = null;
+		org.springframework.data.domain.Page<com.pancisin.bookster.model.Page> pages = null;
 		Pageable pageable = new PageRequest(page, limit, new Sort(Sort.Direction.ASC, "name"));
 
 		if (branchId != null) {
@@ -145,7 +143,7 @@ public class RootController {
 	@GetMapping({ "/api/page/{page_identifier}", "/public/page/{page_identifier}" })
 	@PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
 	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
-		com.pancisin.bookster.models.Page page = null;
+		com.pancisin.bookster.model.Page page = null;
 
 		try {
 			Long page_id = Long.parseLong((String) page_identifier);

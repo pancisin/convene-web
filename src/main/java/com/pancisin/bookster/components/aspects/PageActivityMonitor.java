@@ -1,10 +1,8 @@
 package com.pancisin.bookster.components.aspects;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.*;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -15,12 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.components.Notifier;
 import com.pancisin.bookster.components.annotations.ActivityLog;
-import com.pancisin.bookster.models.Activity;
-import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.Service;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.ActivityType;
+import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import com.pancisin.bookster.repository.UserRepository;
@@ -37,7 +30,7 @@ public class PageActivityMonitor {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private Notifier notifier;
 
@@ -51,32 +44,38 @@ public class PageActivityMonitor {
 		Page stored = pageRepository.findOne(page_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		Activity activity = new Activity(auth, activityLog.type());
 		activity.setPage(stored);
 		activity = activityRepository.save(activity);
 
-		if (activityLog.type() == ActivityType.CREATE_EVENT) {
-			Event event = (Event) response.getBody();
-			stored.getFollowers().stream().forEach(user -> {
-				notifier.notifyUser(user, "notification.page.event_created", event.getName(), stored.getDisplayName());
-			});
-		}
-
-		if (activityLog.type() == ActivityType.FOLLOWING) {
-			User user = userRepository.findOne(auth.getId());
-			
-			stored.getAdministrators().stream().forEach(x -> {
-				notifier.notifyUser(x.getUser(), "notification.page.new_follower", user.getDisplayName(), stored.getDisplayName());
-			});
-		}
-
-		if (activityLog.type() == ActivityType.CREATE_SERVICE) {
-			Service service = (Service) response.getBody();
-
-			stored.getFollowers().stream().forEach(user -> {
-				notifier.notifyUser(user, "notification.page.service_created", service.getName(), stored.getDisplayName());
-			});
-		}
+		switch (activityLog.type()) {
+      case CREATE_EVENT:
+        Event event = (Event) response.getBody();
+        stored.getFollowers().stream().forEach(u -> {
+          notifier.notifyUser(u, "notification.page.event_created", event.getName(), stored.getDisplayName());
+        });
+        break;
+      case FOLLOWING:
+        User user = userRepository.findOne(auth.getId());
+        stored.getAdministrators().stream().forEach(x -> {
+          notifier.notifyUser(x.getUser(), "notification.page.new_follower", user.getDisplayName(), stored.getDisplayName());
+        });
+        break;
+      case CREATE_SERVICE:
+        Service service = (Service) response.getBody();
+        stored.getFollowers().stream().forEach(u -> {
+          notifier.notifyUser(u, "notification.page.service_created", service.getName(), stored.getDisplayName());
+        });
+        break;
+      case CREATE_ADMINISTRATOR:
+        Administrator admin = (Administrator) response.getBody();
+        if (admin.getActive()) {
+          notifier.notifyUser(admin.getUser(), "notification.page.administrator_created", admin.getRole().getProp() ,stored.getDisplayName());
+        }
+        break;
+      default:
+        break;
+    }
 	}
 }

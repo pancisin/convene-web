@@ -8,26 +8,25 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Administrator;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.PageImport;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.enums.BotRunState;
-import com.pancisin.bookster.models.enums.PageRole;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.Page;
+import com.pancisin.bookster.model.PageImport;
+import com.pancisin.bookster.model.User;
+import com.pancisin.bookster.model.enums.BotRunState;
+import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.repository.EventBotRepository;
 import com.pancisin.bookster.repository.AdministratorRepository;
 import com.pancisin.bookster.repository.PageImportRepository;
@@ -98,23 +97,23 @@ public class FacebookImporterController {
 			}
 
 			List<PageImport> imports = pageImportRepository.findAll();
-			
+
 			List<Map<String, String>> result = places.stream().map(p -> {
 				Map<String, String> current = new HashMap<String, String>();
 				current.put("name", p.getName());
 				current.put("id", p.getId());
-				
+
 				boolean isImported = imports.stream().anyMatch(i -> {
 					if (i.getSourceId().equals(p.getId())) {
 						current.put("pageImportId", i.getId().toString());
 						return true;
 					};
-					
+
 					return false;
 				});
-				
+
 				current.put("imported", String.valueOf(isImported));
-				
+
 				return current;
 			}).collect(Collectors.toList());
 
@@ -158,7 +157,7 @@ public class FacebookImporterController {
 				fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
 				Page page = convertPage(fb.getPage(facebook_id, new Reading().fields(pageFields)));
-				
+
 				try {
 					page = pageRepository.save(page);
 

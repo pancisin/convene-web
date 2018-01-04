@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.ArticleBotService;
-import com.pancisin.bookster.models.ArticleBot;
-import com.pancisin.bookster.models.ArticleBotRun;
-import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.model.ArticleBot;
+import com.pancisin.bookster.model.ArticleBotRun;
+import com.pancisin.bookster.model.enums.BotRunState;
 import com.pancisin.bookster.repository.ArticleBotRepository;
 
 @RestController
@@ -48,7 +48,7 @@ public class ArticleBotController {
 		ArticleBot stored = abRepository.findOne(articleBotId);
 
 		stored.setName(articleBot.getName());
-		stored.setActive(articleBot.isActive());
+		stored.setActive(articleBot.getActive());
 		stored.setParser(articleBot.getParser());
 		stored.setSourceType(articleBot.getSourceType());
 		stored.setSourceUrl(articleBot.getSourceUrl());
@@ -61,11 +61,11 @@ public class ArticleBotController {
 		abRepository.delete(articleBotId);
 		return ResponseEntity.ok("success");
 	}
-	
+
 	@PatchMapping("/toggle-active")
 	public ResponseEntity<?> toggleActive(@PathVariable UUID articleBotId) {
 		ArticleBot stored = abRepository.findOne(articleBotId);
-		stored.setActive(!stored.isActive());
+		stored.setActive(!stored.getActive());
 		return ResponseEntity.ok(abRepository.save(stored));
 	}
 

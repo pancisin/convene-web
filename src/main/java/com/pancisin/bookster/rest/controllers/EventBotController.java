@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.EventBotService;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.EventBotRun;
-import com.pancisin.bookster.models.enums.BotRunState;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.EventBotRun;
+import com.pancisin.bookster.model.enums.BotRunState;
 import com.pancisin.bookster.repository.EventBotRepository;
 
 @RestController
@@ -49,7 +49,7 @@ public class EventBotController {
 	@PatchMapping("/toggle-active")
 	public ResponseEntity<?> toggleActive(@PathVariable UUID bot_id) {
 		EventBot stored = eventBotRepository.findOne(bot_id);
-		stored.setActive(!stored.isActive());
+		stored.setActive(!stored.getActive());
 		return ResponseEntity.ok(eventBotRepository.save(stored));
 	}
 

@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.bookster.model.Administrator;
+import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -27,23 +27,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
-import com.pancisin.bookster.models.Administrator;
-import com.pancisin.bookster.models.BookRequest;
-import com.pancisin.bookster.models.Event;
-import com.pancisin.bookster.models.EventBot;
-import com.pancisin.bookster.models.Media;
-import com.pancisin.bookster.models.Page;
-import com.pancisin.bookster.models.Place;
-import com.pancisin.bookster.models.Service;
-import com.pancisin.bookster.models.User;
-import com.pancisin.bookster.models.Widget;
-import com.pancisin.bookster.models.enums.ActivityType;
-import com.pancisin.bookster.models.enums.PageRole;
-import com.pancisin.bookster.models.enums.PageState;
+import com.pancisin.bookster.model.BookRequest;
+import com.pancisin.bookster.model.Event;
+import com.pancisin.bookster.model.EventBot;
+import com.pancisin.bookster.model.Page;
+import com.pancisin.bookster.model.Place;
+import com.pancisin.bookster.model.Service;
+import com.pancisin.bookster.model.User;
+import com.pancisin.bookster.model.Widget;
+import com.pancisin.bookster.model.enums.ActivityType;
+import com.pancisin.bookster.model.enums.PageRole;
+import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.BookRequestRepository;
@@ -92,7 +89,7 @@ public class PageController {
 
 	@Autowired
 	private BookRequestRepository bookRequestRepository;
-	
+
 	// @GetMapping
 	// @PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	// public ResponseEntity<?> getPage(@PathVariable Long page_id) {
@@ -220,7 +217,6 @@ public class PageController {
 	}
 
 	@GetMapping("/administrator")
-	@JsonView(Summary.class)
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getAdministrators(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
@@ -237,11 +233,11 @@ public class PageController {
 
 		User existing = userRepository.findByEmail(user.getEmail());
 		if (existing != null) {
-				
+
 			if (stored.getAdministrators().stream().anyMatch(a -> a.getUser().getId() == existing.getId())) {
 				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			}
-			
+
 			Administrator pa = new Administrator(stored, existing, false);
 			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
 

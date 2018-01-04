@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.models.Category;
+import com.pancisin.bookster.model.Category;
 import com.pancisin.bookster.repository.CategoryRepository;
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoriesController {
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@GetMapping
 	public ResponseEntity<?> getCategories() {
 		return ResponseEntity.ok(categoryRepository.findAll());
 	}
-	
+
 	@GetMapping("/{category_id}/branches")
 	public ResponseEntity<?> getBraches(@PathVariable Long category_id) {
 		Category stored = categoryRepository.findOne(category_id);

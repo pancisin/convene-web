@@ -3,10 +3,7 @@
     <ul class="nav nav-tabs navtab-custom nav-justified">
       <li class="tab" v-for="tab in tabs" :class="{ 'active' : selected.id == tab.id }" :key="tab.id">
         <a :class="{ 'active' : selected.id == tab.id }" @click="selected = tab">
-          <span class="visible-xs">
-            <i class="fa fa-home"></i>
-          </span>
-          <span class="hidden-xs" v-text="tab.title"></span>
+          <span v-text="tab.title"></span>
         </a>
       </li>
       <div class="indicator"></div>

@@ -2,14 +2,12 @@ package com.pancisin.bookster.repository;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.pancisin.bookster.models.Page;
+import com.pancisin.bookster.model.Page;
 
 public interface PageRepository extends JpaRepository<Page, Long> {
 
@@ -19,7 +17,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
 //	@Cacheable("pages")
 	public Page findBySlug(String slug);
-	
+
 	@Query("SELECT page FROM Page page JOIN page.branch branch JOIN branch.category category WHERE category.id = :category_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
 	public org.springframework.data.domain.Page<Page> findByCategory(@Param("category_id") Long category_id,
 			Pageable pageable);
@@ -38,7 +36,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 	public List<Page> getFollowed(@Param("user_id") Long user_id);
 
 	public Page findByFacebookId(@Param("facebookId") String facebookId);
-	
+
 	@Query("SELECT page FROM Page page JOIN page.administrators admin WHERE admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id")
 	public List<Page> getByOwner(@Param("user_id") Long user_id);
 }

@@ -1,7 +1,6 @@
 package com.pancisin.bookster.components;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pancisin.bookster.models.enums.PageState;
-import com.pancisin.bookster.models.enums.Visibility;
+import com.pancisin.bookster.model.enums.PageState;
+import com.pancisin.bookster.model.enums.Visibility;
 import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
@@ -76,7 +75,7 @@ public class SitemapService {
 				}).filter(x -> x != null).collect(Collectors.toList());
 
 		sitemap.addUrls(conferences);
-		
+
 		List<WebSitemapUrl> staticUrls = Arrays.asList(staticRoutes).stream().map(r -> {
 			try {
 				String url = String.join("/", BASE_URL, r);
@@ -85,7 +84,7 @@ public class SitemapService {
 				return null;
 			}
 		}).filter(x -> x != null).collect(Collectors.toList());
-		
+
 		sitemap.addUrls(staticUrls);
 
 		return String.join("", sitemap.writeAsStrings());

@@ -33,7 +33,7 @@
               <td>
                 <bot-run-indicator v-if="bot.lastRun != null" :run="bot.lastRun" />
               </td>
-              <td class="text-center" v-if="editable && (bot.lastRun == null || bot.lastRun.state.name !== 'RUNNING')">
+              <td class="text-center" v-if="editable && (bot.lastRun == null || bot.lastRun.state.prop !== 'RUNNING')">
                 <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
                 <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
               </td>
@@ -100,7 +100,7 @@ export default {
               this.paginator.content.splice(index, 1, {
                 ...bot,
                 lastRun: run,
-                runsCount: run.state.name === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
+                runsCount: run.state.prop === 'SUCCESS' ? bot.runsCount + 1 : bot.runsCount
               });
 
               this.sortBots();
