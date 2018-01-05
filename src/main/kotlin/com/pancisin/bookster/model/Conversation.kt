@@ -5,7 +5,7 @@ import java.util.Comparator
 
 data class Conversation(
   var participant: User? = null,
-  var recentMessages: MutableList<Message> = ArrayList<Message>()
+  var recentMessages: MutableList<Message> = ArrayList()
 ) {
   constructor(participant: User, message: Message) : this(participant) {
     recentMessages.add(message)

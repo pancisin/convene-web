@@ -19,7 +19,9 @@ data class Administrator(
   @Id @JsonView(Compact::class) @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Long? = null,
 
-  @JsonView(Summary::class) @JsonIgnoreProperties("address", "license", "authorities", "created", "token", "locale") @ManyToOne(optional = false, fetch = FetchType.EAGER)
+  @JsonView(Summary::class)
+  @JsonIgnoreProperties("address", "license", "authorities", "created", "token", "locale")
+  @ManyToOne(optional = false, fetch = FetchType.EAGER)
   var user: User? = null,
 
   @JsonIgnore @ManyToOne

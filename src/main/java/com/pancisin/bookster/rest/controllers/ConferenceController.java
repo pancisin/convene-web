@@ -268,11 +268,11 @@ public class ConferenceController {
 
 		User existing = userRepository.findByEmail(user.getEmail());
 		if (existing != null) {
-			Administrator pa = new Administrator(stored, existing, false);
-			pa.setRole(PageRole.ROLE_ADMINISTRATOR);
+			Administrator administrator = new Administrator(stored, existing, false);
+      administrator.setRole(PageRole.ROLE_ADMINISTRATOR);
 
-			administratorRepository.save(pa);
-			return ResponseEntity.ok(pa);
+			administratorRepository.save(administrator);
+			return ResponseEntity.ok(administrator);
 		}
 
 		return new ResponseEntity("User not found by email", HttpStatus.BAD_REQUEST);
@@ -317,12 +317,8 @@ public class ConferenceController {
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	public ResponseEntity<?> postSurvey(@PathVariable Long conference_id, @RequestBody Survey survey) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-
-		survey = surveyRepository.save(survey);
-		stored.addSurvey(survey);
-
-		conferenceRepository.save(stored);
-		return ResponseEntity.ok(survey);
+		survey.setConference(stored);
+		return ResponseEntity.ok(surveyRepository.save(survey));
 	}
 
 	@GetMapping("/survey")
@@ -378,17 +374,12 @@ public class ConferenceController {
 		return ResponseEntity.ok(stored.getPlaces());
 	}
 
-	@Transactional
 	@PostMapping("/place")
 	@PreAuthorize("hasPermission(#conference_id, 'conference', 'update')")
 	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long conference_id, @RequestBody Place place) {
 		Conference stored = conferenceRepository.findOne(conference_id);
-
-		place = placeRepository.save(place);
-		stored.addPlace(place);
-		conferenceRepository.save(stored);
-
-		return ResponseEntity.ok(place);
+		place.setConference(stored);
+		return ResponseEntity.ok(placeRepository.save(place));
 	}
 }

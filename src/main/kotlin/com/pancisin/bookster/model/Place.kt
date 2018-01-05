@@ -1,24 +1,9 @@
 package com.pancisin.bookster.model
 
-import java.util.ArrayList
-
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
-import javax.persistence.Table
-import javax.persistence.Transient
-
-import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.model.Address
-import com.pancisin.bookster.model.Media
+import javax.persistence.*
 
 @Entity
 @Table(name = "places")
@@ -46,17 +31,27 @@ data class Place(
   var venueData: String? = null,
 
   @OneToMany(fetch = FetchType.LAZY, cascade = arrayOf(CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST))
-  private var gallery: MutableList<Media>? = null
+  var gallery: MutableList<Media>? = null,
+
+  @JsonIgnore
+  @ManyToOne
+  @JoinTable(
+    name = "pages_places",
+    joinColumns = arrayOf(JoinColumn(name = "place_id")),
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
+  )
+  var page: Page? = null,
+
+  @JsonIgnore
+  @ManyToOne
+  @JoinTable(
+    name = "conferences_places",
+    joinColumns = arrayOf(JoinColumn(name = "place_id")),
+    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+  )
+  var conference: Conference? = null
 ) {
-  fun getGallery(): List<Media>? {
-    return gallery
-  }
-
   fun AddGallery(media: Media) {
-    if (this.gallery == null) {
-      this.gallery = ArrayList()
-    }
-
-    this.gallery!!.add(media)
+    this.gallery?.add(media)
   }
 }

@@ -65,7 +65,7 @@ class Page() : IAuthor {
 
   @Lob
   @Column
-  var summary: String = ""
+  var summary: String? = null
 
   @JsonIgnore
   @OneToMany(mappedBy = "page")
@@ -100,12 +100,12 @@ class Page() : IAuthor {
   private val created: Calendar? = null
 
   @JsonIgnore
-  @OneToMany(cascade = arrayOf(CascadeType.MERGE, CascadeType.DETACH), fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
   var places: MutableList<Place>? = null
 
   val owner: User?
     @JsonIgnore
-    get() = administrators!!.first { a -> a.role == PageRole.ROLE_OWNER }.user
+    get() = administrators?.firstOrNull { a -> a.role === PageRole.ROLE_OWNER }?.user
 
   @JsonView(Summary::class)
   @Enumerated(EnumType.STRING)
@@ -121,7 +121,12 @@ class Page() : IAuthor {
 
   @JsonIgnore
   @OneToMany(orphanRemoval = true, cascade = arrayOf(CascadeType.ALL))
-  private var widgets: MutableList<Widget>? = null
+  var widgets: MutableList<Widget> = ArrayList()
+    get
+    set(widgets) {
+      this.widgets.clear()
+      this.widgets.addAll(widgets)
+    }
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, cascade = arrayOf(CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST))
@@ -158,34 +163,7 @@ class Page() : IAuthor {
   override val type: String
     get() = "page"
 
-  fun getWidgets(): List<Widget>? {
-    return widgets
-  }
-
-  fun setWidgets(widgets: List<Widget>?) {
-    if (this.widgets == null) {
-      this.widgets = ArrayList()
-    }
-
-    this.widgets!!.clear()
-
-    if (widgets != null) {
-      this.widgets!!.addAll(widgets)
-    }
-  }
-
-  fun addPlace(place: Place) {
-    if (this.places == null)
-      this.places = ArrayList()
-
-    this.places!!.add(place)
-  }
-
-  fun AddGallery(media: Media) {
-    if (this.gallery == null) {
-      this.gallery = ArrayList()
-    }
-
-    this.gallery!!.add(media)
+  fun addGallery(media: Media) {
+    gallery?.add(media)
   }
 }

@@ -152,14 +152,7 @@ class Event() {
 
   //	@JsonSerialize(using = ToStringSerializer.class)
   val author: IAuthor?
-    get() {
-      if (conference != null)
-        return conference
-      else if (page != null)
-        return page
-
-      return owner
-    }
+    get() = conference ?: page ?: owner
 
   val privilege: Any?
     @Transient
@@ -171,15 +164,7 @@ class Event() {
         && SecurityContextHolder.getContext().authentication !is AnonymousAuthenticationToken) {
         val user = SecurityContextHolder.getContext().authentication.principal as User
 
-        if (this.page != null && this.page!!.administrators != null) {
-          return this.page!!.privilege
-        } else if (this.conference != null && this.conference!!.administrators != null) {
-          return this.conference!!.privilege
-        } else if (this.owner != null && this.owner!!.id === user.id) {
-          val result = HashMap<String, String>()
-          result.put("active", "true")
-          return result
-        }
+        return conference?.privilege ?: page?.privilege ?: if (owner?.id === user.id) hashMapOf("active" to true) else null
       }
 
       return false

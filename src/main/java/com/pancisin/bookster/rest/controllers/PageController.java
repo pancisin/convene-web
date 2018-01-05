@@ -41,7 +41,6 @@ import com.pancisin.bookster.model.Widget;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.model.enums.PageState;
-import com.pancisin.bookster.models.views.Summary;
 import com.pancisin.bookster.repository.ActivityRepository;
 import com.pancisin.bookster.repository.BookRequestRepository;
 import com.pancisin.bookster.repository.EventBotRepository;
@@ -261,12 +260,8 @@ public class PageController {
 	@ActivityLog(type = ActivityType.CREATE_PLACE)
 	public ResponseEntity<?> postPlace(@PathVariable Long page_id, @RequestBody Place place) {
 		Page stored = pageRepository.findOne(page_id);
-
-		place = placeRepository.save(place);
-		stored.addPlace(place);
-		pageRepository.save(stored);
-
-		return ResponseEntity.ok(place);
+    place.setPage(stored);
+		return ResponseEntity.ok(placeRepository.save(place));
 	}
 
 	@PatchMapping("/toggle-published")
@@ -334,7 +329,7 @@ public class PageController {
 			galleryItem.setPath("/files/" + url + ".jpg");
 			Long size = storageService.storeBinary(galleryItem.getData(), url);
 			galleryItem.setSize(size);
-			stored.AddGallery(galleryItem);
+			stored.addGallery(galleryItem);
 		}
 
 		pageRepository.save(stored);

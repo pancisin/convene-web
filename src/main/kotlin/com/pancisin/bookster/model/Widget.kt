@@ -13,9 +13,13 @@ import javax.persistence.Table
 
 import org.hibernate.annotations.GenericGenerator
 
-@Entity @Table(name = "widgets")
+@Entity
+@Table(name = "widgets")
 data class Widget(
-  @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
+
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   val id: UUID? = null,
 

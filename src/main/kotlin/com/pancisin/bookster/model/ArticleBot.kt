@@ -61,5 +61,5 @@ data class ArticleBot(
     get() = runs?.size ?: 0
 
   val lastRun: ArticleBotRun?
-    get() = runs!!.reduce { a, b -> if (a.date!!.compareTo(b.date) > 0) a else b }
+    get() = runs?.reduce { a, b -> if (a.date?.compareTo(b.date) ?: -1 > 0) a else b }
 }

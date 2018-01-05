@@ -44,7 +44,7 @@ data class Address(
 
 	@JsonIgnore
 	fun getPaylaneAddress() : com.paylane.client.api.models.Address {
-		return com.paylane.client.api.models.Address(this.street + " " + this.number, this.city, this.state,
+		return com.paylane.client.api.models.Address( "${this.street} ${this.number}", this.city, this.state,
 				this.zip, "SK");
 	}
 }

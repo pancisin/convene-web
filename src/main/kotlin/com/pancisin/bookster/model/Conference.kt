@@ -48,7 +48,7 @@ class Conference : IAuthor {
   @JsonIgnore @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
   var metaFields: MutableList<MetaField>? = null
 
-  @JsonIgnore @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+  @JsonIgnore @OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, orphanRemoval = true)
   var surveys: MutableList<Survey>? = null
 
   @JsonIgnore @OneToMany(mappedBy = "conference")
@@ -79,7 +79,7 @@ class Conference : IAuthor {
   @JsonIgnore @OneToMany(mappedBy = "conference")
   var articles: MutableList<Article>? = null
 
-  @JsonIgnore @OneToMany(cascade = arrayOf(CascadeType.MERGE, CascadeType.DETACH), fetch = FetchType.LAZY, orphanRemoval = true)
+  @JsonIgnore @OneToMany(mappedBy = "conference", fetch = FetchType.LAZY, orphanRemoval = true)
   var places: MutableList<Place>? = null
 
   @JsonIgnore @ManyToMany(fetch = FetchType.LAZY, mappedBy = "conference")
@@ -87,7 +87,12 @@ class Conference : IAuthor {
 
   @JsonIgnore
   @OneToMany(orphanRemoval = true, cascade = arrayOf(CascadeType.ALL))
-  private var widgets: MutableList<Widget>? = null
+  var widgets: MutableList<Widget> = ArrayList()
+    get
+    set(widgets) {
+      this.widgets.clear()
+      this.widgets.addAll(widgets)
+    }
 
   val owner: User?
     @JsonIgnore @Transient
@@ -119,39 +124,9 @@ class Conference : IAuthor {
     this.metaFields!!.add(field)
   }
 
-  fun addSurvey(survey: Survey) {
-    if (this.surveys == null)
-      this.surveys = ArrayList()
-
-    this.surveys!!.add(survey)
-  }
-
-  fun addPlace(place: Place) {
-    if (this.places == null)
-      this.places = ArrayList()
-
-    this.places!!.add(place)
-  }
-
   override val displayName: String
     get() = this.name.toString()
 
   override val type: String
     get() = "conference"
-
-  fun getWidgets() : MutableList<Widget>? {
-    return widgets
-  }
-
-  fun setWidgets(widgets: List<Widget>?) {
-    if (this.widgets == null) {
-      this.widgets = ArrayList()
-    }
-
-    this.widgets!!.clear()
-
-    if (widgets != null) {
-      this.widgets!!.addAll(widgets)
-    }
-  }
 }

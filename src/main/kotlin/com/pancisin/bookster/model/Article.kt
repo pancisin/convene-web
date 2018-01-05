@@ -7,7 +7,8 @@ import com.pancisin.bookster.models.views.Summary
 import java.util.*
 import javax.persistence.*
 
-@Entity @Table(name = "articles")
+@Entity
+@Table(name = "articles")
 data class Article(
 
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,7 +52,7 @@ data class Article(
   @JsonIgnore @ManyToOne(optional = true)
   @JoinTable(
     name = "articles_lists_articles",
-    joinColumns =arrayOf( JoinColumn(name = "articles_id")),
+    joinColumns = arrayOf(JoinColumn(name = "articles_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "articles_list_id"))
   )
   var articlesList: ArticlesList? = null
@@ -59,15 +60,9 @@ data class Article(
 ) {
   @PrePersist
   private fun onCreate() {
-    val values = ArrayList<String>()
-    values.add(this.title.toString())
-
-    if (this.articlesList != null) {
-      values.add(this.articlesList!!.id.toString())
-    } else if (this.conference != null) {
-      values.add(this.conference!!.id!!.toString())
-    }
-
-    this.identifier = values.hashCode()
+    this.identifier = arrayListOf(
+      title.toString(),
+      articlesList?.id.toString() ?: conference?.id.toString() ?: ""
+    ).hashCode()
   }
 }

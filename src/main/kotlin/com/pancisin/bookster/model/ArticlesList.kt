@@ -43,8 +43,6 @@ data class ArticlesList(
 ) {
   @PreUpdate
   private fun onUpdate() {
-    if (this.tags != null && !this.tags!!.isEmpty()) {
-      this.tagsHash = this.tags!!.sorted().hashCode()
-    }
+    this.tagsHash = this.tags?.sorted()?.hashCode() ?: 0
   }
 }

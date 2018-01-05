@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonView
 @Entity
 @Indexed
 @Table(name = "users")
-class User : UserDetails, Principal, IAuthor {
+class User() : UserDetails, Principal, IAuthor {
 
   @Id
   @JsonView(Compact::class)
@@ -121,15 +121,8 @@ class User : UserDetails, Principal, IAuthor {
 
   val license: UserSubscription
     @Transient
-    get() {
-      val subscription = subscriptions.firstOrNull { s -> s.state === SubscriptionState.ACTIVE || s.state === SubscriptionState.NEW}
-
-      if (subscription == null) {
-        return UserSubscription(subscription = Subscription.FREE, state = SubscriptionState.ACTIVE)
-      }
-
-      return subscription
-    }
+    get() = subscriptions.firstOrNull { s -> s.state === SubscriptionState.ACTIVE || s.state === SubscriptionState.NEW }
+      ?: UserSubscription(subscription = Subscription.FREE, state = SubscriptionState.ACTIVE)
 
   @OneToOne(optional = true, cascade = arrayOf(CascadeType.ALL), orphanRemoval = true)
   var address = Address()
@@ -154,20 +147,18 @@ class User : UserDetails, Principal, IAuthor {
   @JsonProperty(access = Access.READ_ONLY)
   var facebookId: Long? = null
 
-  override val displayName: String
-    get() = this.firstName + " " + this.lastName
-
-  override val type: String
-    get() = "user"
-
-  constructor(id: Long?, email: String, token: String, authorities: Collection<GrantedAuthority>) {
+  constructor(id: Long?, email: String, token: String, authorities: Collection<GrantedAuthority>) : this() {
     this.id = id
     this.email = email
     this.token = token
     this.authorities = authorities
   }
 
-  constructor() {}
+  override val displayName: String
+    get() = this.firstName + " " + this.lastName
+
+  override val type: String
+    get() = "user"
 
   override fun getAuthorities(): Collection<GrantedAuthority> {
     return authorities

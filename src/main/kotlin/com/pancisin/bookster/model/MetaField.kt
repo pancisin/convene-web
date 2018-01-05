@@ -41,6 +41,6 @@ data class MetaField(
   var ordering: Int = 0
 ) {
   override fun toString(): String {
-    return this.id!!.toString()
+    return this.id.toString()
   }
 }

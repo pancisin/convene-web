@@ -80,8 +80,9 @@ public class SurveyController {
 	public ResponseEntity<?> postMetaField(@PathVariable Long survey_id, @RequestBody MetaField field) {
 		Survey stored = surveyRepository.findOne(survey_id);
 
-		field = mfRepository.save(field);
-		stored.addMetaField(field);
+
+    field = mfRepository.save(field);
+    stored.getMetaFields().add(field);
 		surveyRepository.save(stored);
 
 		return ResponseEntity.ok(field);
