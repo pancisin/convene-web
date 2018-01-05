@@ -40,6 +40,27 @@ export default {
   },
 
   /**
+   * Get all system articles lists
+   * @param {*} success - success callback function
+   */
+  getArticlesLists (success) {
+    Vue.http.get('/api/articles-list').then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Create new system articles list element
+   * @param {*} articlesList - articles list data object
+   * @param {*} success - success callback function
+   */
+  postArticlesList (articlesList, success) {
+    Vue.http.post('/api/articles-list', articlesList).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
    * Get all users for system maintanance
    * @param {*} page - paginator page attribute
    * @param {*} size - paginator size attribute

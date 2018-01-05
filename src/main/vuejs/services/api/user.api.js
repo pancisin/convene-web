@@ -170,7 +170,7 @@ export default {
   },
 
   getConversations (success) {
-    Vue.http.get('/api/message/conversations').then(response => {
+    Vue.http.get('/api/v1/message/conversations').then(response => {
       success(response.body);
     });
   },

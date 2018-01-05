@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const EVENT_BOT_API_URL = '/api/event-bot';
+const EVENT_BOT_API_URL = '/api/v1/event-bot';
 
 export default {
 
@@ -42,8 +42,8 @@ export default {
    * @param {*} id - event bot id
    * @param {*} success - success callback function
    */
-  getRuns (id, success) {
-    Vue.http.get(`${EVENT_BOT_API_URL}/${id}/run`).then(response => {
+  getRuns (id, page, size, success) {
+    Vue.http.get(`${EVENT_BOT_API_URL}/${id}/run/${page}/${size}`).then(response => {
       success(response.body);
     });
   }

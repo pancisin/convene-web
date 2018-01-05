@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ArticlesListApi from 'api/articles-list.api';
+import RootApi from 'api/api';
 export default {
   name: 'articles-lists',
   data () {
@@ -57,14 +57,14 @@ export default {
   },
   created () {
     this.loading = true;
-    ArticlesListApi.getArticlesLists(articlesLists => {
+    RootApi.getArticlesLists(articlesLists => {
       this.articlesLists = articlesLists;
       this.loading = false;
     });
   },
   methods: {
     submit () {
-      ArticlesListApi.postArticlesList(this.list, (articlesList) => {
+      RootApi.postArticlesList(this.list, (articlesList) => {
         this.$router.push({
           name: 'system.list',
           params: {

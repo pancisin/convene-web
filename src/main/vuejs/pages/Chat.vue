@@ -115,9 +115,9 @@ export default {
     },
     fetchMessages: function () {
       if (this.recipient != null) {
-        this.$http.get('/api/message/user/' + this.recipient.id + '/0').then(response => this.addMessage(response.body.reverse()));
+        this.$http.get('/api/v1/message/user/' + this.recipient.id + '/0').then(response => this.addMessage(response.body.reverse()));
       } else {
-        this.$http.get('/api/message/0').then(response => this.addMessage(response.body.reverse()));
+        this.$http.get('/api/v1/message/0').then(response => this.addMessage(response.body.reverse()));
       }
     },
     sendMessage: function () {

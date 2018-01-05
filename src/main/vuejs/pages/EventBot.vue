@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(run, index) in runs" :key="index">
+          <tr v-for="(run, index) in runsPaginator.content" :key="index">
             <td>
               <bot-run-indicator :run="run" />
             </td>
@@ -41,13 +41,17 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="text-center">
+        <paginator :paginator="runsPaginator" :fetch="getRuns" />
+      </div>
     </panel>
   </div>
 </template>
 
 <script>
 import EventBotApi from 'api/event-bot.api';
-import { BotRunIndicator } from 'elements';
+import { BotRunIndicator, Paginator } from 'elements';
 
 export default {
   name: 'event-bot',
@@ -61,11 +65,12 @@ export default {
   data () {
     return {
       bot: {},
-      runs: []
+      runsPaginator: []
     };
   },
   components: {
-    BotRunIndicator
+    BotRunIndicator,
+    Paginator
   },
   computed: {
     api () {
@@ -79,7 +84,7 @@ export default {
       EventBotApi.getEventBot(this.$route.params.bot_id, bot => {
         this.bot = bot;
 
-        this.getRuns();
+        // this.getRuns(0);
       });
     }
   },
@@ -94,10 +99,10 @@ export default {
 
       });
     },
-    getRuns () {
-      EventBotApi.getRuns(this.bot.id, runs => {
-        this.runs = runs;
-        this.runs.sort((a, b) => b.date - a.date);
+    getRuns (page) {
+      const id = this.$route.params.bot_id;
+      EventBotApi.getRuns(id, page, 10, paginator => {
+        this.runsPaginator = paginator;
       });
     }
   }

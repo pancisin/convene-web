@@ -29,13 +29,13 @@ data class MetaField(
   var description: String? = null,
 
   @JsonIgnore @OneToMany(mappedBy = "field")
-  val values: List<MetaValue>? = null,
+  var values: List<MetaValue>? = null,
 
   @ElementCollection @Column
   var options: List<String>? = null,
 
   @Column
-  var isOptional: Boolean = false,
+  var optional: Boolean = false,
 
   @Column
   var ordering: Int = 0

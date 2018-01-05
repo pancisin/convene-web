@@ -1,27 +1,6 @@
 import Vue from 'vue';
-const ARTICLES_LIST_API_URL = '/api/articles-list';
+const ARTICLES_LIST_API_URL = '/api/v1/articles-list';
 export default {
-
-  /**
-   * Get all system articles lists
-   * @param {*} success - success callback function
-   */
-  getArticlesLists (success) {
-    Vue.http.get(`${ARTICLES_LIST_API_URL}`).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Create new system articles list element
-   * @param {*} articlesList - articles list data object
-   * @param {*} success - success callback function
-   */
-  postArticlesList (articlesList, success) {
-    Vue.http.post(ARTICLES_LIST_API_URL, articlesList).then(response => {
-      success(response.body);
-    });
-  },
 
   /**
    * Update articles list object element
