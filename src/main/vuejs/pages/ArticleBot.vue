@@ -59,7 +59,7 @@
       </form>
     </panel>
 
-    <panel type="table" v-if="runs.length > 0">
+    <panel type="table" v-if="paginator.content && paginator.content.length > 0">
       <span slot="title">Recent runs</span>
       <table class="table">
         <thead>
@@ -73,7 +73,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(run, index) in runs" :key="index">
+          <tr v-for="(run, index) in paginator.content" :key="index">
             <td>
               <bot-run-indicator :run="run" />
             </td>
@@ -83,13 +83,17 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="text-center">
+        <paginator :fetch="getRuns" :paginator="paginator" />
+      </div>
     </panel>
   </div>
 </template>
 
 <script>
 import ArticleBotApi from 'api/article-bot.api';
-import { BotRunIndicator } from 'elements';
+import { BotRunIndicator, Paginator } from 'elements';
 import { calculateHash } from '../services/helpers';
 
 export default {
@@ -106,11 +110,12 @@ export default {
       bot: {},
       originalBot: null,
       parsers: [],
-      runs: []
+      paginator: {}
     };
   },
   components: {
-    BotRunIndicator
+    BotRunIndicator,
+    Paginator
   },
   watch: {
     parsers: {
@@ -143,7 +148,7 @@ export default {
     if (this.edit) {
       ArticleBotApi.getArticleBot(this.$route.params.article_bot_id, bot => {
         this.initializeBot(bot);
-        this.getRuns();
+        this.getRuns(0);
       });
     }
   },
@@ -193,10 +198,9 @@ export default {
 
       });
     },
-    getRuns () {
-      ArticleBotApi.getRuns(this.bot.id, runs => {
-        this.runs = runs;
-        this.runs.sort((a, b) => b.date - a.date);
+    getRuns (page) {
+      ArticleBotApi.getRuns(this.bot.id, page, 10, paginator => {
+        this.paginator = paginator;
       });
     }
   }

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const ARTICLE_BOT_API_URL = '/api/article-bot';
+const ARTICLE_BOT_API_URL = '/api/v1/article-bot';
 
 export default {
 
@@ -54,8 +54,8 @@ export default {
    * @param {*} id - article bot id
    * @param {*} success - success callback function
    */
-  getRuns (id, success) {
-    Vue.http.get(`${ARTICLE_BOT_API_URL}/${id}/run`).then(response => {
+  getRuns (id, page, size, success) {
+    Vue.http.get(`${ARTICLE_BOT_API_URL}/${id}/run/${page}/${size}`).then(response => {
       success(response.body);
     });
   }

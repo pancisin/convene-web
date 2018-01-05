@@ -10,7 +10,7 @@ export default {
    * @param {*} success - success callback function
    */
   getPages (page, size, filters, success) {
-    Vue.http.get(`/api/pages/${page}/${size}`, {
+    Vue.http.get(`/api/v1/pages/${page}/${size}`, {
       params: {
         ...filters
       }
@@ -26,13 +26,13 @@ export default {
    * @param {*} success - success callback function
    */
   getConferences (page, size, success) {
-    Vue.http.get(`/api/conferences/${page}/${size}`).then(response => {
+    Vue.http.get(`/api/v1/conferences/${page}/${size}`).then(response => {
       success(response.body);
     });
   },
 
   getEvents (page, size, filters, success) {
-    Vue.http.get(`/api/events/${page}/${size}`, {
+    Vue.http.get(`/api/v1/events/${page}/${size}`, {
       params: filters
     }).then(response => {
       success(response.body);
@@ -66,7 +66,7 @@ export default {
   },
 
   getHeadlines (language, page, size, success, error) {
-    Vue.http.get('/api/articles', {
+    Vue.http.get('/api/v1/articles', {
       params: {
         tags: `language:${language || 'en'}, headlines`,
         page: page || 0,

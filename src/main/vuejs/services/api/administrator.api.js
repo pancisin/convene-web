@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const ADMINISTRATOR_API_URL = '/api/administrator';
+const ADMINISTRATOR_API_URL = '/api/v1/administrator';
 
 export default {
 

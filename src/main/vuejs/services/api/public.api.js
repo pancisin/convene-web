@@ -9,7 +9,7 @@ const USER_PUBLIC_URL = '/public/user';
 export default {
 
   getEvents (page, size, filters, success) {
-    Vue.http.get(`/public/events/${page}/${size}`, {
+    Vue.http.get(`/public/v1/events/${page}/${size}`, {
       params: filters
     }).then(response => {
       success(response.body);
@@ -17,7 +17,7 @@ export default {
   },
 
   getFeaturedEvents (page, size, filters, success) {
-    Vue.http.get(`/public/featured-events/${page}/${size}`, {
+    Vue.http.get(`/public/v1/featured-events/${page}/${size}`, {
       params: {
         ...filters
       }
@@ -103,7 +103,7 @@ export default {
    * @param {*} success - success callback function
    */
   getPages (page, size, filters, success) {
-    Vue.http.get(`/public/pages/${page}/${size}`, {
+    Vue.http.get(`/public/v1/pages/${page}/${size}`, {
       params: {
         ...filters
       }
