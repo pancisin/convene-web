@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const LICENSE_API_URL = '/api/license';
+const LICENSE_API_URL = '/api/v1/license';
 
 export default {
 

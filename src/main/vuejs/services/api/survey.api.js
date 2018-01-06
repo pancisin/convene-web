@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const SURVEY_API_URL = '/api/survey';
+const SURVEY_API_URL = '/api/v1/survey';
 
 export default {
 

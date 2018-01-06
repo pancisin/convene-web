@@ -2,7 +2,7 @@
   <div>
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
-        <h4>{{ key | luxon('ff') }}</h4>
+        <h4>{{ key }}</h4>
 
         <ul class="events-list">
           <li v-for="event in date" :key="event.id">
@@ -14,7 +14,8 @@
                   {{ event.name }}
                 </h4>
                 <small class="text-muted">
-                  {{ event.date | luxon('ff') }} - {{ event.startsAt }}
+                  {{ event.date | luxon('ff') }} 
+                  <!-- - {{ event.startsAt }} -->
                 </small>
                 <p v-if="event.summary != null" v-strip="event.summary.substring(0, 200)">
                 </p>
@@ -42,11 +43,12 @@ export default {
     events (newVal) {
       let data = {};
       newVal.forEach(e => {
-        if (data[e.date] == null) {
-          data[e.date] = [];
+        const key = parseInt(e.date, 10);
+        if (data[key] == null) {
+          data[key] = [];
         }
 
-        data[e.date].push(e);
+        data[key].push(e);
       });
 
       this.sorted_events = data;

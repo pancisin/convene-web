@@ -104,6 +104,8 @@
 
 <script>
 import { ProductLogo } from 'elements';
+import LicenseApi from 'api/license.api';
+
 export default {
   name: 'invoice',
   data () {
@@ -122,8 +124,8 @@ export default {
     getInvoice () {
       var invoice_id = this.$route.params.invoice_id;
 
-      this.$http.get('api/license/' + invoice_id).then(response => {
-        this.invoice = response.body;
+      LicenseApi.getLicense(invoice_id, license => {
+        this.invoice = license;
       });
     }
   }

@@ -34,7 +34,7 @@
 import { DatePicker } from 'elements';
 export default {
   name: 'conference-application',
-  inject: ['api'],
+  inject: ['provider'],
   data () {
     return {
       meta_fields: [],
@@ -44,10 +44,17 @@ export default {
   components: {
     DatePicker
   },
+  computed: {
+    api () {
+      if (this.provider != null) {
+        return this.provider.api;
+      }
+    }
+  },
   created () {
     this.api.getMetaFields(fields => {
       this.meta_fields = fields;
-      fields.forEach((field) => {
+      fields.forEach(field => {
         this.meta_values.push({
           field,
           value: null

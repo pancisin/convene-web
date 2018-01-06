@@ -48,39 +48,59 @@ class MessageController {
   }
 
   @GetMapping("/page/{page_id}/{page}")
-  fun getPageConversations(@PathVariable page_id: Long?, @PathVariable page: Int) = ResponseEntity.ok(messageRepository.getPageMessages(page_id, PageRequest(page, pageLimit)))
+  fun getPageConversations(
+    @PathVariable page_id: Long?,
+    @PathVariable page: Int
+  ) = ResponseEntity.ok(messageRepository.getPageMessages(page_id, PageRequest(page, pageLimit)))
 
   @GetMapping("/event/{event_id}/{page}")
-  fun getEventConversations(@PathVariable event_id: Long?, @PathVariable page: Int) = ResponseEntity.ok(messageRepository.getEventMessages(event_id, PageRequest(page, pageLimit)))
+  fun getEventConversations(
+    @PathVariable event_id: Long?,
+    @PathVariable page: Int
+  ) = ResponseEntity.ok(messageRepository.getEventMessages(event_id, PageRequest(page, pageLimit)))
 
   @MessageMapping("/chat.private.{username}")
   @SendTo("/user/{username}/queue/chat.message")
-  fun sendDirectMessage(@Payload message: Message, @DestinationVariable("username") username: String, principal: Principal): Message {
+  fun sendDirectMessage(
+    @Payload message: Message,
+    @DestinationVariable("username") username: String, principal: Principal
+  ): Message {
     val recipient = userRepository.findByEmail(username)
-    message.sender = principal as User
-    message.recipientType = RecipientType.USER
-    message.recipientId = recipient.id
+
+    message.apply {
+      sender = principal as User;
+      recipientType = RecipientType.USER;
+      recipientId = recipient.id;
+    }
 
     return messageRepository.save(message)
   }
 
   @MessageMapping("/chat.page.{page_id}")
   @SendTo("/topic/page/{page_id}/chat")
-  fun sendMessageToPage(@Payload message: Message, @DestinationVariable("page_id") page_id: Long?, principal: Principal): Message {
-    message.sender = principal as User
-    message.recipientType = RecipientType.PAGE
-    message.recipientId = page_id
-
+  fun sendMessageToPage(
+    @Payload message: Message,
+    @DestinationVariable("page_id") page_id: Long?, principal: Principal
+  ): Message {
+    message.apply {
+      sender = principal as User;
+      recipientType = RecipientType.PAGE;
+      recipientId = page_id;
+    }
     return messageRepository.save(message)
   }
 
   @MessageMapping("/chat.event.{event_id}")
   @SendTo("/topic/event/{event_id}/chat")
-  fun sendMessageToEvent(@Payload message: Message, @DestinationVariable("event_id") event_id: Long?, principal: Principal): Message {
-    message.sender = principal as User
-    message.recipientType = RecipientType.EVENT
-    message.recipientId = event_id
-
+  fun sendMessageToEvent(
+    @Payload message: Message,
+    @DestinationVariable("event_id") event_id: Long?, principal: Principal
+  ): Message {
+    message.apply {
+      sender = principal as User;
+      recipientType = RecipientType.EVENT;
+      recipientId = event_id;
+    }
     return messageRepository.save(message)
   }
 }
