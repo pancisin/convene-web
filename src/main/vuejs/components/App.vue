@@ -9,6 +9,7 @@
       </router-view>
     </transition>
 
+    <guest-catcher />
     <!-- <cookie-law /> -->
   </div>
 </template>
@@ -17,9 +18,15 @@
 import { mapGetters, mapActions } from 'vuex';
 import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 import { Settings } from 'luxon';
+import { GuestCatcher } from 'components';
 
 export default {
   name: 'app-root',
+  data () {
+    return {
+      displayLoginModal: true
+    };
+  },
   created () {
     if (this.authenticated) {
       this.initializeUser().then(user => {
@@ -32,7 +39,8 @@ export default {
   components: {
     ToastContainer,
     ChatContainer,
-    CookieLaw
+    CookieLaw,
+    GuestCatcher
   },
   computed: {
     ...mapGetters(['authenticated', 'user'])

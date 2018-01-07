@@ -52,9 +52,6 @@ export default {
       loading: false
     };
   },
-  created () {
-    this.getConferences();
-  },
   computed: {
     ...mapGetters(['authenticated'])
   },

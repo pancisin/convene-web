@@ -24,11 +24,14 @@
           </li>
         </ul>
 
-        <ul v-loading="loadingPages" v-if="menus.page.hasPermission(user)">
+        <ul 
+          v-loading="loadingPages" 
+          v-if="menus.page.hasPermission(user)">
+
           <li class="menu-title">{{ $t('admin.menu.pages') }}</li>
 
           <drop-down 
-            v-for="(page, index) in pages" 
+            v-for="(page) in pages" 
             :key="page.id" 
             ref="items" 
             @opened="closeDropdowns">
@@ -125,6 +128,11 @@ export default {
       default: 5
     }
   },
+  data () {
+    return {
+      pagesCollapsed: true
+    };
+  },
   computed: {
     ...mapGetters([
       'pages',
@@ -145,10 +153,7 @@ export default {
     this.initializeConferences();
   },
   methods: {
-    ...mapActions([
-      'initializePages',
-      'initializeConferences'
-    ]),
+    ...mapActions(['initializePages', 'initializeConferences']),
     closeDropdowns (except) {
       if (!except.collapsed) {
         this.$refs.items.forEach(item => {
@@ -163,13 +168,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@media(min-width: 768px) {
+.sidebar-list {
+  transition: all .3s ease-in;
+
+  &.collapsed {
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+  
+    &:after {
+      content: '';
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #ffffff 70%);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1;
+      height: 20%;
+    }
+  }
+}
+
+@media (min-width: 768px) {
   .side-menu.left {
     display: block !important;
   }
 }
 
-@media(max-width: 767px) {
+@media (max-width: 767px) {
   .side-menu.left {
     box-shadow: 0px 0px 13px 5px rgba(0, 0, 0, 0.18);
   }

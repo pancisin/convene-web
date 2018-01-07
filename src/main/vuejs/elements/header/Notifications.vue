@@ -2,7 +2,7 @@
   <dropdown-menu large v-if="notifications">
     <span slot="button" class="notifications-bell" :class="{ 'unread-messages': notifications.length > 0 }">
       <i class="fa fa-bell-o"></i>
-      <span class="badge badge-xs"
+      <span class="badge badge-xs badge-danger"
         v-text="notifications.length"></span>
     </span>
 
@@ -123,7 +123,6 @@ export default {
     }
 
     .badge {
-      background: @color-danger;
       display: initial;
     }
   }

@@ -198,11 +198,8 @@ export default {
       if (this.authenticated) {
         this.togglePageFollow(this.page);
       } else {
-        this.$router.push({
-          name: 'login',
-          query: {
-            redirect: this.$route.path
-          }
+        this.$tryAuthenticate(() => {
+          this.togglePageFollow(this.page);
         });
       }
     }

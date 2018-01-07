@@ -100,7 +100,10 @@
         <panel type="default" class="panel-p-0">
           <span slot="title">{{ $t('event.live_chat.header') }}</span>
           <chat v-if="authenticated && event.id != null" type="event" :recipient="event" />
-          <div v-else class="p-20 text-center text-muted">{{ $t('event.live_chat.authentication') }}</div>
+          <div v-else class="p-20 text-center text-muted">
+            {{ $t('event.live_chat.authentication') }}
+            <a class="btn btn-link" @click="$tryAuthenticate">{{ $t('authenticate.login') }}</a>
+          </div>
         </panel>
       </div>
 
@@ -244,11 +247,8 @@ export default {
       if (this.authenticated) {
         this.toggleEventAttending(this.event);
       } else {
-        this.$router.push({
-          name: 'login',
-          query: {
-            redirect: this.$route.path
-          }
+        this.$tryAuthenticate(() => {
+          this.toggleEventAttending(this.event);
         });
       }
     }

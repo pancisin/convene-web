@@ -25,11 +25,11 @@
             <template v-else>
               <li>
                 <router-link :to="{ name: 'login', query: { redirect: $route.path } }"
-                  class="waves-effect">Login</router-link>
+                  class="waves-effect">{{ $t('authenticate.login') }}</router-link>
               </li>
               <li>
                 <router-link :to="{ name: 'register' }"
-                  class="waves-effect">Register</router-link>
+                  class="waves-effect">{{ $t('authenticate.sign_up') }}</router-link>
               </li>
             </template>
           </ul>

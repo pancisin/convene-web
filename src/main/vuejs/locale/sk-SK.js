@@ -100,5 +100,14 @@ export default {
     building: {
       room: 'Miestnosť'
     }
+  },
+  authenticate: {
+    login: 'Prihlásiť sa',
+    sign_up: 'Registrovať',
+    remember_me: 'Zapamätaj si ma',
+    forgot_password: 'Zabudli ste heslo ?',
+    create_account: 'Vytvoriť úćet',
+    or: 'Alebo',
+    facebook_login: 'Prihlásiť sa pomocou Facebooku'
   }
 };

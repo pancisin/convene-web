@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="modal" role="dialog" v-show="show">
-      <div class="modal-dialog" :class="{ 'modal-full' : full }" v-click-outside="outside">
+      <div class="modal-dialog" :class="{ 'modal-full' : full, 'modal-sm' : small }" v-click-outside="outside">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" @click="close"><i class="fa fa-times"></i></button>
@@ -33,11 +33,15 @@ export default {
       type: Boolean,
       default: false
     },
+    small: Boolean,
     accept: Function
   },
   watch: {
     show (newVal) {
       document.body.classList.toggle('noscroll', newVal);
+    },
+    $route: function () {
+      this.close();
     }
   },
   methods: {

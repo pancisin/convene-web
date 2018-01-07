@@ -101,5 +101,14 @@ export default {
     building: {
       room: 'Room'
     }
+  },
+  authenticate: {
+    login: 'Login',
+    sign_up: 'Sign up',
+    remember_me: 'Remember me',
+    forgot_password: 'Forgot your password?',
+    create_account: 'Create an account',
+    or: 'OR',
+    facebook_login: 'Login with Facebook'
   }
 };
