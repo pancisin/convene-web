@@ -64,15 +64,6 @@ public class PublicRestController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping("/near-events/{page}/{limit}")
-	public ResponseEntity<?> getNearEvents(@PathVariable int page, @PathVariable int limit,
-			@RequestParam(name = "lat") BigDecimal lat, @RequestParam(name = "lng") BigDecimal lng,
-			@RequestParam(name = "distance") Double distance) {
-
-		return ResponseEntity.ok(eventRepository.getEventsByDistance(lat, lng, distance,
-				new PageRequest(page, limit, new Sort(Direction.ASC, "date"))));
-	}
-
 	@GetMapping("/event/{event_id}")
 	public ResponseEntity<Event> getEvent(@PathVariable Long event_id) {
 		Event event = eventRepository.findOne(event_id);
@@ -121,12 +112,6 @@ public class PublicRestController {
 			return ResponseEntity.ok(user);
 		else
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-	}
-
-	@GetMapping("/user/{user_id}/event/{page}/{size}")
-	public ResponseEntity<?> getUserEvents(@PathVariable Long user_id, @PathVariable int page, @PathVariable int size) {
-		return ResponseEntity
-				.ok(eventRepository.getByUser(user_id, new PageRequest(page, size, new Sort(Direction.ASC, "date"))));
 	}
 
 	@GetMapping("/categories")

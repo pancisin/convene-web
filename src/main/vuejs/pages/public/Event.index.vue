@@ -70,6 +70,12 @@
           </masonry-item>
         </masonry>
 
+        <div class="text-center" v-show="eventsPaginator.content && eventsPaginator.content.length === 0">
+          <h4>
+            There's nothing happening on {{ filters.timestamp | luxon('D') }}.
+          </h4>
+        </div>
+
         <div class="text-center">
           <paginator :paginator="eventsPaginator"
             :fetch="getEvents"></paginator>

@@ -10,17 +10,6 @@
 
           <h3 class="text-uppercase">Featured</h3>
           <featured-events />
-          
-          <panel type="primary"
-            v-if="eventsPaginator.content != null">
-            <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
-            <events-list :events="eventsPaginator.content"></events-list>
-
-            <div class="text-center">
-              <paginator :paginator="eventsPaginator"
-                :fetch="getEvents" />
-            </div>
-          </panel>
         </div>
 
         <div class="col-md-3 col-sm-6 col-md-push-6">
@@ -38,6 +27,16 @@
         </div>
 
         <div class="col-md-6 col-md-pull-3">
+          <panel type="default" v-show="eventsPaginator.content && eventsPaginator.content.length > 0">
+            <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
+            <events-list :events="eventsPaginator.content"></events-list>
+
+            <div class="text-center">
+              <paginator :paginator="eventsPaginator"
+                :fetch="getEvents" />
+            </div>
+          </panel>
+
           <articles-list 
             :articles="headlinesPaginator.content"
             v-loading="loadingHeadlines"
@@ -66,8 +65,9 @@ import {
 
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
-
+import PublicApi from 'api/public.api';
 import { FeaturedEvents } from 'components';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'dashboard',
@@ -91,7 +91,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'authenticated',
       'user',
       'followedPages',
       'attendingEvents'
@@ -103,25 +102,20 @@ export default {
   methods: {
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
-        var url = ['/public/near-events', page, 5].join('/');
-        this.$http
-          .get(url, {
-            params: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-              distance: 20
-            }
-          }).then(response => {
-            this.eventsPaginator = response.body;
-            this.eventsPaginator.content = this.eventsPaginator.content.filter(
-              x => x
-            );
-          });
+        PublicApi.getNearEvents(page, 5, {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          distance: 10,
+          fromDate: DateTime.utc().valueOf(),
+          toDate: DateTime.utc().plus({ months: 1 }).valueOf()
+        }, paginator => {
+          this.eventsPaginator = paginator;
+        });
       });
     },
     getHeadlines (page) {
       this.loadingHeadlines = true;
-      RootApi.getHeadlines(this.user.locale.prop, page, 6, paginator => {
+      RootApi.getHeadlines(this.user.locale.prop, page, 4, paginator => {
         this.headlinesPaginator = paginator;
         this.loadingHeadlines = false;
       });

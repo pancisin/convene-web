@@ -26,6 +26,32 @@ export default {
     });
   },
 
+  /**
+   * Get events near location specified and distance.
+   * @param {Int} page - paginator page property
+   * @param {Int} size - paginator size property
+   * @param {Object} params - request params
+   * @param {Long} params.lat - requested latitude (required)
+   * @param {Long} params.lng - requested longitude (required)
+   * @param {Long} params.distance - requested distance from location specified (default: 10)
+   * @param {*} params.fromDate - from date timestamp
+   * @param {*} params.toDate - to date timestamp
+   * @param {Function} success - success callback function
+   */
+  getNearEvents (page, size, params, success) {
+    Vue.http.get(`/public/v1/near-events/${page}/${size}`, {
+      params: {
+        lat: params.lat,
+        lng: params.lng,
+        distance: params.distance || 10,
+        fromDate: params.fromDate || DateTime.utc().valueOf(),
+        toDate: params.toDate || DateTime.utc().plus({ months: 1 }).valueOf()
+      }
+    }).then(response => {
+      success(response.body);
+    });
+  },
+
   user: {
     getUser (id, success, error) {
       Vue.http.get(`${USER_PUBLIC_URL}/${id}`).then(response => {

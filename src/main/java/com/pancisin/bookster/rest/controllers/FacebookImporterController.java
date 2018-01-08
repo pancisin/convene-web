@@ -1,17 +1,18 @@
 package com.pancisin.bookster.rest.controllers;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.pancisin.api.facebookapi.api.FacebookApi;
 import com.pancisin.bookster.model.Administrator;
 import com.pancisin.bookster.model.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -41,188 +42,202 @@ import facebook4j.GeoLocation;
 import facebook4j.Place;
 import facebook4j.Reading;
 import facebook4j.ResponseList;
+import retrofit2.Call;
+import retrofit2.Response;
 
 @RestController
 //@PreAuthorize("hasRole('SUPERADMIN')")
 @RequestMapping("/api/facebook-importer")
 public class FacebookImporterController {
 
-	@Autowired
-	private PageRepository pageRepository;
+  @Autowired
+  private PageRepository pageRepository;
 
-	@Autowired
-	private SimpMessagingTemplate webSocket;
+  @Autowired
+  private SimpMessagingTemplate webSocket;
 
-	@Autowired
-	private EventBotRepository eventBotRepository;
+  @Autowired
+  private EventBotRepository eventBotRepository;
 
-	@Autowired
-	private AdministratorRepository administratorRepository;
+  @Autowired
+  private AdministratorRepository administratorRepository;
 
-	@Autowired
-	private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-	@Autowired
-	private PageImportRepository pageImportRepository;
+  @Autowired
+  private PageImportRepository pageImportRepository;
 
-	private final String[] pageFields = { "name", "about", "cover", "location", "picture.width(640)" };
-	private final String[] placeFields = { "name", "categories", "location", "metadata" };
+  private final String[] pageFields = {"name", "about", "cover", "location", "picture.width(640)"};
+  private final String[] placeFields = {"name", "categories", "location", "metadata"};
 
-	@GetMapping("/search")
-	public ResponseEntity<?> searchPages(@RequestParam(name = "latitude", required = true) Double latitude,
-			@RequestParam(name = "longitude", required = true) Double longitude,
-			@RequestParam(name = "radius", required = false, defaultValue = "1000") int radius,
-			@RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
-			@RequestParam(name = "after", required = false, defaultValue = "") String after,
-			@RequestParam(name = "before", required = false, defaultValue = "") String before,
-			@RequestParam(name = "q", required = false, defaultValue = "*") String q) {
-		Facebook fb = new FacebookFactory().getInstance();
+  @GetMapping("/search")
+  public ResponseEntity<?> searchPages(@RequestParam(name = "latitude", required = true) Double latitude,
+                                       @RequestParam(name = "longitude", required = true) Double longitude,
+                                       @RequestParam(name = "radius", required = false, defaultValue = "1000") int radius,
+                                       @RequestParam(name = "limit", required = false, defaultValue = "10") int limit,
+                                       @RequestParam(name = "after", required = false, defaultValue = "") String after,
+                                       @RequestParam(name = "before", required = false, defaultValue = "") String before,
+                                       @RequestParam(name = "q", required = false, defaultValue = "*") String q) {
+    Facebook fb = new FacebookFactory().getInstance();
 
-		try {
-			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+    try {
+      fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
-			Reading r = new Reading();
-			r.fields(placeFields);
+      Reading r = new Reading();
+      r.fields(placeFields);
 
-			if (!after.equals("")) {
-				r.after(after);
-			}
+      if (!after.equals("")) {
+        r.after(after);
+      }
 
-			ResponseList<Place> places = null;
+      ResponseList<Place> places = null;
 
-			if (latitude != null && longitude != null) {
-				places = fb.searchPlaces(q, new GeoLocation(latitude, longitude), radius, r.limit(limit));
-			} else {
-				places = fb.searchPlaces(q, r.limit(limit));
-			}
+      if (latitude != null && longitude != null) {
+        places = fb.searchPlaces(q, new GeoLocation(latitude, longitude), radius, r.limit(limit));
+      } else {
+        places = fb.searchPlaces(q, r.limit(limit));
+      }
 
-			List<PageImport> imports = pageImportRepository.findAll();
+      List<PageImport> imports = pageImportRepository.findAll();
 
-			List<Map<String, String>> result = places.stream().map(p -> {
-				Map<String, String> current = new HashMap<String, String>();
-				current.put("name", p.getName());
-				current.put("id", p.getId());
+      List<Map<String, String>> result = places.stream().map(p -> {
+        Map<String, String> current = new HashMap<String, String>();
+        current.put("name", p.getName());
+        current.put("id", p.getId());
 
-				boolean isImported = imports.stream().anyMatch(i -> {
-					if (i.getSourceId().equals(p.getId())) {
-						current.put("pageImportId", i.getId().toString());
-						return true;
-					};
+        boolean isImported = imports.stream().anyMatch(i -> {
+          if (i.getSourceId().equals(p.getId())) {
+            current.put("pageImportId", i.getId().toString());
+            return true;
+          }
+          ;
 
-					return false;
-				});
+          return false;
+        });
 
-				current.put("imported", String.valueOf(isImported));
+        current.put("imported", String.valueOf(isImported));
 
-				return current;
-			}).collect(Collectors.toList());
+        return current;
+      }).collect(Collectors.toList());
 
-			String cursorAfter = places.getPaging() != null ? places.getPaging().getCursors().getAfter() : "";
-			GraphApiPagination<List> pagination = new GraphApiPagination<List>(result, cursorAfter);
-			return ResponseEntity.ok(pagination);
-		} catch (FacebookException e) {
-			e.printStackTrace();
-		}
+      String cursorAfter = places.getPaging() != null ? places.getPaging().getCursors().getAfter() : "";
+      GraphApiPagination<List> pagination = new GraphApiPagination<List>(result, cursorAfter);
+      return ResponseEntity.ok(pagination);
+    } catch (FacebookException e) {
+      e.printStackTrace();
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	@GetMapping("/convert")
-	public ResponseEntity<?> importPage(@RequestParam(name = "facebook_id") String facebook_id) {
+  @GetMapping("/convert")
+  public ResponseEntity<?> importPage(@RequestParam(name = "facebook_id") String facebook_id) {
+    FacebookApi api = FacebookApi.Factory.create();
+    Call call = api.getPage(facebook_id, new ArrayList(Arrays.asList(pageFields)));
+    try {
+      Response<com.pancisin.api.facebookapi.model.Page> response = call.execute();
 
-		Facebook fb = new FacebookFactory().getInstance();
+      if (response.isSuccessful()) {
+        Page page = convertPage(response.body());
+        return ResponseEntity.ok(page);
+      }
+    } catch (IOException ex) {
 
-		try {
-			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+    }
+    return new ResponseEntity(HttpStatus.NOT_FOUND);
+  }
 
-			facebook4j.Page fb_page = fb.getPage(facebook_id, new Reading().fields(pageFields));
-			Page page = convertPage(fb_page);
+  @MessageMapping("/page-import")
+  public void runEventBot(@Payload Map<String, String> requestMap, Principal principal) {
+    String facebook_id = requestMap.get("facebook_id");
 
-			return ResponseEntity.ok(page);
-		} catch (FacebookException e) {
-			e.printStackTrace();
-		}
+    if (facebook_id != null && !facebook_id.equals("") && pageImportRepository.findBySourceId(facebook_id) == null) {
+      webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", new PageImport(BotRunState.RUNNING));
 
-		return null;
-	}
+      FacebookApi api = FacebookApi.Factory.create();
+      Call call = api.getPage(facebook_id, new ArrayList(Arrays.asList(pageFields)));
+      try {
+        Response<com.pancisin.api.facebookapi.model.Page> response = call.execute();
 
-	@MessageMapping("/page-import")
-	public void runEventBot(@Payload Map<String, String> requestMap, Principal principal) {
-		String facebook_id = requestMap.get("facebook_id");
+        if (response.isSuccessful()) {
+          Page page = convertPage(response.body());
 
-		if (facebook_id != null && !facebook_id.equals("") && pageImportRepository.findBySourceId(facebook_id) == null) {
-			try {
-				webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", new PageImport(BotRunState.RUNNING));
-				Facebook fb = new FacebookFactory().getInstance();
-				fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+          try {
+            page = pageRepository.save(page);
 
-				Page page = convertPage(fb.getPage(facebook_id, new Reading().fields(pageFields)));
+            EventBot bot = new EventBot(page, facebook_id);
+            bot.setActive(true);
+            eventBotRepository.save(bot);
 
-				try {
-					page = pageRepository.save(page);
+            User user = userRepository.findByEmail(principal.getName());
 
-					EventBot bot = new EventBot(page, facebook_id);
-					bot.setActive(true);
-					eventBotRepository.save(bot);
+            Administrator pa = new Administrator(page, user, true);
+            pa.setRole(PageRole.ROLE_OWNER);
+            administratorRepository.save(pa);
+          } catch (DataIntegrityViolationException ex) {
+            page = pageRepository.findByFacebookId(facebook_id);
+            ex.printStackTrace();
+          }
 
-					User user = userRepository.findByEmail(principal.getName());
+          if (page != null) {
+            PageImport imported = new PageImport(BotRunState.SUCCESS, page);
+            imported.setSourceName(page.getName());
+            imported.setSourceId(facebook_id);
+            imported = pageImportRepository.save(imported);
 
-					Administrator pa = new Administrator(page, user, true);
-					pa.setRole(PageRole.ROLE_OWNER);
-					administratorRepository.save(pa);
-				} catch (DataIntegrityViolationException ex) {
-					page = pageRepository.findByFacebookId(facebook_id);
-					ex.printStackTrace();
-				}
+            webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", imported);
+          }
+        }
+      } catch (IOException ex) {
 
-				if (page != null) {
-					PageImport imported = new PageImport(BotRunState.SUCCESS, page);
-					imported.setSourceName(page.getName());
-					imported.setSourceId(facebook_id);
-					imported = pageImportRepository.save(imported);
+      }
+    }
+  }
 
-					webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", imported);
-				}
-			} catch (FacebookException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+  @Transactional
+  @MessageMapping("import-replay")
+  public void replayImport(@Payload PageImport pageImport, Principal principal) {
+    PageImport stored = pageImportRepository.findOne(pageImport.getId());
 
-	@Transactional
-	@MessageMapping("import-replay")
-	public void replayImport(@Payload PageImport pageImport, Principal principal) {
-		PageImport stored = pageImportRepository.findOne(pageImport.getId());
+    try {
+      stored.setState(BotRunState.RUNNING);
+      webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
+      Facebook fb = new FacebookFactory().getInstance();
+      fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
 
-		try {
-			stored.setState(BotRunState.RUNNING);
-			webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
-			Facebook fb = new FacebookFactory().getInstance();
-			fb.setOAuthAccessToken(fb.getOAuthAppAccessToken());
+      Page facebookPage = convertPage(fb.getPage(stored.getSourceId(), new Reading().fields(pageFields)));
+      Page page = stored.getPage();
+      page.setPoster(facebookPage.getPoster());
+      page.setSummary(facebookPage.getSummary());
+      page.setName(facebookPage.getName());
 
-			Page facebookPage = convertPage(fb.getPage(stored.getSourceId(), new Reading().fields(pageFields)));
-			Page page = stored.getPage();
-			page.setPoster(facebookPage.getPoster());
-			page.setSummary(facebookPage.getSummary());
-			page.setName(facebookPage.getName());
+      page = pageRepository.save(page);
 
-			page = pageRepository.save(page);
+      stored.setState(BotRunState.SUCCESS);
+      webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
+    } catch (FacebookException e) {
+      stored.setState(BotRunState.ERROR);
+      webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
+      e.printStackTrace();
+    }
+  }
 
-			stored.setState(BotRunState.SUCCESS);
-			webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
-		} catch (FacebookException e) {
-			stored.setState(BotRunState.ERROR);
-			webSocket.convertAndSendToUser(principal.getName(), "/queue/page.import", stored);
-			e.printStackTrace();
-		}
-	}
+  private Page convertPage(facebook4j.Page fb_page) {
+    Page page = new Page();
+    page.setName(fb_page.getName());
+    page.setSummary(fb_page.getAbout());
+    page.setFacebookId(fb_page.getId());
+    page.setPoster(new Media(fb_page.getPicture().toString()));
+    return page;
+  }
 
-	private Page convertPage(facebook4j.Page fb_page) {
-		Page page = new Page();
-		page.setName(fb_page.getName());
-		page.setSummary(fb_page.getAbout());
-		page.setFacebookId(fb_page.getId());
-		page.setPoster(new Media(fb_page.getPicture().toString()));
-		return page;
-	}
+  private Page convertPage(com.pancisin.api.facebookapi.model.Page fbPage) {
+    Page page = new Page();
+    page.setName(fbPage.getName());
+    page.setSummary(fbPage.getAbout());
+    page.setFacebookId(fbPage.getId());
+    page.setPoster(new Media(fbPage.getPicture().getData().getUrl()));
+    return page;
+  }
 }

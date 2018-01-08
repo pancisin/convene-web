@@ -8,7 +8,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-8 col-md-5 col-md-offset-2 custom-content">
-            <panel type="default">
+            <panel type="default" v-show="page.metadata && JSON.stringify(page.metadata) != '{}'">
               <span slot="title">Information</span>
               <dl class="dl-horizontal">
                 <template v-for="(value, key) in page.metadata">
@@ -68,7 +68,7 @@
                   <tr v-for="(service, index) in services" :key="index">
                     <td v-text="service.name"></td>
                     <td class="text-right">
-                      <a class="btn btn-rounded btn-primary btn-xs" @click="bookService(service)">Book</a>
+                      <a class="btn btn-default btn-xs" @click="bookService(service)">Book</a>
                     </td>
                   </tr>
                 </tbody>
@@ -188,8 +188,18 @@ export default {
       });
     },
     bookService (service) {
-      this.selectedService = service;
-      this.displayBookModal = true;
+      const book = () => {
+        this.selectedService = service;
+        this.displayBookModal = true;
+      };
+
+      if (this.authenticated) {
+        book();
+      } else {
+        this.$tryAuthenticate(() => {
+          book();
+        });
+      }
     },
     validUrl (value) {
       return validUrl(value);

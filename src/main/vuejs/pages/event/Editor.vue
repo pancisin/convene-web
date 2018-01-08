@@ -4,7 +4,7 @@
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
           <label class="control-label">Name</label>
-          <input class="form-control required" v-model="eventClone.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
+          <input class="form-control" v-model="eventClone.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('name') }}</span>
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.has('date') }">
@@ -27,7 +27,8 @@
 
     <div class="form-group">
       <label class="control-label">Location</label>
-      <place-picker v-model="location"></place-picker>
+      <place-picker v-model="location" name="location" v-validate data-vv-rules="required"></place-picker>
+      <span class="text-danger" v-if="errors.has('location')">{{ errors.first('location') }}</span>
     </div>
     
     <div class="form-group">

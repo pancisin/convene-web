@@ -1,9 +1,6 @@
 package com.pancisin.bookster.rest.controllers.v1
 
-import com.pancisin.bookster.model.Article
-import com.pancisin.bookster.model.ArticlesList
-import com.pancisin.bookster.model.Conference
-import com.pancisin.bookster.model.User
+import com.pancisin.bookster.model.*
 import com.pancisin.bookster.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.math.BigDecimal
 import java.util.*
 
 @RestController
@@ -120,7 +118,8 @@ class RootControllerV1 {
   @GetMapping("/api/v1/page/{page_identifier}", "/public/v1/page/{page_identifier}")
   @PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
   fun getPage(
-    @PathVariable page_identifier: String): ResponseEntity<com.pancisin.bookster.model.Page> {
+    @PathVariable page_identifier: String
+  ): ResponseEntity<com.pancisin.bookster.model.Page> {
 
     page_identifier.toLongOrNull()?.let { id -> return ResponseEntity.ok(pageRepository.findOne(id)) }
     pageRepository.findBySlug(page_identifier)?.let { page -> return ResponseEntity.ok(page) }
@@ -131,12 +130,35 @@ class RootControllerV1 {
   fun getFeaturedEvents(
     @PathVariable page: Int, @PathVariable size: Int,
     @RequestParam(name = "fromDate", required = false) fromDateTimestamp: Long,
-    @RequestParam(name = "toDate", required = false) toDateTimestamp: Long): ResponseEntity<*> {
+    @RequestParam(name = "toDate", required = false) toDateTimestamp: Long
+  ) = ResponseEntity.ok(eventRepository.getFeaturedEvents(
+    Calendar.getInstance().apply { timeInMillis = fromDateTimestamp },
+    Calendar.getInstance().apply { timeInMillis = toDateTimestamp },
+    PageRequest(page, size, Direction.ASC, "date"))
+  )
 
-    return ResponseEntity.ok(eventRepository.getFeaturedEvents(
-      Calendar.getInstance().apply { timeInMillis = fromDateTimestamp },
-      Calendar.getInstance().apply { timeInMillis = toDateTimestamp },
-      PageRequest(page, size, Direction.ASC, "date"))
-    )
+
+  @GetMapping("/api/v1/near-events/{page}/{size}", "/public/v1/near-events/{page}/{size}")
+  fun getNearEvents(
+    @PathVariable page: Int,
+    @PathVariable size: Int,
+    @RequestParam(name = "lat") lat: BigDecimal,
+    @RequestParam(name = "lng") lng: BigDecimal,
+    @RequestParam(name = "distance") distance: Double?,
+    @RequestParam(name = "fromDate", required = false) fromDateTimestamp: Long,
+    @RequestParam(name = "toDate", required = false) toDateTimestamp: Long
+  ) : ResponseEntity<Page<Event>> {
+
+    val fromDate = Calendar.getInstance().apply { timeInMillis = fromDateTimestamp }
+    val toDate = Calendar.getInstance().apply { timeInMillis = toDateTimestamp }
+
+    return ResponseEntity.ok(eventRepository.getEventsByDistanceFrom(lat, lng, distance, fromDate, toDate, PageRequest(page, size, Sort(Direction.ASC, "date"))))
   }
+
+  @GetMapping("/api/v1/user/{user_id}/event/{page}/{size}", "/public/v1/user/{user_id}/event/{page}/{size}")
+  fun getUserEvents(
+    @PathVariable user_id: Long?,
+    @PathVariable page: Int,
+    @PathVariable size: Int
+  ) = ResponseEntity.ok(eventRepository.getByUser(user_id, PageRequest(page, size, Sort(Direction.ASC, "date"))))
 }
