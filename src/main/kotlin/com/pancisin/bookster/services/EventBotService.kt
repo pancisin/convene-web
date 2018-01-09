@@ -1,4 +1,4 @@
-package com.pancisin.bookster.job
+package com.pancisin.bookster.services
 
 import java.math.BigDecimal
 import java.util.*
@@ -7,9 +7,7 @@ import com.pancisin.api.facebookapi.api.FacebookApi
 import com.pancisin.api.facebookapi.model.Event
 import com.pancisin.api.facebookapi.utils.Reading
 import com.pancisin.bookster.model.Media
-import org.hibernate.exception.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
@@ -21,7 +19,6 @@ import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.repository.EventBotRepository
 import com.pancisin.bookster.repository.EventBotRunRepository
 import com.pancisin.bookster.repository.EventRepository
-import com.pancisin.bookster.repository.PlaceRepository
 
 import kotlin.collections.ArrayList
 
