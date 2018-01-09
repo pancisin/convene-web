@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.pancisin.api.facebookapi.api.FacebookApi;
 import com.pancisin.api.facebookapi.model.Event;
 import com.pancisin.api.facebookapi.model.Paginator;
+import com.pancisin.api.facebookapi.utils.Reading;
 import com.pancisin.bookster.model.Media;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class EventBotService {
   @Autowired
   private EventBotRunRepository eventBotRunRepository;
 
-  private final String[] eventFields = {"name", "description", "place", "id", "start_time", "picture.type(large)"};
+  private final String eventFields = "name,description,place,id,start_time,picture.type(large)";
 
   @Scheduled(cron = "0 0 6 * * *")
   public List<EventBotRun> run() {
@@ -56,7 +57,7 @@ public class EventBotService {
 
     FacebookApi api = FacebookApi.Factory.create();
 
-    bots.stream().forEach(b -> {
+    bots.forEach(b -> {
       if (b.getActive()) {
         try {
           runs.add(this.run(b, api));
@@ -81,7 +82,7 @@ public class EventBotService {
 
   private EventBotRun run(EventBot bot, FacebookApi api) throws IOException{
     int savedEventsCount = 0;
-    Call call = api.getEvents(bot.getFbPageId(), Arrays.asList(eventFields));
+    Call call = api.getEvents(bot.getFbPageId(), new Reading().fields(eventFields).since(new Date()));
 
     Response<Paginator<com.pancisin.api.facebookapi.model.Event>> response = call.execute();
 
