@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.services.NotificationService;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.model.Activity;
 import com.pancisin.bookster.model.Conference;
@@ -34,7 +34,7 @@ public class ConferenceActivityMonitor {
 	private ConferenceRepository conferenceRepository;
 
 	@Autowired
-	private Notifier notifier;
+	private NotificationService notificationService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -58,28 +58,28 @@ public class ConferenceActivityMonitor {
 		if (activityLog.type() == ActivityType.ATTENDING) {
 			User user = userRepository.findOne(auth.getId());
 			stored.getAdministrators().stream().forEach(ca -> {
-				notifier.notifyUser(ca.getUser(), "notification.conference.new_attender", user.getDisplayName(), stored.getDisplayName());
+				notificationService.notifyUser(ca.getUser(), "notification.conference.new_attender", user.getDisplayName(), stored.getDisplayName());
 			});
 		}
 
 		if (activityLog.type() == ActivityType.CREATE_EVENT) {
 			Event event = (Event) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				notifier.notifyUser(att.getUser(), "notification.conference.event_created", event.getName(), stored.getDisplayName());
+				notificationService.notifyUser(att.getUser(), "notification.conference.event_created", event.getName(), stored.getDisplayName());
 			});
 		}
 
 		if (activityLog.type() == ActivityType.CREATE_SURVEY) {
 			Survey survey = (Survey) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				notifier.notifyUser(att.getUser(), "notification.conference.survey_created", survey.getName(), stored.getDisplayName());
+				notificationService.notifyUser(att.getUser(), "notification.conference.survey_created", survey.getName(), stored.getDisplayName());
 			});
 		}
 
 		if (activityLog.type() == ActivityType.CREATE_ARTICLE) {
 			Article article = (Article) response.getBody();
 			stored.getAttendees().stream().forEach(att -> {
-				notifier.notifyUser(att.getUser(), "notification.conference.article_created", article.getTitle(), stored.getDisplayName());
+				notificationService.notifyUser(att.getUser(), "notification.conference.article_created", article.getTitle(), stored.getDisplayName());
 			});
 		}
 	}

@@ -3,6 +3,7 @@ package com.pancisin.bookster.components;
 import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class SitemapService {
 						e1.printStackTrace();
 						return null;
 					}
-				}).filter(x -> x != null).collect(Collectors.toList());
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		sitemap.addUrls(pages);
 
@@ -59,7 +60,7 @@ public class SitemapService {
 					} catch (MalformedURLException e1) {
 						return null;
 					}
-				}).filter(x -> x != null).collect(Collectors.toList());
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		sitemap.addUrls(events);
 
@@ -72,7 +73,7 @@ public class SitemapService {
 					} catch (MalformedURLException e1) {
 						return null;
 					}
-				}).filter(x -> x != null).collect(Collectors.toList());
+				}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		sitemap.addUrls(conferences);
 
@@ -83,7 +84,7 @@ public class SitemapService {
 			} catch (MalformedURLException e1) {
 				return null;
 			}
-		}).filter(x -> x != null).collect(Collectors.toList());
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		sitemap.addUrls(staticUrls);
 

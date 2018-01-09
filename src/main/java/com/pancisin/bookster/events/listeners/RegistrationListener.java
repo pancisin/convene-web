@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.pancisin.bookster.components.EmailService;
+import com.pancisin.bookster.services.EmailService;
 import com.pancisin.bookster.events.OnRegistrationCompleteEvent;
 import com.pancisin.bookster.model.User;
 

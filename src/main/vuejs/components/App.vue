@@ -10,6 +10,11 @@
     </transition>
 
     <guest-catcher />
+    
+    <ad-sense
+      ad-client="ca-pub-8590347690879523"
+      ad-slot="XXXXXXXX">
+    </ad-sense>
     <!-- <cookie-law /> -->
   </div>
 </template>
@@ -18,7 +23,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 import { Settings } from 'luxon';
-import { GuestCatcher } from 'components';
+import { GuestCatcher, AdSense } from 'components';
 
 export default {
   name: 'app-root',
@@ -40,7 +45,8 @@ export default {
     ToastContainer,
     ChatContainer,
     CookieLaw,
-    GuestCatcher
+    GuestCatcher,
+    AdSense
   },
   computed: {
     ...mapGetters(['authenticated', 'user'])

@@ -50,6 +50,7 @@ import LightBox from './LightBox';
 import VueImage from './VueImage';
 import Error from './Error';
 import WidgetSelector from './WidgetSelector';
+import AdSense from './AdSense';
 
 export {
   ArticlesList,
@@ -103,5 +104,6 @@ export {
   LightBox,
   VueImage,
   Error,
-  WidgetSelector
+  WidgetSelector,
+  AdSense
 };

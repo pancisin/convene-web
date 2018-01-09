@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pancisin.bookster.components.EmailService;
-import com.pancisin.bookster.components.Notifier;
+import com.pancisin.bookster.services.EmailService;
+import com.pancisin.bookster.services.NotificationService;
 import com.pancisin.bookster.model.BookRequest;
 import com.pancisin.bookster.model.Service;
 import com.pancisin.bookster.model.User;
@@ -35,7 +35,7 @@ public class ServiceController {
 	private EmailService emailService;
 
 	@Autowired
-	private Notifier notifier;
+	private NotificationService notificationService;
 
 	@GetMapping
 	@PreAuthorize("hasPermission(#service_id, 'service', 'read')")
@@ -74,7 +74,7 @@ public class ServiceController {
 				+ service.getName();
 		service.getPage().getAdministrators().stream().forEach(x -> {
 			emailService.sendSimpleMessage(x.getUser().getEmail(), "Service request", message);
-			notifier.notifyUser(x.getUser(), "Service request", message);
+			notificationService.notifyUser(x.getUser(), "Service request", message);
 		});
 
 		return ResponseEntity.ok(bookRequestRepository.save(request));
