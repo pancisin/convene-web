@@ -21,9 +21,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
+import { ToastContainer, ChatContainer, CookieLaw, AdSense } from 'elements';
 import { Settings } from 'luxon';
-import { GuestCatcher, AdSense } from 'components';
+import { GuestCatcher } from 'components';
 
 export default {
   name: 'app-root',

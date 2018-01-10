@@ -59,13 +59,13 @@ class EventBotService {
     facebookId?.let {
       api.getEvents(facebookId, Reading().fields(eventFields).since(Date())).execute().let { response ->
         if (response.isSuccessful && response.body() != null) {
-          val events = response.body()?.data?.map(this::buildEvent) ?: ArrayList()
-
-          for (e in events) {
+          response.body()?.data?.map(this::buildEvent)?.forEach {
             try {
-              eventRepository.save(e)
+              it.page = bot.page
+              eventRepository.save(it)
               savedEventsCount++
-            } catch (ex: Exception) { }
+            } catch (ex: Exception) {
+            }
           }
         }
       }

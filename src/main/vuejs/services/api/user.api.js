@@ -176,7 +176,7 @@ export default {
   },
 
   changePassword (data, success, error) {
-    Vue.http.post(`${USER_API_URL}/changePassword`, data).then(response => {
+    Vue.http.post(`${USER_API_URL}/v1/changePassword`, data).then(response => {
       success(response.body);
     }, response => {
       error(response.body);

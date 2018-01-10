@@ -9,7 +9,7 @@ export default {
    * @param {Function} error - error callback function
    */
   login (credentials, success, error) {
-    Vue.http.post('/public/login', credentials).then(response => {
+    Vue.http.post('/public/v1/login', credentials).then(response => {
       success(response.body);
     }, response => {
       error(response.body);
@@ -23,7 +23,7 @@ export default {
    * @param {Function} error - error callback function
    */
   register (user, success, error) {
-    Vue.http.post('/public/register', user).then(response => {
+    Vue.http.post('/public/v1/register', user).then(response => {
       success(response.body);
     }, response => {
       error(response.body);
@@ -37,7 +37,7 @@ export default {
    * @param {*} error - error callback function
    */
   loginFacebook (loginData, success, error) {
-    Vue.http.post('/public/login-facebook', loginData).then(response => {
+    Vue.http.post('/public/v1/login-facebook', loginData).then(response => {
       success(response.body);
     }, response => {
       error(response.body);

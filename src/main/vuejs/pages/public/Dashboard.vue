@@ -26,7 +26,7 @@
           </tab-container>
         </div>
 
-        <div class="col-md-6 col-md-pull-3">
+        <div class="col-sm-12 col-md-6 col-md-pull-3">
           <panel type="default" v-show="eventsPaginator.content && eventsPaginator.content.length > 0">
             <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
             <events-list :events="eventsPaginator.content"></events-list>
