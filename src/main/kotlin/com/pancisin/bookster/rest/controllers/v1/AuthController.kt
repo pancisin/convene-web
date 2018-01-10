@@ -105,21 +105,24 @@ class AuthController {
     val api = FacebookApi.Factory.create()
     val userId = requestMap["userId"]!!
 
-    if (userRepository.findByFacebookId(userId.toLong()) == null) {
-      api.getUser(userId, Reading().fields("id,name,email,first_name,last_name,locale,picture.width(640)")).execute().body()?.let { user ->
-        val stored = userRepository.save(User().apply {
-          locale = Locale.en;
-          facebookId = userId.toLong();
-          isLocked = false;
-          firstName = user.firstName;
-          lastName = user.lastName;
-          email = user.email;
-          profilePicture = Media(user.picture?.data?.url.toString());
-          token = JwtAuthenticationToken.generateToken(this, secret)
-        })
-
-        return ResponseEntity.ok(stored)
+    api.getUser(userId, Reading().fields("id,name,email,first_name,last_name,locale,picture.width(640)")).execute().body()?.let { user ->
+      var stored = userRepository.findByFacebookId(userId.toLong()).apply {
+        token = JwtAuthenticationToken.generateToken(this, secret)
       }
+
+      if (stored == null) {
+        stored = userRepository.save(User().apply {
+          locale = Locale.en
+          facebookId = userId.toLong()
+          isLocked = false
+          firstName = user.firstName
+          lastName = user.lastName
+          email = user.email
+          profilePicture = Media(user.picture?.data?.url.toString())
+        })
+      }
+
+      return ResponseEntity.ok(stored)
     }
 
     return ResponseEntity(HttpStatus.BAD_REQUEST)
