@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import { DateTime } from 'luxon';
 
-const EVENT_PUBLIC_URL = '/public/event';
-const PAGE_PUBLIC_URL = '/public/page';
-const CONFERENCE_PUBLIC_URL = '/public/conference';
-const USER_PUBLIC_URL = '/public/user';
+const EVENT_PUBLIC_URL = '/public/v1/event';
+const PAGE_PUBLIC_URL = '/public/v1/page';
+const CONFERENCE_PUBLIC_URL = '/public/v1/conference';
+const USER_PUBLIC_URL = '/public/v1/user';
 
 export default {
 
@@ -116,7 +116,7 @@ export default {
    * @param {Function} success - success callback function
    */
   getPopularPages (success) {
-    Vue.http.get('/api/public/popular-pages/').then(response => {
+    Vue.http.get('/public/v1/popular-pages/').then(response => {
       success(response.body);
     });
   },
@@ -253,8 +253,12 @@ export default {
    * Get available page categories.
    * @param {Function} success - success callback function
    */
-  getCategories (success) {
-    Vue.http.get('/public/categories').then(response => {
+  getCategories (filters, success) {
+    Vue.http.get('/public/v1/categories', {
+      params: {
+        used: filters.used
+      }
+    }).then(response => {
       const categories = response.body.filter(c => c);
       success(categories);
     });
@@ -265,8 +269,12 @@ export default {
    * @param {Number} category_id - category id
    * @param {Function} success - success callback function
    */
-  getBranches (category_id, success) {
-    Vue.http.get(`/public/categories/${category_id}/branches`).then(response => {
+  getBranches (category_id, filters, success) {
+    Vue.http.get(`/public/v1/categories/${category_id}/branches`, {
+      params: {
+        used: filters.used
+      }
+    }).then(response => {
       success(response.body);
     });
   },
@@ -276,23 +284,23 @@ export default {
    * @param {*} success - success callback function
    */
   getMetaTypes (success) {
-    Vue.http.get('/public/meta-types').then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Get widget types enum values.
-   * @param {*} success - success callback function
-   */
-  getWidgetTypes (success) {
-    Vue.http.get('/public/widget-types').then(response => {
+    Vue.http.get('/public/v1/meta-types').then(response => {
       success(response.body);
     });
   },
 
   getLocales (success) {
-    Vue.http.get('/public/locales').then(response => {
+    Vue.http.get('/public/v1/locales').then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Get Unit enum vales
+   * @param {*} success - success callback function
+   */
+  getUnits (success) {
+    Vue.http.get('/public/v1/unit').then(response => {
       success(response.body);
     });
   }

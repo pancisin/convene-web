@@ -29,6 +29,7 @@ import com.pancisin.bookster.repository.UserRepository
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
 import com.pancisin.bookster.security.models.JwtAuthenticationToken
 import com.pancisin.bookster.utils.PasswordUtils
+import com.pancisin.bookster.utils.configurations.JwtConfiguration
 
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -37,11 +38,8 @@ import kotlin.experimental.and
 @RestController
 class AuthController {
 
-  @Value("\${jwt.secret}")
-  private val secret: String? = null
-
-  @Value("\${jwt.verificationSecret}")
-  private val verificationSecret: String? = null
+  @Autowired
+  lateinit var jwtConfiguration: JwtConfiguration
 
   @Autowired
   lateinit var userRepository: UserRepository
@@ -62,7 +60,7 @@ class AuthController {
       }
 
       return ResponseEntity.ok(stored.apply {
-        token = JwtAuthenticationToken.generateToken(stored, secret)
+        token = JwtAuthenticationToken.generateToken(stored, jwtConfiguration.secret)
       })
     } ?: run {
       bindingResult.rejectValue("email", "error.user_not_found")
@@ -91,7 +89,7 @@ class AuthController {
         locale = l;
         isLocked = false;
         hashedPassword = PasswordUtils.hashPassword(user.password.toString());
-        token = JwtAuthenticationToken.generateToken(user, secret)
+        token = JwtAuthenticationToken.generateToken(user, jwtConfiguration.secret)
       }
 
       userRepository.save(user)
@@ -107,7 +105,7 @@ class AuthController {
 
     api.getUser(userId, Reading().fields("id,name,email,first_name,last_name,locale,picture.width(640)")).execute().body()?.let { user ->
       var stored = userRepository.findByFacebookId(userId.toLong()).apply {
-        token = JwtAuthenticationToken.generateToken(this, secret)
+        token = JwtAuthenticationToken.generateToken(this, jwtConfiguration.secret)
       }
 
       if (stored == null) {
@@ -132,7 +130,7 @@ class AuthController {
   private fun verifyEmail(@RequestBody token: String): ResponseEntity<*> {
     var user: User? = null
     try {
-      val body = Jwts.parser().setSigningKey(verificationSecret).parseClaimsJws(token).body
+      val body = Jwts.parser().setSigningKey(jwtConfiguration.verificationSecret).parseClaimsJws(token).body
       user = userRepository.findOne(java.lang.Long.parseLong(body["userId"].toString()))
       user.verified = true
       userRepository.save(user)

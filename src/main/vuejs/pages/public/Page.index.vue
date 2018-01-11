@@ -134,12 +134,12 @@ export default {
       });
     },
     getCategories () {
-      PublicApi.getCategories(categories => {
+      PublicApi.getCategories({ used: true }, categories => {
         this.categories = categories;
       });
     },
     getBranches (category_id) {
-      PublicApi.getBranches(category_id, branches => {
+      PublicApi.getBranches(category_id, { used: true }, branches => {
         this.branches = branches;
       });
     },
