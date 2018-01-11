@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import com.pancisin.bookster.components.ArticleBotService
+import com.pancisin.bookster.services.ArticleBotService
 import com.pancisin.bookster.model.ArticleBot
 import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.model.enums.BotRunState

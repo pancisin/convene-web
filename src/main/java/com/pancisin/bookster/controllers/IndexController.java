@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.pancisin.bookster.components.SitemapView;
+import com.pancisin.bookster.services.SitemapView;
 import com.pancisin.bookster.utils.EnviromentProvider;
 
 import org.springframework.http.HttpStatus;
@@ -33,8 +33,8 @@ public class IndexController {
 
 	private final String crawlersPatters = ".*(facebookexternalhit|Facebot|Twitterbot|Pinterest|Google.*snippet|Googlebot).*";
 	private final String forwardPaths = "(event|page|conference)";
-	
-	
+
+
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping("/")
 	public String getRoot() {
