@@ -303,5 +303,11 @@ export default {
     Vue.http.get('/public/v1/unit').then(response => {
       success(response.body);
     });
+  },
+
+  getRoles (success) {
+    Vue.http.get('/public/v1/roles').then(response => {
+      success(response.body);
+    });
   }
 };

@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController
 
 import com.pancisin.bookster.components.ArticleBotService
 import com.pancisin.bookster.model.ArticleBot
-import com.pancisin.bookster.model.ArticleBotRun
+import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.model.enums.BotRunState
 import com.pancisin.bookster.repository.ArticleBotRepository
-import com.pancisin.bookster.repository.ArticleBotRunRepository
+import com.pancisin.bookster.repository.BotRunRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -36,7 +36,7 @@ class ArticleBotController {
   lateinit var abRepository: ArticleBotRepository
 
   @Autowired
-  lateinit var abrRepository: ArticleBotRunRepository
+  lateinit var botRunRepository: BotRunRepository
 
   @Autowired
   lateinit var articleBotService: ArticleBotService
@@ -77,15 +77,15 @@ class ArticleBotController {
   fun getRuns(
     @PathVariable articleBotId: UUID,
     @PathVariable page: Int,
-    @PathVariable size: Int): ResponseEntity<Page<ArticleBotRun>> {
-    return ResponseEntity.ok(abrRepository.getByArticleBot(articleBotId, PageRequest(page, size, Sort.Direction.DESC, "date")))
+    @PathVariable size: Int): ResponseEntity<Page<BotRun>> {
+    return ResponseEntity.ok(botRunRepository.getByArticleBot(articleBotId, PageRequest(page, size, Sort.Direction.DESC, "date")))
   }
 
   @MessageMapping("/article-bot/{bot_id}/run")
   fun runEventBot(@DestinationVariable("bot_id") bot_id: UUID, principal: Principal) {
     val stored = abRepository.findOne(bot_id)
 
-    webSocket.convertAndSendToUser(principal.name, "/queue/list.bots", ArticleBotRun(stored, BotRunState.RUNNING))
+    webSocket.convertAndSendToUser(principal.name, "/queue/list.bots", BotRun(stored, BotRunState.RUNNING))
 
     val run = articleBotService.run(stored)
     webSocket.convertAndSendToUser(principal.name, "/queue/list.bots", run)

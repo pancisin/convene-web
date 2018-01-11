@@ -23,6 +23,7 @@ import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.pancisin.bookster.model.enums.BotSourceType
+import com.pancisin.bookster.model.interfaces.IBot
 
 @Entity
 @Table(name = "article_bots")
@@ -40,9 +41,6 @@ data class ArticleBot(
   var articlesList: ArticlesList? = null,
 
   @Column
-  var name: String? = null,
-
-  @Column
   var sourceUrl: String? = null,
 
   @Enumerated(EnumType.STRING)
@@ -52,14 +50,12 @@ data class ArticleBot(
   val created: Calendar? = null,
 
   @Column
-  var active: Boolean = false,
+  override var name: String? = null,
 
-  @JsonIgnore @OneToMany(mappedBy = "bot", orphanRemoval = true)
-  val runs: List<ArticleBotRun>? = null
-) {
-  val runsCount: Int
-    get() = runs?.size ?: 0
+  @Column
+  override var active: Boolean = false,
 
-  val lastRun: ArticleBotRun?
-    get() = runs?.reduce { a, b -> if (a.date?.compareTo(b.date) ?: -1 > 0) a else b }
-}
+  @JsonIgnore
+  @OneToMany(mappedBy = "articleBot", orphanRemoval = true)
+  override var runs: List<BotRun> = ArrayList()
+) : IBot

@@ -15,6 +15,12 @@ export default {
     });
   },
 
+  putEventBot (id, bot, success) {
+    Vue.http.put(`${EVENT_BOT_API_URL}/${id}`, bot).then(response => {
+      success(response.body);
+    });
+  },
+
   /**
    * Completely delete event bot object from database
    * @param {*} id - event bot id/uuid

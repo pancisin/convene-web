@@ -1,0 +1,230 @@
+package com.pancisin.bookster.rest.controllers.v1
+
+import java.util.stream.Collectors
+
+import javax.validation.Valid
+
+import com.pancisin.bookster.model.Media
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.PageRequest
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+import com.pancisin.bookster.components.storage.StorageServiceImpl
+import com.pancisin.bookster.events.OnInviteEvent
+import com.pancisin.bookster.model.Event
+import com.pancisin.bookster.model.Invitation
+import com.pancisin.bookster.model.Programme
+import com.pancisin.bookster.model.User
+import com.pancisin.bookster.model.enums.PageState
+import com.pancisin.bookster.models.views.Summary
+import com.pancisin.bookster.repository.EventRepository
+import com.pancisin.bookster.repository.InvitationRepository
+import com.pancisin.bookster.repository.MediaRepository
+import com.pancisin.bookster.repository.ProgrammeRepository
+import com.pancisin.bookster.repository.UserRepository
+import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
+import org.springframework.data.domain.Page
+
+@RestController
+@RequestMapping("/api/event/{event_id}")
+class EventController {
+
+  @Autowired
+  lateinit var eventRepository: EventRepository
+
+  @Autowired
+  lateinit var programmeRepository: ProgrammeRepository
+
+  @Autowired
+  lateinit var storageService: StorageServiceImpl
+
+  @Autowired
+  lateinit var invitationRepository: InvitationRepository
+
+  @Autowired
+  lateinit var userRepository: UserRepository
+
+  @Autowired
+  lateinit var eventPublisher: ApplicationEventPublisher
+
+  @Autowired
+  lateinit var mediaRepository: MediaRepository
+
+  @GetMapping
+  @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
+  fun getEvent(@PathVariable event_id: Long?): ResponseEntity<Event> {
+    val event = eventRepository.findOne(event_id)
+
+    return if (event == null) {
+      ResponseEntity(HttpStatus.NOT_FOUND)
+    } else {
+      ResponseEntity.ok(event)
+    }
+  }
+
+  @PutMapping
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun putEvent(
+    @PathVariable event_id: Long?,
+    @Valid @RequestBody event: Event,
+    bindingResult: BindingResult
+  ): ResponseEntity<*> {
+    if (bindingResult.hasErrors())
+      throw InvalidRequestException("Invalid data", bindingResult)
+
+    val stored = eventRepository.findOne(event_id).apply {
+      name = event.name
+      summary = event.summary
+      visibility = event.visibility
+      date = event.date
+      place = event.place
+      latitude = event.latitude
+      longitude = event.longitude
+      banner = event.banner
+    }
+
+    if (event.posterData != null && storageService.isBinary(event.posterData)) {
+      val poster = mediaRepository.save(Media(author = SecurityContextHolder.getContext().authentication.principal as User))
+      val url = "banners/events/" + poster.id.toString()
+
+      stored.poster = poster.apply {
+        path = "/files/$url.jpg"
+        size = storageService.storeBinary(event.posterData, url)
+      }
+    }
+
+    return ResponseEntity.ok(eventRepository.save(stored))
+  }
+
+  @DeleteMapping
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun deleteEvent(@PathVariable event_id: Long?): ResponseEntity<*> {
+    eventRepository.delete(event_id)
+    return ResponseEntity.ok("success")
+  }
+
+  @GetMapping("/programme")
+  fun getProgramme(@PathVariable event_id: Long?) = ResponseEntity.ok(eventRepository.findOne(event_id).programme)
+
+  @PostMapping("/programme")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun postProgramme(@PathVariable event_id: Long?, @RequestBody programme: Programme)
+    = ResponseEntity.ok(programmeRepository.save(programme.apply {
+    event = eventRepository.findOne(event_id)
+  }))
+
+
+  @PatchMapping("/toggle-attend")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
+  fun toggleAttend(@PathVariable event_id: Long?): ResponseEntity<*> {
+    val auth_user = SecurityContextHolder.getContext().authentication.principal as User
+    val attend_count = eventRepository.isAttending(event_id, auth_user.id)
+    var status = false
+
+    val event = eventRepository.findOne(event_id)
+    if (attend_count > 0) {
+      event.attendees = event.attendees.filter { it.id !== auth_user.id }.toMutableList()
+      status = false
+    } else {
+      event.attendees.add(auth_user)
+      status = true
+    }
+
+    eventRepository.save(event)
+    return ResponseEntity.ok(status)
+  }
+
+  @GetMapping("/attend-status")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
+  fun getAttendStatus(@PathVariable event_id: Long?): ResponseEntity<*> {
+    val auth_user = SecurityContextHolder.getContext().authentication.principal as User
+    val attend_count = eventRepository.isAttending(event_id, auth_user.id)
+    return ResponseEntity.ok(attend_count > 0)
+  }
+
+  @GetMapping("/attendees")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun getAttendees(@PathVariable event_id: Long?) = ResponseEntity.ok(eventRepository.findOne(event_id).attendees)
+
+  @PostMapping("/invite")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun postInvitation(@PathVariable event_id: Long?, @RequestBody invitation: Invitation): ResponseEntity<*> {
+    val stored = eventRepository.findOne(event_id)
+    var inv: Invitation? = Invitation(stored, invitation.email.toString())
+    inv?.user = userRepository.findByEmail(invitation.email)
+
+    inv = invitationRepository.save(inv)
+
+    if (inv != null)
+      eventPublisher.publishEvent(OnInviteEvent(inv))
+
+    return ResponseEntity.ok(inv)
+  }
+
+  @GetMapping("/invitation")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun getInvitations(@PathVariable event_id: Long?) = ResponseEntity.ok(eventRepository.findOne(event_id).invitations)
+
+  @GetMapping("/related")
+  fun getRelatedEvents(@PathVariable event_id: Long?) = ResponseEntity.ok<Page<Event>>(eventRepository.getRelated(event_id, PageRequest(0, 100)))
+
+  @GetMapping("/gallery")
+  fun getGallery(@PathVariable event_id: Long?) = ResponseEntity.ok(mediaRepository.getByEvent(event_id))
+
+  @PostMapping("/gallery")
+  fun postGallery(@PathVariable event_id: Long?, @RequestBody galleryItem: Media): ResponseEntity<*> {
+    val stored = eventRepository.findOne(event_id)
+
+    if (storageService.isBinary(galleryItem.data)) {
+      val user = SecurityContextHolder.getContext().authentication.principal as User
+
+      mediaRepository.save(galleryItem.apply {
+        author = user
+      })
+
+      val url = "images/event/" + galleryItem.id.toString()
+      stored.addGallery(galleryItem.apply {
+        path = "/files/$url.jpg"
+        size = storageService.storeBinary(galleryItem.data, url)
+      })
+    }
+
+    eventRepository.save(stored)
+    return ResponseEntity.ok(galleryItem)
+  }
+
+  @PatchMapping("/toggle-published")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  fun togglePublishState(@PathVariable event_id: Long?): ResponseEntity<*> {
+    val stored = eventRepository.findOne(event_id)
+
+    if (stored.state === PageState.DEACTIVATED) {
+      stored.state = PageState.PUBLISHED
+    } else if (stored.state === PageState.PUBLISHED) {
+      stored.state = PageState.DEACTIVATED
+    }
+
+    return ResponseEntity.ok(eventRepository.save(stored))
+  }
+
+  @PatchMapping("/toggle-featured")
+  @PreAuthorize("hasRole('SUPERADMIN')")
+  fun toggleFeatured(@PathVariable event_id: Long?)
+    = ResponseEntity.ok(eventRepository.save(eventRepository.findOne(event_id).apply {
+    featured = !featured
+  }))
+}

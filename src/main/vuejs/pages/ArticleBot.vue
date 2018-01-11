@@ -67,7 +67,7 @@
             <th>
               State
             </th>
-            <th>
+            <th class="text-center">
               Articles imported
             </th>
           </tr>
@@ -77,8 +77,8 @@
             <td>
               <bot-run-indicator :run="run" />
             </td>
-            <td>
-              {{ run.articlesCount }}
+            <td class="text-center">
+              {{ run.dataCount }}
             </td>
           </tr>
         </tbody>

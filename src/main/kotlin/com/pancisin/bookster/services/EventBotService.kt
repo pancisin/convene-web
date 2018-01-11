@@ -12,12 +12,12 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 import com.pancisin.bookster.model.EventBot
-import com.pancisin.bookster.model.EventBotRun
+import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.model.enums.BotRunState
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.repository.EventBotRepository
-import com.pancisin.bookster.repository.EventBotRunRepository
+import com.pancisin.bookster.repository.BotRunRepository
 import com.pancisin.bookster.repository.EventRepository
 
 import kotlin.collections.ArrayList
@@ -32,27 +32,27 @@ class EventBotService {
   lateinit var eventRepository: EventRepository
 
   @Autowired
-  lateinit var eventBotRunRepository: EventBotRunRepository
+  lateinit var botRunRepository: BotRunRepository
 
   val eventFields = "name,description,place,id,start_time,picture.type(large)"
 
   @Scheduled(cron = "0 0 6 * * *")
-  fun run(): List<EventBotRun>? {
+  fun run(): List<BotRun>? {
     val bots = eventBotRepository.findAll()
-    val runs: MutableList<EventBotRun> = ArrayList()
+    val runs: MutableList<BotRun> = ArrayList()
 
     val api = FacebookApi.create()
     bots.forEach { if (it.active) runs.add(run(it, api)) }
 
-    return eventBotRunRepository.save(runs)
+    return botRunRepository.save(runs)
   }
 
-  fun run(bot: EventBot): EventBotRun {
+  fun run(bot: EventBot): BotRun {
     val api = FacebookApi.create()
-    return eventBotRunRepository.save(this.run(bot, api))
+    return botRunRepository.save(this.run(bot, api))
   }
 
-  private fun run(bot: EventBot, api: FacebookApi): EventBotRun {
+  private fun run(bot: EventBot, api: FacebookApi): BotRun {
     var savedEventsCount = 0
     val facebookId = bot.fbPageId
 
@@ -71,7 +71,7 @@ class EventBotService {
       }
     }
 
-    return EventBotRun(bot = bot, state = BotRunState.SUCCESS, eventsCount = savedEventsCount)
+    return BotRun(bot, BotRunState.SUCCESS).apply { dataCount = savedEventsCount }
   }
 
   private fun buildEvent(ev: Event) = com.pancisin.bookster.model.Event().apply {

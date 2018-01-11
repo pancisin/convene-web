@@ -14,6 +14,7 @@ import javax.persistence.Table
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.pancisin.bookster.model.interfaces.IBot
 
 @Entity
 @Table(name = "eventBots")
@@ -29,22 +30,16 @@ data class EventBot(
   @JsonIgnore @ManyToOne
   var page: Page? = null,
 
-  @Column
-  var active: Boolean = false,
-
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   private val created: Calendar? = null,
 
+  @Column
+  override var name: String? = null,
+
+  @Column
+  override var active: Boolean = false,
+
   @JsonIgnore
-  @OneToMany(mappedBy = "bot", orphanRemoval = true)
-  val runs: List<EventBotRun>? = null
-
-) {
-  val runsCount: Int
-    get() = runs?.size ?: 0
-
-  val lastRun: EventBotRun?
-    get() = runs!!.maxBy { r -> r.date!!.timeInMillis }
-
-  constructor(page: Page, facebookId: String) : this(null, facebookId, page)
-}
+  @OneToMany(mappedBy = "eventBot", orphanRemoval = true)
+  override var runs: List<BotRun> = ArrayList()
+) : IBot

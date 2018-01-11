@@ -1,6 +1,8 @@
 package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.bookster.model.*
+import com.pancisin.bookster.model.enums.*
+import com.pancisin.bookster.model.enums.Unit
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -15,12 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-import com.pancisin.bookster.model.enums.Locale
-import com.pancisin.bookster.model.enums.MetaType
-import com.pancisin.bookster.model.enums.PageState
-import com.pancisin.bookster.model.enums.Subscription
-import com.pancisin.bookster.model.enums.Unit
-import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.repository.ArticleRepository
 import com.pancisin.bookster.repository.BranchRepository
 import com.pancisin.bookster.repository.CategoryRepository
@@ -143,4 +139,7 @@ class PublicController {
 
   @GetMapping("/unit")
   fun getUnits() = ResponseEntity.ok(Unit.values())
+
+  @GetMapping("/roles")
+  fun getRoles() = ResponseEntity.ok(PageRole.values())
 }

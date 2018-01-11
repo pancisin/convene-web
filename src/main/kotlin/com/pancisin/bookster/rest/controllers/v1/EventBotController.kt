@@ -8,22 +8,18 @@ import org.springframework.http.ResponseEntity
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.simp.SimpMessagingTemplate
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
 
 import com.pancisin.bookster.services.EventBotService
 import com.pancisin.bookster.model.EventBot
-import com.pancisin.bookster.model.EventBotRun
+import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.model.enums.BotRunState
 import com.pancisin.bookster.repository.EventBotRepository
-import com.pancisin.bookster.repository.EventBotRunRepository
+import com.pancisin.bookster.repository.BotRunRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 // @PreAuthorize("hasRole('SUPERADMIN')")
@@ -34,7 +30,7 @@ class EventBotController {
   lateinit var eventBotRepository: EventBotRepository
 
   @Autowired
-  lateinit var eventBotRunRepository: EventBotRunRepository
+  lateinit var botRunRepository: BotRunRepository
 
   @Autowired
   lateinit var eventBotService: EventBotService
@@ -51,6 +47,15 @@ class EventBotController {
     return ResponseEntity.ok("success")
   }
 
+  @PutMapping
+  fun putEventBot(@PathVariable bot_id: UUID, @RequestBody @Valid eventBot: EventBot): ResponseEntity<EventBot>? {
+    val stored = eventBotRepository.findOne(bot_id)
+    return ResponseEntity.ok(eventBotRepository.save(stored.apply {
+      name = eventBot.name
+      fbPageId = eventBot.fbPageId
+    }))
+  }
+
   @PatchMapping("/toggle-active")
   fun toggleActive(@PathVariable bot_id: UUID): ResponseEntity<EventBot> {
     val stored = eventBotRepository.findOne(bot_id).apply {
@@ -64,15 +69,15 @@ class EventBotController {
     @PathVariable bot_id: UUID,
     @PathVariable page: Int,
     @PathVariable size: Int
-  ): ResponseEntity<Page<EventBotRun>> {
-    return ResponseEntity.ok(eventBotRunRepository.getByEventBot(bot_id, PageRequest(page, size, Sort.Direction.DESC, "date")))
+  ): ResponseEntity<Page<BotRun>> {
+    return ResponseEntity.ok(botRunRepository.getByEventBot(bot_id, PageRequest(page, size, Sort.Direction.DESC, "date")))
   }
 
   @MessageMapping("/bot/{bot_id}/run")
   fun runEventBot(@DestinationVariable("bot_id") bot_id: UUID, principal: Principal) {
     val stored = eventBotRepository.findOne(bot_id)
 
-    webSocket.convertAndSendToUser(principal.name, "/queue/page.bots", EventBotRun(stored, BotRunState.RUNNING))
+    webSocket.convertAndSendToUser(principal.name, "/queue/page.bots", BotRun(stored, BotRunState.RUNNING))
 
     val run = eventBotService.run(stored)
     webSocket.convertAndSendToUser(principal.name, "/queue/page.bots", run)

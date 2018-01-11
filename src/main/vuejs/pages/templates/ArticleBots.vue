@@ -119,7 +119,7 @@ export default {
 
           if (run != null) {
             this.paginator.content.forEach((bot, index) => {
-              if (bot.id === run.bot.id) {
+              if (bot.id === run.articleBot.id) {
                 this.paginator.content.splice(index, 1, {
                   ...bot,
                   lastRun: run,

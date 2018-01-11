@@ -10,6 +10,11 @@
 
       <form class="form" @submit.prevent="submit">
         <div class="form-group">
+          <label class="control-label">Name</label>
+          <input class="form-control required" v-model="bot.name" type="text">
+        </div>
+
+        <div class="form-group">
           <label class="control-label">Facebook page</label>
           <input class="form-control required" v-model="bot.fbPageId" type="text">
         </div>
@@ -25,7 +30,7 @@
             <th>
               State
             </th>
-            <th>
+            <th class="text-center">
               Events imported
             </th>
           </tr>
@@ -35,8 +40,8 @@
             <td>
               <bot-run-indicator :run="run" />
             </td>
-            <td>
-              {{ run.eventsCount }}
+            <td class="text-center">
+              {{ run.dataCount }}
             </td>
           </tr>
         </tbody>
@@ -90,9 +95,15 @@ export default {
   },
   methods: {
     submit () {
-      this.api.postBot(this.bot, bot => {
-        this.$router.push(this.api.base_route);
-      });
+      if (this.bot.id) {
+        EventBotApi.putEventBot(this.bot.id, this.bot, bot => {
+          this.bot = bot;
+        });
+      } else {
+        this.api.postBot(this.bot, bot => {
+          this.$router.push(this.api.base_route);
+        });
+      }
     },
     deleteBot (bot_id) {
       EventBotApi.deleteBot(bot_id, result => {

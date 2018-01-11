@@ -70,6 +70,7 @@
 import { mapGetters } from 'vuex';
 import { UserSearch } from 'elements';
 import AdministratorApi from 'api/administrator.api';
+import PublicApi from 'api/public.api';
 
 export default {
   name: 'administrators',
@@ -121,8 +122,8 @@ export default {
       }
     },
     getRoles () {
-      this.$http.get('/api/roles').then(response => {
-        this.roles = response.body.filter(r => {
+      PublicApi.getRoles(roles => {
+        this.roles = roles.filter(r => {
           return r.level < this.current_pa.role.level;
         });
 
