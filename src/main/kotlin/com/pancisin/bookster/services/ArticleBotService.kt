@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component
 
 import com.jayway.jsonpath.JsonPath
 import com.jayway.jsonpath.ReadContext
+import com.pancisin.api.dataparser.parsers.DataParser
+import com.pancisin.api.dataparser.parsers.JsonParser
 import com.pancisin.bookster.model.ArticleBot
 import com.pancisin.bookster.model.enums.BotRunState
 import com.pancisin.bookster.repository.ArticleBotRepository
@@ -53,65 +55,17 @@ class ArticleBotService {
       val request = Request.Builder().url(articleBot.sourceUrl.toString()).build()
       val response = OkHttpClient().newCall(request).execute()
 
-      val ctx = JsonPath.parse(response.body()?.string())
-
-      var length = 0
-      val contentStore = HashMap<String, List<String>>()
-      for ((key, value) in articleBot.parser) {
-        val values = ctx.read<List<String>>(value)
-        contentStore.put(key, values)
-
-        if (length == 0 || values.size < length) {
-          length = values.size
-        }
-      }
+      val parser = JsonParser(Article::class.java, articleBot.parser.toString())
 
       var savedArticlesCount = 0
-
-      for (i in 0 until length) {
-        val art = Article()
-
-        contentStore.entries.stream().forEach { entry ->
-          try {
-
-            val field = Article::class.java.getDeclaredField(entry.key)
-            field.isAccessible = true
-
-            if (field.type.isAssignableFrom(String::class.java) || field.type.isPrimitive) {
-              field.set(art, entry.value[i])
-            } else if (field.type.isAssignableFrom(Calendar::class.java)) {
-
-            } else {
-              try {
-                val constructor = field.type.getConstructor(String::class.java)
-                field.set(art, constructor.newInstance(entry.value[i]))
-              } catch (e: NoSuchMethodException) {
-                e.printStackTrace()
-              } catch (e: InstantiationException) {
-                e.printStackTrace()
-              } catch (e: InvocationTargetException) {
-                e.printStackTrace()
-              }
+      parser.parse(response.body()?.string().toString()).let {
+        (it as ArrayList<*>).forEach { article ->
+          if (article is Article)
+            try {
+              articleRepository.save(article)
+              savedArticlesCount++
+            } catch (ex: Exception) {
             }
-          } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-          } catch (e: SecurityException) {
-            e.printStackTrace()
-          } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-          } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-          }
-        }
-
-        art.articlesList = articleBot.articlesList
-        try {
-          if (articleRepository.save(art) != null) {
-            savedArticlesCount++
-          }
-        } catch (ex: ConstraintViolationException) {
-          // ex.printStackTrace();
-        } catch (ex: DataIntegrityViolationException) {
         }
       }
 
@@ -124,6 +78,5 @@ class ArticleBotService {
       val run = BotRun(articleBot, BotRunState.ERROR)
       return botRunRepository.save(run)
     }
-
   }
 }

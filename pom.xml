@@ -112,6 +112,11 @@
       <artifactId>facebook-api</artifactId>
       <version>LATEST</version>
     </dependency>
+    <dependency>
+      <groupId>com.pancisin.api</groupId>
+      <artifactId>data-parser</artifactId>
+      <version>LATEST</version>
+    </dependency>
 
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>

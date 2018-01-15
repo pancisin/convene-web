@@ -15,6 +15,10 @@
               <label class="control-label">Name</label>
               <input class="form-control required" v-model="bot.name" type="text">
             </div>
+            <div class="form-group">
+              <label class="control-label">Parser</label>
+              <textarea class="form-control required" v-model="bot.parser" rows="5"></textarea>
+            </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
@@ -27,32 +31,6 @@
               <input class="form-control required" v-model="bot.sourceType" type="text">
             </div>
           </div>
-        </div>
-
-        <hr>
-        <h4>Parsers</h4>
-
-        <transition-group name="fade-up">
-          <div class="form-group" v-for="(parser, index) in parsers" :key="index">
-            <div class="input-group">
-              <input class="form-control required" v-model="parser.name" type="text">
-              <span class="input-group-addon">
-                <i class="fa fa-code"></i>
-              </span>
-              <input class="form-control required" v-model="parser.value" type="text">
-              <span class="input-group-btn">
-                <button class="btn btn-danger" type="button" @click="deleteParser(parser.name)">
-                  <i class="fa fa-trash-o"></i>
-                </button>
-              </span>
-            </div>
-          </div>
-        </transition-group>
-
-        <div class="text-center">
-          <a class="btn btn-xs btn-primary btn-rounded" @click="addParser">
-            <i class="fa fa-plus"></i>
-          </a>
         </div>
 
         <button type="submit" class="btn btn-primary" v-if="touched">Save</button>
@@ -172,26 +150,6 @@ export default {
     initializeBot (bot) {
       this.bot = bot;
       this.originalBot = calculateHash(JSON.stringify(bot));
-
-      let parsers = [];
-      for (var key in this.bot.parser) {
-        parsers.push({
-          name: key,
-          value: this.bot.parser[key]
-        });
-      }
-
-      this.parsers = parsers;
-    },
-    addParser () {
-      this.parsers.push({
-        name: '',
-        value: ''
-      });
-    },
-    deleteParser (key) {
-      const index = this.parsers.map(p => p.name).indexOf(key);
-      this.parsers.splice(index, 1);
     },
     deleteBot (bot_id) {
       ArticleBotApi.deleteBot(bot_id, result => {

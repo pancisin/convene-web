@@ -33,9 +33,12 @@ data class ArticleBot(
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   val id: UUID? = null,
 
-  @ElementCollection(fetch = FetchType.EAGER) @MapKeyColumn(name = "name") @Column(name = "value")
-  @CollectionTable(name = "article_bots_parsers", joinColumns = arrayOf(JoinColumn(name = "article_bot_id")))
-  var parser: MutableMap<String, String> = HashMap(),
+//  @ElementCollection(fetch = FetchType.EAGER) @MapKeyColumn(name = "name") @Column(name = "value")
+//  @CollectionTable(name = "article_bots_parsers", joinColumns = arrayOf(JoinColumn(name = "article_bot_id")))
+//  var parser: MutableMap<String, String> = HashMap(),
+
+  @Column
+  var parser: String? = null,
 
   @JsonIgnore @ManyToOne(optional = false)
   var articlesList: ArticlesList? = null,
