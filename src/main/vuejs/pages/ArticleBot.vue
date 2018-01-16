@@ -15,9 +15,13 @@
               <label class="control-label">Name</label>
               <input class="form-control required" v-model="bot.name" type="text">
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label class="control-label">Parser</label>
               <textarea class="form-control required" v-model="bot.parser" rows="5"></textarea>
+            </div> -->
+            <div class="form-group">
+              <label class="control-label">Source type</label>
+              <input class="form-control required" v-model="bot.sourceType" type="text">
             </div>
           </div>
           <div class="col-md-6">
@@ -25,12 +29,12 @@
               <label class="control-label">Source url</label>
               <textarea class="form-control required" v-model="bot.sourceUrl" rows="5"></textarea>
             </div>
-
-            <div class="form-group">
-              <label class="control-label">Source type</label>
-              <input class="form-control required" v-model="bot.sourceType" type="text">
-            </div>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Parser</label>
+          <data-parser-editor v-model="bot.parser" />
         </div>
 
         <button type="submit" class="btn btn-primary" v-if="touched">Save</button>
@@ -71,7 +75,7 @@
 
 <script>
 import ArticleBotApi from 'api/article-bot.api';
-import { BotRunIndicator, Paginator } from 'elements';
+import { BotRunIndicator, Paginator, DataParserEditor } from 'elements';
 import { calculateHash } from '../services/helpers';
 
 export default {
@@ -93,7 +97,8 @@ export default {
   },
   components: {
     BotRunIndicator,
-    Paginator
+    Paginator,
+    DataParserEditor
   },
   watch: {
     parsers: {

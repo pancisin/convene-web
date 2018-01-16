@@ -51,6 +51,7 @@ import VueImage from './VueImage';
 import Error from './Error';
 import WidgetSelector from './WidgetSelector';
 import AdSense from './AdSense';
+import DataParserEditor from './DataParserEditor';
 
 export {
   ArticlesList,
@@ -105,5 +106,6 @@ export {
   VueImage,
   Error,
   WidgetSelector,
-  AdSense
+  AdSense,
+  DataParserEditor
 };
