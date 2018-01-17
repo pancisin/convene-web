@@ -70,6 +70,30 @@ GoogleMapsApi.install = (Vue, options) => {
           callback(location);
         }
       });
+    },
+
+    bounds () {
+      return new googleApi.maps.LatLngBounds();
+    },
+
+    marker (options) {
+      return new googleApi.maps.Marker(options);
+    },
+
+    size (width, height) {
+      return new googleApi.maps.Size(width, height);
+    },
+
+    infoWindow (options) {
+      return new googleApi.maps.InfoWindow(options);
+    },
+
+    point (x, y) {
+      return new googleApi.maps.Point(x, y);
+    },
+
+    overlay () {
+      return new googleApi.maps.OverlayView();
     }
   };
 

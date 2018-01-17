@@ -62,6 +62,7 @@ class ArticleBotService {
         (it as ArrayList<*>).forEach { article ->
           if (article is Article)
             try {
+              article.articlesList = articleBot.articlesList
               articleRepository.save(article)
               savedArticlesCount++
             } catch (ex: Exception) {

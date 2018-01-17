@@ -27,15 +27,7 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-md-pull-3">
-          <panel type="default" v-show="eventsPaginator.content && eventsPaginator.content.length > 0">
-            <span slot="title">{{ $t('client.dashboard.near_events') }}</span>
-            <events-list :events="eventsPaginator.content"></events-list>
-
-            <div class="text-center">
-              <paginator :paginator="eventsPaginator"
-                :fetch="getEvents" />
-            </div>
-          </panel>
+          <event-map v-if="eventsPaginator.content && eventsPaginator.content.length > 0" :events="eventsPaginator.content"></event-map>
 
           <articles-list 
             :articles="headlinesPaginator.content"
@@ -60,8 +52,9 @@ import {
   HeroUnit,
   ArticlesList,
   EventsList,
-  PagesList
-  } from 'elements';
+  PagesList,
+  EventMap
+} from 'elements';
 
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
@@ -87,7 +80,8 @@ export default {
     ArticlesList,
     EventsList,
     PagesList,
-    FeaturedEvents
+    FeaturedEvents,
+    EventMap
   },
   computed: {
     ...mapGetters([
@@ -99,10 +93,13 @@ export default {
   watch: {
     'user.locale': 'getHeadlines'
   },
+  created () {
+    this.getEvents(0);
+  },
   methods: {
     getEvents (page) {
       navigator.geolocation.getCurrentPosition(position => {
-        PublicApi.getNearEvents(page, 5, {
+        PublicApi.getNearEvents(page, 100, {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           distance: 10,

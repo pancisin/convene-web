@@ -52,6 +52,7 @@ import Error from './Error';
 import WidgetSelector from './WidgetSelector';
 import AdSense from './AdSense';
 import DataParserEditor from './DataParserEditor';
+import EventMap from './EventMap';
 
 export {
   ArticlesList,
@@ -107,5 +108,6 @@ export {
   Error,
   WidgetSelector,
   AdSense,
-  DataParserEditor
+  DataParserEditor,
+  EventMap
 };
