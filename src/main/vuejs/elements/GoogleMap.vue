@@ -44,6 +44,11 @@ export default {
         center: this.location
       });
 
+      context.marker({
+        position: this.location,
+        map: this.map
+      });
+
       this.loading = false;
     });
   }

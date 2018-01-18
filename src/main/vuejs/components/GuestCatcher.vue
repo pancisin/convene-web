@@ -11,6 +11,7 @@
 
 <script>
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import { LoginForm } from 'elements/forms';
 
 export default {
@@ -24,13 +25,22 @@ export default {
   components: {
     LoginForm
   },
+  computed: {
+    ...mapGetters(['authenticated'])
+  },
   created () {
     Vue.prototype.$tryAuthenticate = this.tryAuthenticate;
   },
   methods: {
     tryAuthenticate (callback) {
-      this.displayLoginModal = true;
-      this.successCallback = callback;
+      if (this.authenticated) {
+        if (callback) {
+          callback();
+        }
+      } else {
+        this.displayLoginModal = true;
+        this.successCallback = callback;
+      }
     },
     success () {
       this.displayLoginModal = false;

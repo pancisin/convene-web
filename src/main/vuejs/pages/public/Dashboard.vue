@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-md-pull-3">
-          <event-map v-if="eventsPaginator.content && eventsPaginator.content.length > 0" :events="eventsPaginator.content"></event-map>
+          <near-events />
 
           <articles-list 
             :articles="headlinesPaginator.content"
@@ -59,7 +59,7 @@ import {
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 import PublicApi from 'api/public.api';
-import { FeaturedEvents } from 'components';
+import { FeaturedEvents, NearEvents } from 'components';
 import { DateTime } from 'luxon';
 
 export default {
@@ -81,7 +81,8 @@ export default {
     EventsList,
     PagesList,
     FeaturedEvents,
-    EventMap
+    EventMap,
+    NearEvents
   },
   computed: {
     ...mapGetters([
@@ -104,10 +105,12 @@ export default {
           lng: position.coords.longitude,
           distance: 10,
           fromDate: DateTime.utc().valueOf(),
-          toDate: DateTime.utc().plus({ months: 1 }).valueOf()
+          toDate: DateTime.utc().plus({ week: 1 }).valueOf()
         }, paginator => {
           this.eventsPaginator = paginator;
         });
+      }, error => {
+        console.warn(error);
       });
     },
     getHeadlines (page) {

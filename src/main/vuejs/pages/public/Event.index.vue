@@ -8,7 +8,7 @@
           class="m-b-20">
         </date-picker>
         
-        <a class="btn btn-primary btn-block m-b-20" v-if="authenticated" @click="displayEventCreateModal = true">Create event</a>
+        <a class="btn btn-primary btn-block m-b-20" @click="createEvent">Create event</a>
 
         <panel type="primary" v-if="authenticated">
           <span slot="title">Filters</span>
@@ -167,6 +167,10 @@ export default {
       ...this.filters,
       ...this.$route.query
     };
+
+    if (this.$route.query.timestamp) {
+      this.filters.timestamp = parseInt(this.$route.query.timestamp, 10);
+    }
   },
   computed: {
     ...mapGetters(['user', 'authenticated', 'isSuperAdmin']),
@@ -243,6 +247,11 @@ export default {
     sortEvents () {
       this.eventsPaginator.content.sort((a, b) => {
         return b.featured || (a.date - b.date);
+      });
+    },
+    createEvent () {
+      this.$tryAuthenticate(() => {
+        this.displayEventCreateModal = true;
       });
     }
   }

@@ -21,6 +21,7 @@
     "later": "github:rickcarlino/later",
     "luxon": "^0.2.9",
     "moment": "^2.18.0",
+    "node-js-marker-clusterer": "^1.0.0",
     "node-waves": "^0.7.5",
     "quill": "^1.2.4",
     "share-url": "^1.0.0",
