@@ -11,10 +11,18 @@ const getters = {
 
 const actions = {
   initializeMachine ({ commit }) {
-    const position = JSON.parse(window.localStorage.getItem('position'));
-    if (position != null) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const position = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      };
       commit(types.SET_POSITION, {position});
-    }
+    }, () => {
+      const position = JSON.parse(window.localStorage.getItem('position'));
+      if (position != null) {
+        commit(types.SET_POSITION, {position});
+      }
+    });
   },
   setPosition ({ commit }, position) {
     window.localStorage.setItem('position', JSON.stringify(position));

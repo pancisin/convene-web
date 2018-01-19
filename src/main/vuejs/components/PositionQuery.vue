@@ -11,7 +11,7 @@
 
 <script>
 import Vue from 'vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { PositionForm } from 'elements/forms';
 
 export default {
@@ -47,24 +47,14 @@ export default {
     Vue.prototype.$tryGetPosition = this.tryGetPosition;
   },
   methods: {
+    ...mapActions(['setPosition']),
     tryGetPosition (callback, errorCallback) {
       if (this.positionKnown) {
         callback(this.position);
       } else {
-        navigator.geolocation.getCurrentPosition(pos => {
-          const position = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-
-          if (callback) {
-            callback(position);
-          }
-        }, () => {
-          this.successCallback = callback;
-          this.errorCallback = errorCallback;
-          this.displayModal = true;
-        });
+        this.successCallback = callback;
+        this.errorCallback = errorCallback;
+        this.displayModal = true;
       }
     }
   }
