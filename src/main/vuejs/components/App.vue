@@ -10,7 +10,8 @@
     </transition>
 
     <guest-catcher />
-    
+    <position-query />
+
     <ad-sense
       ad-client="ca-pub-8590347690879523"
       ad-slot="XXXXXXXX">
@@ -23,7 +24,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { ToastContainer, ChatContainer, CookieLaw, AdSense } from 'elements';
 import { Settings } from 'luxon';
-import { GuestCatcher } from 'components';
+import { GuestCatcher, PositionQuery } from 'components';
 
 export default {
   name: 'app-root',
@@ -33,6 +34,7 @@ export default {
     };
   },
   created () {
+    this.initializeMachine();
     if (this.authenticated) {
       this.initializeUser().then(user => {
         Settings.defaultLocale = user.locale.prop;
@@ -46,7 +48,8 @@ export default {
     ChatContainer,
     CookieLaw,
     GuestCatcher,
-    AdSense
+    AdSense,
+    PositionQuery
   },
   computed: {
     ...mapGetters(['authenticated', 'user'])
@@ -84,7 +87,8 @@ export default {
       'initializeAttendingEvents',
       'initializeContacts',
       'initializeConversations',
-      'updateContactsActivityState'
+      'updateContactsActivityState',
+      'initializeMachine'
     ]),
     initializeStomp () {
       this.connectWM('/stomp').then(frame => {

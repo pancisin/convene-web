@@ -5,7 +5,7 @@
 <script>
 import gmapStyle from './gmapStyle.js';
 import { DateTime } from 'luxon';
-import MarkerClusterer from 'node-js-marker-clusterer';
+// import MarkerClusterer from 'node-js-marker-clusterer';
 
 export default {
   name: 'event-map',
@@ -16,16 +16,8 @@ export default {
     };
   },
   props: {
-    location: {
-      type: Object,
-      default () {
-        return {
-          lat: null,
-          lng: null
-        };
-      }
-    },
-    events: Array
+    events: Array,
+    draggable: Boolean
   },
   mounted () {
     this.loading = true;
@@ -33,7 +25,8 @@ export default {
     this.$googleMapApi.load(context => {
       this.map = context.map(this.$el, {
         disableDefaultUI: true,
-        styles: gmapStyle
+        styles: gmapStyle,
+        draggable: this.draggable
       });
 
       const infoWindow = context.infoWindow({
@@ -64,9 +57,9 @@ export default {
         return marker;
       });
 
-      new MarkerClusterer(this.map, markers, {
-        imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'
-      });
+      // new MarkerClusterer(this.map, markers, {
+      //   imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'
+      // });
 
       const overlay = context.overlay();
       overlay.draw = function () {

@@ -102,7 +102,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import (reference) '~less/variables.less';
 
 .conversation-container {
@@ -162,7 +162,7 @@ export default {
 
 .btn-chat {
   padding: 15px 16px;
-  border-radius: 30px;
+  border-radius: 150%;
 }
 
 @media (max-width: 768px) {

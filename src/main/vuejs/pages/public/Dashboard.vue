@@ -27,7 +27,7 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-md-pull-3">
-          <near-events />
+          <near-events draggable showWarning/>
 
           <articles-list 
             :articles="headlinesPaginator.content"

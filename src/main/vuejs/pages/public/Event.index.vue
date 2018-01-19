@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-3 m-b-10">
+      <div class="col-sm-4 col-md-3 m-b-10">
         <date-picker 
           v-model="filters.timestamp"
           inline
@@ -22,7 +22,7 @@
           </div>
         </panel>
       </div>
-      <div class="col-sm-6 col-md-9" v-loading="loading">
+      <div class="col-sm-8 col-md-9" v-loading="loading">
         <masonry 
           class="events-masonry" 
           :columns="4">

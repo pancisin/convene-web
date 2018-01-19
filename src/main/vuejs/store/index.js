@@ -6,6 +6,7 @@ Vue.use(Vuex);
 import user from './modules/user';
 import page from './modules/page';
 import conference from './modules/conference';
+import machine from './modules/machine';
 
 // IMPORT MUTATION TYPES
 import * as types from 'store/mutation-types';
@@ -19,7 +20,7 @@ const store = new Vuex.Store({
     locales: []
   },
   modules: {
-    user, page, conference
+    user, page, conference, machine
   },
   getters: {
     toasts: state => state.toasts,
@@ -61,7 +62,7 @@ const store = new Vuex.Store({
   }
 });
 
-[user, page, conference].forEach((module) => {
+[user, page, conference, machine].forEach((module) => {
   if (module.watchers) {
     module.watchers.forEach((params) => {
       store.watch(...params);

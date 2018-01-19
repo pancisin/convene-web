@@ -20,21 +20,17 @@
     </section>
 
     <section class="events">
-      <hero-unit :background="crowd">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3 content bg-gray">
-            <div class="text-center">
-              <h2 class="title">Still don't know what to do today ? </h2>
-              <p class="sub-title">Convene is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
-            </div>
+      <hero-unit :background="crowd" :overlay="!positionKnown">
+      <near-events slot="background" /> 
 
-            <events-list :events="eventsPaginator.content" />
-
-            <div class="text-center">
-              <paginator :paginator="eventsPaginator" :fetch="getEvents" />
-            </div>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="text-center">
+            <h2 class="text-pink-question">Still don't know what to do today ? </h2>
+            <p class="sub-title">Convene is full of public events right from your neighborhood just select one and join. Do not forget to tell your friends about that. ;) </p>
           </div>
         </div>
+      </div>
       </hero-unit>
     </section>
 
@@ -53,14 +49,15 @@ import Pricing from '../static/Pricing.vue';
 import {
   Paginator,
   ProductLogo,
-  HeroUnit,
-  EventsList
+  HeroUnit
 } from 'elements';
+import { NearEvents } from 'components';
 import faq from '../static/FAQ';
 import HowItWorks from '../static/HowItWorks';
 
 import Notepad from 'assets/img/notepad.jpg';
 import Crowd from 'assets/img/crowd.jpg';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'landing',
@@ -71,27 +68,15 @@ export default {
     HowItWorks,
     ProductLogo,
     HeroUnit,
-    EventsList
-  },
-  data () {
-    return {
-      eventsPaginator: {}
-    };
+    NearEvents
   },
   computed: {
+    ...mapGetters(['positionKnown']),
     notepad () {
       return Notepad;
     },
     crowd () {
       return Crowd;
-    }
-  },
-  methods: {
-    getEvents (page) {
-      var url = ['/public/events', page, 5].join('/');
-      this.$http.get(url).then(response => {
-        this.eventsPaginator = response.body;
-      });
     }
   }
 };
@@ -101,6 +86,15 @@ export default {
 @import (reference) '~less/variables.less';
 @hero-img: url('~assets/img/notepad.jpg');
 @events-img: url('~assets/img/crowd.jpg');
+
+.text-pink-question {
+  color: @color-primary;
+  /* text-shadow: 2px 2px 5px #5b5b5b8f; */
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  padding: 20px 0;
+  font-weight: lighter;
+}
 
 .section {
   padding-top: 120px;

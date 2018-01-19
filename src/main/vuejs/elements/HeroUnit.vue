@@ -1,7 +1,9 @@
 <template>
   <div class="hero-unit" 
-    :class="{ 'hero-unit-fluid': !solid }" 
+    :class="{ 'hero-unit-fluid': !solid, 'hero-overlay': overlay }" 
     :style="bg_style">
+
+    <slot name="background"></slot>
 
     <div class="hero-unit-content" 
       :style="content_style" 
@@ -23,7 +25,13 @@ export default {
       type: String,
       default: null
     },
-    solid: Boolean
+    solid: Boolean,
+    overlay: {
+      type: Boolean,
+      default () {
+        return true;
+      }
+    }
   },
   watch: {
     background (newVal) {
@@ -47,7 +55,9 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll);
-    this.handleScroll();
+    this.$nextTick(() => {
+      this.handleScroll();
+    });
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll);
@@ -60,14 +70,19 @@ export default {
         offset = -(this.$el.offsetTop - (window.innerHeight - this.$el.offsetHeight) / 2 - window.scrollY);
       }
 
+      const height = this.$slots.background
+        ? this.$slots.background[0].elm.offsetHeight
+        : this.$refs.hero_unit_content.offsetHeight + 160;
       this.bg_style = {
         ...this.bg_style,
         'background-position': `center calc(50% + ${offset * 0.5}px)`,
-        height: `${this.$refs.hero_unit_content.offsetHeight + 160}px`
+        height: `${height}px`
       };
+
       this.content_style = {
         ...this.content_style,
-        top: `calc(50% + ${offset * 0.3}px)`
+        top: `calc(50% + ${offset * 0.3}px)`,
+        opacity: 1 / (Math.abs(offset) / 100)
       };
     }
   }
@@ -148,18 +163,20 @@ export default {
     width: 100%;
   }
 
-  &:after {
-    content: '';
-    z-index: 1;
-    // background: rgba(0, 0, 0, 0.6);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+  &.hero-overlay {
+    &:after {
+      content: '';
+      z-index: 1;
+      // background: rgba(0, 0, 0, 0.6);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
 
-    background: linear-gradient(#444f5c, #334159);
-    opacity: 0.85;
+      background: linear-gradient(#444f5c, #334159);
+      opacity: 0.85;
+    }
   }
 }
 </style>

@@ -30,7 +30,7 @@ export default {
           this.$emit('input', location);
         });
 
-        if (this.value.lat != null && this.value.lng != null) {
+        if (this.value != null && this.value.lat != null && this.value.lng != null) {
           context.geocode(this.value, result => {
             this.$refs.place_picker.value = result.address;
           });
