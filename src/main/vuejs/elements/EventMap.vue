@@ -5,7 +5,6 @@
 <script>
 import gmapStyle from './gmapStyle.js';
 import { DateTime } from 'luxon';
-// import MarkerClusterer from 'node-js-marker-clusterer';
 
 export default {
   name: 'event-map',
@@ -33,7 +32,7 @@ export default {
         maxWidth: 250
       });
       const bounds = context.bounds();
-      const markers = this.events.map(e => {
+      this.events.map(e => {
         const position = {
           lat: e.latitude,
           lng: e.longitude
@@ -57,10 +56,6 @@ export default {
         return marker;
       });
 
-      // new MarkerClusterer(this.map, markers, {
-      //   imagePath: 'https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m'
-      // });
-
       const overlay = context.overlay();
       overlay.draw = function () {
         this.getPanes().markerLayer.id = 'markerLayer';
@@ -69,6 +64,10 @@ export default {
 
       this.map.setCenter(bounds.getCenter());
       this.map.fitBounds(bounds);
+
+      if (this.map.getZoom() > 17) {
+        this.map.setZoom(17);
+      }
 
       this.loading = false;
     });

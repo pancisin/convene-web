@@ -21,7 +21,7 @@
 
     <section class="events">
       <hero-unit :background="crowd" :overlay="!positionKnown">
-      <near-events slot="background" /> 
+      <near-events slot="background" :toDate="toDate" /> 
 
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -58,6 +58,7 @@ import HowItWorks from '../static/HowItWorks';
 import Notepad from 'assets/img/notepad.jpg';
 import Crowd from 'assets/img/crowd.jpg';
 import { mapGetters } from 'vuex';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'landing',
@@ -72,6 +73,9 @@ export default {
   },
   computed: {
     ...mapGetters(['positionKnown']),
+    toDate () {
+      return DateTime.utc().plus({ day: 1 }).valueOf();
+    },
     notepad () {
       return Notepad;
     },
