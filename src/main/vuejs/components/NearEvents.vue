@@ -3,7 +3,7 @@
     <div v-if="!positionAcquired" class="text-center position-picker" >
       <position-form />
     </div>
-    <event-map v-if="paginator.content && paginator.content.length > 0" :events="paginator.content" :draggable="draggable" />
+    <event-map v-if="paginator.content && paginator.content.length > 0" :events="paginator.content" :draggable="interactive" :infoWindow="interactive" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
         return DateTime.utc().plus({ months: 1 }).valueOf();
       }
     },
-    draggable: Boolean,
+    interactive: Boolean,
     showWarning: Boolean
   },
   components: {

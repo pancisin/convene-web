@@ -1,36 +1,59 @@
 <template>
-  <div class="event-map"></div>
+  <div class="event-map">
+    <div ref="mapCanvas" class="event-map-canvas"></div>
+    <transition name="fade-right" v-if="infoWindow">
+      <div class="info-window" v-show="displayInfoWindow">
+        <button type="button" class="close" @click="displayInfoWindow = false"><i class="fa fa-times"></i></button>
+
+        <span>
+          <router-link :to="{ name: 'event.public', params: { id: selectedEvent.id } }">
+            <h4 class="text-primary">{{ selectedEvent.name }}</h4>
+          </router-link>
+          <small class="text-muted">{{ selectedEvent.date | luxon('ff') }}</small>
+          <hr />
+
+          <p>
+            {{ selectedEvent.summary ? selectedEvent.summary.substr(0, 200) : '' }}...
+          </p>
+        </span>
+
+        <router-link :to="{ name: 'event.public', params: { id: selectedEvent.id } }" class="btn btn-default btn-block btn-sm">
+          Open
+        </router-link>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
 import gmapStyle from './gmapStyle.js';
-import { DateTime } from 'luxon';
 
 export default {
   name: 'event-map',
   data () {
     return {
       map: null,
-      loading: false
+      loading: false,
+      displayInfoWindow: false,
+      selectedEvent: {}
     };
   },
   props: {
     events: Array,
-    draggable: Boolean
+    draggable: Boolean,
+    infoWindow: Boolean
   },
   mounted () {
     this.loading = true;
 
     this.$googleMapApi.load(context => {
-      this.map = context.map(this.$el, {
+      console.log(this.$refs.mapCanvas);
+      this.map = context.map(this.$refs.mapCanvas, {
         disableDefaultUI: true,
         styles: gmapStyle,
         draggable: this.draggable
       });
 
-      const infoWindow = context.infoWindow({
-        maxWidth: 250
-      });
       const bounds = context.bounds();
       this.events.map(e => {
         const position = {
@@ -50,8 +73,8 @@ export default {
           optimized: false
         });
         marker.addListener('click', () => {
-          infoWindow.setContent(`<h5><a href="/event/${e.id}">${e.name}</a></h5><small class="text-muted">${DateTime.fromMillis(e.date).toFormat('ff')}</small><hr />${e.summary.substr(0, 200)}...`);
-          infoWindow.open(this.map, marker);
+          this.selectedEvent = e;
+          this.displayInfoWindow = true;
         });
         return marker;
       });
@@ -77,16 +100,43 @@ export default {
 
 <style lang="less">
 .event-map {
-  height: 400px;
-  width: 100%;
+  position: relative;
+  overflow: hidden;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 
-  div#markerLayer {
-    img {
-      border-radius: 100%;
-      border: 1px solid #ccc !important;
+  .info-window {
+    position: absolute;
+    top: 0;
+    height: 100%; 
+    right: 0;
+    width: 50%;
+    background:#fff;
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .close {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
+  .event-map-canvas {
+    height: 400px;
+    width: 100%;
+
+    div#markerLayer {
+      img {
+        border-radius: 100%;
+        border: 1px solid #ccc !important;
+      }
     }
   }
 }
+
 </style>

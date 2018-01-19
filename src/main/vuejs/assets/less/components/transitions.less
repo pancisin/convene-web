@@ -53,6 +53,17 @@ a {
   transform: translateX(-50px);
 }
 
+.fade-right-enter-active,
+.fade-right-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-right-enter,
+.fade-right-leave-to {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
 .slide-down-enter-active,
 .slide-down-leave-active {
   transition: all .3s ease-in-out;
