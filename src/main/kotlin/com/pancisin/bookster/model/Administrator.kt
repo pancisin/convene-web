@@ -26,14 +26,6 @@ data class Administrator(
 
   @JsonIgnore @ManyToOne
   @JoinTable(
-    name = "conferences_administrators",
-    joinColumns = arrayOf(JoinColumn(name = "administrator_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
-  )
-  var conference: Conference? = null,
-
-  @JsonIgnore @ManyToOne
-  @JoinTable(
     name = "pages_administrators",
     joinColumns = arrayOf(JoinColumn(name = "administrator_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
@@ -53,6 +45,5 @@ data class Administrator(
   var role: PageRole? = PageRole.ROLE_ADMINISTRATOR
 
 ) {
-  constructor(page: Page, user: User, active: Boolean) : this(null, user, null, page, active, null, null, null)
-  constructor(conference: Conference, user: User, active: Boolean) : this(null, user, conference, null, active, null, null, null)
+  constructor(page: Page, user: User, active: Boolean) : this(null, user, page, active, null, null, null)
 }

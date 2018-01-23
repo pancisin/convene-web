@@ -46,7 +46,7 @@ const actions = {
   },
   deleteConference ({ commit }, conference) {
     return new Promise(resolve => {
-      UserApi.deleteConference(conference.id, () => {
+      ConferenceApi.deleteConference(conference.id, () => {
         commit(types.REMOVE_CONFERENCE, { conference });
         commit(types.LOADING_CONFERENCES, false);
         resolve(conference);

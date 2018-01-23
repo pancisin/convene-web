@@ -2,13 +2,17 @@
   <div class="row">
     <div class="col-md-3">
       <div class="list-group mail-list">
-        <router-link to="information" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'conference.settings.information' }" class="list-group-item waves-effect">
           <i class="fa fa-info"></i>
           Basic information
         </router-link>
-        <router-link to="registration" class="list-group-item waves-effect">
+        <router-link :to="{ name: 'conference.settings.registration' }" class="list-group-item waves-effect">
           <i class="fa fa-users" aria-hidden="true"></i>
           Registration
+        </router-link>
+        <router-link :to="{ name: 'conference.settings.deletion' }" class="list-group-item waves-effect">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+          Delete
         </router-link>
       </div>
     </div>

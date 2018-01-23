@@ -107,6 +107,7 @@ export default [
         children: [
           {
             path: 'information',
+            name: 'conference.settings.information',
             component: resolve => require(['../pages/conference/settings/Information.vue'], resolve),
             meta: {
               title: 'Conference information settings'
@@ -114,9 +115,18 @@ export default [
           },
           {
             path: 'registration',
+            name: 'conference.settings.registration',
             component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
             meta: {
               title: 'Conference registration settings'
+            }
+          },
+          {
+            path: 'delete',
+            name: 'conference.settings.deletion',
+            component: resolve => require(['../pages/conference/settings/Delete.vue'], resolve),
+            meta: {
+              titie: 'Conference deletion'
             }
           }
         ]

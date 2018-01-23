@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service
 
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.Visibility
-import com.pancisin.bookster.repository.ConferenceRepository
 import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.redfin.sitemapgenerator.WebSitemapGenerator
@@ -23,9 +22,6 @@ class SitemapService {
 
   @Autowired
   lateinit var pageRepository: PageRepository
-
-  @Autowired
-  lateinit var conferenceRepository: ConferenceRepository
 
   private val staticRoutes = arrayOf("about", "pricing", "faq", "terms", "privacy-policy", "events", "explore", "conferences")
 
@@ -52,15 +48,6 @@ class SitemapService {
       }
     }
     sitemap.addUrls(events)
-
-    val conferences = conferenceRepository.findAll().filter { it.state === PageState.PUBLISHED || it.state === PageState.BLOCKED }.map {
-      try {
-        WebSitemapUrl("/${BASE_URL}/conference/${it.id}")
-      } catch (ex: MalformedURLException) {
-        null
-      }
-    }
-    sitemap.addUrls(conferences)
 
     val staticUrls = staticRoutes.map {
       try {

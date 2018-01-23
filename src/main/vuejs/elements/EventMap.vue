@@ -2,7 +2,7 @@
   <div class="event-map">
     <div ref="mapCanvas" class="event-map-canvas"></div>
     <transition name="fade-right" v-if="infoWindow">
-      <div class="info-window" v-show="displayInfoWindow">
+      <div class="info-window" v-show="displayInfoWindow" :style="getInfowindowStyle(selectedEvent)">
         <button type="button" class="close" @click="displayInfoWindow = false"><i class="fa fa-times"></i></button>
 
         <span>
@@ -94,6 +94,15 @@ export default {
 
       this.loading = false;
     });
+  },
+  methods: {
+    getInfowindowStyle (event) {
+      if (event != null) {
+        return {
+          'background-image': event.poster ? `url(${event.poster.path})` : ''
+        };
+      }
+    }
   }
 };
 </script>
@@ -119,6 +128,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 
     .close {
       position: absolute;

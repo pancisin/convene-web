@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import com.pancisin.bookster.model.Administrator;
 import com.pancisin.bookster.model.Media;
+import com.pancisin.bookster.model.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,17 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageService;
-import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.UserSubscription;
-import com.pancisin.bookster.model.enums.Locale;
-import com.pancisin.bookster.model.enums.PageRole;
-import com.pancisin.bookster.model.enums.Role;
-import com.pancisin.bookster.model.enums.Subscription;
-import com.pancisin.bookster.model.enums.SubscriptionState;
-import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.MediaRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
@@ -64,9 +58,6 @@ public class CurrentUserController {
 
 	@Autowired
 	private PageRepository pageRepository;
-
-	@Autowired
-	private ConferenceRepository conferenceRepository;
 
 	@Autowired
 	private AdministratorRepository administratorRepository;
@@ -179,16 +170,18 @@ public class CurrentUserController {
 	@GetMapping("/conference")
 	public ResponseEntity<?> getConference() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(conferenceRepository.getByOwner(auth.getId()));
+		return ResponseEntity.ok(pageRepository.getConferencesByOwner(auth.getId()));
 	}
 
 	@PostMapping("/conference")
 	@LicenseLimit(entity = "conference")
 	@Transactional
-	public ResponseEntity<?> postConference(@RequestBody Conference conference) {
+	public ResponseEntity<?> postConference(@RequestBody Page conference) {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		Conference stored_conference = conferenceRepository.save(conference);
+		conference.setPageType(PageType.CONFERENCE);
+
+		Page stored_conference = pageRepository.save(conference);
 
 		Administrator ca = new Administrator(stored_conference, auth, true);
 		ca.setRole(PageRole.ROLE_OWNER);

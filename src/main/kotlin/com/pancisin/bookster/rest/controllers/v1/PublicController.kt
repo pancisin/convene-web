@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController
 import com.pancisin.bookster.repository.ArticleRepository
 import com.pancisin.bookster.repository.BranchRepository
 import com.pancisin.bookster.repository.CategoryRepository
-import com.pancisin.bookster.repository.ConferenceRepository
 import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.MediaRepository
 import com.pancisin.bookster.repository.PageRepository
@@ -42,9 +41,6 @@ class PublicController {
 
   @Autowired
   lateinit var branchRepository: BranchRepository
-
-  @Autowired
-  lateinit var conferenceRepository: ConferenceRepository
 
   @Autowired
   lateinit var articleRepository: ArticleRepository
@@ -114,10 +110,10 @@ class PublicController {
   }
 
   @GetMapping("/conference/{conference_id}")
-  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Conference> {
-    val conference = conferenceRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
+    val conference = pageRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
 
-    return if (conference.visibility === Visibility.PUBLIC && (conference.state === PageState.PUBLISHED || conference.state === PageState.BLOCKED)) {
+    return if (conference.state === PageState.PUBLISHED || conference.state === PageState.BLOCKED) {
       ResponseEntity.ok(conference)
     } else {
       ResponseEntity(HttpStatus.FORBIDDEN)
@@ -135,7 +131,7 @@ class PublicController {
   ) = ResponseEntity.ok(articleRepository.getByConference(conference_id, PageRequest(page, size, Direction.DESC, "created")))
 
   @GetMapping("/conference/{page}/{size}")
-  fun getConferences(@PathVariable page: Int, @PathVariable size: Int) = ResponseEntity.ok(conferenceRepository.getPublic(PageRequest(page, size)))
+  fun getConferences(@PathVariable page: Int, @PathVariable size: Int) = ResponseEntity.ok(pageRepository.getPublicConferences(PageRequest(page, size)))
 
   @GetMapping("/unit")
   fun getUnits() = ResponseEntity.ok(Unit.values())

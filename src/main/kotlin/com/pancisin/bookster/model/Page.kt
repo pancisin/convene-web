@@ -34,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonView
 import com.fasterxml.jackson.annotation.JsonProperty.Access
 import com.pancisin.bookster.model.enums.PageRole
 import com.pancisin.bookster.model.enums.PageState
+import com.pancisin.bookster.model.enums.PageType
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
@@ -76,8 +77,8 @@ class Page() : IAuthor {
   var branch: Branch? = null
 
   @JsonIgnore
-  @ManyToMany
-  var followers: MutableList<User> = ArrayList()
+  @OneToMany(mappedBy = "page")
+  var members: MutableList<PageMember> = ArrayList()
 
   @JsonIgnore
   @OneToMany(mappedBy = "page")
@@ -94,7 +95,7 @@ class Page() : IAuthor {
 
   val followersCount: Int
     @JsonView(Summary::class)
-    get() = this.followers.size
+    get() = this.members.size
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   private val created: Calendar? = null
@@ -102,6 +103,12 @@ class Page() : IAuthor {
   @JsonIgnore
   @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
   var places: MutableList<Place>? = null
+
+  @JsonIgnore @OneToMany(mappedBy = "page")
+  val invitations: List<Invitation>? = null
+
+  @JsonIgnore @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
+  var surveys: MutableList<Survey>? = null
 
   val owner: User?
     @JsonIgnore
@@ -131,6 +138,11 @@ class Page() : IAuthor {
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, cascade = arrayOf(CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST))
   var gallery: MutableList<Media>? = null
+
+  @JsonProperty(access = Access.READ_ONLY)
+  @JsonView(Compact::class)
+  @Enumerated(EnumType.STRING)
+  var pageType: PageType = PageType.PAGE
 
   @Column(unique = true)
   var facebookId: String? = null

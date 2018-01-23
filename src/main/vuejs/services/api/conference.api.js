@@ -38,6 +38,17 @@ export default {
   },
 
   /**
+   * Delete conference permanently
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  deleteConference (id, success) {
+    Vue.http.delete(`${CONFERENCE_API_URL}/${id}`).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
    * Get conference events
    * @param {*} id - conference id
    * @param {*} page - paginator page property

@@ -25,7 +25,6 @@ import com.pancisin.bookster.model.ArticlesList;
 import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.repository.ArticleRepository;
 import com.pancisin.bookster.repository.ArticlesListRepository;
-import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
@@ -43,9 +42,6 @@ public class RootController {
 
 	@Autowired
 	private EventRepository eventRepository;
-
-	@Autowired
-	private ConferenceRepository conferenceRepository;
 
 	@GetMapping({ "/api/articles", "/public/articles" })
 	public ResponseEntity<?> getArticles(
@@ -134,9 +130,9 @@ public class RootController {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (auth != null) {
-			return ResponseEntity.ok(conferenceRepository.getForUser(auth.getId(), new PageRequest(page, size)));
+			return ResponseEntity.ok(pageRepository.getConferencesForUser(auth.getId(), new PageRequest(page, size)));
 		} else {
-			return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
+			return ResponseEntity.ok(pageRepository.getPublicConferences(new PageRequest(page, size)));
 		}
 	}
 

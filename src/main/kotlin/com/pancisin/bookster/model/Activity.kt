@@ -34,18 +34,6 @@ data class Activity(
   @Enumerated(EnumType.STRING)
   var type: ActivityType? = null,
 
-  @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-  var created: Calendar? = null,
-
-  @JsonIgnore
-  @ManyToOne
-  @JoinTable(
-    name = "conferences_activities",
-    joinColumns = arrayOf(JoinColumn(name = "activity_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
-  )
-  var conference: Conference? = null,
-
   @JsonIgnore
   @ManyToOne
   @JoinTable(
@@ -53,7 +41,10 @@ data class Activity(
     joinColumns = arrayOf(JoinColumn(name = "activity_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var page: Page? = null
+  var page: Page? = null,
+
+  @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+  var created: Calendar? = null
 ) {
-  constructor (user: User, type: ActivityType) : this(null, user, type, null, null, null)
+  constructor (user: User, type: ActivityType, page: Page) : this(null, user, type, page)
 }

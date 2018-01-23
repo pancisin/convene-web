@@ -6,8 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.pancisin.bookster.model.Administrator;
-import com.pancisin.bookster.model.Media;
+import com.pancisin.bookster.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,14 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pancisin.bookster.components.annotations.ActivityLog;
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageServiceImpl;
-import com.pancisin.bookster.model.BookRequest;
-import com.pancisin.bookster.model.Event;
-import com.pancisin.bookster.model.EventBot;
-import com.pancisin.bookster.model.Page;
-import com.pancisin.bookster.model.Place;
-import com.pancisin.bookster.model.Service;
-import com.pancisin.bookster.model.User;
-import com.pancisin.bookster.model.Widget;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.model.enums.PageState;
@@ -164,12 +155,12 @@ public class PageController {
 		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		boolean status = stored.getFollowers().stream().anyMatch(x -> x.getId() == user.getId());
+		boolean status = stored.getMembers().stream().anyMatch(x -> x.getUser().getId() == user.getId());
 		if (status)
-			stored.setFollowers(
-					stored.getFollowers().stream().filter(x -> x.getId() != user.getId()).collect(Collectors.toList()));
+			stored.setMembers(
+					stored.getMembers().stream().filter(x -> x.getUser().getId() != user.getId()).collect(Collectors.toList()));
 		else {
-			stored.getFollowers().add(user);
+			stored.getMembers().add(new PageMember(user, stored));
 		}
 
 		pageRepository.save(stored);
@@ -181,7 +172,7 @@ public class PageController {
 	public ResponseEntity<?> getFollowStatus(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(stored.getFollowers().stream().anyMatch(x -> x.getId() == user.getId()));
+		return ResponseEntity.ok(stored.getMembers().stream().anyMatch(x -> x.getUser().getId() == user.getId()));
 	}
 
 	@GetMapping("/service")
@@ -205,7 +196,7 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getFollowers(@PathVariable Long page_id) {
 		Page stored = pageRepository.findOne(page_id);
-		return ResponseEntity.ok(stored.getFollowers());
+		return ResponseEntity.ok(stored.getMembers());
 	}
 
 	@GetMapping("/requests/{page}/{size}")
