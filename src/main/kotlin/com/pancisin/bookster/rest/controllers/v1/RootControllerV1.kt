@@ -105,13 +105,11 @@ class RootControllerV1 {
   fun getConferences(@PathVariable page: Int, @PathVariable size: Int) : ResponseEntity<*> {
     val auth = SecurityContextHolder.getContext().authentication.principal as? User
 
-//    auth?.let {
-//      return ResponseEntity.ok(pageRepository.getForUser(auth.id, PageRequest(page, size)))
-//    }
-//
-//    return ResponseEntity.ok(conferenceRepository.getPublic(PageRequest(page, size)))
+    auth?.let {
+      return ResponseEntity.ok(pageRepository.getConferencesForUser(auth.id, PageRequest(page, size)))
+    }
 
-    return ResponseEntity.ok("");
+    return ResponseEntity.ok(pageRepository.getPublicConferences(PageRequest(page, size)))
   }
 
   @GetMapping("/api/v1/page/{page_identifier}", "/public/v1/page/{page_identifier}")

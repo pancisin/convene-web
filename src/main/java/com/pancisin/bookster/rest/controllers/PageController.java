@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import com.pancisin.bookster.model.*;
+import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,16 +33,6 @@ import com.pancisin.bookster.components.storage.StorageServiceImpl;
 import com.pancisin.bookster.model.enums.ActivityType;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.model.enums.PageState;
-import com.pancisin.bookster.repository.ActivityRepository;
-import com.pancisin.bookster.repository.BookRequestRepository;
-import com.pancisin.bookster.repository.EventBotRepository;
-import com.pancisin.bookster.repository.EventRepository;
-import com.pancisin.bookster.repository.MediaRepository;
-import com.pancisin.bookster.repository.AdministratorRepository;
-import com.pancisin.bookster.repository.PageRepository;
-import com.pancisin.bookster.repository.PlaceRepository;
-import com.pancisin.bookster.repository.ServiceRepository;
-import com.pancisin.bookster.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/page/{page_id}")
@@ -79,6 +70,9 @@ public class PageController {
 
 	@Autowired
 	private BookRequestRepository bookRequestRepository;
+
+	@Autowired
+  private PageMemberRepository pageMemberRepository;
 
 	// @GetMapping
 	// @PreAuthorize("hasPermission(#page_id, 'page', 'read')")
@@ -152,27 +146,25 @@ public class PageController {
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	@ActivityLog(type = ActivityType.FOLLOWING)
 	public ResponseEntity<?> followPage(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    PageMember member = pageMemberRepository.findByAttendance(page_id, user.getId());
 
-		boolean status = stored.getMembers().stream().anyMatch(x -> x.getUser().getId() == user.getId());
-		if (status)
-			stored.setMembers(
-					stored.getMembers().stream().filter(x -> x.getUser().getId() != user.getId()).collect(Collectors.toList()));
-		else {
-			stored.getMembers().add(new PageMember(user, stored));
-		}
+    if (member != null) {
+      pageMemberRepository.delete(member);
+    } else {
+		  Page stored = pageRepository.findOne(page_id);
+		  member = new PageMember(user, stored);
+      pageMemberRepository.save(member);
+    }
 
-		pageRepository.save(stored);
-		return ResponseEntity.ok(!status);
+		return ResponseEntity.ok(member);
 	}
 
 	@GetMapping("/follow-status")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'read')")
 	public ResponseEntity<?> getFollowStatus(@PathVariable Long page_id) {
-		Page stored = pageRepository.findOne(page_id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(stored.getMembers().stream().anyMatch(x -> x.getUser().getId() == user.getId()));
+	  return ResponseEntity.ok(pageMemberRepository.findByAttendance(page_id, user.getId()) != null);
 	}
 
 	@GetMapping("/service")

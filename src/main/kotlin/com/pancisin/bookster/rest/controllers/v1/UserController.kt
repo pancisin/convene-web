@@ -46,5 +46,5 @@ class UserController {
 
   @GetMapping("/followed-pages")
   @JsonView(Summary::class)
-  fun getFollowedPages(@PathVariable user_id: Long?) = ResponseEntity.ok<List<Page>>(userRepository.findOne(user_id)?.followed)
+  fun getFollowedPages(@PathVariable user_id: Long?) = ResponseEntity.ok(pageRepository.getFollowed(user_id))
 }

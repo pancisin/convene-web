@@ -128,7 +128,7 @@ class PublicController {
     @PathVariable conference_id: Long,
     @PathVariable page: Int,
     @PathVariable size: Int
-  ) = ResponseEntity.ok(articleRepository.getByConference(conference_id, PageRequest(page, size, Direction.DESC, "created")))
+  ) = ResponseEntity.ok(articleRepository.getByPage(conference_id, PageRequest(page, size, Direction.DESC, "created")))
 
   @GetMapping("/conference/{page}/{size}")
   fun getConferences(@PathVariable page: Int, @PathVariable size: Int) = ResponseEntity.ok(pageRepository.getPublicConferences(PageRequest(page, size)))

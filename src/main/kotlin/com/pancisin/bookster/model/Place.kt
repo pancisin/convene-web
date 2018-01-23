@@ -36,9 +36,9 @@ data class Place(
   @JsonIgnore
   @ManyToOne
   @JoinTable(
-    name = "conferences_places",
+    name = "pages_places",
     joinColumns = arrayOf(JoinColumn(name = "place_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
   var page: Page? = null
 ) {

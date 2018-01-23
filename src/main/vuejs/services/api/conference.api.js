@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const CONFERENCE_API_URL = '/api/conference';
+const CONFERENCE_API_URL = '/api/v1/conference';
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');
 }

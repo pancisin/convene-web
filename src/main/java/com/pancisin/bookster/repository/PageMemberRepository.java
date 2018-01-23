@@ -8,12 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface PageAttendeeRepository extends JpaRepository<PageMember, UUID> {
+public interface PageMemberRepository extends JpaRepository<PageMember, UUID> {
 
-  @Query("SELECT attendee FROM pageAttendee attendee WHERE attendee.page.id = :page_id")
+  @Query("SELECT pageMember FROM PageMember pageMember WHERE pageMember.page.id = :page_id")
   public List<PageMember> findByPage(@Param("page_id") Long page_id);
 
-  @Query("SELECT attendee FROM pageAttendee attendee WHERE attendee.page.id = :page_id AND attendee.user.id = :user_id")
+  @Query("SELECT pageMember FROM PageMember pageMember WHERE pageMember.page.id = :page_id AND pageMember.user.id = :user_id")
   public PageMember findByAttendance(@Param("page_id") Long page_id,
                                      @Param("user_id") Long user_id);
 }

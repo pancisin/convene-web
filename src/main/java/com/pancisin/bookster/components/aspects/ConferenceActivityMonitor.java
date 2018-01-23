@@ -34,7 +34,7 @@ public class ConferenceActivityMonitor {
 	@Autowired
   private PageRepository pageRepository;
 
-	@Pointcut("execution(* com.pancisin.bookster.rest.controllers.ConferenceController.*(..)) && args(conference_id,..)")
+	@Pointcut("execution(* com.pancisin.bookster.rest.controllers.v1.ConferenceController.*(..)) && args(conference_id,..)")
 	public void conferenceController(Long conference_id) {
 
 	}

@@ -96,10 +96,6 @@ class User() : UserDetails, Principal, IAuthor {
   private var authorities: Collection<GrantedAuthority> = ArrayList()
 
   @JsonIgnore
-  @ManyToMany(mappedBy = "followers")
-  val followed: List<Page>? = null
-
-  @JsonIgnore
   @OneToMany(mappedBy = "owner")
   val events: List<Event>? = null
 

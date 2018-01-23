@@ -64,7 +64,7 @@ class ConferenceController {
   lateinit var administratorRepository: AdministratorRepository
 
   @Autowired
-  lateinit var pageAttendeeRepository: PageAttendeeRepository
+  lateinit var pageMemberRepository: PageMemberRepository
 
   @Autowired
   lateinit var activityRepository: ActivityRepository
@@ -134,7 +134,7 @@ class ConferenceController {
   // @JsonView(Summary.class)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
   fun getAttendees(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    return ResponseEntity.ok(pageAttendeeRepository.findByPage(conference_id))
+    return ResponseEntity.ok(pageMemberRepository.findByPage(conference_id))
   }
 
   @PostMapping("/attend")
@@ -147,7 +147,7 @@ class ConferenceController {
 
     val attendee = PageMember(user, conference, meta)
     attendee.meta = meta
-    pageAttendeeRepository.save(attendee)
+    pageMemberRepository.save(attendee)
     return ResponseEntity.ok("ACTIVE")
   }
 
@@ -156,17 +156,17 @@ class ConferenceController {
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun cancelAttend(@PathVariable conference_id: Long?): ResponseEntity<*> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
-    val attendee = pageAttendeeRepository.findByAttendance(conference_id, user.id)
+    val attendee = pageMemberRepository.findByAttendance(conference_id, user.id)
 
     attendee.active = false
-    return ResponseEntity.ok(pageAttendeeRepository.save(attendee))
+    return ResponseEntity.ok(pageMemberRepository.save(attendee))
   }
 
   @GetMapping("/attend-status")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<*> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
-    val (_, _, _, _, active) = pageAttendeeRepository.findByAttendance(conference_id, user.id)
+    val (_, _, _, _, active) = pageMemberRepository.findByAttendance(conference_id, user.id)
       ?: return ResponseEntity.ok("INACTIVE")
 
     return ResponseEntity.ok(if (active) "ACTIVE" else "CANCELED")
@@ -259,7 +259,7 @@ class ConferenceController {
     @PathVariable conference_id: Long?,
     @PathVariable page: Int,
     @PathVariable size: Int
-  ) = ResponseEntity.ok(articleRepository.getByConference(conference_id, PageRequest(page, size, Direction.DESC, "created")))
+  ) = ResponseEntity.ok(articleRepository.getByPage(conference_id, PageRequest(page, size, Direction.DESC, "created")))
 
   @PatchMapping("/toggle-published")
   @ActivityLog(type = ActivityType.UPDATE)
@@ -298,7 +298,7 @@ class ConferenceController {
       return ResponseEntity.ok<List<Survey>>(stored.surveys)
     } else {
       val user = SecurityContextHolder.getContext().authentication.principal as User
-      val surveys = surveyRepository.getByConference(conference_id, user.id)
+      val surveys = surveyRepository.getByPage(conference_id, user.id)
       return ResponseEntity.ok(surveys)
     }
   }
