@@ -89,18 +89,18 @@ class ConferenceController {
       name = conference.name
       branch = conference.branch
       summary = conference.summary
+      visibility = conference.visibility
     }
 
     if (conference.posterData != null && storageService.isBinary(conference.posterData)) {
-      var poster = Media()
-      poster = mediaRepository.save(poster)
-      val url = "banners/conferences/" + poster.id!!.toString()
+      val poster = mediaRepository.save(Media(author = SecurityContextHolder.getContext().authentication.principal as User))
+      val url = "banners/conferences/" + poster.id.toString()
 
-      poster.path = "/files/$url.jpg"
-      storageService.storeBinary(conference.posterData, url)
-      stored.poster = poster
+      stored.poster = poster.apply {
+        path = "/files/$url.jpg"
+        size = storageService.storeBinary(conference.posterData, url)
+      }
     }
-
     return ResponseEntity.ok(pageRepository.save(stored))
   }
 

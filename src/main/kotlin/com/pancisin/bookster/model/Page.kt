@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access
 import com.pancisin.bookster.model.enums.PageRole
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.PageType
+import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
@@ -104,10 +105,12 @@ class Page() : IAuthor {
   @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
   var places: MutableList<Place>? = null
 
-  @JsonIgnore @OneToMany(mappedBy = "page")
+  @JsonIgnore
+  @OneToMany(mappedBy = "page")
   val invitations: List<Invitation>? = null
 
-  @JsonIgnore @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
+  @JsonIgnore
+  @OneToMany(mappedBy = "page", fetch = FetchType.LAZY, orphanRemoval = true)
   var surveys: MutableList<Survey>? = null
 
   val owner: User?
@@ -144,6 +147,10 @@ class Page() : IAuthor {
   @Enumerated(EnumType.STRING)
   var pageType: PageType = PageType.PAGE
 
+  @JsonView(Compact::class)
+  @Enumerated(EnumType.STRING)
+  var visibility: Visibility = Visibility.PUBLIC
+
   @Column(unique = true)
   var facebookId: String? = null
 
@@ -173,7 +180,7 @@ class Page() : IAuthor {
     get() = this.name.toString()
 
   override val type: String
-    get() = "page"
+    get() = pageType.toString().toLowerCase()
 
   fun addGallery(media: Media) {
     gallery?.add(media)

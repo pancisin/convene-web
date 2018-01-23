@@ -43,9 +43,9 @@ public interface PageRepository extends JpaRepository<Page, Long> {
   @Query("SELECT page FROM Page page JOIN page.administrators admin WHERE page.pageType = 'CONFERENCE' AND admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id")
   public List<Page> getConferencesByOwner(@Param("user_id") Long user_id);
 
-	@Query("SELECT page FROM Page page WHERE page.pageType = 'CONFERENCE' AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')")
+	@Query("SELECT page FROM Page page WHERE page.pageType = 'CONFERENCE' AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED') AND page.visibility = 'PUBLIC'")
 	public org.springframework.data.domain.Page<Page> getPublicConferences(Pageable pageable);
 
-	@Query("SELECT DISTINCT page FROM Page page LEFT JOIN page.invitations invitation LEFT JOIN page.administrators administrator WHERE page.pageType = 'CONFERENCE' AND ((invitation.user.id = :user_id AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED')) OR administrator.user.id = :user_id)")
+	@Query("SELECT DISTINCT page FROM Page page LEFT JOIN page.invitations invitation LEFT JOIN page.administrators administrator WHERE page.pageType = 'CONFERENCE' AND (((page.visibility = 'PUBLIC' OR page.visibility = 'AUTHENTICATED') OR (page.visibility = 'INVITED' AND invitation.user.id = :user_id)) AND (page.state = 'PUBLISHED' OR page.state = 'BLOCKED') OR administrator.user.id = :user_id)")
 	public org.springframework.data.domain.Page<Page> getConferencesForUser(@Param("user_id") Long user_id, Pageable pageable);
 }
