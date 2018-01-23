@@ -87,6 +87,7 @@ class ConferenceController {
   fun putConference(@PathVariable conference_id: Long?, @RequestBody conference: Page): ResponseEntity<Page> {
     val stored = pageRepository.findOne(conference_id).apply {
       name = conference.name
+      branch = conference.branch
       summary = conference.summary
     }
 
