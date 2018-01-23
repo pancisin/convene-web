@@ -27,6 +27,7 @@
 
 <script>
 import gmapStyle from './gmapStyle.js';
+import { groupBy } from '../services/helpers';
 
 export default {
   name: 'event-map',
@@ -55,12 +56,24 @@ export default {
       });
 
       const bounds = context.bounds();
-      this.events.map(e => {
-        const position = {
-          lat: e.latitude,
-          lng: e.longitude
+
+      const eventGroups = groupBy(this.events, item => {
+        return {
+          latitude: item.latitude,
+          longitude: item.longitude
         };
+      });
+
+      console.log(eventGroups);
+      eventGroups.map(g => {
+        const position = {
+          lat: g.props.latitude,
+          lng: g.props.longitude
+        };
+
         bounds.extend(position);
+
+        const e = g.data[0];
         const marker = context.marker({
           position,
           map: this.map,
@@ -99,7 +112,7 @@ export default {
     getInfowindowStyle (event) {
       if (event != null) {
         return {
-          'background-image': event.poster ? `url(${event.poster.path})` : ''
+          // 'background-image': event.poster ? `url(${event.poster.path})` : ''
         };
       }
     }

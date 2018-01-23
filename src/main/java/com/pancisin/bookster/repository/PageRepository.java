@@ -37,7 +37,7 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
 	public Page findByFacebookId(@Param("facebookId") String facebookId);
 
-	@Query("SELECT page FROM Page page JOIN page.administrators admin WHERE page.pageType = 'PAGE' AND admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id")
+	@Query("SELECT page FROM Page page JOIN page.administrators admin WHERE page.pageType = 'PAGE' AND admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id AND page.state != 'DELETED'")
 	public List<Page> getByOwner(@Param("user_id") Long user_id);
 
   @Query("SELECT page FROM Page page JOIN page.administrators admin WHERE page.pageType = 'CONFERENCE' AND admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id")
