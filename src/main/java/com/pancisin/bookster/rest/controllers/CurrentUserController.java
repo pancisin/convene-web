@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.pancisin.bookster.model.Administrator;
 import com.pancisin.bookster.model.Media;
 import com.pancisin.bookster.model.enums.*;
+import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,14 +37,6 @@ import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.UserSubscription;
-import com.pancisin.bookster.repository.EventRepository;
-import com.pancisin.bookster.repository.MediaRepository;
-import com.pancisin.bookster.repository.NotificationRepository;
-import com.pancisin.bookster.repository.AdministratorRepository;
-import com.pancisin.bookster.repository.PageRepository;
-import com.pancisin.bookster.repository.UserRepository;
-import com.pancisin.bookster.repository.UserSearchRepository;
-import com.pancisin.bookster.repository.UserSubscriptionRepository;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -73,6 +66,9 @@ public class CurrentUserController {
 
 	@Autowired
 	private StorageService storageService;
+
+	@Autowired
+  private ConferenceRepository conferenceRepository;
 
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
@@ -170,7 +166,7 @@ public class CurrentUserController {
 	@GetMapping("/conference")
 	public ResponseEntity<?> getConference() {
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ResponseEntity.ok(pageRepository.getConferencesByOwner(auth.getId()));
+		return ResponseEntity.ok(conferenceRepository.getByOwner(auth.getId()));
 	}
 
 	@PostMapping("/conference")

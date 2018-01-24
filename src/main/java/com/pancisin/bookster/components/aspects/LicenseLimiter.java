@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import com.pancisin.bookster.repository.ConferenceRepository;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -33,6 +34,9 @@ public class LicenseLimiter {
   @Autowired
   private PageRepository pageRepository;
 
+  @Autowired
+  private ConferenceRepository conferenceRepository;
+
   @Around("@annotation(com.pancisin.bookster.components.annotations.LicenseLimit)")
   public Object limitUserResources(ProceedingJoinPoint pjp) throws Throwable {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -56,7 +60,7 @@ public class LicenseLimiter {
             return pjp.proceed();
           break;
         case "conference":
-          if (stored.getLicense().getSubscription().getConferenceLimit() > pageRepository.getConferencesByOwner(auth_user.getId()).size())
+          if (stored.getLicense().getSubscription().getConferenceLimit() > conferenceRepository.getByOwner(auth_user.getId()).size())
             return pjp.proceed();
       }
     } else if (limit.parent().equals("page")) {

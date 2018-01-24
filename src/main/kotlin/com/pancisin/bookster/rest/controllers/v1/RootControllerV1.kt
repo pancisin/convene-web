@@ -33,6 +33,9 @@ class RootControllerV1 {
   @Autowired
   lateinit var eventRepository: EventRepository
 
+  @Autowired
+  lateinit var conferenceRepository: ConferenceRepository
+
   @GetMapping("/api/v1/articles", "/public/v1/articles")
   fun getArticles(
     @RequestParam(required = false, name = "tags", defaultValue = "language:en,headlines") tags: List<String>?,
@@ -106,10 +109,10 @@ class RootControllerV1 {
     val auth = SecurityContextHolder.getContext().authentication.principal as? User
 
     auth?.let {
-      return ResponseEntity.ok(pageRepository.getConferencesForUser(auth.id, PageRequest(page, size)))
+      return ResponseEntity.ok(conferenceRepository.getForUser(auth.id, PageRequest(page, size)))
     }
 
-    return ResponseEntity.ok(pageRepository.getPublicConferences(PageRequest(page, size)))
+    return ResponseEntity.ok(conferenceRepository.findPublic(PageRequest(page, size)))
   }
 
   @GetMapping("/api/v1/page/{page_identifier}", "/public/v1/page/{page_identifier}")

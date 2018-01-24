@@ -28,7 +28,7 @@ import javax.transaction.Transactional
 class ConferenceController {
 
   @Autowired
-  lateinit var pageRepository: PageRepository
+  lateinit var conferenceRepository: ConferenceRepository
 
   @Autowired
   lateinit var eventRepository: EventRepository
@@ -41,9 +41,6 @@ class ConferenceController {
 
   @Autowired
   lateinit var eventPublisher: ApplicationEventPublisher
-
-  @Autowired
-  lateinit var cmfRepository: MetaFieldRepository
 
   @Autowired
   lateinit var storageService: StorageServiceImpl
@@ -72,7 +69,7 @@ class ConferenceController {
   @GetMapping
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = pageRepository.findOne(conference_id)
+    val conference = conferenceRepository.findOne(conference_id)
 
     return if (conference == null) {
       ResponseEntity(HttpStatus.NOT_FOUND)
@@ -85,7 +82,7 @@ class ConferenceController {
   @ActivityLog(type = ActivityType.UPDATE)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun putConference(@PathVariable conference_id: Long?, @RequestBody conference: Page): ResponseEntity<Page> {
-    val stored = pageRepository.findOne(conference_id).apply {
+    val stored = conferenceRepository.findOne(conference_id).apply {
       name = conference.name
       branch = conference.branch
       summary = conference.summary
@@ -101,17 +98,17 @@ class ConferenceController {
         size = storageService.storeBinary(conference.posterData, url)
       }
     }
-    return ResponseEntity.ok(pageRepository.save(stored))
+    return ResponseEntity.ok(conferenceRepository.save(stored))
   }
 
   @DeleteMapping
   @ActivityLog(type = ActivityType.DELETE)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun deleteConference(@PathVariable conference_id: Long?): ResponseEntity<Page> {
-    val stored = pageRepository.findOne(conference_id).apply {
+    val stored = conferenceRepository.findOne(conference_id).apply {
       state = PageState.DELETED
     }
-    return ResponseEntity.ok(pageRepository.save(stored))
+    return ResponseEntity.ok(conferenceRepository.save(stored))
   }
 
   @GetMapping("/event/{page}/{size}")
@@ -126,7 +123,7 @@ class ConferenceController {
   @ActivityLog(type = ActivityType.CREATE_EVENT)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun postEvent(@PathVariable conference_id: Long?, @RequestBody event: Event): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     event.page = stored
     return ResponseEntity.ok(eventRepository.save(event))
   }
@@ -144,7 +141,7 @@ class ConferenceController {
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun postAttend(@PathVariable conference_id: Long?, @RequestBody meta: List<MetaValue>): ResponseEntity<*> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
-    val conference = pageRepository.findOne(conference_id)
+    val conference = conferenceRepository.findOne(conference_id)
 
     val attendee = PageMember(user, conference, meta)
     attendee.meta = meta
@@ -196,7 +193,7 @@ class ConferenceController {
   @ActivityLog(type = ActivityType.UPDATE)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun postInvitation(@PathVariable conference_id: Long?, @RequestBody invitation: Invitation): ResponseEntity<*> {
-    val conference = pageRepository.findOne(conference_id)
+    val conference = conferenceRepository.findOne(conference_id)
 
     var inv: Invitation? = Invitation(conference, invitation.email!!)
     inv!!.user = userRepository.findByEmail(invitation.email)
@@ -212,7 +209,7 @@ class ConferenceController {
   @GetMapping("/invitation")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
   fun getInvitations(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    val conference = pageRepository.findOne(conference_id)
+    val conference = conferenceRepository.findOne(conference_id)
     return ResponseEntity.ok<List<Invitation>>(conference.invitations)
   }
 
@@ -220,7 +217,7 @@ class ConferenceController {
   @JsonView(Summary::class)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
   fun getAdministrators(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     return ResponseEntity.ok<List<Administrator>>(stored.administrators)
   }
 
@@ -230,7 +227,7 @@ class ConferenceController {
   // "conference_id")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun postAdministrator(@PathVariable conference_id: Long?, @RequestBody user: User): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
 
     val existing = userRepository.findByEmail(user.email)
     if (existing != null) {
@@ -248,7 +245,7 @@ class ConferenceController {
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   @ActivityLog(type = ActivityType.CREATE_ARTICLE)
   fun postArticle(@PathVariable conference_id: Long?, @RequestBody article: Article): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     article.published = false
     article.page = stored
     return ResponseEntity.ok(articleRepository.save(article))
@@ -266,7 +263,7 @@ class ConferenceController {
   @ActivityLog(type = ActivityType.UPDATE)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun togglePublishState(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
 
     if (stored.state === PageState.DEACTIVATED) {
       stored.state = PageState.PUBLISHED
@@ -274,7 +271,7 @@ class ConferenceController {
       stored.state = PageState.DEACTIVATED
     }
 
-    return ResponseEntity.ok(pageRepository.save(stored))
+    return ResponseEntity.ok(conferenceRepository.save(stored))
   }
 
   @Transactional
@@ -282,7 +279,7 @@ class ConferenceController {
   @ActivityLog(type = ActivityType.CREATE_SURVEY)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun postSurvey(@PathVariable conference_id: Long?, @RequestBody survey: Survey): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     survey.page = stored
     return ResponseEntity.ok(surveyRepository.save(survey))
   }
@@ -293,7 +290,7 @@ class ConferenceController {
     @PathVariable conference_id: Long?,
     @RequestParam(name = "submitted", required = false, defaultValue = "false") submitted: String
   ): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
 
     if (java.lang.Boolean.parseBoolean(submitted)) {
       return ResponseEntity.ok<List<Survey>>(stored.surveys)
@@ -315,7 +312,7 @@ class ConferenceController {
   @GetMapping("/widget")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
   fun getWidgets(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     return ResponseEntity.ok<List<Widget>>(stored.widgets)
   }
 
@@ -323,10 +320,10 @@ class ConferenceController {
   @PutMapping("/widget")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun postWidgets(@PathVariable conference_id: Long?, @RequestBody widgets: MutableList<Widget>): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
 
     stored.widgets = widgets
-    pageRepository.save(stored)
+    conferenceRepository.save(stored)
 
     return ResponseEntity.ok<List<Widget>>(stored.widgets)
   }
@@ -334,7 +331,7 @@ class ConferenceController {
   @GetMapping("/place")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
   fun getPlaces(@PathVariable conference_id: Long?): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     return ResponseEntity.ok<List<Place>>(stored.places)
   }
 
@@ -342,7 +339,7 @@ class ConferenceController {
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   @ActivityLog(type = ActivityType.CREATE_PLACE)
   fun postPlace(@PathVariable conference_id: Long?, @RequestBody place: Place): ResponseEntity<*> {
-    val stored = pageRepository.findOne(conference_id)
+    val stored = conferenceRepository.findOne(conference_id)
     place.page = stored
     return ResponseEntity.ok(placeRepository.save(place))
   }

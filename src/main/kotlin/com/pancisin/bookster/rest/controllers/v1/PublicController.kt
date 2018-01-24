@@ -3,6 +3,7 @@ package com.pancisin.bookster.rest.controllers.v1
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.*
 import com.pancisin.bookster.model.enums.Unit
+import com.pancisin.bookster.repository.*
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -16,14 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-
-import com.pancisin.bookster.repository.ArticleRepository
-import com.pancisin.bookster.repository.BranchRepository
-import com.pancisin.bookster.repository.CategoryRepository
-import com.pancisin.bookster.repository.EventRepository
-import com.pancisin.bookster.repository.MediaRepository
-import com.pancisin.bookster.repository.PageRepository
-import com.pancisin.bookster.repository.UserRepository
 
 @RestController
 @CrossOrigin
@@ -50,6 +43,9 @@ class PublicController {
 
   @Autowired
   lateinit var userRepository: UserRepository
+
+  @Autowired
+  lateinit var conferenceRepository: ConferenceRepository
 
   @GetMapping("/locales")
   fun getLocales() = ResponseEntity.ok(Locale.values())
@@ -131,7 +127,7 @@ class PublicController {
   ) = ResponseEntity.ok(articleRepository.getByPage(conference_id, PageRequest(page, size, Direction.DESC, "created")))
 
   @GetMapping("/conference/{page}/{size}")
-  fun getConferences(@PathVariable page: Int, @PathVariable size: Int) = ResponseEntity.ok(pageRepository.getPublicConferences(PageRequest(page, size)))
+  fun getConferences(@PathVariable page: Int, @PathVariable size: Int) = ResponseEntity.ok(conferenceRepository.findPublic(PageRequest(page, size)))
 
   @GetMapping("/unit")
   fun getUnits() = ResponseEntity.ok(Unit.values())
