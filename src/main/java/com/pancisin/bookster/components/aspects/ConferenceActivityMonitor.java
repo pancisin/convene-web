@@ -3,6 +3,7 @@ package com.pancisin.bookster.components.aspects;
 import javax.transaction.Transactional;
 
 import com.pancisin.bookster.model.*;
+import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,7 +33,7 @@ public class ConferenceActivityMonitor {
 	private UserRepository userRepository;
 
 	@Autowired
-  private PageRepository pageRepository;
+  private ConferenceRepository conferenceRepository;
 
 	@Pointcut("execution(* com.pancisin.bookster.rest.controllers.v1.ConferenceController.*(..)) && args(conference_id,..)")
 	public void conferenceController(Long conference_id) {
@@ -42,7 +43,7 @@ public class ConferenceActivityMonitor {
 	@Transactional
 	@AfterReturning(pointcut = "conferenceController(conference_id) && @annotation(activityLog)", returning = "response")
 	public void logConferenceActivity(Long conference_id, ActivityLog activityLog, ResponseEntity<?> response) {
-		Page stored = pageRepository.findOne(conference_id);
+		Page stored = conferenceRepository.findOne(conference_id);
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

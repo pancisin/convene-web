@@ -59,6 +59,7 @@ export default {
 
 <style lang="less" scoped>
 @import (reference) '~less/variables.less';
+@import (reference) '~less/mixins.less';
 .modal {
   display: block;
   background: rgba(0, 0, 0, 0.4);
@@ -92,7 +93,7 @@ export default {
       box-shadow: none;
       .modal-header {
         padding: 15px 30px;
-        background-color: @color-primary;
+        .pattern-background(@color-primary);
         color: #fff;
 
         h4 {

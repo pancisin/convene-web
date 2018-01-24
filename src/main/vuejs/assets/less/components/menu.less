@@ -1,4 +1,5 @@
 @import (reference) '../variables.less';
+@import (reference) '../mixins.less';
 
 .wrapper {
   margin-top: 145px;
@@ -37,7 +38,7 @@
     }
   }
   .topbar-main {
-    background-color: @color-accent;
+    .pattern-background(@color-accent);
     .logo {
       color: #ffffff !important;
       font-size: 18px;
