@@ -5,7 +5,6 @@ import com.pancisin.bookster.repository.SurveySubmissionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import retrofit2.http.Path
 
 @RestController
 @RequestMapping("/api/v1/survey-submission/{survey_submission_id}")

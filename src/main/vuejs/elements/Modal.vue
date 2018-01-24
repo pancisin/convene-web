@@ -83,6 +83,7 @@ export default {
     text-align: left;
     vertical-align: middle;
     margin: 15px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 
     .modal-content {
       -moz-box-shadow: none;
@@ -95,6 +96,7 @@ export default {
         padding: 15px 30px;
         .pattern-background(@color-primary);
         color: #fff;
+        border-bottom: none;
 
         h4 {
           color: #fff;
@@ -107,6 +109,7 @@ export default {
       }
       .modal-body {
         padding: 30px;
+        // box-shadow: inset 0px 6px 4px -4px rgba(0, 0, 0, 0.23)
       }
       .modal-footer {
         padding: 15px 30px;

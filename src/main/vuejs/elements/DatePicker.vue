@@ -209,7 +209,7 @@ export default {
     left: 0;
     background: #fff;
     z-index: 2;
-    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     overflow: hidden;
 
     &.date-picker-inline {
