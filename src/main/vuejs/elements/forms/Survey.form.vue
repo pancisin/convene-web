@@ -75,14 +75,10 @@ export default {
         if (!valid) return;
         SurveyApi.postSubmission(this.survey.id, this.meta_values, result => {
           this.$success('notification.survey.completed', this.survey.name);
-          this.$router.go(-1);
+          this.$emit('submit', this.survey);
         });
       });
     }
   }
 };
 </script>
-
-<style>
-
-</style>

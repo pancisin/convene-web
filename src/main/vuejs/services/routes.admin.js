@@ -196,7 +196,20 @@ export default [
   {
     path: 'survey/:survey_id',
     name: 'survey',
-    component: resolve => require(['../pages/Survey.vue'], resolve)
+    component: resolve => require(['../pages/Survey.vue'], resolve),
+    redirect: '/admin/survey/:survey_id/results',
+    children: [
+      {
+        path: 'results',
+        name: 'survey.results',
+        component: resolve => require(['../pages/survey/Survey.results.vue'], resolve)
+      },
+      {
+        path: 'edit',
+        name: 'survey.edit',
+        component: resolve => require(['../pages/survey/Survey.editor.vue'], resolve)
+      }
+    ]
   },
   {
     path: 'event/:id',
