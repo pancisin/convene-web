@@ -19,6 +19,24 @@ export default {
       }
     }
   },
+  render (h) {
+    return h('div', {
+      class: 'member-list'
+    }, this.users.map(u => h('router-link', {
+      attrs: {
+        to: { name: 'user', params: { user_id: u.id } }
+      },
+      class: 'member-list-card'
+    }, [
+      h('vue-image', {
+        attrs: {
+          src: u.profilePicture ? u.profilePicture.path : null
+        },
+        class: 'img-circle'
+      }),
+      h('p', u.displayName)
+    ])));
+  },
   components: {
     VueImage
   }

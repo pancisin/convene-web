@@ -48,13 +48,14 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-4">
-                <div class="widget-simple text-center card-box">
+                <!-- <div class="widget-simple text-center card-box">
                   <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
                   <p class="text-muted">{{ $t('event.attendees') }}</p>
-                </div>
+                </div> -->
 
                 <a class="btn btn-primary btn-block waves-effect" 
                   :class="{ 'btn-danger' : attending }" 
+                  v-show="!attending"
                   @click="toggleAttending"
                   v-if="event.state == 'PUBLISHED'">
 
@@ -62,7 +63,11 @@
                   <span v-else>{{ $t('event.attend') }}</span>
                 </a>
 
-                <member-list :users="attendees" style="margin-top: 20px" />
+                <div class="text-center">
+                  <h3 class="text-primary">{{ members.length }} <small class="text-muted">{{ $t('event.attendees') }}</small></h3>
+                </div>
+                
+                <member-list :users="members" v-loading="loadingMembers" />
 
                 <div class="timeline-2 m-t-20">
                   <div class="time-item" v-for="p in event.programme" :key="p.id">
@@ -160,7 +165,8 @@ export default {
       loading: false,
       address: null,
       error: null,
-      attendees: []
+      members: [],
+      loadingMembers: false
     };
   },
   components: {
@@ -180,7 +186,7 @@ export default {
     this.getEvent();
   },
   computed: {
-    ...mapGetters(['authenticated', 'eventAttendingStatus']),
+    ...mapGetters(['authenticated', 'eventAttendingStatus', 'user']),
     attending () {
       return this.eventAttendingStatus(this.event.id);
     },
@@ -234,8 +240,10 @@ export default {
             });
           });
 
-          api.getAttendees(attendees => {
-            this.attendees = attendees;
+          this.loadingMembers = true;
+          api.getAttendees(members => {
+            this.members = members;
+            this.loadingMembers = false;
           });
 
           this.loading = false;
@@ -253,11 +261,21 @@ export default {
       return array;
     },
     toggleAttending () {
+      const toggle = () => {
+        this.toggleEventAttending(this.event).then(attending => {
+          if (attending) {
+            this.members.push(this.user);
+          } else {
+            this.members = this.members.filter(u => u.id !== this.user.id);
+          }
+        });
+      };
+
       if (this.authenticated) {
-        this.toggleEventAttending(this.event);
+        toggle();
       } else {
         this.$tryAuthenticate(() => {
-          this.toggleEventAttending(this.event);
+          toggle();
         });
       }
     }
