@@ -62,6 +62,8 @@
                   <span v-else>{{ $t('event.attend') }}</span>
                 </a>
 
+                <member-list :users="attendees" style="margin-top: 20px" />
+
                 <div class="timeline-2 m-t-20">
                   <div class="time-item" v-for="p in event.programme" :key="p.id">
                     <div class="item-info">
@@ -137,7 +139,8 @@ import {
   SharePanel,
   LightBox,
   VueImage,
-  Error
+  Error,
+  MemberList
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -156,7 +159,8 @@ export default {
       gallery: [],
       loading: false,
       address: null,
-      error: null
+      error: null,
+      attendees: []
     };
   },
   components: {
@@ -169,7 +173,8 @@ export default {
     SharePanel,
     LightBox,
     VueImage,
-    Error
+    Error,
+    MemberList
   },
   created () {
     this.getEvent();
@@ -227,6 +232,10 @@ export default {
             context.geocode(this.location, result => {
               this.address = result.address;
             });
+          });
+
+          api.getAttendees(attendees => {
+            this.attendees = attendees;
           });
 
           this.loading = false;

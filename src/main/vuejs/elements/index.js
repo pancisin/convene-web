@@ -54,6 +54,7 @@ import AdSense from './AdSense';
 import DataParserEditor from './DataParserEditor';
 import EventMap from './EventMap';
 import VueTable from './VueTable';
+import MemberList from './MemberList.vue';
 
 export {
   ArticlesList,
@@ -111,5 +112,6 @@ export {
   AdSense,
   DataParserEditor,
   EventMap,
-  VueTable
+  VueTable,
+  MemberList
 };
