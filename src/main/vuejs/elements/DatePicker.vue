@@ -172,6 +172,7 @@ export default {
 <style lang="less">
 @import (reference) '~less/variables.less';
 @header-color: @color-inverse;
+@import (reference) '~less/mixins.less';
 
 .date-picker-container {
   position: relative;

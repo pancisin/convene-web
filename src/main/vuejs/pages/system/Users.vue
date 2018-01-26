@@ -1,75 +1,8 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">Users</span>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            ID
-          </th>
-          <th>
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Email
-          </th>
-          <th>
-          </th>
-          <th>
-            License
-          </th>
-          <th>
-            Role
-          </th>
-          <th>
-            Locale
-          </th>
-          <th>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in paginator.content" :key="user.id">
-          <td>
-            {{ user.id }}
-          </td>
-          <td>
-            <i class="fa fa-circle" :class="{ 'text-success' : user.online }"></i>
-          </td>
-          <td>
-            <router-link :to="{ name:'user', params: { user_id: user.id }}">
-              {{ user.displayName }}
-            </router-link>
-          </td>
-          <td>
-            <a :href="'mailto:' + user.email">
-              {{ user.email }}
-            </a>
-          </td>
-          <td>
-            <i class="fa fa-check text-success" v-if="user.verified"></i>
-            <i class="fa fa-book text-warning" v-else></i>
-          </td>
-          <td>
-            {{ $t(user.license.subscription.code) }}
-          </td>
-          <td>
-            {{ $t(user.role.code) }}
-          </td>
-          <td>
-            {{ $t(user.locale.code) }}
-          </td>
-          <td>
-            <a class="btn btn-xs btn-default">
-              <i class="fa fa-comment-o"></i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
+    <vue-table :func="tableRender" :data="paginator.content" />
     <div class="text-center">
       <paginator :history="true" :paginator="paginator" :fetch="getUsers"></paginator>
     </div>
@@ -78,7 +11,7 @@
 
 <script>
 import RootApi from 'api/api';
-import { Paginator } from 'elements';
+import { Paginator, VueTable } from 'elements';
 
 export default {
   name: 'users',
@@ -90,14 +23,13 @@ export default {
     };
   },
   components: {
-    Paginator
+    Paginator,
+    VueTable
   },
   created () {
     this.connectWM('/stomp').then(frame => {
       this.subscription = this.$stompClient.subscribe('/topic/active', response => {
         let activeUsers = JSON.parse(response.body);
-        console.log(activeUsers);
-
         this.paginator.content = this.paginator.content.map(u => {
           return {
             ...u,
@@ -117,6 +49,31 @@ export default {
         this.paginator = paginator;
         this.loading = false;
       });
+    },
+    tableRender (user) {
+      return {
+        id: user.id,
+        A: {
+          el: 'i',
+          class: `fa fa-circle ${ user.online ? 'text-success' : ''}`
+        },
+        [this.$t('user.name')]: {
+          el: 'a',
+          onClick: () => {
+            console.log(this);
+            this.$router.push({ name: 'user', params: { user_id: user.id }});
+          },
+          content: user.displayName
+        },
+        [this.$t('user.email')]: user.email,
+        V: {
+          el: 'i',
+          class: `fa fa-check ${ user.verified ? 'text-success' : 'text-warning' }`
+        },
+        [this.$t('settings.license.default')]: this.$t(user.license.subscription.code),
+        user: this.$t(user.role.code),
+        locale: this.$t(user.locale.code)
+      };
     }
   }
 };

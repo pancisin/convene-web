@@ -5,6 +5,7 @@
         <div class="col-sm-6 col-md-3">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
+            <small slot="subtitle">Udalosti na ktoré som prihlásený a ešte sa nekonali.</small>
             <events-list :events="attendingEvents"></events-list>
           </panel>
 

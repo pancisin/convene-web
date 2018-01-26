@@ -53,6 +53,7 @@ export default {
   },
   user: {
     email: 'Emailová adresa',
+    name: 'Meno',
     firstName: 'Krstné meno',
     lastName: 'Priezvisko',
     address: {
