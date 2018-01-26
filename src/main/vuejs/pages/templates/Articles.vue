@@ -1,82 +1,8 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">Articles</span>
-    <table class="table articles-table">
-      <thead>
-        <tr>
-          <th>
-            #
-          </th>
-          <th>
-          </th>
-          <th>
-            Title
-          </th>
-          <th>
-            Created
-          </th>
-          <th class="text-center">
-            Status
-          </th>
-        </tr>
-      </thead>
 
-      <tbody>
-        <tr v-for="(article, index) in articlesPaginator.content" :key="article.id" @contextmenu.prevent="$refs.menu.open($event, article)">
-          <td>
-            {{ articlesPaginator.number * articlesPaginator.size + index + 1 }}
-          </td>
-          <td>
-            <img :src="article.thumbnail.path" v-if="article.thumbnail != null" style="height:50px">
-          </td>
-          <td>
-            <router-link :to="{ name: 'article', params: { article_id: article.id } }">
-              {{ article.title }}
-            </router-link>
-          </td>
-          <td>{{ article.created | luxon('F') }}</td>
-          <td class="text-center">
-            <i class="fa fa-check text-success" aria-hidden="true" v-if="article.published"></i>
-            <i class="fa fa-eye-slash text-warning" aria-hidden="true" v-else></i>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <context-menu ref="menu">
-      <template slot-scope="props">
-        <ul>
-          <li>
-            <router-link :to="{ name: 'article.public', params: { article_id: props.data.id } }">
-              Go to article
-            </router-link>
-          </li>
-          <li class="separator"></li>
-          <li v-if="editable">
-            <a @click="togglePublished(props.data.id)">
-              Toggle published
-            </a>
-          </li>
-          <li v-if="editable">
-            <router-link :to="{ name: 'article', params: { article_id: props.data.id } }">
-              Edit
-            </router-link>
-          </li>
-          <li v-if="editable">
-            <a @click="deleteArticle(props.data)">
-              Delete
-            </a>
-          </li>
-          <li class="separator"></li>
-          <li>
-            <router-link to="create-article">
-              Create article
-            </router-link>
-          </li>
-        </ul>
-      </template>
-    </context-menu>
-
+    <vue-table class="articles-table" :func="tableRender" :data="articlesPaginator.content" :contextmenu="contextMenuRender" />
     <div class="text-center">
       <paginator :paginator="articlesPaginator" :fetch="getArticles" />
     </div>
@@ -91,7 +17,8 @@
 
 <script>
 import ArticleApi from 'api/article.api';
-import { Paginator } from 'elements';
+import { Paginator, VueTable } from 'elements';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'articles-template',
@@ -105,7 +32,8 @@ export default {
     paginated: Boolean
   },
   components: {
-    Paginator
+    Paginator,
+    VueTable
   },
   data () {
     return {
@@ -131,6 +59,46 @@ export default {
         this.articlesPaginator = paginator;
         this.loading = false;
       });
+    },
+    tableRender (article, index) {
+      return {
+        id: index + 1,
+        img () {
+          if (article.thumbnail) {
+            return {
+              el: 'img',
+              attrs: {
+                src: article.thumbnail.path
+              },
+              style: {
+                height: '50px'
+              }
+            };
+          }
+        },
+        title: {
+          el: 'a',
+          onClick: () => {
+            this.$router.push({ name: 'article', params: { article_id: article.id } });
+          },
+          content: article.title
+        },
+        created: DateTime.fromMillis(article.created).toFormat('F'),
+        status: {
+          el: 'i',
+          colClass: 'text-center',
+          class: `fa ${ article.published ? 'fa-check text-success' : 'fa-eye-slash text-warning' }`
+        }
+      };
+    },
+    contextMenuRender (item) {
+      return [
+        item('Go to article', article => this.$router.push({ name: 'article.public', params: { article_id: article.id } })),
+        item('Toggle published', article => this.togglePublished(article.id)),
+        item('Edit', article => this.$router.push({ name: 'article', params: { article_id: article.id } })),
+        item('Delete', article => this.deleteArticle(article)),
+        item('Create article', article => this.$router.push('create-article'))
+      ];
     },
     togglePublished (article_id) {
       ArticleApi.togglePublished(article_id, article => {
