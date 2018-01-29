@@ -11,7 +11,6 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
-import javax.persistence.UniqueConstraint
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -20,8 +19,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 
 @Entity
-@Table(name = "surveys_submissions", uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("user_id", "survey_id"))))
-data class SurveySubmission(
+@Table(name = "forms_submissions")
+data class FormSubmission(
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
@@ -29,13 +28,13 @@ data class SurveySubmission(
   val user: User? = null,
 
   @JsonIgnore @ManyToOne
-  val survey: Survey? = null,
+  val form: Form? = null,
 
   @OneToMany(cascade = arrayOf(CascadeType.ALL))
-  var values: MutableList<MetaValue>? = null,
+  var values: MutableList<FormFieldValue>? = null,
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   val created: Calendar? = null
 ) {
-  constructor(user: User, survey: Survey) : this(null, user, survey, null)
+  constructor(user: User, form: Form) : this(null, user, form, null)
 }

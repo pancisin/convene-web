@@ -73,29 +73,6 @@ export default {
     });
   },
 
-  /**
-   * Post answers to meta fields and meta values
-   * @param {*} id - survey id
-   * @param {*} values - meta values data objects array
-   * @param {*} success - success callback function
-   */
-  postSubmission (id, values, success) {
-    Vue.http.post(`${SURVEY_API_URL}/${id}/submission`, values).then(response => {
-      success(response.body);
-    });
-  },
-
-  /**
-   * Get survey meta values
-   * @param {*} id - survey id
-   * @param {*} success - success callback function
-   */
-  getSubmissions (id, success) {
-    Vue.http.get(`${SURVEY_API_URL}/${id}/submission`).then(response => {
-      success(response.body);
-    });
-  },
-
   togglePublished (id, success) {
     Vue.http.patch(`${SURVEY_API_URL}/${id}/toggle-published`).then(response => {
       success(response.body);

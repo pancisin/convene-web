@@ -3,7 +3,7 @@
     <span slot="title">Surveys</span>
     <small slot="subtitle">Please spare a little time to complete these surveys.</small>
     <div class="surveys-list">
-      <survey-form v-if="surveys.length == 1" :survey="surveys[0]"></survey-form>
+      <custom-form v-if="surveys.length == 1" :form="surveys[0].form" @submit="formSubmitted" />
       <ul class="list-unstyled" v-else>
         <li v-for="survey in surveys" :key="survey.id">
           <button class="btn btn-link" @click="startSurvey(survey)">
@@ -14,7 +14,7 @@
 
       <modal :show.sync="showSurveyModal">
         <div slot="body">
-          <survey-form v-if="selectedSurvey != null" :survey="selectedSurvey" @submit="surveySubmitted" />
+          <custom-form v-if="selectedSurvey != null" :form="selectedSurvey.form" @submit="formSubmitted" />
         </div>
       </modal>
     </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { SurveyForm } from 'elements/forms';
+import { CustomForm } from 'elements/forms';
 export default {
   name: 'survey-list',
   data () {
@@ -39,7 +39,7 @@ export default {
     }
   },
   components: {
-    SurveyForm
+    CustomForm
   },
   watch: {
     'api': 'getSurveys'
@@ -57,8 +57,11 @@ export default {
       this.selectedSurvey = survey;
       this.showSurveyModal = true;
     },
-    surveySubmitted (survey) {
-      this.surveys = this.surveys.filter(s => s.id !== survey.id);
+    formSubmitted (form) {
+      const index = this.surveys.findIndex(s => s.form.id === form.id);
+      const survey = this.surveys.splice(index, 1);
+
+      this.$success('notification.survey.completed', survey.name);
       this.showSurveyModal = false;
     }
   }

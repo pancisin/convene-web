@@ -137,13 +137,13 @@ class ConferenceController {
   @Transactional
   @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun postAttend(@PathVariable conference_id: Long?, @RequestBody meta: List<MetaValue>): ResponseEntity<*> {
+  fun postAttend(@PathVariable conference_id: Long?, @RequestBody formField: List<FormFieldValue>): ResponseEntity<*> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
     val conference = conferenceRepository.findOne(conference_id)
 
-    val attendee = PageMember(user, conference, meta)
-    attendee.meta = meta
-    pageMemberRepository.save(attendee)
+//    val attendee = PageMember(user, conference, formField)
+//    attendee.formField = formField
+//    pageMemberRepository.save(attendee)
     return ResponseEntity.ok("ACTIVE")
   }
 
@@ -168,17 +168,17 @@ class ConferenceController {
     return ResponseEntity.ok(if (active) "ACTIVE" else "CANCELED")
   }
 
-//  @GetMapping("/meta-field")
+//  @GetMapping("/formField-field")
 //  @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
-//  fun getMetaFields(@PathVariable conference_id: Long?): ResponseEntity<*> {
+//  fun getFormFields(@PathVariable conference_id: Long?): ResponseEntity<*> {
 //    val conference = conferenceRepository.findOne(conference_id)
-//    return ResponseEntity.ok<List<MetaField>>(conference.metaFields)
+//    return ResponseEntity.ok<List<FormField>>(conference.formFields)
 //  }
 //
-//  @PostMapping("/meta-field")
+//  @PostMapping("/formField-field")
 //  @ActivityLog(type = ActivityType.UPDATE)
 //  @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
-//  fun postMetaField(@PathVariable conference_id: Long?, @RequestBody field: MetaField): ResponseEntity<*> {
+//  fun postMetaField(@PathVariable conference_id: Long?, @RequestBody field: FormField): ResponseEntity<*> {
 //    var field = field
 //    val conference = conferenceRepository.findOne(conference_id)
 //    field = cmfRepository!!.save(field)

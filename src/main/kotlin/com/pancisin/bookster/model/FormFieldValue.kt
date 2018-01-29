@@ -9,16 +9,15 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 import com.fasterxml.jackson.annotation.JsonRawValue
-import com.pancisin.bookster.model.MetaField
 
 @Entity
-@Table(name = "meta_values")
-data class MetaValue(
+@Table(name = "forms_fields_values")
+data class FormFieldValue(
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
   @ManyToOne @JsonRawValue
-  var field: MetaField? = null,
+  var field: FormField? = null,
 
   @Column
   var value: String? = null

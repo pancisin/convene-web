@@ -10,6 +10,6 @@ import com.pancisin.bookster.model.Survey;
 
 public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
-	@Query("SELECT survey FROM Page page JOIN page.surveys survey LEFT JOIN survey.submissions submission WHERE page.id = :page_id AND (submission IS NULL OR submission.user.id != :user_id) AND survey.state = 'IN_PROGRESS'")
+	@Query("SELECT survey FROM Page page JOIN page.surveys survey LEFT JOIN survey.form.submissions submission WHERE page.id = :page_id AND (submission IS NULL OR submission.user.id != :user_id) AND survey.state = 'IN_PROGRESS'")
 	public List<Survey> getByPage(@Param("page_id") Long page_id, @Param("user_id") Long user_id);
 }

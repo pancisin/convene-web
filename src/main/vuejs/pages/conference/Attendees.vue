@@ -59,7 +59,7 @@ export default {
         this.attendees = attendees;
       });
 
-      this.api.getMetaFields(metaFields => {
+      this.api.getFormFields(metaFields => {
         this.metaFields = metaFields;
       });
     },
@@ -72,12 +72,12 @@ export default {
         user = user[0];
       }
 
-      var meta = user.meta.filter(x => {
+      var formField = user.formField.filter(x => {
         return x.field === field_id;
       });
 
-      if (meta.length > 0) {
-        return meta[0].value;
+      if (formField.length > 0) {
+        return formField[0].value;
       } else null;
     }
   }

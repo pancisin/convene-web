@@ -65,9 +65,9 @@ export default {
 
       this.injector.getSurvey(survey => {
         this.survey = survey;
-        this.survey.metaFields.sort((a, b) => {
-          return a.ordering >= b.ordering;
-        });
+        // this.survey.metaFields.sort((a, b) => {
+        //   return a.ordering >= b.ordering;
+        // });
       });
     },
     updateSurvey (survey) {

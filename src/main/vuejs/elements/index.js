@@ -55,6 +55,7 @@ import DataParserEditor from './DataParserEditor';
 import EventMap from './EventMap';
 import VueTable from './VueTable';
 import MemberList from './MemberList.vue';
+import FormEditor from './Form.editor.vue';
 
 export {
   ArticlesList,
@@ -113,5 +114,6 @@ export {
   DataParserEditor,
   EventMap,
   VueTable,
-  MemberList
+  MemberList,
+  FormEditor
 };

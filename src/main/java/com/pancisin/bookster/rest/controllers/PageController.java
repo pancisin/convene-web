@@ -334,7 +334,7 @@ public class PageController {
 		return ResponseEntity.ok(eventBotRepository.save(eventBot));
 	}
 
-	@PutMapping("/meta")
+	@PutMapping("/formField")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'update')")
 	public ResponseEntity<?> putMetaData(@PathVariable Long page_id, HashMap<String, String> metadata) {
 		Page stored = pageRepository.findOne(page_id);

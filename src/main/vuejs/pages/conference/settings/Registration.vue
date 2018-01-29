@@ -21,12 +21,12 @@
             <label class="control-label">Name: </label>
             <input class="form-control required" v-model="selected.name" type="text">
           </div>
-  
+
           <div class="form-group">
             <label class="control-label">Description: </label>
             <input class="form-control" v-model="selected.description" type="text">
           </div>
-  
+
           <div class="form-group">
             <div class="checkbox checkbox-primary">
               <input id="optional-checkbox" type="checkbox" v-model="selected.optional">
@@ -35,18 +35,18 @@
               </label>
             </div>
           </div>
-  
+
           <div class="form-group">
             <label class="control-label">Type: </label>
-  
+
             <select class="form-control" v-model="selected.type">
               <option v-for="mtype in metaTypes" v-text="mtype" :key="mtype"></option>
             </select>
           </div>
-  
+
           <div class="form-group" v-if="selected.type == 'SELECT' || selected.type == 'RADIO'">
             <label class="control-label">Options: </label>
-  
+
             <ul class="options-list">
               <li v-for="option in selected.options" :key="option">
                 {{ option }}
@@ -64,7 +64,7 @@
               </li>
             </ul>
           </div>
-  
+
           <div class="text-center">
             <a class="btn btn-primary btn-rounded" @click="submit">Save</a>
           </div>
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import MetaFieldApi from 'api/meta-field.api';
+// import MetaFieldApi from 'api/formField-field.api';
 import PublicApi from 'api/public.api';
 
 export default {
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     initialize () {
-      this.api.getMetaFields(metaFields => {
+      this.api.getFormFields(metaFields => {
         this.metaFields = metaFields;
       });
 
@@ -118,10 +118,10 @@ export default {
           this.$success('notification.meta_field.created', field.name);
         });
       } else {
-        MetaFieldApi.putMetaField(this.selected, field => {
-          this.selected = field;
-          this.$success('notification.meta_field.updated', field.name);
-        });
+        // MetaFieldApi.putMetaField(this.selected, field => {
+        //   this.selected = field;
+        //   this.$success('notification.meta_field.updated', field.name);
+        // });
       }
     },
     deleteOption (option) {

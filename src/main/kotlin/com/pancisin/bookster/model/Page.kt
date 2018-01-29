@@ -176,6 +176,9 @@ class Page() : IAuthor {
   @JsonView(Summary::class)
   var metadata: Map<String, String> = HashMap()
 
+  @OneToOne
+  var registrationForm: Form? = null
+
   override val displayName: String
     get() = this.name.toString()
 

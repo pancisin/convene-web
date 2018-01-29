@@ -1,21 +1,11 @@
 package com.pancisin.bookster.model
 
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.persistence.Table
-
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.pancisin.bookster.model.enums.MetaType
+import javax.persistence.*
 
-@Entity @Table(name = "meta_fields")
-data class MetaField(
+@Entity @Table(name = "forms_fields")
+data class FormField(
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
@@ -29,9 +19,11 @@ data class MetaField(
   var description: String? = null,
 
   @JsonIgnore @OneToMany(mappedBy = "field")
-  var values: List<MetaValue>? = null,
+  var values: List<FormFieldValue>? = null,
 
-  @ElementCollection @Column
+  @ElementCollection
+  @CollectionTable(name = "forms_fields_options")
+  @Column
   var options: List<String>? = null,
 
   @Column

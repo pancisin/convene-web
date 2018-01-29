@@ -21,9 +21,6 @@ data class PageMember(
   @JsonIgnore @ManyToOne
   var page: Page? = null,
 
-  @OneToMany(cascade = arrayOf(CascadeType.ALL))
-  var meta: List<MetaValue>? = null,
-
   @Column
   var active: Boolean = true,
 
@@ -35,6 +32,5 @@ data class PageMember(
   val created: Calendar? = null
 
 ) {
-  constructor(user: User, page: Page, meta: List<MetaValue>) : this(null, user, page, meta)
   constructor(user: User, page: Page) : this(null, user, page)
 }

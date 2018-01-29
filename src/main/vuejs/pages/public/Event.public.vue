@@ -12,11 +12,11 @@
 
           <p class="panel-sub-title font-13">
             {{ event.date | luxon('DDDD, T') }} {{ event.startsAt }}
-            
+
             <span v-if="event.author">
               <br>
-              <b>{{ $t('event.convener') }}: </b> 
-              <router-link 
+              <b>{{ $t('event.convener') }}: </b>
+              <router-link
                 v-if="event.author.type == 'page'"
                 :to="{ name: 'page.public', params: { id: event.author.slug || event.author.id }}"
                 class="text-primary">
@@ -36,7 +36,7 @@
               <br><b>{{ $t('event.place') }}: </b> {{ address }}
             </span>
           </p>
-       
+
           <!-- <div class="socials">
             <a class="btn btn-link" :href="'https://www.facebook.com/' + event.facebookId" target="_blank" v-if="event.facebookId != null">
               <i class="fa fa-facebook"></i>
@@ -53,8 +53,8 @@
                   <p class="text-muted">{{ $t('event.attendees') }}</p>
                 </div> -->
 
-                <a class="btn btn-primary btn-block waves-effect" 
-                  :class="{ 'btn-danger' : attending }" 
+                <a class="btn btn-primary btn-block waves-effect"
+                  :class="{ 'btn-danger' : attending }"
                   v-show="!attending"
                   @click="toggleAttending"
                   v-if="event.state == 'PUBLISHED'">
@@ -66,7 +66,7 @@
                 <div class="text-center">
                   <h3 class="text-primary">{{ members.length }} <small class="text-muted">{{ $t('event.attendees') }}</small></h3>
                 </div>
-                
+
                 <member-list :users="members" v-loading="loadingMembers" />
 
                 <div class="timeline-2 m-t-20">
@@ -115,9 +115,9 @@
       </div>
 
       <div class="col-sm-12 col-md-3 col-md-pull-9">
-        <share-panel 
-          class="m-b-20" 
-          :title="event.name" 
+        <share-panel
+          class="m-b-20"
+          :title="event.name"
           :description="event.summary"
           :media="event.poster != null ? event.poster.path : ''" />
         <panel type="default">
@@ -284,7 +284,7 @@ export default {
     title () {
       return this.event.name;
     },
-    meta () {
+    formField () {
       return {
         description: this.event.summary,
         'og:title': this.event.name,

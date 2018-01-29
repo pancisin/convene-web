@@ -52,7 +52,7 @@ export default {
     }
   },
   created () {
-    this.api.getMetaFields(fields => {
+    this.api.getFormFields(fields => {
       this.meta_fields = fields;
       fields.forEach(field => {
         this.meta_values.push({

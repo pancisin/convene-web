@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-  
+
     <error v-if="error" :status="error.status" />
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
     title () {
       return this.user.displayName;
     },
-    meta () {
+    formField () {
       return {
 
       };

@@ -3,7 +3,7 @@
     <div v-if="page.id">
       <hero-unit :background="page.poster != null ? page.poster.path : null" class="m-b-20">
         <h1 class="text-uppercase text-primary">{{ page.name }}</h1>
-      </hero-unit>  
+      </hero-unit>
 
       <div class="container">
         <div class="row">
@@ -16,7 +16,7 @@
                     {{ key }}
                   </dt>
                   <dd :key="key">
-                    <a target="_blank" 
+                    <a target="_blank"
                       :href="value"
                       v-if="validUrl(value)">
                       {{ value }}
@@ -28,7 +28,7 @@
                 </template>
               </dl>
             </panel>
-            
+
             <panel v-if="page.summary != null && page.summary.length > 0">
               <div v-html="page.summary" class="m-b-20"></div>
             </panel>
@@ -41,15 +41,15 @@
 
           <div class="col-sm-4 col-md-3">
             <div class="btn-group-vertical btn-block m-b-20">
-              <a 
-                class="btn waves-effect" 
-                :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }" 
+              <a
+                class="btn waves-effect"
+                :class="{ 'btn-default' : follows, 'btn-inverse' : !follows }"
                 @click="toggleFollow">
 
                 {{ follows ? 'Unfollow' : 'Follow' }}
               </a>
-              <router-link 
-                :to="{ name: 'page.settings', params: { id: page.id }}" 
+              <router-link
+                :to="{ name: 'page.settings', params: { id: page.id }}"
                 v-if="page.privilege && page.privilege.active"
                 class="btn btn-primary waves-effect">
                 Settings
@@ -75,9 +75,9 @@
               </table>
             </panel>
 
-            <share-panel 
-              class="m-b-20" 
-              :title="page.name" 
+            <share-panel
+              class="m-b-20"
+              :title="page.name"
               :description="page.summary"
               :media="page.poster != null ? page.poster.path : ''" />
 
@@ -91,9 +91,9 @@
       <modal :show.sync="displayBookModal">
         <span slot="header">Book a service</span>
         <div slot="body">
-          <service-book 
-            :service="selectedService" 
-            @submitted="displayBookModal = false" 
+          <service-book
+            :service="selectedService"
+            @submitted="displayBookModal = false"
           />
         </div>
       </modal>
@@ -218,7 +218,7 @@ export default {
     title () {
       return this.page.name;
     },
-    meta () {
+    formField () {
       return {
         description: this.page.summary,
         'og:title': this.page.name,

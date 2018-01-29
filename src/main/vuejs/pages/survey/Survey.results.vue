@@ -36,6 +36,7 @@
 
 <script>
 import SurveySubmissionApi from 'api/survey-submission.api';
+import FormApi from 'api/form.api';
 export default {
   name: 'survey-submissions',
   inject: ['provider'],
@@ -52,7 +53,11 @@ export default {
       return this.provider.api;
     },
     metaFields () {
-      const fields = this.survey.metaFields;
+      if (!this.survey.form) {
+        return [];
+      }
+
+      const fields = this.survey.form.formFields;
 
       if (fields) {
         fields.sort((a, b) => a.ordering >= b.ordering);
@@ -71,7 +76,11 @@ export default {
   methods: {
     getSubmissions () {
       if (this.api) {
-        this.api.getSubmissions(submissions => {
+        if (this.survey.form == null) {
+          return;
+        }
+
+        FormApi.getSubmissions(this.survey.form.id, submissions => {
           this.submissions = submissions;
         });
       }

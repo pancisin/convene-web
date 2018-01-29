@@ -1,6 +1,6 @@
 <template>
   <form class="form" @submit.prevent="submit">
-    <div class="form-group" v-for="(field, index) in survey.metaFields" :key="index" :class="{ 'has-error' : errors.has(`input-${index}`) }">
+    <div class="form-group" v-for="(field, index) in form.formFields" :key="index" :class="{ 'has-error' : errors.has(`input-${index}`) }">
       <label v-text="field.name"></label>
       <p v-if="field.description">
         <small v-text="field.description"></small>
@@ -33,10 +33,10 @@
 
 <script>
 import { DatePicker } from 'elements';
-import SurveyApi from 'api/survey.api';
+import FormApi from 'api/form.api';
 
 export default {
-  name: 'survey',
+  name: 'custom-form',
   data () {
     return {
       meta_values: [],
@@ -44,9 +44,9 @@ export default {
     };
   },
   props: {
-    survey: {
+    form: {
       type: Object,
-      default: {}
+      required: true
     }
   },
   components: {
@@ -57,11 +57,11 @@ export default {
   },
   methods: {
     initializeSurvey () {
-      this.survey.metaFields.sort((a, b) => {
+      this.form.formFields.sort((a, b) => {
         return a.ordering > b.ordering;
       });
 
-      this.survey.metaFields.forEach((field, index) => {
+      this.form.formFields.forEach((field, index) => {
         this.meta_values.push({
           field: {
             id: field.id
@@ -73,9 +73,8 @@ export default {
     submit () {
       this.$validator.validateAll().then(valid => {
         if (!valid) return;
-        SurveyApi.postSubmission(this.survey.id, this.meta_values, result => {
-          this.$success('notification.survey.completed', this.survey.name);
-          this.$emit('submit', this.survey);
+        FormApi.postSubmission(this.form.id, this.meta_values, result => {
+          this.$emit('submit', this.form);
         });
       });
     }
