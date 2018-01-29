@@ -72,6 +72,9 @@ class PublicController {
   @GetMapping("/event/{event_id}/gallery")
   fun getEventGallery(@PathVariable event_id: Long) = ResponseEntity.ok(mediaRepository.getByEvent(event_id))
 
+  @GetMapping("/event/{event_id}/attendees")
+  fun getAttendees(@PathVariable event_id: Long) = ResponseEntity.ok(eventRepository.findOne(event_id).attendees)
+
   @GetMapping("/popular-pages/{page}/{limit}")
   fun getPopularPages(@PathVariable page: Int, @PathVariable limit: Int) = ResponseEntity.ok(pageRepository.getPopular(PageRequest(page, limit)))
 
@@ -107,7 +110,7 @@ class PublicController {
 
   @GetMapping("/conference/{conference_id}")
   fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = pageRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+    val conference = conferenceRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
 
     return if (conference.state === PageState.PUBLISHED || conference.state === PageState.BLOCKED) {
       ResponseEntity.ok(conference)

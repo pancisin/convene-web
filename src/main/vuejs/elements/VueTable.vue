@@ -108,11 +108,12 @@ export default {
           opt.on = {
             contextmenu: (event) => {
               event.preventDefault();
-              menu.componentInstance.open(event, item);
+              menu.componentInstance.open(event, item.ref);
             }
           };
         }
-        return h('tr', opt, Object.values(item).map(value => {
+        return h('tr', opt, Object.values(this.columns).map(col => {
+          const value = item[col];
           if (typeof value === 'function') {
             const res = value();
 
@@ -143,7 +144,12 @@ export default {
       } else return [];
     },
     items () {
-      return this.data.map((item, index) => this.func(item, index));
+      return this.data.map((item, index) => {
+        return {
+          ...this.func(item, index),
+          ref: item
+        };
+      });
     }
   }
 };

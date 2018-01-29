@@ -108,6 +108,12 @@ export default {
       Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/gallery`).then(response => {
         success(response.body);
       });
+    },
+
+    getAttendees (id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/attendees`).then(response => {
+        success(response.body);
+      });
     }
   },
 

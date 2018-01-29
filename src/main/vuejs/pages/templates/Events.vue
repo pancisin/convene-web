@@ -2,77 +2,7 @@
   <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.events') }}</span>
 
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Created</th>
-          <th>Place</th>
-          <th class="text-center">Attendees</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="ev in paginator.content" :key="ev.id" @contextmenu.prevent="$refs.menu.open($event, ev)">
-          <td>
-            <router-link :to="{ name: 'event', params: { id: ev.id } }" v-text="ev.name">
-            </router-link>
-          </td>
-          <td>{{ ev.date | luxon('D') }} {{ ev.startsAt }}</td>
-          <td>{{ ev.created | luxon('F') }}</td>
-          <td>
-            <span v-if="ev.place != null" v-text="ev.place.name">
-            </span>
-          </td>
-          <td v-text="ev.attendeesCount" class="text-center"></td>
-        </tr>
-        <tr v-if="paginator.content && paginator.content.length == 0">
-          <td colspan="5" class="text-center">
-            There's nothing to display
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <context-menu ref="menu">
-      <template slot-scope="props">
-        <ul>
-          <li>
-            <router-link :to="{ name: 'event.public', params: { id: props.data.id } }">
-              Go to event
-            </router-link>
-          </li>
-          <li class="separator"></li>
-          <li>
-            <router-link :to="{ name: 'event.overview', params: { id: props.data.id } }">
-              Overview
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'event.programme', params: { id: props.data.id } }">
-              Programme
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{ name: 'event.attendees', params: { id: props.data.id } }">
-              Attendees
-            </router-link>
-          </li>
-          <li class="separator"></li>
-          <li :class="{ 'disabled' : !editable }">
-            <router-link to="events/create">
-              Create event
-            </router-link>
-          </li>
-          <li class="separator"></li>
-          <li :class="{ 'disabled' : !editable }">
-            <a @click="deleteEvent(props.data)">
-              Delete
-            </a>
-          </li>
-        </ul>
-      </template>
-    </context-menu>
+    <vue-table :func="tableRender" :data="paginator.content" :contextmenu="contextMenuRender" />
 
     <div class="text-center">
       <paginator :history="true" :paginator="paginator" :fetch="getEvents"></paginator>
@@ -100,9 +30,11 @@
 <script>
 import {
   Paginator,
-  EventCreateWizard
+  EventCreateWizard,
+  VueTable
 } from 'elements';
 import EventApi from 'api/event.api';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'events',
@@ -119,7 +51,8 @@ export default {
   },
   components: {
     Paginator,
-    EventCreateWizard
+    EventCreateWizard,
+    VueTable
   },
   computed: {
     api () {
@@ -139,6 +72,35 @@ export default {
     'api': 'initialize'
   },
   methods: {
+    tableRender (event, index) {
+      return {
+        name: {
+          el: 'a',
+          content: event.name,
+          onClick: () => {
+            this.$router.push({ name: 'event', params: { id: event.id } });
+          }
+        },
+        date: DateTime.fromMillis(event.date).toFormat('D'),
+        created: DateTime.fromMillis(event.created).toFormat('F'),
+        status: {
+          el: 'i',
+          colClass: 'text-center',
+          class: `fa ${ event.state === 'PUBLISHED' ? 'fa-check text-success' : 'fa-eye-slash text-warning' }`
+        },
+        attendees: event.attendeesCount
+      };
+    },
+    contextMenuRender (item) {
+      return [
+        item('Go to event', event => this.$router.push({ name: 'event.public', params: { id: event.id } })),
+        item('Overview', event => this.$router.push({ name: 'event.overview', params: { id: event.id } })),
+        item('Programme', event => this.$router.push({ name: 'event.programme', params: { id: event.id } })),
+        item('Attendees', event => this.$router.push({ name: 'event.attendees', params: { id: event.id } })),
+        item('Create event', () => { this.displayEventCreateModal = true; }),
+        item('Delete', event => this.deleteEvent(event))
+      ];
+    },
     initialize () {
       this.getEvents(0);
     },

@@ -72,6 +72,10 @@ export default {
   props: {
     value: {
       type: [ Number, String ],
+      required: false,
+      validator: (value) => {
+        return (new Date(value)).getTime() > 0;
+      },
       default () {
         return DateTime.utc().startOf('day').valueOf();
       }
@@ -121,6 +125,10 @@ export default {
       this.updateCalendar();
     },
     updateCalendar () {
+      if (this.focusDate.startOf === null || this.focusDate.endOf === null) {
+        return;
+      }
+
       var start = this.focusDate.startOf('month').startOf('week');
       var end = this.focusDate.endOf('month').endOf('week');
 
@@ -226,14 +234,20 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px;
+        padding: 10px !important;
         border-bottom: 1px solid #ccc;
         text-align: center;
+        color: #666 !important;
+      }
+
+      thead {
+        background: none !important;
       }
 
       td {
         transition: background-color 0.2s ease;
         position: relative;
+        padding: 0px !important;
 
         a {
           text-align: center;

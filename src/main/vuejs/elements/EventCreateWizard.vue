@@ -45,12 +45,18 @@ import WizardPage from './WizardPage';
 import DatePicker from './DatePicker';
 import TextEditor from './TextEditor';
 import PlacePicker from './PlacePicker';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'event-create-wizard',
   props: {
     postFunc: Function,
-    date: [ String, Number ]
+    date: {
+      type: String | Number,
+      default () {
+        return DateTime.utc().startOf('day').valueOf();
+      }
+    }
   },
   data () {
     return {
