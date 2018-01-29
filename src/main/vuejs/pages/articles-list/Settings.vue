@@ -5,12 +5,12 @@
 
       <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control" v-model="list.name">
+        <input type="text" class="form-control" v-model="listClone.name">
       </div>
 
       <div class="form-group">
         <label>Tags</label>
-        <tag-input v-model="list.tags" :tags="list.tags"></tag-input>
+        <tag-input v-model="listClone.tags" :tags="listClone.tags"></tag-input>
       </div>
 
       <div class="text-center">
@@ -25,33 +25,27 @@ import { TagInput } from 'elements';
 export default {
   name: 'articles-list-settings',
   inject: ['provider'],
-  data () {
-    return {
-      list: null
-    };
+  props: {
+    list: Object
+  },
+  data: {
+    listClone: null
   },
   components: {
     TagInput
+  },
+  created () {
+    this.listClone = { ...this.list };
   },
   computed: {
     api () {
       return this.provider.api;
     }
   },
-  watch: {
-    'api': 'initializeList'
-  },
-  created () {
-    this.initializeList();
-  },
   methods: {
-    initializeList () {
-      this.list = this.api.instance;
-    },
     submit () {
-      this.api.putArticlesList(this.list, list => {
-        this.list = list;
-        this.$success('dsada');
+      this.api.putArticlesList(this.listClone, list => {
+        this.$success('update', list);
       });
     }
   }
