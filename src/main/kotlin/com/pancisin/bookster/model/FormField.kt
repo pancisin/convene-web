@@ -1,7 +1,7 @@
 package com.pancisin.bookster.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.pancisin.bookster.model.enums.MetaType
+import com.pancisin.bookster.model.enums.FieldType
 import javax.persistence.*
 
 @Entity @Table(name = "forms_fields")
@@ -10,13 +10,13 @@ data class FormField(
   val id: Long? = null,
 
   @Column
-  var name: String? = null,
+  var name: String = "",
 
   @Enumerated(EnumType.STRING)
-  var type: MetaType? = null,
+  var type: FieldType = FieldType.TEXT,
 
   @Column
-  var description: String? = null,
+  var description: String = "",
 
   @JsonIgnore @OneToMany(mappedBy = "field")
   var values: List<FormFieldValue>? = null,
@@ -24,7 +24,7 @@ data class FormField(
   @ElementCollection
   @CollectionTable(name = "forms_fields_options")
   @Column
-  var options: List<String>? = null,
+  var options: List<String> = ArrayList(),
 
   @Column
   var optional: Boolean = false,

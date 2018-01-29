@@ -54,7 +54,7 @@ class PublicController {
   fun getSubscriptions() = ResponseEntity.ok(Subscription.values())
 
   @GetMapping("/meta-types")
-  fun getMetaTypes() = ResponseEntity.ok(MetaType.values())
+  fun getMetaTypes() = ResponseEntity.ok(FieldType.values())
 
   @GetMapping("/event/{event_id}")
   fun getEvent(@PathVariable event_id: Long): ResponseEntity<Event> {

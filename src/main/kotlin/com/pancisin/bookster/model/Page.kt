@@ -176,7 +176,7 @@ class Page() : IAuthor {
   @JsonView(Summary::class)
   var metadata: Map<String, String> = HashMap()
 
-  @OneToOne
+  @OneToOne(cascade = [ CascadeType.ALL ], orphanRemoval = true)
   var registrationForm: Form? = null
 
   override val displayName: String

@@ -34,7 +34,7 @@
             <div v-if="authenticated">
               <panel v-if="attend_status != 'ACTIVE'" type="primary">
                 <span slot="title">Join conference</span>
-                <attend-form @statusChanged="statusChanged"></attend-form>
+                <custom-form :form="conference.registrationForm" :submitFunc="registrationSubmit" />
               </panel>
               <div v-else>
       
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { ConferenceAttendForm } from 'elements/forms';
+import { CustomForm } from 'elements/forms';
 import {
   ArticlesList,
   HeroUnit,
@@ -89,7 +89,7 @@ export default {
     return { provider };
   },
   components: {
-    ConferenceAttendForm,
+    CustomForm,
     ArticlesList,
     EventsList,
     HeroUnit,
@@ -144,6 +144,11 @@ export default {
     getArticles (page) {
       this.injector.getArticles(page, 5, paginator => {
         this.articlesPaginator = paginator;
+      });
+    },
+    registrationSubmit (values) {
+      this.injector.postAttend(values, result => {
+        this.attend_status = result.active;
       });
     }
   }

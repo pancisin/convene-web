@@ -47,7 +47,8 @@ export default {
     form: {
       type: Object,
       required: true
-    }
+    },
+    submitFunc: Function
   },
   components: {
     DatePicker
@@ -73,9 +74,14 @@ export default {
     submit () {
       this.$validator.validateAll().then(valid => {
         if (!valid) return;
-        FormApi.postSubmission(this.form.id, this.meta_values, result => {
-          this.$emit('submit', this.form);
-        });
+
+        if (this.submitFunc != null) {
+          this.submitFunc(this.meta_values);
+        } else {
+          FormApi.postSubmission(this.form.id, this.meta_values, result => {
+            this.$emit('submit', this.form);
+          });
+        }
       });
     }
   }

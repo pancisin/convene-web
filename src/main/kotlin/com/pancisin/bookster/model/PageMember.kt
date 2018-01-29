@@ -21,6 +21,9 @@ data class PageMember(
   @JsonIgnore @ManyToOne
   var page: Page? = null,
 
+  @OneToOne
+  var submission: FormSubmission? = null,
+
   @Column
   var active: Boolean = true,
 
@@ -33,4 +36,5 @@ data class PageMember(
 
 ) {
   constructor(user: User, page: Page) : this(null, user, page)
+  constructor(user: User, page: Page, submission: FormSubmission) : this(null, user, page, submission)
 }

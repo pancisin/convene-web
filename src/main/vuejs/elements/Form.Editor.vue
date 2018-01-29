@@ -1,7 +1,7 @@
 <template>
   <div>
     <transition-group name="fade-down">
-      <div class="row formField-field-row" v-for="(field, index) in form.formFields" :key="index">
+      <div class="row formField-field-row" v-for="(field, index) in formCopy.formFields" :key="index">
         <div class="col-md-2 col-lg-1 text-center">
           <h3>
             {{ index + 1 }}.
@@ -12,7 +12,7 @@
               <i class="fa fa-arrow-up"></i>
             </button>
 
-            <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, 1)" v-if="index + 1 < form.formFields.length">
+            <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, 1)" v-if="index + 1 < formCopy.formFields.length">
               <i class="fa fa-arrow-down"></i>
             </button>
           </div>
@@ -81,7 +81,7 @@
     </transition-group>
 
     <div class="text-center">
-      <button @click="form.formFields.push({})" class="btn btn-rounded btn-lg m-t-15 m-b-15">
+      <button @click="formCopy.formFields.push({})" class="btn btn-rounded m-t-15 m-b-15">
         <i class="fa fa-plus"></i>
       </button>
     </div>
@@ -95,35 +95,37 @@ export default {
   props: {
     value: {
       type: Object,
-      required: true
+      default () {
+        return {
+          formFields: []
+        };
+      }
     }
   },
   data () {
     return {
-      meta_types: []
+      meta_types: [],
+      formCopy: {}
     };
-  },
-  computed: {
-    form () {
-      return this.value;
-    }
   },
   created () {
     PublicApi.getMetaTypes(meta_types => {
       this.meta_types = meta_types;
     });
+
+    this.formCopy = { formFields: [], ...this.value };
   },
   watch: {
-    form: {
+    formCopy: {
       handler () {
-        this.$emit('input', this.form);
+        this.$emit('input', this.formCopy);
       },
       deep: true
     }
   },
   methods: {
     removeMeta (index) {
-      this.survey.metaFields.splice(index, 1);
+      this.formCopy.formFields.splice(index, 1);
     },
     moveMeta (index, direction) {
       let element = this.survey.metaFields[index];

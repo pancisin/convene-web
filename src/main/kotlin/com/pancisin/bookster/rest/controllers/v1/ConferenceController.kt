@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import sun.text.resources.ar.FormatData_ar_SY
 
 import javax.transaction.Transactional
 
@@ -66,6 +67,9 @@ class ConferenceController {
   @Autowired
   lateinit var activityRepository: ActivityRepository
 
+  @Autowired
+  lateinit var formSubmissionRepository: FormSubmissionRepository
+
   @GetMapping
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
@@ -87,6 +91,7 @@ class ConferenceController {
       branch = conference.branch
       summary = conference.summary
       visibility = conference.visibility
+      registrationForm = conference.registrationForm
     }
 
     if (conference.posterData != null && storageService.isBinary(conference.posterData)) {
@@ -137,14 +142,19 @@ class ConferenceController {
   @Transactional
   @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun postAttend(@PathVariable conference_id: Long?, @RequestBody formField: List<FormFieldValue>): ResponseEntity<*> {
+  fun postAttend(@PathVariable conference_id: Long?, @RequestBody values: MutableList<FormFieldValue>): ResponseEntity<PageMember> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
     val conference = conferenceRepository.findOne(conference_id)
 
-//    val attendee = PageMember(user, conference, formField)
-//    attendee.formField = formField
-//    pageMemberRepository.save(attendee)
-    return ResponseEntity.ok("ACTIVE")
+    val submission = formSubmissionRepository.save(FormSubmission(
+      user = user,
+      form = conference.registrationForm,
+      values = values
+    ));
+
+    val attendee = PageMember(user, conference, submission)
+    pageMemberRepository.save(attendee)
+    return ResponseEntity.ok(attendee)
   }
 
   @PutMapping("/cancel-attend")

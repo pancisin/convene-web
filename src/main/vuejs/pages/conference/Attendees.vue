@@ -1,6 +1,9 @@
 <template>
   <panel type="table">
     <span slot="title">Attendees</span>
+
+    <!-- <vue-table :func="tableRender" :data="members" /> -->
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -16,13 +19,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <td v-text="user.displayName"></td>
+        <tr v-for="member in members" :key="member.user.id">
+          <td>{{ member.user.displayName }}</td>
           <td>
-            {{ user.email }}
+            {{ member.user.email }}
           </td>
           <td v-for="field in metaFields" :key="field.id">
-            {{ getUserMetaValue(user.id, field.id) }}
+            {{ getUserMetaValue(member.submission, field.id) }}
           </td>
         </tr>
       </tbody>
@@ -31,54 +34,49 @@
 </template>
 
 <script>
+import { VueTable } from 'elements';
 export default {
   name: 'conference-attendees-new',
   inject: ['provider'],
+  props: ['conference'],
   data () {
     return {
-      attendees: [],
-      metaFields: []
+      members: []
     };
   },
   created () {
     this.initialize();
   },
+  components: {
+    VueTable
+  },
   computed: {
-    users () {
-      return this.attendees.map(x => {
-        return x.user;
-      });
-    },
     api () {
       return this.provider.api;
+    },
+    metaFields () {
+      if (this.conference && this.conference.registrationForm != null) {
+        return this.conference.registrationForm.formFields;
+      } else return [];
     }
   },
   methods: {
-    initialize () {
-      this.api.getAttendees(attendees => {
-        this.attendees = attendees;
-      });
+    tableRender () {
+      return {
 
-      this.api.getFormFields(metaFields => {
-        this.metaFields = metaFields;
+      };
+    },
+    initialize () {
+      this.api.getAttendees(members => {
+        this.members = members;
       });
     },
-    getUserMetaValue (user_id, field_id) {
-      var user = this.attendees.filter(x => {
-        return x.user.id === user_id;
-      });
+    getUserMetaValue (submission, field_id) {
+      const fields = submission.values.filter(e => e.field === field_id);
 
-      if (user.length > 0) {
-        user = user[0];
+      if (fields.length > 0) {
+        return fields[0].value;
       }
-
-      var formField = user.formField.filter(x => {
-        return x.field === field_id;
-      });
-
-      if (formField.length > 0) {
-        return formField[0].value;
-      } else null;
     }
   }
 };

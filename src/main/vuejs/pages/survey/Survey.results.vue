@@ -75,11 +75,7 @@ export default {
   },
   methods: {
     getSubmissions () {
-      if (this.api) {
-        if (this.survey.form == null) {
-          return;
-        }
-
+      if (this.api && this.survey.form) {
         FormApi.getSubmissions(this.survey.form.id, submissions => {
           this.submissions = submissions;
         });

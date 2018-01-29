@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonRawValue
 @Entity
 @Table(name = "forms_fields_values")
 data class FormFieldValue(
+
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
