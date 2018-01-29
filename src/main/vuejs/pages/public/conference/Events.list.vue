@@ -2,7 +2,7 @@
   <div>
     <ul class="list-unstyled p-0">
       <li v-for="(date, key) in sorted_events" :key="key">
-        <h4>{{ key }}</h4>
+        <h4>{{ parseInt(key, 10) | luxon('DDD')}}</h4>
 
         <ul class="events-list">
           <li v-for="event in date" :key="event.id">

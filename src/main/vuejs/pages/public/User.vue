@@ -89,6 +89,16 @@ export default {
         });
       }
     }
+  },
+  head: {
+    title () {
+      return this.user.displayName;
+    },
+    meta () {
+      return {
+
+      };
+    }
   }
 };
 </script>

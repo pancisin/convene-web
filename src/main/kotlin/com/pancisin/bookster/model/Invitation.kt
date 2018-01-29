@@ -47,12 +47,12 @@ data class Invitation(
 
   @JsonIgnore @ManyToOne
   @JoinTable(
-    name = "conferences_invitations",
+    name = "pages_invitations",
     joinColumns = arrayOf(JoinColumn(name = "invitation_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var conference: Conference? = null
+  var page: Page? = null
 ) {
   constructor(event: Event, email: String) : this(null, email, null, null, event)
-  constructor(conference: Conference, email: String) : this(null, email, null, null, null, conference)
+  constructor(page: Page, email: String) : this(null, email, null, null, null, page)
 }

@@ -72,6 +72,10 @@ export default {
   props: {
     value: {
       type: [ Number, String ],
+      required: false,
+      validator: (value) => {
+        return (new Date(value)).getTime() > 0;
+      },
       default () {
         return DateTime.utc().startOf('day').valueOf();
       }
@@ -121,6 +125,10 @@ export default {
       this.updateCalendar();
     },
     updateCalendar () {
+      if (this.focusDate.startOf === null || this.focusDate.endOf === null) {
+        return;
+      }
+
       var start = this.focusDate.startOf('month').startOf('week');
       var end = this.focusDate.endOf('month').endOf('week');
 
@@ -172,6 +180,7 @@ export default {
 <style lang="less">
 @import (reference) '~less/variables.less';
 @header-color: @color-inverse;
+@import (reference) '~less/mixins.less';
 
 .date-picker-container {
   position: relative;
@@ -209,7 +218,7 @@ export default {
     left: 0;
     background: #fff;
     z-index: 2;
-    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     overflow: hidden;
 
     &.date-picker-inline {
@@ -225,14 +234,20 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px;
+        padding: 10px !important;
         border-bottom: 1px solid #ccc;
         text-align: center;
+        color: #666 !important;
+      }
+
+      thead {
+        background: none !important;
       }
 
       td {
         transition: background-color 0.2s ease;
         position: relative;
+        padding: 0px !important;
 
         a {
           text-align: center;

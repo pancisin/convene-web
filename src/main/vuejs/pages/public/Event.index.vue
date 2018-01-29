@@ -101,6 +101,7 @@
         <event-editor 
           :event="editedEvent" 
           @updated="updateContent"
+          compact
         ></event-editor>
       </div>
     </modal>

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component
 import com.pancisin.bookster.model.UserSubscription
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.SubscriptionState
-import com.pancisin.bookster.repository.ConferenceRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserSubscriptionRepository
 
@@ -25,9 +24,6 @@ class LicenseService {
 
   @Autowired
   lateinit var pageRepository: PageRepository
-
-  @Autowired
-  lateinit var conferenceRepository: ConferenceRepository
 
   @Scheduled(cron = "0 0 3 * * *")
   fun checkLicenses() {
@@ -50,12 +46,12 @@ class LicenseService {
         }
         pageRepository.save(pages)
 
-        val conferences = conferenceRepository.getByOwner(user_id).map {
-          it.apply {
-            state = if (state === PageState.PUBLISHED || state === PageState.DEACTIVATED) PageState.BLOCKED else state
-          }
-        }
-        conferenceRepository.save(conferences)
+//        val conferences = conferenceRepository.getByOwner(user_id).map {
+//          it.apply {
+//            state = if (state === PageState.PUBLISHED || state === PageState.DEACTIVATED) PageState.BLOCKED else state
+//          }
+//        }
+//        conferenceRepository.save(conferences)
       }
     }
 

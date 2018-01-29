@@ -14,9 +14,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
 	public Place findByFacebookId(String facebookId);
 
-	@Query("SELECT place FROM Page page JOIN page.places place WHERE page.id = :page_id")
+	@Query("SELECT place FROM Place place WHERE place.page.id = :page_id")
 	public List<Place> getByPage(@Param("page_id") Long page_id);
-
-	@Query("SELECT place FROM Conference conference JOIN conference.places place WHERE conference.id = :conference_id")
-	public List<Place> getByConference(@Param("conference_id") Long conference_id);
 }

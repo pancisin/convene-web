@@ -5,6 +5,7 @@
         <div class="col-sm-6 col-md-3">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
+            <small slot="subtitle">Udalosti na ktoré som prihlásený a ešte sa nekonali.</small>
             <events-list :events="attendingEvents"></events-list>
           </panel>
 
@@ -21,7 +22,7 @@
 
             <tab :title="$t('client.dashboard.popular')"
               @navigated="tabNavigation">
-              <pages-list :pages="popular" followers />
+              <pages-list :pages="popular.content" followers />
             </tab>
           </tab-container>
         </div>
@@ -123,8 +124,8 @@ export default {
     tabNavigation (id, loading) {
       if (id === 1 && (this.popular == null || this.popular.length === 0)) {
         loading(true);
-        this.$http.get('/public/popular-pages/0/5').then(response => {
-          this.popular = response.body.content;
+        PublicApi.getPopularPages(0, 10, paginator => {
+          this.popular = paginator;
           loading(false);
         });
       }

@@ -108,6 +108,12 @@ export default {
       Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/gallery`).then(response => {
         success(response.body);
       });
+    },
+
+    getAttendees (id, success) {
+      Vue.http.get(`${EVENT_PUBLIC_URL}/${id}/attendees`).then(response => {
+        success(response.body);
+      });
     }
   },
 
@@ -115,8 +121,8 @@ export default {
    * Get all public popular pages.
    * @param {Function} success - success callback function
    */
-  getPopularPages (success) {
-    Vue.http.get('/public/v1/popular-pages/').then(response => {
+  getPopularPages (page, size, success) {
+    Vue.http.get(`/public/v1/popular-pages/${page}/${size}`).then(response => {
       success(response.body);
     });
   },

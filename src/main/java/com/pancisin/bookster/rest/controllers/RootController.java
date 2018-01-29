@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.pancisin.bookster.model.Article;
+import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.model.ArticlesList;
 import com.pancisin.bookster.model.User;
-import com.pancisin.bookster.repository.ArticleRepository;
-import com.pancisin.bookster.repository.ArticlesListRepository;
-import com.pancisin.bookster.repository.ConferenceRepository;
-import com.pancisin.bookster.repository.EventRepository;
-import com.pancisin.bookster.repository.PageRepository;
 
 @RestController
 public class RootController {
@@ -45,7 +41,7 @@ public class RootController {
 	private EventRepository eventRepository;
 
 	@Autowired
-	private ConferenceRepository conferenceRepository;
+  private ConferenceRepository conferenceRepository;
 
 	@GetMapping({ "/api/articles", "/public/articles" })
 	public ResponseEntity<?> getArticles(
@@ -136,7 +132,7 @@ public class RootController {
 		if (auth != null) {
 			return ResponseEntity.ok(conferenceRepository.getForUser(auth.getId(), new PageRequest(page, size)));
 		} else {
-			return ResponseEntity.ok(conferenceRepository.getPublic(new PageRequest(page, size)));
+			return ResponseEntity.ok(conferenceRepository.findPublic(new PageRequest(page, size)));
 		}
 	}
 

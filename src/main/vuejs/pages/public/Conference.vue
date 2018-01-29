@@ -37,21 +37,8 @@
                 <attend-form @statusChanged="statusChanged"></attend-form>
               </panel>
               <div v-else>
-                <panel type="primary" v-if="surveys.length > 0">
-                  <span slot="title">Surveys</span>
-                  <small slot="subtitle">Please spare a little time to complete these surveys.</small>
-
-                  <div class="surveys-list" v-if="surveys != null && surveys.length > 0">
-                    <survey-form v-if="surveys.length == 1" :survey="surveys[0]"></survey-form>
-                    <ul class="list-unstyled" v-else>
-                      <li v-for="survey in surveys" :key="survey.id">
-                        <router-link :to="{ name: 'survey.public', params: { survey_id: survey.id } }">
-                          {{ survey.name }}
-                        </router-link>
-                      </li>
-                    </ul>
-                  </div>
-                </panel>
+      
+                <survey-list />
 
                 <events-list :events="eventsPaginator.content"></events-list>
                 
@@ -72,7 +59,7 @@
 </template>
 
 <script>
-import AttendForm from './conference/Attend.form.vue';
+import { ConferenceAttendForm } from 'elements/forms';
 import {
   ArticlesList,
   HeroUnit,
@@ -82,7 +69,7 @@ import {
   Error
 } from 'elements';
 import EventsList from './conference/Events.list.vue';
-import SurveyForm from './survey/Survey.form';
+import SurveyList from './conference/Survey.list.vue';
 
 import { mapGetters } from 'vuex';
 
@@ -102,21 +89,20 @@ export default {
     return { provider };
   },
   components: {
-    AttendForm,
+    ConferenceAttendForm,
     ArticlesList,
     EventsList,
-    SurveyForm,
     HeroUnit,
     LightBox,
     Paginator,
     VueImage,
-    Error
+    Error,
+    SurveyList
   },
   data () {
     return {
       conference: null,
       attend_status: false,
-      surveys: [],
       articlesPaginator: {},
       injector: null,
       eventsPaginator: {},
@@ -144,10 +130,6 @@ export default {
       this.injector.getAttendStatus(status => {
         this.attend_status = status;
       });
-
-      this.injector.getPublicSurveys(surveys => {
-        this.surveys = surveys;
-      });
     }
   },
   methods: {
@@ -173,14 +155,5 @@ export default {
   width: 100%;
   border: 1px solid #ccc;
   margin-bottom: 20px;
-}
-
-.surveys-list>ul {
-  li {
-    a {
-      padding: 5px 0;
-      display: block;
-    }
-  }
 }
 </style>

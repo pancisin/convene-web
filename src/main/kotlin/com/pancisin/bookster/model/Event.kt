@@ -85,15 +85,6 @@ class Event() {
   @JsonIgnore
   @ManyToOne
   @JoinTable(
-    name = "conferences_events",
-    joinColumns = arrayOf(JoinColumn(name = "event_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
-  )
-  var conference: Conference? = null
-
-  @JsonIgnore
-  @ManyToOne
-  @JoinTable(
     name = "pages_events",
     joinColumns = arrayOf(JoinColumn(name = "event_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
@@ -152,7 +143,7 @@ class Event() {
 
   //	@JsonSerialize(using = ToStringSerializer.class)
   val author: IAuthor?
-    get() = conference ?: page ?: owner
+    get() = page ?: owner
 
   val privilege: Any?
     @Transient
@@ -164,7 +155,7 @@ class Event() {
         && SecurityContextHolder.getContext().authentication !is AnonymousAuthenticationToken) {
         val user = SecurityContextHolder.getContext().authentication.principal as User
 
-        return conference?.privilege ?: page?.privilege ?: if (owner?.id === user.id) hashMapOf("active" to true) else null
+        return page?.privilege ?: if (owner?.id === user.id) hashMapOf("active" to true) else null
       }
 
       return false

@@ -107,6 +107,7 @@ export default [
         children: [
           {
             path: 'information',
+            name: 'conference.settings.information',
             component: resolve => require(['../pages/conference/settings/Information.vue'], resolve),
             meta: {
               title: 'Conference information settings'
@@ -114,9 +115,18 @@ export default [
           },
           {
             path: 'registration',
+            name: 'conference.settings.registration',
             component: resolve => require(['../pages/conference/settings/Registration.vue'], resolve),
             meta: {
               title: 'Conference registration settings'
+            }
+          },
+          {
+            path: 'delete',
+            name: 'conference.settings.deletion',
+            component: resolve => require(['../pages/conference/settings/Delete.vue'], resolve),
+            meta: {
+              titie: 'Conference deletion'
             }
           }
         ]
@@ -186,7 +196,20 @@ export default [
   {
     path: 'survey/:survey_id',
     name: 'survey',
-    component: resolve => require(['../pages/Survey.vue'], resolve)
+    component: resolve => require(['../pages/Survey.vue'], resolve),
+    redirect: '/admin/survey/:survey_id/results',
+    children: [
+      {
+        path: 'results',
+        name: 'survey.results',
+        component: resolve => require(['../pages/survey/Survey.results.vue'], resolve)
+      },
+      {
+        path: 'edit',
+        name: 'survey.edit',
+        component: resolve => require(['../pages/survey/Survey.editor.vue'], resolve)
+      }
+    ]
   },
   {
     path: 'event/:id',

@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.events.OnPaymentEvent;
 import com.pancisin.bookster.events.OnPaymentEvent.PaymentState;
-import com.pancisin.bookster.model.Conference;
 import com.pancisin.bookster.model.Page;
 import com.pancisin.bookster.model.enums.PageState;
-import com.pancisin.bookster.repository.ConferenceRepository;
 import com.pancisin.bookster.repository.PageRepository;
 
 @Component
@@ -20,9 +18,6 @@ public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 
 	@Autowired
 	private PageRepository pageRepository;
-
-	@Autowired
-	private ConferenceRepository conferenceRepository;
 
 	@Override
 	public void onApplicationEvent(OnPaymentEvent event) {
@@ -37,16 +32,16 @@ public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 				updatedPages.add(x);
 			});
 
-			List<Conference> conferences = conferenceRepository.getByOwner(user_id);
-
-			List<Conference> updatedConferences = new ArrayList<Conference>();
-			conferences.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
-				x.setState(PageState.PUBLISHED);
-				updatedConferences.add(x);
-			});
-
-			pageRepository.save(updatedPages);
-			conferenceRepository.save(updatedConferences);
+//			List<Conference> conferences = conferenceRepository.getByOwner(user_id);
+//
+//			List<Conference> updatedConferences = new ArrayList<Conference>();
+//			conferences.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
+//				x.setState(PageState.PUBLISHED);
+//				updatedConferences.add(x);
+//			});
+//
+//			pageRepository.save(updatedPages);
+//			conferenceRepository.save(updatedConferences);
 
 			// Send approval email to the customer. Log transactions as well !
 		} else if (event.getState() == PaymentState.ERROR) {

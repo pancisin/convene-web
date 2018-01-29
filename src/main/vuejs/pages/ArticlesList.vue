@@ -27,7 +27,7 @@
         <keep-alive>
           <transition name="fade-down"
             mode="out-in">
-            <router-view :key="$route.path"></router-view>
+            <router-view :key="$route.path" :list="list" @update="updateList"></router-view>
           </transition>
         </keep-alive>
       </div>
@@ -70,6 +70,9 @@ export default {
       this.injector.getArticlesList(articlesList => {
         this.list = articlesList;
       });
+    },
+    updateList (list) {
+      this.list = list;
     }
   }
 };

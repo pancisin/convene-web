@@ -41,11 +41,11 @@ class Survey() {
   @JsonIgnore
   @ManyToOne
   @JoinTable(
-    name = "conferences_surveys",
+    name = "pages_surveys",
     joinColumns = arrayOf(JoinColumn(name = "survey_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var conference: Conference? = null
+  var page: Page? = null
 
   val submissionsCount
     get() = submissions?.size

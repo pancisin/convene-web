@@ -40,16 +40,7 @@ data class Place(
     joinColumns = arrayOf(JoinColumn(name = "place_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var page: Page? = null,
-
-  @JsonIgnore
-  @ManyToOne
-  @JoinTable(
-    name = "conferences_places",
-    joinColumns = arrayOf(JoinColumn(name = "place_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
-  )
-  var conference: Conference? = null
+  var page: Page? = null
 ) {
   fun AddGallery(media: Media) {
     this.gallery?.add(media)

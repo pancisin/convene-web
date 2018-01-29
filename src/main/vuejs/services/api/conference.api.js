@@ -1,5 +1,5 @@
 import Vue from 'vue';
-const CONFERENCE_API_URL = '/api/conference';
+const CONFERENCE_API_URL = '/api/v1/conference';
 function checkId (id) {
   if (id == null || id === '') throw new Error('missing entity id');
 }
@@ -33,6 +33,17 @@ export default {
    */
   putConference (id, conference, success) {
     Vue.http.put(`${CONFERENCE_API_URL}/${id}`, conference).then(response => {
+      success(response.body);
+    });
+  },
+
+  /**
+   * Delete conference permanently
+   * @param {*} id - conference id
+   * @param {*} success - success callback function
+   */
+  deleteConference (id, success) {
+    Vue.http.delete(`${CONFERENCE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
   },

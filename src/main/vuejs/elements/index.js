@@ -53,6 +53,8 @@ import WidgetSelector from './WidgetSelector';
 import AdSense from './AdSense';
 import DataParserEditor from './DataParserEditor';
 import EventMap from './EventMap';
+import VueTable from './VueTable';
+import MemberList from './MemberList.vue';
 
 export {
   ArticlesList,
@@ -109,5 +111,7 @@ export {
   WidgetSelector,
   AdSense,
   DataParserEditor,
-  EventMap
+  EventMap,
+  VueTable,
+  MemberList
 };

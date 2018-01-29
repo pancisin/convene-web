@@ -12,25 +12,16 @@
           <date-picker v-model="eventClone.date" v-validate data-vv-rules="required" name="date"></date-picker>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('date') }}</span>
         </div>
-        <div class="form-group" :class="{ 'has-error' : errors.has('visibility') }">
-          <label class="control-label">Visibility</label>
-          <select v-model="eventClone.visibility" class="form-control" name="visibility" v-validate data-vv-rules="required">
-            <option :value="option" v-for="(option, index) in visibility_options" v-text="option" :key="index"></option>
-          </select>
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('visibility') }}</span>
+        <div class="form-group">
+          <label class="control-label">Location</label>
+          <place-picker v-model="location" name="location" v-validate data-vv-rules="required"></place-picker>
+          <span class="text-danger" v-if="errors.has('location')">{{ errors.first('location') }}</span>
         </div>
       </div>
       <div class="col-md-6">
         <image-upload v-model="eventClone.posterData" :media="event.poster"></image-upload>
       </div>
     </div>
-
-    <div class="form-group">
-      <label class="control-label">Location</label>
-      <place-picker v-model="location" name="location" v-validate data-vv-rules="required"></place-picker>
-      <span class="text-danger" v-if="errors.has('location')">{{ errors.first('location') }}</span>
-    </div>
-    
     <div class="form-group">
       <label class="control-label">Summary</label>
       <text-editor v-model="eventClone.summary"></text-editor>
@@ -74,7 +65,8 @@ export default {
       default () {
         return {};
       }
-    }
+    },
+    compact: Boolean
   },
   computed: {
     visibility_options: {

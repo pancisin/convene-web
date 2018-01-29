@@ -48,19 +48,26 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-4">
-                <div class="widget-simple text-center card-box">
+                <!-- <div class="widget-simple text-center card-box">
                   <h3 class="text-primary counter font-bold">{{ event.attendeesCount }} / {{ event.place != null ? event.place.capacity : "N" }}</h3>
                   <p class="text-muted">{{ $t('event.attendees') }}</p>
-                </div>
+                </div> -->
 
                 <a class="btn btn-primary btn-block waves-effect" 
                   :class="{ 'btn-danger' : attending }" 
+                  v-show="!attending"
                   @click="toggleAttending"
                   v-if="event.state == 'PUBLISHED'">
 
                   <span v-if="attending">{{ $t('event.cancel_attending') }}</span>
                   <span v-else>{{ $t('event.attend') }}</span>
                 </a>
+
+                <div class="text-center">
+                  <h3 class="text-primary">{{ members.length }} <small class="text-muted">{{ $t('event.attendees') }}</small></h3>
+                </div>
+                
+                <member-list :users="members" v-loading="loadingMembers" />
 
                 <div class="timeline-2 m-t-20">
                   <div class="time-item" v-for="p in event.programme" :key="p.id">
@@ -137,7 +144,8 @@ import {
   SharePanel,
   LightBox,
   VueImage,
-  Error
+  Error,
+  MemberList
 } from 'elements';
 import EventApi from 'api/event.api';
 import PublicApi from 'api/public.api';
@@ -156,7 +164,9 @@ export default {
       gallery: [],
       loading: false,
       address: null,
-      error: null
+      error: null,
+      members: [],
+      loadingMembers: false
     };
   },
   components: {
@@ -169,13 +179,14 @@ export default {
     SharePanel,
     LightBox,
     VueImage,
-    Error
+    Error,
+    MemberList
   },
   created () {
     this.getEvent();
   },
   computed: {
-    ...mapGetters(['authenticated', 'eventAttendingStatus']),
+    ...mapGetters(['authenticated', 'eventAttendingStatus', 'user']),
     attending () {
       return this.eventAttendingStatus(this.event.id);
     },
@@ -229,6 +240,12 @@ export default {
             });
           });
 
+          this.loadingMembers = true;
+          api.getAttendees(members => {
+            this.members = members;
+            this.loadingMembers = false;
+          });
+
           this.loading = false;
         }, error => {
           this.error = error;
@@ -244,11 +261,21 @@ export default {
       return array;
     },
     toggleAttending () {
+      const toggle = () => {
+        this.toggleEventAttending(this.event).then(attending => {
+          if (attending) {
+            this.members.push(this.user);
+          } else {
+            this.members = this.members.filter(u => u.id !== this.user.id);
+          }
+        });
+      };
+
       if (this.authenticated) {
-        this.toggleEventAttending(this.event);
+        toggle();
       } else {
         this.$tryAuthenticate(() => {
-          this.toggleEventAttending(this.event);
+          toggle();
         });
       }
     }

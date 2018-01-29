@@ -18,7 +18,7 @@ export default {
     };
   },
   mounted () {
-    this.source = this.src;
+    this.source = this.src || Placeholder;
   },
   methods: {
     error (event) {
@@ -30,7 +30,3 @@ export default {
   }
 };
 </script>
-
-<style>
-
-</style>

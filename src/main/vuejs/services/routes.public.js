@@ -2,12 +2,10 @@ export default [
   {
     path: '',
     name: 'client.home',
-    component: resolve => require(['../pages/public/Home.vue'], resolve)
-  },
-  {
-    path: 'my-events',
-    name: 'client.event.my',
-    component: resolve => require(['../pages/public/Event.my.vue'], resolve)
+    component: resolve => require(['../pages/public/Home.vue'], resolve),
+    meta: {
+      title: 'Home'
+    }
   },
   {
     path: 'event/:id',
@@ -15,9 +13,12 @@ export default [
     component: resolve => require(['../pages/public/Event.public.vue'], resolve)
   },
   {
-    path: 'explore',
+    path: 'pages',
     name: 'client.page.explore',
-    component: resolve => require(['../pages/public/Page.index.vue'], resolve)
+    component: resolve => require(['../pages/public/Page.index.vue'], resolve),
+    meta: {
+      title: 'Pages'
+    }
   },
   {
     path: 'page/:id',
@@ -27,7 +28,10 @@ export default [
   {
     path: 'conferences',
     name: 'conferences',
-    component: resolve => require(['../pages/public/Conference.index.vue'], resolve)
+    component: resolve => require(['../pages/public/Conference.index.vue'], resolve),
+    meta: {
+      title: 'Conferences'
+    }
   },
   {
     path: 'conference/:id',
@@ -40,41 +44,54 @@ export default [
     component: resolve => require(['../pages/public/Article.vue'], resolve)
   },
   {
-    path: 'survey/:survey_id',
-    name: 'survey.public',
-    component: resolve => require(['../pages/public/Survey.vue'], resolve)
-  },
-  {
     path: 'about',
     alias: 'admin/about',
     name: 'about',
-    component: resolve => require(['../pages/static/About.vue'], resolve)
+    component: resolve => require(['../pages/static/About.vue'], resolve),
+    meta: {
+      title: 'About'
+    }
   },
   {
     path: 'faq',
     name: 'faq',
-    component: resolve => require(['../pages/static/FAQ.vue'], resolve)
+    component: resolve => require(['../pages/static/FAQ.vue'], resolve),
+    meta: {
+      title: 'Frequently asked questions'
+    }
   },
   {
     path: 'terms',
     name: 'terms',
-    component: resolve => require(['../pages/static/Terms.vue'], resolve)
+    component: resolve => require(['../pages/static/Terms.vue'], resolve),
+    meta: {
+      title: 'Terms of usage'
+    }
   },
   {
     path: 'privacy-policy',
     name: 'privacy-policy',
-    component: resolve => require(['../pages/static/Privacy.vue'], resolve)
+    component: resolve => require(['../pages/static/Privacy.vue'], resolve),
+    meta: {
+      title: 'Privacy policy'
+    }
   },
   {
     path: 'pricing',
     alias: 'admin/pricing',
     name: 'pricing',
-    component: resolve => require(['../pages/static/Pricing.vue'], resolve)
+    component: resolve => require(['../pages/static/Pricing.vue'], resolve),
+    meta: {
+      title: 'Pricing'
+    }
   },
   {
     path: 'events',
     name: 'client.event.explore',
-    component: resolve => require(['../pages/public/Event.index.vue'], resolve)
+    component: resolve => require(['../pages/public/Event.index.vue'], resolve),
+    meta: {
+      title: 'Events'
+    }
   },
   {
     path: 'settings',
@@ -85,17 +102,26 @@ export default [
       {
         path: 'account',
         name: 'settings.account',
-        component: resolve => require(['../pages/settings/Account.vue'], resolve)
+        component: resolve => require(['../pages/settings/Account.vue'], resolve),
+        meta: {
+          title: 'Account settings'
+        }
       },
       {
         path: 'license',
         name: 'settings.license',
-        component: resolve => require(['../pages/settings/License.vue'], resolve)
+        component: resolve => require(['../pages/settings/License.vue'], resolve),
+        meta: {
+          title: 'License settings'
+        }
       },
       {
         path: 'notifications',
         name: 'settings.notifications',
-        component: resolve => require(['../pages/settings/Notifications.vue'], resolve)
+        component: resolve => require(['../pages/settings/Notifications.vue'], resolve),
+        meta: {
+          title: 'Notification settings'
+        }
       }
     ]
   },

@@ -265,18 +265,22 @@ const actions = {
     });
   },
   toggleEventAttending ({ commit, state }, event) {
-    EventApi.toggleAttendanceStatus(event.id, status => {
-      event.attendeesCount += status ? 1 : -1;
+    return new Promise(resolve => {
+      EventApi.toggleAttendanceStatus(event.id, status => {
+        event.attendeesCount += status ? 1 : -1;
 
-      if (status) {
-        let events = [...state.attendingEvents];
-        events.push(event);
-        commit(types.SET_ATTENDING_EVENTS, { events });
-      } else {
-        commit(types.SET_ATTENDING_EVENTS, {
-          events: state.attendingEvents.filter(e => e.id !== event.id)
-        });
-      }
+        if (status) {
+          let events = [...state.attendingEvents];
+          events.push(event);
+          commit(types.SET_ATTENDING_EVENTS, { events });
+        } else {
+          commit(types.SET_ATTENDING_EVENTS, {
+            events: state.attendingEvents.filter(e => e.id !== event.id)
+          });
+        }
+
+        resolve(status);
+      });
     });
   },
   setLocale ({ commit, state }, locale) {

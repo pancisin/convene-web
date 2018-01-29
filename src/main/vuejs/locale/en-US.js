@@ -54,6 +54,7 @@ export default {
   },
   user: {
     email: 'Email address',
+    name: 'Name',
     firstName: 'First name',
     lastName: 'Last name',
     address: {

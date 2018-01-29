@@ -18,12 +18,9 @@
             <option :value="option" v-for="option in visibility_options" v-text="option" :key="option"></option>
           </select>
         </div>
-      </div>
 
-      <button class="btn btn-rounded btn-danger" @click="toggleConferencePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
-      <button class="btn btn-rounded btn-success" @click="toggleConferencePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
-        Publish
-      </button>
+        <categorizer :category.sync="conference.category" :branch.sync="conference.branch" required />
+      </div>
     </div>
 
     <div class="form-group m-t-20">
@@ -32,6 +29,10 @@
     </div>
 
     <div class="text-center">
+      <button class="btn btn-rounded btn-danger" @click="toggleConferencePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
+      <button class="btn btn-rounded btn-success" @click="toggleConferencePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
+        Publish
+      </button>
       <button class="btn btn-rounded btn-primary" type="submit" @click="submit" :disabled="conference.state == 'BLOCKED'">
         <span>Save</span>
       </button>
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload } from 'elements';
+import { TextEditor, ImageUpload, Categorizer } from 'elements';
 import { mapActions } from 'vuex';
 export default {
   props:
@@ -62,7 +63,9 @@ export default {
     }
   },
   components: {
-    TextEditor, ImageUpload
+    TextEditor,
+    ImageUpload,
+    Categorizer
   },
   methods: {
     submit () {

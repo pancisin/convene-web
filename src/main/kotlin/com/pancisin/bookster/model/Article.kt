@@ -40,11 +40,11 @@ data class Article(
 
   @JsonIgnore @ManyToOne(optional = true)
   @JoinTable(
-    name = "conferences_articles",
+    name = "pages_articles",
     joinColumns = arrayOf(JoinColumn(name = "articles_id")),
-    inverseJoinColumns = arrayOf(JoinColumn(name = "conference_id"))
+    inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var conference: Conference? = null,
+  var page: Page? = null,
 
   @Column(unique = true, updatable = false, nullable = false)
   var identifier: Int = 0,
@@ -62,7 +62,7 @@ data class Article(
   private fun onCreate() {
     this.identifier = arrayListOf(
       title.toString(),
-      articlesList?.id.toString() ?: conference?.id.toString() ?: ""
+      articlesList?.id.toString() ?: page?.id.toString() ?: ""
     ).hashCode()
   }
 }

@@ -44,15 +44,14 @@ public class PageActivityMonitor {
 
 		User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		Activity activity = new Activity(auth, activityLog.type());
-		activity.setPage(stored);
+		Activity activity = new Activity(auth, activityLog.type(), stored);
 		activity = activityRepository.save(activity);
 
 		switch (activityLog.type()) {
       case CREATE_EVENT:
         Event event = (Event) response.getBody();
-        stored.getFollowers().stream().forEach(u -> {
-          notificationService.notifyUser(u, "notification.page.event_created", event.getName(), stored.getDisplayName());
+        stored.getMembers().stream().forEach(u -> {
+          notificationService.notifyUser(u.getUser(), "notification.page.event_created", event.getName(), stored.getDisplayName());
         });
         break;
       case FOLLOWING:
@@ -63,8 +62,8 @@ public class PageActivityMonitor {
         break;
       case CREATE_SERVICE:
         Service service = (Service) response.getBody();
-        stored.getFollowers().stream().forEach(u -> {
-          notificationService.notifyUser(u, "notification.page.service_created", service.getName(), stored.getDisplayName());
+        stored.getMembers().stream().forEach(u -> {
+          notificationService.notifyUser(u.getUser(), "notification.page.service_created", service.getName(), stored.getDisplayName());
         });
         break;
       case CREATE_ADMINISTRATOR:

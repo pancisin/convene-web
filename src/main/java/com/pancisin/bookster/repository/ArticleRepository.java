@@ -27,8 +27,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	@CacheEvict(value = "articles", key = "#p0.id")
 	void delete(Long id);
 
-	@Query("SELECT article FROM Article article JOIN article.conference conference WHERE conference.id = :conference_id")
-	public Page<Article> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
+	@Query("SELECT article FROM Article article WHERE article.page.id = :page_id")
+	public Page<Article> getByPage(@Param("page_id") Long page_id, Pageable pageable);
 
 	@Query("SELECT article FROM Article article WHERE article.articlesList.id = :articles_list_id")
 	public Page<Article> getByArticlesList(@Param("articles_list_id") UUID articles_list_id, Pageable pageable);

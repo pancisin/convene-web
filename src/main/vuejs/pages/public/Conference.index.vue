@@ -11,6 +11,9 @@
             <h5>
               {{ conference.name }}
             </h5>
+            <small class="text-muted" v-if="conference.category != null">
+              {{ $t('category.' + conference.category.code + '.' + conference.branch.code) }}
+            </small>
           </div>
 
           <div class="image-wrapper" v-if="conference.poster"> 
