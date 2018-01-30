@@ -1,5 +1,6 @@
 <script>
 import { VueTable } from 'elements';
+import PageMemberApi from 'api/page-member.api';
 export default {
   name: 'conference-attendees-new',
   inject: ['provider'],
@@ -21,7 +22,8 @@ export default {
       h('vue-table', {
         props: {
           func: this.tableRender,
-          data: this.members
+          data: this.members,
+          contextmenu: this.contextMenu
         }
       })
     ]);
@@ -58,15 +60,38 @@ export default {
       }, {});
 
       return {
-        name: member.user.displayName,
+        name: {
+          el: 'a',
+          onClick: () => {
+            this.$router.push({ name: 'user', params: { user_id: member.user.id } });
+          },
+          content: member.user.displayName
+        },
         email: member.user.email,
-        ...fields
+        ...fields,
+        approved: member.approved
       };
+    },
+    contextMenu (item) {
+      return [
+        item('Delete', this.deleteMember),
+        item('Toggle approved', this.toggleMemberApproved)
+      ];
     },
     initialize () {
       this.api.getAttendees(members => {
         this.members = members;
       });
+    },
+    deleteMember (member) {
+      this.$prompt('notification.delete_prompt', member.user.displayName, () => {
+        PageMemberApi.deletePageMember(member.id, result => {
+          this.members = this.members.filter(m => m.id !== member.id);
+        });
+      });
+    },
+    toggleMemberApproved (member) {
+
     }
   }
 };

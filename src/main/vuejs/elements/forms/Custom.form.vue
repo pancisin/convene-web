@@ -1,7 +1,7 @@
 <template>
   <form class="form" @submit.prevent="submit">
     <div class="form-group" v-for="(field, index) in form.formFields" :key="index" :class="{ 'has-error' : errors.has(`input-${index}`) }">
-      <label v-text="field.name"></label>
+      <label v-text="field.name"></label> <span v-if="!field.optional">*</span>
       <p v-if="field.description">
         <small v-text="field.description"></small>
         <br>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="text-center m-b-15">
-      <input type="submit" class="btn btn-primary btn-rounded" />
+      <button type="submit" class="btn btn-default">Submit</button>
     </div>
   </form>
 </template>

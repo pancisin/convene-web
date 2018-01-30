@@ -1,5 +1,5 @@
 <script>
-import SurveySubmissionApi from 'api/survey-submission.api';
+import FormSubmissionApi from 'api/survey-submission.api';
 import FormApi from 'api/form.api';
 import { VueTable } from 'elements';
 
@@ -94,7 +94,7 @@ export default {
     },
     deleteSubmission (submission_id) {
       this.$prompt('notification.delete_prompt', '', () => {
-        SurveySubmissionApi.deleteSurveySubmission(submission_id, result => {
+        FormSubmissionApi.deleteFormSubmission(submission_id, result => {
           this.submissions = this.submissions.filter(s => s.id !== submission_id);
         });
       });

@@ -172,10 +172,7 @@ class ConferenceController {
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
   fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<*> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
-    val (_, _, _, _, active) = pageMemberRepository.findByAttendance(conference_id, user.id)
-      ?: return ResponseEntity.ok("INACTIVE")
-
-    return ResponseEntity.ok(if (active) "ACTIVE" else "CANCELED")
+    return ResponseEntity.ok(pageMemberRepository.findByAttendance(conference_id, user.id))
   }
 
 //  @GetMapping("/formField-field")

@@ -122,7 +122,7 @@ export default {
             } else {
               return h('td', res);
             }
-          } else if (typeof value === 'object') {
+          } else if (typeof value === 'object' && value != null) {
             return h('td', { class: value.colClass }, [ constructEl(value) ]);
           } else {
             return h('td', value);

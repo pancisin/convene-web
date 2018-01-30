@@ -164,7 +164,7 @@ export default {
   getAttendStatus (id, success) {
     checkId(id);
     Vue.http.get(`${CONFERENCE_API_URL}/${id}/attend-status`).then(response => {
-      success(response.bodyText);
+      success(response.body);
     });
   },
 
@@ -177,7 +177,7 @@ export default {
   postAttend (id, meta, success) {
     checkId(id);
     Vue.http.post(`${CONFERENCE_API_URL}/${id}/attend`, meta).then(response => {
-      success(response.bodyText);
+      success(response.body);
     });
   },
 

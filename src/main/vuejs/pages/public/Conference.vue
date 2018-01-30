@@ -32,16 +32,16 @@
             </light-box>        
             
             <div v-if="authenticated">
-              <panel v-if="attend_status != 'ACTIVE'" type="primary">
+              <panel v-if="!attend_status" type="primary">
                 <span slot="title">Join conference</span>
-                <custom-form :form="conference.registrationForm" :submitFunc="registrationSubmit" />
+                <custom-form v-if="conference.registrationForm" :form="conference.registrationForm" :submitFunc="registrationSubmit" />
+                <div v-else class="text-center">
+                  <button type="button" class="btn btn-primary">Sign up</button>
+                </div>
               </panel>
               <div v-else>
-      
                 <survey-list />
-
                 <events-list :events="eventsPaginator.content"></events-list>
-                
                 <div class="text-center">
                   <paginator 
                     :fetch="getEvents" 
@@ -127,15 +127,12 @@ export default {
     });
 
     if (this.authenticated) {
-      this.injector.getAttendStatus(status => {
-        this.attend_status = status;
+      this.injector.getAttendStatus(member => {
+        this.attend_status = member.active;
       });
     }
   },
   methods: {
-    statusChanged (status) {
-      this.attend_status = status;
-    },
     getEvents (page) {
       this.injector.getEvents(page, 3, paginator => {
         this.eventsPaginator = paginator;
@@ -148,6 +145,7 @@ export default {
     },
     registrationSubmit (values) {
       this.injector.postAttend(values, result => {
+        console.log(result);
         this.attend_status = result.active;
       });
     }
