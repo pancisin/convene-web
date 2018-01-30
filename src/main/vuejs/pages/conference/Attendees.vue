@@ -1,38 +1,3 @@
-<template>
-  <panel type="table">
-    <span slot="title">Attendees</span>
-
-    <!-- <vue-table :func="tableRender" :data="members" /> -->
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>
-            Name
-          </th>
-          <th>
-            Email
-          </th>
-          <th v-for="field in metaFields" :key="field.id">
-            {{ field.name }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="member in members" :key="member.user.id">
-          <td>{{ member.user.displayName }}</td>
-          <td>
-            {{ member.user.email }}
-          </td>
-          <td v-for="field in metaFields" :key="field.id">
-            {{ getUserMetaValue(member.submission, field.id) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </panel>
-</template>
-
 <script>
 import { VueTable } from 'elements';
 export default {
@@ -43,6 +8,23 @@ export default {
     return {
       members: []
     };
+  },
+  render (h) {
+    return h('panel', {
+      props: {
+        type: 'table'
+      }
+    }, [
+      h('span', {
+        slot: 'title'
+      }, 'Attendees'),
+      h('vue-table', {
+        props: {
+          func: this.tableRender,
+          data: this.members
+        }
+      })
+    ]);
   },
   created () {
     this.initialize();
@@ -61,22 +43,30 @@ export default {
     }
   },
   methods: {
-    tableRender () {
-      return {
+    tableRender (member) {
+      const getMeta = (fieldId) => {
+        const fields = member.submission.values.filter(e => e.field === fieldId);
 
+        if (fields.length > 0) {
+          return fields[0].value;
+        }
+      };
+
+      const fields = this.metaFields.reduce((acc, field) => {
+        acc[field.name] = getMeta(field.id);
+        return acc;
+      }, {});
+
+      return {
+        name: member.user.displayName,
+        email: member.user.email,
+        ...fields
       };
     },
     initialize () {
       this.api.getAttendees(members => {
         this.members = members;
       });
-    },
-    getUserMetaValue (submission, field_id) {
-      const fields = submission.values.filter(e => e.field === field_id);
-
-      if (fields.length > 0) {
-        return fields[0].value;
-      }
     }
   }
 };

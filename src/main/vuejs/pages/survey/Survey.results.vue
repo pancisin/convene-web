@@ -1,42 +1,8 @@
-<template>
-  <panel type="table">
-    <span slot="title">Results table</span>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>
-            User
-          </th>
-          <th v-for="(field, index) in metaFields" :key="index">
-            {{ field.name }}
-          </th>
-          <th>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="submission in submissions" :key="submission.id">
-          <td>
-            {{ submission.user }}
-          </td>
-          <td v-for="field in metaFields" :key="field.ordering">
-            {{ getSubmissionValue(submission, field.id) || '-' }}
-          </td>
-          <td>
-            <button class="btn btn-danger btn-xs" @click="deleteSubmission(submission.id)">
-              <i class="fa fa-trash-o"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </panel>
-</template>
-
 <script>
 import SurveySubmissionApi from 'api/survey-submission.api';
 import FormApi from 'api/form.api';
+import { VueTable } from 'elements';
+
 export default {
   name: 'survey-submissions',
   inject: ['provider'],
@@ -47,6 +13,26 @@ export default {
     return {
       submissions: []
     };
+  },
+  render (h) {
+    return h('panel', {
+      attrs: {
+        type: 'table'
+      }
+    }, [
+      h('span', {
+        slot: 'title'
+      }, 'Results table'),
+      h('vue-table', {
+        attrs: {
+          func: this.tableRender,
+          data: this.submissions
+        }
+      })
+    ]);
+  },
+  components: {
+    VueTable
   },
   computed: {
     api () {
@@ -80,6 +66,24 @@ export default {
           this.submissions = submissions;
         });
       }
+    },
+    tableRender (submission) {
+      const fields = this.metaFields.reduce((acc, field) => {
+        acc[field.name] = this.getSubmissionValue(submission, field.id);
+        return acc;
+      }, {});
+
+      return {
+        user: submission.user,
+        ...fields,
+        action: {
+          el: 'a',
+          content: 'delete',
+          onClick: submission => {
+            this.deleteSubmission(submission.id);
+          }
+        }
+      };
     },
     getSubmissionValue (submission, field_id) {
       const fields = submission.values.filter(e => e.field === field_id);
