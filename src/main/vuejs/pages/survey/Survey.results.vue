@@ -26,7 +26,8 @@ export default {
       h('vue-table', {
         attrs: {
           func: this.tableRender,
-          data: this.submissions
+          data: this.submissions,
+          contextmenu: this.contextmenu
         }
       })
     ]);
@@ -75,15 +76,13 @@ export default {
 
       return {
         user: submission.user,
-        ...fields,
-        action: {
-          el: 'a',
-          content: 'delete',
-          onClick: submission => {
-            this.deleteSubmission(submission.id);
-          }
-        }
+        ...fields
       };
+    },
+    contextmenu (item) {
+      return [
+        item('Delete', this.deleteSubmission)
+      ];
     },
     getSubmissionValue (submission, field_id) {
       const fields = submission.values.filter(e => e.field === field_id);
@@ -92,10 +91,10 @@ export default {
         return fields[0].value;
       }
     },
-    deleteSubmission (submission_id) {
+    deleteSubmission (submission) {
       this.$prompt('notification.delete_prompt', '', () => {
-        FormSubmissionApi.deleteFormSubmission(submission_id, result => {
-          this.submissions = this.submissions.filter(s => s.id !== submission_id);
+        FormSubmissionApi.deleteFormSubmission(submission.id, result => {
+          this.submissions = this.submissions.filter(s => s.id !== submission.id);
         });
       });
     }

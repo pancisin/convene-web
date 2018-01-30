@@ -24,6 +24,8 @@
       </div>
     </div>
 
+    <h3>Fields</h3>
+    <hr />
     <form-editor v-if="survey.form" v-model="survey.form" />
 
     <div class="text-center">
@@ -38,7 +40,6 @@
 <script>
 import SurveyApi from 'api/survey.api';
 import { DatePicker, FormEditor } from 'elements';
-import PublicApi from 'api/public.api';
 import { calculateHash } from '../../services/helpers';
 
 export default {
@@ -110,15 +111,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-.formField-field-row {
-  border: 1px solid #eee;
-  padding-top: 15px;
-  padding-bottom: 15px;
-
-  &~.formField-field-row {
-    margin-top: 15px;
-  }
-}
-</style>

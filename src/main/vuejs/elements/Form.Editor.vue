@@ -1,23 +1,23 @@
 <template>
-  <div>
+  <div class="form-editor">
     <transition-group name="fade-down">
-      <div class="row formField-field-row" v-for="(field, index) in formCopy.formFields" :key="index">
+      <div class="row field-row" v-for="(field, index) in formCopy.formFields" :key="index">
         <div class="col-md-2 col-lg-1 text-center">
           <h3>
             {{ index + 1 }}.
           </h3>
 
           <div class="m-b-10">
-            <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, -1)" v-if="index > 0">
+            <button class="btn btn-default btn-rounded btn-xs" @click="moveField(index, -1)" v-if="index > 0">
               <i class="fa fa-arrow-up"></i>
             </button>
 
-            <button class="btn btn-default btn-rounded btn-xs" @click="moveMeta(index, 1)" v-if="index + 1 < formCopy.formFields.length">
+            <button class="btn btn-default btn-rounded btn-xs" @click="moveField(index, 1)" v-if="index + 1 < formCopy.formFields.length">
               <i class="fa fa-arrow-down"></i>
             </button>
           </div>
 
-          <button class="btn btn-danger btn-rounded btn-xs" @click="removeMeta(index)">
+          <button class="btn btn-danger btn-rounded btn-xs" @click="removeField(index)">
             <i class="fa fa-minus"></i>
           </button>
         </div>
@@ -29,7 +29,7 @@
           </div>
           <div class="form-group">
             <label class="control-label">Description</label>
-            <input class="form-control" v-model="field.description" type="text">
+            <textarea class="form-control" v-model="field.description" rows="3"></textarea>
           </div>
           <div class="form-group">
             <div class="checkbox checkbox-primary">
@@ -81,8 +81,8 @@
     </transition-group>
 
     <div class="text-center">
-      <button @click="formCopy.formFields.push({})" class="btn btn-rounded m-t-15 m-b-15">
-        <i class="fa fa-plus"></i>
+      <button @click="addField" class="btn btn-rounded m-t-15 m-b-15">
+        <i class="fa fa-plus"></i> Add field
       </button>
     </div>
   </div>
@@ -118,19 +118,34 @@ export default {
   watch: {
     formCopy: {
       handler () {
-        this.$emit('input', this.formCopy);
+        const data = {
+          ...this.formCopy,
+          formFields: this.formCopy.formFields.map((field, index) => {
+            return {
+              ...field,
+              ordering: index
+            };
+          })
+        };
+
+        this.$emit('input', data);
       },
       deep: true
     }
   },
   methods: {
-    removeMeta (index) {
+    removeField (index) {
       this.formCopy.formFields.splice(index, 1);
     },
-    moveMeta (index, direction) {
-      let element = this.survey.metaFields[index];
-      this.survey.metaFields.splice(index, 1);
-      this.survey.metaFields.splice(index + direction, 0, element);
+    moveField (index, direction) {
+      let element = this.formCopy.formFields[index];
+      this.formCopy.formFields.splice(index, 1);
+      this.formCopy.formFields.splice(index + direction, 0, element);
+    },
+    addField () {
+      if (this.formCopy.formFields.filter(x => Object.keys(x).length === 0).length === 0) {
+        this.formCopy.formFields.push({});
+      }
     },
     deleteOption (field, index) {
       field.options.splice(index, 1);
@@ -151,6 +166,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+.form-editor {
+  .field-row {
 
+    & ~ .field-row {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed #ddd;
+    }
+  }
+}
 </style>

@@ -234,7 +234,7 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px !important;
+        padding: 10px 0 !important;
         border-bottom: 1px solid #ccc;
         text-align: center;
         color: #666 !important;
