@@ -23,7 +23,7 @@
                 {{ event.author.displayName }}
               </router-link>
               <router-link v-else-if="event.author.type == 'conference'"
-                :to="{ name: 'conference', params: { id: event.author.id }}"
+                :to="{ name: 'conference', params: { id: event.author.slug || event.author.id }}"
                 class="text-pink">
                 {{ event.author.displayName }}
               </router-link>

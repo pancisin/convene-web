@@ -359,11 +359,6 @@ export default [
         }
       },
       {
-        path: 'create-service',
-        name: 'page.create-service',
-        component: resolve => require(['../pages/Service.vue'], resolve)
-      },
-      {
         path: 'gallery',
         name: 'page.gallery',
         component: resolve => require(['../pages/templates/Gallery.vue'], resolve),
@@ -395,11 +390,6 @@ export default [
         }
       }
     ]
-  },
-  {
-    path: 'service/:service_id',
-    component: resolve => require(['../pages/Service.vue'], resolve),
-    name: 'service'
   },
   {
     path: 'place/:place_id',

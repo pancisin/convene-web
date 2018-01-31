@@ -54,8 +54,9 @@ class ServiceController {
     val stored = serviceRepository.findOne(service_id).apply {
       name = service.name
       detail = service.detail
-      pricePerUnit = service.pricePerUnit
+      price = service.price
       unit = service.unit
+      form = service.form
     }
     return ResponseEntity.ok(serviceRepository.save(stored))
   }
@@ -85,8 +86,5 @@ class ServiceController {
 
   @GetMapping("/request")
   @PreAuthorize("hasPermission(#service_id, 'service', 'read')")
-  fun getRequests(@PathVariable service_id: Long?): ResponseEntity<*> {
-    val (_, _, _, _, _, _, requests) = serviceRepository.findOne(service_id)
-    return ResponseEntity.ok<List<BookRequest>>(requests)
-  }
+  fun getRequests(@PathVariable service_id: Long?) = serviceRepository.findOne(service_id).requests;
 }

@@ -4,7 +4,9 @@
       <div class="modal-dialog" :class="{ 'modal-full' : full, 'modal-sm' : small }" v-click-outside="outside">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" @click="close"><i class="fa fa-times"></i></button>
+            <button type="button" class="close" data-dismiss="modal" @click="close">
+              <i class="material-icons">clear</i>
+            </button>
             <h4 class="modal-title">
               <slot name="header">Header</slot>
             </h4>
@@ -105,6 +107,8 @@ export default {
         .close {
           margin: 0;
           text-shadow: none;
+          color: #fff;
+          opacity: 1;
         }
       }
       .modal-body {

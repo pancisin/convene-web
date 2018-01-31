@@ -16,7 +16,8 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 //	<S extends Page> S save(S entity);
 
 //	@Cacheable("pages")
-	public Page findBySlug(String slug);
+  @Query("SELECT page FROM Page page WHERE page.slug = :slug AND page.pageType = 'PAGE'")
+	Page findBySlug(@Param("slug") String slug);
 
   @Override
   @Query("SELECT page FROM Page page WHERE page.id = :page_id AND page.pageType = 'PAGE'")

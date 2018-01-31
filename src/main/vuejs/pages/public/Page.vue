@@ -88,8 +88,8 @@
         </div>
       </div>
 
-      <modal :show.sync="displayBookModal">
-        <span slot="header">Book a service</span>
+      <modal :show.sync="displayBookModal" v-if="selectedService != null">
+        <span slot="header">{{ selectedService.name }}</span>
         <div slot="body">
           <service-book
             :service="selectedService"

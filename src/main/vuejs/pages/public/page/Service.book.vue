@@ -1,7 +1,5 @@
 <template>
   <div v-if="service != null">
-    <h2 v-text="service.name"></h2>
-  
     <div class="form-group">
       <label class="control-label">Units: </label>
       <input class="form-control required" v-model="bookRequest.units" type="text">
@@ -11,29 +9,29 @@
     <hr>
   
     <div class="text-center">
-      {{ bookRequest.units }} x {{ service.pricePerUnit }}
+      {{ bookRequest.units }} x {{ service.price }}
       <br>
   
-      <h4>= {{ bookRequest.units * service.pricePerUnit }}e</h4>
+      <h4>= {{ bookRequest.units * service.price }}e</h4>
     </div>
     <hr>
   
-    <div class="text-center">
-      <a @click="submit" class="btn btn-rounded btn-success">Submit</a>
-    </div>
-  
+    <custom-form :form="service.form" :submitFunc="submit" />
   </div>
 </template>
 
 <script>
 import { DatePicker } from 'elements';
+import { CustomForm } from 'elements/forms';
+
 export default {
   name: 'service-book',
   props: {
     service: Object
   },
   components: {
-    DatePicker
+    DatePicker,
+    CustomForm
   },
   data () {
     return {
@@ -43,10 +41,12 @@ export default {
     };
   },
   methods: {
-    submit () {
-      this.$http.post('/api/service/' + this.service.id + '/request', this.bookRequest).then(response => {
-        this.$emit('submitted', response.body);
-      });
+    submit (values) {
+      console.log(values);
+
+      // this.$http.post('/api/service/' + this.service.id + '/request', this.bookRequest).then(response => {
+      //   this.$emit('submitted', response.body);
+      // });
     }
   }
 };

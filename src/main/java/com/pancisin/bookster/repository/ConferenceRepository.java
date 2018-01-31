@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface ConferenceRepository extends JpaRepository<Page, Long> {
 
+  @Query("SELECT page FROM Page page WHERE page.slug = :slug AND page.pageType = 'CONFERENCE'")
+  Page findBySlug(@Param("slug") String slug);
+
   @Override
   @Query("SELECT page FROM Page page WHERE page.id = :conference_id AND page.pageType = 'CONFERENCE'")
   Page findOne(@Param("conference_id") Long conference_id);

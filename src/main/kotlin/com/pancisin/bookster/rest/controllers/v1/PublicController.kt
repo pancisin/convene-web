@@ -108,17 +108,6 @@ class PublicController {
     return if (used) ResponseEntity.ok(branchRepository.getUsed(category_id)) else ResponseEntity.ok(categoryRepository.findOne(category_id).branches)
   }
 
-  @GetMapping("/conference/{conference_id}")
-  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = conferenceRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
-
-    return if (conference.state === PageState.PUBLISHED || conference.state === PageState.BLOCKED) {
-      ResponseEntity.ok(conference)
-    } else {
-      ResponseEntity(HttpStatus.FORBIDDEN)
-    }
-  }
-
   @GetMapping("/conference/{conference_id}/event")
   fun getConferenceEvents(@PathVariable conference_id: Long) = ResponseEntity.ok(eventRepository.getByConference(conference_id, PageRequest(0, 10)))
 

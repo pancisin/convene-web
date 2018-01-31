@@ -8,16 +8,16 @@
           </h3>
 
           <div class="m-b-10">
-            <button class="btn btn-default btn-rounded btn-xs" @click="moveField(index, -1)" v-if="index > 0">
+            <button type="button" class="btn btn-default btn-rounded btn-xs" @click="moveField(index, -1)" v-if="index > 0">
               <i class="fa fa-arrow-up"></i>
             </button>
 
-            <button class="btn btn-default btn-rounded btn-xs" @click="moveField(index, 1)" v-if="index + 1 < formCopy.formFields.length">
+            <button type="button" class="btn btn-default btn-rounded btn-xs" @click="moveField(index, 1)" v-if="index + 1 < formCopy.formFields.length">
               <i class="fa fa-arrow-down"></i>
             </button>
           </div>
 
-          <button class="btn btn-danger btn-rounded btn-xs" @click="removeField(index)">
+          <button type="button" class="btn btn-danger btn-rounded btn-xs" @click="removeField(index)">
             <i class="fa fa-minus"></i>
           </button>
         </div>
@@ -60,18 +60,16 @@
                 </a>
               </li>
               <li>
-                <form @submit.prevent="addOption(field, $event)">
-                  <div class="form-group">
-                    <div class="input-group">
-                      <input type="text" class="form-control" name="option">
-                      <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit">
-                          <i class="fa fa-plus"></i> Add
-                        </button>
-                      </span>
-                    </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="option">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" @click="addOption(field, $event)">
+                        <i class="fa fa-plus"></i> Add
+                      </button>
+                    </span>
                   </div>
-                </form>
+                </div>
               </li>
             </ul>
           </div>
@@ -81,7 +79,7 @@
     </transition-group>
 
     <div class="text-center">
-      <button @click="addField" class="btn btn-rounded m-t-15 m-b-15">
+      <button type="button" @click="addField" class="btn btn-rounded m-t-15 m-b-15">
         <i class="fa fa-plus"></i> Add field
       </button>
     </div>
@@ -116,6 +114,11 @@ export default {
     this.formCopy = { formFields: [], ...this.value };
   },
   watch: {
+    value (newVal) {
+      if (newVal.id !== this.formCopy.id) {
+        this.formCopy = { formFields: [], ...newVal };
+      }
+    },
     formCopy: {
       handler () {
         const data = {

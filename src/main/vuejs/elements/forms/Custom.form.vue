@@ -7,12 +7,34 @@
         <br>
         <br>
       </p>
-      <input v-if="field.type == 'NUMBER'" type="number" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
-      <select v-else-if="field.type == 'SELECT'" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name">
+
+      <input 
+        v-if="field.type == 'NUMBER'"
+        type="number" 
+        class="form-control" 
+        v-model="meta_values[index].value" 
+        v-validate="!field.optional ? 'required' : ''" 
+        :name="`input-${index}`" 
+        :data-vv-as="field.name" />
+
+      <select 
+        v-else-if="field.type == 'SELECT'" 
+        class="form-control" 
+        v-model="meta_values[index].value" 
+        v-validate="!field.optional ? 'required' : ''" 
+        :name="`input-${index}`" 
+        :data-vv-as="field.name">
+
         <option :value="null">- select one -</option>
         <option v-for="option in field.options" :value="option" :key="option">{{ option }}</option>
       </select>
-      <div v-else-if="field.type == 'RADIO'" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name">
+
+      <div 
+        v-else-if="field.type == 'RADIO'" 
+        v-validate="!field.optional ? 'required' : ''" 
+        :name="`input-${index}`" 
+        :data-vv-as="field.name">
+
         <div class="radio radio-primary" v-for="(option, i) in field.options" :key="i">
           <input :id="'radio-' + i" type="radio" :value="option" v-model="meta_values[index].value">
           <label :for="'radio-' + i">
@@ -20,8 +42,23 @@
           </label>
         </div>
       </div>
-      <date-picker v-else-if="field.type == 'DATE'" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
-      <input v-else-if="field.type == 'TEXT'" type="text" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
+
+      <date-picker 
+        v-else-if="field.type == 'DATE'" 
+        v-model="meta_values[index].value" 
+        v-validate="!field.optional ? 'required' : ''" 
+        :name="`input-${index}`" 
+        :data-vv-as="field.name" />
+
+      <input 
+        v-else-if="field.type == 'TEXT'" 
+        type="text" 
+        class="form-control" 
+        v-model="meta_values[index].value" 
+        v-validate="!field.optional ? 'required' : ''" 
+        :name="`input-${index}`" 
+        :data-vv-as="field.name" />
+        
       <span class="text-danger" v-if="errors.has(`input-${index}`)">{{ errors.first(`input-${index}`) }}</span>
     </div>
 
@@ -32,8 +69,8 @@
 </template>
 
 <script>
-import { DatePicker } from 'elements';
 import FormApi from 'api/form.api';
+import { DatePicker } from 'elements';
 
 export default {
   name: 'custom-form',
@@ -43,6 +80,66 @@ export default {
       loading: false
     };
   },
+  components: {
+    DatePicker
+  },
+  render (h) {
+    return h('form', {
+      on: {
+        submit: (e) => {
+          e.preventDefault();
+          this.submit();
+        }
+      }
+    }, [
+      ...this.form.formFields.map((field, index) => {
+        var el = 'INPUT';
+
+        if (field.type === 'SELECT') {
+          el = field.type;
+        } else if (field.type === 'RADIO') {
+          el = 'div';
+        } else if (field.type === 'DATE') {
+          el = 'date-picker';
+        }
+
+        const inputElement = h(el, {
+          class: 'form-control',
+          domProps: {
+            value: this.meta_values[index].value
+          },
+          attrs: {
+            name: `input-${index}`,
+            'data-vv-as': field.name,
+            type: field.type === 'NUMBER' ? 'number' : 'text'
+          },
+          on: {
+            input: (e) => {
+              this.meta_values[index].value = e.target.value;
+            }
+          }
+        });
+
+        return h('div', {
+          class: 'form-group' // add has error
+        }, [
+          h('label', field.name), // add asterisk when non optional field given
+          h('p', [ h('small', field.description) ]), // add conditional render
+          inputElement,
+          h('span', {
+            class: 'text-danger'
+          }, this.errors.first(`input-${index}`))
+        ]);
+      }),
+      h('div', {
+        class: 'text-center'
+      }, [
+        h('button', {
+          class: 'btn btn-default'
+        }, 'submit')
+      ])
+    ]);
+  },
   props: {
     form: {
       type: Object,
@@ -50,11 +147,16 @@ export default {
     },
     submitFunc: Function
   },
-  components: {
-    DatePicker
-  },
   created () {
     this.initializeSurvey();
+  },
+  mounted () {
+    // this.form.formFields.forEach((field, index) => {
+    //   this.$validator.attach({
+    //     name: `input-${index}`,
+    //     rules: 'required'
+    //   });
+    // });
   },
   methods: {
     initializeSurvey () {

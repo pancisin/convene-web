@@ -70,18 +70,6 @@ class ConferenceController {
   @Autowired
   lateinit var formSubmissionRepository: FormSubmissionRepository
 
-  @GetMapping
-  @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = conferenceRepository.findOne(conference_id)
-
-    return if (conference == null) {
-      ResponseEntity(HttpStatus.NOT_FOUND)
-    } else {
-      ResponseEntity.ok(conference)
-    }
-  }
-
   @PutMapping
   @ActivityLog(type = ActivityType.UPDATE)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
@@ -142,7 +130,10 @@ class ConferenceController {
   @Transactional
   @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun postAttend(@PathVariable conference_id: Long?, @RequestBody values: MutableList<FormFieldValue>): ResponseEntity<PageMember> {
+  fun postAttend(
+    @PathVariable conference_id: Long?,
+    @RequestBody values: MutableList<FormFieldValue>
+  ): ResponseEntity<PageMember> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
     val conference = conferenceRepository.findOne(conference_id)
 

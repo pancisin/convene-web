@@ -1,83 +1,45 @@
 <template>
   <panel type="table" v-loading="loading">
     <span slot="title">{{ $t('admin.page.services') }}</span>
+    <vue-table :func="tableRender" :data="services" :contextmenu="contextmenu" />
 
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>{{ $t('admin.service.name') }}</th>
-          <th>{{ $t('admin.service.detail') }}</th>
-          <th>{{ $t('admin.service.unit') }}</th>
-          <th class="text-center">{{ $t('admin.service.price_per_unit') }}</th>
-        </tr>
-      </thead>
-      <tbody is="transition-group" name="fade">
-        <tr v-for="service in services" :key="service.id" @contextmenu.prevent="$refs.menu.open($event, service)">
-          <td>
-            <router-link :to="{ name: 'service', params: { service_id: service.id } }">
-              {{ service.name }}
-            </router-link>
-          </td>
-          <td>
-            {{ service.detail }}
-          </td>
-          <td>
-            <span v-if="service.unit">{{ $t(service.unit.code) }}</span>
-          </td>
-          <td class="text-center">
-            {{ service.pricePerUnit }}
-            <i class="fa fa-euro"></i>
-          </td>
-        </tr>
-        <tr v-if="services.length == 0" :key="0">
-          <td colspan="5" class="text-center">There's nothing to display.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <context-menu ref="menu">
-      <template slot-scope="props">
-        <ul>
-          <li>
-            <a @click="editService(props.data)">
-              Edit
-            </a>
-          </li>
-          <li v-if="editable">
-            <a @click="deleteService(props.data)">
-              Delete
-            </a>
-          </li>
-          <li class="separator"></li>
-          <li>
-            <router-link :to="{ name: 'page.create-service' }">
-              {{ $t('admin.service.create') }}
-            </router-link>
-          </li>
-        </ul>
-      </template>
-    </context-menu>
+    <modal :show.sync="displayServiceModal">
+      <span slot="header">Edit service</span>
+      
+      <div slot="body">
+        <service-form 
+          v-if="displayServiceModal" 
+          :service="selectedService" 
+          @update="updateService" />
+      </div>
+    </modal>
 
     <div class="text-center" v-if="editable">
-      <router-link :to="{ name: 'page.create-service' }" class="btn btn-rounded btn-primary">
+      <button type="button" @click="createService" class="btn btn-default">
         {{ $t('admin.service.create') }}
-      </router-link>
+      </button>
     </div>
   </panel>
 </template>
 
 <script>
 import ServiceApi from 'api/service.api';
+import { VueTable } from 'elements';
+import { ServiceForm } from 'elements/forms';
 
 export default {
   inject: ['provider'],
   data () {
     return {
       services: [],
-      displayEditModal: false,
       selectedService: {},
-      loading: false
+      loading: false,
+      displayServiceModal: false
     };
+  },
+  components: {
+    VueTable,
+    ServiceForm
   },
   props: {
     editable: Boolean
@@ -94,6 +56,28 @@ export default {
     'api': 'getServices'
   },
   methods: {
+    tableRender (service) {
+      return {
+        [this.$t('admin.service.name')]: {
+          el: 'a',
+          content: service.name,
+          onClick: () => {
+            this.selectedService = service;
+            this.displayServiceModal = true;
+          }
+        },
+        [this.$t('admin.service.detail')]: service.detail,
+        [this.$t('admin.service.unit')]: service.unit != null ? this.$t(service.unit.code) : '',
+        [this.$t('admin.service.price_per_unit')]: service.price
+      };
+    },
+    contextmenu (item) {
+      return [
+        item('Edit', this.editService),
+        item('Delete', this.deleteService),
+        item(this.$t('admin.service.create'), this.createService)
+      ];
+    },
     getServices () {
       this.loading = true;
       if (this.api != null) {
@@ -112,15 +96,16 @@ export default {
         });
       });
     },
-    editService (service) {
-      this.selectedService = service ? service : {};
-      this.displayEditModal = true;
-    },
-    updatedService (service) {
+    updateService (service) {
       this.services = this.services.filter(s => {
         return s.id !== service.id;
       });
       this.services.push(service);
+      this.displayServiceModal = false;
+    },
+    createService () {
+      this.selectedService = {};
+      this.displayServiceModal = true;
     }
   }
 };

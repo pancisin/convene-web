@@ -6,7 +6,7 @@
         :key="index">
         
         <router-link 
-          :to="{ name: 'conference', params: { id: conference.id } }">
+          :to="{ name: 'conference', params: { id: conference.slug || conference.id } }">
           <div class="title">
             <h5>
               {{ conference.name }}
