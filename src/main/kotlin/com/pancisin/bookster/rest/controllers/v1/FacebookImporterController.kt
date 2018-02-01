@@ -89,7 +89,7 @@ class FacebookImporterController {
       call.execute().let { response ->
         if (response.isSuccessful && response.body() != null) {
           val result = response.body()?.data?.map { p ->
-            val import = imports.firstOrNull { it.sourceId?.equals(p.id) ?: false }
+            val import = imports.firstOrNull { it.sourceId.equals(p.id) }
             mapOf(
               "name" to p.name,
               "id" to p.id,
@@ -185,7 +185,7 @@ class FacebookImporterController {
   }
 
   private fun convertPage(fbPage: com.pancisin.api.facebookapi.model.Page) = Page().apply {
-    name = fbPage.name;
+    name = fbPage.name.toString();
     summary = fbPage.about;
     facebookId = fbPage.id;
     fbPage.picture?.data?.url?.let { poster = Media(it) }

@@ -1,7 +1,28 @@
 <template>
-  <panel type="table" v-loading="loading">
-    <span slot="title">{{ $t('admin.page.services') }}</span>
-    <vue-table :func="tableRender" :data="services" :contextmenu="contextmenu" />
+  <div v-loading="loading">
+
+    <panel type="table" v-for="(service, index) in services" :key="index">
+      <span slot="title">
+        {{service.name}}
+        <button type="button" class="btn btn-link pull-right" @click="editService(service)">
+          <i class="fa fa-cogs"></i>
+        </button>
+      </span>
+
+      <service-panel :service="service" />
+    </panel>
+
+
+    <div class="text-center" v-if="editable">
+      <button type="button" @click="createService" class="btn btn-default">
+        {{ $t('admin.service.create') }}
+      </button>
+    </div>
+
+    <!-- <panel type="table" v-loading="loading" class="m-t-20">
+      <span slot="title">{{ $t('admin.page.services') }}</span>
+      <vue-table :func="tableRender" :data="services" :contextmenu="contextmenu" />
+    </panel> -->
 
     <modal :show.sync="displayServiceModal">
       <span slot="header">Edit service</span>
@@ -13,19 +34,14 @@
           @update="updateService" />
       </div>
     </modal>
-
-    <div class="text-center" v-if="editable">
-      <button type="button" @click="createService" class="btn btn-default">
-        {{ $t('admin.service.create') }}
-      </button>
-    </div>
-  </panel>
+  </div>
 </template>
 
 <script>
 import ServiceApi from 'api/service.api';
 import { VueTable } from 'elements';
 import { ServiceForm } from 'elements/forms';
+import { ServicePanel } from 'components';
 
 export default {
   inject: ['provider'],
@@ -39,7 +55,8 @@ export default {
   },
   components: {
     VueTable,
-    ServiceForm
+    ServiceForm,
+    ServicePanel
   },
   props: {
     editable: Boolean
@@ -105,6 +122,10 @@ export default {
     },
     createService () {
       this.selectedService = {};
+      this.displayServiceModal = true;
+    },
+    editService (service) {
+      this.selectedService = service;
       this.displayServiceModal = true;
     }
   }

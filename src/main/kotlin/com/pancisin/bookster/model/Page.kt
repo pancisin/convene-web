@@ -57,7 +57,7 @@ class Page() : IAuthor {
 
   @Column
   @JsonView(Compact::class)
-  var name: String? = null
+  var name: String = ""
 
   @JsonView(Compact::class)
   @JsonProperty(access = Access.READ_ONLY)

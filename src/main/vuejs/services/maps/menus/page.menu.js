@@ -28,13 +28,13 @@ export default {
         return pa.active && pa.role.level >= 60;
       }
     },
-    {
-      name: 'page.requests',
-      code: 'admin.page.requests',
-      hasPermission: (pa) => {
-        return pa.active && pa.role.level >= 60;
-      }
-    },
+    // {
+    //   name: 'page.requests',
+    //   code: 'admin.page.requests',
+    //   hasPermission: (pa) => {
+    //     return pa.active && pa.role.level >= 60;
+    //   }
+    // },
     {
       name: 'page.gallery',
       code: 'admin.page.gallery',

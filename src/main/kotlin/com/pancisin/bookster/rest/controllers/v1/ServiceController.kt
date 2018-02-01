@@ -1,5 +1,7 @@
 package com.pancisin.bookster.rest.controllers.v1
 
+import com.pancisin.bookster.model.*
+import com.pancisin.bookster.repository.FormSubmissionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController
 
 import com.pancisin.bookster.services.EmailService
 import com.pancisin.bookster.services.NotificationService
-import com.pancisin.bookster.model.BookRequest
-import com.pancisin.bookster.model.Service
-import com.pancisin.bookster.model.User
-import com.pancisin.bookster.repository.BookRequestRepository
+import com.pancisin.bookster.repository.ServiceRequestRepository
 import com.pancisin.bookster.repository.ServiceRepository
+import org.springframework.http.HttpStatus
+import javax.transaction.Transactional
 
 @RestController
 @RequestMapping("/api/service/{service_id}")
@@ -29,13 +30,16 @@ class ServiceController {
   lateinit var serviceRepository: ServiceRepository
 
   @Autowired
-  lateinit var bookRequestRepository: BookRequestRepository
+  lateinit var serviceRequestRepository: ServiceRequestRepository
 
   @Autowired
   lateinit var emailService: EmailService
 
   @Autowired
   lateinit var notificationService: NotificationService
+
+  @Autowired
+  lateinit var formSubmissionRepository: FormSubmissionRepository
 
   @GetMapping
   @PreAuthorize("hasPermission(#service_id, 'service', 'read')")
@@ -62,29 +66,38 @@ class ServiceController {
   }
 
   @PostMapping("/request")
+  @Transactional
   @PreAuthorize("hasPermission(#service_id, 'service', 'read')")
-  fun postRequest(@PathVariable service_id: Long?, @RequestBody request: BookRequest): ResponseEntity<*> {
+  fun postRequest(
+    @PathVariable service_id: Long,
+    @RequestBody values: MutableList<FormFieldValue>
+  ) : ResponseEntity<ServiceRequest> {
     val auth = SecurityContextHolder.getContext().authentication.principal as User
     val service = serviceRepository.findOne(service_id)
 
-    request.apply {
-      user = auth
-      this.service = service
-      approved = false
-    }
+    var submission = FormSubmission(
+      user = auth,
+      values = values,
+      form = service.form
+    )
+    submission = formSubmissionRepository.save(submission)
 
-    val message = ("User " + auth.username + " requested " + request.units + " units of " + service.name)
-    service.page?.administrators?.forEach { (_, user) ->
-      if (user != null) {
-        emailService.sendSimpleMessage(user.email.toString(), "Service request", message)
-        notificationService.notifyUser(user, "Service request", message)
-      }
-    }
-
-    return ResponseEntity.ok(bookRequestRepository.save(request))
+    return ResponseEntity.ok(serviceRequestRepository.save(ServiceRequest(
+      submission = submission,
+      user = auth,
+      service = service
+    )))
   }
 
   @GetMapping("/request")
   @PreAuthorize("hasPermission(#service_id, 'service', 'read')")
-  fun getRequests(@PathVariable service_id: Long?) = serviceRepository.findOne(service_id).requests;
+  fun getRequests(@PathVariable service_id: Long): ResponseEntity<List<ServiceRequest>> {
+    val service = serviceRepository.findOne(service_id)
+
+    if (!service.requestPending) {
+      return ResponseEntity.ok(service.requests);
+    } else {
+      return ResponseEntity(HttpStatus.FORBIDDEN);
+    }
+  }
 }

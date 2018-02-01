@@ -2,7 +2,6 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -69,10 +68,13 @@ public class PageController {
 	private EventBotRepository eventBotRepository;
 
 	@Autowired
-	private BookRequestRepository bookRequestRepository;
+	private ServiceRequestRepository serviceRequestRepository;
 
 	@Autowired
   private PageMemberRepository pageMemberRepository;
+
+	@Autowired
+  private FormSubmissionRepository formSubmissionRepository;
 
 	// @GetMapping
 	// @PreAuthorize("hasPermission(#page_id, 'page', 'read')")
@@ -194,8 +196,10 @@ public class PageController {
 	@GetMapping("/requests/{page}/{size}")
 	@PreAuthorize("hasPermission(#page_id, 'page', 'admin-read')")
 	public ResponseEntity<?> getRequests(@PathVariable Long page_id, @PathVariable int page, @PathVariable int size) {
-		org.springframework.data.domain.Page<BookRequest> requests = bookRequestRepository.getByPage(page_id, new PageRequest(page, size));
-		return ResponseEntity.ok(requests);
+//		org.springframework.data.domain.Page<ServiceRequest> requests = serviceRequestRepository.getByPage(page_id, new PageRequest(page, size));
+//		return ResponseEntity.ok(requests);
+
+		return ResponseEntity.ok(formSubmissionRepository.getServiceRequestsByPage(page_id));
 	}
 
 	@GetMapping("/administrator")

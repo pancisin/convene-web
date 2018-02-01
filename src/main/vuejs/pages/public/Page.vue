@@ -68,7 +68,7 @@
                   <tr v-for="(service, index) in services" :key="index">
                     <td v-text="service.name"></td>
                     <td class="text-right">
-                      <a class="btn btn-default btn-xs" @click="bookService(service)">Book</a>
+                      <a class="btn btn-default btn-xs" v-show="!service.request_pending" @click="bookService(service)">Book</a>
                     </td>
                   </tr>
                 </tbody>
@@ -93,7 +93,7 @@
         <div slot="body">
           <service-book
             :service="selectedService"
-            @submitted="displayBookModal = false"
+            @submit="displayBookModal = false"
           />
         </div>
       </modal>
