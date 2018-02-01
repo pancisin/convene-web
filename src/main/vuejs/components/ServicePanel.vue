@@ -8,6 +8,7 @@
 import ServiceApi from 'api/service.api';
 import { VueTable } from 'elements';
 import { DateTime } from 'luxon';
+import ServiceRequestApi from 'api/service-request.api';
 
 export default {
   name: 'service-panel',
@@ -56,12 +57,26 @@ export default {
         user: request.submission.user,
         date: DateTime.fromMillis(request.submission.created).toFormat('F'),
         ...fields,
-        approved: request.approved
+        state: {
+          el: 'i',
+          class: request.approved ? 'fa fa-check text-success' : 'fa fa-question'
+        }
       };
     },
     contextmenu (item) {
       return [
-        item('Respond')
+        item('Accept', request => {
+          ServiceRequestApi.acceptRequest(request.id, req => {
+            const index = this.requests.findIndex(r => r.id === req.id);
+            this.requests.splice(index, 1, req);
+          });
+        }),
+        item('Refuse', request => {
+          ServiceRequestApi.refuseRequest(request.id, req => {
+            const index = this.requests.findIndex(r => r.id === req.id);
+            this.requests.splice(index, 1, req);
+          });
+        })
       ];
     }
   }

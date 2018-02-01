@@ -21,6 +21,7 @@ import com.pancisin.bookster.repository.ServiceRequestRepository
 import com.pancisin.bookster.repository.ServiceRepository
 import org.springframework.http.HttpStatus
 import javax.transaction.Transactional
+import javax.xml.ws.Response
 
 @RestController
 @RequestMapping("/api/service/{service_id}")
@@ -75,6 +76,10 @@ class ServiceController {
     val auth = SecurityContextHolder.getContext().authentication.principal as User
     val service = serviceRepository.findOne(service_id)
 
+    if (service.requestPending) {
+      return ResponseEntity(HttpStatus.FORBIDDEN)
+    }
+
     var submission = FormSubmission(
       user = auth,
       values = values,
@@ -90,14 +95,9 @@ class ServiceController {
   }
 
   @GetMapping("/request")
-  @PreAuthorize("hasPermission(#service_id, 'service', 'read')")
+  @PreAuthorize("hasPermission(#service_id, 'service', 'update')")
   fun getRequests(@PathVariable service_id: Long): ResponseEntity<List<ServiceRequest>> {
     val service = serviceRepository.findOne(service_id)
-
-    if (!service.requestPending) {
-      return ResponseEntity.ok(service.requests);
-    } else {
-      return ResponseEntity(HttpStatus.FORBIDDEN);
-    }
+    return ResponseEntity.ok(service.requests);
   }
 }
