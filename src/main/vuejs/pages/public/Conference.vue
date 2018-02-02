@@ -115,22 +115,23 @@ export default {
   },
   created () {
     const api = this.authenticated ? ConferenceApi : PublicApi.conference;
-    this.injector = InjectorGenerator.generate(api, this.$route.params.id);
 
     this.loading = true;
-    this.injector.getConference(conference => {
+    api.getConference(this.$route.params.id, conference => {
       this.conference = conference;
+      this.injector = InjectorGenerator.generate(api, conference.id);
+
+      if (this.authenticated) {
+        this.injector.getAttendStatus(member => {
+          this.attend_status = member.active;
+        });
+      }
+
       this.loading = false;
     }, error => {
       this.error = error;
       this.loading = false;
     });
-
-    if (this.authenticated) {
-      this.injector.getAttendStatus(member => {
-        this.attend_status = member.active;
-      });
-    }
   },
   methods: {
     getEvents (page) {

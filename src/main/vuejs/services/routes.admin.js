@@ -140,14 +140,6 @@ export default [
         }
       },
       {
-        path: 'create-article',
-        name: 'conference.article.create',
-        component: resolve => require(['../pages/Article.vue'], resolve),
-        meta: {
-          title: 'Create article'
-        }
-      },
-      {
         path: 'surveys',
         name: 'conference.surveys',
         component: resolve => require(['../pages/templates/Surveys.vue'], resolve),
@@ -190,24 +182,6 @@ export default [
         meta: {
           title: 'Create survey'
         }
-      }
-    ]
-  },
-  {
-    path: 'survey/:survey_id',
-    name: 'survey',
-    component: resolve => require(['../pages/Survey.vue'], resolve),
-    redirect: '/admin/survey/:survey_id/results',
-    children: [
-      {
-        path: 'results',
-        name: 'survey.results',
-        component: resolve => require(['../pages/survey/Survey.results.vue'], resolve)
-      },
-      {
-        path: 'edit',
-        name: 'survey.edit',
-        component: resolve => require(['../pages/survey/Survey.editor.vue'], resolve)
       }
     ]
   },
@@ -258,14 +232,6 @@ export default [
         }
       }
     ]
-  },
-  {
-    path: 'article/:article_id',
-    name: 'article',
-    component: resolve => require(['../pages/Article.vue'], resolve),
-    meta: {
-      titlle: 'Article'
-    }
   },
   {
     path: 'page/create',
@@ -447,17 +413,6 @@ export default [
       name: 'system.list.articles'
     },
     children: [
-      {
-        path: 'create-article',
-        name: 'system.list.create-article',
-        component: resolve => require(['../pages/Article.vue'], resolve),
-        props: route => ({
-          edit: false
-        }),
-        meta: {
-          title: 'Create article to list'
-        }
-      },
       {
         path: 'articles',
         name: 'system.list.articles',

@@ -11,14 +11,17 @@ import javax.persistence.*
 @Table(name = "pages_members", uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("page_id", "user_id"))))
 data class PageMember(
 
-  @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   val id: UUID? = null,
 
   @ManyToOne
   var user: User? = null,
 
-  @JsonIgnore @ManyToOne
+  @JsonIgnore
+  @ManyToOne
   var page: Page? = null,
 
   @OneToOne

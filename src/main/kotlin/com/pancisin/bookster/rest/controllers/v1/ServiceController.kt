@@ -89,7 +89,6 @@ class ServiceController {
 
     return ResponseEntity.ok(serviceRequestRepository.save(ServiceRequest(
       submission = submission,
-      user = auth,
       service = service
     )))
   }

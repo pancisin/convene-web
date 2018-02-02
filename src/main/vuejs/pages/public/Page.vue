@@ -93,7 +93,7 @@
         <div slot="body">
           <service-book
             :service="selectedService"
-            @submit="displayBookModal = false"
+            @submit="serviceRequestUpdate"
           />
         </div>
       </modal>
@@ -212,6 +212,10 @@ export default {
           this.togglePageFollow(this.page);
         });
       }
+    },
+    serviceRequestUpdate (request) {
+      this.selectedService.request_pending = true;
+      this.displayBookModal = false;
     }
   },
   head: {

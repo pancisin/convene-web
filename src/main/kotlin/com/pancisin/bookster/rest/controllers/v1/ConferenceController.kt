@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*
 import sun.text.resources.ar.FormatData_ar_SY
 
 import javax.transaction.Transactional
+import org.springframework.http.converter.HttpMessageNotReadableException
+
+
 
 @RestController
 @RequestMapping("/api/v1/conference/{conference_id}")
@@ -161,7 +164,7 @@ class ConferenceController {
 
   @GetMapping("/attend-status")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<*> {
+  fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<PageMember> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
     return ResponseEntity.ok(pageMemberRepository.findByAttendance(conference_id, user.id))
   }
@@ -327,5 +330,11 @@ class ConferenceController {
     val stored = conferenceRepository.findOne(conference_id)
     place.page = stored
     return ResponseEntity.ok(placeRepository.save(place))
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  fun handle(e: HttpMessageNotReadableException) {
+    e.printStackTrace()
   }
 }

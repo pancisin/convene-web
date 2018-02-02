@@ -1,7 +1,5 @@
 <template>
-  <panel type="default">
-    <span slot="title">Overview</span>
-
+  <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
@@ -32,51 +30,22 @@
       <a v-if="survey.state == 'IN_PROGRESS'" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
       <a v-else-if="survey.state == 'NEW'" class="btn btn-success btn-rounded" @click="togglePublished">Publish</a>
 
-      <button class="btn btn-rounded btn-primary" type="submit" v-show="touched" @click="submit">Save</button>
+      <button class="btn btn-rounded btn-primary" type="submit">Save</button>
     </div>
-  </panel>
+  </form>
 </template>
 
 <script>
 import SurveyApi from 'api/survey.api';
 import { DatePicker, FormEditor } from 'elements';
-import { calculateHash } from '../../services/helpers';
-
 export default {
-  name: 'survey',
+  name: 'survey-form',
   props: {
     survey: Object
-  },
-  data () {
-    return {
-      original_survey: null
-    };
   },
   components: {
     DatePicker,
     FormEditor
-  },
-  created () {
-    this.original_survey = JSON.stringify(this.survey);
-  },
-  computed: {
-    touched () {
-      return calculateHash(this.original_survey) !== calculateHash(JSON.stringify(this.survey));
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    if (this.touched) {
-      this.$prompt('notification.leave_prompt', null, () => {
-        next();
-      });
-    } else {
-      next();
-    }
-  },
-  watch: {
-    survey (newVal) {
-      this.original_survey = JSON.stringify(newVal);
-    }
   },
   methods: {
     submit () {
@@ -91,7 +60,6 @@ export default {
           //   return a.ordering >= b.ordering;
           // });
 
-          this.original_survey = JSON.stringify(this.survey);
           this.$success('notification.survey.updated', this.survey.name);
         });
       } else {
@@ -101,13 +69,15 @@ export default {
     togglePublished () {
       SurveyApi.togglePublished(this.survey.id, result => {
         this.survey = result;
-        // this.survey.metaFields.sort((a, b) => {
+        // this.survey.metaField+s.sort((a, b) => {
         //   return a.ordering >= b.ordering;
         // });
-
-        this.original_survey = JSON.stringify(this.survey);
       });
     }
   }
 };
 </script>
+
+<style>
+
+</style>

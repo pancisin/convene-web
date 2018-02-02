@@ -1,9 +1,3 @@
-<template>
-  <div v-loading="loading">
-    <vue-table :data="requests" :func="tableRender" :contextmenu="contextmenu" />
-  </div>
-</template>
-
 <script>
 import ServiceApi from 'api/service.api';
 import { VueTable } from 'elements';
@@ -23,6 +17,15 @@ export default {
       requests: [],
       loading: false
     };
+  },
+  render (h) {
+    return h('vue-table', {
+      props: {
+        data: this.requests,
+        func: this.tableRender,
+        contextmenu: this.contextmenu
+      }
+    });
   },
   created () {
     this.getSubmission();

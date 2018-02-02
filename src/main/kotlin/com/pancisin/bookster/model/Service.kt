@@ -45,6 +45,6 @@ data class Service(
     @JsonProperty("request_pending")
     get () {
       val auth = SecurityContextHolder.getContext().authentication.principal as User
-      return requests.any { it.user?.id === auth.id && it.approved == null }
+      return requests.any { it.submission?.user?.id === auth.id && it.approved == null }
     }
 }

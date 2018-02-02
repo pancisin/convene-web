@@ -2,15 +2,26 @@
   <panel type="table" v-loading="loading">
     <span slot="title">Articles</span>
 
-    <vue-table class="articles-table" :func="tableRender" :data="articlesPaginator.content" :contextmenu="contextMenuRender" />
+    <vue-table class="articles-table" 
+      :func="tableRender" 
+      :data="articlesPaginator.content" 
+      :contextmenu="contextMenuRender" />
+
     <div class="text-center">
       <paginator :paginator="articlesPaginator" :fetch="getArticles" />
     </div>
 
+    <modal :show.sync="displayArticleModal" v-if="selectedArticle != null">
+      <span slot="title">Edit {{ selectedArticle.title }}</span>
+      <div slot="body">
+        <article-form :article="selectedArticle" @submit="updateArticle" />
+      </div>
+    </modal>
+
     <div class="text-center" v-if="editable && insertable">
-      <router-link to="create-article" class="btn btn-primary btn-rounded">
+      <button type="button" @click="createArticle()" class="btn btn-default">
         Create article
-      </router-link>
+      </button>
     </div>
   </panel>
 </template>
@@ -19,6 +30,7 @@
 import ArticleApi from 'api/article.api';
 import { Paginator, VueTable } from 'elements';
 import { DateTime } from 'luxon';
+import { ArticleForm } from 'elements/forms';
 
 export default {
   name: 'articles-template',
@@ -33,12 +45,15 @@ export default {
   },
   components: {
     Paginator,
-    VueTable
+    VueTable,
+    ArticleForm
   },
   data () {
     return {
       loading: false,
-      articlesPaginator: {}
+      articlesPaginator: {},
+      selectedArticle: {},
+      displayArticleModal: false
     };
   },
   computed: {
@@ -79,7 +94,8 @@ export default {
         title: {
           el: 'a',
           onClick: () => {
-            this.$router.push({ name: 'article', params: { article_id: article.id } });
+            this.selectedArticle = article;
+            this.displayArticleModal = true;
           },
           content: article.title
         },
@@ -97,7 +113,7 @@ export default {
         item('Toggle published', article => this.togglePublished(article.id)),
         item('Edit', article => this.$router.push({ name: 'article', params: { article_id: article.id } })),
         item('Delete', article => this.deleteArticle(article)),
-        item('Create article', article => this.$router.push('create-article'))
+        item('Create article', this.createArticle)
       ];
     },
     togglePublished (article_id) {
@@ -117,6 +133,21 @@ export default {
           });
         });
       });
+    },
+    createArticle () {
+      this.selectedArticle = {};
+      this.displayArticleModal = true;
+    },
+    updateArticle (article) {
+      const index = this.articles.findIndex(a => a.id === article.id);
+
+      if (index !== -1) {
+        this.articles.splice(index, 1, article);
+      } else {
+        this.articles.push(article);
+      }
+
+      this.displayArticleModal = false;
     }
   }
 };

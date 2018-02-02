@@ -14,10 +14,6 @@ data class ServiceRequest(
   @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
-  @JsonIgnore
-  @ManyToOne
-  var user: User? = null,
-
   @ManyToOne
   @JsonIgnore
   var service: Service? = null,
@@ -26,15 +22,9 @@ data class ServiceRequest(
   var units: Int = 0,
 
   @Column
-  var date: Calendar? = null,
-
-  @Column
   var approved: Boolean? = null,
 
   @OneToOne
   var submission: FormSubmission? = null
 
-) {
-  val email: String?
-    get() = user?.email
-}
+)

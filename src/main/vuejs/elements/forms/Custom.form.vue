@@ -83,63 +83,6 @@ export default {
   components: {
     DatePicker
   },
-  render (h) {
-    return h('form', {
-      on: {
-        submit: (e) => {
-          e.preventDefault();
-          this.submit();
-        }
-      }
-    }, [
-      ...this.form.formFields.map((field, index) => {
-        var el = 'INPUT';
-
-        if (field.type === 'SELECT') {
-          el = field.type;
-        } else if (field.type === 'RADIO') {
-          el = 'div';
-        } else if (field.type === 'DATE') {
-          el = 'date-picker';
-        }
-
-        const inputElement = h(el, {
-          class: 'form-control',
-          domProps: {
-            value: this.meta_values[index].value
-          },
-          attrs: {
-            name: `input-${index}`,
-            'data-vv-as': field.name,
-            type: field.type === 'NUMBER' ? 'number' : 'text'
-          },
-          on: {
-            input: (e) => {
-              this.meta_values[index].value = e.target.value;
-            }
-          }
-        });
-
-        return h('div', {
-          class: 'form-group' // add has error
-        }, [
-          h('label', field.name), // add asterisk when non optional field given
-          h('p', [ h('small', field.description) ]), // add conditional render
-          inputElement,
-          h('span', {
-            class: 'text-danger'
-          }, this.errors.first(`input-${index}`))
-        ]);
-      }),
-      h('div', {
-        class: 'text-center'
-      }, [
-        h('button', {
-          class: 'btn btn-default'
-        }, 'submit')
-      ])
-    ]);
-  },
   props: {
     form: {
       type: Object,
@@ -150,13 +93,8 @@ export default {
   created () {
     this.initializeSurvey();
   },
-  mounted () {
-    // this.form.formFields.forEach((field, index) => {
-    //   this.$validator.attach({
-    //     name: `input-${index}`,
-    //     rules: 'required'
-    //   });
-    // });
+  watch: {
+    form: 'initializeSurvey'
   },
   methods: {
     initializeSurvey () {
