@@ -1,84 +1,83 @@
 <template>
-  <form class="form" @submit.prevent="submit">
-    <div class="form-group" v-for="(field, index) in survey.metaFields" :key="index" :class="{ 'has-error' : errors.has(`input-${index}`) }">
-      <label v-text="field.name"></label>
-      <p v-if="field.description">
-        <small v-text="field.description"></small>
-        <br>
-        <br>
-      </p>
-      <input v-if="field.type == 'NUMBER'" type="number" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
-      <select v-else-if="field.type == 'SELECT'" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name">
-        <option :value="null">- select one -</option>
-        <option v-for="option in field.options" :value="option" :key="option">{{ option }}</option>
-      </select>
-      <div v-else-if="field.type == 'RADIO'" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name">
-        <div class="radio radio-primary" v-for="(option, i) in field.options" :key="i">
-          <input :id="'radio-' + i" type="radio" :value="option" v-model="meta_values[index].value">
-          <label :for="'radio-' + i">
-            {{ option }}
-          </label>
+  <form @submit.prevent="submit">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
+          <label class="control-label">Name</label>
+          <input class="form-control required" v-model="survey.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
+          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('name') }}</span>
         </div>
       </div>
-      <date-picker v-else-if="field.type == 'DATE'" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
-      <input v-else-if="field.type == 'TEXT'" type="text" class="form-control" v-model="meta_values[index].value" v-validate="!field.optional ? 'required' : ''" :name="`input-${index}`" :data-vv-as="field.name" />
-      <span class="text-danger" v-if="errors.has(`input-${index}`)">{{ errors.first(`input-${index}`) }}</span>
+      <div class="col-md-6">
+        <div class="form-group" :class="{ 'has-error' : errors.has('start_date') }">
+          <label class="control-label">Start date</label>
+          <date-picker v-model="survey.start_date" v-validate data-vv-rules="required" name="start_date"></date-picker>
+          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('start_date') }}</span>
+        </div>
+        <div class="form-group" :class="{ 'has-error' : errors.has('end_date') }">
+          <label class="control-label">End date</label>
+          <date-picker v-model="survey.end_date" v-validate data-vv-rules="required" name="end_date"></date-picker>
+          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('end_date') }}</span>
+        </div>
+      </div>
     </div>
 
-    <div class="text-center m-b-15">
-      <input type="submit" class="btn btn-primary btn-rounded" />
+    <h3>Fields</h3>
+    <hr />
+    <form-editor v-if="survey.form" v-model="survey.form" />
+
+    <div class="text-center">
+      <a v-if="survey.state == 'IN_PROGRESS'" class="btn btn-danger btn-rounded" @click="togglePublished">Unpublish</a>
+      <a v-else-if="survey.state == 'NEW'" class="btn btn-success btn-rounded" @click="togglePublished">Publish</a>
+
+      <button class="btn btn-rounded btn-primary" type="submit">Save</button>
     </div>
   </form>
 </template>
 
 <script>
-import { DatePicker } from 'elements';
 import SurveyApi from 'api/survey.api';
-
+import { DatePicker, FormEditor } from 'elements';
 export default {
-  name: 'survey',
-  data () {
-    return {
-      meta_values: [],
-      loading: false
-    };
-  },
+  name: 'survey-form',
   props: {
-    survey: {
-      type: Object,
-      default: {}
-    }
+    survey: Object
   },
   components: {
-    DatePicker
-  },
-  created () {
-    this.initializeSurvey();
+    DatePicker,
+    FormEditor
   },
   methods: {
-    initializeSurvey () {
-      this.survey.metaFields.sort((a, b) => {
-        return a.ordering > b.ordering;
-      });
-
-      this.survey.metaFields.forEach((field, index) => {
-        this.meta_values.push({
-          field: {
-            id: field.id
-          },
-          value: null
-        });
-      });
-    },
     submit () {
-      this.$validator.validateAll().then(valid => {
-        if (!valid) return;
-        SurveyApi.postSubmission(this.survey.id, this.meta_values, result => {
-          this.$success('notification.survey.completed', this.survey.name);
-          this.$emit('submit', this.survey);
+      // this.survey.metaFields.forEach((m, index) => {
+      //   this.survey.metaFields[index].ordering = index;
+      // });
+
+      if (this.survey.id != null) {
+        SurveyApi.putSurvey(this.survey.id, this.survey, response => {
+          this.survey = response;
+          // this.survey.metaFields.sort((a, b) => {
+          //   return a.ordering >= b.ordering;
+          // });
+
+          this.$success('notification.survey.updated', this.survey.name);
         });
+      } else {
+
+      }
+    },
+    togglePublished () {
+      SurveyApi.togglePublished(this.survey.id, result => {
+        this.survey = result;
+        // this.survey.metaField+s.sort((a, b) => {
+        //   return a.ordering >= b.ordering;
+        // });
       });
     }
   }
 };
 </script>
+
+<style>
+
+</style>

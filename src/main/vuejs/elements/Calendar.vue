@@ -28,7 +28,12 @@
             <span class="monthday" v-text="day.day"></span>
             
             <ul @dragover.prevent @drop="drop(day)">
-              <li v-for="(event, index) in day.events" :key="index"  @contextmenu.prevent="$refs.menu.open($event, event)">
+              <li 
+                v-for="(event, index) in day.events" 
+                :key="index"  
+                @contextmenu.prevent="$refs.menu.open($event, event)" 
+                :class="{ 'event-deactivated': event.state === 'DEACTIVATED'}">
+
                 <router-link  :to="{ name: 'event', params: { id: event.id } }">
                   {{ event.name }}
                 </router-link>
@@ -275,6 +280,12 @@ table.calendar-table {
             &:hover {
               background-color: @color-inverse-active;
             }
+          }
+        }
+
+        &.event-deactivated {
+          a {
+            background-color: @color-danger;
           }
         }
       }

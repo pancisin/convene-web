@@ -54,7 +54,7 @@ class PublicController {
   fun getSubscriptions() = ResponseEntity.ok(Subscription.values())
 
   @GetMapping("/meta-types")
-  fun getMetaTypes() = ResponseEntity.ok(MetaType.values())
+  fun getMetaTypes() = ResponseEntity.ok(FieldType.values())
 
   @GetMapping("/event/{event_id}")
   fun getEvent(@PathVariable event_id: Long): ResponseEntity<Event> {
@@ -106,17 +106,6 @@ class PublicController {
   @GetMapping("/categories/{category_id}/branches")
   fun getBraches(@PathVariable category_id: Long, @RequestParam(name = "used", defaultValue = "true") used: Boolean): ResponseEntity<List<Branch>>? {
     return if (used) ResponseEntity.ok(branchRepository.getUsed(category_id)) else ResponseEntity.ok(categoryRepository.findOne(category_id).branches)
-  }
-
-  @GetMapping("/conference/{conference_id}")
-  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = conferenceRepository.findOne(conference_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
-
-    return if (conference.state === PageState.PUBLISHED || conference.state === PageState.BLOCKED) {
-      ResponseEntity.ok(conference)
-    } else {
-      ResponseEntity(HttpStatus.FORBIDDEN)
-    }
   }
 
   @GetMapping("/conference/{conference_id}/event")

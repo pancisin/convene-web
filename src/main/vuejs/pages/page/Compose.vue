@@ -22,21 +22,21 @@
           <text-editor v-model="page.summary"></text-editor>
         </div>
 
-        <div class="form-group" v-for="(meta, index) in metadata" :key="index">
+        <div class="form-group" v-for="(formField, index) in metadata" :key="index">
           <div class="input-group">
-            <input class="form-control required" 
-              v-model.trim="meta.key" 
+            <input class="form-control required"
+              v-model.trim="formField.key"
               type="text"
-              placeholder="new meta name">
+              placeholder="new formField name">
             <span class="input-group-addon">
               :
             </span>
-            <input class="form-control required" 
-              v-model.trim="meta.value" 
+            <input class="form-control required"
+              v-model.trim="formField.value"
               type="text"
-              placeholder="new meta value">
+              placeholder="new formField value">
             <span class="input-group-btn">
-              <button class="btn btn-danger" type="button" @click="removeMeta(meta)">
+              <button class="btn btn-danger" type="button" @click="removeMeta(formField)">
                 <i class="fa fa-trash-o"></i>
               </button>
             </span>
@@ -98,7 +98,7 @@ export default {
     'page': 'initializeMeta',
     metadata: {
       handler (newVal) {
-        const emptyEval = meta => meta.key == null || meta.key === '';
+        const emptyEval = formField => formField.key == null || formField.key === '';
 
         const emptyCount = newVal.filter(emptyEval).length;
 
@@ -166,9 +166,9 @@ export default {
         });
       });
     },
-    removeMeta (meta) {
-      if (meta.key != null && meta.key !== '') {
-        const index = this.metadata.findIndex(m => m.key === meta.key);
+    removeMeta (formField) {
+      if (formField.key != null && formField.key !== '') {
+        const index = this.metadata.findIndex(m => m.key === formField.key);
         this.metadata.splice(index, 1);
       }
     }

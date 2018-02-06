@@ -57,7 +57,7 @@ class Page() : IAuthor {
 
   @Column
   @JsonView(Compact::class)
-  var name: String? = null
+  var name: String = ""
 
   @JsonView(Compact::class)
   @JsonProperty(access = Access.READ_ONLY)
@@ -175,6 +175,9 @@ class Page() : IAuthor {
   @CollectionTable(name = "pages_metadata")
   @JsonView(Summary::class)
   var metadata: Map<String, String> = HashMap()
+
+  @OneToOne(cascade = [ CascadeType.ALL ], orphanRemoval = true)
+  var registrationForm: Form? = null
 
   override val displayName: String
     get() = this.name.toString()

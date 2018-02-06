@@ -1,6 +1,7 @@
 package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.bookster.model.*
+import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -121,8 +122,24 @@ class RootControllerV1 {
     @PathVariable page_identifier: String
   ): ResponseEntity<com.pancisin.bookster.model.Page> {
 
-    page_identifier.toLongOrNull()?.let { id -> return ResponseEntity.ok(pageRepository.findOne(id)) }
+    page_identifier.toLongOrNull()?.let { id ->
+      return ResponseEntity.ok(pageRepository.findOne(id))
+    }
+
     pageRepository.findBySlug(page_identifier)?.let { page -> return ResponseEntity.ok(page) }
+    return ResponseEntity(HttpStatus.NOT_FOUND)
+  }
+
+  @GetMapping("/api/v1/conference/{conference_identifier}", "/public/v1/conference/{conference_identifier}")
+  fun getConference(
+    @PathVariable conference_identifier: String
+  ): ResponseEntity<com.pancisin.bookster.model.Page> {
+
+    conference_identifier.toLongOrNull()?.let {
+      return ResponseEntity.ok(conferenceRepository.findOne(it));
+    }
+
+    conferenceRepository.findBySlug(conference_identifier)?.let { return ResponseEntity.ok(it) }
     return ResponseEntity(HttpStatus.NOT_FOUND)
   }
 

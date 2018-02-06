@@ -1,6 +1,5 @@
 package com.pancisin.bookster.model
 
-import java.util.ArrayList
 import java.util.Date
 
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -24,19 +23,11 @@ class Survey() {
   @Column
   var end_date: Date? = null
 
-  @OneToMany(orphanRemoval = true, cascade = arrayOf(CascadeType.ALL))
-  var metaFields: MutableList<MetaField> = ArrayList()
-    get
-    set(metaFields) {
-      this.metaFields.clear()
-      this.metaFields.addAll(metaFields)
-    }
-
-  @JsonIgnore @OneToMany(mappedBy = "survey")
-  var submissions: MutableList<SurveySubmission>? = null
-
   @Enumerated(EnumType.STRING) @JsonProperty(access = Access.READ_ONLY)
   var state: SurveyState = SurveyState.NEW
+
+  @OneToOne(cascade = [ CascadeType.ALL ], orphanRemoval = true)
+  var form: Form = Form()
 
   @JsonIgnore
   @ManyToOne
@@ -48,5 +39,5 @@ class Survey() {
   var page: Page? = null
 
   val submissionsCount
-    get() = submissions?.size
+    get() = form.submissions.size
 }

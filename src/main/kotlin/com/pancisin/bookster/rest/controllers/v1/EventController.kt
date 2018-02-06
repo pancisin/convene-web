@@ -40,7 +40,7 @@ import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
 import org.springframework.data.domain.Page
 
 @RestController
-@RequestMapping("/api/event/{event_id}")
+@RequestMapping("/api/v1/event/{event_id}")
 class EventController {
 
   @Autowired

@@ -11,18 +11,21 @@ import javax.persistence.*
 @Table(name = "pages_members", uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("page_id", "user_id"))))
 data class PageMember(
 
-  @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   val id: UUID? = null,
 
   @ManyToOne
   var user: User? = null,
 
-  @JsonIgnore @ManyToOne
+  @JsonIgnore
+  @ManyToOne
   var page: Page? = null,
 
-  @OneToMany(cascade = arrayOf(CascadeType.ALL))
-  var meta: List<MetaValue>? = null,
+  @OneToOne
+  var submission: FormSubmission? = null,
 
   @Column
   var active: Boolean = true,
@@ -35,6 +38,6 @@ data class PageMember(
   val created: Calendar? = null
 
 ) {
-  constructor(user: User, page: Page, meta: List<MetaValue>) : this(null, user, page, meta)
   constructor(user: User, page: Page) : this(null, user, page)
+  constructor(user: User, page: Page, submission: FormSubmission) : this(null, user, page, submission)
 }

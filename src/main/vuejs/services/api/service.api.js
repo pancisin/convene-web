@@ -41,5 +41,17 @@ export default {
     Vue.http.delete(`${SERVICE_API_URL}/${id}`).then(response => {
       success(response.body);
     });
+  },
+
+  getServiceRequests (id, success) {
+    Vue.http.get(`${SERVICE_API_URL}/${id}/request`).then(response => {
+      success(response.body);
+    });
+  },
+
+  postServiceRequest (id, values, success) {
+    Vue.http.post(`${SERVICE_API_URL}/${id}/request`, values).then(response => {
+      success(response.body);
+    });
   }
 };

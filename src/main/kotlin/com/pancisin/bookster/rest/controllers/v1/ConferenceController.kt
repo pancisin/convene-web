@@ -20,8 +20,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
+import sun.text.resources.ar.FormatData_ar_SY
 
 import javax.transaction.Transactional
+import org.springframework.http.converter.HttpMessageNotReadableException
+
+
 
 @RestController
 @RequestMapping("/api/v1/conference/{conference_id}")
@@ -66,17 +70,8 @@ class ConferenceController {
   @Autowired
   lateinit var activityRepository: ActivityRepository
 
-  @GetMapping
-  @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun getConference(@PathVariable conference_id: Long): ResponseEntity<Page> {
-    val conference = conferenceRepository.findOne(conference_id)
-
-    return if (conference == null) {
-      ResponseEntity(HttpStatus.NOT_FOUND)
-    } else {
-      ResponseEntity.ok(conference)
-    }
-  }
+  @Autowired
+  lateinit var formSubmissionRepository: FormSubmissionRepository
 
   @PutMapping
   @ActivityLog(type = ActivityType.UPDATE)
@@ -87,6 +82,7 @@ class ConferenceController {
       branch = conference.branch
       summary = conference.summary
       visibility = conference.visibility
+      registrationForm = conference.registrationForm
     }
 
     if (conference.posterData != null && storageService.isBinary(conference.posterData)) {
@@ -137,14 +133,22 @@ class ConferenceController {
   @Transactional
   @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun postAttend(@PathVariable conference_id: Long?, @RequestBody meta: List<MetaValue>): ResponseEntity<*> {
+  fun postAttend(
+    @PathVariable conference_id: Long?,
+    @RequestBody values: MutableList<FormFieldValue>
+  ): ResponseEntity<PageMember> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
     val conference = conferenceRepository.findOne(conference_id)
 
-    val attendee = PageMember(user, conference, meta)
-    attendee.meta = meta
+    val submission = formSubmissionRepository.save(FormSubmission(
+      user = user,
+      form = conference.registrationForm,
+      values = values
+    ));
+
+    val attendee = PageMember(user, conference, submission)
     pageMemberRepository.save(attendee)
-    return ResponseEntity.ok("ACTIVE")
+    return ResponseEntity.ok(attendee)
   }
 
   @PutMapping("/cancel-attend")
@@ -160,25 +164,22 @@ class ConferenceController {
 
   @GetMapping("/attend-status")
   @PreAuthorize("hasPermission(#conference_id, 'page', 'read')")
-  fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<*> {
+  fun getAttendStatus(@PathVariable conference_id: Long?): ResponseEntity<PageMember> {
     val user = SecurityContextHolder.getContext().authentication.principal as User
-    val (_, _, _, _, active) = pageMemberRepository.findByAttendance(conference_id, user.id)
-      ?: return ResponseEntity.ok("INACTIVE")
-
-    return ResponseEntity.ok(if (active) "ACTIVE" else "CANCELED")
+    return ResponseEntity.ok(pageMemberRepository.findByAttendance(conference_id, user.id))
   }
 
-//  @GetMapping("/meta-field")
+//  @GetMapping("/formField-field")
 //  @PreAuthorize("hasPermission(#conference_id, 'page', 'admin-read')")
-//  fun getMetaFields(@PathVariable conference_id: Long?): ResponseEntity<*> {
+//  fun getFormFields(@PathVariable conference_id: Long?): ResponseEntity<*> {
 //    val conference = conferenceRepository.findOne(conference_id)
-//    return ResponseEntity.ok<List<MetaField>>(conference.metaFields)
+//    return ResponseEntity.ok<List<FormField>>(conference.formFields)
 //  }
 //
-//  @PostMapping("/meta-field")
+//  @PostMapping("/formField-field")
 //  @ActivityLog(type = ActivityType.UPDATE)
 //  @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
-//  fun postMetaField(@PathVariable conference_id: Long?, @RequestBody field: MetaField): ResponseEntity<*> {
+//  fun postMetaField(@PathVariable conference_id: Long?, @RequestBody field: FormField): ResponseEntity<*> {
 //    var field = field
 //    val conference = conferenceRepository.findOne(conference_id)
 //    field = cmfRepository!!.save(field)
@@ -329,5 +330,11 @@ class ConferenceController {
     val stored = conferenceRepository.findOne(conference_id)
     place.page = stored
     return ResponseEntity.ok(placeRepository.save(place))
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  fun handle(e: HttpMessageNotReadableException) {
+    e.printStackTrace()
   }
 }

@@ -29,6 +29,8 @@ export default {
     saved: '{object} has been saved successfuly.'
   },
   service: {
+    created: 'Service {object} has been updated successfuly.',
+    updated: 'Service {object} has been saved successfuly.'
   },
   meta_field: {
     created: 'Meta field {object} has been created successfuly.',
@@ -48,7 +50,7 @@ export default {
   survey: {
     created: 'Survey {object} has been created successfuly.',
     updated: 'Survey {object} has been updated successfuly.',
-    completed: 'Thank you.'
+    completed: 'Thank you for completing {object} survey.'
   },
   account: {
     updated: ''

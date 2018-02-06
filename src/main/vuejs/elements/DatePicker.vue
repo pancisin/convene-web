@@ -73,9 +73,6 @@ export default {
     value: {
       type: [ Number, String ],
       required: false,
-      validator: (value) => {
-        return (new Date(value)).getTime() > 0;
-      },
       default () {
         return DateTime.utc().startOf('day').valueOf();
       }
@@ -113,9 +110,13 @@ export default {
   },
   methods: {
     updateFocusDate (timestamp) {
-      const dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
-        zone: 'utc'
-      }).startOf('day');
+      var dateTime = DateTime.utc().startOf('day');
+
+      if (timestamp != null) {
+        dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
+          zone: 'utc'
+        }).startOf('day');
+      }
 
       if (dateTime.isValid) {
         this.selected = dateTime.valueOf();
@@ -234,7 +235,7 @@ export default {
 
       th {
         text-transform: uppercase;
-        padding: 10px !important;
+        padding: 10px 0 !important;
         border-bottom: 1px solid #ccc;
         text-align: center;
         color: #666 !important;

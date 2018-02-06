@@ -32,16 +32,16 @@
             </light-box>        
             
             <div v-if="authenticated">
-              <panel v-if="attend_status != 'ACTIVE'" type="primary">
+              <panel v-if="!attend_status" type="primary">
                 <span slot="title">Join conference</span>
-                <attend-form @statusChanged="statusChanged"></attend-form>
+                <custom-form v-if="conference.registrationForm" :form="conference.registrationForm" :submitFunc="registrationSubmit" />
+                <div v-else class="text-center">
+                  <button type="button" class="btn btn-primary">Sign up</button>
+                </div>
               </panel>
               <div v-else>
-      
                 <survey-list />
-
                 <events-list :events="eventsPaginator.content"></events-list>
-                
                 <div class="text-center">
                   <paginator 
                     :fetch="getEvents" 
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { ConferenceAttendForm } from 'elements/forms';
+import { CustomForm } from 'elements/forms';
 import {
   ArticlesList,
   HeroUnit,
@@ -89,7 +89,7 @@ export default {
     return { provider };
   },
   components: {
-    ConferenceAttendForm,
+    CustomForm,
     ArticlesList,
     EventsList,
     HeroUnit,
@@ -115,27 +115,25 @@ export default {
   },
   created () {
     const api = this.authenticated ? ConferenceApi : PublicApi.conference;
-    this.injector = InjectorGenerator.generate(api, this.$route.params.id);
 
     this.loading = true;
-    this.injector.getConference(conference => {
+    api.getConference(this.$route.params.id, conference => {
       this.conference = conference;
+      this.injector = InjectorGenerator.generate(api, conference.id);
+
+      if (this.authenticated) {
+        this.injector.getAttendStatus(member => {
+          this.attend_status = member.active;
+        });
+      }
+
       this.loading = false;
     }, error => {
       this.error = error;
       this.loading = false;
     });
-
-    if (this.authenticated) {
-      this.injector.getAttendStatus(status => {
-        this.attend_status = status;
-      });
-    }
   },
   methods: {
-    statusChanged (status) {
-      this.attend_status = status;
-    },
     getEvents (page) {
       this.injector.getEvents(page, 3, paginator => {
         this.eventsPaginator = paginator;
@@ -144,6 +142,12 @@ export default {
     getArticles (page) {
       this.injector.getArticles(page, 5, paginator => {
         this.articlesPaginator = paginator;
+      });
+    },
+    registrationSubmit (values) {
+      this.injector.postAttend(values, result => {
+        console.log(result);
+        this.attend_status = result.active;
       });
     }
   }

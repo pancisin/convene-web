@@ -1,84 +1,97 @@
-<template>
-  <panel type="table">
-    <span slot="title">Attendees</span>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>
-            Name
-          </th>
-          <th>
-            Email
-          </th>
-          <th v-for="field in metaFields" :key="field.id">
-            {{ field.name }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <td v-text="user.displayName"></td>
-          <td>
-            {{ user.email }}
-          </td>
-          <td v-for="field in metaFields" :key="field.id">
-            {{ getUserMetaValue(user.id, field.id) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </panel>
-</template>
-
 <script>
+import { VueTable } from 'elements';
+import PageMemberApi from 'api/page-member.api';
 export default {
   name: 'conference-attendees-new',
   inject: ['provider'],
+  props: ['conference'],
   data () {
     return {
-      attendees: [],
-      metaFields: []
+      members: []
     };
+  },
+  render (h) {
+    return h('panel', {
+      props: {
+        type: 'table'
+      }
+    }, [
+      h('span', {
+        slot: 'title'
+      }, 'Attendees'),
+      h('vue-table', {
+        props: {
+          func: this.tableRender,
+          data: this.members,
+          contextmenu: this.contextMenu
+        }
+      })
+    ]);
   },
   created () {
     this.initialize();
   },
+  components: {
+    VueTable
+  },
   computed: {
-    users () {
-      return this.attendees.map(x => {
-        return x.user;
-      });
-    },
     api () {
       return this.provider.api;
+    },
+    metaFields () {
+      if (this.conference && this.conference.registrationForm != null) {
+        return this.conference.registrationForm.formFields;
+      } else return [];
     }
   },
   methods: {
-    initialize () {
-      this.api.getAttendees(attendees => {
-        this.attendees = attendees;
-      });
+    tableRender (member) {
+      const getMeta = (fieldId) => {
+        const fields = member.submission.values.filter(e => e.field === fieldId);
 
-      this.api.getMetaFields(metaFields => {
-        this.metaFields = metaFields;
+        if (fields.length > 0) {
+          return fields[0].value;
+        }
+      };
+
+      const fields = this.metaFields.reduce((acc, field) => {
+        acc[field.name] = getMeta(field.id);
+        return acc;
+      }, {});
+
+      return {
+        name: {
+          el: 'a',
+          onClick: () => {
+            this.$router.push({ name: 'user', params: { user_id: member.user.id } });
+          },
+          content: member.user.displayName
+        },
+        email: member.user.email,
+        ...fields,
+        approved: member.approved
+      };
+    },
+    contextMenu (item) {
+      return [
+        item('Delete', this.deleteMember),
+        item('Toggle approved', this.toggleMemberApproved)
+      ];
+    },
+    initialize () {
+      this.api.getAttendees(members => {
+        this.members = members;
       });
     },
-    getUserMetaValue (user_id, field_id) {
-      var user = this.attendees.filter(x => {
-        return x.user.id === user_id;
+    deleteMember (member) {
+      this.$prompt('notification.delete_prompt', member.user.displayName, () => {
+        PageMemberApi.deletePageMember(member.id, result => {
+          this.members = this.members.filter(m => m.id !== member.id);
+        });
       });
+    },
+    toggleMemberApproved (member) {
 
-      if (user.length > 0) {
-        user = user[0];
-      }
-
-      var meta = user.meta.filter(x => {
-        return x.field === field_id;
-      });
-
-      if (meta.length > 0) {
-        return meta[0].value;
-      } else null;
     }
   }
 };

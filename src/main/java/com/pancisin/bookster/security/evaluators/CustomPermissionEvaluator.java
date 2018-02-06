@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-import com.pancisin.bookster.model.BookRequest;
+import com.pancisin.bookster.model.ServiceRequest;
 import com.pancisin.bookster.model.Event;
 import com.pancisin.bookster.model.Notification;
 import com.pancisin.bookster.model.Page;
@@ -19,7 +19,7 @@ import com.pancisin.bookster.model.User;
 import com.pancisin.bookster.model.enums.PageRole;
 import com.pancisin.bookster.model.enums.PageState;
 import com.pancisin.bookster.model.enums.Visibility;
-import com.pancisin.bookster.repository.BookRequestRepository;
+import com.pancisin.bookster.repository.ServiceRequestRepository;
 import com.pancisin.bookster.repository.EventRepository;
 import com.pancisin.bookster.repository.NotificationRepository;
 import com.pancisin.bookster.repository.AdministratorRepository;
@@ -40,7 +40,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	private ProgrammeRepository programmeRepository;
 
 	@Autowired
-	private BookRequestRepository bookRequestRepository;
+	private ServiceRequestRepository serviceRequestRepository;
 
 	@Autowired
 	private NotificationRepository notificationRepository;
@@ -85,8 +85,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 		switch (targetType) {
 		case "book_request":
-			BookRequest bookRequest = bookRequestRepository.findOne((Long) targetId);
-			return bookRequest.getService().getPage().getAdministrators().stream()
+			ServiceRequest serviceRequest = serviceRequestRepository.findOne((Long) targetId);
+			return serviceRequest.getService().getPage().getAdministrators().stream()
 					.anyMatch(x -> x.getUser().getId() == userId);
 
 		case "event":
