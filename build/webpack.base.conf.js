@@ -43,7 +43,8 @@ module.exports = {
       'filters': path.resolve(__dirname, '../src/main/vuejs/filters'),
       'less': path.resolve(__dirname, '../src/main/vuejs/assets/less'),
       'assets': path.resolve(__dirname, '../src/main/vuejs/assets'),
-      'components': path.resolve(__dirname, '../src/main/vuejs/components')
+      'components': path.resolve(__dirname, '../src/main/vuejs/components'),
+      'pages': path.resolve(__dirname, '../src/main/vuejs/pages')
     }
   },
   module: {

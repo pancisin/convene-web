@@ -2,7 +2,7 @@ export default [
   {
     path: '',
     name: 'client.home',
-    component: resolve => require(['../pages/public/Home.vue'], resolve),
+    component: resolve => require(['pages/public/Home.vue'], resolve),
     meta: {
       title: 'Home'
     }
@@ -10,12 +10,12 @@ export default [
   {
     path: 'event/:id',
     name: 'event.public',
-    component: resolve => require(['../pages/public/Event.public.vue'], resolve)
+    component: resolve => require(['pages/public/Event.public.vue'], resolve)
   },
   {
     path: 'pages',
     name: 'client.page.explore',
-    component: resolve => require(['../pages/public/Page.index.vue'], resolve),
+    component: resolve => require(['pages/public/Page.index.vue'], resolve),
     meta: {
       title: 'Pages'
     }
@@ -23,12 +23,12 @@ export default [
   {
     path: 'page/:id',
     name: 'page.public',
-    component: resolve => require(['../pages/public/Page.vue'], resolve)
+    component: resolve => require(['pages/public/Page.vue'], resolve)
   },
   {
     path: 'conferences',
     name: 'conferences',
-    component: resolve => require(['../pages/public/Conference.index.vue'], resolve),
+    component: resolve => require(['pages/public/Conference.index.vue'], resolve),
     meta: {
       title: 'Conferences'
     }
@@ -36,18 +36,18 @@ export default [
   {
     path: 'conference/:id',
     name: 'conference',
-    component: resolve => require(['../pages/public/Conference.vue'], resolve)
+    component: resolve => require(['pages/public/Conference.vue'], resolve)
   },
   {
     path: 'article/:article_id',
     name: 'article.public',
-    component: resolve => require(['../pages/public/Article.vue'], resolve)
+    component: resolve => require(['pages/public/Article.vue'], resolve)
   },
   {
     path: 'about',
     alias: 'admin/about',
     name: 'about',
-    component: resolve => require(['../pages/static/About.vue'], resolve),
+    component: resolve => require(['pages/static/About.vue'], resolve),
     meta: {
       title: 'About'
     }
@@ -55,7 +55,7 @@ export default [
   {
     path: 'faq',
     name: 'faq',
-    component: resolve => require(['../pages/static/FAQ.vue'], resolve),
+    component: resolve => require(['pages/static/FAQ.vue'], resolve),
     meta: {
       title: 'Frequently asked questions'
     }
@@ -63,7 +63,7 @@ export default [
   {
     path: 'terms',
     name: 'terms',
-    component: resolve => require(['../pages/static/Terms.vue'], resolve),
+    component: resolve => require(['pages/static/Terms.vue'], resolve),
     meta: {
       title: 'Terms of usage'
     }
@@ -71,7 +71,7 @@ export default [
   {
     path: 'privacy-policy',
     name: 'privacy-policy',
-    component: resolve => require(['../pages/static/Privacy.vue'], resolve),
+    component: resolve => require(['pages/static/Privacy.vue'], resolve),
     meta: {
       title: 'Privacy policy'
     }
@@ -80,7 +80,7 @@ export default [
     path: 'pricing',
     alias: 'admin/pricing',
     name: 'pricing',
-    component: resolve => require(['../pages/static/Pricing.vue'], resolve),
+    component: resolve => require(['pages/static/Pricing.vue'], resolve),
     meta: {
       title: 'Pricing'
     }
@@ -88,7 +88,7 @@ export default [
   {
     path: 'events',
     name: 'client.event.explore',
-    component: resolve => require(['../pages/public/Event.index.vue'], resolve),
+    component: resolve => require(['pages/public/Event.index.vue'], resolve),
     meta: {
       title: 'Events'
     }
@@ -96,13 +96,13 @@ export default [
   {
     path: 'settings',
     name: 'settings',
-    component: resolve => require(['../pages/Settings.vue'], resolve),
+    component: resolve => require(['pages/Settings.vue'], resolve),
     redirect: '/settings/account',
     children: [
       {
         path: 'account',
         name: 'settings.account',
-        component: resolve => require(['../pages/settings/Account.vue'], resolve),
+        component: resolve => require(['pages/settings/Account.vue'], resolve),
         meta: {
           title: 'Account settings'
         }
@@ -110,7 +110,7 @@ export default [
       {
         path: 'license',
         name: 'settings.license',
-        component: resolve => require(['../pages/settings/License.vue'], resolve),
+        component: resolve => require(['pages/settings/License.vue'], resolve),
         meta: {
           title: 'License settings'
         }
@@ -118,7 +118,7 @@ export default [
       {
         path: 'notifications',
         name: 'settings.notifications',
-        component: resolve => require(['../pages/settings/Notifications.vue'], resolve),
+        component: resolve => require(['pages/settings/Notifications.vue'], resolve),
         meta: {
           title: 'Notification settings'
         }
@@ -128,11 +128,11 @@ export default [
   {
     path: 'invoice/:invoice_id',
     name: 'invoice',
-    component: resolve => require(['../pages/Invoice.vue'], resolve)
+    component: resolve => require(['pages/Invoice.vue'], resolve)
   },
   {
     path: 'user/:user_id',
     name: 'user',
-    component: resolve => require(['../pages/public/User.vue'], resolve)
+    component: resolve => require(['pages/public/User.vue'], resolve)
   }
 ];

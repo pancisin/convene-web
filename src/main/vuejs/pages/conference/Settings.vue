@@ -1,22 +1,17 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="list-group mail-list">
-        <router-link :to="{ name: 'conference.settings.information' }" class="list-group-item waves-effect">
-          <i class="fa fa-info"></i>
-          Basic information
+  <div>
+    <ul class="nav nav-tabs">
+      <li class="tab" 
+        v-for="route in routes" 
+        :key="route.name">
+
+        <router-link :to="{ name: route.name }">
+          {{ route.label }}
         </router-link>
-        <router-link :to="{ name: 'conference.settings.registration' }" class="list-group-item waves-effect">
-          <i class="fa fa-users" aria-hidden="true"></i>
-          Registration
-        </router-link>
-        <router-link :to="{ name: 'conference.settings.deletion' }" class="list-group-item waves-effect">
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-          Delete
-        </router-link>
-      </div>
-    </div>
-    <div class="col-md-9">
+      </li>
+      <div class="indicator"></div>
+    </ul>
+    <div class="tab-content">
       <transition name="fade-up" mode="out-in">
         <router-view :conference="conference"></router-view>
       </transition>
@@ -27,6 +22,28 @@
 <script>
 export default {
   name: 'conference-settings',
-  props: ['conference']
+  props: ['conference'],
+  computed: {
+    routes () {
+      return [
+        {
+          name: 'conference.settings.information',
+          label: 'Basic information'
+        },
+        {
+          name: 'conference.settings.registration',
+          label: 'Registration form'
+        },
+        {
+          name: 'conference.settings.partners',
+          label: 'Partners'
+        },
+        {
+          name: 'conference.settings.deletion',
+          label: 'Delete'
+        }
+      ];
+    }
+  }
 };
 </script>

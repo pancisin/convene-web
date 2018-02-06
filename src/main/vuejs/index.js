@@ -18,7 +18,7 @@ import 'font-awesome/css/font-awesome.css';
 
 // SERVICES
 import store from 'store/index.js';
-import router from './services/router.js';
+import router from './services/router';
 import notifier from './services/notifier.js';
 
 // LOAD STYLES

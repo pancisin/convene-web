@@ -1,7 +1,11 @@
 <template>
   <div>
     <ul class="nav nav-tabs navtab-custom nav-justified">
-      <li class="tab" v-for="tab in tabs" :class="{ 'active' : selected.id == tab.id }" :key="tab.id">
+      <li class="tab" 
+        v-for="tab in tabs" 
+        :class="{ 'active' : selected.id == tab.id }" 
+        :key="tab.id">
+
         <a :class="{ 'active' : selected.id == tab.id }" @click="selected = tab">
           <span v-text="tab.title"></span>
         </a>
@@ -33,10 +37,12 @@ export default {
     }
   },
   mounted () {
-    this.tabs = this.$children;
-    for (var i = 0; i < this.tabs.length; i++) {
-      this.$set(this.tabs[i], 'id', i);
-    }
+    this.tabs = this.$children.map((child, index) => {
+      return {
+        ...child,
+        id: index
+      };
+    });
 
     this.selected = this.tabs[0];
   }

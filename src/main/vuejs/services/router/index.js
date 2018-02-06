@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
-import store from '../store/index';
+import store from 'store';
 
-import publicRoutes from './routes.public.js';
-import adminRoutes from './routes.admin.js';
+import publicRoutes from './routes.public';
+import adminRoutes from './routes.admin';
 
 const require_auth = (to, from, next) => {
   if (!store.getters.authenticated) {
@@ -34,32 +34,32 @@ var router = new VueRouter({
       component: resolve => {
         var reg = new RegExp('www|bookster|localhost:3000|convene');
         var parts = window.location.host.split('.');
-        return reg.test(parts[0]) ? require(['../layouts/Client.vue'], resolve) : require(['../pages/public/Page.standalone.vue'], resolve);
+        return reg.test(parts[0]) ? require(['src/main/vuejs/layouts/Client.vue'], resolve) : require(['pages/public/Page.standalone.vue'], resolve);
       },
       children: publicRoutes.concat([
         {
           path: 'subscribe/:subscription',
           name: 'sub.signup',
-          component: resolve => require(['../pages/public/Subscribe.vue'], resolve),
+          component: resolve => require(['pages/public/Subscribe.vue'], resolve),
           beforeEnter: require_auth
         }
       ])
     },
     {
       path: '/admin',
-      component: resolve => require(['../layouts/Admin.vue'], resolve),
+      component: resolve => require(['src/main/vuejs/layouts/Admin.vue'], resolve),
       beforeEnter: require_auth,
       redirect: '/admin/dashboard',
       children: adminRoutes
     },
     {
       path: '/confirm-email',
-      component: resolve => require(['../pages/EmailVerify.vue'], resolve)
+      component: resolve => require(['pages/EmailVerify.vue'], resolve)
     },
     {
       path: '/login',
       name: 'login',
-      component: resolve => require(['../pages/Login.vue'], resolve),
+      component: resolve => require(['pages/Login.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {
         title: 'Login'
@@ -68,7 +68,7 @@ var router = new VueRouter({
     {
       path: '/register',
       name: 'register',
-      component: resolve => require(['../pages/Register.vue'], resolve),
+      component: resolve => require(['pages/Register.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {
         title: 'Register'
