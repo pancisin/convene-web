@@ -5,11 +5,6 @@
         :class="`text-${type}`">
 
         <span>convene</span>
-        <sup>
-          <small>
-            &beta;
-          </small>
-        </sup>
         <slot></slot>
       </router-link>
     </div>

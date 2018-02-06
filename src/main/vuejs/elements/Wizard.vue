@@ -1,7 +1,13 @@
 <template>
   <div class="wizard">
     <div class="wizard-navigation">
-      <a class="wizard-navigation-step" :class="{ 'disabled' : !canNavigate(index) && index > activePage, 'active' : index == activePage }" v-for="(page, index) in pages" :key="page.title" @click="navigateTo(index)">
+      <a 
+        class="wizard-navigation-step" 
+        :class="{ 'disabled' : !canNavigate(index) && index > activePage, 'active' : index == activePage }" 
+        v-for="(page, index) in pages" 
+        :key="page.title" 
+        @click="navigateTo(index)">
+
         <div class="number-circle">
           <i class="fa " :class="'fa-' + page.icon" v-if="page.icon"></i>
           <span v-else>
@@ -14,18 +20,27 @@
   
     <div class="steps-container">
       <div id="bar" class="progress progress-striped">
-        <div class="bar progress-bar progress-bar-primary" :style="progressBarStyle"></div>
+        <div 
+          class="bar progress-bar progress-bar-primary" 
+          :style="progressBarStyle"></div>
       </div>
   
       <slot>
       </slot>
   
       <div class="wizard-navigation-buttons clearfix m-t-10">
-        <a class="btn btn-primary" @click="navigateTo(activePage - 1)" v-if="canNavigate(activePage - 1)">Previous</a>
+        <a class="btn btn-primary" 
+          @click="navigateTo(activePage - 1)" 
+          v-if="canNavigate(activePage - 1)">
+        Previous</a>
         
         <div class="text-right">
-          <a class="btn btn-primary pull-right" @click="navigateTo(activePage + 1)" v-if="canNavigate(activePage + 1)">Next</a>
-          <a class="btn btn-success pull-right" v-if="activePage + 1 === pages.length" @click="complete">Submit</a>
+          <a class="btn btn-primary pull-right" 
+            @click="navigateTo(activePage + 1)" 
+            v-if="canNavigate(activePage + 1)">Next</a>
+          <a class="btn btn-success pull-right" 
+            v-if="activePage + 1 === pages.length" 
+            @click="complete">Submit</a>
         </div>
       </div>
     </div>

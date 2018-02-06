@@ -73,11 +73,7 @@ export default {
     value: {
       type: [ Number, String ],
       required: false,
-      // validator: (value) => {
-      //   return (new Date(value)).getTime() > 0;
-      // },
       default () {
-        console.log('dsadss');
         return DateTime.utc().startOf('day').valueOf();
       }
     },
