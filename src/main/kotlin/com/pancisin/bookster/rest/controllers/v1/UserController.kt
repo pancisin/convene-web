@@ -13,8 +13,10 @@ import com.pancisin.bookster.model.Event
 import com.pancisin.bookster.model.Page
 import com.pancisin.bookster.model.User
 import com.pancisin.bookster.models.views.Summary
+import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserRepository
+import javax.xml.ws.Response
 
 @RestController
 @RequestMapping(value = "api/v1/user/{user_id}")
@@ -26,9 +28,12 @@ class UserController {
   @Autowired
   lateinit var pageRepository: PageRepository
 
+  @Autowired
+  lateinit var eventRepository: EventRepository
+
   @JsonView(Summary::class)
   @GetMapping
-  fun getUserData(@PathVariable user_id: Long?): ResponseEntity<User> {
+  fun getUserData(@PathVariable user_id: Long): ResponseEntity<User> {
     val user = userRepository.findOne(user_id)
 
     return if (user != null)
@@ -38,13 +43,16 @@ class UserController {
   }
 
   @GetMapping("event")
-  fun getEvents(@PathVariable user_id: Long?) = ResponseEntity.ok(userRepository.findOne(user_id)?.events)
+  fun getEvents(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id)?.events)
 
   @JsonView(Summary::class)
   @GetMapping("/page")
-  fun getPage(@PathVariable user_id: Long?) = ResponseEntity.ok(pageRepository.getByOwner(user_id))
+  fun getPage(@PathVariable user_id: Long) = ResponseEntity.ok(pageRepository.getByOwner(user_id))
 
   @GetMapping("/followed-pages")
   @JsonView(Summary::class)
-  fun getFollowedPages(@PathVariable user_id: Long?) = ResponseEntity.ok(pageRepository.getFollowed(user_id))
+  fun getFollowedPages(@PathVariable user_id: Long) = ResponseEntity.ok(pageRepository.getFollowed(user_id))
+
+  @GetMapping("/privacy-constraints")
+  fun getPrivacyConstraints(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id).privacyConstraints)
 }

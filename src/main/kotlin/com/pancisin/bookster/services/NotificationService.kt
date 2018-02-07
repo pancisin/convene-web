@@ -17,9 +17,10 @@ class NotificationService {
   @Autowired
   lateinit var webSocket: SimpMessagingTemplate
 
-  fun notifyUser(user: User, code: String) = this.notifyUser(user, code, "")
   fun notifyUser(user: User, code: String, target: String) = this.notifyUser(user, Notification(code, target))
+
   fun notifyUser(user: User, code: String, target: String, subject: String) = this.notifyUser(user, Notification(code, target, subject))
+
   fun notifyUser(user: User, notification: Notification) {
     notification.recipient = user
     webSocket.convertAndSendToUser(user.email, "/queue/notifier", notificationRepository.save(notification))

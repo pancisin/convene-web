@@ -43,6 +43,7 @@ export default {
   settings: {
     default: 'Settings',
     account: 'Account',
+    privacy: 'Privacy',
     notifications: 'Notifications',
     license: {
       default: 'License',

@@ -3,16 +3,11 @@ package com.pancisin.bookster.model
 import java.util.Calendar
 import java.util.UUID
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.ManyToOne
-import javax.persistence.Table
-
 import org.hibernate.annotations.GenericGenerator
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.pancisin.bookster.model.enums.NotificationType
+import javax.persistence.*
 
 @Entity
 @Table(name = "notifications")
@@ -37,7 +32,11 @@ data class Notification(
   var target: String? = null,
 
   @Column
-  var subject: String? = null
+  var subject: String? = null,
+
+  @Column
+  @Enumerated(EnumType.STRING)
+  var type: NotificationType = NotificationType.INFO
 ) {
   constructor(code: String, target: String, subject: String) : this(null, null, code, false, null, target, subject)
   constructor(code: String, target: String) : this(null, null, code, false, null, target)

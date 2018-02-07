@@ -1,5 +1,7 @@
 package com.pancisin.bookster.services
 
+import com.pancisin.bookster.model.Notification
+import com.pancisin.bookster.model.User
 import java.util.ArrayList
 import java.util.Calendar
 
@@ -8,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
 import com.pancisin.bookster.model.UserSubscription
+import com.pancisin.bookster.model.enums.NotificationType
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.SubscriptionState
 import com.pancisin.bookster.repository.ConferenceRepository
@@ -29,6 +32,9 @@ class LicenseService {
   @Autowired
   lateinit var conferenceRepository: ConferenceRepository
 
+  @Autowired
+  lateinit var notificationService: NotificationService
+
   @Scheduled(cron = "0 0 3 * * *")
   fun checkLicenses() {
     val expired = usRepository.findExpirations()
@@ -39,18 +45,26 @@ class LicenseService {
         s.state = SubscriptionState.EXPIRED
         newSubs.add(createNew(s))
       } else if (s.state === SubscriptionState.NEW) {
-        s.state = SubscriptionState.UNPAID
+        val user = s.user
+        if (user != null) {
+          s.state = SubscriptionState.UNPAID
 
-        val user_id = s.user?.id
+          var pages = pageRepository.getByOwner(user.id)
+          pages.addAll(conferenceRepository.getByOwner(user.id))
 
-        var pages = pageRepository.getByOwner(user_id)
-        pages.addAll(conferenceRepository.getByOwner(user_id))
+          pages = pages
+            .filter { it.state === PageState.PUBLISHED || it.state === PageState.DEACTIVATED }
+            .onEach { it.state = PageState.BLOCKED }
 
-        pages = pages
-          .filter { it.state === PageState.PUBLISHED || it.state === PageState.DEACTIVATED }
-          .onEach { it.state = PageState.BLOCKED }
+          pageRepository.save(pages)
 
-        pageRepository.save(pages)
+          notificationService.notifyUser(user, Notification(
+            recipient = user,
+            code = "notification.license.unpaid",
+            target = s.subscription?.name,
+            type = NotificationType.DANGER
+          ))
+        }
       }
     }
 

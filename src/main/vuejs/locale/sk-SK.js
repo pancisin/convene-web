@@ -42,6 +42,7 @@ export default {
   settings: {
     default: 'Nastavenia',
     account: 'Účet',
+    privacy: 'Súkromie',
     notifications: 'Oznámenia',
     license: {
       default: 'Licencia',

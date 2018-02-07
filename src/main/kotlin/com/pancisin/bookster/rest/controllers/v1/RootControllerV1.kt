@@ -2,6 +2,7 @@ package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.PageState
+import com.pancisin.bookster.model.enums.PrivacyAccess
 import com.pancisin.bookster.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -36,6 +37,9 @@ class RootControllerV1 {
 
   @Autowired
   lateinit var conferenceRepository: ConferenceRepository
+
+  @Autowired
+  lateinit var userRepository: UserRepository
 
   @GetMapping("/api/v1/articles", "/public/v1/articles")
   fun getArticles(
@@ -178,4 +182,13 @@ class RootControllerV1 {
     @PathVariable page: Int,
     @PathVariable size: Int
   ) = ResponseEntity.ok(eventRepository.getByUser(user_id, PageRequest(page, size, Sort(Direction.ASC, "date"))))
+
+  @GetMapping("/api/v1/user/{user_id}/attending-events", "/public/v1/user/{user_id}/attending-events")
+  fun getAttendingEvents(@PathVariable user_id: Long) = ResponseEntity.ok(eventRepository.getAttending(user_id))
+
+  @GetMapping("/api/v1/user/{user_id}/privacy-constraints", "/public/v1/user/{user_id}/privacy-constraints")
+  fun getUserPrivacyConstraints(): ResponseEntity<Map<String, PrivacyAccess>> {
+    val auth = SecurityContextHolder.getContext().authentication.principal as User
+    return ResponseEntity.ok(userRepository.findOne(auth.id).privacyConstraints)
+  }
 }

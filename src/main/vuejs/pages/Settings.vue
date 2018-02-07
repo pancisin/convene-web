@@ -4,28 +4,23 @@
       <h4 class="page-title">{{ $t('settings.default') }}</h4>
     </div>
   
-    <div class="row">
-      <div class="col-md-3 col-md-push-9">
-        <div class="list-group mail-list">
-          <router-link :to="{ name: 'settings.account' }" class="list-group-item waves-effect">
-            <i class="fa fa-user-o"></i>
-            {{ $t('settings.account') }}
+    <div class="user-settings">
+      <ul class="nav nav-tabs">
+        <li class="tab" 
+          v-for="route in routes" 
+          :key="route.name"
+          :class="{ 'active' : $route.name === route.name }">
+
+          <router-link :to="{ name: route.name }">
+            <i class="fa" :class="route.icon"></i>
+            {{ route.label }}
           </router-link>
-          <router-link :to="{ name: 'settings.license' }" class="list-group-item waves-effect">
-            <i class="fa fa-file-text-o"></i>
-            {{ $t('settings.license.default') }}
-          </router-link>
-          <router-link :to="{ name: 'settings.notifications' }" class="list-group-item waves-effect">
-            <i class="fa fa-bell-o"></i>
-            {{ $t('settings.notifications') }}
-          </router-link>
-        </div>
-      </div>
-      <div class="col-md-9 col-md-pull-3">
-        <transition name="fade-up" mode="out-in">
-          <keep-alive>
-            <router-view></router-view>
-          </keep-alive>
+        </li>
+        <div class="indicator"></div>
+      </ul>
+      <div class="tab-content">
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
         </transition>
       </div>
     </div>
@@ -34,6 +29,49 @@
 
 <script>
 export default {
-  name: 'settings'
+  name: 'user-settings',
+  computed: {
+    routes () {
+      return [
+        {
+          name: 'settings.account',
+          label: this.$t('settings.account'),
+          icon: 'fa-user-o'
+        },
+        {
+          name: 'settings.privacy',
+          label: this.$t('settings.privacy'),
+          icon: 'fa-key'
+        },
+        {
+          name: 'settings.license',
+          label: this.$t('settings.license.default'),
+          icon: 'fa-file-text-o'
+        },
+        {
+          name: 'settings.notifications',
+          label: this.$t('settings.notifications'),
+          icon: 'fa-bell-o'
+        }
+      ];
+    }
+  }
 };
-</script>
+</script> 
+
+<style lang="less">
+.user-settings {
+  margin-bottom: 20px;
+  
+  ul {
+    .tab i {
+      margin-right: 10px;
+    }
+  }
+
+  .tab-content {
+    background: #fff;
+    padding: 15px;
+  }
+}
+</style>

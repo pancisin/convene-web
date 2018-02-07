@@ -161,8 +161,8 @@ export default {
 }
 
 .btn-chat {
-  padding: 15px 16px;
-  border-radius: 150%;
+  padding: 15px 16px !important;
+  border-radius: 100% !important; 
 }
 
 @media (max-width: 768px) {

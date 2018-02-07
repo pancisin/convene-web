@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-lg-4 col-md-6">
         <image-upload 
           v-model="conference.posterData" 
-          :media="conference.poster"></image-upload>
+          :media="conference.poster">
+        </image-upload>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-lg-4 col-md-6">
         <div class="form-group">
           <label class="control-label">Name: </label>
           <input 
@@ -15,7 +16,7 @@
             v-model="conference.name" 
             type="text">
         </div>
-        
+
         <div class="form-group">
           <label class="control-label">Visibility: </label>
           <select v-model="conference.visibility" class="form-control">
@@ -63,17 +64,26 @@
 </template>
 
 <script>
-import { TextEditor, ImageUpload, Categorizer } from 'elements';
+import {
+  TextEditor,
+  ImageUpload,
+  Categorizer
+} from 'elements';
 import { mapActions } from 'vuex';
+
 export default {
-  props:
-  {
+  props: {
     conference: {
       type: Object,
       default () {
         return {};
       }
     }
+  },
+  data () {
+    return {
+      loading: false
+    };
   },
   computed: {
     visibility_options: {
@@ -91,8 +101,10 @@ export default {
   },
   methods: {
     submit () {
+      this.loading = true;
       this.updateConference(this.conference).then(conference => {
         this.$success('notification.conference.updated', conference.name);
+        this.loading = false;
       });
     },
     ...mapActions([

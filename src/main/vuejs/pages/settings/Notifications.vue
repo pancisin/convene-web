@@ -1,6 +1,5 @@
 <template>
- <panel type="table" v-loading="loading">
-    <span slot="title">Notifications</span>
+  <div v-loading="loading">
     <button type="button" class="btn btn-link pull-right" @click="setAllSeen">Set all as seen</button>
     
     <table class="table table-striped">
@@ -49,7 +48,7 @@
     <div class="text-center">
       <paginator :paginator="paginator" :fetch="getNotifications" history/>
     </div>
-  </panel>
+  </div>
 </template>
 
 <script>

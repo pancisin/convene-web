@@ -2,6 +2,7 @@ package com.pancisin.bookster.rest.controllers;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -298,4 +299,21 @@ public class CurrentUserController {
 
 		return ResponseEntity.ok(notificationRepository.setSeen(auth.getId(), sinceCal, untilCal, seen));
 	}
+
+	@PatchMapping("/privacy-constraints")
+  public ResponseEntity<?> patchPrivacyConstraints(@RequestBody Map<String, PrivacyAccess> constraints) {
+    User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User stored = userRepository.findOne(auth.getId());
+
+    stored.setPrivacyConstraints(constraints);
+    userRepository.save(stored);
+    return ResponseEntity.ok(constraints);
+  }
+
+  @GetMapping("/privacy-constraints")
+  public ResponseEntity<?> getPrivacyConstraints() {
+    User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User stored = userRepository.findOne(auth.getId());
+	  return ResponseEntity.ok(stored.getPrivacyConstraints());
+  }
 }

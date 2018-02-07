@@ -5,23 +5,6 @@ import java.util.ArrayList
 import java.util.Calendar
 import java.util.HashMap
 
-import javax.persistence.CascadeType
-import javax.persistence.CollectionTable
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Lob
-import javax.persistence.ManyToMany
-import javax.persistence.MapKeyColumn
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
-import javax.persistence.Table
-import javax.persistence.Transient
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -34,14 +17,12 @@ import org.springframework.security.core.userdetails.UserDetails
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
-import com.pancisin.bookster.model.enums.Locale
-import com.pancisin.bookster.model.enums.Role
-import com.pancisin.bookster.model.enums.Subscription
-import com.pancisin.bookster.model.enums.SubscriptionState
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.enums.*
+import javax.persistence.*
 
 @Entity
 @Indexed
@@ -142,6 +123,14 @@ class User() : UserDetails, Principal, IAuthor {
 
   @JsonProperty(access = Access.READ_ONLY)
   var facebookId: Long? = null
+
+  @ElementCollection
+  @MapKeyColumn(name = "constraint_key")
+  @Column(name = "access")
+  @CollectionTable(name = "users_privacy_constraints")
+  @Enumerated(EnumType.STRING)
+  @JsonIgnore
+  var privacyConstraints: MutableMap<String, PrivacyAccess> = HashMap()
 
   constructor(id: Long?, email: String, token: String, authorities: Collection<GrantedAuthority>) : this() {
     this.id = id

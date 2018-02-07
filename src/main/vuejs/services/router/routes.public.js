@@ -108,6 +108,14 @@ export default [
         }
       },
       {
+        path: 'privacy',
+        name: 'settings.privacy',
+        component: resolve => require(['pages/settings/Privacy.vue'], resolve),
+        meta: {
+          title: 'Privacy settings'
+        }
+      },
+      {
         path: 'license',
         name: 'settings.license',
         component: resolve => require(['pages/settings/License.vue'], resolve),

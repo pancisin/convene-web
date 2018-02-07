@@ -69,6 +69,18 @@ export default {
       }, response => {
 
       });
+    },
+
+    getAttendingEvents (id, success) {
+      Vue.http.get(`${USER_PUBLIC_URL}/${id}/attending-events`).then(response => {
+        success(response.body);
+      });
+    },
+
+    getPrivacyConstraints (id, success) {
+      Vue.http.get(`${USER_PUBLIC_URL}/${id}/privacy-constraints`).then(response => {
+        success(response.body);
+      });
     }
   },
 

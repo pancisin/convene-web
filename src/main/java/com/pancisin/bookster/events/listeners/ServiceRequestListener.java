@@ -20,12 +20,14 @@ public class ServiceRequestListener implements ApplicationListener<OnServiceRequ
   public void onApplicationEvent(OnServiceRequestEvent event) {
     Service service = event.getServiceRequest().getService();
 
-    service.getPage().getAdministrators().forEach(admin -> {
-      User user = admin.getUser();
-      if (user != null) {
-        emailService.sendSimpleMessage(user.getEmail(), "Service request", "");
-        notificationService.notifyUser(user, "Service request", "");
-      }
-    });
+    if (service != null && service.getPage() != null && service.getPage().getAdministrators() != null) {
+      service.getPage().getAdministrators().forEach(admin -> {
+        User user = admin.getUser();
+        if (user != null) {
+          emailService.sendSimpleMessage(user.getEmail(), "Service request", "");
+          notificationService.notifyUser(user, "Service request", "");
+        }
+      });
+    }
   }
 }

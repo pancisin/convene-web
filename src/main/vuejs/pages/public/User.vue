@@ -23,13 +23,17 @@
             <span slot="title">
               Events
             </span>
-
             <events-list :events="eventsPaginator.content" />
-
             <div class="text-center">
               <paginator :paginator="eventsPaginator" :fetch="getEvents" />
             </div>
           </panel>
+
+          <panel type="default">
+            <span slot="title">Attending</span>
+            <events-list :events="attendingEvents" />
+          </panel>
+          
         </div>
       </div>
     </div>
@@ -58,7 +62,8 @@ export default {
       api: null,
       eventsPaginator: {},
       error: null,
-      loadingEvents: false
+      loadingEvents: false,
+      attendingEvents: []
     };
   },
   components: {
@@ -75,6 +80,10 @@ export default {
 
     this.api.getUser(user => {
       this.user = user;
+
+      this.api.getAttendingEvents(events => {
+        this.attendingEvents = events;
+      });
     }, error => {
       this.error = error;
     });

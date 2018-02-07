@@ -37,12 +37,10 @@ export default {
     }
   },
   mounted () {
-    this.tabs = this.$children.map((child, index) => {
-      return {
-        ...child,
-        id: index
-      };
-    });
+    this.tabs = this.$children;
+    for (var i = 0; i < this.tabs.length; i++) {
+      this.$set(this.tabs[i], 'id', i);
+    }
 
     this.selected = this.tabs[0];
   }

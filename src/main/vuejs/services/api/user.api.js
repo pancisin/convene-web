@@ -187,5 +187,17 @@ export default {
     Vue.http.put(`${USER_API_URL}/locale`, locale).then(response => {
       success(response.body);
     });
+  },
+
+  getPrivacyConstraints (success) {
+    Vue.http.get(`${USER_API_URL}/privacy-constraints`).then(response => {
+      success(response.body);
+    });
+  },
+
+  updatePrivacyConstraints (constraints, success) {
+    Vue.http.patch(`${USER_API_URL}/privacy-constraints`).then(response => {
+      success(response.body);
+    });
   }
 };
