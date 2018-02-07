@@ -63,7 +63,8 @@ export default {
       eventsPaginator: {},
       error: null,
       loadingEvents: false,
-      attendingEvents: []
+      attendingEvents: [],
+      constraints: []
     };
   },
   components: {
@@ -83,6 +84,10 @@ export default {
 
       this.api.getAttendingEvents(events => {
         this.attendingEvents = events;
+      });
+
+      this.api.getPrivacyConstraints(constraints => {
+        this.constraints = constraints;
       });
     }, error => {
       this.error = error;

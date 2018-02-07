@@ -158,7 +158,6 @@ class RootControllerV1 {
     PageRequest(page, size, Direction.ASC, "date"))
   )
 
-
   @GetMapping("/api/v1/near-events/{page}/{size}", "/public/v1/near-events/{page}/{size}")
   fun getNearEvents(
     @PathVariable page: Int,
@@ -187,8 +186,5 @@ class RootControllerV1 {
   fun getAttendingEvents(@PathVariable user_id: Long) = ResponseEntity.ok(eventRepository.getAttending(user_id))
 
   @GetMapping("/api/v1/user/{user_id}/privacy-constraints", "/public/v1/user/{user_id}/privacy-constraints")
-  fun getUserPrivacyConstraints(): ResponseEntity<Map<String, PrivacyAccess>> {
-    val auth = SecurityContextHolder.getContext().authentication.principal as User
-    return ResponseEntity.ok(userRepository.findOne(auth.id).privacyConstraints)
-  }
+  fun getUserPrivacyConstraints(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id).privacyConstraints)
 }
