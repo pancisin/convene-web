@@ -2,7 +2,9 @@ package com.pancisin.bookster.events.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.pancisin.bookster.repository.ConferenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -16,36 +18,29 @@ import com.pancisin.bookster.repository.PageRepository;
 @Component
 public class PaymentListener implements ApplicationListener<OnPaymentEvent> {
 
-	@Autowired
-	private PageRepository pageRepository;
+  @Autowired
+  private PageRepository pageRepository;
 
-	@Override
-	public void onApplicationEvent(OnPaymentEvent event) {
-		if (event.getState() == PaymentState.SUCCESS) {
-			Long user_id = event.getUs().getUser().getId();
+  @Autowired
+  private ConferenceRepository conferenceRepository;
 
-			List<Page> pages = pageRepository.getByOwner(user_id);
+  @Override
+  public void onApplicationEvent(OnPaymentEvent event) {
+    if (event.getState() == PaymentState.SUCCESS) {
+      Long user_id = event.getUs().getUser().getId();
 
-			List<Page> updatedPages = new ArrayList<Page>();
-			pages.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
-				x.setState(PageState.PUBLISHED);
-				updatedPages.add(x);
-			});
+      List<Page> pages = pageRepository.getByOwner(user_id);
+      pages.addAll(conferenceRepository.getByOwner(user_id));
 
-//			List<Conference> conferences = conferenceRepository.getByOwner(user_id);
-//
-//			List<Conference> updatedConferences = new ArrayList<Conference>();
-//			conferences.stream().filter(x -> x.getState() == PageState.BLOCKED).forEach(x -> {
-//				x.setState(PageState.PUBLISHED);
-//				updatedConferences.add(x);
-//			});
-//
-//			pageRepository.save(updatedPages);
-//			conferenceRepository.save(updatedConferences);
+      List<Page> updatedPages = pages.stream()
+        .filter(x -> x.getState() == PageState.BLOCKED)
+        .peek(x -> x.setState(PageState.PUBLISHED)).collect(Collectors.toList());
 
-			// Send approval email to the customer. Log transactions as well !
-		} else if (event.getState() == PaymentState.ERROR) {
-			// send warning error about unsuccessful transaction.
-		}
-	}
+      pageRepository.save(updatedPages);
+
+      // Send approval email to the customer. Log transactions as well !
+    } else if (event.getState() == PaymentState.ERROR) {
+      // send warning error about unsuccessful transaction.
+    }
+  }
 }
