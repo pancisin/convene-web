@@ -1,9 +1,6 @@
 <template>
-  <panel type="danger">
-    <span slot="title">Completely delete conference</span>
+  <div>
     <p class="m-b-15">Write name of page to ensure it's not misstake and confirm with 'Delete'.</p>
-
-    <br />
     <div class="row">
       <div class="col-md-6">
         <input type="text" class="form-control" v-model="deleteConfirm">
@@ -12,7 +9,7 @@
         <a class="btn btn-danger" :disabled="deleteConfirm !== conference.name" @click="deleteC">Delete</a>
       </div>
     </div>
-  </panel>
+  </div>
 </template>
 
 <script>

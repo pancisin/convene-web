@@ -1,25 +1,36 @@
 <template>
-  <panel type="default">
-    <span slot="title">Overview</span>
-
+  <div>
     <div class="row">
       <div class="col-md-6">
-        <image-upload v-model="conference.posterData" :media="conference.poster"></image-upload>
+        <image-upload 
+          v-model="conference.posterData" 
+          :media="conference.poster"></image-upload>
       </div>
 
       <div class="col-md-6">
         <div class="form-group">
           <label class="control-label">Name: </label>
-          <input class="form-control required" v-model="conference.name" type="text">
+          <input 
+            class="form-control required" 
+            v-model="conference.name" 
+            type="text">
         </div>
+        
         <div class="form-group">
           <label class="control-label">Visibility: </label>
           <select v-model="conference.visibility" class="form-control">
-            <option :value="option" v-for="option in visibility_options" v-text="option" :key="option"></option>
+            <option 
+              :value="option" 
+              v-for="option in visibility_options" 
+              v-text="option" 
+              :key="option"></option>
           </select>
         </div>
 
-        <categorizer :category.sync="conference.category" :branch.sync="conference.branch" required />
+        <categorizer 
+          :category.sync="conference.category" 
+          :branch.sync="conference.branch" 
+          required />
       </div>
     </div>
 
@@ -29,15 +40,26 @@
     </div>
 
     <div class="text-center">
-      <button class="btn btn-rounded btn-danger" @click="toggleConferencePublished(conference)" v-if="conference.state == 'PUBLISHED'">Deactivate</button>
-      <button class="btn btn-rounded btn-success" @click="toggleConferencePublished(conference)" v-if="conference.state == 'DEACTIVATED'">
+      <button 
+        class="btn btn-rounded btn-danger"
+        @click="toggleConferencePublished(conference)" 
+        v-if="conference.state == 'PUBLISHED'">
+        Deactivate</button>
+      <button 
+        class="btn btn-rounded btn-success" 
+        @click="toggleConferencePublished(conference)" 
+        v-if="conference.state == 'DEACTIVATED'">
         Publish
       </button>
-      <button class="btn btn-rounded btn-primary" type="submit" @click="submit" :disabled="conference.state == 'BLOCKED'">
+      <button 
+        class="btn btn-rounded btn-primary" 
+        type="submit" 
+        @click="submit" 
+        :disabled="conference.state == 'BLOCKED'">
         <span>Save</span>
       </button>
     </div>
-  </panel>
+  </div>
 </template>
 
 <script>
