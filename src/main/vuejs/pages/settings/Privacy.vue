@@ -8,8 +8,14 @@
           <tr>
             <th>
             </th>
-            <th v-for="access in accessPolicy" :key="access.name">
-              {{ access.label }}
+            <th>
+              {{ $t('settings.privacy.access.public') }}
+            </th>
+            <th v-for="access in accessPolicy" :key="access">
+              {{ $t(`settings.privacy.access.${access}`) }}
+            </th>
+            <th>
+              Description
             </th>
           </tr>
         </thead>
@@ -20,17 +26,32 @@
             :key="index">
 
             <td>
-              {{ rule }}
+              {{ $t(`settings.privacy.constraint.${rule}`) }}
             </td>
-            <td v-for="access in accessPolicy" :key="access.name">
+            <td>
               <div class="radio radio-primary">
                 <input 
-                  :id="`radio-${index}-${access.name}`" 
-                  type="radio" :value="access.name" 
-                  v-model="constraints[rule]">
+                  id="radio-public" 
+                  type="radio" 
+                  :checked="constraints[rule] == null"
+                  @change="$delete(constraints, rule)">
 
-                <label :for="`radio-${index}-${access.name}`"></label>
+                <label for="radio-public"></label>
               </div>
+            </td>
+            <td v-for="access in accessPolicy" :key="access">
+              <div class="radio radio-primary">
+                <input 
+                  :id="`radio-${index}-${access}`" 
+                  type="radio" 
+                  :checked="constraints[rule] == access.toUpperCase()"
+                  @change="$set(constraints, rule, access.toUpperCase());">
+
+                <label :for="`radio-${index}-${access}`"></label>
+              </div>
+            </td>
+            <td>
+              {{ $t(`settings.privacy.description.${rule}`) }}
             </td>
           </tr>
         </tbody>
@@ -64,6 +85,11 @@ export default {
       this.loading = false;
     });
   },
+  watch: {
+    constraints (newVal) {
+      console.log(newVal);
+    }
+  },
   computed: {
     rules () {
       return [
@@ -74,18 +100,7 @@ export default {
     },
     accessPolicy () {
       return [
-        {
-          name: 'PUBLIC',
-          label: 'public'
-        },
-        {
-          name: 'PRIVATE',
-          label: 'private'
-        },
-        {
-          name: 'FRIENDS',
-          label: 'friends'
-        }
+        'private', 'friends'
       ];
     }
   },
@@ -93,6 +108,7 @@ export default {
     submit () {
       this.loading = true;
       UserApi.updatePrivacyConstraints(this.constraints, res => {
+        this.constraints = res;
         this.loading = false;
       });
     }

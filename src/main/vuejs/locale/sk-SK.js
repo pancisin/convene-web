@@ -42,7 +42,6 @@ export default {
   settings: {
     default: 'Nastavenia',
     account: 'Účet',
-    privacy: 'Súkromie',
     notifications: 'Oznámenia',
     license: {
       default: 'Licencia',
@@ -50,6 +49,24 @@ export default {
       acquired: 'Získaná',
       expires: 'Končí',
       state: 'Stav'
+    },
+    privacy: {
+      default: 'Nastavenie súkromia',
+      constraint: {
+        profile: 'Používateľský profil',
+        'attending-events': 'Účasť na podujatiach',
+        events: 'Vytvorené podujatia'
+      },
+      description: {
+        profile: 'Viditeľnosť používateľského profilu',
+        'attending-events': '',
+        events: ''
+      },
+      access: {
+        public: 'Verejné',
+        private: 'Iba ja',
+        friends: 'Priatelia'
+      }
     }
   },
   user: {

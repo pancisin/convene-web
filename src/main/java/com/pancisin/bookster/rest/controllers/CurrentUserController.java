@@ -1,8 +1,10 @@
 package com.pancisin.bookster.rest.controllers;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -304,6 +306,8 @@ public class CurrentUserController {
   public ResponseEntity<?> patchPrivacyConstraints(@RequestBody Map<String, PrivacyAccess> constraints) {
     User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User stored = userRepository.findOne(auth.getId());
+
+    constraints = constraints.entrySet().stream().filter(c -> c.getValue() != PrivacyAccess.PUBLIC).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     stored.setPrivacyConstraints(constraints);
     userRepository.save(stored);

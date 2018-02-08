@@ -43,7 +43,6 @@ export default {
   settings: {
     default: 'Settings',
     account: 'Account',
-    privacy: 'Privacy',
     notifications: 'Notifications',
     license: {
       default: 'License',
@@ -51,6 +50,24 @@ export default {
       acquired: 'Acquired',
       expires: 'Expires',
       state: 'State'
+    },
+    privacy: {
+      default: 'Privacy',
+      constraint: {
+        profile: 'User profile',
+        'attending-events': 'Attending events',
+        events: 'Created events'
+      },
+      description: {
+        profile: 'Your profile page',
+        'attending-events': 'Events that you are attending in future.',
+        events: 'Events created by you'
+      },
+      access: {
+        public: 'Public',
+        private: 'Only me',
+        friends: 'Close friends'
+      }
     }
   },
   user: {

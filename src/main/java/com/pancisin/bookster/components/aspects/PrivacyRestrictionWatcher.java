@@ -30,7 +30,7 @@ public class PrivacyRestrictionWatcher {
     if (stored.getPrivacyConstraints().containsKey(restriction.constraint())
       && stored.getPrivacyConstraints().get(restriction.constraint()) != PrivacyAccess.PUBLIC
       && !self) {
-      return new ResponseEntity(HttpStatus.FORBIDDEN);
+      return new ResponseEntity<>("User privacy policy restricted", HttpStatus.FORBIDDEN);
     }
 
     return pjp.proceed();

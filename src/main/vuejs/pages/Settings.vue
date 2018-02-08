@@ -40,7 +40,7 @@ export default {
         },
         {
           name: 'settings.privacy',
-          label: this.$t('settings.privacy'),
+          label: this.$t('settings.privacy.default'),
           icon: 'fa-key'
         },
         {
