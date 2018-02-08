@@ -1,5 +1,5 @@
 import store from 'store/index';
-import AdminRoutes from './admin';
+import * as AdminRoutes from './admin';
 
 export default [
   {
@@ -79,7 +79,7 @@ export default [
       titlle: 'Create page'
     }
   },
-  ...AdminRoutes,
+  ...Object.values(AdminRoutes),
   {
     path: 'event-bot/:bot_id',
     component: resolve => require(['pages/EventBot.vue'], resolve),

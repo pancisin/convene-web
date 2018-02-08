@@ -1,12 +1,17 @@
 <template>
-  <div class="checkbox"
-       v-if="option != null">
-    <input type="checkbox"
-           :id="option.id + '-input'"
-           @change="updateInput($event.target.checked)"
-           :checked="isChecked">
-    <label :for="option.id + '-input'"
-           v-text="option.value"></label>
+  <div 
+    class="checkbox"
+    v-if="option != null">
+    
+    <input 
+      type="checkbox"
+      :id="option.id + '-input'"
+      @change="updateInput($event.target.checked)"
+      :checked="isChecked">
+    
+    <label 
+      :for="option.id + '-input'"
+      v-text="option.value"></label>
   </div>
 </template>
 

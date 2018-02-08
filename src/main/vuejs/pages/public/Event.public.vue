@@ -284,7 +284,7 @@ export default {
     title () {
       return this.event.name;
     },
-    formField () {
+    meta () {
       return {
         description: this.event.summary,
         'og:title': this.event.name,

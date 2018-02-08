@@ -196,7 +196,7 @@ export default {
   },
 
   updatePrivacyConstraints (constraints, success) {
-    Vue.http.patch(`${USER_API_URL}/privacy-constraints`).then(response => {
+    Vue.http.patch(`${USER_API_URL}/privacy-constraints`, constraints).then(response => {
       success(response.body);
     });
   }

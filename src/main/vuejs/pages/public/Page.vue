@@ -222,7 +222,7 @@ export default {
     title () {
       return this.page.name;
     },
-    formField () {
+    meta () {
       return {
         description: this.page.summary,
         'og:title': this.page.name,

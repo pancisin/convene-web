@@ -19,7 +19,7 @@
             <vue-image :src="user.profilePicture.path" class="img-poster" />
           </light-box>
 
-          <panel type="default" v-loading="loadingEvents">
+          <panel type="default" v-loading="loadingEvents" v-if="hasAccess('events')">
             <span slot="title">
               Events
             </span>
@@ -29,11 +29,10 @@
             </div>
           </panel>
 
-          <panel type="default">
+          <panel type="default" v-if="hasAccess('attending-events')">
             <span slot="title">Attending</span>
             <events-list :events="attendingEvents" />
           </panel>
-          
         </div>
       </div>
     </div>
@@ -82,9 +81,11 @@ export default {
     this.api.getUser(user => {
       this.user = user;
 
-      this.api.getAttendingEvents(events => {
-        this.attendingEvents = events;
-      });
+      if (this.hasAccess('attending-events')) {
+        this.api.getAttendingEvents(events => {
+          this.attendingEvents = events;
+        });
+      }
 
       this.api.getPrivacyConstraints(constraints => {
         this.constraints = constraints;
@@ -95,20 +96,24 @@ export default {
   },
   methods: {
     getEvents (page) {
-      if (this.api != null) {
+      if (this.api != null && this.hasAccess('events')) {
         this.loadingEvents = true;
         this.api.getEvents(page, 8, paginator => {
           this.eventsPaginator = paginator;
           this.loadingEvents = false;
         });
       }
+    },
+    hasAccess (constraint) {
+      const key = Object.keys(this.constraints).find(c => c === constraint);
+      return key && this.constraints[key] === 'PUBLIC';
     }
   },
   head: {
     title () {
       return this.user.displayName;
     },
-    formField () {
+    meta () {
       return {
 
       };

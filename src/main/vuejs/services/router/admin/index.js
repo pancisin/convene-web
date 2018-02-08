@@ -4,10 +4,10 @@ import PageRoutes from './page.routes';
 import PlaceRoutes from './place.routes';
 import ListRoutes from './list.routes';
 
-export default [
+export {
   ConferenceRoutes,
   EventRoutes,
   PageRoutes,
   PlaceRoutes,
   ListRoutes
-];
+};
