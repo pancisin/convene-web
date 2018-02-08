@@ -1,8 +1,7 @@
 package com.pancisin.bookster.rest.controllers.v1
 
+import com.pancisin.bookster.components.annotations.PrivacyRestricted
 import com.pancisin.bookster.model.*
-import com.pancisin.bookster.model.enums.PageState
-import com.pancisin.bookster.model.enums.PrivacyAccess
 import com.pancisin.bookster.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -175,6 +174,16 @@ class RootControllerV1 {
     return ResponseEntity.ok(eventRepository.getEventsByDistanceFrom(lat, lng, distance, fromDate, toDate, PageRequest(page, size, Sort(Direction.ASC, "date"))))
   }
 
+  @PrivacyRestricted(constraint = "profile")
+  @GetMapping("/api/v1/user/{user_id}", "/public/v1/user/{user_id}")
+  fun getUser(@PathVariable user_id: Long): ResponseEntity<User> {
+    userRepository.findOne(user_id)?.let {
+      return ResponseEntity.ok(it)
+    }
+    return ResponseEntity(HttpStatus.NOT_FOUND)
+  }
+
+  @PrivacyRestricted(constraint = "events")
   @GetMapping("/api/v1/user/{user_id}/event/{page}/{size}", "/public/v1/user/{user_id}/event/{page}/{size}")
   fun getUserEvents(
     @PathVariable user_id: Long?,
@@ -182,6 +191,7 @@ class RootControllerV1 {
     @PathVariable size: Int
   ) = ResponseEntity.ok(eventRepository.getByUser(user_id, PageRequest(page, size, Sort(Direction.ASC, "date"))))
 
+  @PrivacyRestricted(constraint = "attending-events")
   @GetMapping("/api/v1/user/{user_id}/attending-events", "/public/v1/user/{user_id}/attending-events")
   fun getAttendingEvents(@PathVariable user_id: Long) = ResponseEntity.ok(eventRepository.getAttending(user_id))
 

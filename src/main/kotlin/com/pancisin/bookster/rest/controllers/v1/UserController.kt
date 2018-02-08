@@ -32,20 +32,6 @@ class UserController {
   lateinit var eventRepository: EventRepository
 
   @JsonView(Summary::class)
-  @GetMapping
-  fun getUserData(@PathVariable user_id: Long): ResponseEntity<User> {
-    val user = userRepository.findOne(user_id)
-
-    return if (user != null)
-      ResponseEntity.ok(user)
-    else
-      ResponseEntity(HttpStatus.NOT_FOUND)
-  }
-
-  @GetMapping("event")
-  fun getEvents(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id)?.events)
-
-  @JsonView(Summary::class)
   @GetMapping("/page")
   fun getPage(@PathVariable user_id: Long) = ResponseEntity.ok(pageRepository.getByOwner(user_id))
 

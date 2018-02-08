@@ -90,14 +90,6 @@ class PublicController {
     @RequestParam("toDate") toDate: String
   ) = ResponseEntity.ok(eventRepository.getByPageRange(page_id, PageRequest(page, size, Sort(Direction.ASC, "date")), fromDate, toDate, null))
 
-  @GetMapping("/user/{user_id}")
-  fun getUser(@PathVariable user_id: Long): ResponseEntity<User> {
-    userRepository.findOne(user_id)?.let {
-      return ResponseEntity.ok(it)
-    }
-    return ResponseEntity(HttpStatus.NOT_FOUND)
-  }
-
   @GetMapping("/categories")
   fun getCategories(@RequestParam(name = "used", defaultValue = "true") used: Boolean): ResponseEntity<MutableList<Category>>? {
     return if (used) ResponseEntity.ok(categoryRepository.used) else ResponseEntity.ok(categoryRepository.findAll())

@@ -42,7 +42,7 @@
             placeholder="Last name">
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-sm-12 col-md-3">
         <a 
           class="btn btn-default btn-block" 
           @click="showChangePasswordModal = true">
