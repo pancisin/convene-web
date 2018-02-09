@@ -6,6 +6,8 @@ import SystemMenu from './system.menu';
 import ClientMenu from './client.menu';
 import AboutMenu from './about.menu';
 import DiscoverMenu from './discover.menu';
+import EventMenu from './event.menu';
+import UserSettingsMenu from './user-settings.menu';
 
 export {
   MainMenu,
@@ -15,5 +17,7 @@ export {
   SystemMenu,
   ClientMenu,
   AboutMenu,
-  DiscoverMenu
+  DiscoverMenu,
+  EventMenu,
+  UserSettingsMenu
 };

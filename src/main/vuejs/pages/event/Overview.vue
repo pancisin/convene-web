@@ -1,9 +1,7 @@
 <template>
-  <panel type="default" v-loading="loading">
-    <span slot="title">Overview</span>
-
+  <div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-lg-4 col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
           <label class="control-label">Name</label>
           <input class="form-control required" v-model="event.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
@@ -40,7 +38,7 @@
         </div>
 
       </div>
-      <div class="col-md-6">
+      <div class="col-lg-4 col-md-6">
         <image-upload v-model="event.posterData" :media="event.poster"></image-upload>
       </div>
     </div>
@@ -59,7 +57,7 @@
         Save
       </button>
     </div>
-  </panel>
+  </div>
 </template>
 
 <script>

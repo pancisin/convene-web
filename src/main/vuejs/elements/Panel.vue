@@ -1,6 +1,6 @@
 <template>
   <div class="panel" :class="'panel-' + type">
-    <div class="panel-heading" ref="header">
+    <div class="panel-heading pattern-background" ref="header">
       <h3 class="panel-title">
         <slot name="title"></slot>
       </h3>

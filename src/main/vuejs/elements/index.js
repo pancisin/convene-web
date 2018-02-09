@@ -56,6 +56,7 @@ import EventMap from './EventMap';
 import VueTable from './VueTable';
 import MemberList from './MemberList.vue';
 import FormEditor from './Form.editor.vue';
+import RouterTabNavigation from './RouterTabNavigation.vue';
 
 export {
   ArticlesList,
@@ -115,5 +116,6 @@ export {
   EventMap,
   VueTable,
   MemberList,
-  FormEditor
+  FormEditor,
+  RouterTabNavigation
 };

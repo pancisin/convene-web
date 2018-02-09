@@ -9,7 +9,7 @@ export default {
       name: 'event.overview',
       component: resolve => require(['pages/event/Overview.vue'], resolve),
       meta: {
-        titlle: 'Overview'
+        title: 'Overview'
       }
     },
     {
@@ -17,7 +17,7 @@ export default {
       name: 'event.programme',
       component: resolve => require(['pages/event/Programme.vue'], resolve),
       meta: {
-        titlle: 'Programme'
+        title: 'Programme'
       }
     },
     {

@@ -3,7 +3,7 @@
     <div class="modal" role="dialog" v-show="show">
       <div class="modal-dialog" :class="{ 'modal-full' : full, 'modal-sm' : small }" v-click-outside="outside">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header pattern-background">
             <button type="button" class="close" data-dismiss="modal" @click="close">
               <i class="material-icons">clear</i>
             </button>
@@ -96,7 +96,7 @@ export default {
       box-shadow: none;
       .modal-header {
         padding: 15px 30px;
-        .pattern-background(@color-primary);
+        background-color: @color-primary;
         color: #fff;
         border-bottom: none;
 

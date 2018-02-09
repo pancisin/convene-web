@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.components.annotations.PrivacyRestricted
 import com.pancisin.bookster.models.views.Summary
 import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.PageRepository
@@ -30,6 +31,7 @@ class UserController {
   @GetMapping("/page")
   fun getPage(@PathVariable user_id: Long) = ResponseEntity.ok(pageRepository.getByOwner(user_id))
 
+  @PrivacyRestricted(constraint = "followed-pages")
   @GetMapping("/followed-pages")
   @JsonView(Summary::class)
   fun getFollowedPages(@PathVariable user_id: Long) = ResponseEntity.ok(pageRepository.getFollowed(user_id))

@@ -1,6 +1,6 @@
 <template>
   <header id="topnav">
-    <div class="topbar-main">
+    <div class="topbar-main pattern-background">
       <div class="container">
 
         <product-logo inline light />

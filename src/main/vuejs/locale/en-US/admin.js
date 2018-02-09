@@ -54,5 +54,12 @@ export default {
     news: 'News',
     page_import: 'Page importer',
     maintenance: 'Maintenance'
+  },
+  event: {
+    edit: 'Edit',
+    programme: 'Programme',
+    gallery: 'Gallery',
+    attendees: 'Attendees',
+    advanced: 'Advanced'
   }
 };

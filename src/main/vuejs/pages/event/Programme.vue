@@ -1,41 +1,37 @@
 <template>
-  <panel type="table">
-    <span slot="title">Programme</span>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>time</th>
-          <th>Description</th>
-          <th class="text-center">Action</th>
-        </tr>
-      </thead>
-      <tbody is="transition-group" name="fade">
-        <tr v-for="programme in programme" :key="programme.id">
-          <td v-text="programme.time"></td>
-          <td v-text="programme.description"></td>
-          <td class="text-center">
-            <a @click="deleteProgramme(programme)" class="btn btn-rounded btn-xs btn-danger">
-              <i class="fa fa-trash"></i>
-            </a>
-          </td>
-        </tr>
-        <tr key="new_programme">
-          <td>
-            <time-picker v-model="new_programme.time"></time-picker>
-          </td>
-          <td>
-            <input type="text" v-model="new_programme.description" class="form-control" @keyup.enter="submitProgramme">
-          </td>
-          <td class="text-center">
-            <a @click="submitProgramme" class="btn btn-rounded btn-xs btn-success">
-              <i class="fa fa-save"></i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </panel>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>time</th>
+        <th>Description</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody is="transition-group" name="fade">
+      <tr v-for="programme in programme" :key="programme.id">
+        <td v-text="programme.time"></td>
+        <td v-text="programme.description"></td>
+        <td class="text-center">
+          <a @click="deleteProgramme(programme)" class="btn btn-rounded btn-xs btn-danger">
+            <i class="fa fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      <tr key="new_programme">
+        <td>
+          <time-picker v-model="new_programme.time"></time-picker>
+        </td>
+        <td>
+          <input type="text" v-model="new_programme.description" class="form-control" @keyup.enter="submitProgramme">
+        </td>
+        <td class="text-center">
+          <a @click="submitProgramme" class="btn btn-rounded btn-xs btn-success">
+            <i class="fa fa-save"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script>

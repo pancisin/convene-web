@@ -1,19 +1,18 @@
 <template>
   <div class="row">
     <div class="col-md-6">
-      <panel type="table">
         <span slot="title">Invitations</span>
 
         <form class="form"
           @submit.prevent="invite">
-          <div class="input-group"
-            style="margin: 0px 20px 20px 20px">
+          <div class="input-group">
             <user-search v-model="invitation.email"></user-search>
             <!--<input type="email" v-model="invitation.email" class="form-control" placeholder="Email">-->
             <span class="input-group-btn">
-              <input type="submit"
+              <button type="submit"
                 class="btn waves-effect waves-light btn-primary">
                 Invite
+              </button>
             </span>
           </div>
         </form>
@@ -51,13 +50,10 @@
           </tbody>
         </table>
 
-      </panel>
     </div>
     <div class="col-md-6">
-      <panel type="table">
-        <span slot="title">Attendees</span>
-        <user-list :users="attendees"></user-list>
-      </panel>
+      <span slot="title">Attendees</span>
+      <user-list :users="attendees"></user-list>
     </div>
   </div>
 </template>

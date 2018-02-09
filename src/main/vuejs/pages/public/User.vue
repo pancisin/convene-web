@@ -106,7 +106,7 @@ export default {
     },
     hasAccess (constraint) {
       const key = Object.keys(this.constraints).find(c => c === constraint);
-      return key && this.constraints[key] === 'PUBLIC';
+      return !key || this.constraints[key] === 'PUBLIC';
     }
   },
   head: {
