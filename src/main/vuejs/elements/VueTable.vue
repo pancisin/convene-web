@@ -27,7 +27,8 @@ export default {
         style: options.style,
         attrs: {
           ...options.attrs
-        }
+        },
+        props: options.props
       };
 
       if (options.onClick) {
@@ -160,7 +161,7 @@ export default {
   thead {
     th {
       a {
-        color: #fff;
+        color: inherit;
       }
     }
   }

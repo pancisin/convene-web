@@ -1,23 +1,20 @@
 <template>
-  <panel>
-    <span slot="title">List settings</span>
-    <form class="form" @submit.prevent="submit">
+  <form class="form" @submit.prevent="submit">
 
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" class="form-control" v-model="listClone.name">
-      </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" v-model="listClone.name">
+    </div>
 
-      <div class="form-group">
-        <label>Tags</label>
-        <tag-input v-model="listClone.tags" :tags="listClone.tags"></tag-input>
-      </div>
+    <div class="form-group">
+      <label>Tags</label>
+      <tag-input v-model="listClone.tags" :tags="listClone.tags"></tag-input>
+    </div>
 
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
-  </panel>
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
 </template>
 
 <script>

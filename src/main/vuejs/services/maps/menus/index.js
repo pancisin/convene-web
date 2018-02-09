@@ -8,6 +8,7 @@ import AboutMenu from './about.menu';
 import DiscoverMenu from './discover.menu';
 import EventMenu from './event.menu';
 import UserSettingsMenu from './user-settings.menu';
+import ArticlesListMenu from './articles-list.menu';
 
 export {
   MainMenu,
@@ -19,5 +20,6 @@ export {
   AboutMenu,
   DiscoverMenu,
   EventMenu,
-  UserSettingsMenu
+  UserSettingsMenu,
+  ArticlesListMenu
 };

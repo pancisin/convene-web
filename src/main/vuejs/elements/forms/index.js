@@ -5,6 +5,7 @@ import CustomForm from './Custom.form';
 import ServiceForm from './Service.form';
 import SurveyForm from './Survey.form';
 import ArticleForm from './Article.form';
+import ArticleBotForm from './ArticleBot.form';
 
 export {
   LoginForm,
@@ -13,5 +14,6 @@ export {
   CustomForm,
   ServiceForm,
   SurveyForm,
-  ArticleForm
+  ArticleForm,
+  ArticleBotForm
 };

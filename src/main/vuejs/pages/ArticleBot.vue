@@ -91,7 +91,6 @@ export default {
     return {
       bot: {},
       originalBot: null,
-      parsers: [],
       paginator: {}
     };
   },
@@ -99,23 +98,6 @@ export default {
     BotRunIndicator,
     Paginator,
     DataParserEditor
-  },
-  watch: {
-    parsers: {
-      handler (newVal) {
-        let parser = {};
-
-        newVal.forEach(field => {
-          parser = {
-            ...parser,
-            [field.name]: field.value
-          };
-        });
-
-        this.bot.parser = parser;
-      },
-      deep: true
-    }
   },
   computed: {
     api () {

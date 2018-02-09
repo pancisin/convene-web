@@ -1,86 +1,34 @@
 <template>
-  <panel type="table" v-loading="loading">
-    <span slot="title">
-      Article bots
-    </span>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            Name
-          </th>
-          <th class="text-center">
-            Runs
-          </th>
-          <th>
-            Last run
-          </th>
-          <th class="text-center" v-if="editable">
-            Action
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(bot, index) in paginator.content" :key="bot.id" @contextmenu.prevent="$refs.menu.open($event, bot)">
-          <td>
-            <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: bot.id } }">
-              {{ bot.name }}
-            </router-link>
-          </td>
-          <td class="text-center">
-            {{ bot.runsCount }}
-          </td>
-          <td>
-            <bot-run-indicator v-if="bot.lastRun != null" :run="bot.lastRun" />
-          </td>
-          <td class="text-center" v-if="editable && (bot.lastRun == null || bot.lastRun.state.name !== 'RUNNING')">
-            <a class="btn btn-default btn-xs" @click="toggleActive(bot.id)" :class="{ 'btn-danger' : bot.active }">{{ bot.active ? 'Dectivate' : 'Activate' }}</a>
-            <a class="btn btn-warning btn-xs" @click="run(bot.id)">Run</a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div v-loading="loading">
+    <vue-table :func="tableRender" :data="paginator.content" :contextmenu="contextmenu" />
 
     <div class="text-center">
       <paginator :paginator="paginator" :fetch="getBots" />
     </div>
 
-    <context-menu ref="menu">
-      <template slot-scope="props">
-        <ul>
-          <li v-if="editable">
-            <router-link :to="{ name: 'admin.article-bot', params: { article_bot_id: props.data.id } }">
-              Edit
-            </router-link>
-          </li>
-          <li v-if="editable">
-            <a @click="deleteBot(props.data.id)">
-              Delete
-            </a>
-          </li>
-          <li class="separator"></li>
-          <li>
-            <router-link :to="{ name: 'system.list.create-bot' }">
-              Create bot
-            </router-link>
-          </li>
-        </ul>
-      </template>
-    </context-menu>
+    <modal :show.sync="displayBotModal" v-if="selectedBot">
+      <span slot="title">Edit bot</span>
+
+      <div slot="body">
+        <article-bot-form :bot="selectedBot" @submit="updateBot" />
+      </div>
+    </modal>
 
     <div class="text-center">
-      <router-link :to="{ name: 'system.list.create-bot' }" class="btn btn-primary btn-rounded">Create bot</router-link>
+      <a class="btn btn-default" @click="createBot">Create bot</a>
     </div>
-  </panel>
+  </div>
 </template>
 
 <script>
 import {
   BotRunIndicator,
-  Paginator
+  Paginator,
+  VueTable
 } from 'elements';
 import ArtcleBotApi from 'api/article-bot.api';
+import { ArticleBotForm } from 'elements/forms';
+
 export default {
   name: 'article-bots',
   inject: ['provider'],
@@ -96,7 +44,9 @@ export default {
     return {
       paginator: {},
       loading: false,
-      subscription: null
+      subscription: null,
+      displayBotModal: false,
+      selectedBot: {}
     };
   },
   computed: {
@@ -108,7 +58,9 @@ export default {
   },
   components: {
     BotRunIndicator,
-    Paginator
+    Paginator,
+    VueTable,
+    ArticleBotForm
   },
   created () {
     this.connectWM('/stomp').then(frame => {
@@ -147,13 +99,7 @@ export default {
       });
     },
     toggleActive (bot_id) {
-      ArtcleBotApi.toggleActive(bot_id, bot => {
-        this.paginator.content.forEach((b, index) => {
-          if (b.id === bot_id) {
-            this.paginator.content.splice(index, 1, bot);
-          }
-        });
-      });
+      ArtcleBotApi.toggleActive(bot_id, bot => this.updateBot(bot));
     },
     deleteBot (bot_id) {
       this.$prompt('notification.delete_prompt', bot_id, () => {
@@ -162,8 +108,52 @@ export default {
         });
       });
     },
+    createBot () {
+      this.selectedBot = {};
+      this.displayBotModal = true;
+    },
+    editBot (bot) {
+      this.selectedBot = bot;
+      this.displayBotModal = true;
+    },
+    updateBot (bot) {
+      const index = this.paginator.content.findIndex(b => b.id === bot.id);
+      if (index !== -1) {
+        this.paginator.content.splice(index, 1, bot);
+      } else {
+        this.paginator.content.push(bot);
+      }
+
+      this.displayBotModal = false;
+    },
     run (bot_id) {
       this.sendWM(`/app/article-bot/${bot_id}/run`, JSON.stringify({}));
+    },
+    tableRender (bot) {
+      return {
+        name: {
+          el: 'a',
+          content: bot.name,
+          onClick: () => this.editBot(bot)
+        },
+        runs: bot.runsCount,
+        last_run: {
+          el: BotRunIndicator,
+          props: {
+            run: bot.lastRun || {}
+          }
+        },
+        active: bot.active
+      };
+    },
+    contextmenu (item) {
+      return [
+        item('Run', bot => this.run(bot.id)),
+        item('Toggle active', bot => this.toggleActive(bot.id)),
+        item('Edit', bot => this.editBot(bot)),
+        item('Delete', bot => this.deleteBot(bot.id)),
+        item('Create bot', this.createBot)
+      ];
     }
   }
 };

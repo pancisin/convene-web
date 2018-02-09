@@ -1,17 +1,26 @@
-<template>
-  <div>
-    <i class="fa fa-check text-success" v-if="run.state.prop === 'SUCCESS'"></i>
-    <i class="fa fa-clock-o text-warning" v-else-if="run.state.prop === 'RUNNING'"></i>
-    <i class="fa fa-exclamation-triangle text-danger" v-else></i>
-
-    <b v-if="run.state.prop !== 'RUNNING'">{{ run.date | luxon('fff') }}</b>
-    <b v-else>Running...</b>
-  </div>
-</template>
-
 <script>
+import { DateTime } from 'luxon';
+
 export default {
   name: 'bot-run-indicator',
+  render (h) {
+    var iconClass = '';
+
+    if (this.run.state.prop === 'SUCCESS') {
+      iconClass = 'fa-check text-success';
+    } else if (this.run.state.prop === 'RUNNING') {
+      iconClass = 'fa-clock-o text-warning';
+    } else {
+      iconClass = 'fa-exclamation-triangle text-danger';
+    }
+
+    return h('div', [
+      h('i', {
+        class: `fa ${iconClass}`
+      }),
+      h('b', this.run.state.prop === 'RUNNING' ? ' Running...' : DateTime.fromMillis(this.run.date).toFormat('fff'))
+    ]);
+  },
   props: {
     run: {
       type: Object,

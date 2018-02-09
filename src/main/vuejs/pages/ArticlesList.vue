@@ -3,41 +3,26 @@
     <h3 v-text="list.name"
       class="page-title"></h3>
 
-    <div class="row">
-      <div class="col-md-3">
-        <div class="list-group mail-list">
-          <router-link :to="{ name: 'system.list.articles' }"
-            class="list-group-item waves-effect">
-            <i class="fa fa-file"
-              aria-hidden="true"></i> Articles
-          </router-link>
-          <router-link :to="{ name: 'system.list.bots' }"
-            class="list-group-item waves-effect">
-            <i class="fa fa-android"
-              aria-hidden="true"></i> Bots
-          </router-link>
-          <router-link :to="{ name: 'system.list.settings' }"
-            class="list-group-item waves-effect">
-            <i class="fa fa-cog"
-              aria-hidden="true"></i> Settings
-          </router-link>
-        </div>
-      </div>
-      <div class="col-md-9">
-        <keep-alive>
-          <transition name="fade-down"
-            mode="out-in">
-            <router-view :key="$route.path" :list="list" @update="updateList"></router-view>
-          </transition>
-        </keep-alive>
-      </div>
-    </div>
+    <router-tab-navigation :menu="menu">
+      <keep-alive>
+        <transition name="fade"
+          mode="out-in">
+          <router-view 
+            :key="$route.path" 
+            :list="list" 
+            @update="updateList">
+          </router-view>
+        </transition>
+      </keep-alive>
+    </router-tab-navigation>
   </div>
 </template>
 
 <script>
 import ArticlesListApi from 'api/articles-list.api';
 import InjectorGenerator from '../services/InjectorGenerator';
+import { RouterTabNavigation } from 'elements';
+import { ArticlesListMenu } from '../services/maps/menus';
 
 export default {
   name: 'news',
@@ -55,6 +40,14 @@ export default {
     });
 
     return { provider };
+  },
+  computed: {
+    menu () {
+      return ArticlesListMenu;
+    }
+  },
+  components: {
+    RouterTabNavigation
   },
   created () {
     this.initializeInjector();

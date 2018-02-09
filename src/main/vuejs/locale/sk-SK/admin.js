@@ -54,5 +54,17 @@ export default {
     news: 'News',
     page_import: 'Importovanie stránok',
     maintenance: 'Údržba'
+  },
+  event: {
+    edit: 'Upraviť',
+    programme: 'Program',
+    gallery: 'Galéria',
+    attendees: 'Účastníci / Pozvánky',
+    advanced: 'Pokročilé'
+  },
+  articles_list: {
+    articles: 'Články',
+    bots: 'Boti',
+    settings: 'Nastavenia'
   }
 };

@@ -61,5 +61,10 @@ export default {
     gallery: 'Gallery',
     attendees: 'Attendees',
     advanced: 'Advanced'
+  },
+  articles_list: {
+    articles: 'Articles',
+    bots: 'Bots',
+    settings: 'Settings'
   }
 };
