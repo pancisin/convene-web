@@ -25,14 +25,10 @@ body.noscroll {
   overflow: hidden;
 }
 
-.pattern-background {
-  background-image: @background-image;
-  background-blend-mode: multiply;
-}
-
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+@supports (background-blend-mode: multiply) {
   .pattern-background {
-    background-image: none;
+    background-image: @background-image;
+    background-blend-mode: multiply;
   }
 }
 

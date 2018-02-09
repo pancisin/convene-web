@@ -1,6 +1,10 @@
 <template>
-  <div class="panel" :class="'panel-' + type">
-    <div class="panel-heading pattern-background" ref="header">
+  <div class="panel" :class="`panel-${type}`">
+    <div 
+      class="panel-heading" 
+      :class="{ 'pattern-background' : type === 'primary' }" 
+      ref="header">
+
       <h3 class="panel-title">
         <slot name="title"></slot>
       </h3>
@@ -9,11 +13,18 @@
       </p>
     </div>
   
-    <div class="panel-body" :style="bodyStyle">
+    <div 
+      class="panel-body" 
+      :style="bodyStyle">
+
       <slot></slot>
     </div>
 
-    <div class="panel-footer" ref="footer" v-if="$slots.footer">
+    <div 
+      class="panel-footer" 
+      ref="footer" 
+      v-if="$slots.footer">
+      
       <slot name="footer"></slot>
     </div>
   </div>
