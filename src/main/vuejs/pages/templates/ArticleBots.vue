@@ -1,21 +1,27 @@
 <template>
   <div v-loading="loading">
-    <vue-table :func="tableRender" :data="paginator.content" :contextmenu="contextmenu" />
+    <vue-table 
+      :func="tableRender" 
+      :data="paginator.content" 
+      :contextmenu="contextmenu" />
 
     <div class="text-center">
-      <paginator :paginator="paginator" :fetch="getBots" />
+      <paginator 
+        :paginator="paginator" 
+        :fetch="getBots" />
     </div>
 
     <modal :show.sync="displayBotModal" v-if="selectedBot">
-      <span slot="title">Edit bot</span>
-
+      <span slot="header">Edit {{ selectedBot.name }}</span>
       <div slot="body">
         <article-bot-form :bot="selectedBot" @submit="updateBot" />
       </div>
     </modal>
 
     <div class="text-center">
-      <a class="btn btn-default" @click="createBot">Create bot</a>
+      <button type="button" class="btn btn-default" @click="createBot">
+        Create bot
+      </button>
     </div>
   </div>
 </template>

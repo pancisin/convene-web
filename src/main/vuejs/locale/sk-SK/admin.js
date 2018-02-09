@@ -32,10 +32,16 @@ export default {
     events: 'Podujatia',
     articles: 'Články',
     surveys: 'Prieskumy',
-    settings: 'Nastavenia',
     places: 'Miesta',
     attendees: 'Hostia',
-    administrators: 'Správcovia'
+    administrators: 'Správcovia',
+    settings: {
+      default: 'Nastavenia',
+      edit: 'Upraviť',
+      registration: 'Registrácia',
+      partners: 'Partneri',
+      deletion: 'Odstránenie'
+    }
   },
   service: {
     name: 'Názov',

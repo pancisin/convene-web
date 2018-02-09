@@ -30,14 +30,6 @@ export default {
       }
     },
     {
-      path: 'create-bot',
-      name: 'system.list.create-bot',
-      component: resolve => require(['pages/ArticleBot.vue'], resolve),
-      props: {
-        edit: false
-      }
-    },
-    {
       path: 'settings',
       name: 'system.list.settings',
       component: resolve => require(['pages/articles-list/Settings.vue'], resolve),

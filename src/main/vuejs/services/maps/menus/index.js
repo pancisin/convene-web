@@ -9,6 +9,7 @@ import DiscoverMenu from './discover.menu';
 import EventMenu from './event.menu';
 import UserSettingsMenu from './user-settings.menu';
 import ArticlesListMenu from './articles-list.menu';
+import ConferenceSettingsMenu from './conference-settings.menu';
 
 export {
   MainMenu,
@@ -21,5 +22,6 @@ export {
   DiscoverMenu,
   EventMenu,
   UserSettingsMenu,
-  ArticlesListMenu
+  ArticlesListMenu,
+  ConferenceSettingsMenu
 };

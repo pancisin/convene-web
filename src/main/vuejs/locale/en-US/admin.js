@@ -32,10 +32,16 @@ export default {
     events: 'Events',
     articles: 'Articles',
     surveys: 'Surveys',
-    settings: 'Settings',
     places: 'Places',
     attendees: 'Attendees',
-    administrators: 'Administrators'
+    administrators: 'Administrators',
+    settings: {
+      default: 'Settings',
+      edit: 'Edit',
+      registration: 'Registration',
+      partners: 'Partners',
+      deletion: 'Deletion'
+    }
   },
   service: {
     name: 'Name',

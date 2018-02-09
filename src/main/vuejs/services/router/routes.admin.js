@@ -99,14 +99,6 @@ export default [
     name: 'system.lists'
   },
   {
-    path: 'article-bot/:article_bot_id',
-    component: resolve => require(['pages/ArticleBot.vue'], resolve),
-    name: 'admin.article-bot',
-    props: {
-      edit: true
-    }
-  },
-  {
     path: '*',
     component: resolve => require(['pages/error/404.vue'], resolve)
   }

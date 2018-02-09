@@ -8,18 +8,20 @@
       :contextmenu="contextMenuRender" />
 
     <div class="text-center">
-      <paginator :paginator="articlesPaginator" :fetch="getArticles" />
+      <paginator 
+        :paginator="articlesPaginator" 
+        :fetch="getArticles" />
     </div>
 
-    <modal :show.sync="displayArticleModal" v-if="selectedArticle != null">
-      <span slot="title">Edit {{ selectedArticle.title }}</span>
+    <modal :show.sync="displayArticleModal" v-if="selectedArticle">
+      <span slot="header">Edit {{ selectedArticle.title }}</span>
       <div slot="body">
         <article-form :article="selectedArticle" @submit="updateArticle" />
       </div>
     </modal>
 
     <div class="text-center" v-if="editable && insertable">
-      <button type="button" @click="createArticle()" class="btn btn-default">
+      <button type="button" @click="createArticle" class="btn btn-default">
         Create article
       </button>
     </div>

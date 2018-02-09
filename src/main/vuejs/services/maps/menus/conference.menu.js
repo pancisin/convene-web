@@ -32,7 +32,7 @@ export default {
   },
   {
     name: 'conference.settings',
-    code: 'admin.conference.settings'
+    code: 'admin.conference.settings.default'
   }
   ]
 };
