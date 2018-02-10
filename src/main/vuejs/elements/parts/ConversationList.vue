@@ -123,16 +123,4 @@ export default {
   padding: 10px;
   margin-bottom: 0;
 }
-
-.chat-inputbar {
-  padding-left: 10px;
-
-  input {
-    border: 1px solid #ccc;
-  }
-}
-
-.chat-send {
-  padding-right: 10px;
-}
 </style>

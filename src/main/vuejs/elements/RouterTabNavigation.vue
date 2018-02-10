@@ -106,6 +106,7 @@ export default {
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1) !important;
     background: #fff;
     padding: 15px;
+    overflow-x: auto;
   }
 
   .nav-tab-indicator {
