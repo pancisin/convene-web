@@ -28,9 +28,10 @@
         </div>
 
         <div class="col-sm-12 col-md-6 col-md-pull-3">
-          <near-events interactive showWarning/>
+          <!-- <near-events interactive showWarning/> -->
+          <user-activity-feed />
 
-          <articles-list 
+          <!-- <articles-list 
             :articles="headlinesPaginator.content"
             v-loading="loadingHeadlines"
             hasHeadline
@@ -38,7 +39,7 @@
           <div class="text-center">
             <paginator :paginator="headlinesPaginator"
               :fetch="getHeadlines" />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -60,7 +61,7 @@ import {
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 import PublicApi from 'api/public.api';
-import { FeaturedEvents, NearEvents } from 'components';
+import { FeaturedEvents, NearEvents, UserActivityFeed } from 'components';
 import { DateTime } from 'luxon';
 
 export default {
@@ -83,7 +84,8 @@ export default {
     PagesList,
     FeaturedEvents,
     EventMap,
-    NearEvents
+    NearEvents,
+    UserActivityFeed
   },
   computed: {
     ...mapGetters([

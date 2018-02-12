@@ -92,24 +92,6 @@ export default {
     user_not_found: 'User not found in our database.',
     password: 'Password does not match'
   },
-  activity: {
-    target: {
-      conference: 'conference',
-      page: 'page'
-    },
-    type: {
-      following: 'has started to following',
-      attending: 'is attending',
-      delete: 'has deleted',
-      update: 'has updated',
-      create_event: 'has created an event to',
-      create_service: 'has created service to',
-      create_administrator: 'has granted access rights to',
-      create_place: 'has created place to',
-      create_article: 'has created an article to',
-      create_survey: 'has created a survey to'
-    }
-  },
   venue_editor: {
     objects: {
       squared_table: 'Squared table',

@@ -14,25 +14,34 @@ import javax.persistence.Enumerated
 import com.pancisin.bookster.model.enums.ActivityType
 import java.util.Calendar
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.pancisin.bookster.model.enums.ObjectType
+import com.pancisin.bookster.repository.MediaRepository
+import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.JoinTable
 import javax.persistence.JoinColumn
 import javax.persistence.EnumType
+import javax.persistence.Transient
 
 @Entity
 @Table(name = "activities")
-data class Activity(
+open class Activity() {
 
-  @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
-  var id: UUID? = UUID.randomUUID(),
+  var id: UUID? = UUID.randomUUID()
 
   @ManyToOne(optional = true)
   @JsonSerialize(using = ToStringSerializer::class)
-  var user: User? = null,
+  var user: User? = null
 
   @Column
   @Enumerated(EnumType.STRING)
-  var type: ActivityType? = null,
+  var type: ActivityType? = null
 
   @JsonIgnore
   @ManyToOne
@@ -41,10 +50,54 @@ data class Activity(
     joinColumns = arrayOf(JoinColumn(name = "activity_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var page: Page? = null,
+  var page: Page? = null
+
+  @Enumerated(EnumType.STRING)
+  @JsonProperty("object_type")
+  var objectType: ObjectType? = ObjectType.PAGE
+
+  @JsonProperty("object_id")
+  var objectId: String? = ""
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   var created: Calendar? = null
-) {
-  constructor (user: User, type: ActivityType, page: Page) : this(null, user, type, page)
+
+  constructor (user: User, type: ActivityType, page: Page) : this() {
+    this.user = user
+    this.type = type
+    this.page = page
+  }
+
+  val subject: Any?
+    @Transient
+    get() {
+      if (page != null) {
+        return hashMapOf(
+          "id" to page?.id,
+          "name" to page?.name,
+          "type" to ObjectType.PAGE,
+          "poster" to page?.poster
+        );
+      }
+
+      return null;
+    }
+
+  @JsonIgnore
+  @Transient
+  @Autowired
+  lateinit var mediaRepository: MediaRepository
+
+  @Transient
+  var objectThumbnail: Any? = null
+
+//  val objectThumbnail: Any?
+//    @JsonProperty("object_thumbnail")
+//    @Transient
+//    get() {
+//      return when (objectType) {
+//        ObjectType.MEDIA -> mediaRepository.findOne(objectId?.toLongOrNull())
+//        else -> null
+//      }
+//    }
 }

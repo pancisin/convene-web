@@ -199,5 +199,11 @@ export default {
     Vue.http.patch(`${USER_API_URL}/privacy-constraints`, constraints).then(response => {
       success(response.body);
     });
+  },
+
+  getActivityFeed (page, size, success) {
+    Vue.http.get(`${USER_API_URL}/activity-feed/${page}/${size}`).then(response => {
+      success(response.body);
+    });
   }
 };

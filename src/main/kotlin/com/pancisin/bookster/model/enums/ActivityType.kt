@@ -9,12 +9,15 @@ enum class ActivityType private constructor(
   val action: String,
 
   @JsonProperty("code")
-  val code: String
+  val code: String,
+
+  @JsonProperty("public")
+  val public: Boolean = true
 ) {
   NOT_SPECIFIED("FOLLOWING", "activity.type.following"),
 
   CREATE("CREATE", "activity.type.create"),
-  UPDATE("UPDATE", "activity.type.update"),
+  UPDATE("UPDATE", "activity.type.update", false),
   DELETE("DELETE", "activity.type.delete"),
 
   FOLLOWING("FOLLOWING", "activity.type.following"),
@@ -22,8 +25,8 @@ enum class ActivityType private constructor(
 
   CREATE_EVENT("CREATE_EVENT", "activity.type.create_event"),
   CREATE_SERVICE("CREATE_SERVICE", "activity.type.create_service"),
-  CREATE_ADMINISTRATOR("CREATE_ADMINISTRATOR", "activity.type.create_administrator"),
-  CREATE_PLACE("CREATE_PLACE", "activity.type.create_place"),
+  CREATE_ADMINISTRATOR("CREATE_ADMINISTRATOR", "activity.type.create_administrator", false),
+  CREATE_PLACE("CREATE_PLACE", "activity.type.create_place", false),
   CREATE_ARTICLE("CREATE_ARTICLE", "activity.type.create_article"),
   CREATE_SURVEY("CREATE_SURVEY", "activity.type.create_survey"),
 
