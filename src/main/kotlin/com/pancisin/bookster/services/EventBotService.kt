@@ -6,6 +6,7 @@ import java.util.*
 import com.pancisin.api.facebookapi.api.FacebookApi
 import com.pancisin.api.facebookapi.model.Event
 import com.pancisin.api.facebookapi.utils.Reading
+import com.pancisin.bookster.model.Activity
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -16,6 +17,7 @@ import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.model.enums.BotRunState
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.Visibility
+import com.pancisin.bookster.repository.ActivityRepository
 import com.pancisin.bookster.repository.EventBotRepository
 import com.pancisin.bookster.repository.BotRunRepository
 import com.pancisin.bookster.repository.EventRepository

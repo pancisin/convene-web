@@ -63,6 +63,8 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
       ObjectType.USER -> User::class.java
       ObjectType.SERVICE -> Service::class.java
       ObjectType.ARTICLE -> Article::class.java
+      ObjectType.SURVEY -> Survey::class.java
+      ObjectType.PROGRAMME -> Programme::class.java
       else -> null
     }
   }

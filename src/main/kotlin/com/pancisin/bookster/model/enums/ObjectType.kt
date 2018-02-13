@@ -6,5 +6,7 @@ enum class ObjectType {
   USER,
   MEDIA,
   SERVICE,
-  ARTICLE
+  ARTICLE,
+  SURVEY,
+  PROGRAMME
 }

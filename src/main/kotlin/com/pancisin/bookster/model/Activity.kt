@@ -27,21 +27,21 @@ import javax.persistence.Transient
 
 @Entity
 @Table(name = "activities")
-open class Activity() {
+data class Activity(
 
   @Id
   @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
-  var id: UUID? = UUID.randomUUID()
+  var id: UUID? = UUID.randomUUID(),
 
   @ManyToOne(optional = true)
   @JsonSerialize(using = ToStringSerializer::class)
-  var user: User? = null
+  var user: User? = null,
 
   @Column
   @Enumerated(EnumType.STRING)
-  var type: ActivityType? = null
+  var type: ActivityType? = null,
 
   @JsonIgnore
   @ManyToOne
@@ -50,24 +50,27 @@ open class Activity() {
     joinColumns = arrayOf(JoinColumn(name = "activity_id")),
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
-  var page: Page? = null
+  var page: Page? = null,
+
+  @JsonIgnore
+  @ManyToOne
+  @JoinTable(
+    name = "events_activities",
+    joinColumns = arrayOf(JoinColumn(name = "activity_id")),
+    inverseJoinColumns = arrayOf(JoinColumn(name = "event_id"))
+  )
+  var event: Event? = null,
 
   @Enumerated(EnumType.STRING)
   @JsonProperty("object_type")
-  var objectType: ObjectType? = ObjectType.PAGE
+  var objectType: ObjectType? = ObjectType.PAGE,
 
   @JsonProperty("object_id")
-  var objectId: String? = ""
+  var objectId: String? = "",
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   var created: Calendar? = null
-
-  constructor (user: User, type: ActivityType, page: Page) : this() {
-    this.user = user
-    this.type = type
-    this.page = page
-  }
-
+) {
   val subject: Any?
     @Transient
     get() {
@@ -78,26 +81,16 @@ open class Activity() {
           "type" to ObjectType.PAGE,
           "poster" to page?.poster
         );
+      } else if (event != null) {
+        return hashMapOf(
+          "id" to event?.id,
+          "name" to event?.name,
+          "poster" to event?.poster
+        )
       }
-
       return null;
     }
 
-  @JsonIgnore
-  @Transient
-  @Autowired
-  lateinit var mediaRepository: MediaRepository
-
   @Transient
   var objectThumbnail: Any? = null
-
-//  val objectThumbnail: Any?
-//    @JsonProperty("object_thumbnail")
-//    @Transient
-//    get() {
-//      return when (objectType) {
-//        ObjectType.MEDIA -> mediaRepository.findOne(objectId?.toLongOrNull())
-//        else -> null
-//      }
-//    }
 }

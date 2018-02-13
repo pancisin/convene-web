@@ -14,7 +14,7 @@
             <router-link :to="{ name: 'page.public', params: { id: activity.subject.id } }">
               {{ activity.subject.name }} 
             </router-link>
-            <small class="text-muted">{{ $t(activity.type.code) }}.</small>
+            <span class="text-muted">{{ $t(activity.type.code) }}.</span>
           </h4>
           <p class="text-muted"><small>{{ activity.created | luxon('f') }}</small></p>
         </div>
@@ -44,7 +44,7 @@
         <div v-else-if="activity.object_type === 'EVENT'">
           <h4>{{ activity.objectThumbnail.name }}</h4>
           <p>{{ activity.object_type.date | luxon('FF') }}</p>
-          <p v-strip="activity.objectThumbnail.summary.substring(0, 200)">...</p>
+          <p v-if="activity.objectThumbnail.summary" v-strip="activity.objectThumbnail.summary.substring(0, 200)">...</p>
         </div>
       </div>
     </div>
@@ -97,10 +97,12 @@ export default {
       border-bottom: 1px solid #eee;
       display: flex;
       flex-direction: row;
-      align-items: center;
+      // align-items: center;
       
       & > div {
         display: inline-block;
+        flex-grow: 1;
+
         p {
           margin: 0;
         }
@@ -114,9 +116,15 @@ export default {
 
       h4 {
         display: inline;
+        line-height: inherit;
+        font-size: 14px;
 
         a {
           color: @color-primary;
+        }
+
+        span {
+          font-weight: normal
         }
       }
     }
