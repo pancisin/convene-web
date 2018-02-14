@@ -1,9 +1,12 @@
 package com.pancisin.bookster.repository.custom.impl
 
-import com.pancisin.bookster.model.*
-import com.pancisin.bookster.model.enums.ObjectType
+import com.pancisin.bookster.model.Activity
 import com.pancisin.bookster.repository.custom.ActivityRepositoryCustom
+import com.pancisin.bookster.utils.EntityTransformUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import java.lang.reflect.Field
 import java.util.*
 import javax.persistence.EntityManager
@@ -14,37 +17,34 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
   @Autowired
   lateinit var entityManager: EntityManager
 
-  val allowedFields = arrayOf("id", "name", "title", "poster", "pageType", "privilege", "type", "slug", "path", "content", "thumbnail", "summary", "date")
+  private val hqlQuery = "SELECT activity FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id ORDER BY activity.created DESC"
+  private val hqlCountQuery = "SELECT count(*) FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id ORDER BY activity.created DESC"
 
-  override fun getUserActivityFeed(user_id: Long, page: Int, size: Int): List<Activity> {
-    val builder = entityManager.criteriaBuilder
-
-    val query = entityManager.createQuery("SELECT activity FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id ORDER BY activity.created DESC", Activity::class.java)
+  override fun getUserActivityFeed(user_id: Long, pageable: Pageable): Page<Activity> {
+    val query = entityManager.createQuery(hqlQuery, Activity::class.java)
     query.setParameter("user_id", user_id)
 
-    query.firstResult = page * size
-    query.maxResults = size
+    query.firstResult = pageable.pageNumber
+    query.maxResults = pageable.pageSize
 
-    return query.resultList.map {
+    val data = query.resultList.map {
       it.apply {
-        objectTypeToClass(it.objectType).let { clazz ->
-          val idField = clazz?.declaredFields?.find { it.isAnnotationPresent(Id::class.java) }
+        val clazz = objectType?.clazz
+        val idField = clazz?.declaredFields?.find { it.isAnnotationPresent(Id::class.java) }
 
-          if (idField != null && it.objectId != null && !objectId.equals("")) {
-            idField.isAccessible = true
-            val stored = entityManager.find(clazz, fieldTypeCast(idField, it.objectId))
-            objectThumbnail = clazz.declaredFields.mapNotNull {
-              if (allowedFields.contains(it.name)) {
-                it.isAccessible = true
-                it.name to it.get(stored)
-              } else {
-                null
-              }
-            }.toMap()
-           }
+        if (idField != null && it.objectId != null && !objectId.equals("")) {
+          idField.isAccessible = true
+          val stored = entityManager.find(clazz, fieldTypeCast(idField, it.objectId))
+          objectThumbnail = EntityTransformUtils.hashMapOfEntity(clazz, stored);
         }
       }
     }
+
+    val countQuery = entityManager.createQuery(hqlCountQuery, Long::class.javaObjectType)
+    countQuery.setParameter("user_id", user_id)
+    val total = countQuery.singleResult
+
+    return PageImpl(data, pageable, total)
   }
 
   private fun fieldTypeCast(field: Field, identifier: String?): Any? {
@@ -52,20 +52,6 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
       Long::class.javaObjectType, Long::class.javaPrimitiveType -> identifier?.toLong()
       UUID::class.java -> UUID.fromString(identifier)
       else -> identifier
-    }
-  }
-
-  private fun objectTypeToClass(type: ObjectType?): Class<*>? {
-    return when (type) {
-      ObjectType.PAGE -> Page::class.java
-      ObjectType.MEDIA -> Media::class.java
-      ObjectType.EVENT -> Event::class.java
-      ObjectType.USER -> User::class.java
-      ObjectType.SERVICE -> Service::class.java
-      ObjectType.ARTICLE -> Article::class.java
-      ObjectType.SURVEY -> Survey::class.java
-      ObjectType.PROGRAMME -> Programme::class.java
-      else -> null
     }
   }
 }

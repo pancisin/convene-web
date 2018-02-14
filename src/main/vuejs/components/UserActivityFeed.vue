@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     getFeeds () {
-      UserApi.getActivityFeed(0, 100, activities => {
+      UserApi.getActivityFeed(0, 10, activities => {
         this.activities = activities;
       });
     }

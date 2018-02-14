@@ -8,6 +8,7 @@ import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.ObjectType
 import com.pancisin.bookster.repository.ActivityRepository
 import com.pancisin.bookster.repository.EventRepository
+import com.pancisin.bookster.services.ActivityFeedService
 import com.pancisin.bookster.services.NotificationService
 import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
@@ -23,13 +24,13 @@ import javax.transaction.Transactional
 class EventActivityMonitor {
 
   @Autowired
-  lateinit var eventRepository: EventRepository
+  private lateinit var eventRepository: EventRepository
 
   @Autowired
-  lateinit var notificationService: NotificationService
+  private lateinit var notificationService: NotificationService
 
   @Autowired
-  lateinit var activityRepository: ActivityRepository
+  private lateinit var activityFeedService: ActivityFeedService
 
   @Pointcut("execution(* com.pancisin.bookster.rest.controllers.v1.EventController.*(..)) && args(event_id,..)")
   fun eventController(event_id: Long?) {
@@ -59,6 +60,6 @@ class EventActivityMonitor {
       }
     }
 
-    activityRepository.save(activity)
+    activityFeedService.publishActivity(activity)
   }
 }

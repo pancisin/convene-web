@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 enum class Subscription private constructor(
+
   @JsonProperty("name")
   val prop: String,
   val code: String,

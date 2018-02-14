@@ -2,32 +2,7 @@
   <div>
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 col-md-3">
-          <panel type="primary">
-            <span slot="title">{{ $t('client.dashboard.attending') }}</span>
-            <small slot="subtitle">Udalosti na ktoré som prihlásený a ešte sa nekonali.</small>
-            <events-list :events="attendingEvents"></events-list>
-          </panel>
-
-          <h3 class="text-uppercase">Featured</h3>
-          <featured-events />
-        </div>
-
-        <div class="col-md-3 col-sm-6 col-md-push-6">
-          <tab-container>
-            <tab :title="$t('client.dashboard.followed')"
-              @navigated="tabNavigation">
-              <pages-list :pages="followedPages" />
-            </tab>
-
-            <tab :title="$t('client.dashboard.popular')"
-              @navigated="tabNavigation">
-              <pages-list :pages="popular.content" followers />
-            </tab>
-          </tab-container>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-md-pull-3">
+        <div class="col-sm-12 col-md-6 col-md-push-3">
           <!-- <near-events interactive showWarning/> -->
           <user-activity-feed />
 
@@ -41,6 +16,33 @@
               :fetch="getHeadlines" />
           </div> -->
         </div>
+
+        <div class="col-sm-6 col-md-3 col-md-pull-6">
+          <panel type="primary">
+            <span slot="title">{{ $t('client.dashboard.attending') }}</span>
+            <small slot="subtitle">Udalosti na ktoré som prihlásený a ešte sa nekonali.</small>
+            <events-list :events="attendingEvents"></events-list>
+          </panel>
+
+          <h3 class="text-uppercase">Featured</h3>
+          <featured-events />
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <tab-container>
+            <tab :title="$t('client.dashboard.followed')"
+              @navigated="tabNavigation">
+              <pages-list :pages="followedPages" />
+            </tab>
+
+            <tab :title="$t('client.dashboard.popular')"
+              @navigated="tabNavigation">
+              <pages-list :pages="popular.content" followers />
+            </tab>
+          </tab-container>
+        </div>
+
+        
       </div>
     </div>
   </div>

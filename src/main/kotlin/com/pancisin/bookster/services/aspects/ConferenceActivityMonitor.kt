@@ -4,7 +4,6 @@ import javax.transaction.Transactional
 
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.repository.ConferenceRepository
-import com.pancisin.bookster.repository.PageRepository
 import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
@@ -19,13 +18,11 @@ import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.ObjectType
 import com.pancisin.bookster.repository.ActivityRepository
 import com.pancisin.bookster.repository.UserRepository
+import com.pancisin.bookster.services.ActivityFeedService
 
 @Aspect
 @Component
 class ConferenceActivityMonitor {
-
-  @Autowired
-  lateinit var activityRepository: ActivityRepository
 
   @Autowired
   lateinit var notificationService: NotificationService
@@ -35,6 +32,9 @@ class ConferenceActivityMonitor {
 
   @Autowired
   lateinit var conferenceRepository: ConferenceRepository
+
+  @Autowired
+  lateinit var activityFeedService: ActivityFeedService
 
   @Pointcut("execution(* com.pancisin.bookster.rest.controllers.v1.ConferenceController.*(..)) && args(conference_id,..)")
   fun conferenceController(conference_id: Long?) {
@@ -95,6 +95,6 @@ class ConferenceActivityMonitor {
       }
     }
 
-    activityRepository.save(activity)
+    activityFeedService.publishActivity(activity)
   }
 }

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.pancisin.bookster.model.enums.ObjectType
 import com.pancisin.bookster.repository.MediaRepository
+import com.pancisin.bookster.utils.EntityTransformUtils
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import javax.persistence.JoinTable
@@ -75,19 +76,11 @@ data class Activity(
     @Transient
     get() {
       if (page != null) {
-        return hashMapOf(
-          "id" to page?.id,
-          "name" to page?.name,
-          "type" to ObjectType.PAGE,
-          "poster" to page?.poster
-        );
+        return  EntityTransformUtils.hashMapOfEntity(Page::class.java, page!!)
       } else if (event != null) {
-        return hashMapOf(
-          "id" to event?.id,
-          "name" to event?.name,
-          "poster" to event?.poster
-        )
+        return EntityTransformUtils.hashMapOfEntity(Event::class.java, event!!)
       }
+
       return null;
     }
 

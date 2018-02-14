@@ -322,7 +322,6 @@ public class CurrentUserController {
   @GetMapping("/activity-feed/{page}/{size}")
   public ResponseEntity<?> getActivityFeed(@PathVariable int page, @PathVariable int size) {
     User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    List<Activity> activities = activityRepository.getUserActivityFeed(auth.getId(), page, size);
-    return ResponseEntity.ok(activities);
+    return ResponseEntity.ok(activityRepository.getUserActivityFeed(auth.getId(), new PageRequest(page, size)));
   }
 }

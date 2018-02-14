@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component
 class ActivityFeedService {
 
   @Autowired
-  lateinit var webSocket: SimpMessagingTemplate
+  private lateinit var webSocket: SimpMessagingTemplate
 
   @Autowired
-  lateinit var activityRepository: ActivityRepository
+  private lateinit var activityRepository: ActivityRepository
 
   fun publishActivity(activity: Activity) {
     val act = activityRepository.save(activity)

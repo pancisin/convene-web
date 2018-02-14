@@ -15,25 +15,25 @@ import com.pancisin.bookster.services.NotificationService
 import com.pancisin.bookster.components.annotations.ActivityLog
 import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.ObjectType
-import com.pancisin.bookster.repository.ActivityRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserRepository
+import com.pancisin.bookster.services.ActivityFeedService
 
 @Aspect
 @Component
 class PageActivityMonitor {
 
   @Autowired
-  lateinit var activityRepository: ActivityRepository
+  private lateinit var pageRepository: PageRepository
 
   @Autowired
-  lateinit var pageRepository: PageRepository
+  private lateinit var userRepository: UserRepository
 
   @Autowired
-  lateinit var userRepository: UserRepository
+  private lateinit var notificationService: NotificationService
 
   @Autowired
-  lateinit var notificationService: NotificationService
+  private lateinit var activityFeedService: ActivityFeedService
 
   @Pointcut("execution(* com.pancisin.bookster.rest.controllers.PageController.*(..)) && args(page_id,..)")
   fun pageController(page_id: Long?) {
@@ -92,6 +92,6 @@ class PageActivityMonitor {
       }
     }
 
-    activityRepository.save(activity)
+    activityFeedService.publishActivity(activity)
   }
 }
