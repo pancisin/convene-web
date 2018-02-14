@@ -1,8 +1,8 @@
 <template>
   <div class="activity-feed">
     <div 
-      v-for="activity in activities" 
-      :key="activity.id" class="activity-feed-card" 
+      v-for="(activity, index) in paginator.content" 
+      :key="index" class="activity-feed-card" 
       :class="{ 'af-media-card': activity.object_type === 'MEDIA' }"
       v-if="activity.type.public">
 
@@ -48,6 +48,15 @@
         </div>
       </div>
     </div>
+
+    <div class="text-center m-t-20" v-if="!paginator.last">
+      <button 
+        type="button" 
+        class="btn btn-default" 
+        @click="loadMore">
+
+      Load more</button>
+    </div>
   </div>
 </template>
 
@@ -59,20 +68,28 @@ export default {
   name: 'user-activity-feed',
   data () {
     return {
-      activities: []
+      paginator: {}
     };
   },
   components: {
     LightBox
   },
   created () {
-    this.getFeeds();
+    this.getFeeds(0);
   },
   methods: {
-    getFeeds () {
-      UserApi.getActivityFeed(0, 10, activities => {
-        this.activities = activities;
+    getFeeds (page) {
+      UserApi.getActivityFeed(page, 10, paginator => {
+        const items = this.paginator.content || [];
+
+        this.paginator = {
+          ...paginator,
+          content: items.concat(paginator.content)
+        };
       });
+    },
+    loadMore () {
+      this.getFeeds(this.paginator.number + 1);
     }
   }
 };
