@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-6 col-md-push-3">
-          <!-- <near-events interactive showWarning/> -->
+          <near-events interactive showWarning/>
           <user-activity-feed />
 
           <!-- <articles-list 
@@ -41,8 +41,6 @@
             </tab>
           </tab-container>
         </div>
-
-        
       </div>
     </div>
   </div>

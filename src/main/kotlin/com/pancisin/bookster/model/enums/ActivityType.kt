@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 enum class ActivityType private constructor(
+
   @JsonProperty("name")
   val action: String,
 
@@ -13,6 +14,7 @@ enum class ActivityType private constructor(
 
   @JsonProperty("public")
   val public: Boolean = true
+
 ) {
   NOT_SPECIFIED("FOLLOWING", "activity.type.following"),
 
@@ -22,8 +24,8 @@ enum class ActivityType private constructor(
   PUBLISH("PUBLISJED", "activity.type.publish"),
   FEATURE("FEATURE", "activity.type.feature"),
 
-  FOLLOWING("FOLLOWING", "activity.type.following"),
-  ATTENDING("ATTENDING", "activity.type.attending"),
+  FOLLOWING("FOLLOWING", "activity.type.following", false),
+  ATTENDING("ATTENDING", "activity.type.attending", false),
 
   CREATE_EVENT("CREATE_EVENT", "activity.type.create_event"),
   CREATE_SERVICE("CREATE_SERVICE", "activity.type.create_service"),

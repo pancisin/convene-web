@@ -24,7 +24,7 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
     val query = entityManager.createQuery(hqlQuery, Activity::class.java)
     query.setParameter("user_id", user_id)
 
-    query.firstResult = pageable.pageNumber
+    query.firstResult = pageable.offset
     query.maxResults = pageable.pageSize
 
     val data = query.resultList.map {
