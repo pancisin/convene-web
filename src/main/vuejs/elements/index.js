@@ -57,6 +57,7 @@ import VueTable from './VueTable';
 import MemberList from './MemberList.vue';
 import FormEditor from './Form.editor.vue';
 import RouterTabNavigation from './RouterTabNavigation.vue';
+import Search from './Search';
 
 export {
   ArticlesList,
@@ -117,5 +118,6 @@ export {
   VueTable,
   MemberList,
   FormEditor,
-  RouterTabNavigation
+  RouterTabNavigation,
+  Search
 };

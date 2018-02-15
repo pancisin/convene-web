@@ -8,15 +8,7 @@
         <div class="menu-extras">
           <ul class="nav navbar-nav navbar-right pull-right">
             <li>
-              <form role="search"
-                class="navbar-left app-search pull-left hidden-xs">
-                <input type="text"
-                  placeholder="Search..."
-                  class="form-control">
-                <a href="">
-                  <i class="fa fa-search"></i>
-                </a>
-              </form>
+              <search class="navbar-left pull-left hidden-xs" />
             </li>
 
             <lang-switcher />
@@ -85,7 +77,13 @@
 </template>
 
 <script>
-import { Notifications, LangSwitcher, UserProfile, ProductLogo } from 'elements';
+import {
+  Notifications,
+  LangSwitcher,
+  UserProfile,
+  ProductLogo,
+  Search
+} from 'elements';
 import SlideTransition from '../functional/SlideTransition';
 import { mapGetters } from 'vuex';
 import menus from '../services/maps/menus.map';
@@ -107,7 +105,12 @@ export default {
     }
   },
   components: {
-    Notifications, LangSwitcher, SlideTransition, UserProfile, ProductLogo
+    Notifications,
+    LangSwitcher,
+    SlideTransition,
+    UserProfile,
+    ProductLogo,
+    Search
   },
   methods: {
     closeNavbar () {

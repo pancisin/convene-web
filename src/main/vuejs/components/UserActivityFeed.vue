@@ -1,5 +1,5 @@
 <template>
-  <div class="activity-feed">
+  <div class="activity-feed" v-loading="loading">
     <div 
       v-for="(activity, index) in paginator.content" 
       :key="index" class="activity-feed-card" 
@@ -53,7 +53,7 @@
       <button 
         type="button" 
         class="btn btn-default" 
-        @click="loadMore">
+        v-stream:click="loadMore$">
 
       Load more</button>
     </div>
@@ -63,34 +63,44 @@
 <script>
 import UserApi from 'api/user.api';
 import { LightBox } from 'elements';
+import { Observable, Subject } from 'rxjs';
 
 export default {
   name: 'user-activity-feed',
-  data () {
-    return {
-      paginator: {}
-    };
-  },
   components: {
     LightBox
   },
-  created () {
-    this.getFeeds(0);
+  data () {
+    return {
+      loading: false
+    };
   },
-  methods: {
-    getFeeds (page) {
-      UserApi.getActivityFeed(page, 10, paginator => {
-        const items = this.paginator.content || [];
+  subscriptions () {
+    this.loadMore$ = new Subject();
+    const onCreateStream = this.$eventToObservable('hook:created');
 
-        this.paginator = {
-          ...paginator,
-          content: items.concat(paginator.content)
-        };
-      });
-    },
-    loadMore () {
-      this.getFeeds(this.paginator.number + 1);
-    }
+    return {
+      paginator: Observable.merge(this.loadMore$, onCreateStream)
+        .throttleTime(400)
+        .mapTo(1)
+        .scan((acc, cur) => acc + cur, -1)
+        .do(() => { this.loading = true; })
+        .flatMap(page => Observable.create(ob => {
+          UserApi.getActivityFeed(page, 10, paginator => {
+            ob.next(paginator);
+          });
+        }))
+        .map(p => {
+          const items = this.paginator.content || [];
+
+          return {
+            ...p,
+            content: items.concat(p.content)
+          };
+        })
+        .do(() => { this.loading = false; })
+        .startWith({})
+    };
   }
 };
 </script>
