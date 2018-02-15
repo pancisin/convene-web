@@ -64,7 +64,7 @@ export default {
         this.initializeConversations();
 
         await this.initializeContacts();
-        this.connectWM('/stomp').then(frame => {
+        this.connectWM('/stomp').then(() => {
           this.$stompClient.subscribe(
             '/user/queue/chat.activeUsers',
             response => {

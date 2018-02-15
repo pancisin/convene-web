@@ -169,12 +169,23 @@ export default {
     });
   },
 
+  /**
+   * Get users conversations list. Returns conversations with last
+   * message and user object.
+   * @param {*} success - success callback function
+   */
   getConversations (success) {
     Vue.http.get('/api/v1/message/conversations').then(response => {
       success(response.body);
     });
   },
 
+  /**
+   * Request to change curent users password
+   * @param {*} data - user data with old and new password
+   * @param {*} success - success callback function
+   * @param {*} error - error callback function
+   */
   changePassword (data, success, error) {
     Vue.http.post(`${USER_API_URL}/v1/changePassword`, data).then(response => {
       success(response.body);
@@ -183,24 +194,44 @@ export default {
     });
   },
 
+  /**
+   * Set currents user locale
+   * @param {*} locale - selected locale
+   * @param {*} success - success callback function
+   */
   setLocale (locale, success) {
     Vue.http.put(`${USER_API_URL}/locale`, locale).then(response => {
       success(response.body);
     });
   },
 
+  /**
+   * Get users privacy constraints
+   * @param {*} success - success callback function
+   */
   getPrivacyConstraints (success) {
     Vue.http.get(`${USER_API_URL}/privacy-constraints`).then(response => {
       success(response.body);
     });
   },
 
+  /**
+   * Update privacy constraints
+   * @param {*} constraints - constrains map object
+   * @param {*} success = success callback function
+   */
   updatePrivacyConstraints (constraints, success) {
     Vue.http.patch(`${USER_API_URL}/privacy-constraints`, constraints).then(response => {
       success(response.body);
     });
   },
 
+  /**
+   * Get current use activity feed
+   * @param {*} page - paginator page property
+   * @param {*} size - paginator size property
+   * @param {*} success - success callback function
+   */
   getActivityFeed (page, size, success) {
     Vue.http.get(`${USER_API_URL}/activity-feed/${page}/${size}`).then(response => {
       success(response.body);
