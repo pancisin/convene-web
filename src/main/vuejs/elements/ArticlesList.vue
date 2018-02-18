@@ -27,7 +27,7 @@
         :key="article.id">
         <div class="article-image-container"
           v-if="article.thumbnail != null">
-          <vue-image :src="article.thumbnail.path" /> 
+          <vue-image :src="article.thumbnail.path" placeholder /> 
         </div>
 
         <router-link :to="{ name: 'article.public', params: { article_id: article.id } }">

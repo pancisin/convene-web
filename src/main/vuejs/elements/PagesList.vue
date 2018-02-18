@@ -7,7 +7,7 @@
 
       <div class="inbox-item-img"
         v-if="page.poster != null">
-        <vue-image :src="page.poster.path" class="img-circle" />
+        <vue-image :src="page.poster.path" class="img-circle" placeholder />
       </div>
       <div>
         <p class="inbox-item-author">

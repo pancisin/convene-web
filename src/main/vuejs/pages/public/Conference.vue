@@ -28,7 +28,7 @@
 
           <div class="col-sm-4 col-md-3">
             <light-box v-if="conference.poster != null" :image="conference.poster.path">
-              <vue-image :src="conference.poster.path" class="img-poster" />
+              <vue-image :src="conference.poster.path" class="img-poster" placeholder />
             </light-box>        
             
             <div v-if="authenticated">

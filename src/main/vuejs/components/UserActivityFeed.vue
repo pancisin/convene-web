@@ -3,11 +3,13 @@
     <div 
       v-for="(activity, index) in paginator.content" 
       :key="index" class="activity-feed-card" 
-      :class="{ 'af-media-card': activity.object_type === 'MEDIA' }"
+      :class="{ 
+        'af-media-card': activity.object_type === 'MEDIA', 
+        'af-event-card' : activity.object_type === 'EVENT' }"
       v-if="activity.type.public">
 
       <div class="af-card-header">
-        <img class="img img-circle" :src="activity.subject.poster.path">
+        <vue-image :src="activity.subject.poster.path" class="img-circle" />
 
         <div>
           <h4>
@@ -21,31 +23,7 @@
       </div>
 
       <div class="af-card-content">
-        <div v-if="activity.object_type === 'MEDIA'">
-          <light-box :image="activity.objectThumbnail.path" v-if="activity.objectThumbnail" >
-            <img :src="activity.objectThumbnail.path">
-          </light-box>
-        </div>
-        <div v-else-if="activity.object_type === 'ARTICLE'">
-          <img :src="activity.objectThumbnail.thumbnail.path" style="width:100%">
-          <h4>
-            <router-link :to="{ name: 'article.public', params: { article_id: activity.object_id }}">
-              {{ activity.objectThumbnail.title }}
-            </router-link>
-          </h4>
-          <p v-strip="activity.objectThumbnail.content.substring(0, 200)">...</p>
-          <div class="text-right m-t-20 clearfix">
-            <button type="button" class="btn btn-link pull-right">Read more</button>
-          </div>
-        </div>
-        <div v-else-if="activity.object_type === 'SERVICE'">
-          {{ activity.objectThumbnail.name }}
-        </div>
-        <div v-else-if="activity.object_type === 'EVENT'">
-          <h4>{{ activity.objectThumbnail.name }}</h4>
-          <p>{{ activity.object_type.date | luxon('FF') }}</p>
-          <p v-if="activity.objectThumbnail.summary" v-strip="activity.objectThumbnail.summary.substring(0, 200)">...</p>
-        </div>
+        <component :is="`${activity.object_type.toLowerCase()}-activity`" :obj="activity.objectThumbnail" />
       </div>
     </div>
 
@@ -62,13 +40,16 @@
 
 <script>
 import UserApi from 'api/user.api';
-import { LightBox } from 'elements';
+import { LightBox, VueImage } from 'elements';
 import { Observable, Subject } from 'rxjs';
+import * as activities from './activity-feed';
 
 export default {
   name: 'user-activity-feed',
   components: {
-    LightBox
+    LightBox,
+    VueImage,
+    ...activities
   },
   data () {
     return {
@@ -114,10 +95,6 @@ export default {
     background: #fff;
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1); 
 
-    .af-card-content {
-      padding: 20px;
-    }
-
     .af-card-header {
       line-height: 18px;
       padding: 15px 20px;
@@ -158,16 +135,6 @@ export default {
 
     & ~ .activity-feed-card {
       margin-top: 20px;
-    }
-
-    &.af-media-card {
-      .af-card-content {
-        padding: 0;
-      }
-
-      img {
-        width: 100%;
-      }
     }
   }
 }

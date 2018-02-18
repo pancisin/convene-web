@@ -13,7 +13,7 @@
           <span class="year">{{ event.date | luxon('yyyy') }}</span>
         </div>
 
-        <vue-image v-if="event.poster" :src="event.poster.path" />
+        <vue-image v-if="event.poster" :src="event.poster.path" placeholder />
       </div>
 
       <div class="featured-event-content">

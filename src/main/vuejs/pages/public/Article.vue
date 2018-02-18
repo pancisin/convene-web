@@ -3,7 +3,7 @@
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" v-loading="loading">
       <div class="article-banner" v-if="article.thumbnail != null">
         <light-box :image="article.thumbnail.path">
-          <vue-image :src="article.thumbnail.path" />
+          <vue-image :src="article.thumbnail.path" placeholder />
         </light-box>
       </div>
   

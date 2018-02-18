@@ -50,7 +50,6 @@ import LightBox from './LightBox';
 import VueImage from './VueImage';
 import Error from './Error';
 import WidgetSelector from './WidgetSelector';
-import AdSense from './AdSense';
 import DataParserEditor from './DataParserEditor';
 import EventMap from './EventMap';
 import VueTable from './VueTable';
@@ -112,7 +111,6 @@ export {
   VueImage,
   Error,
   WidgetSelector,
-  AdSense,
   DataParserEditor,
   EventMap,
   VueTable,
