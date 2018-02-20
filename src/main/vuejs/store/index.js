@@ -7,6 +7,7 @@ import user from './modules/user';
 import page from './modules/page';
 import conference from './modules/conference';
 import machine from './modules/machine';
+import activity from './modules/activity';
 
 // IMPORT MUTATION TYPES
 import * as types from 'store/mutation-types';
@@ -20,7 +21,11 @@ const store = new Vuex.Store({
     locales: []
   },
   modules: {
-    user, page, conference, machine
+    user,
+    page,
+    conference,
+    machine,
+    activity
   },
   getters: {
     toasts: state => state.toasts,

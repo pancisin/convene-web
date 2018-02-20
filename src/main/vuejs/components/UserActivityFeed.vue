@@ -1,5 +1,15 @@
 <template>
   <div class="activity-feed" v-loading="loading">
+    <button type="button" v-stream:click="testButton$" class="btn btn-primary">
+      Add activity
+    </button>
+
+    <div class="text-center" v-if="receivedActivities > 0" v-stream:click="showReceived$">
+      <button type="button" class="btn btn-link">
+        {{ `Load ${receivedActivities} more activities.` }}
+      </button>
+    </div>
+
     <div 
       v-for="(activity, index) in paginator.content" 
       :key="index" class="activity-feed-card" 
@@ -43,6 +53,7 @@ import UserApi from 'api/user.api';
 import { LightBox, VueImage } from 'elements';
 import { Observable, Subject } from 'rxjs';
 import * as activities from './activity-feed';
+import { map } from 'rxjs/operators';
 
 export default {
   name: 'user-activity-feed',
@@ -58,9 +69,45 @@ export default {
   },
   subscriptions () {
     this.loadMore$ = new Subject();
+    this.showReceived$ = new Subject();
     const onCreateStream = this.$eventToObservable('hook:created');
 
+    const wsStream = Observable.fromPromise(this.connectWM('/stomp'))
+      .flatMap(() => {
+        Observable.create(ob => {
+          this.$stompClient.subscribe('/user/queue/activity', response => {
+            const activity = JSON.parse(response.body);
+            ob.next(activity);
+          });
+        });
+      });
+
+    this.testButton$ = new Subject()
+      .mapTo(JSON.parse('{"id":"72f2cd31-8174-4dc3-825c-0c5ee360fcb3","user":"Patrik Pančišin","type":{"action":"ATTENDING","code":"activity.type.attending","public":false},"object_type":null,"object_id":null,"created":1517298053000,"objectThumbnail":null,"subject":{"id":58,"name":"Test conference d","slug":"test-conference","summary":"<p>dsad sadasda</p>","poster":{"id":"b73b5de9-e976-4ddb-864f-a3989b000ccd","created":1516802825000,"title":null,"description":null,"path":"/files/banners/conferences/b73b5de9-e976-4ddb-864f-a3989b000ccd.jpg","deleted":false,"size":777835},"pageType":"CONFERENCE"}}'));
+
+    const receivedBufferStream = Observable.merge(this.testButton$, wsStream)
+      .bufferWhen(() => this.showReceived$)
+      .map(a => {
+        return {
+          ...this.paginator,
+          content: [
+            ...a,
+            ...this.paginator.content
+          ]
+        };
+      });
+
+    const concatContent = map(p => {
+      const items = this.paginator.content || [];
+      return {
+        ...p,
+        content: [ ...items ].concat(p.content)
+      };
+    });
+
     return {
+      received: this.testButton$,
+      receivedActivities: this.testButton$.scan((acc, cur) => acc + 1, 0),
       paginator: Observable.merge(this.loadMore$, onCreateStream)
         .throttleTime(400)
         .mapTo(1)
@@ -71,15 +118,9 @@ export default {
             ob.next(paginator);
           });
         }))
-        .map(p => {
-          const items = this.paginator.content || [];
-
-          return {
-            ...p,
-            content: items.concat(p.content)
-          };
-        })
+        .pipe(concatContent)
         .do(() => { this.loading = false; })
+        .merge(receivedBufferStream)
         .startWith({})
     };
   }
