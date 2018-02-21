@@ -72,14 +72,14 @@ export default {
     this.showReceived$ = new Subject();
     const onCreateStream = this.$eventToObservable('hook:created');
 
-    const wsStream = Observable.fromPromise(this.connectWM('/stomp'))
+    const wsStream = Observable
+      .fromPromise(this.connectWM('/stomp'))
       .flatMap(() => Observable.create(ob => {
         this.$stompClient.subscribe('/user/queue/activity', response => {
           const activity = JSON.parse(response.body);
           ob.next(activity);
         });
-      }))
-      .do(console.log);
+      }));
 
     const receivedBufferStream = wsStream
       .bufferWhen(() => this.showReceived$)
@@ -102,7 +102,10 @@ export default {
     });
 
     return {
-      receivedActivities: wsStream.scan((acc, cur) => acc + 1, 0),
+      receivedActivities: Observable.merge(wsStream.mapTo({ delta: 1 }), this.showReceived$.mapTo({ reset: true }))
+        .scan((acc, cur) => {
+          return cur.reset ? 0 : acc + cur.delta;
+        }, 0),
       paginator: Observable.merge(this.loadMore$, onCreateStream)
         .throttleTime(400)
         .mapTo(1)
