@@ -1,19 +1,39 @@
 <template>
-  <div @click="focusNewTag()" v-bind:class="{'read-only': readOnly}" class="vue-input-tag-wrapper">
-    <span v-for="(tag, index) in tags" v-bind:key="index" class="input-tag">
+  <div 
+    class="vue-input-tag-wrapper"
+    :class="{'read-only': readonly}" 
+    @click="focusNewTag">
+
+    <span 
+      v-for="(tag, index) in tags" 
+      :key="index" 
+      class="input-tag">
+      
       <span>{{ tag }}</span>
-      <a v-if="!readOnly" @click.prevent.stop="remove(index)" class="remove"><i class="fa fa-times"></i></a>
+      <a 
+        v-if="!readonly" 
+        v-stream:click="{ subject: deleteTag$, data: tag }"
+        class="remove">
+        <i class="fa fa-times"></i>
+      </a>
     </span>
-    <input v-if="!readOnly" v-bind:placeholder="placeholder" type="text" v-model="newTag" v-on:keydown.delete.stop="removeLastTag()" v-on:keydown.enter.188.tab.prevent.stop="addNew(newTag)" class="new-tag" />
+
+    <input 
+      v-if="!readonly" 
+      :placeholder="placeholder" 
+      type="text" 
+      v-stream:keydown="submitTag$"
+      class="new-tag"
+      ref="newtag" />
   </div>
 </template>
 
 <script>
+import { Subject, Observable } from 'rxjs';
 export default {
-  name: 'InputTag',
-
+  name: 'input-tag',
   props: {
-    tags: {
+    value: {
       type: Array,
       default: () => []
     },
@@ -21,10 +41,7 @@ export default {
       type: String,
       default: ''
     },
-    onChange: {
-      type: Function
-    },
-    readOnly: {
+    readonly: {
       type: Boolean,
       default: false
     }
@@ -35,36 +52,69 @@ export default {
       newTag: ''
     };
   },
+  subscriptions () {
+    this.submitTag$ = new Subject();
+    this.deleteTag$ = new Subject();
 
+    const deletion = Observable.merge(
+      this.deleteTag$,
+      this.submitTag$.filter(e => e.event.keyCode === 8 && !e.event.target.value)
+    )
+     .map(d => {
+       return {
+         value: d.data,
+         delete: true
+       };
+     });
+
+    const fromProps$ = Observable.merge(
+      this.$eventToObservable('hook:created').mapTo(this.value),
+      this.$watchAsObservable('value')
+    )
+    .flatMap(x => x)
+    .map(x => {
+      return {
+        value: x
+      };
+    });
+
+    return {
+      tags: this.submitTag$
+        .pluck('event')
+        .filter(e => [13, 32, 9].includes(e.keyCode))
+        .pluck('target')
+        .map(t => {
+          t.focus();
+          const res = {
+            value: t.value
+          };
+          t.value = '';
+          return res;
+        })
+        .distinct(x => x.value)
+        .merge(deletion, fromProps$)
+        .scan((acc, cur) => {
+          if (cur.delete) {
+            if (cur.value) {
+              acc = acc.filter(c => c !== cur.value);
+            } else {
+              acc.pop();
+            }
+          } else {
+            acc.push(cur.value.trim());
+          }
+
+          return acc;
+        }, [])
+        .do(x => {
+          this.$emit('input', [ ...x ]);
+        })
+    };
+  },
   methods: {
     focusNewTag () {
-      if (this.readOnly) { return; }
-      this.$el.querySelector('.new-tag').focus();
-    },
-
-    addNew (tag) {
-      if (tag && this.tags.indexOf(tag) === -1) {
-        this.tags.push(tag);
-        this.tagChange();
-      }
-      this.newTag = '';
-    },
-
-    remove (index) {
-      this.tags.splice(index, 1);
-      this.tagChange();
-    },
-
-    removeLastTag () {
-      if (this.newTag) { return; }
-      this.tags.pop();
-      this.tagChange();
-    },
-
-    tagChange () {
-      if (this.onChange) {
-        // avoid passing the observer
-        this.onChange(JSON.parse(JSON.stringify(this.tags)));
+      if (!this.readonly) {
+        this.$refs.newtag.focus();
       }
     }
   }

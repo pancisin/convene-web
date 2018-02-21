@@ -8,7 +8,9 @@
 
     <div class="form-group">
       <label>Tags</label>
-      <tag-input v-model="listClone.tags" :tags="listClone.tags"></tag-input>
+      <tag-input 
+        v-model="listClone.tags">
+      </tag-input>
     </div>
 
     <div class="text-center">

@@ -1,9 +1,5 @@
 <template>
   <div class="activity-feed" v-loading="loading">
-    <!-- <button type="button" v-stream:click="testButton$" class="btn btn-primary">
-      Add activity
-    </button> -->
-
     <div class="text-center" v-if="receivedActivities > 0" v-stream:click="showReceived$">
       <button type="button" class="btn btn-link">
         {{ `Load ${receivedActivities} more activities.` }}
