@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="image-wrapper" v-if="page.poster">
-                  <vue-image :src="page.poster.path" />
+                  <vue-image :src="page.poster.path" placeholder />
                 </div>
               </router-link>
               <div class="actions" v-if="page.privilege && page.privilege.active">

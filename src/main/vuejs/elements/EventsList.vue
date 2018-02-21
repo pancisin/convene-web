@@ -6,7 +6,7 @@
       class="inbox-item">
 
       <div class="inbox-item-img" v-if="event.poster != null">
-        <vue-image :src="event.poster.path" class="img-circle" />
+        <vue-image :src="event.poster.path" class="img-circle" placeholder />
       </div>
       
       <div>

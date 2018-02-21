@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers.v1
 
+import com.pancisin.bookster.components.annotations.ActivityLog
 import java.util.stream.Collectors
 
 import javax.validation.Valid
@@ -29,6 +30,7 @@ import com.pancisin.bookster.model.Event
 import com.pancisin.bookster.model.Invitation
 import com.pancisin.bookster.model.Programme
 import com.pancisin.bookster.model.User
+import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.models.views.Summary
 import com.pancisin.bookster.repository.EventRepository
@@ -77,6 +79,7 @@ class EventController {
   }
 
   @PutMapping
+  @ActivityLog(type = ActivityType.UPDATE)
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
   fun putEvent(
     @PathVariable event_id: Long?,
@@ -111,6 +114,7 @@ class EventController {
   }
 
   @DeleteMapping
+  @ActivityLog(type = ActivityType.DELETE)
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
   fun deleteEvent(@PathVariable event_id: Long?): ResponseEntity<*> {
     eventRepository.delete(event_id)
@@ -121,6 +125,7 @@ class EventController {
   fun getProgramme(@PathVariable event_id: Long?) = ResponseEntity.ok(eventRepository.findOne(event_id).programme)
 
   @PostMapping("/programme")
+  @ActivityLog(type = ActivityType.CREATE_PROGRAMME)
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
   fun postProgramme(@PathVariable event_id: Long?, @RequestBody programme: Programme)
     = ResponseEntity.ok(programmeRepository.save(programme.apply {
@@ -129,6 +134,7 @@ class EventController {
 
 
   @PatchMapping("/toggle-attend")
+  @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
   fun toggleAttend(@PathVariable event_id: Long?): ResponseEntity<*> {
     val auth_user = SecurityContextHolder.getContext().authentication.principal as User
@@ -208,6 +214,7 @@ class EventController {
   }
 
   @PatchMapping("/toggle-published")
+  @ActivityLog(type = ActivityType.PUBLISH)
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
   fun togglePublishState(@PathVariable event_id: Long?): ResponseEntity<*> {
     val stored = eventRepository.findOne(event_id)
@@ -222,6 +229,7 @@ class EventController {
   }
 
   @PatchMapping("/toggle-featured")
+  @ActivityLog(type = ActivityType.FEATURE)
   @PreAuthorize("hasRole('SUPERADMIN')")
   fun toggleFeatured(@PathVariable event_id: Long?)
     = ResponseEntity.ok(eventRepository.save(eventRepository.findOne(event_id).apply {

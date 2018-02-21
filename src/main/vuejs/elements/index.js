@@ -50,13 +50,13 @@ import LightBox from './LightBox';
 import VueImage from './VueImage';
 import Error from './Error';
 import WidgetSelector from './WidgetSelector';
-import AdSense from './AdSense';
 import DataParserEditor from './DataParserEditor';
 import EventMap from './EventMap';
 import VueTable from './VueTable';
 import MemberList from './MemberList.vue';
 import FormEditor from './Form.editor.vue';
 import RouterTabNavigation from './RouterTabNavigation.vue';
+import Search from './Search';
 
 export {
   ArticlesList,
@@ -111,11 +111,11 @@ export {
   VueImage,
   Error,
   WidgetSelector,
-  AdSense,
   DataParserEditor,
   EventMap,
   VueTable,
   MemberList,
   FormEditor,
-  RouterTabNavigation
+  RouterTabNavigation,
+  Search
 };

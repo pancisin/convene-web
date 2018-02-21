@@ -101,7 +101,7 @@
 
       <div class="col-sm-6 col-md-3 col-md-push-3">
         <light-box v-if="event.poster != null" :image="event.poster.path">
-          <vue-image :src="event.poster.path" class="img-poster m-b-20" />
+          <vue-image :src="event.poster.path" class="img-poster m-b-20" placeholder />
         </light-box>
 
         <panel type="default" class="panel-p-0">

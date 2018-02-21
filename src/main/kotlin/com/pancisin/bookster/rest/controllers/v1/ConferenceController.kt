@@ -253,7 +253,7 @@ class ConferenceController {
   ) = ResponseEntity.ok(articleRepository.getByPage(conference_id, PageRequest(page, size, Direction.DESC, "created")))
 
   @PatchMapping("/toggle-published")
-  @ActivityLog(type = ActivityType.UPDATE)
+  @ActivityLog(type = ActivityType.PUBLISH)
   @PreAuthorize("hasPermission(#conference_id, 'page', 'update')")
   fun togglePublishState(@PathVariable conference_id: Long?): ResponseEntity<*> {
     val stored = conferenceRepository.findOne(conference_id)

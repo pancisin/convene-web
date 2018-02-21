@@ -152,10 +152,13 @@ const actions = {
     });
   },
   initializeNotifications ({ commit }) {
-    UserApi.getNotifications(0, 100, {
-      seen: false
-    }, paginator => {
-      commit(types.SET_NOTIFICATIONS, { paginator });
+    return new Promise(resolve => {
+      UserApi.getNotifications(0, 100, {
+        seen: false
+      }, paginator => {
+        commit(types.SET_NOTIFICATIONS, { paginator });
+        resolve();
+      });
     });
   },
   toggleSeenNotification ({ commit, state }, not) {

@@ -11,18 +11,13 @@
 
     <guest-catcher />
     <position-query />
-
-    <ad-sense
-      ad-client="ca-pub-8590347690879523"
-      ad-slot="XXXXXXXX">
-    </ad-sense>
     <!-- <cookie-law /> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { ToastContainer, ChatContainer, CookieLaw, AdSense } from 'elements';
+import { ToastContainer, ChatContainer, CookieLaw } from 'elements';
 import { Settings } from 'luxon';
 import { GuestCatcher, PositionQuery } from 'components';
 
@@ -48,7 +43,6 @@ export default {
     ChatContainer,
     CookieLaw,
     GuestCatcher,
-    AdSense,
     PositionQuery
   },
   computed: {
@@ -64,7 +58,7 @@ export default {
         this.initializeConversations();
 
         await this.initializeContacts();
-        this.connectWM('/stomp').then(frame => {
+        this.connectWM('/stomp').then(() => {
           this.$stompClient.subscribe(
             '/user/queue/chat.activeUsers',
             response => {

@@ -42,7 +42,7 @@
               </div>
               
               <div v-if="event.poster != null" class="image-wrapper">
-                <vue-image :src="event.poster.path" />
+                <vue-image :src="event.poster.path" placeholder />
               </div>
   
               <div class="title">

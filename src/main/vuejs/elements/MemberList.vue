@@ -1,7 +1,7 @@
 <template>
   <div class="member-list">
     <router-link :to="{ name: 'user', params: { user_id: user.id } }" class="member-list-card" v-for="user in users" :key="user.id">
-      <vue-image :src="user.profilePicture ? user.profilePicture.path : null" class="img-circle" />
+      <vue-image :src="user.profilePicture ? user.profilePicture.path : null" class="img-circle" placeholder />
       <p>{{ user.displayName }}</p>
     </router-link>
   </div>

@@ -6,6 +6,7 @@ import java.util.*
 import com.pancisin.api.facebookapi.api.FacebookApi
 import com.pancisin.api.facebookapi.model.Event
 import com.pancisin.api.facebookapi.utils.Reading
+import com.pancisin.bookster.model.Activity
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -13,9 +14,8 @@ import org.springframework.stereotype.Component
 
 import com.pancisin.bookster.model.EventBot
 import com.pancisin.bookster.model.BotRun
-import com.pancisin.bookster.model.enums.BotRunState
-import com.pancisin.bookster.model.enums.PageState
-import com.pancisin.bookster.model.enums.Visibility
+import com.pancisin.bookster.model.enums.*
+import com.pancisin.bookster.repository.ActivityRepository
 import com.pancisin.bookster.repository.EventBotRepository
 import com.pancisin.bookster.repository.BotRunRepository
 import com.pancisin.bookster.repository.EventRepository
@@ -33,6 +33,9 @@ class EventBotService {
 
   @Autowired
   lateinit var botRunRepository: BotRunRepository
+
+  @Autowired
+  lateinit var activityFeedService: ActivityFeedService
 
   val eventFields = "name,description,place,id,start_time,picture.type(large)"
 
@@ -63,6 +66,14 @@ class EventBotService {
             try {
               it.page = bot.page
               eventRepository.save(it)
+
+              activityFeedService.publishActivity(Activity(
+                page = it.page,
+                type = ActivityType.CREATE_EVENT,
+                objectType = ObjectType.EVENT,
+                objectId = it.id.toString()
+              ))
+
               savedEventsCount++
             } catch (ex: Exception) {
             }

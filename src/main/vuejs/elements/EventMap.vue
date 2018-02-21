@@ -48,7 +48,6 @@ export default {
     this.loading = true;
 
     this.$googleMapApi.load(context => {
-      console.log(this.$refs.mapCanvas);
       this.map = context.map(this.$refs.mapCanvas, {
         disableDefaultUI: true,
         styles: gmapStyle,
@@ -64,7 +63,6 @@ export default {
         };
       });
 
-      console.log(eventGroups);
       eventGroups.map(g => {
         const position = {
           lat: g.props.latitude,
@@ -79,7 +77,7 @@ export default {
           map: this.map,
           title: e.name,
           icon: {
-            url: e.poster.path,
+            url: e.poster ? e.poster.path : '',
             scaledSize: context.size(50, 50),
             anchor: context.point(25, 25)
           },

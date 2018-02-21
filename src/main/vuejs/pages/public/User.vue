@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-4 col-md-3">
           <light-box :image="user.profilePicture.path" v-if="user.profilePicture">
-            <vue-image :src="user.profilePicture.path" class="img-poster" />
+            <vue-image :src="user.profilePicture.path" class="img-poster" placeholder />
           </light-box>
 
           <panel type="default" v-loading="loadingEvents" v-if="hasAccess('events')">

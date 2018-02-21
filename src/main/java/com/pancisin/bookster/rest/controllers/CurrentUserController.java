@@ -9,8 +9,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import com.pancisin.bookster.model.Administrator;
-import com.pancisin.bookster.model.Media;
+import com.pancisin.bookster.model.*;
 import com.pancisin.bookster.model.enums.*;
 import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +35,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pancisin.bookster.components.annotations.LicenseLimit;
 import com.pancisin.bookster.components.storage.StorageService;
-import com.pancisin.bookster.model.Event;
-import com.pancisin.bookster.model.Page;
-import com.pancisin.bookster.model.User;
-import com.pancisin.bookster.model.UserSubscription;
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException;
 
 @RestController
@@ -72,6 +67,9 @@ public class CurrentUserController {
 
 	@Autowired
   private ConferenceRepository conferenceRepository;
+
+	@Autowired
+  private ActivityRepository activityRepository;
 
 	@GetMapping("/me")
 	public ResponseEntity<User> getMe() {
@@ -319,5 +317,11 @@ public class CurrentUserController {
     User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     User stored = userRepository.findOne(auth.getId());
 	  return ResponseEntity.ok(stored.getPrivacyConstraints());
+  }
+
+  @GetMapping("/activity-feed/{page}/{size}")
+  public ResponseEntity<?> getActivityFeed(@PathVariable int page, @PathVariable int size) {
+    User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return ResponseEntity.ok(activityRepository.getUserActivityFeed(auth.getId(), new PageRequest(page, size)));
   }
 }

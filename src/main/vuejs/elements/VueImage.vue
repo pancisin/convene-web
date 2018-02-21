@@ -2,7 +2,8 @@
   <img 
     :src="source" 
     @error.prevent="error" 
-    @load="load"/>
+    @load="load"
+    v-if="display" />
 </template>
 
 <script>
@@ -10,11 +11,18 @@ import Placeholder from 'assets/img/notepad.jpg';
 export default {
   name: 'image',
   props: {
-    src: String
+    src: String,
+    placeholder: {
+      type: Boolean,
+      default () {
+        return false;
+      }
+    }
   },
   data () {
     return {
-      source: null
+      source: null,
+      display: true
     };
   },
   mounted () {
@@ -22,7 +30,11 @@ export default {
   },
   methods: {
     error (event) {
-      this.source = Placeholder;
+      if (this.placeholder) {
+        this.source = Placeholder;
+      } else {
+        this.display = false;
+      }
     },
     load (event) {
 

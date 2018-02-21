@@ -17,7 +17,7 @@
           </div>
 
           <div class="image-wrapper" v-if="conference.poster"> 
-            <vue-image :src="conference.poster.path" />
+            <vue-image :src="conference.poster.path" placeholder />
           </div>
         </router-link>
         <div class="actions" v-if="conference.privilege && conference.privilege.active">

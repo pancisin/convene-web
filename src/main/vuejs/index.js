@@ -2,6 +2,9 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import VueI18n from 'vue-i18n';
+import VueRx from 'vue-rx';
+import { Observable, Subscription, Subject } from 'rxjs';
+
 import VueWebsocket from './services/websocket.js';
 import VueAnalytics from 'vue-analytics';
 import VeeValidate from 'vee-validate';
@@ -32,6 +35,7 @@ import 'assets/less/components.less';
 import 'assets/less/responsive.less';
 import 'node-waves/src/less/waves.less';
 
+Vue.use(VueRx, { Observable, Subscription, Subject });
 Vue.use(MetaManager);
 Vue.use(FacebookApi);
 Vue.use(GoogleMapsApi);
@@ -88,7 +92,8 @@ const i18n = new VueI18n({
 
 import App from './components/App.vue';
 
-const app = new Vue({
+/* eslint-disable no-new */
+new Vue({
   el: '#application',
   store,
   router,

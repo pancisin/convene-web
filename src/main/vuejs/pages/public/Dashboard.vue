@@ -2,7 +2,22 @@
   <div>
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-12 col-md-6 col-md-push-3">
+          <near-events interactive showWarning/>
+          <user-activity-feed />
+
+          <!-- <articles-list 
+            :articles="headlinesPaginator.content"
+            v-loading="loadingHeadlines"
+            hasHeadline
+          />
+          <div class="text-center">
+            <paginator :paginator="headlinesPaginator"
+              :fetch="getHeadlines" />
+          </div> -->
+        </div>
+
+        <div class="col-sm-6 col-md-3 col-md-pull-6">
           <panel type="primary">
             <span slot="title">{{ $t('client.dashboard.attending') }}</span>
             <small slot="subtitle">Udalosti na ktoré som prihlásený a ešte sa nekonali.</small>
@@ -13,7 +28,7 @@
           <featured-events />
         </div>
 
-        <div class="col-md-3 col-sm-6 col-md-push-6">
+        <div class="col-md-3 col-sm-6">
           <tab-container>
             <tab :title="$t('client.dashboard.followed')"
               @navigated="tabNavigation">
@@ -25,20 +40,6 @@
               <pages-list :pages="popular.content" followers />
             </tab>
           </tab-container>
-        </div>
-
-        <div class="col-sm-12 col-md-6 col-md-pull-3">
-          <near-events interactive showWarning/>
-
-          <articles-list 
-            :articles="headlinesPaginator.content"
-            v-loading="loadingHeadlines"
-            hasHeadline
-          />
-          <div class="text-center">
-            <paginator :paginator="headlinesPaginator"
-              :fetch="getHeadlines" />
-          </div>
         </div>
       </div>
     </div>
@@ -60,7 +61,7 @@ import {
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 import PublicApi from 'api/public.api';
-import { FeaturedEvents, NearEvents } from 'components';
+import { FeaturedEvents, NearEvents, UserActivityFeed } from 'components';
 import { DateTime } from 'luxon';
 
 export default {
@@ -83,7 +84,8 @@ export default {
     PagesList,
     FeaturedEvents,
     EventMap,
-    NearEvents
+    NearEvents,
+    UserActivityFeed
   },
   computed: {
     ...mapGetters([

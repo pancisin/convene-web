@@ -4,6 +4,7 @@ import NearEvents from './NearEvents';
 import PositionQuery from './PositionQuery';
 import ServicePanel from './ServicePanel';
 import SurveyPanel from './SurveyPanel';
+import UserActivityFeed from './UserActivityFeed';
 
 export {
   FeaturedEvents,
@@ -11,5 +12,6 @@ export {
   NearEvents,
   PositionQuery,
   ServicePanel,
-  SurveyPanel
+  SurveyPanel,
+  UserActivityFeed
 };

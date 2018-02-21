@@ -48,7 +48,7 @@ public class LicenseLimiter {
 
     LicenseLimit limit = method.getAnnotation(LicenseLimit.class);
 
-    if (limit.parent() == null || limit.parent().equals("") || limit.parent().equals("user")) {
+    if (limit.parent().equals("") || limit.parent().equals("user")) {
       switch (limit.entity()) {
         case "event":
           if (stored.getLicense().getSubscription().getEventLimit() > stored.getEvents().stream()
@@ -62,6 +62,7 @@ public class LicenseLimiter {
         case "conference":
           if (stored.getLicense().getSubscription().getConferenceLimit() > conferenceRepository.getByOwner(auth_user.getId()).size())
             return pjp.proceed();
+          break;
       }
     } else if (limit.parent().equals("page")) {
       try {
@@ -70,11 +71,11 @@ public class LicenseLimiter {
         switch (limit.entity()) {
           case "event":
             if (page.getOwner().getLicense().getSubscription().getEventLimit() > page.getEvents().size())
-              return pjp.proceed();
-            break;
+            return pjp.proceed();
           case "service":
             if (page.getOwner().getLicense().getSubscription().getServiceLimit() > page.getServices().size())
               return pjp.proceed();
+            break;
         }
       } catch (Exception ex) {
 
