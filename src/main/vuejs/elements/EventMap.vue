@@ -77,7 +77,7 @@ export default {
           map: this.map,
           title: e.name,
           icon: {
-            url: e.poster.path,
+            url: e.poster ? e.poster.path : '',
             scaledSize: context.size(50, 50),
             anchor: context.point(25, 25)
           },

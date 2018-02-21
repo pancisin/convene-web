@@ -1,8 +1,8 @@
 <template>
   <div class="activity-feed" v-loading="loading">
-    <button type="button" v-stream:click="testButton$" class="btn btn-primary">
+    <!-- <button type="button" v-stream:click="testButton$" class="btn btn-primary">
       Add activity
-    </button>
+    </button> -->
 
     <div class="text-center" v-if="receivedActivities > 0" v-stream:click="showReceived$">
       <button type="button" class="btn btn-link">
@@ -73,19 +73,15 @@ export default {
     const onCreateStream = this.$eventToObservable('hook:created');
 
     const wsStream = Observable.fromPromise(this.connectWM('/stomp'))
-      .flatMap(() => {
-        Observable.create(ob => {
-          this.$stompClient.subscribe('/user/queue/activity', response => {
-            const activity = JSON.parse(response.body);
-            ob.next(activity);
-          });
+      .flatMap(() => Observable.create(ob => {
+        this.$stompClient.subscribe('/user/queue/activity', response => {
+          const activity = JSON.parse(response.body);
+          ob.next(activity);
         });
-      });
+      }))
+      .do(console.log);
 
-    this.testButton$ = new Subject()
-      .mapTo(JSON.parse('{"id":"72f2cd31-8174-4dc3-825c-0c5ee360fcb3","user":"Patrik Pančišin","type":{"action":"ATTENDING","code":"activity.type.attending","public":false},"object_type":null,"object_id":null,"created":1517298053000,"objectThumbnail":null,"subject":{"id":58,"name":"Test conference d","slug":"test-conference","summary":"<p>dsad sadasda</p>","poster":{"id":"b73b5de9-e976-4ddb-864f-a3989b000ccd","created":1516802825000,"title":null,"description":null,"path":"/files/banners/conferences/b73b5de9-e976-4ddb-864f-a3989b000ccd.jpg","deleted":false,"size":777835},"pageType":"CONFERENCE"}}'));
-
-    const receivedBufferStream = Observable.merge(this.testButton$, wsStream)
+    const receivedBufferStream = wsStream
       .bufferWhen(() => this.showReceived$)
       .map(a => {
         return {
@@ -106,8 +102,7 @@ export default {
     });
 
     return {
-      received: this.testButton$,
-      receivedActivities: this.testButton$.scan((acc, cur) => acc + 1, 0),
+      receivedActivities: wsStream.scan((acc, cur) => acc + 1, 0),
       paginator: Observable.merge(this.loadMore$, onCreateStream)
         .throttleTime(400)
         .mapTo(1)

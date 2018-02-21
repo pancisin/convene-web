@@ -55,7 +55,7 @@ class PageActivityMonitor {
           objectId = event.id.toString()
         }
 
-        stored.members.forEach { (_, user) -> notificationService.notifyUser(user!!, "notification.page.event_created", event.name!!, stored.displayName) }
+//        stored.members.forEach { (_, user) -> notificationService.notifyUser(user!!, "notification.page.event_created", event.name!!, stored.displayName) }
       }
       ActivityType.FOLLOWING -> {
         val user = userRepository.findOne(auth.id)

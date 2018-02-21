@@ -16,7 +16,7 @@ class ActivityFeedService {
   private lateinit var activityRepository: ActivityRepository
 
   fun publishActivity(activity: Activity) {
-    val act = activityRepository.save(activity)
+    val act = activityRepository.saveActivity(activity)
 
     if (act.page != null) {
       act.page!!.members.forEach { m ->

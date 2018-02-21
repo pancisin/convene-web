@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable
 
 interface ActivityRepositoryCustom {
   fun getUserActivityFeed(user_id: Long, pageable: Pageable) : Page<Activity>
+  fun saveActivity(activity: Activity) : Activity
 }

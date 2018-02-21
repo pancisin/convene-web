@@ -4,7 +4,9 @@
 
     <div class="event-activity-content">
       <div class="text-center">
-        <light-box :image="obj.poster.path">
+        <light-box 
+          v-if="obj.poster"
+          :image="obj.poster.path">
           <vue-image class="img-thumbnail event-activity-thumbnail" :src="obj.poster.path" />
         </light-box>
       </div>
@@ -33,7 +35,7 @@ export default {
   computed: {
     style () {
       return {
-        'background-image': `url(${this.obj.poster.path})`
+        'background-image': this.obj.poster ? `url(${this.obj.poster.path})` : ''
       };
     }
   }
