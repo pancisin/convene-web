@@ -4,22 +4,68 @@
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
           <label class="control-label">Name</label>
-          <input class="form-control" v-model="eventClone.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('name') }}</span>
+          <input class="form-control" 
+            v-model="eventClone.name" 
+            type="text" 
+            name="name" 
+            v-validate 
+            data-vv-rules="required|min:3">
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('name')">
+            {{ errors.first('name') }}
+          </span>
         </div>
+
         <div class="form-group" :class="{ 'has-error' : errors.has('date') }">
           <label class="control-label">Date</label>
-          <date-picker v-model="eventClone.date" v-validate data-vv-rules="required" name="date"></date-picker>
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('date') }}</span>
+          <date-picker 
+            v-model="eventClone.date" 
+            v-validate 
+            data-vv-rules="required" 
+            name="date">
+          </date-picker>
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('name')">
+            {{ errors.first('date') }}
+          </span>
         </div>
+
         <div class="form-group">
           <label class="control-label">Location</label>
-          <place-picker v-model="location" name="location" v-validate data-vv-rules="required"></place-picker>
-          <span class="text-danger" v-if="errors.has('location')">{{ errors.first('location') }}</span>
+          <place-picker 
+            v-model="location" 
+            name="location" 
+            v-validate
+            data-vv-rules="required">
+          </place-picker>
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('location')">
+            {{ errors.first('location') }}
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tags</label>
+          <tag-input v-model="eventClone.tags" />
+          
+          <span 
+            class="text-danger" 
+            v-if="errors.has('tags')">
+            {{ errors.first('tags') }}
+          </span>
         </div>
       </div>
       <div class="col-md-6">
-        <image-upload v-model="eventClone.posterData" :media="event.poster"></image-upload>
+        <image-upload 
+          v-model="eventClone.posterData" 
+          :media="event.poster">
+        </image-upload>
       </div>
     </div>
     <div class="form-group">
@@ -53,7 +99,8 @@ import {
   DatePicker,
   ImageUpload,
   GiphySearch,
-  PlacePicker
+  PlacePicker,
+  TagInput
 } from 'elements';
 import EventApi from 'api/event.api';
 
@@ -100,7 +147,8 @@ export default {
     DatePicker,
     ImageUpload,
     GiphySearch,
-    PlacePicker
+    PlacePicker,
+    TagInput
   },
   data () {
     return {
@@ -129,7 +177,8 @@ export default {
         visibility: this.event.visibility,
         posterData: this.event.posterData,
         latitude: this.event.latitude,
-        longitude: this.event.longitude
+        longitude: this.event.longitude,
+        tags: this.event.tags || []
       };
     },
     submit () {
@@ -137,7 +186,7 @@ export default {
         if (result) {
           this.loading = true;
 
-          this.$http.put(`/api/event/${this.event.id}`, this.eventClone, {
+          this.$http.put(`/api/v1/event/${this.event.id}`, this.eventClone, {
             progress (e) {
               if (e.lengthComputable) {
                 this.loading = (e.loaded / e.total) * 100;

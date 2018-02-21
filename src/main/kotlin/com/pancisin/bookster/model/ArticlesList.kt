@@ -26,20 +26,24 @@ data class ArticlesList(
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   val id: UUID? = null,
 
-  @JsonIgnore @ManyToMany(mappedBy = "articlesList")
+  @JsonIgnore
+  @ManyToMany(mappedBy = "articlesList")
   val articles: List<Article>? = null,
 
   @Column
   var name: String? = null,
 
-  @JsonIgnore @OneToMany(mappedBy = "articlesList")
+  @JsonIgnore
+  @OneToMany(mappedBy = "articlesList")
   private val bots: List<ArticleBot>? = null,
 
   @Column(unique = true, nullable = false)
   var tagsHash: Int = 0,
 
-  @ElementCollection @CollectionTable(name = "tags") @JsonProperty
-  var tags: MutableList<String>? = null
+  @ElementCollection
+  @CollectionTable(name = "articles_lists_tags")
+  var tags: MutableList<String> = ArrayList()
+
 ) {
   @PreUpdate
   private fun onUpdate() {

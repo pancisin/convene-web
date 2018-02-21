@@ -98,6 +98,7 @@ class EventController {
       latitude = event.latitude
       longitude = event.longitude
       banner = event.banner
+      tags = event.tags
     }
 
     if (event.posterData != null && storageService.isBinary(event.posterData)) {

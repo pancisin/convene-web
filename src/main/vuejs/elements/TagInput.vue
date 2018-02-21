@@ -35,15 +35,18 @@ export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      default () {
+        return [];
+      }
     },
     placeholder: {
       type: String,
-      default: ''
+      default () {
+        return '';
+      }
     },
     readonly: {
-      type: Boolean,
-      default: false
+      type: Boolean
     }
   },
 
@@ -60,16 +63,16 @@ export default {
       this.deleteTag$,
       this.submitTag$.filter(e => e.event.keyCode === 8 && !e.event.target.value)
     )
-     .map(d => {
-       return {
-         value: d.data,
-         delete: true
-       };
-     });
+    .map(d => {
+      return {
+        value: d.data,
+        delete: true
+      };
+    });
 
     const fromProps$ = Observable.merge(
       this.$eventToObservable('hook:created').mapTo(this.value),
-      this.$watchAsObservable('value')
+      // this.$watchAsObservable('value').pluck('newValue')
     )
     .flatMap(x => x)
     .map(x => {
@@ -82,6 +85,7 @@ export default {
       tags: this.submitTag$
         .pluck('event')
         .filter(e => [13, 32, 9].includes(e.keyCode))
+        .do(e => e.preventDefault())
         .pluck('target')
         .map(t => {
           t.focus();
@@ -103,11 +107,12 @@ export default {
           } else {
             acc.push(cur.value.trim());
           }
-
           return acc;
         }, [])
         .do(x => {
+          // if (this.value.every(v => x.every(i => i === v))) {
           this.$emit('input', [ ...x ]);
+          // }
         })
     };
   },

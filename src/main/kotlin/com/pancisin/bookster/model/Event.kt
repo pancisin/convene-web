@@ -6,25 +6,6 @@ import java.util.ArrayList
 import java.util.Calendar
 import java.util.HashMap
 
-import javax.persistence.CascadeType
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.FetchType
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.Lob
-import javax.persistence.ManyToMany
-import javax.persistence.ManyToOne
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
-import javax.persistence.OrderBy
-import javax.persistence.Table
-import javax.persistence.Transient
 import javax.validation.constraints.NotNull
 
 import org.hibernate.validator.constraints.NotEmpty
@@ -41,6 +22,7 @@ import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
+import javax.persistence.*
 
 @Entity
 @Table(name = "events")
@@ -140,6 +122,10 @@ class Event() {
 
   @JsonProperty(access = Access.READ_ONLY)
   var featured: Boolean = false
+
+  @ElementCollection
+  @CollectionTable(name = "events_tags")
+  var tags: MutableList<String> = ArrayList()
 
   //	@JsonSerialize(using = ToStringSerializer.class)
   val author: IAuthor?
