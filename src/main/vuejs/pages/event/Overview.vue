@@ -2,22 +2,70 @@
   <div>
     <div class="row">
       <div class="col-lg-4 col-md-6">
-        <div class="form-group" :class="{ 'has-error' : errors.has('name') }">
+        <div 
+          class="form-group" 
+          :class="{ 'has-error' : errors.has('name') }">
+
           <label class="control-label">Name</label>
-          <input class="form-control required" v-model="event.name" type="text" name="name" v-validate data-vv-rules="required|min:3">
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('name') }}</span>
+          <input 
+            class="form-control required" 
+            v-model="event.name" 
+            type="text" 
+            name="name" 
+            v-validate 
+            data-vv-rules="required|min:3">
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('name')">
+            {{ errors.first('name') }}
+          </span>
         </div>
-        <div class="form-group" :class="{ 'has-error' : errors.has('date') }">
+
+        <div 
+          class="form-group" 
+          :class="{ 'has-error' : errors.has('date') }">
+          
           <label class="control-label">Date</label>
-          <date-picker v-model="event.date" v-validate data-vv-rules="required" name="date"></date-picker>
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('date') }}</span>
+          <date-picker 
+            v-model="event.date" 
+            v-validate 
+            data-vv-rules="required" 
+            name="date">
+          </date-picker>
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('name')">
+            {{ errors.first('date') }}
+          </span>
         </div>
-        <div class="form-group" :class="{ 'has-error' : errors.has('visibility') }">
+
+        <div 
+          class="form-group" 
+          :class="{ 'has-error' : errors.has('visibility') }">
+
           <label class="control-label">Visibility</label>
-          <select v-model="event.visibility" class="form-control" name="visibility" v-validate data-vv-rules="required">
-            <option :value="option" v-for="(option, index) in visibility_options" v-text="option" :key="index"></option>
+          <select 
+            v-model="event.visibility" 
+            class="form-control" 
+            name="visibility" 
+            v-validate 
+            data-vv-rules="required">
+
+            <option 
+              :value="option" 
+              v-for="(option, index) in visibility_options" 
+              v-text="option" 
+              :key="index">
+            </option>
           </select>
-          <span class="text-danger" v-if="errors.has('name')">{{ errors.first('visibility') }}</span>
+
+          <span 
+            class="text-danger" 
+            v-if="errors.has('name')">
+            {{ errors.first('visibility') }}
+          </span>
         </div>
 
         <div class="form-group">
@@ -25,21 +73,33 @@
           <place-picker v-model="location" ></place-picker>
         </div>
 
-        <!-- <div class="form-group">
-          <label class="control-label">Place</label>
-          <select v-model="event.place" class="form-control">
-            <option :value="place" v-for="place in places" v-text="place.name" :key="place.id"></option>
-          </select>
-        </div> -->
-
         <div class="form-group">
           <label>Banner</label>
-          <giphy-search v-model="event.banner" upload></giphy-search>
+          <giphy-search 
+            v-model="event.banner" 
+            upload>
+          </giphy-search>
         </div>
 
       </div>
       <div class="col-lg-4 col-md-6">
-        <image-upload v-model="event.posterData" :media="event.poster"></image-upload>
+        <div class="form-group">
+          <image-upload 
+            v-model="event.posterData" 
+            :media="event.poster">
+          </image-upload>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tags</label>
+          <tag-input v-model="event.tags" />
+          
+          <span 
+            class="text-danger" 
+            v-if="errors.has('tags')">
+            {{ errors.first('tags') }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -49,11 +109,22 @@
     </div>
 
     <div class="text-right">
-      <button class="btn btn-danger" @click="togglePublished" v-if="event.state == 'PUBLISHED'">Deactivate</button>
-      <button class="btn btn-success" @click="togglePublished" v-if="event.state == 'DEACTIVATED'">
+      <button 
+        class="btn btn-danger" 
+        @click="togglePublished" 
+        v-if="event.state == 'PUBLISHED'">
+        Deactivate
+      </button>
+      <button 
+        class="btn btn-success" 
+        @click="togglePublished" 
+        v-if="event.state == 'DEACTIVATED'">
         Publish
       </button>
-      <button class="btn btn-primary" type="submit" @click="submit">
+      <button 
+        class="btn btn-primary" 
+        type="submit" 
+        @click="submit">
         Save
       </button>
     </div>
@@ -66,7 +137,8 @@ import {
   DatePicker,
   ImageUpload,
   GiphySearch,
-  PlacePicker
+  PlacePicker,
+  TagInput
 } from 'elements';
 
 export default {
@@ -115,7 +187,8 @@ export default {
     DatePicker,
     ImageUpload,
     GiphySearch,
-    PlacePicker
+    PlacePicker,
+    TagInput
   },
   data () {
     return {
