@@ -72,14 +72,8 @@ export default {
 
     const fromProps$ = Observable.merge(
       this.$eventToObservable('hook:created').mapTo(this.value),
-      // this.$watchAsObservable('value').pluck('newValue')
-    )
-    .flatMap(x => x)
-    .map(x => {
-      return {
-        value: x
-      };
-    });
+      this.$watchAsObservable('value').pluck('newValue')
+    );
 
     return {
       tags: this.submitTag$
@@ -98,7 +92,9 @@ export default {
         .distinct(x => x.value)
         .merge(deletion, fromProps$)
         .scan((acc, cur) => {
-          if (cur.delete) {
+          if (cur instanceof Array) {
+            acc = [ ...cur ];
+          } else if (cur.delete) {
             if (cur.value) {
               acc = acc.filter(c => c !== cur.value);
             } else {
@@ -110,9 +106,10 @@ export default {
           return acc;
         }, [])
         .do(x => {
-          // if (this.value.every(v => x.every(i => i === v))) {
-          this.$emit('input', [ ...x ]);
-          // }
+          if (!x.every(v => !this.value.every(i => i !== v))) {
+          // if (x.some(v => !this.value.some(i => i === v))) {
+            this.$emit('input', [ ...x ]);
+          }
         })
     };
   },
