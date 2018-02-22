@@ -103,4 +103,21 @@ class MessageController {
     }
     return messageRepository.save(message)
   }
+
+//  @MessageMapping("/chat.{recipient_type}.{recipient_id}")
+//  @SendTo("/topic/{recipient_type}/{recipient_id}/chat")
+//  fun sendMessageToRecipient(
+//    @Payload message: Message,
+//    @DestinationVariable("recipient_id") recipient_id: Long?,
+//    @DestinationVariable("recipient_type") recipient_type: RecipientType,
+//    principal: Principal
+//  ): Message {
+//    message.apply {
+//      sender = principal as User
+//      recipientType = recipient_type
+//      recipientId = recipient_id
+//    }
+//
+//    return messageRepository.save(message)
+//  }
 }

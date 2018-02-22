@@ -14,7 +14,6 @@ import UserProfile from './header/UserProfile';
 import Modal from './Modal';
 import Paginator from './Paginator';
 import Panel from './Panel';
-import Select from './Select';
 import Tab from './Tab';
 import TabContainer from './TabContainer';
 import TextEditor from './TextEditor';
@@ -75,7 +74,6 @@ export {
   UserProfile,
   Paginator,
   Panel,
-  Select,
   Tab,
   TabContainer,
   TextEditor,

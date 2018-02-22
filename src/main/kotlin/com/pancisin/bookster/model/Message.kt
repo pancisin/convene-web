@@ -31,5 +31,5 @@ data class Message(
 		var content: String? = null,
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-		var created: Calendar? = null
+		var created: Calendar = Calendar.getInstance()
 )
