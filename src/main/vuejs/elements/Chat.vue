@@ -17,7 +17,7 @@
         :key="message.id">
 
         <div class="chat-avatar">
-          <!-- <profile-picture :user="message.sender" /> -->
+          <profile-picture :user="message.sender" />
         </div>
        
         <div class="conversation-text">
@@ -79,7 +79,7 @@ export default {
       subscription: null
     };
   },
-  componnets: {
+  components: {
     ProfilePicture
   },
   computed: {

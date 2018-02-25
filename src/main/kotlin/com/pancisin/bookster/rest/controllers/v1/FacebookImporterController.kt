@@ -123,9 +123,10 @@ class FacebookImporterController {
   @MessageMapping("/page-import")
   fun runEventBot(@Payload requestMap: Map<String, String>, principal: Principal) {
     val facebook_id = requestMap["facebook_id"]
+    var import = PageImport(state = BotRunState.RUNNING, sourceId = facebook_id.toString())
 
     if (facebook_id != null && facebook_id != "" && pageImportRepository.findBySourceId(facebook_id) == null) {
-      webSocket.convertAndSendToUser(principal.name, "/queue/page.import", PageImport(BotRunState.RUNNING))
+      webSocket.convertAndSendToUser(principal.name, "/queue/page.import", import)
 
       val api = FacebookApi.create()
       try {
@@ -144,16 +145,15 @@ class FacebookImporterController {
               ex.printStackTrace()
             }
 
-            if (page != null) {
-              val import = pageImportRepository.save(PageImport(
-                sourceName = page.name,
-                sourceId = facebook_id,
-                state = BotRunState.SUCCESS,
+            import = pageImportRepository.save(
+              import.apply {
+                sourceName = page?.name.toString()
+                state = BotRunState.SUCCESS
                 page = page
-              ))
+              }
+            )
 
-              webSocket.convertAndSendToUser(principal.name, "/queue/page.import", import)
-            }
+            webSocket.convertAndSendToUser(principal.name, "/queue/page.import", import)
           }
         }
       } catch (ex: IOException) { }
@@ -172,11 +172,23 @@ class FacebookImporterController {
     val api = FacebookApi.Factory.create()
     api.getPage(stored.sourceId.toString(), Reading().fields(pageFields)).execute().let { response ->
       if (response.isSuccessful && response.body() != null) {
-        var page = convertPage(response.body()!!)
-        page = pageRepository.save(page)
+        val page = stored.page
+
+        if (page != null) {
+          convertPage(response.body()!!).let {
+            page.apply {
+              name = it.name
+              summary = it.summary
+              poster = it.poster
+            }
+          }
+
+          pageRepository.save(page)
+        }
 
         stored.state = BotRunState.SUCCESS
         webSocket.convertAndSendToUser(principal.name, "/queue/page.import", stored)
+        return
       }
     }
 

@@ -112,6 +112,15 @@
             <a class="btn btn-link" @click="$tryAuthenticate">{{ $t('authenticate.login') }}</a>
           </div>
         </panel>
+
+        <panel type="default" class="m-b-20">
+          <span slot="title">Tags</span>
+          <a
+            v-for="(tag, index) in event.tags" 
+            :key="index">
+            <i>{{ tag }}</i>,
+          </a>
+        </panel>
       </div>
 
       <div class="col-sm-12 col-md-3 col-md-pull-9">
