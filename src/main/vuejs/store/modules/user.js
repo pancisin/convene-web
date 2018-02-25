@@ -247,8 +247,8 @@ const actions = {
     });
   },
   togglePageFollow ({ commit, state }, page) {
-    PageApi.toggleFollowStatus(page.id, status => {
-      if (status) {
+    PageApi.toggleFollowStatus(page.id, page_member => {
+      if (page_member.active) {
         let pages = [...state.followedPages];
         pages.push(page);
         commit(types.SET_FOLLOWED_PAGES, { pages });

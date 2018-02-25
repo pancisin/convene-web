@@ -16,12 +16,12 @@ enum class ActivityType private constructor(
   val public: Boolean = true
 
 ) {
-  NOT_SPECIFIED("FOLLOWING", "activity.type.following"),
+  NOT_SPECIFIED("NOT_SPECIFIED", "activity.type.following"),
 
   CREATE("CREATE", "activity.type.create"),
   UPDATE("UPDATE", "activity.type.update", false),
   DELETE("DELETE", "activity.type.delete"),
-  PUBLISH("PUBLISJED", "activity.type.publish"),
+  PUBLISH("PUBLISHED", "activity.type.publish"),
   FEATURE("FEATURE", "activity.type.feature"),
 
   FOLLOWING("FOLLOWING", "activity.type.following", false),

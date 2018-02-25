@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import com.pancisin.bookster.model.*;
 import com.pancisin.bookster.repository.*;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -152,7 +153,8 @@ public class PageController {
     PageMember member = pageMemberRepository.findByAttendance(page_id, user.getId());
 
     if (member != null) {
-      pageMemberRepository.delete(member);
+      member.setActive(!member.getActive());
+      pageMemberRepository.save(member);
     } else {
 		  Page stored = pageRepository.findOne(page_id);
 		  member = new PageMember(user, stored);

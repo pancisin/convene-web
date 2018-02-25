@@ -164,7 +164,7 @@ class EventController {
   }
 
   @GetMapping("/attendees")
-  @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
+  @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
   fun getAttendees(@PathVariable event_id: Long?) = ResponseEntity.ok(eventRepository.findOne(event_id).attendees)
 
   @PostMapping("/invite")

@@ -1,9 +1,16 @@
 <template>
   <div class="near-events">
-    <div v-if="!positionAcquired" class="text-center position-picker" >
+    <div 
+      v-if="!positionAcquired" 
+      class="text-center position-picker" >
+      
       <position-form />
     </div>
-    <event-map v-if="paginator.content && paginator.content.length > 0" :events="paginator.content" :draggable="interactive" :infoWindow="interactive" />
+    <event-map 
+      v-if="paginator.content && paginator.content.length > 0" 
+      :events="paginator.content" 
+      :draggable="interactive" 
+      :infoWindow="interactive" />
   </div>
 </template>
 

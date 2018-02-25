@@ -7,6 +7,15 @@
     </div>
 
     <div 
+      v-if="paginator.content && paginator.content.length === 0" 
+      class="card-box text-center">
+      <h3 class="text-pink">You haven't got any recent activity yet.</h3>
+
+      <small class="text-muted">
+        There is any content for you. Select some pages to follow.
+      </small>
+    </div>
+    <div
       v-for="(activity, index) in paginator.content" 
       :key="index" class="activity-feed-card" 
       :class="{ 

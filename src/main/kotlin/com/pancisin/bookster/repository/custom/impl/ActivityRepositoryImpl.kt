@@ -21,8 +21,8 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
   @Autowired
   lateinit var activityRepository: ActivityRepository
 
-  private val hqlQuery = "SELECT activity FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id ORDER BY activity.created DESC"
-  private val hqlCountQuery = "SELECT count(*) FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id ORDER BY activity.created DESC"
+  private val hqlQuery = "SELECT activity FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id AND page_member.active = 1 ORDER BY activity.created DESC"
+  private val hqlCountQuery = "SELECT count(*) FROM Activity activity JOIN activity.page page JOIN page.members page_member JOIN page_member.user user WHERE user.id = :user_id AND page_member.active = 1 ORDER BY activity.created DESC"
 
   override fun getUserActivityFeed(user_id: Long, pageable: Pageable): Page<Activity> {
     val query = entityManager.createQuery(hqlQuery, Activity::class.java)
