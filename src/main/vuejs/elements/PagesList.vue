@@ -1,5 +1,5 @@
 <template>
-   <div class="inbox-widget">
+   <div class="inbox-widget" :class="{ 'inbox-widget-mini' : mini }">
     <stagger-transition>
       <router-link 
         :to="{ name: 'page.public', params: { id: page.slug || page.id }}"
@@ -9,7 +9,10 @@
 
         <div class="inbox-item-img"
           v-if="page.poster != null">
-          <vue-image :src="page.poster.path" class="img-circle" placeholder />
+          <vue-image 
+            :src="page.poster.path" 
+            class="img-circle" 
+            placeholder />
         </div>
         <div>
           <p class="inbox-item-author">
@@ -19,7 +22,7 @@
             </span>
           </p>
           <p class="inbox-item-text"
-            v-if="page.category != null">
+            v-if="page.category != null && !mini">
             {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
           </p>
         </div>
@@ -35,7 +38,8 @@ export default {
   name: 'pages-list',
   props: {
     pages: Array,
-    followers: Boolean
+    followers: Boolean,
+    mini: Boolean
   },
   components: {
     VueImage,

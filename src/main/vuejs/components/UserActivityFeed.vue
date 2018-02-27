@@ -16,8 +16,8 @@
       </small>
     </div>
     <div
-      v-for="(activity, index) in paginator.content" 
-      :key="index" class="activity-feed-card" 
+      v-for="activity in paginator.content" 
+      :key="activity.id" class="activity-feed-card" 
       :class="{ 
         'af-media-card': activity.object_type === 'MEDIA', 
         'af-event-card' : activity.object_type === 'EVENT' }"
@@ -59,12 +59,14 @@ import { LightBox, VueImage } from 'elements';
 import { Observable, Subject } from 'rxjs';
 import * as activities from './activity-feed';
 import { map } from 'rxjs/operators';
+import { StaggerTransition } from '../functional/transitions';
 
 export default {
   name: 'user-activity-feed',
   components: {
     LightBox,
     VueImage,
+    StaggerTransition,
     ...activities
   },
   data () {

@@ -3,7 +3,7 @@
     class="suggested-pages-outer" 
     v-loading="loading">
 
-    <h3>You might like some of these pages</h3>
+    <h3>You might also like some of these pages</h3>
 
     <div>
       <button 

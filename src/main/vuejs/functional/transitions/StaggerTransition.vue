@@ -21,7 +21,8 @@ export default {
     const options = {
       props: {
         tag: context.props.tag,
-        css: false
+        css: false,
+        appear: true
       },
       on: {
         beforeEnter (el) {
@@ -35,6 +36,7 @@ export default {
             opacity: 1
           }, {
             queue: false,
+            duration: 150,
             delay: index * context.props.delay,
             easing: 'ease-in',
             complete: done
@@ -50,6 +52,7 @@ export default {
             opacity: 0
           }, {
             queue: false,
+            duration: 150,
             delay: order * context.props.delay,
             easing: 'ease-in',
             complete: done
