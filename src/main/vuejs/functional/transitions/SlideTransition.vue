@@ -14,10 +14,9 @@ export default {
           height: autoHeight,
           opacity: 1
         }, {
-          duration: 600,
-          // easing: 'ease-in-out',
+          duration: 300,
+          easing: 'ease-in-out',
           queue: false,
-          easing: [300, 20],
           complete: done
         });
       },
@@ -26,10 +25,9 @@ export default {
           height: 0,
           opacity: 0.5
         }, {
-          duration: 600,
-          // easing: 'ease-in-out',
+          duration: 300,
+          easing: 'ease-in-out',
           queue: false,
-          easing: [300, 20],
           complete: done
         });
       }

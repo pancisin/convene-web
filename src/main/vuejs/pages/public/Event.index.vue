@@ -26,48 +26,50 @@
         <masonry 
           class="events-masonry" 
           :columns="4">
-          <masonry-item 
-            class="card"
-            :class="{ 'card-danger': event.state != 'PUBLISHED' }"
-            v-for="event in eventsPaginator.content"
-            :key="event.id">
+          <stagger-transition>
+            <masonry-item 
+              class="card"
+              :class="{ 'card-danger': event.state != 'PUBLISHED' }"
+              v-for="event in eventsPaginator.content"
+              :key="event.id">
 
-            <div class="card-state" v-if="event.state != 'PUBLISHED'">
-              {{ event.state }}
-            </div> 
+              <div class="card-state" v-if="event.state != 'PUBLISHED'">
+                {{ event.state }}
+              </div> 
 
-            <router-link :to="{ name: 'event.public', params: { id: event.id }}">
-              <div class="ribbon" v-if="event.featured">
-                <span>{{ $t('event.featured') }}</span>
-              </div>
-              
-              <div v-if="event.poster != null" class="image-wrapper">
-                <vue-image :src="event.poster.path" placeholder />
-              </div>
-  
-              <div class="title">
-                <h5 v-text="event.name"></h5>
-                <small class="text-muted" v-if="event.author">
-                  {{ event.author.displayName }}
-                  <br>
-                  {{ event.date | luxon('f') }}
-                  <span
-                    v-if="event.startsAt != null">
-                    at {{ event.startsAt }}
-                  </span>
-                </small>
-              </div>
-            </router-link>
-            <div class="actions" v-if="isSuperAdmin || (event.privilege && event.privilege.active)">
-              <a @click="editEvent(event)">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-              </a>
-              <a @click="toggleFeatured(event)" v-if="isSuperAdmin">
-                <i class="fa" :class="{ 'fa-star' : event.featured, 'fa-star-o' : !event.featured }" aria-hidden="true"></i>
-              </a>
-              <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
-            </div> 
-          </masonry-item>
+              <router-link :to="{ name: 'event.public', params: { id: event.id }}">
+                <div class="ribbon" v-if="event.featured">
+                  <span>{{ $t('event.featured') }}</span>
+                </div>
+                
+                <div v-if="event.poster != null" class="image-wrapper">
+                  <vue-image :src="event.poster.path" placeholder />
+                </div>
+    
+                <div class="title">
+                  <h5 v-text="event.name"></h5>
+                  <small class="text-muted" v-if="event.author">
+                    {{ event.author.displayName }}
+                    <br>
+                    {{ event.date | luxon('f') }}
+                    <span
+                      v-if="event.startsAt != null">
+                      at {{ event.startsAt }}
+                    </span>
+                  </small>
+                </div>
+              </router-link>
+              <div class="actions" v-if="isSuperAdmin || (event.privilege && event.privilege.active)">
+                <a @click="editEvent(event)">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </a>
+                <a @click="toggleFeatured(event)" v-if="isSuperAdmin">
+                  <i class="fa" :class="{ 'fa-star' : event.featured, 'fa-star-o' : !event.featured }" aria-hidden="true"></i>
+                </a>
+                <!-- <a href="javascript:;" @click="editEvent(event)"><i class="fa fa-times"></i></a> -->
+              </div> 
+            </masonry-item>
+          </stagger-transition>
         </masonry>
 
         <div class="text-center" v-show="eventsPaginator.content && eventsPaginator.content.length === 0">
@@ -124,6 +126,7 @@ import UserApi from 'api/user.api';
 import EventEditor from '../event/Editor';
 import EventApi from 'api/event.api';
 import { DateTime } from 'luxon';
+import { StaggerTransition } from '../../functional/transitions';
 
 export default {
   name: 'events',
@@ -148,7 +151,8 @@ export default {
     MasonryItem,
     EventCreateWizard,
     EventEditor,
-    VueImage
+    VueImage,
+    StaggerTransition
   },
   watch: {
     filters: {

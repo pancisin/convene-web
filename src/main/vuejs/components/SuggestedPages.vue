@@ -2,6 +2,9 @@
   <div 
     class="suggested-pages-outer" 
     v-loading="loading">
+
+    <h3>You might like some of these pages</h3>
+
     <div>
       <button 
         type="button" 
@@ -11,33 +14,35 @@
       </button>
       <div class="suggested-pages-wrapper">
         <div class="suggested-pages" ref="spnavigator">
-          <div 
-            v-for="(page, index) in suggestions" 
-            :key="index"
-            class="card"
-            :class="{ 'card-focused' : page.focused }"
-            v-stream:click="{ subject: navigate$, data: { index } }">
+          <stagger-transition>
+            <div 
+              v-for="(page, index) in suggestions" 
+              :key="index"
+              class="card"
+              :class="{ 'card-focused' : page.focused }"
+              v-stream:click="{ subject: navigate$, data: { index } }">
 
-            <div>
-              <div class="title">
-                <h5>{{ page.name }}</h5>
-                <small 
-                  class="text-muted" 
-                  v-if="page.category != null">
-                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                </small>
-              </div>
+              <div>
+                <div class="title">
+                  <h5>{{ page.name }}</h5>
+                  <small 
+                    class="text-muted" 
+                    v-if="page.category != null">
+                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                  </small>
+                </div>
 
-              <div 
-                class="image-wrapper" 
-                v-if="page.poster">
-                
-                <vue-image 
-                  :src="page.poster.path" 
-                  placeholder />
+                <div 
+                  class="image-wrapper" 
+                  v-if="page.poster">
+                  
+                  <vue-image 
+                    :src="page.poster.path" 
+                    placeholder />
+                </div>
               </div>
             </div>
-          </div>
+          </stagger-transition>
         </div>
       </div>
 
@@ -56,6 +61,7 @@ import UserApi from 'api/user.api';
 import { Observable, Subject } from 'rxjs';
 import { VueImage } from 'elements';
 import velocity from 'velocity-animate';
+import { StaggerTransition } from '../functional/transitions';
 
 export default {
   name: 'suggested-pages',
@@ -65,7 +71,8 @@ export default {
     };
   },
   components: {
-    VueImage
+    VueImage,
+    StaggerTransition
   },
   subscriptions () {
     this.navigate$ = new Subject();
@@ -128,6 +135,10 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+  }
+
+  & > h3 {
+    color: #fff;
   }
 
   button.btn-link {
