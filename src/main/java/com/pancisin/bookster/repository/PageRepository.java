@@ -44,4 +44,11 @@ public interface PageRepository extends JpaRepository<Page, Long> {
 
 	@Query("SELECT page FROM Page page JOIN page.administrators admin WHERE page.pageType = 'PAGE' AND admin.role = 'ROLE_OWNER' AND admin.user.id = :user_id AND page.state != 'DELETED'")
 	public List<Page> getByOwner(@Param("user_id") Long user_id);
+
+//  AND page.id NOT IN (:except_pages)
+
+	@Query("SELECT page FROM Page page LEFT JOIN page.members pageMember WHERE (pageMember IS NULL OR (pageMember.user.id = :user_id AND pageMember.active = 0)) AND page.id NOT IN (:except_pages)")
+  public org.springframework.data.domain.Page<Page> getSuggested(@Param("user_id") Long user_id,
+                                                                 @Param("except_pages") List<Long> except_pages,
+                                                                 Pageable pageable);
 }

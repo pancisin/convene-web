@@ -84,7 +84,7 @@ import {
   ProductLogo,
   Search
 } from 'elements';
-import SlideTransition from '../functional/SlideTransition';
+import { SlideTransition } from '../functional/transitions';
 import { mapGetters } from 'vuex';
 import menus from '../services/maps/menus.map';
 

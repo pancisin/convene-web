@@ -1,9 +1,6 @@
 package com.pancisin.bookster.rest.controllers;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -11,6 +8,7 @@ import javax.validation.Valid;
 
 import com.pancisin.bookster.model.*;
 import com.pancisin.bookster.model.enums.*;
+import com.pancisin.bookster.model.enums.Locale;
 import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -323,5 +321,20 @@ public class CurrentUserController {
   public ResponseEntity<?> getActivityFeed(@PathVariable int page, @PathVariable int size) {
     User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return ResponseEntity.ok(activityRepository.getUserActivityFeed(auth.getId(), new PageRequest(page, size)));
+  }
+
+  @GetMapping("/suggested-pages/{page}/{size}")
+  public ResponseEntity<?> getSuggestedPages(
+    @PathVariable int page,
+    @PathVariable int size,
+    @RequestParam(name = "except", required = false) List<Long> except) {
+    User auth = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    if (except == null) {
+      except = new ArrayList<Long>();
+      except.add(0L);
+    }
+
+    return ResponseEntity.ok(pageRepository.getSuggested(auth.getId(), except, new PageRequest(page, size)));
   }
 }

@@ -1,4 +1,5 @@
 <script>
+import velocity from 'velocity-animate';
 export default {
   functional: true,
   props: {
@@ -25,7 +26,7 @@ export default {
           el.style.display = 'block';
         },
         enter (el, done) {
-          Velocity(el, {
+          velocity(el, {
             opacity: 1,
             height: '100%'
           }, {
@@ -35,7 +36,7 @@ export default {
           );
         },
         leave (el, done) {
-          Velocity(el, {
+          velocity(el, {
             opacity: 0,
             height: 0
           }, {

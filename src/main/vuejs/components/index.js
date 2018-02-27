@@ -5,6 +5,7 @@ import PositionQuery from './PositionQuery';
 import ServicePanel from './ServicePanel';
 import SurveyPanel from './SurveyPanel';
 import UserActivityFeed from './UserActivityFeed';
+import SuggestedPages from './SuggestedPages';
 
 export {
   FeaturedEvents,
@@ -13,5 +14,6 @@ export {
   PositionQuery,
   ServicePanel,
   SurveyPanel,
-  UserActivityFeed
+  UserActivityFeed,
+  SuggestedPages
 };

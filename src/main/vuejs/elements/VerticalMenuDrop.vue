@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SlideTransition from '../functional/SlideTransition.vue';
+import { SlideTransition } from '../functional/transitions';
 export default {
   name: 'vertical-menu-dropdown',
   data () {

@@ -1,10 +1,22 @@
 <template>
   <div>
+    <div class="suggested-pages-section">
+      <div class="container">
+        <suggested-pages />
+      </div>
+    </div>
+
     <div class="container">
+      <!-- <suggested-pages class="m-b-20" /> -->
+
       <div class="row">
         <div class="col-sm-12 col-md-6 col-md-push-3">
           <near-events interactive showWarning/>
           <user-activity-feed />
+
+          <!-- <panel type="default"> -->
+          <!-- </panel> -->
+
 
           <!-- <articles-list 
             :articles="headlinesPaginator.content"
@@ -61,7 +73,12 @@ import {
 import { mapGetters } from 'vuex';
 import RootApi from 'api/api';
 import PublicApi from 'api/public.api';
-import { FeaturedEvents, NearEvents, UserActivityFeed } from 'components';
+import {
+  FeaturedEvents,
+  NearEvents,
+  UserActivityFeed,
+  SuggestedPages
+} from 'components';
 import { DateTime } from 'luxon';
 
 export default {
@@ -85,7 +102,8 @@ export default {
     FeaturedEvents,
     EventMap,
     NearEvents,
-    UserActivityFeed
+    UserActivityFeed,
+    SuggestedPages
   },
   computed: {
     ...mapGetters([
@@ -135,3 +153,15 @@ export default {
   }
 };
 </script>
+
+<style lang="less">
+.suggested-pages-section {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  // background: linear-gradient(to right, #f2994a, #f2c94c);
+  margin-bottom: 20px;
+  margin-top: -20px;
+
+  background: linear-gradient(to right, #ff5f6d, #ffc371); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  padding: 20px 0;
+}
+</style>

@@ -1,4 +1,5 @@
 <script>
+import velocity from 'velocity-animate';
 export default {
   functional: true,
   render (createElement, context) {
@@ -7,7 +8,7 @@ export default {
         el.style.opacity = 0;
       },
       enter (el, done) {
-        Velocity(el, {
+        velocity(el, {
           opacity: 1
         }, {
           delay: el.dataset.index * 150,
@@ -16,7 +17,7 @@ export default {
         );
       },
       leave (el, done) {
-        Velocity(el, {
+        velocity(el, {
           opacity: 0
         }, {
           delay: el.dataset.index * 150,

@@ -65,7 +65,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import SlideTransition from '../functional/SlideTransition';
+import { SlideTransition } from '../functional/transitions';
 import { DateTime, Info } from 'luxon';
 
 export default {

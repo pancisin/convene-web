@@ -236,5 +236,15 @@ export default {
     Vue.http.get(`${USER_API_URL}/activity-feed/${page}/${size}`).then(response => {
       success(response.body);
     });
+  },
+
+  getSuggestedPages (except, page, size, success) {
+    Vue.http.get(`${USER_API_URL}/suggested-pages/${page}/${size}`, {
+      params: {
+        except: except ? except.join(',') : []
+      }
+    }).then(response => {
+      success(response.body);
+    });
   }
 };
