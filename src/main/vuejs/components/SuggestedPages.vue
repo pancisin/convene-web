@@ -19,27 +19,45 @@
               v-for="(page, index) in suggestions" 
               :key="index"
               class="card"
-              :class="{ 'card-focused' : page.focused }"
-              v-stream:click="{ subject: navigate$, data: { index } }">
+              :class="{ 'card-focused' : page.focused }">
+              <!-- v-stream:click="{ subject: navigate$, data: { index } }" -->
 
-              <div>
-                <div class="title">
-                  <h5>{{ page.name }}</h5>
-                  <small 
-                    class="text-muted" 
-                    v-if="page.category != null">
-                    {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
-                  </small>
-                </div>
+              <div class="title">
+                <h5>{{ page.name }}</h5>
+                <small 
+                  class="text-muted" 
+                  v-if="page.category != null">
+                  {{ $t('category.' + page.category.code + '.' + page.branch.code) }}
+                </small>
+              </div>
 
-                <div 
-                  class="image-wrapper" 
-                  v-if="page.poster">
+              <div 
+                class="image-wrapper" 
+                v-if="page.poster">
+                
+                <vue-image 
+                  :src="page.poster.path" 
+                  placeholder />
+              </div>
+
+              <div class="card-actions">
+                <button 
+                  type="button"
+                  class="btn btn-follow waves-effect"
+                  v-stream:click="{ subject: ignoreSuggestion$, data: { page } }">
                   
-                  <vue-image 
-                    :src="page.poster.path" 
-                    placeholder />
-                </div>
+                  <i class="material-icons">clear</i>
+                </button>
+
+                <button 
+                  type="button"
+                  class="btn btn-follow waves-effect" 
+                  v-stream:click="{ subject: toggleFollow$, data: { page } }"
+                  >
+                  <!-- @click="togglePageFollow(page)" -->
+                  
+                  <i class="material-icons">add</i>
+                </button>
               </div>
             </div>
           </stagger-transition>
@@ -62,6 +80,7 @@ import { Observable, Subject } from 'rxjs';
 import { VueImage } from 'elements';
 import velocity from 'velocity-animate';
 import { StaggerTransition } from '../functional/transitions';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'suggested-pages',
@@ -74,9 +93,22 @@ export default {
     VueImage,
     StaggerTransition
   },
+  methods: {
+    ...mapActions(['togglePageFollow'])
+  },
   subscriptions () {
     this.navigate$ = new Subject();
     const onCreate$ = this.$eventToObservable('hook:created');
+
+    this.toggleFollow$ = new Subject();
+    this.ignoreSuggestion$ = new Subject();
+
+    const toggleFollow$ = this.toggleFollow$
+      .pluck('data', 'page')
+      .do(this.togglePageFollow);
+
+    const ignoreSuggestion$ = this.ignoreSuggestion$
+      .pluck('data', 'page');
 
     const navigator$ = this.navigate$
       .pluck('data')
@@ -119,6 +151,19 @@ export default {
             focused: i === index
           };
         });
+      })
+      .combineLatest(Observable.merge(toggleFollow$, ignoreSuggestion$).startWith(null), (pages, page) => {
+        if (page) {
+          return page;
+        } else return pages;
+      })
+      .scan((acc, cur) => {
+        if (cur instanceof Array) {
+          return cur;
+        } else {
+          const arr = [ ...acc ];
+          return arr.filter(p => p.id !== cur.id);
+        }
       });
 
     return {
@@ -129,12 +174,14 @@ export default {
 </script>
 
 <style lang="less">
+@import (reference) '~less/variables.less';
 .suggested-pages-outer {
   & > div {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
   }
 
   & > h3 {
@@ -163,13 +210,63 @@ export default {
     width: 150px;
     overflow: hidden;
     cursor: pointer;
+    position: relative;
 
     & ~ .card {
       margin-left: 10px;
     }
 
-    &.card-focused {
-      // border: 1px solid red;
+    .image-wrapper {
+      height: 100%;
+      img {
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    .card-actions {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      padding: 10px;
+
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      
+      opacity: 0;
+      transition: opacity .3s ease;
+
+      button ~ button {
+        margin-top: 10px;
+      }
+
+      .btn-follow {
+        background: none;
+        color: #fff;
+        line-height: 12px;
+        transition: all .5s ease;
+        padding: 7px;
+
+        &:hover {
+          border-radius: 100%;
+          border: 2px solid #fff; 
+        }
+
+        &:focus {
+          border-radius: 0;
+          border: 2px solid rgba(255,255,255,0);
+        }
+      }
+    }
+
+    &:hover {
+      .card-actions {
+        opacity: 1;
+      }
     }
   }
 }

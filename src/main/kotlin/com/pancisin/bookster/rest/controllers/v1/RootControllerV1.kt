@@ -63,7 +63,7 @@ class RootControllerV1 {
     @RequestParam(name = "categoryId", required = false) categoryId: Long?,
     @RequestParam(name = "branchId", required = false) branchId: Long?): ResponseEntity<*> {
 
-    var pages: Page<com.pancisin.bookster.model.Page>? = null
+    var pages: Page<com.pancisin.bookster.model.Page>?
     val pageable = PageRequest(page, limit, Sort(Direction.ASC, "name"))
 
     if (branchId != null) {

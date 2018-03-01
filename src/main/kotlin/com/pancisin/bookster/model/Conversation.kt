@@ -13,6 +13,6 @@ data class Conversation(
 
   val lastContact: Long?
     get() {
-      return recentMessages.map { m -> m.created!!.timeInMillis }.maxWith(Comparator.comparingLong{ x -> x})
+      return recentMessages.map { m -> m.created.timeInMillis }.maxWith(Comparator.comparingLong{ x -> x})
     }
 }

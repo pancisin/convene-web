@@ -62,7 +62,7 @@ data class Article(
   private fun onCreate() {
     this.identifier = arrayListOf(
       title.toString(),
-      articlesList?.id.toString() ?: page?.id.toString() ?: ""
+      articlesList?.id ?: page?.id ?: ""
     ).hashCode()
   }
 }

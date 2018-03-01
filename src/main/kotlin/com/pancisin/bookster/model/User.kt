@@ -87,10 +87,12 @@ class User() : UserDetails, Principal, IAuthor {
   @NotNull
   @JsonView(Summary::class)
   @Enumerated(EnumType.STRING)
+  @JsonProperty(access = Access.READ_ONLY)
   var role = Role.ROLE_VISITOR
 
   @Enumerated(EnumType.STRING)
   @JsonView(Summary::class)
+  @JsonProperty(access = Access.READ_ONLY)
   var locale: Locale? = null
 
   @Column

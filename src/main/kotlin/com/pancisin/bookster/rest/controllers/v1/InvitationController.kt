@@ -21,7 +21,7 @@ class InvitationController {
   lateinit var invitationRepository: InvitationRepository
 
   @GetMapping
-  fun getInvitation(@PathVariable invitation_id: Long?) = ResponseEntity.ok(invitationRepository!!.findOne(invitation_id))
+  fun getInvitation(@PathVariable invitation_id: Long?) = ResponseEntity.ok(invitationRepository.findOne(invitation_id))
 
   @DeleteMapping
   fun deleteInvitation(@PathVariable invitation_id: Long?): ResponseEntity<String> {

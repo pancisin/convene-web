@@ -24,7 +24,7 @@ class SurveySubmissionController {
     val stored = formSubmissionRepository.findOne(form_submission_id).apply {
       values = submission.values
     }
-    return ResponseEntity.ok(formSubmissionRepository.save(submission))
+    return ResponseEntity.ok(formSubmissionRepository.save(stored))
   }
 
 }

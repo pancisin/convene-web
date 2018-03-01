@@ -1,27 +1,29 @@
 <template>
   <div v-loading="loading">
-    <router-link 
-      class="featured-event" 
-      v-for="(event, index) in paginator.content" 
-      :key="index"
-      :to="{ name: 'event.public', params: { id: event.id } }">
+    <stagger-transition>
+      <router-link 
+        class="featured-event" 
+        v-for="(event, index) in paginator.content" 
+        :key="index"
+        :to="{ name: 'event.public', params: { id: event.id } }">
 
-      <div class="featured-event-image">
-        <div class="featured-event-date">
-          <span class="day">{{ event.date | luxon('d') }}.</span>
-          <span class="month">{{ event.date | luxon('LLLL') }}</span>
-          <span class="year">{{ event.date | luxon('yyyy') }}</span>
+        <div class="featured-event-image">
+          <div class="featured-event-date">
+            <span class="day">{{ event.date | luxon('d') }}.</span>
+            <span class="month">{{ event.date | luxon('LLLL') }}</span>
+            <span class="year">{{ event.date | luxon('yyyy') }}</span>
+          </div>
+
+          <vue-image v-if="event.poster" :src="event.poster.path" placeholder />
         </div>
 
-        <vue-image v-if="event.poster" :src="event.poster.path" placeholder />
-      </div>
-
-      <div class="featured-event-content">
-        <h4>
-          {{ event.name }}
-        </h4>
-      </div>
-    </router-link>
+        <div class="featured-event-content">
+          <h4>
+            {{ event.name }}
+          </h4>
+        </div>
+      </router-link>
+    </stagger-transition>
 
     <div class="text-center">
       <paginator :paginator="paginator" :fetch="getFeaturedEvents" />
@@ -32,6 +34,7 @@
 <script>
 import PublicApi from 'api/public.api';
 import { DateTime } from 'luxon';
+import { StaggerTransition } from '../functional/transitions';
 
 import {
   Paginator,
@@ -50,7 +53,8 @@ export default {
   components: {
     Paginator,
     EventsList,
-    VueImage
+    VueImage,
+    StaggerTransition
   },
   methods: {
     getFeaturedEvents (page) {
