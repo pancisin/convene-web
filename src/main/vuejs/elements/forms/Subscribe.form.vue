@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <form @submit.prevent="submit">
     <div class="row">
       <div class="col-md-6">
         <vue-input 
@@ -55,17 +55,15 @@
           label="State"/>
       </div>
     </div>
-
     <hr>
-
     <div class="text-right">
-      <a 
+      <button 
         class="btn btn-primary" 
-        @click="submit">
+        type="submit">
         Submit
-      </a>
+      </button>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>

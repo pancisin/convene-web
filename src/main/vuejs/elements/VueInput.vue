@@ -14,7 +14,8 @@
       v-validate="rules"
       @change="updateInput"
       :value="value"
-      :disabled="disabled">
+      :disabled="disabled"
+      :placeholder="label">
 
     <span 
       class="text-danger" 
@@ -86,3 +87,4 @@ export default {
   }
 };
 </script>
+ 
