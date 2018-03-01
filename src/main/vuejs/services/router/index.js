@@ -36,14 +36,7 @@ var router = new VueRouter({
         var parts = window.location.host.split('.');
         return reg.test(parts[0]) ? require(['src/main/vuejs/layouts/Client.vue'], resolve) : require(['pages/public/Page.standalone.vue'], resolve);
       },
-      children: publicRoutes.concat([
-        {
-          path: 'subscribe/:subscription',
-          name: 'sub.signup',
-          component: resolve => require(['pages/public/Subscribe.vue'], resolve),
-          beforeEnter: require_auth
-        }
-      ])
+      children: publicRoutes
     },
     {
       path: '/admin',

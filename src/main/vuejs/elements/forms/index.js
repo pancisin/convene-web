@@ -6,6 +6,7 @@ import ServiceForm from './Service.form';
 import SurveyForm from './Survey.form';
 import ArticleForm from './Article.form';
 import ArticleBotForm from './ArticleBot.form';
+import SubscribeForm from './Subscribe.form';
 
 export {
   LoginForm,
@@ -15,5 +16,6 @@ export {
   ServiceForm,
   SurveyForm,
   ArticleForm,
-  ArticleBotForm
+  ArticleBotForm,
+  SubscribeForm
 };

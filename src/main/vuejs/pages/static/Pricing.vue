@@ -11,7 +11,11 @@
       <div class="col-lg-8 col-lg-offset-2">
         <div class="row">
 
-          <div class="col-sm-4 col-md-4 col-lg-4">
+          <div 
+            v-for="(subscription, index) in subscriptions" 
+            :key="index" 
+            class="col-sm-4 col-md-4 col-lg-4">
+
             <div class="pricing-item">
               <div class="pricing-item-inner">
                 <div class="pricing-wrap">
@@ -19,105 +23,30 @@
                   <div class="pricing-num pricing-num-pink">
                     <sup>
                       <i class="fa fa-euro"></i>
-                    </sup>9
+                    </sup>{{ subscription.price }}
                   </div>
                   <div class="pr-per">
                     per month
                   </div>
 
                   <div class="pricing-title">
-                    Starter Pack
+                    {{ subscription.name }}
                   </div>
 
                   <div class="pricing-features">
-                    <ul class="sf-list pr-list">
-                      <li>5 events / month</li>
-                      <li>1 page</li>
+                    <ul class="sf-list pr-list" >
+                      <li 
+                        v-for="(feature, findex) in subscription.features" 
+                        :key="findex">{{ feature }}</li>
                     </ul>
                   </div>
 
                   <div class="pr-button">
-                    <a @click="selectSubscription('STARTER')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'STARTER'">
-                      Sign up now !
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <a 
+                      @click="selectSubscription(subscription.type)" 
+                      class="btn btn-primary btn-rounded" 
+                      v-if="cur_sub.prop != subscription.type">
 
-          <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="pricing-item main">
-              <div class="ribbon">
-                <span>POPULAR</span>
-              </div>
-              <div class="pricing-item-inner">
-                <div class="pricing-wrap">
-
-                  <div class="pricing-num">
-                    <sup>
-                      <i class="fa fa-euro"></i>
-                    </sup>29
-                  </div>
-                  <div class="pr-per">
-                    per month
-                  </div>
-
-                  <div class="pricing-title">
-                    Premium Pack
-                  </div>
-
-                  <div class="pricing-features">
-                    <ul class="sf-list pr-list">
-                      <li>Unlimited events</li>
-                      <li>5 pages</li>
-                      <li>5 team members</li>
-                      <li>Limited customers chat</li>
-                      <li>Free support</li>
-                    </ul>
-                  </div>
-
-                  <div class="pr-button">
-                    <a @click="selectSubscription('PROFESSIONAL')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'PROFESSIONAL'">
-                      Sign up now !
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-4 col-md-4 col-lg-4">
-            <div class="pricing-item">
-              <div class="pricing-item-inner">
-                <div class="pricing-wrap">
-
-                  <div class="pricing-num pricing-num-yellow">
-                    <sup>
-                      <i class="fa fa-euro"></i>
-                    </sup>119
-                  </div>
-                  <div class="pr-per">
-                    per month
-                  </div>
-
-                  <div class="pricing-title">
-                    Enterprise Pack
-                  </div>
-
-                  <div class="pricing-features">
-                    <ul class="sf-list pr-list">
-                      <li>Unlimited pages & events</li>
-                      <li>Unlimited conferences</li>
-                      <li>Unlimited team members</li>
-                      <li>Customers chat</li>
-                      <li>Team chat / task board</li>
-                      <li>Free Support</li>
-                    </ul>
-                  </div>
-
-                  <div class="pr-button">
-                    <a @click="selectSubscription('ENTERPRISE')" class="btn btn-primary btn-rounded" v-if="cur_sub.prop != 'ENTERPRISE'">
                       Sign up now !
                     </a>
                   </div>
@@ -128,13 +57,35 @@
         </div>
       </div>
     </div>
+
+    <modal :show.sync="displaySubscribeModal">
+      <span slot="header">{{ selectedSubscription }}</span>
+      <div slot="body">
+        <subscribe-form 
+          :license="selectedSubscription" 
+          @submit="updateLicense" />
+      </div>
+    </modal>
+
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import { SubscribeForm } from 'elements/forms';
+import SubscriptionsMap from '../../services/maps/subscriptions.map';
+
 export default {
   name: 'pricing',
+  data () {
+    return {
+      displaySubscribeModal: false,
+      selectedSubscription: null
+    };
+  },
+  components: {
+    SubscribeForm
+  },
   computed: {
     ...mapGetters(['license']),
     cur_sub () {
@@ -145,16 +96,20 @@ export default {
       return {
         name: 'NOTHING'
       };
+    },
+    subscriptions () {
+      return SubscriptionsMap;
     }
   },
   methods: {
+    ...mapActions(['initializeUser']),
     selectSubscription (name) {
-      this.$router.push({
-        name: 'sub.signup',
-        params: {
-          subscription: name
-        }
-      });
+      this.selectedSubscription = name;
+      this.displaySubscribeModal = true;
+    },
+    updateLicense (result) {
+      this.displaySubscribeModal = false;
+      this.initializeUser();
     }
   }
 };
