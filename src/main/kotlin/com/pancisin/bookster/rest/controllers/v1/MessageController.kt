@@ -63,7 +63,8 @@ class MessageController {
   @SendTo("/user/{username}/queue/chat.message")
   fun sendDirectMessage(
     @Payload message: Message,
-    @DestinationVariable("username") username: String, principal: Principal
+    @DestinationVariable("username") username: String,
+    principal: Principal
   ): Message {
     val recipient = userRepository.findByEmail(username)
 
@@ -80,7 +81,8 @@ class MessageController {
   @SendTo("/topic/page/{page_id}/chat")
   fun sendMessageToPage(
     @Payload message: Message,
-    @DestinationVariable("page_id") page_id: Long?, principal: Principal
+    @DestinationVariable("page_id") page_id: Long?,
+    principal: Principal
   ): Message {
     message.apply {
       sender = principal as User;
@@ -94,7 +96,8 @@ class MessageController {
   @SendTo("/topic/event/{event_id}/chat")
   fun sendMessageToEvent(
     @Payload message: Message,
-    @DestinationVariable("event_id") event_id: Long?, principal: Principal
+    @DestinationVariable("event_id") event_id: Long?,
+    principal: Principal
   ): Message {
     message.apply {
       sender = principal as User;

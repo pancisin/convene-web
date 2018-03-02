@@ -25,22 +25,17 @@
             </span>
           </div>
         </div>
-        <div class="form-group">
-          <label>{{ $t('user.firstName') }}</label>
-          <input 
-            type="email" 
-            v-model="user.firstName" 
-            class="form-control" 
-            placeholder="First name">
-        </div>
-        <div class="form-group">
-          <label>{{ $t('user.lastName') }}</label>
-          <input 
-            type="email" 
-            v-model="user.lastName" 
-            class="form-control" 
-            placeholder="Last name">
-        </div>
+
+        <vue-input 
+          :label="$t('user.firstName')" 
+          v-model="user.firstName" 
+          name="user.fistName" />
+
+        <vue-input 
+          :label="$t('user.lastName')" 
+          v-model="user.lastName" 
+          name="user.lastName" />
+
       </div>
       <div class="col-sm-12 col-md-3">
         <a 
@@ -64,31 +59,8 @@
     <div v-if="user">
       <h3>Billing address</h3>
       <hr />
-      <div class="row">
-        <div class="form-group col-xs-8">
-          <label>{{ $t('user.address.street') }}</label>
-          <input type="email" v-model="user.address.street" class="form-control" placeholder="Street">
-        </div>
-        <div class="form-group col-xs-4">
-          <label>{{ $t('user.address.number') }}</label>
-          <input type="email" v-model="user.address.number" class="form-control" placeholder="Number">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-xs-6">
-          <label>{{ $t('user.address.zip') }}</label>
-          <input type="email" v-model="user.address.zip" class="form-control" placeholder="Zip code">
-        </div>
-        <div class="form-group col-xs-6">
-          <label>{{ $t('user.address.city') }}</label>
-          <input type="email" v-model="user.address.city" class="form-control" placeholder="City">
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label>{{ $t('user.address.state') }}</label>
-        <input type="email" v-model="user.address.state" class="form-control" placeholder="State">
-      </div>
+      <address-editor v-model="user.address" />
     </div>
   
     <div class="text-right m-b-20">
@@ -116,7 +88,7 @@ import {
   mapActions
 } from 'vuex';
 
-import { ImageUpload } from 'elements';
+import { ImageUpload, AddressEditor, VueInput } from 'elements';
 import { PasswordChangeForm } from 'elements/forms';
 
 export default {
@@ -132,7 +104,9 @@ export default {
   },
   components: {
     ImageUpload,
-    PasswordChangeForm
+    PasswordChangeForm,
+    AddressEditor,
+    VueInput
   },
   methods: {
     ...mapActions([
@@ -147,10 +121,12 @@ export default {
         metadata: this.user.metadata
       };
 
-      this.loading = true;
-      this.updateUser(data).then(user => {
-        this.$success('notification.account.updated');
-        this.loading = false;
+      this.$validator.validateAll().then(valid => {
+        this.loading = true;
+        this.updateUser(data).then(user => {
+          this.$success('notification.account.updated');
+          this.loading = false;
+        });
       });
     }
   }

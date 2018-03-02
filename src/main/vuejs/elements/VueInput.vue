@@ -10,7 +10,7 @@
     <input 
       :name="name"
       class="form-control" 
-      type="text" 
+      :type="type" 
       @input="updateInput"
       :disabled="disabled"
       v-validate="rules"
@@ -78,6 +78,13 @@ export default {
       required: false,
       default () {
         return '';
+      }
+    },
+    type: {
+      type: String,
+      required: false,
+      default () {
+        return 'text';
       }
     }
   },

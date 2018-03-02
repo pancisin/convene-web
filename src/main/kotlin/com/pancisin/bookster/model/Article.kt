@@ -26,7 +26,8 @@ data class Article(
   @Lob @Column
   var content: String? = null,
 
-  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH)) @JsonView(Summary::class)
+  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH), orphanRemoval = true)
+  @JsonView(Summary::class)
   var thumbnail: Media? = null,
 
   @Transient @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

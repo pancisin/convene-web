@@ -86,10 +86,10 @@ class Event() {
 
   @JsonProperty(access = Access.READ_ONLY)
   @JsonView(Summary::class)
-  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH))
+  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH), orphanRemoval = true)
   var poster: Media? = null
 
-  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH))
+  @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH), orphanRemoval = true)
   @JsonView(Summary::class)
   var banner: Media? = null
 

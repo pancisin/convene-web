@@ -1,16 +1,19 @@
 <template>
   <div id="wrapper">
-    <header-component></header-component>
+    <header-component />
   
     <div class="content">
       <keep-alive>
-        <transition name="fade-down" mode="out-in">
-          <router-view :key="$route.path"></router-view>
+        <transition 
+          name="fade-down"
+          mode="out-in">
+
+          <router-view :key="$route.path" />
         </transition>
       </keep-alive>
     </div>
   
-    <footer-component></footer-component>
+    <footer-component />
   </div>
 </template>
 

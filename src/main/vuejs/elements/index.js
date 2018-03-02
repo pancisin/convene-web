@@ -55,6 +55,8 @@ import FormEditor from './Form.editor.vue';
 import RouterTabNavigation from './RouterTabNavigation.vue';
 import Search from './Search';
 import VueInput from './VueInput';
+import AddressEditor from './AddressEditor';
+import DateTimePicker from './DateTimePicker';
 
 export {
   ArticlesList,
@@ -113,5 +115,7 @@ export {
   FormEditor,
   RouterTabNavigation,
   Search,
-  VueInput
+  VueInput,
+  AddressEditor,
+  DateTimePicker
 };

@@ -9,7 +9,7 @@
       @focus="focusChanged"
       @blur="focusChanged">
   
-    <transition name="slide-down">
+    <slide-transition>
       <div class="time-picker" v-show="displayTimePicker">
         <div class="hour-selector">
           <button @click="offsetHour(1)" class="btn btn-link">
@@ -33,16 +33,20 @@
           </button>
         </div>
       </div>
-    </transition>
+    </slide-transition>
   </div>
 </template>
 
 <script>
 import { DateTime } from 'luxon';
+import { SlideTransition } from '../functional/transitions';
 
 export default {
   name: 'time-picker',
   props: ['value', 'placeholder'],
+  components: {
+    SlideTransition
+  },
   data () {
     return {
       displayTimePicker: false,

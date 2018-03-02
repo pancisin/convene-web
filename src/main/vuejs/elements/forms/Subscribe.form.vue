@@ -19,42 +19,7 @@
       </div>
 
       <div class="col-md-6">
-        <div class="row">
-          <div class="col-xs-8">
-            <vue-input 
-              v-model="userClone.address.street" 
-              name="street" 
-              label="Street"/>
-          </div>
-          <div class="col-xs-4">
-            <vue-input 
-              v-model="userClone.address.number" 
-              name="number"
-              rules="required|numeric"
-              label="Number"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-6">
-            <vue-input 
-              v-model="userClone.address.zip" 
-              name="zip" 
-              rules="required|numeric"
-              label="ZIP"/>
-          </div>
-          <div class="col-xs-6">
-            <vue-input 
-              v-model="userClone.address.city" 
-              name="city" 
-              label="City"/>
-          </div>
-        </div>
-
-        <vue-input 
-          v-model="userClone.address.state" 
-          name="state" 
-          label="State"/>
+        <address-editor v-model="userClone.address" />
       </div>
     </div>
     <hr>
@@ -70,7 +35,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { VueInput } from 'elements';
+import {
+  VueInput,
+  AddressEditor
+} from 'elements';
 
 export default {
   name: 'subscribe-form',
@@ -83,7 +51,8 @@ export default {
     }
   },
   components: {
-    VueInput
+    VueInput,
+    AddressEditor
   },
   data () {
     return {
@@ -105,12 +74,7 @@ export default {
   },
   methods: {
     cloneData (us) {
-      this.userClone = {
-        ...us,
-        address: {
-          ...us.address
-        }
-      };
+      this.userClone = { ...us };
     },
     submit () {
       this.$validator.validateAll().then(valid => {
