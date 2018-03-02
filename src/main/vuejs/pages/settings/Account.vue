@@ -102,7 +102,7 @@
       <div slot="body">
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
-            <password-change @updated="showChangePasswordModal = false" />
+            <password-change-form @updated="showChangePasswordModal = false" />
           </div>
         </div>
       </div>
@@ -116,10 +116,8 @@ import {
   mapActions
 } from 'vuex';
 
-import {
-  ImageUpload,
-  PasswordChange
-} from 'elements';
+import { ImageUpload } from 'elements';
+import { PasswordChangeForm } from 'elements/forms';
 
 export default {
   name: 'account',
@@ -134,7 +132,7 @@ export default {
   },
   components: {
     ImageUpload,
-    PasswordChange
+    PasswordChangeForm
   },
   methods: {
     ...mapActions([

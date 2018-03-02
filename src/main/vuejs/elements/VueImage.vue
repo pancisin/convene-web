@@ -28,6 +28,11 @@ export default {
   mounted () {
     this.source = this.src || Placeholder;
   },
+  watch: {
+    src (newVal) {
+      this.source = newVal || Placeholder;
+    }
+  },
   methods: {
     error (event) {
       if (this.placeholder) {

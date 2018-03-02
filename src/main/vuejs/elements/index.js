@@ -39,11 +39,9 @@ import Chat from './Chat';
 import EventCreateWizard from './EventCreateWizard';
 import AbuseReport from './AbuseReport';
 import CookieLaw from './CookieLaw';
-import Payment from './Payment';
 import PlacePicker from './PlacePicker';
 import UserList from './UserList';
 import ProfilePicture from './ProfilePicture';
-import PasswordChange from './PasswordChange';
 import SharePanel from './SharePanel';
 import LightBox from './LightBox';
 import VueImage from './VueImage';
@@ -100,11 +98,9 @@ export {
   EventCreateWizard,
   AbuseReport,
   CookieLaw,
-  Payment,
   PlacePicker,
   UserList,
   ProfilePicture,
-  PasswordChange,
   SharePanel,
   LightBox,
   VueImage,

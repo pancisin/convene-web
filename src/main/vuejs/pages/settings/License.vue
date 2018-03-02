@@ -44,14 +44,14 @@
     <modal :show.sync="displayPayment">
       <span slot="header">Payment</span>
       <div slot="body">
-        <payment :license="selectedLicense"></payment>
+        <payment-form :license="selectedLicense" />
       </div>
     </modal>
   </div>
 </template>
 
 <script>
-import { Payment } from 'elements';
+import { PaymentForm } from 'elements/forms';
 export default {
   name: 'licenses',
   data () {
@@ -62,7 +62,7 @@ export default {
     };
   },
   components: {
-    Payment
+    PaymentForm
   },
   created () {
     this.getSubscriptions();

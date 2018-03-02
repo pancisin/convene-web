@@ -29,7 +29,8 @@
           <div class="col-xs-4">
             <vue-input 
               v-model="userClone.address.number" 
-              name="number" 
+              name="number"
+              rules="required|numeric"
               label="Number"/>
           </div>
         </div>
@@ -39,6 +40,7 @@
             <vue-input 
               v-model="userClone.address.zip" 
               name="zip" 
+              rules="required|numeric"
               label="ZIP"/>
           </div>
           <div class="col-xs-6">

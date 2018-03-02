@@ -12,13 +12,11 @@
 
     <div class="form-group" :class="{'has-error': errors.has('firstName') }">
       <input v-model="user.firstName" class="form-control" type="text" placeholder="First Name" v-validate data-vv-rules="required" name="firstName">
-      <i class="md md-account-circle form-control-feedback l-h-34"></i>
       <span class="text-danger" v-if="errors.has('firstName')">{{ errors.first('firstName') }}</span>
     </div>
 
     <div class="form-group" :class="{'has-error': errors.has('lastName') }">
       <input v-model="user.lastName" class="form-control" type="text" placeholder="Last Name" v-validate data-vv-rules="required" name="lastName">
-      <i class="md md-account-circle form-control-feedback l-h-34"></i>
       <span class="text-danger" v-if="errors.has('lastName')">{{ errors.first('lastName') }}</span>
     </div>
 

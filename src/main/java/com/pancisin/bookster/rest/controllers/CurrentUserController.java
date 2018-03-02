@@ -227,7 +227,7 @@ public class CurrentUserController {
 
 			return ResponseEntity.ok(usRepository.save(su));
 		} else
-			return null;
+		  throw new Exception("User already have another license subscribed.");
 	}
 
 	// @PostMapping("/place")

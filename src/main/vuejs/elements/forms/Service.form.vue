@@ -1,30 +1,15 @@
 <template>
   <form @submit.prevent="submit" v-loading="loading">
-    <div class="form-group" :class="{ 'has-error' : errors.has('service.name') }" >
-      <label class="control-label">Name</label>
-      
-      <input 
-        class="form-control" 
-        v-model.trim="serviceCopy.name" 
-        name="service.name"
-        type="text"
-        v-validate="'required'"
-        data-vv-as="name">
-      
-      <span 
-        class="text-danger" 
-        v-if="errors.has('service.name')">
-          {{ errors.first('service.name') }}
-      </span>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label">Detail</label>
-      
-      <textarea 
-        class="form-control" 
-        v-model="serviceCopy.detail" />
-    </div>
+    
+    <vue-input
+      name="service.name"
+      label="Name" 
+      v-model="serviceCopy.name"/>
+    <vue-input
+      name="service.detail"
+      label="Detail"
+      v-model="serviceCopy.detail"
+      rules="" />
 
     <div class="form-group" :class="{ 'has-error' : errors.has('service.price') || errors.has('service.unit') }">
       <label class="control-label">Price</label>
@@ -82,6 +67,7 @@
 import PublicApi from 'api/public.api';
 import FormEditor from '../Form.editor';
 import ServiceApi from 'api/service.api';
+import { VueInput } from 'elements';
 
 export default {
   props: {
@@ -96,7 +82,8 @@ export default {
     };
   },
   components: {
-    FormEditor
+    FormEditor,
+    VueInput
   },
   computed: {
     api () {
@@ -126,8 +113,6 @@ export default {
     },
     submit () {
       this.$validator.validateAll().then(valid => {
-        if (!valid) return;
-
         this.loading = true;
         if (this.serviceCopy.id == null) {
           this.api.postService(this.serviceCopy, service => {

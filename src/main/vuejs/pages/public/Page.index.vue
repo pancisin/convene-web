@@ -33,7 +33,7 @@
         <div class="col-md-9" :class="{ 'col-md-6': branches.length > 0 }">
           <masonry v-loading="loading" :columns="branches.length > 0 ? 3 : 4">
             <masonry-item class="card"   
-              v-for="(page, index) in pagesPaginator.content" 
+              v-for="page in pagesPaginator.content" 
               :key="page.id">
             
               <router-link 

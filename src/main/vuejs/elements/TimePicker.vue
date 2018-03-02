@@ -1,6 +1,13 @@
 <template>
   <div class="time-picker-container" v-click-outside="outside">
-    <input type="text" ref="input" :placeholder="placeholder" :value="timeString" class="form-control" @focus="focusChanged" @blur="focusChanged">
+    <input 
+      type="text" 
+      ref="input" 
+      :placeholder="placeholder" 
+      :value="timeString" 
+      class="form-control" 
+      @focus="focusChanged"
+      @blur="focusChanged">
   
     <transition name="slide-down">
       <div class="time-picker" v-show="displayTimePicker">

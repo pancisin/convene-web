@@ -11,10 +11,10 @@
       :name="name"
       class="form-control" 
       type="text" 
-      v-validate="rules"
-      @change="updateInput"
-      :value="value"
+      @input="updateInput"
       :disabled="disabled"
+      v-validate="rules"
+      :value="value"
       :placeholder="label">
 
     <span 
@@ -50,6 +50,7 @@ export default {
       h('span', {}, this.errors.first(this.name))
     ]);
   },
+  inject: ['$validator'],
   props: {
     value: {
       type: String | null,

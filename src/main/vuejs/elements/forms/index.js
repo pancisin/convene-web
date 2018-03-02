@@ -7,6 +7,8 @@ import SurveyForm from './Survey.form';
 import ArticleForm from './Article.form';
 import ArticleBotForm from './ArticleBot.form';
 import SubscribeForm from './Subscribe.form';
+import PaymentForm from './Payment.form';
+import PasswordChangeForm from './PasswordChange.form';
 
 export {
   LoginForm,
@@ -17,5 +19,7 @@ export {
   SurveyForm,
   ArticleForm,
   ArticleBotForm,
-  SubscribeForm
+  SubscribeForm,
+  PaymentForm,
+  PasswordChangeForm
 };
