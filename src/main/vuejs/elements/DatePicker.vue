@@ -1,17 +1,17 @@
 <template>
   <div 
     class="date-picker-container"
-    v-click-outside="outside">
+    v-click-outside="clickOutside">
 
-    <input v-show="!inline"
+    <input 
+      v-show="!inline"
       type="text"
       ref="input"
       :placeholder="placeholder"
       :name="name"
       :value="selected | luxon('D')"
       class="form-control"
-      @focus="focusChanged"
-      @blur="focusChanged">
+      v-stream:focus="focusChange$">
 
     <slide-transition>
       <div class="date-picker"
@@ -19,16 +19,24 @@
         :class="{ 'date-picker-inline' : inline }">
 
         <div class="date-picker-header">
-          <a class="btn btn-link waves-effect waves-light"
-            @click="moveCursor(-1)">
-            <i class="fa fa-arrow-left"
-              aria-hidden="true"></i>
+          <a 
+            class="btn btn-link waves-effect waves-light"
+            v-stream:click="{ subject: navigate$, data: { months: -1 } }">
+
+            <i 
+              class="fa fa-arrow-left"
+              aria-hidden="true">
+            </i>
           </a>
-          <h4 class="text-center">{{ focusDate.valueOf() | luxon('LLLL yyyy') }}</h4>
-          <a class="btn btn-link waves-effect waves-light"
-            @click="moveCursor(1)">
-            <i class="fa fa-arrow-right"
-              aria-hidden="true"></i>
+          <h4 class="text-center">{{ focusDate.toFormat('LLLL yyyy') }}</h4>
+          <a 
+            class="btn btn-link waves-effect waves-light"
+            v-stream:click="{ subject: navigate$, data: { months: 1 } }">
+
+            <i 
+              class="fa fa-arrow-right"
+              aria-hidden="true">
+            </i>
           </a>
         </div>
 
@@ -36,45 +44,50 @@
           <table>
             <thead>
               <tr>
-                <th v-for="weekday in weekdays"
+                <th 
+                  v-for="weekday in weekdays"
                   :key="weekday">
                   <span>{{ weekday.substr(0, 2) }}</span>
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="(week, index) in weeks"
-                :key="index">
-                <td v-for="(day, index) in week"
-                  :key="index"
-                  :class="{ 
-                      'current' : selected == day.timestamp, 
-                      'disabled' : day.month != focusDate.month
-                    }">
-                  <a class="monthday"
-                    v-text="day.day"
-                    @click="select(day)"></a>
-                </td>
-              </tr>
-            </tbody>
+             <tbody>
+                <tr 
+                  v-for="week in weeks"
+                  :key="week.number">
+                  <td v-for="(day, dindex) in week.days"
+                    :key="dindex"
+                    :class="{ 
+                        'current' : selected == day.timestamp, 
+                        'disabled' : day.month != focusDate.month
+                      }">
+                    <a class="monthday"
+                      v-text="day.day"
+                      v-stream:click="{ subject: selectDay$, data: day }"></a>
+                  </td>
+                </tr>
+              </tbody>
           </table>
         </div>
       </div>
     </slide-transition>
   </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
-import { SlideTransition } from '../functional/transitions';
+import { SlideTransition, StaggerTransition } from '../functional/transitions';
 import { DateTime, Info } from 'luxon';
+import { Subject, Observable } from 'rxjs';
 
 export default {
+  name: 'date-picker',
   props: {
     value: {
       type: [ Number, String ],
       required: false,
       default () {
-        return DateTime.utc().startOf('day').valueOf();
+        return DateTime.local().startOf('day').valueOf();
       }
     },
     placeholder: String,
@@ -83,11 +96,7 @@ export default {
   },
   data: function () {
     return {
-      weeks: [],
-      display: false,
-      selected: null,
-      focus: false,
-      focusDate: {}
+      focus: false
     };
   },
   computed: {
@@ -97,83 +106,74 @@ export default {
     }
   },
   components: {
-    SlideTransition
+    SlideTransition,
+    StaggerTransition
   },
-  created () {
-    this.updateFocusDate(this.value);
-  },
-  watch: {
-    focus (newVal) {
-      if (newVal) this.display = true;
-    },
-    value: 'updateFocusDate'
-  },
-  methods: {
-    updateFocusDate (timestamp) {
-      var dateTime = DateTime.utc().startOf('day');
+  subscriptions () {
+    this.navigate$ = new Subject();
+    this.selectDay$ = new Subject();
+    this.focusChange$ = new Subject();
+    const onCreate$ = this.$eventToObservable('hook:created');
 
-      if (timestamp != null) {
-        dateTime = DateTime.fromMillis(parseInt(timestamp, 10), {
-          zone: 'utc'
-        }).startOf('day');
-      }
+    const display = Observable
+      .merge(
+        this.focusChange$,
+        this.$createObservableMethod('clickOutside')
+      )
+      .pluck('event', 'type')
+      .map(type => type === 'focus');
 
-      if (dateTime.isValid) {
-        this.selected = dateTime.valueOf();
-        this.focusDate = dateTime;
-      }
+    const initial$ = Observable.merge(
+      onCreate$.map(() => DateTime.local().startOf('day')),
+      this.$watchAsObservable('value')
+        .pluck('newValue')
+        .map(timestamp => DateTime.fromMillis(parseInt(timestamp, 10)).startOf('day'))
+    );
 
-      this.updateCalendar();
-    },
-    updateCalendar () {
-      if (this.focusDate.startOf === null || this.focusDate.endOf === null) {
-        return;
-      }
+    const focusDate = Observable
+    .merge(initial$, this.navigate$.pluck('data'))
+    .scan((acc, cur) => (cur instanceof DateTime) ? cur : acc.plus(cur), {});
 
-      var start = this.focusDate.startOf('month').startOf('week');
-      var end = this.focusDate.endOf('month').endOf('week');
+    const selected = Observable
+      .merge(
+        initial$.map(dateTime => dateTime.valueOf()),
+        this.selectDay$.pluck('data', 'timestamp')
+        .do(timestamp => {
+          if (timestamp !== this.value) {
+            this.display = false;
+            this.$emit('input', timestamp);
+          }
+        })
+      );
 
-      this.weeks = [];
-      const first_week = start.weekNumber;
+    const weeks = focusDate
+      .map(focus => {
+        var start = focus.startOf('day').startOf('month').startOf('week');
+        var end = focus.endOf('month').endOf('week');
 
-      while (start.diff(end, 'days').days <= 0) {
-        var week_index = start.weekNumber - first_week;
+        const diff = Math.round(end.diff(start, 'days').days);
+        const daysArray = Array.from(new Array(diff), (val, index) => start.plus({ days: index }));
 
-        if (this.weeks[week_index] == null) {
-          this.weeks[week_index] = [];
-        }
-
-        this.weeks[week_index].push({
-          day: start.day,
-          timestamp: start.startOf('day').valueOf(),
-          month: start.month
-        });
-
-        start = start.plus({
-          days: 1
-        });
-      }
-    },
-    moveCursor (i) {
-      this.focusDate = this.focusDate.plus({
-        months: i
+        return daysArray.reduce((acc, cur) => {
+          const week_index = cur.weekNumber - start.weekNumber;
+          if (acc[week_index] == null) {
+            acc[week_index] = { number: cur.weekNumber, days: [] };
+          }
+          acc[week_index].days.push({
+            day: cur.day,
+            timestamp: cur.valueOf(),
+            month: cur.month
+          });
+          return acc;
+        }, []);
       });
 
-      this.updateCalendar();
-    },
-    focusChanged (e) {
-      this.focus = e.type === 'focus';
-    },
-    select (day) {
-      this.selected = day.timestamp;
-      const utc_timestamp = DateTime.fromMillis(day.timestamp).valueOf();
-
-      this.display = false;
-      this.$emit('input', utc_timestamp);
-    },
-    outside: function () {
-      if (focus) this.display = false;
-    }
+    return {
+      focusDate,
+      weeks,
+      selected,
+      display
+    };
   }
 };
 </script>
@@ -222,20 +222,12 @@ export default {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     overflow: hidden;
 
-    &.date-picker-inline {
-      position: relative;
-
-      table th {
-        padding: 10px 0;
-      }
-    }
-
     table {
       width: 100%;
 
       th {
         text-transform: uppercase;
-        padding: 10px 0 !important;
+        padding: 10px;
         border-bottom: 1px solid #ccc;
         text-align: center;
         color: #666 !important;
@@ -297,6 +289,14 @@ export default {
             z-index: -1;
           }
         }
+      }
+    }
+
+    &.date-picker-inline {
+      position: relative;
+
+      table th {
+        padding: 10px 0;
       }
     }
   }

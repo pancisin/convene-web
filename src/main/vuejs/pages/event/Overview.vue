@@ -27,12 +27,10 @@
           :class="{ 'has-error' : errors.has('date') }">
           
           <label class="control-label">Date</label>
-          <date-picker 
+          <date-time-picker 
             v-model="event.date" 
-            v-validate 
-            data-vv-rules="required" 
-            name="date">
-          </date-picker>
+            required>
+          </date-time-picker>
 
           <span 
             class="text-danger" 
@@ -134,7 +132,7 @@
 <script>
 import {
   TextEditor,
-  DatePicker,
+  DateTimePicker,
   ImageUpload,
   GiphySearch,
   PlacePicker,
@@ -184,7 +182,7 @@ export default {
   },
   components: {
     TextEditor,
-    DatePicker,
+    DateTimePicker,
     ImageUpload,
     GiphySearch,
     PlacePicker,

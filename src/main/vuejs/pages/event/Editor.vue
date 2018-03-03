@@ -22,10 +22,7 @@
           <label class="control-label">Date</label>
           <date-time-picker 
             v-model="eventClone.date" 
-            v-validate 
-            data-vv-rules="required" 
-            name="date">
-          </date-time-picker>
+            required /> 
 
           <span 
             class="text-danger" 
@@ -96,7 +93,6 @@
 <script>
 import {
   TextEditor,
-  DatePicker,
   DateTimePicker,
   ImageUpload,
   GiphySearch,
@@ -145,7 +141,6 @@ export default {
   },
   components: {
     TextEditor,
-    DatePicker,
     DateTimePicker,
     ImageUpload,
     GiphySearch,

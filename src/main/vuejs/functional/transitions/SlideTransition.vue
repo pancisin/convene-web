@@ -30,6 +30,9 @@ export default {
           queue: false,
           complete: done
         });
+      },
+      afterEnter (el) {
+        el.style.height = 'auto';
       }
     };
 

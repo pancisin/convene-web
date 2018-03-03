@@ -55,10 +55,11 @@ Vue.component('panel', Panel);
 Vue.component('context-menu', ContextMenu);
 
 // DIRECTIVES
-import { ClickOutside, StripTags, Loading } from './directives';
+import { ClickOutside, StripTags, Loading, Hold } from './directives';
 Vue.directive('click-outside', ClickOutside);
 Vue.directive('strip', StripTags);
 Vue.directive('loading', Loading);
+Vue.directive('hold', Hold);
 
 import { DateTime } from 'luxon';
 Vue.filter('luxon', (value, arg) => {
