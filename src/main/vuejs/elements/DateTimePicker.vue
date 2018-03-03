@@ -86,7 +86,9 @@ export default {
             this.$emit('input', timestamp);
           }
         })
-        .map(value => DateTime.fromMillis(value)),
+        .map(value => DateTime.fromMillis(value, {
+          zone: 'utc'
+        })),
 
       display: Observable
         .merge(

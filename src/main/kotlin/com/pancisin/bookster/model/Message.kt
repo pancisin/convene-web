@@ -12,24 +12,25 @@ import javax.persistence.Column
 import java.util.Calendar
 import javax.persistence.GenerationType
 
-@Entity @Table(name = "messages")
+@Entity
+@Table(name = "messages")
 data class Message(
 
   @Id @GeneratedValue(strategy = GenerationType.AUTO)
-		var id: Long? = null,
+  var id: Long? = null,
 
   @ManyToOne
-		var sender: User? = null,
+  var sender: User? = null,
 
   @Enumerated(EnumType.STRING)
-		var recipientType: RecipientType? = null,
+  var recipientType: RecipientType? = null,
 
   @Column
-		var recipientId: Long? = null,
+  var recipientId: Long? = null,
 
   @Column
-		var content: String? = null,
+  var content: String? = null,
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
-		var created: Calendar = Calendar.getInstance()
+  var created: Calendar = Calendar.getInstance()
 )

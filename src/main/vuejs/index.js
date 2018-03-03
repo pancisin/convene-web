@@ -65,7 +65,7 @@ import { DateTime } from 'luxon';
 Vue.filter('luxon', (value, arg) => {
   return DateTime.fromMillis(value, {
     zone: 'utc'
-  }).toLocal().toFormat(arg);
+  }).toFormat(arg);
 });
 
 Vue.config.devtools = true;

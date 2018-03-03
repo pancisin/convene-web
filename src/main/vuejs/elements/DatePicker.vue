@@ -9,7 +9,7 @@
       ref="input"
       :placeholder="placeholder"
       :name="name"
-      :value="selected | luxon('D')"
+      :value="selected.toFormat('D')"
       class="form-control"
       v-stream:focus="focusChange$">
 
@@ -87,7 +87,7 @@ export default {
       type: [ Number, String ],
       required: false,
       default () {
-        return DateTime.local().startOf('day').valueOf();
+        return DateTime.utc().startOf('day').valueOf();
       }
     },
     placeholder: String,
@@ -124,11 +124,11 @@ export default {
       .map(type => type === 'focus');
 
     const initial$ = Observable.merge(
-      onCreate$.map(() => DateTime.local().startOf('day')),
+      onCreate$.mapTo(this.value),
       this.$watchAsObservable('value')
         .pluck('newValue')
-        .map(timestamp => DateTime.fromMillis(parseInt(timestamp, 10)).startOf('day'))
-    );
+    )
+    .map(timestamp => DateTime.fromMillis(parseInt(timestamp, 10), { zone: 'utc' }).startOf('day'));
 
     const focusDate = Observable
     .merge(initial$, this.navigate$.pluck('data'))
@@ -136,7 +136,7 @@ export default {
 
     const selected = Observable
       .merge(
-        initial$.map(dateTime => dateTime.valueOf()),
+        initial$,
         this.selectDay$.pluck('data', 'timestamp')
         .do(timestamp => {
           if (timestamp !== this.value) {
@@ -144,6 +144,7 @@ export default {
             this.$emit('input', timestamp);
           }
         })
+        .map(timestamp => DateTime.fromMillis(timestamp, { zone: 'utc' }))
       );
 
     const weeks = focusDate

@@ -89,7 +89,9 @@ export default {
       this.$watchAsObservable('value')
         .pluck('newValue')
     )
-    .map(value => DateTime.fromMillis(value));
+    .map(value => DateTime.fromMillis(value, {
+      zone: 'utc'
+    }));
 
     return {
       display: Observable
