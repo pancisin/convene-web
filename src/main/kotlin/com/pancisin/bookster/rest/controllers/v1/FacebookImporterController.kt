@@ -75,7 +75,7 @@ class FacebookImporterController {
     @RequestParam(name = "q", required = false, defaultValue = "*") q: String): ResponseEntity<*>? {
 
     val api = FacebookApi.create()
-    var call: Call<Paginator<Place>>? = null
+    var call: Call<Paginator<Place>>?
     if (latitude != null && longitude != null) {
       call = api.searchPlaces(
         GeoLocation(latitude, longitude), radius, q,

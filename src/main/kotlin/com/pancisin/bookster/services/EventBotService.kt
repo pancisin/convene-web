@@ -91,13 +91,7 @@ class EventBotService {
     facebookId = ev.id;
     visibility = Visibility.PUBLIC;
     state = PageState.PUBLISHED
-
-    if (ev.startTime != null) {
-      date = Calendar.getInstance().apply {
-        time = ev.startTime;
-        timeZone = TimeZone.getTimeZone("UTC")
-      }
-    }
+    date = ev.startTime
 
     ev.picture?.data?.let {
       poster = Media(it.url ?: "")

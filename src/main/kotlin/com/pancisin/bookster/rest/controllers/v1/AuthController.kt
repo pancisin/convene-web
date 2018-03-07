@@ -128,7 +128,7 @@ class AuthController {
 
   @PutMapping("/public/v1/verify")
   private fun verifyEmail(@RequestBody token: String): ResponseEntity<*> {
-    var user: User? = null
+    val user: User?
     try {
       val body = Jwts.parser().setSigningKey(jwtConfiguration.verificationSecret).parseClaimsJws(token).body
       user = userRepository.findOne(java.lang.Long.parseLong(body["userId"].toString()))

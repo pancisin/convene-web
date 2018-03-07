@@ -1,5 +1,9 @@
 <template>
-  <form class="form" v-loading="loading" @submit.prevent="submit">
+  <form 
+    class="form" 
+    v-loading="loading" 
+    @submit.prevent="submit">
+    
     <div class="row">
       <div class="col-md-6">
         <div class="form-group" :class="{ 'has-error' : errors.has('name') }">

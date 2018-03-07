@@ -12,7 +12,7 @@
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.has('date') }">
           <label class="control-label">Date</label>
-          <date-picker v-model="event.date" v-validate data-vv-rules="required" name="date"  @change="validate('basic')"></date-picker>
+          <date-time-picker v-model="event.date" v-validate data-vv-rules="required" name="date"  @change="validate('basic')"></date-time-picker>
           <span class="text-danger" v-if="errors.has('name')">{{ errors.first('date') }}</span>
         </div>
         <div class="form-group" :class="{ 'has-error' : errors.has('location') }">
@@ -42,7 +42,7 @@
 <script>
 import Wizard from './Wizard';
 import WizardPage from './WizardPage';
-import DatePicker from './DatePicker';
+import DateTimePicker from './DateTimePicker';
 import TextEditor from './TextEditor';
 import PlacePicker from './PlacePicker';
 import { DateTime } from 'luxon';
@@ -72,7 +72,7 @@ export default {
   components: {
     Wizard,
     WizardPage,
-    DatePicker,
+    DateTimePicker,
     TextEditor,
     PlacePicker
   },

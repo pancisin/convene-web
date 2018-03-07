@@ -140,7 +140,7 @@ class EventController {
   fun toggleAttend(@PathVariable event_id: Long?): ResponseEntity<*> {
     val auth_user = SecurityContextHolder.getContext().authentication.principal as User
     val attend_count = eventRepository.isAttending(event_id, auth_user.id)
-    var status = false
+    var status: Boolean
 
     val event = eventRepository.findOne(event_id)
     if (attend_count > 0) {

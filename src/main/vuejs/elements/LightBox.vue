@@ -4,14 +4,16 @@
       <slot></slot>
     </a>
     <transition name="fade">
-      <div class="lightbox" v-if="visible" @click="show(false)">
-        <div class="lightbox__close" @click="show(false)">&times;</div>
+      <div class="lightbox" v-if="visible">
+        <div class="lightbox__close" @click="show(false)">
+          &times;
+        </div>
 
         <div class="lightbox__element">
           <div
             class="lightbox__arrow lightbox__arrow--left"
-            @click.stop.prevent="prev"
-            :class="{'lightbox__arrow--invisible': !has_prev()}">
+            v-stream:click="{ subject: navigate$, data: { offset: -1 } }"
+            :class="{'lightbox__arrow--invisible': !navigator.hasPrev}">
             <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/>
               <path d="M0-.5h24v24H0z" fill="none"/>
@@ -19,13 +21,13 @@
           </div>
 
           <div class="lightbox__image">
-            <img :src="images[index]">
+            <img :src="images[navigator.index]">
           </div>
 
           <div
             class="lightbox__arrow lightbox__arrow--right"
-            @click.stop.prevent="next"
-            :class="{'lightbox__arrow--invisible': !has_next()}">
+            v-stream:click="{ subject: navigate$, data: { offset: 1 } }"
+            :class="{'lightbox__arrow--invisible': !navigator.hasNext}">
             <svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>
               <path d="M0-.25h24v24H0z" fill="none"/>
@@ -38,6 +40,7 @@
 </template>
 
 <script>
+import { Subject, Observable } from 'rxjs';
 export default {
   name: 'light-box',
   props: {
@@ -45,74 +48,62 @@ export default {
   },
   data () {
     return {
-      visible: false,
-      images: [],
-      index: 0,
-      defaultIndex: 0
+      visible: false
     };
   },
-  mounted () {
-    this.images = [];
+  subscriptions () {
+    const onCreate$ = this.$eventToObservable('hook:created');
+    this.navigate$ = new Subject();
 
-    let index = 0;
-    this.$parent.$children.forEach(component => {
-      if (component.$options.name === this.$options.name) {
-        this.images.push(component.$options.propsData.image);
+    const images = onCreate$
+      .flatMap(() => Observable
+        .of(...this.$parent.$children)
+        .filter(c => c.$options.name === this.$options.name)
+        .map(component => component.$options.propsData.image)
+        .reduce((acc, cur) => {
+          acc.push(cur);
+          return acc;
+        }, [])
+      );
 
-        if (this._uid === component._uid) {
-          this.defaultIndex = index;
+    const defaultIndex$ = images
+      .map(images => {
+        return {
+          index: images.findIndex(image => image === this.image)
+        };
+      });
+
+    const index$ = Observable
+      .merge(
+        this.navigate$.pluck('data'),
+        defaultIndex$)
+      .scan((acc, cur) => {
+        if (cur.index) {
+          return cur.index;
+        } else {
+          return acc + cur.offset;
         }
+      }, 0);
 
-        index++;
-      }
-    });
+    const navigator = Observable
+      .combineLatest(images, index$.startWith(0))
+      .map(([images, i]) => {
+        return {
+          index: i,
+          hasNext: i + 1 < images.length,
+          hasPrev: i - 1 >= 0
+        };
+      });
 
-    window.addEventListener('keydown', this.eventListener);
-  },
-  destroyed () {
-    window.removeEventListener('keydown', this.eventListener);
+    return {
+      navigator,
+      images
+    };
   },
   methods: {
     show (value) {
       this.visible = value;
       document.body.classList.toggle('noscroll', value);
-      this.index = this.defaultIndex;
-    },
-    has_next () {
-      return (this.index + 1 < this.images.length);
-    },
-    has_prev () {
-      return (this.index - 1 >= 0);
-    },
-    prev () {
-      if (this.has_prev()) {
-        this.index -= 1;
-      }
-    },
-    next () {
-      if (this.has_next()) {
-        this.index += 1;
-      }
-    },
-    eventListener (e) {
-      if (this.visible) {
-        switch (e.key) {
-          case 'ArrowRight':
-            this.next();
-            break;
-          case 'ArrowLeft':
-            this.prev();
-            break;
-          case 'ArrowDown':
-          case 'ArrowUp':
-          case ' ':
-            e.preventDefault();
-            break;
-          case 'Escape':
-            this.show(false);
-            break;
-        }
-      }
     }
   }
 };
@@ -138,7 +129,8 @@ export default {
   right: 0;
   top: 0;
   padding: 1rem;
-  font-size: 1.5rem;
+  // font-size: 1.5rem;
+  font-size: 48px;
   cursor: pointer;
   color: @color_1;
   width: 4rem;
