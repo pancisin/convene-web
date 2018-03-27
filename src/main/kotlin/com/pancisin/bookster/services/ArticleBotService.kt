@@ -1,24 +1,14 @@
 package com.pancisin.bookster.services
 
 import java.io.IOException
-import java.lang.reflect.Constructor
-import java.lang.reflect.Field
-import java.lang.reflect.InvocationTargetException
-import java.util.Calendar
-import java.util.HashMap
 
 import com.pancisin.bookster.model.Article
 import com.pancisin.bookster.model.BotRun
 import com.pancisin.bookster.repository.BotRunRepository
-import org.hibernate.exception.ConstraintViolationException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
-import com.jayway.jsonpath.JsonPath
-import com.jayway.jsonpath.ReadContext
-import com.pancisin.api.dataparser.parsers.DataParser
 import com.pancisin.api.dataparser.parsers.JsonParser
 import com.pancisin.bookster.model.ArticleBot
 import com.pancisin.bookster.model.enums.BotRunState
@@ -27,7 +17,6 @@ import com.pancisin.bookster.repository.ArticleRepository
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 
 @Component
 class ArticleBotService {
