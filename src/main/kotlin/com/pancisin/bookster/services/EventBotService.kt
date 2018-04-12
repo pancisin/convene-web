@@ -37,7 +37,8 @@ class EventBotService {
   @Autowired
   lateinit var activityFeedService: ActivityFeedService
 
-  val eventFields = "name,description,place,id,start_time,picture.type(large)"
+//  val eventFields = "name,description,place,id,start_time,picture.type(large)"
+  val eventFields = "name,description,place,id,start_time,cover"
 
   @Scheduled(cron = "0 0 6 * * *")
   fun run(): List<BotRun>? {
@@ -93,8 +94,8 @@ class EventBotService {
     state = PageState.PUBLISHED
     date = ev.startTime
 
-    ev.picture?.data?.let {
-      poster = Media(it.url ?: "")
+    ev.cover?.let {
+      poster = Media(it.source ?: "")
     }
 
     ev.place?.location?.let {

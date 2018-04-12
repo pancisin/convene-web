@@ -81,7 +81,7 @@ export default {
     getNotifications (page) {
       this.loading = true;
       var size = 8;
-      var url = ['/api/user/notification', page, size].join('/');
+      var url = ['/api/v1/user/me/notification', page, size].join('/');
       this.$http.get(url).then(response => {
         this.loading = false;
         this.paginator = response.body;

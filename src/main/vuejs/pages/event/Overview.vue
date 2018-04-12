@@ -231,7 +231,7 @@ export default {
           });
           break;
         case 'user':
-          this.$http.get('/api/user/place').then(response => {
+          this.$http.get('/api/v1/user/me/place').then(response => {
             this.places = response.body;
           });
           break;

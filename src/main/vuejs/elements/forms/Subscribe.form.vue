@@ -79,7 +79,7 @@ export default {
     submit () {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          this.$http.post('/api/user/subscription', {
+          this.$http.post('/api/v1/user/me/subscription', {
             user: this.userClone,
             subscription: this.license
           }).then(response => {

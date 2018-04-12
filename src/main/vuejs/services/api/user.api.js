@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const USER_API_URL = '/api/user';
+const USER_API_URL = '/api/v1/user/me';
 
 export default {
 
@@ -20,7 +20,7 @@ export default {
    * @param {Function} success callback function
    */
   getUser (success) {
-    Vue.http.get(`${USER_API_URL}/me`).then(response => {
+    Vue.http.get(USER_API_URL).then(response => {
       success(response.body);
     });
   },
@@ -106,7 +106,7 @@ export default {
    * @param {*} success - callback function
    */
   searchUsers (key, success) {
-    Vue.http.get(`${USER_API_URL}/search`, {
+    Vue.http.get('api/v1/user/search', {
       params: {
         q: key
       }
@@ -187,7 +187,7 @@ export default {
    * @param {*} error - error callback function
    */
   changePassword (data, success, error) {
-    Vue.http.post(`${USER_API_URL}/v1/changePassword`, data).then(response => {
+    Vue.http.post('/api/v1/user/changePassword', data).then(response => {
       success(response.body);
     }, response => {
       error(response.body);

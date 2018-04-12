@@ -1,13 +1,13 @@
-spring: 
-  profiles: 
-    active: production
+spring:
+  profiles:
+    active: local
   application:
     name: bookster
   datasource:
     url: jdbc:mysql://localhost:3306/bookster_db?characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
     sql-script-encoding: UTF-8
-  jpa: 
+  jpa:
     hibernate:
       ddl-auto: update
       naming:
@@ -20,19 +20,19 @@ spring:
           validation:
             mode: none
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect    
-jwt: 
+        dialect: org.hibernate.dialect.MySQL5Dialect
+jwt:
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
   verificationSecret: 123456789
-  
+
 paylane:
   api_key: 45e4f38452d71554195c13f0acee84962fb82a13
-  
-mailjet: 
+
+mailjet:
   username: 80c51a39aa13ea96c2ecc26bdeb11baf
   password: 3ec24bb92abc4709089069778f2f18b8
-  
+
 jsondoc:
   version: 1.0
   packages:
@@ -41,13 +41,13 @@ jsondoc:
 ---
 spring:
   profiles: local
-  datasource: 
+  datasource:
     username: root
-    password: 
+    password:
   jpa:
     properties:
       hibernate:
-        search: 
+        search:
           default:
             directory_provider: filesystem
             indexBase: /files/lucene/indexes
@@ -55,14 +55,14 @@ spring:
   mail:
     host: localhost
     port: 25
-server: 
+server:
   port: 8180
 storage:
   path: /files/
 mailing:
   enabled: true
 ---
-spring: 
+spring:
   profiles: production
   datasource:
     username: bookster_db
@@ -70,17 +70,16 @@ spring:
   jpa:
     properties:
       hibernate:
-        search: 
+        search:
           default:
             directory_provider: filesystem
             indexBase: /uploads/lucene/indexes
   mail:
     host: localhost
-server: 
+server:
   port: 8080
   context-path: /bookster
 storage:
   path: /uploads/bookster/
-mailing: 
+mailing:
   enabled: true
-  

@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     getSubscriptions () {
-      this.$http.get('/api/user/subscription').then(response => {
+      this.$http.get('/api/v1/user/me/subscription').then(response => {
         this.subscriptions = response.body;
       });
     },
