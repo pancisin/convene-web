@@ -55,7 +55,7 @@ export default [
   {
     path: 'faq',
     name: 'faq',
-    component: resolve => require(['pages/static/FAQ.vue'], resolve),
+    component: resolve => require(['pages/static/faq.vue'], resolve),
     meta: {
       title: 'Frequently asked questions'
     }

@@ -52,7 +52,7 @@ import {
   HeroUnit
 } from 'elements';
 import { NearEvents } from 'components';
-import faq from '../static/FAQ';
+import faq from '../static/faq';
 import HowItWorks from '../static/HowItWorks';
 
 import Notepad from 'assets/img/notepad.jpg';
