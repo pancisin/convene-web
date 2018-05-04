@@ -38,8 +38,11 @@ class ActivityRepositoryImpl : ActivityRepositoryCustom {
 
         if (idField != null && it.objectId != null && !objectId.equals("")) {
           idField.isAccessible = true
-          val stored = entityManager.find(clazz, fieldTypeCast(idField, it.objectId))
-          objectThumbnail = EntityTransformUtils.hashMapOfEntity(clazz, stored);
+          val stored: Any? = entityManager.find(clazz, fieldTypeCast(idField, it.objectId))
+
+          if (stored != null) {
+            objectThumbnail = EntityTransformUtils.hashMapOfEntity(clazz, stored);
+          }
         }
       }
     }

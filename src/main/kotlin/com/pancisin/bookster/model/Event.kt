@@ -127,9 +127,16 @@ class Event() {
   @CollectionTable(name = "events_tags")
   var tags: MutableList<String> = ArrayList()
 
+  @OneToMany(mappedBy = "event", orphanRemoval = true)
+  @JsonIgnore
+  var ratings: List<Rating> = ArrayList()
+
   //	@JsonSerialize(using = ToStringSerializer.class)
   val author: IAuthor?
     get() = page ?: owner
+
+  val averageRating
+    get() = ratings.sumBy { it.starsCount } / ratings.size
 
   val privilege: Any?
     @Transient

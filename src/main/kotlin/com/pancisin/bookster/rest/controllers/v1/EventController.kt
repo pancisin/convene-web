@@ -5,7 +5,6 @@ import java.util.stream.Collectors
 
 import javax.validation.Valid
 
-import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.data.domain.PageRequest
@@ -26,20 +25,16 @@ import org.springframework.web.bind.annotation.RestController
 
 import com.pancisin.bookster.components.storage.StorageServiceImpl
 import com.pancisin.bookster.events.OnInviteEvent
-import com.pancisin.bookster.model.Event
-import com.pancisin.bookster.model.Invitation
-import com.pancisin.bookster.model.Programme
-import com.pancisin.bookster.model.User
+import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.models.views.Summary
-import com.pancisin.bookster.repository.EventRepository
-import com.pancisin.bookster.repository.InvitationRepository
-import com.pancisin.bookster.repository.MediaRepository
-import com.pancisin.bookster.repository.ProgrammeRepository
-import com.pancisin.bookster.repository.UserRepository
+import com.pancisin.bookster.repository.*
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
+import com.pancisin.bookster.rest.controllers.exceptions.UnallowedRequestException
 import org.springframework.data.domain.Page
+import org.springframework.validation.Errors
+import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/event/{event_id}")
@@ -65,6 +60,9 @@ class EventController {
 
   @Autowired
   lateinit var mediaRepository: MediaRepository
+
+  @Autowired
+  lateinit var ratingRepository: RatingRepository
 
   @GetMapping
   @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
@@ -128,8 +126,7 @@ class EventController {
   @PostMapping("/programme")
   @ActivityLog(type = ActivityType.CREATE_PROGRAMME)
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
-  fun postProgramme(@PathVariable event_id: Long?, @RequestBody programme: Programme)
-    = ResponseEntity.ok(programmeRepository.save(programme.apply {
+  fun postProgramme(@PathVariable event_id: Long?, @RequestBody programme: Programme) = ResponseEntity.ok(programmeRepository.save(programme.apply {
     event = eventRepository.findOne(event_id)
   }))
 
@@ -138,21 +135,25 @@ class EventController {
   @ActivityLog(type = ActivityType.ATTENDING)
   @PreAuthorize("hasPermission(#event_id, 'event', 'read')")
   fun toggleAttend(@PathVariable event_id: Long?): ResponseEntity<*> {
-    val auth_user = SecurityContextHolder.getContext().authentication.principal as User
-    val attend_count = eventRepository.isAttending(event_id, auth_user.id)
-    var status: Boolean
+    val stored = eventRepository.findOne(event_id)
 
-    val event = eventRepository.findOne(event_id)
-    if (attend_count > 0) {
-      event.attendees = event.attendees.filter { it.id !== auth_user.id }.toMutableList()
-      status = false
-    } else {
-      event.attendees.add(auth_user)
-      status = true
+    stored.date?.let {
+      if (it.before(Calendar.getInstance())) {
+        throw UnallowedRequestException("error.event.ended")
+      }
     }
 
-    eventRepository.save(event)
-    return ResponseEntity.ok(status)
+    val auth_user = SecurityContextHolder.getContext().authentication.principal as User
+    val attending = eventRepository.isAttending(event_id, auth_user.id) > 0
+
+    if (attending) {
+      stored.attendees = stored.attendees.filter { it.id !== auth_user.id }.toMutableList()
+    } else {
+      stored.attendees.add(auth_user)
+    }
+
+    eventRepository.save(stored)
+    return ResponseEntity.ok(!attending)
   }
 
   @GetMapping("/attend-status")
@@ -236,4 +237,36 @@ class EventController {
     = ResponseEntity.ok(eventRepository.save(eventRepository.findOne(event_id).apply {
     featured = !featured
   }))
+
+  @GetMapping("/rating/{page}/{size}")
+  fun getRating(
+    @PathVariable event_id: Long,
+    @PathVariable page: Int,
+    @PathVariable size: Int
+  ) = ResponseEntity.ok(ratingRepository.getForEvent(event_id, PageRequest(page, size)))
+
+  @PostMapping("/rating")
+  fun postRating(
+    @PathVariable event_id: Long,
+    @RequestBody rating: Rating
+  ) : ResponseEntity<Rating> {
+    val stored = eventRepository.findOne(event_id)
+
+    rating.apply {
+      event = stored
+      user = SecurityContextHolder.getContext().authentication.principal as User
+    }
+
+    if (!stored.attendees.any { it.id === rating.user?.id }) {
+      throw UnallowedRequestException("error.rating.not_attending")
+    }
+
+    stored.date?.let {
+      if (it.after(Calendar.getInstance())) {
+        throw UnallowedRequestException("error.rating.premature_rating")
+      }
+    }
+
+    return ResponseEntity.ok(ratingRepository.save(rating))
+  }
 }
