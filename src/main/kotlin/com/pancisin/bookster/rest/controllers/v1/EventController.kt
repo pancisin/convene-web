@@ -1,7 +1,6 @@
 package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.bookster.components.annotations.ActivityLog
-import java.util.stream.Collectors
 
 import javax.validation.Valid
 
@@ -28,12 +27,10 @@ import com.pancisin.bookster.events.OnInviteEvent
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.PageState
-import com.pancisin.bookster.models.views.Summary
 import com.pancisin.bookster.repository.*
 import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
 import com.pancisin.bookster.rest.controllers.exceptions.UnallowedRequestException
 import org.springframework.data.domain.Page
-import org.springframework.validation.Errors
 import java.util.*
 
 @RestController

@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Error(
-  var code: String,
+  var code: Int,
+  var type: ErrorType,
   var message: String
 ) {
-  var fieldErrors: List<FieldError> = ArrayList()
+  var errors: List<FieldError> = ArrayList()
 }

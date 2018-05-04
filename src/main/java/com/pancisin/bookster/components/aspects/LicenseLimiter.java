@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import com.pancisin.bookster.repository.ConferenceRepository;
+import com.pancisin.bookster.rest.controllers.exceptions.ResourceLimitReachedException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -82,7 +83,8 @@ public class LicenseLimiter {
       }
     }
 
-    return new ResponseEntity<String>("You've reached your resources limit.", HttpStatus.PAYMENT_REQUIRED);
+    throw new ResourceLimitReachedException("error.subscription.limit_reached");
+//    return new ResponseEntity<String>("You've reached your resources limit.", HttpStatus.PAYMENT_REQUIRED);
   }
 
   private int getPathVariableIndex(Method method, String argName) throws Exception {
@@ -125,6 +127,7 @@ public class LicenseLimiter {
       }
     }
 
-    return new ResponseEntity<String>("Your current subscription do not allows this.", HttpStatus.PAYMENT_REQUIRED);
+    throw new ResourceLimitReachedException("error.subscription.weak");
+//    return new ResponseEntity<String>("Your current subscription do not allows this.", HttpStatus.PAYMENT_REQUIRED);
   }
 }

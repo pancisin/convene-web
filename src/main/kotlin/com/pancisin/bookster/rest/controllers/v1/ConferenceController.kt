@@ -331,10 +331,4 @@ class ConferenceController {
     place.page = stored
     return ResponseEntity.ok(placeRepository.save(place))
   }
-
-  @ExceptionHandler
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  fun handle(e: HttpMessageNotReadableException) {
-    e.printStackTrace()
-  }
 }
