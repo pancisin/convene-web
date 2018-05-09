@@ -16,6 +16,7 @@ import java.util.Calendar
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.model.enums.ObjectType
 import com.pancisin.bookster.repository.MediaRepository
 import com.pancisin.bookster.utils.EntityTransformUtils
@@ -36,8 +37,8 @@ data class Activity(
   @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
   var id: UUID? = UUID.randomUUID(),
 
+  @JsonIgnore
   @ManyToOne(optional = true)
-  @JsonSerialize(using = ToStringSerializer::class)
   var user: User? = null,
 
   @Column
@@ -82,6 +83,13 @@ data class Activity(
       }
 
       return null;
+    }
+
+  val userDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "user")
+    get () {
+      val us = this.user
+      return if (us !== null) UserDto.fromUserModel(us) else null
     }
 
   @Transient

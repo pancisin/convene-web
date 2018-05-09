@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
@@ -131,9 +132,16 @@ class Event() {
   @JsonIgnore
   var ratings: List<Rating> = ArrayList()
 
-  //	@JsonSerialize(using = ToStringSerializer.class)
   val author: IAuthor?
-    get() = page ?: owner
+    get() {
+      if (page !== null) return page else {
+        val us = this.owner
+
+        if (us !== null) return UserDto.fromUserModel(us)
+      }
+
+      return null
+    }
 
   val averageRating
     get() = ratings.sumBy { it.starsCount } / ratings.size

@@ -1,7 +1,9 @@
 package com.pancisin.bookster.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.models.views.Compact
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
@@ -18,6 +20,7 @@ data class PageMember(
   val id: UUID? = null,
 
   @ManyToOne
+  @JsonIgnore
   var user: User? = null,
 
   @JsonIgnore
@@ -38,6 +41,13 @@ data class PageMember(
   val created: Calendar? = null
 
 ) {
+  // This constructor is required because PageController.java is still using it !
   constructor(user: User, page: Page) : this(null, user, page)
-  constructor(user: User, page: Page, submission: FormSubmission) : this(null, user, page, submission)
+
+  val userDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "user")
+    get () {
+      val us = this.user
+      return if (us !== null) UserDto.fromUserModel(us) else null
+    }
 }

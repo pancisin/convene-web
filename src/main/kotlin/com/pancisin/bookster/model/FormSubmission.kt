@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonProperty.Access
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
+import com.pancisin.bookster.model.dtos.UserDto
 
 @Entity
 @Table(name = "forms_submissions")
@@ -26,9 +27,8 @@ data class FormSubmission(
   @GeneratedValue(strategy = GenerationType.AUTO)
   val id: Long? = null,
 
+  @JsonIgnore
   @ManyToOne
-  @JsonProperty(access = Access.READ_ONLY)
-  @JsonSerialize(using = ToStringSerializer::class)
   val user: User? = null,
 
   @JsonIgnore
@@ -40,4 +40,11 @@ data class FormSubmission(
 
   @Column(name = "created", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
   val created: Calendar? = null
-)
+) {
+  val userDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "user")
+    get () {
+      val us = this.user
+      return if (us !== null) UserDto.fromUserModel(us) else null
+    }
+}

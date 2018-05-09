@@ -3,6 +3,7 @@ package com.pancisin.bookster.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.models.views.Summary
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
@@ -33,7 +34,8 @@ data class Media(
   @Transient @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   var data: String? = null,
 
-  @JsonIgnore @JsonProperty(access = JsonProperty.Access.READ_ONLY) @ManyToOne(optional = true)
+  @JsonIgnore
+  @ManyToOne(optional = true)
   var author: User? = null,
 
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)

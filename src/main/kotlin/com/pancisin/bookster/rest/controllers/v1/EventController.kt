@@ -169,14 +169,14 @@ class EventController {
   @PreAuthorize("hasPermission(#event_id, 'event', 'update')")
   fun postInvitation(@PathVariable event_id: Long?, @RequestBody invitation: Invitation): ResponseEntity<*> {
     val stored = eventRepository.findOne(event_id)
-    var inv: Invitation? = Invitation(stored, invitation.email.toString())
-    inv?.user = userRepository.findByEmail(invitation.email)
+    var inv = Invitation(
+      event = stored,
+      email = invitation.email.toString(),
+      user = userRepository.findByEmail(invitation.email)
+    )
 
     inv = invitationRepository.save(inv)
-
-    if (inv != null)
-      eventPublisher.publishEvent(OnInviteEvent(inv))
-
+    eventPublisher.publishEvent(OnInviteEvent(inv))
     return ResponseEntity.ok(inv)
   }
 

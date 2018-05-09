@@ -146,7 +146,12 @@ class ConferenceController {
       values = values
     ));
 
-    val attendee = PageMember(user, conference, submission)
+    val attendee = PageMember(
+      user = user,
+      page = conference,
+      submission =  submission
+    )
+
     pageMemberRepository.save(attendee)
     return ResponseEntity.ok(attendee)
   }
@@ -224,8 +229,12 @@ class ConferenceController {
 
     val existing = userRepository.findByEmail(user.email)
     if (existing != null) {
-      val administrator = Administrator(stored, existing, false)
-      administrator.role = PageRole.ROLE_ADMINISTRATOR
+      val administrator = Administrator(
+        page = stored,
+        user = existing,
+        active = false,
+        role = PageRole.ROLE_ADMINISTRATOR
+      )
 
       administratorRepository.save(administrator)
       return ResponseEntity.ok(administrator)

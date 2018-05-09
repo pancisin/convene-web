@@ -1,6 +1,7 @@
 package com.pancisin.bookster.rest.controllers.exceptions.models
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.util.*
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Error(
@@ -9,4 +10,5 @@ data class Error(
   var message: String
 ) {
   var errors: List<FieldError> = ArrayList()
+  val timestamp = Calendar.getInstance().timeInMillis
 }

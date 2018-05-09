@@ -27,12 +27,12 @@ import javax.persistence.*
 @Entity
 @Indexed
 @Table(name = "users")
-class User() : UserDetails, Principal, IAuthor {
+class User() : UserDetails, Principal {
 
   @Id
   @JsonView(Compact::class)
   @GeneratedValue(strategy = GenerationType.AUTO)
-  override var id: Long? = null
+  var id: Long? = null
 
   @NotNull
   @Field
@@ -141,11 +141,8 @@ class User() : UserDetails, Principal, IAuthor {
     this.authorities = authorities
   }
 
-  override val displayName: String
+  val displayName: String
     get() = this.firstName + " " + this.lastName
-
-  override val type: String
-    get() = "user"
 
   override fun getAuthorities(): Collection<GrantedAuthority> {
     return authorities

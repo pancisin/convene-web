@@ -17,9 +17,9 @@ class NotificationService {
   @Autowired
   lateinit var webSocket: SimpMessagingTemplate
 
-  fun notifyUser(user: User, code: String, target: String) = this.notifyUser(user, Notification(code, target))
+  fun notifyUser(user: User, code: String, target: String) = this.notifyUser(user, Notification(code = code, target = target))
 
-  fun notifyUser(user: User, code: String, target: String, subject: String) = this.notifyUser(user, Notification(code, target, subject))
+  fun notifyUser(user: User, code: String, target: String, subject: String) = this.notifyUser(user, Notification(code = code, target = target, subject = subject))
 
   fun notifyUser(user: User, notification: Notification) {
     notification.recipient = user

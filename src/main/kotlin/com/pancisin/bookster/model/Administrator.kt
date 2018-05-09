@@ -6,7 +6,9 @@ import javax.validation.constraints.NotNull
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.model.enums.PageRole
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
@@ -19,8 +21,9 @@ data class Administrator(
   @Id @JsonView(Compact::class) @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Long? = null,
 
-  @JsonView(Summary::class)
-  @JsonIgnoreProperties("address", "license", "authorities", "created", "token", "locale")
+  //@JsonView(Summary::class)
+  //@JsonIgnoreProperties("address", "license", "authorities", "created", "token", "locale")
+  @JsonIgnore
   @ManyToOne(optional = false, fetch = FetchType.EAGER)
   var user: User? = null,
 
@@ -45,5 +48,13 @@ data class Administrator(
   var role: PageRole? = PageRole.ROLE_ADMINISTRATOR
 
 ) {
+  // this constructor is required because PageController.java is still using it !
   constructor(page: Page, user: User, active: Boolean) : this(null, user, page, active, null, null, null)
+
+  val userDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "user")
+    get () {
+      val us = this.user
+      return if (us !== null) UserDto.fromUserModel(us) else null
+    }
 }

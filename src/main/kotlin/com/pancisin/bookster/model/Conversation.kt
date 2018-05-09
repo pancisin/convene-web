@@ -7,10 +7,6 @@ data class Conversation(
   var participant: User? = null,
   var recentMessages: MutableList<Message> = ArrayList()
 ) {
-  constructor(participant: User, message: Message) : this(participant) {
-    recentMessages.add(message)
-  }
-
   val lastContact: Long?
     get() {
       return recentMessages.map { m -> m.created.timeInMillis }.maxWith(Comparator.comparingLong{ x -> x})

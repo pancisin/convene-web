@@ -52,7 +52,4 @@ data class Invitation(
     inverseJoinColumns = arrayOf(JoinColumn(name = "page_id"))
   )
   var page: Page? = null
-) {
-  constructor(event: Event, email: String) : this(null, email, null, null, event)
-  constructor(page: Page, email: String) : this(null, email, null, null, null, page)
-}
+)

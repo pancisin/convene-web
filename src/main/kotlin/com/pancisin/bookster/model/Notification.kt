@@ -37,8 +37,4 @@ data class Notification(
   @Column
   @Enumerated(EnumType.STRING)
   var type: NotificationType = NotificationType.INFO
-) {
-  constructor(code: String, target: String, subject: String) : this(null, null, code, false, null, target, subject)
-  constructor(code: String, target: String) : this(null, null, code, false, null, target)
-  constructor(code: String) : this(null, null, code)
-}
+)

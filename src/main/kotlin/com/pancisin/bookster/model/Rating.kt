@@ -2,6 +2,7 @@ package com.pancisin.bookster.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.pancisin.bookster.model.dtos.UserDto
 import org.hibernate.annotations.GenericGenerator
 import java.util.*
 import javax.persistence.*
@@ -27,6 +28,13 @@ data class Rating(
   var event: Event? = null,
 
   @ManyToOne
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @JsonIgnore
   var user: User? = null
-)
+) {
+  val userDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "user")
+    get () {
+      val us = this.user
+      return if (us !== null) UserDto.fromUserModel(us) else null
+    }
+}

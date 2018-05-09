@@ -37,9 +37,5 @@ data class PageImport(
 
   @Column(unique = true)
   var sourceId: String = ""
-
-) {
-  constructor(state: BotRunState) : this(null, state)
-  constructor(state: BotRunState, page: Page) : this(null, state, page)
-}
+)
 

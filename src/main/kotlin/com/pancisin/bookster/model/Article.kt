@@ -3,6 +3,7 @@ package com.pancisin.bookster.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonView
+import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.models.views.Summary
 import java.util.*
 import javax.persistence.*
@@ -33,7 +34,8 @@ data class Article(
   @Transient @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   var thumbnailData: String? = null,
 
-  @ManyToOne @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @JsonIgnore
+  @ManyToOne
   var author: User? = null,
 
   @Column
@@ -66,4 +68,11 @@ data class Article(
       articlesList?.id ?: page?.id ?: ""
     ).hashCode()
   }
+
+  val authorDto: UserDto?
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "author")
+    get () {
+      val us = this.author
+      return if (us !== null) UserDto.fromUserModel(us) else null
+    }
 }
