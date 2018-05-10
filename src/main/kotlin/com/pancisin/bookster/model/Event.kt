@@ -144,7 +144,7 @@ class Event() {
     }
 
   val averageRating
-    get() = ratings.sumBy { it.starsCount } / ratings.size
+    get() = if (ratings.size > 0) ratings.sumBy { it.starsCount } / ratings.size else 0
 
   val privilege: Any?
     @Transient
