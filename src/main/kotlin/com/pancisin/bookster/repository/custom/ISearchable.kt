@@ -1,5 +1,5 @@
 package com.pancisin.bookster.repository.custom
 
-interface ISearchRepository {
+interface ISearchable {
   fun search(keyword: String) : List<Any>
 }

@@ -4,8 +4,8 @@ import com.pancisin.bookster.components.annotations.PrivacyRestricted
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.repository.*
-import com.pancisin.bookster.repository.custom.impl.EventSearchRepository
-import com.pancisin.bookster.repository.custom.impl.UserSearchRepository
+import com.pancisin.bookster.repository.custom.EventSearchRepository
+import com.pancisin.bookster.repository.custom.UserSearchRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -72,7 +72,7 @@ class RootControllerV1 {
     @RequestParam(name = "categoryId", required = false) categoryId: Long?,
     @RequestParam(name = "branchId", required = false) branchId: Long?): ResponseEntity<*> {
 
-    var pages: Page<com.pancisin.bookster.model.Page>?
+    val pages: Page<com.pancisin.bookster.model.Page>?
     val pageable = PageRequest(page, limit, Sort(Direction.ASC, "name"))
 
     if (branchId != null) {
@@ -206,7 +206,6 @@ class RootControllerV1 {
 
   @GetMapping("/api/v1/user/{user_id}/privacy-constraints", "/public/v1/user/{user_id}/privacy-constraints")
   fun getUserPrivacyConstraints(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id).privacyConstraints)
-
 
   @GetMapping("/api/v1/user/search", "/public/v1/user/search")
   fun searchUsers(@RequestParam q: String) = ResponseEntity.ok(userSearchRepository.search(q).filterIsInstance<User>().map { UserDto.fromUserModel(it) })

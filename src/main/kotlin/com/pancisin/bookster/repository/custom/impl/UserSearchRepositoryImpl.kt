@@ -7,14 +7,13 @@ import javax.transaction.Transactional
 import org.springframework.stereotype.Repository
 
 import com.pancisin.bookster.model.User
-import com.pancisin.bookster.repository.custom.ISearchRepository
-import com.pancisin.bookster.repository.custom.IUserSearchRepository
+import com.pancisin.bookster.repository.custom.UserSearchRepository
 import org.hibernate.search.jpa.Search
 import org.springframework.beans.factory.annotation.Autowired
 
 @Repository
 @Transactional
-class UserSearchRepository : IUserSearchRepository {
+class UserSearchRepositoryImpl : UserSearchRepository {
 
   @Autowired
   @PersistenceContext

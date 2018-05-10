@@ -48,6 +48,23 @@ export default {
   },
 
   /**
+   * Search events by keyword.
+   * @param {String} key - searched keyword
+   * @param {*} success - callback function
+   */
+  searchEvents (key, success) {
+    Vue.http.get('api/v1/event/search', {
+      params: {
+        q: key
+      }
+    }).then(response => {
+      success(response.body);
+    }, response => {
+      console.error(response);
+    });
+  },
+
+  /**
    * Get event related events.
    * @param {*} id - event id
    * @param {*} success - success callback function

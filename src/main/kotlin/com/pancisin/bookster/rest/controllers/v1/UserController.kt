@@ -5,12 +5,11 @@ import org.springframework.http.ResponseEntity
 
 import com.fasterxml.jackson.annotation.JsonView
 import com.pancisin.bookster.components.annotations.PrivacyRestricted
-import com.pancisin.bookster.model.User
 import com.pancisin.bookster.models.views.Summary
 import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserRepository
-import com.pancisin.bookster.repository.custom.impl.UserSearchRepository
+import com.pancisin.bookster.repository.custom.impl.UserSearchRepositoryImpl
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -25,9 +24,6 @@ class UserController {
 
   @Autowired
   lateinit var eventRepository: EventRepository
-
-  @Autowired
-  lateinit var userSearchRepository: UserSearchRepository
 
   @JsonView(Summary::class)
   @GetMapping("/page")

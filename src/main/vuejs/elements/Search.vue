@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import EventApi from 'api/event.api';
 export default {
   name: 'app-search',
   data () {
@@ -27,7 +28,9 @@ export default {
         .debounceTime(250)
         .map(e => e.toUpperCase())
         .do(q => {
-          console.log(q);
+          EventApi.searchEvents(q, events => {
+            console.log(events);
+          })
         })
     };
   }

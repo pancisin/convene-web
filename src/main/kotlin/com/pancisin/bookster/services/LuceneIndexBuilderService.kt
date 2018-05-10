@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 import javax.persistence.EntityManager
 import org.hibernate.search.jpa.Search
 
-
 @Component
 class LuceneIndexBuilderService : ApplicationListener<ApplicationReadyEvent> {
 
@@ -15,13 +14,15 @@ class LuceneIndexBuilderService : ApplicationListener<ApplicationReadyEvent> {
   lateinit var entityManager: EntityManager
 
   override fun onApplicationEvent(event: ApplicationReadyEvent?) {
+    this.buildIndexes()
+  }
+
+  fun buildIndexes() {
     try {
       val fullTextEntityManager = Search.getFullTextEntityManager(entityManager)
       fullTextEntityManager.createIndexer().startAndWait()
     } catch (e: InterruptedException) {
       println("An error occurred trying to build the serach index: " + e.toString())
     }
-
-    return
   }
 }
