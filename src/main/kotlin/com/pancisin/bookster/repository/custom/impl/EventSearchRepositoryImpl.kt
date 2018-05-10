@@ -1,7 +1,7 @@
 package com.pancisin.bookster.repository.custom.impl
 
 import com.pancisin.bookster.model.Event
-import com.pancisin.bookster.repository.custom.IEventSearchRepository
+import com.pancisin.bookster.repository.custom.EventSearchRepository
 import org.hibernate.search.jpa.Search
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
@@ -11,7 +11,7 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-class EventSearchRepository : IEventSearchRepository {
+class EventSearchRepositoryImpl : EventSearchRepository {
 
   @Autowired
   @PersistenceContext
