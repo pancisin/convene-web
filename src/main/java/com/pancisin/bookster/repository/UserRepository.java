@@ -1,5 +1,6 @@
 package com.pancisin.bookster.repository;
 
+import com.pancisin.bookster.repository.custom.IUserSearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

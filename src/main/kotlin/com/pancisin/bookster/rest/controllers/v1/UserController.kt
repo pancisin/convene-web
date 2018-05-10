@@ -10,7 +10,7 @@ import com.pancisin.bookster.models.views.Summary
 import com.pancisin.bookster.repository.EventRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserRepository
-import com.pancisin.bookster.repository.UserSearchRepository
+import com.pancisin.bookster.repository.custom.impl.UserSearchRepository
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -40,17 +40,4 @@ class UserController {
 
   @GetMapping("/privacy-constraints")
   fun getPrivacyConstraints(@PathVariable user_id: Long) = ResponseEntity.ok(userRepository.findOne(user_id).privacyConstraints)
-
-  @GetMapping("/search")
-  fun searchUser(@RequestParam q: String): ResponseEntity<*> {
-    var result: List<User>? = null
-
-    try {
-      result = userSearchRepository.search(q)
-    } catch (ex: Exception) {
-      System.err.println(ex)
-    }
-
-    return ResponseEntity.ok<List<User>>(result)
-  }
 }

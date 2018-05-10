@@ -23,9 +23,12 @@ import com.pancisin.bookster.model.enums.Visibility
 import com.pancisin.bookster.model.interfaces.IAuthor
 import com.pancisin.bookster.models.views.Compact
 import com.pancisin.bookster.models.views.Summary
+import org.hibernate.search.annotations.Field
+import org.hibernate.search.annotations.Indexed
 import javax.persistence.*
 
 @Entity
+@Indexed
 @Table(name = "events")
 class Event() {
 
@@ -36,6 +39,7 @@ class Event() {
 
   @Column
   @NotEmpty
+  @Field
   @JsonView(Compact::class)
   var name: String? = null
 

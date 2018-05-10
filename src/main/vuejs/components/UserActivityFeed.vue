@@ -24,7 +24,7 @@
       v-if="activity.type.public">
 
       <div class="af-card-header">
-        <vue-image :src="activity.subject.poster.path" class="img-circle" />
+        <vue-image v-if="activity.subject.poster" :src="activity.subject.poster.path" class="img-circle" />
 
         <div>
           <h4>
