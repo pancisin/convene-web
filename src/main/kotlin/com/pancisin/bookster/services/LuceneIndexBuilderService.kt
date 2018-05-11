@@ -14,7 +14,7 @@ class LuceneIndexBuilderService : ApplicationListener<ApplicationReadyEvent> {
   lateinit var entityManager: EntityManager
 
   override fun onApplicationEvent(event: ApplicationReadyEvent?) {
-    this.buildIndexes()
+    //this.buildIndexes()
   }
 
   fun buildIndexes() {

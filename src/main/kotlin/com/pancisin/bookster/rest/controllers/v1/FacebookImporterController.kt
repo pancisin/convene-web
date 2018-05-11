@@ -34,6 +34,7 @@ import com.pancisin.bookster.repository.AdministratorRepository
 import com.pancisin.bookster.repository.PageImportRepository
 import com.pancisin.bookster.repository.PageRepository
 import com.pancisin.bookster.repository.UserRepository
+import com.pancisin.bookster.services.PageImportService
 import com.pancisin.bookster.utils.GraphApiPagination
 
 import retrofit2.Call
@@ -112,7 +113,7 @@ class FacebookImporterController {
     try {
       api.getPage(facebookId, Reading().fields(pageFields)).execute().let { response ->
         if (response.isSuccessful && response.body() != null) {
-          return ResponseEntity.ok(convertPage(response.body()!!))
+          return ResponseEntity.ok(PageImportService.convertPage(response.body()!!))
         }
       }
     } catch (ex: IOException) {
@@ -132,7 +133,7 @@ class FacebookImporterController {
       try {
         api.getPage(facebook_id, Reading().fields(pageFields)).execute().let { response ->
           if (response.isSuccessful && response.body() != null) {
-            var page: Page? = convertPage(response.body()!!)
+            var page: Page? = PageImportService.convertPage(response.body()!!)
 
             try {
               page = pageRepository.save<Page>(page)
@@ -175,7 +176,7 @@ class FacebookImporterController {
         val page = stored.page
 
         if (page != null) {
-          convertPage(response.body()!!).let {
+          PageImportService.convertPage(response.body()!!).let {
             page.apply {
               name = it.name
               summary = it.summary
@@ -194,12 +195,5 @@ class FacebookImporterController {
 
     stored.state = BotRunState.ERROR
     webSocket.convertAndSendToUser(principal.name, "/queue/page.import", stored)
-  }
-
-  private fun convertPage(fbPage: com.pancisin.api.facebookapi.model.Page) = Page().apply {
-    name = fbPage.name.toString();
-    summary = fbPage.about;
-    facebookId = fbPage.id;
-    fbPage.picture?.data?.url?.let { poster = Media(it) }
   }
 }
