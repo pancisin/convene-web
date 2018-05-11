@@ -10,6 +10,7 @@ import com.pancisin.api.facebookapi.model.Paginator
 import com.pancisin.api.facebookapi.model.Place
 import com.pancisin.api.facebookapi.utils.GeoLocation
 import com.pancisin.api.facebookapi.utils.Reading
+import com.pancisin.bookster.exceptions.PageImportFailedException
 import com.pancisin.bookster.model.Administrator
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
@@ -61,6 +62,9 @@ class FacebookImporterController {
 
   @Autowired
   lateinit var pageImportRepository: PageImportRepository
+
+  @Autowired
+  lateinit var pageImportService: PageImportService
 
   private val pageFields = "name,about,cover,location,picture.width(640)"
   private val placeFields = arrayOf("name", "categories", "location", "metadata")
@@ -170,30 +174,13 @@ class FacebookImporterController {
 
     webSocket.convertAndSendToUser(principal.name, "/queue/page.import", stored)
 
-    val api = FacebookApi.Factory.create()
-    api.getPage(stored.sourceId.toString(), Reading().fields(pageFields)).execute().let { response ->
-      if (response.isSuccessful && response.body() != null) {
-        val page = stored.page
-
-        if (page != null) {
-          PageImportService.convertPage(response.body()!!).let {
-            page.apply {
-              name = it.name
-              summary = it.summary
-              poster = it.poster
-            }
-          }
-
-          pageRepository.save(page)
-        }
-
-        stored.state = BotRunState.SUCCESS
-        webSocket.convertAndSendToUser(principal.name, "/queue/page.import", stored)
-        return
-      }
+    try {
+      pageImportService.reimportPage(stored)
+      stored.state = BotRunState.SUCCESS
+    } catch (ex : PageImportFailedException) {
+      stored.state = BotRunState.ERROR
     }
 
-    stored.state = BotRunState.ERROR
     webSocket.convertAndSendToUser(principal.name, "/queue/page.import", stored)
   }
 }
