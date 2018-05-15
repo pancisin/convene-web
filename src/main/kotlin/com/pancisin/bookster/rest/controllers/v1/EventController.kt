@@ -29,6 +29,7 @@ import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.repository.*
 import com.pancisin.bookster.exceptions.InvalidRequestException
+import com.pancisin.bookster.exceptions.ResourceNotFoundException
 import com.pancisin.bookster.exceptions.UnallowedRequestException
 import org.springframework.data.domain.Page
 import java.util.*
@@ -66,11 +67,11 @@ class EventController {
   fun getEvent(@PathVariable event_id: Long?): ResponseEntity<Event> {
     val event = eventRepository.findOne(event_id)
 
-    return if (event == null) {
-      ResponseEntity(HttpStatus.NOT_FOUND)
-    } else {
-      ResponseEntity.ok(event)
+    event?.let {
+      return  ResponseEntity.ok(event);
     }
+
+    throw ResourceNotFoundException("Event identified with ${event_id} can't be found!")
   }
 
   @PutMapping

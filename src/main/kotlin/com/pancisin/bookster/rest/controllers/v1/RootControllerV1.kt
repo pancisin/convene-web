@@ -1,6 +1,7 @@
 package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.bookster.components.annotations.PrivacyRestricted
+import com.pancisin.bookster.exceptions.ResourceNotFoundException
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.dtos.UserDto
 import com.pancisin.bookster.repository.*
@@ -135,11 +136,11 @@ class RootControllerV1 {
   ): ResponseEntity<com.pancisin.bookster.model.Page> {
 
     page_identifier.toLongOrNull()?.let { id ->
-      return ResponseEntity.ok(pageRepository.findOne(id))
+      pageRepository.findOne(id)?.let { return ResponseEntity.ok(it) }
     }
 
-    pageRepository.findBySlug(page_identifier)?.let { page -> return ResponseEntity.ok(page) }
-    return ResponseEntity(HttpStatus.NOT_FOUND)
+    pageRepository.findBySlug(page_identifier)?.let { return ResponseEntity.ok(it) }
+    throw ResourceNotFoundException("Page identified with ${page_identifier} can't be found!")
   }
 
   @GetMapping("/api/v1/conference/{conference_identifier}", "/public/v1/conference/{conference_identifier}")
@@ -148,11 +149,11 @@ class RootControllerV1 {
   ): ResponseEntity<com.pancisin.bookster.model.Page> {
 
     conference_identifier.toLongOrNull()?.let {
-      return ResponseEntity.ok(conferenceRepository.findOne(it));
+      conferenceRepository.findOne(it)?.let { return ResponseEntity.ok(it) }
     }
 
     conferenceRepository.findBySlug(conference_identifier)?.let { return ResponseEntity.ok(it) }
-    return ResponseEntity(HttpStatus.NOT_FOUND)
+    throw ResourceNotFoundException("Conference identified with ${conference_identifier} can't be found!")
   }
 
   @GetMapping("/api/v1/featured-events/{page}/{size}", "/public/v1/featured-events/{page}/{size}")
@@ -189,7 +190,7 @@ class RootControllerV1 {
     userRepository.findOne(user_id)?.let {
       return ResponseEntity.ok(it)
     }
-    return ResponseEntity(HttpStatus.NOT_FOUND)
+    throw ResourceNotFoundException("Profile identified with ${user_id} can't be found!")
   }
 
   @PrivacyRestricted(constraint = "events")

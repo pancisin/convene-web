@@ -11,6 +11,7 @@ import com.pancisin.api.facebookapi.model.Place
 import com.pancisin.api.facebookapi.utils.GeoLocation
 import com.pancisin.api.facebookapi.utils.Reading
 import com.pancisin.bookster.exceptions.PageImportFailedException
+import com.pancisin.bookster.exceptions.ResourceNotFoundException
 import com.pancisin.bookster.model.Administrator
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
@@ -121,8 +122,10 @@ class FacebookImporterController {
         }
       }
     } catch (ex: IOException) {
+
     }
-    return ResponseEntity(HttpStatus.NOT_FOUND)
+
+    throw ResourceNotFoundException("Page ${facebookId} was not found! For that reason it can't be fetched.")
   }
 
   @MessageMapping("/page-import")

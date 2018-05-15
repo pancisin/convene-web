@@ -23,6 +23,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <kotlin.version>1.2.31</kotlin.version>
+    <application.version.number>${version}</application.version.number>
   </properties>
 
   <dependencies>
@@ -223,6 +224,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

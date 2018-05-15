@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.pancisin.bookster.exceptions.ResourceNotFoundException;
 import com.pancisin.bookster.model.Article;
 import com.pancisin.bookster.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,7 @@ public class RootController {
 
 	@GetMapping({ "/api/page/{page_identifier}", "/public/page/{page_identifier}" })
 	@PreAuthorize("hasPermission(#page_identifier, 'page', 'read')")
-	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) {
+	public ResponseEntity<?> getPage(@PathVariable Object page_identifier) throws ResourceNotFoundException {
 		com.pancisin.bookster.model.Page page = null;
 
 		try {
@@ -149,7 +150,7 @@ public class RootController {
 		}
 
 		if (page == null)
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		  throw new ResourceNotFoundException("Page with with identifier " + page_identifier + " was not found!");
 
 		return ResponseEntity.ok(page);
 	}

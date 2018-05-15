@@ -2,6 +2,7 @@ package com.pancisin.bookster.rest.controllers.exceptions
 
 import com.pancisin.bookster.exceptions.InvalidRequestException
 import com.pancisin.bookster.exceptions.ResourceLimitReachedException
+import com.pancisin.bookster.exceptions.ResourceNotFoundException
 import com.pancisin.bookster.exceptions.UnallowedRequestException
 import com.pancisin.bookster.rest.controllers.exceptions.models.Error
 import com.pancisin.bookster.rest.controllers.exceptions.models.ErrorType
@@ -58,6 +59,17 @@ class RequestExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     return handleExceptionInternal(e, error, headers, HttpStatus.PAYMENT_REQUIRED, request)
+  }
+
+  @ExceptionHandler(ResourceNotFoundException::class)
+  fun handleResourceNotFound(e: RuntimeException, request: WebRequest): ResponseEntity<Any> {
+    val rnfe = e as ResourceNotFoundException
+    val error = Error(1404, ErrorType.NOT_FOUND, rnfe.message.toString())
+    val headers = HttpHeaders().apply {
+      contentType = MediaType.APPLICATION_JSON
+    }
+
+    return handleExceptionInternal(e, error, headers, HttpStatus.NOT_FOUND, request)
   }
 
 //  @ExceptionHandler(BadHttpRequest::class)

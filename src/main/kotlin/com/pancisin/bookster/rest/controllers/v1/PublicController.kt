@@ -1,5 +1,6 @@
 package com.pancisin.bookster.rest.controllers.v1
 
+import com.pancisin.bookster.exceptions.ResourceNotFoundException
 import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.*
 import com.pancisin.bookster.model.enums.Unit
@@ -58,7 +59,7 @@ class PublicController {
 
   @GetMapping("/event/{event_id}")
   fun getEvent(@PathVariable event_id: Long): ResponseEntity<Event> {
-    val event = eventRepository.findOne(event_id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+    val event = eventRepository.findOne(event_id) ?: throw ResourceNotFoundException("Event identified with ${event_id} can't be found!")
 
     return if (event.visibility === Visibility.PUBLIC && event.state === PageState.PUBLISHED)
       ResponseEntity.ok(event)
