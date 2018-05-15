@@ -5,14 +5,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import com.pancisin.bookster.repository.ConferenceRepository;
-import com.pancisin.bookster.rest.controllers.exceptions.ResourceLimitReachedException;
+import com.pancisin.bookster.exceptions.ResourceLimitReachedException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

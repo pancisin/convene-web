@@ -1,4 +1,4 @@
-package com.pancisin.bookster.rest.controllers.exceptions
+package com.pancisin.bookster.exceptions
 
 import org.springframework.validation.Errors
 

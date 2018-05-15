@@ -6,7 +6,7 @@ import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.*
 import com.pancisin.bookster.model.enums.Locale
 import com.pancisin.bookster.repository.*
-import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
+import com.pancisin.bookster.exceptions.InvalidRequestException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import java.util.stream.Collectors
 import javax.transaction.Transactional
 import javax.validation.Valid
 

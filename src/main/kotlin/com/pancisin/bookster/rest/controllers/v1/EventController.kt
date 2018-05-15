@@ -28,8 +28,8 @@ import com.pancisin.bookster.model.*
 import com.pancisin.bookster.model.enums.ActivityType
 import com.pancisin.bookster.model.enums.PageState
 import com.pancisin.bookster.repository.*
-import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
-import com.pancisin.bookster.rest.controllers.exceptions.UnallowedRequestException
+import com.pancisin.bookster.exceptions.InvalidRequestException
+import com.pancisin.bookster.exceptions.UnallowedRequestException
 import org.springframework.data.domain.Page
 import java.util.*
 

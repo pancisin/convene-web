@@ -1,9 +1,11 @@
 package com.pancisin.bookster.rest.controllers.exceptions
 
+import com.pancisin.bookster.exceptions.InvalidRequestException
+import com.pancisin.bookster.exceptions.ResourceLimitReachedException
+import com.pancisin.bookster.exceptions.UnallowedRequestException
 import com.pancisin.bookster.rest.controllers.exceptions.models.Error
 import com.pancisin.bookster.rest.controllers.exceptions.models.ErrorType
 import com.pancisin.bookster.rest.controllers.exceptions.models.FieldError
-import javassist.tools.web.BadHttpRequest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

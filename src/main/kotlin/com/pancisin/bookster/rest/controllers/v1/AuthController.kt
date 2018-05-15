@@ -2,15 +2,12 @@ package com.pancisin.bookster.rest.controllers.v1
 
 import com.pancisin.api.facebookapi.api.FacebookApi
 import com.pancisin.api.facebookapi.utils.Reading
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
@@ -26,14 +23,13 @@ import com.pancisin.bookster.events.OnRegistrationCompleteEvent
 import com.pancisin.bookster.model.User
 import com.pancisin.bookster.model.enums.Locale
 import com.pancisin.bookster.repository.UserRepository
-import com.pancisin.bookster.rest.controllers.exceptions.InvalidRequestException
+import com.pancisin.bookster.exceptions.InvalidRequestException
 import com.pancisin.bookster.security.models.JwtAuthenticationToken
 import com.pancisin.bookster.utils.PasswordUtils
 import com.pancisin.bookster.utils.configurations.JwtConfiguration
 
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
-import kotlin.experimental.and
 
 @RestController
 class AuthController {

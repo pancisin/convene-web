@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import com.pancisin.bookster.security.exceptions.JwtTokenMissingException;
+import com.pancisin.bookster.exceptions.JwtTokenMissingException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
 
 public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessingFilter {
@@ -22,7 +22,7 @@ public class JwtAuthenticationTokenFilter extends AbstractAuthenticationProcessi
 	public JwtAuthenticationTokenFilter() {
 		super("/api/**");
 	}
-	
+
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		String header = request.getHeader(this.tokenHeader);

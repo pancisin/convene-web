@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.pancisin.bookster.model.User;
-import com.pancisin.bookster.security.exceptions.JwtTokenMalformedException;
+import com.pancisin.bookster.exceptions.JwtTokenMalformedException;
 import com.pancisin.bookster.security.models.JwtAuthenticationToken;
 import com.pancisin.bookster.security.utils.JwtUtil;
 
