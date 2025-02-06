@@ -10,7 +10,7 @@ const require_auth = (to, from, next) => {
   if (!store.getters.authenticated) {
     next({
       path: '/login',
-      query: { redirect: to.fullPath }
+      query: { redirect: to.fullPath },
     });
   } else {
     next();
@@ -31,43 +31,46 @@ var router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: resolve => {
-        var reg = new RegExp('www|bookster|localhost:3000|convene');
-        var parts = window.location.host.split('.');
-        return reg.test(parts[0]) ? require(['src/main/vuejs/layouts/Client.vue'], resolve) : require(['pages/public/Page.standalone.vue'], resolve);
-      },
-      children: publicRoutes
+      component: (resolve) =>
+        require(['src/main/vuejs/layouts/Client.vue'], resolve),
+      // component: resolve => {
+      //   var reg = new RegExp('www|bookster|localhost:3000|convene');
+      //   var parts = window.location.host.split('.');
+      //   return reg.test(parts[0]) ? require(['src/main/vuejs/layouts/Client.vue'], resolve) : require(['pages/public/Page.standalone.vue'], resolve);
+      // },
+      children: publicRoutes,
     },
     {
       path: '/admin',
-      component: resolve => require(['src/main/vuejs/layouts/Admin.vue'], resolve),
+      component: (resolve) =>
+        require(['src/main/vuejs/layouts/Admin.vue'], resolve),
       beforeEnter: require_auth,
       redirect: '/admin/dashboard',
-      children: adminRoutes
+      children: adminRoutes,
     },
     {
       path: '/confirm-email',
-      component: resolve => require(['pages/EmailVerify.vue'], resolve)
+      component: (resolve) => require(['pages/EmailVerify.vue'], resolve),
     },
     {
       path: '/login',
       name: 'login',
-      component: resolve => require(['pages/Login.vue'], resolve),
+      component: (resolve) => require(['pages/Login.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {
-        title: 'Login'
-      }
+        title: 'Login',
+      },
     },
     {
       path: '/register',
       name: 'register',
-      component: resolve => require(['pages/Register.vue'], resolve),
+      component: (resolve) => require(['pages/Register.vue'], resolve),
       beforeEnter: afterAuth,
       meta: {
-        title: 'Register'
-      }
-    }
-  ]
+        title: 'Register',
+      },
+    },
+  ],
 });
 
 export default router;
