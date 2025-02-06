@@ -8,7 +8,7 @@
         </div>
 
         <div class="">
-          <h5>Available widgets: </h5>
+          <h5>Available widgets:</h5>
 
           <ul class="widget-types-list">
             <li v-for="(w_type, index) in widgetTypes" :key="index">
@@ -20,10 +20,9 @@
               <img :src="w_type.thumbnail" />
             </li>
           </ul>
-
         </div>
       </div>
-      
+
       <div v-else key="pending" class="clearfix">
         <a class="btn btn-link pull-right" @click="editModeSwitch(true)">
           Edit dashboard
@@ -31,7 +30,7 @@
       </div>
     </transition>
 
-    <grid-layout 
+    <!-- <grid-layout 
       :layout="widgets" 
       :col-num="6" 
       :row-height="100" 
@@ -66,113 +65,117 @@
         </div>
         
       </grid-item>
-    </grid-layout>
+    </grid-layout> -->
   </div>
 </template>
-  
+
 <script>
-import { GridLayout, GridItem } from 'vue-grid-layout';
-import * as WidgetComponents from 'elements/widgets';
-import { calculateHash } from '../../services/helpers';
-import DashboardWidgetsMap from '../../services/maps/dashboard-widgets.map';
+// import { GridLayout, GridItem } from 'vue-grid-layout';
+import * as WidgetComponents from "elements/widgets";
+import { calculateHash } from "../../services/helpers";
+import DashboardWidgetsMap from "../../services/maps/dashboard-widgets.map";
 
 export default {
-  name: 'dashboard',
-  inject: ['provider'],
-  data () {
+  name: "dashboard",
+  inject: ["provider"],
+  data() {
     return {
       activities: [],
       widgets: [],
       editMode: false,
-      original_widgets: null
+      original_widgets: null,
     };
   },
   components: {
     ...WidgetComponents,
-    GridLayout, GridItem
+    GridLayout,
+    GridItem,
   },
   computed: {
-    widgetTypes () {
+    widgetTypes() {
       return DashboardWidgetsMap;
     },
-    touched () {
-      return calculateHash(JSON.stringify(this.widgets)) !== calculateHash(this.original_widgets);
+    touched() {
+      return (
+        calculateHash(JSON.stringify(this.widgets)) !==
+        calculateHash(this.original_widgets)
+      );
     },
-    api () {
+    api() {
       if (this.provider != null) {
         return this.provider.api;
       }
-    }
+    },
   },
   watch: {
-    '$route': 'getWidgets'
+    $route: "getWidgets",
   },
-  created () {
+  created() {
     this.getWidgets();
   },
   methods: {
-    getWidgets () {
+    getWidgets() {
       this.editMode = false;
-      this.api.getWidgets(widgets => {
+      this.api.getWidgets((widgets) => {
         this.original_widgets = JSON.stringify(widgets);
-        this.widgets = widgets.map(widget => {
+        this.widgets = widgets.map((widget) => {
           const type = this.evaluateWidget(widget.type);
           return {
             ...widget,
-            type
+            type,
           };
         });
       });
     },
-    addWidget (type) {
+    addWidget(type) {
       let new_widget = {
         type,
         x: 0,
         y: 0,
         w: 1,
         h: 1,
-        i: this.widgets.length
+        i: this.widgets.length,
       };
 
       this.widgets.push(new_widget);
     },
-    removeWidget (widget) {
-      this.widgets = this.widgets.filter(w => {
+    removeWidget(widget) {
+      this.widgets = this.widgets.filter((w) => {
         return w.id !== widget.id;
       });
     },
-    saveWidgets () {
+    saveWidgets() {
       let data = this.widgets.map((w, index) => {
         return {
           ...w,
           i: index,
-          type: w.type.name
+          type: w.type.name,
         };
       });
 
-      this.api.putWidgets(data, widgets => {
+      this.api.putWidgets(data, (widgets) => {
         this.original_widgets = JSON.stringify(widgets);
-        this.widgets = widgets.map(w => {
+        this.widgets = widgets.map((w) => {
           const type = this.evaluateWidget(w.type);
           return {
             ...w,
-            type
+            type,
           };
         });
 
         this.editMode = false;
-        this.$success('notification.dashboard.saved');
+        this.$success("notification.dashboard.saved");
       });
     },
-    editModeSwitch (enabled) {
+    editModeSwitch(enabled) {
       if (!enabled && this.touched) {
-        this.$prompt('notification.leave_prompt', null, () => {
+        this.$prompt("notification.leave_prompt", null, () => {
           const widgets = JSON.parse(this.original_widgets);
-          this.widgets = widgets.map(w => {
+          this.widgets = widgets.map((w) => {
             const type = this.evaluateWidget(w.type);
             return {
               ...w,
-              type
+              type,
             };
           });
 
@@ -182,14 +185,14 @@ export default {
         this.editMode = enabled;
       }
     },
-    evaluateWidget (type) {
-      const widget = this.widgetTypes.filter(w => w.name === type);
+    evaluateWidget(type) {
+      const widget = this.widgetTypes.filter((w) => w.name === type);
 
       if (widget && widget.length > 0) {
         return widget[0];
       } else return {};
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -205,7 +208,7 @@ export default {
   position: relative;
   height: 100%;
 
-  &>* {
+  & > * {
     height: 100%;
   }
 
@@ -232,13 +235,13 @@ export default {
       user-select: none;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: rgba(255, 255, 255, .4);
+        background-color: rgba(255, 255, 255, 0.4);
       }
     }
   }
@@ -251,7 +254,7 @@ export default {
 
   li {
     &:before {
-      content: '';
+      content: "";
       height: 100%;
     }
 
@@ -263,7 +266,7 @@ export default {
       width: 100%;
     }
 
-    &~li {
+    & ~ li {
       margin-left: 10px;
     }
   }

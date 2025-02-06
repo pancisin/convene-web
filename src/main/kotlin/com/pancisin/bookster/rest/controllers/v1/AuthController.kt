@@ -1,7 +1,7 @@
 package com.pancisin.bookster.rest.controllers.v1
 
-import com.pancisin.api.facebookapi.api.FacebookApi
-import com.pancisin.api.facebookapi.utils.Reading
+// import com.pancisin.api.facebookapi.api.FacebookApi
+// import com.pancisin.api.facebookapi.utils.Reading
 
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
@@ -96,28 +96,28 @@ class AuthController {
 
   @PostMapping("/public/v1/login-facebook")
   fun loginFacebook(@RequestBody requestMap: Map<String, String>): ResponseEntity<User> {
-    val api = FacebookApi.Factory.create()
-    val userId = requestMap["userId"]!!
+    // val api = FacebookApi.Factory.create()
+    // val userId = requestMap["userId"]!!
 
-    api.getUser(userId, Reading().fields("id,name,email,first_name,last_name,locale,picture.width(640)")).execute().body()?.let { user ->
-      var stored = userRepository.findByFacebookId(userId.toLong()).apply {
-        token = JwtAuthenticationToken.generateToken(this, jwtConfiguration.secret)
-      }
+    // api.getUser(userId, Reading().fields("id,name,email,first_name,last_name,locale,picture.width(640)")).execute().body()?.let { user ->
+    //   var stored = userRepository.findByFacebookId(userId.toLong()).apply {
+    //     token = JwtAuthenticationToken.generateToken(this, jwtConfiguration.secret)
+    //   }
 
-      if (stored == null) {
-        stored = userRepository.save(User().apply {
-          locale = Locale.en
-          facebookId = userId.toLong()
-          isLocked = false
-          firstName = user.firstName
-          lastName = user.lastName
-          email = user.email
-          profilePicture = Media(user.picture?.data?.url.toString())
-        })
-      }
+    //   if (stored == null) {
+    //     stored = userRepository.save(User().apply {
+    //       locale = Locale.en
+    //       facebookId = userId.toLong()
+    //       isLocked = false
+    //       firstName = user.firstName
+    //       lastName = user.lastName
+    //       email = user.email
+    //       profilePicture = Media(user.picture?.data?.url.toString())
+    //     })
+    //   }
 
-      return ResponseEntity.ok(stored)
-    }
+    //   return ResponseEntity.ok(stored)
+    // }
 
     return ResponseEntity(HttpStatus.BAD_REQUEST)
   }

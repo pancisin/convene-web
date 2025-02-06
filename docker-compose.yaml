@@ -1,0 +1,37 @@
+volumes:
+  postgres_data:
+    driver: local
+services:
+  db:
+    image: postgres:12.22-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: convene_db
+      POSTGRES_USER: convene_db
+      POSTGRES_PASSWORD: Czhk4oZA7IGatlG7
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.spring
+    depends_on:
+      - db
+    environment:
+      - PORT=8080
+      - DB_URL=jdbc:postgresql://db:5432/convene_db
+      - DB_USERNAME=convene_db
+      - DB_PASSWORD=Czhk4oZA7IGatlG7
+    links:
+      - db
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    links:
+      - backend

@@ -87,3 +87,5 @@ src/main/resources/static/
 package-lock\.json
 
 node/
+
+dist/

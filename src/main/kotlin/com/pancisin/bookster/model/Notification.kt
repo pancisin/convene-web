@@ -13,7 +13,7 @@ import javax.persistence.*
 @Table(name = "notifications")
 data class Notification(
   @Id @GeneratedValue(generator = "uuid2") @GenericGenerator(name = "uuid2", strategy = "uuid2")
-  @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+  @Column(updatable = false, nullable = false)
   val id: UUID? = null,
 
   @JsonIgnore @ManyToOne

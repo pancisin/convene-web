@@ -19,7 +19,7 @@ data class BotRun(
   @Id
   @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
-  @Column(updatable = false, nullable = false, columnDefinition = "BINARY(16)")
+  @Column(updatable = false, nullable = false)
   val id: UUID? = null,
 
   @Column(name = "date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", updatable = false)

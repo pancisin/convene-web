@@ -3,9 +3,9 @@ package com.pancisin.bookster.services
 import java.math.BigDecimal
 import java.util.*
 
-import com.pancisin.api.facebookapi.api.FacebookApi
-import com.pancisin.api.facebookapi.model.Event
-import com.pancisin.api.facebookapi.utils.Reading
+// import com.pancisin.api.facebookapi.api.FacebookApi
+// import com.pancisin.api.facebookapi.model.Event
+// import com.pancisin.api.facebookapi.utils.Reading
 import com.pancisin.bookster.model.Activity
 import com.pancisin.bookster.model.Media
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,66 +42,77 @@ class EventBotService {
 
   @Scheduled(cron = "0 0 6 * * *")
   fun run(): List<BotRun>? {
-    val bots = eventBotRepository.findAll()
-    val runs: MutableList<BotRun> = ArrayList()
+    // val bots = eventBotRepository.findAll()
+    // val runs: MutableList<BotRun> = ArrayList()
 
-    val api = FacebookApi.create()
-    bots.forEach { if (it.active) runs.add(run(it, api)) }
+    // val api = FacebookApi.create()
+    // bots.forEach { if (it.active) runs.add(run(it, api)) }
 
-    return botRunRepository.save(runs)
+    // return botRunRepository.save(runs)
+
+    throw UnsupportedOperationException("Not implemented!")
   }
 
   fun run(bot: EventBot): BotRun {
-    val api = FacebookApi.create()
-    return botRunRepository.save(this.run(bot, api))
-  }
+    // val api = FacebookApi.create()
+    // return botRunRepository.save(this.run(bot, api))
+    
+    throw UnsupportedOperationException("Not implemented!")
+}
 
-  private fun run(bot: EventBot, api: FacebookApi): BotRun {
-    var savedEventsCount = 0
-    val facebookId = bot.fbPageId
+  // private fun run(
+  //   bot: EventBot, 
+  //   api: FacebookApi
+  //   ): BotRun {
+  //   var savedEventsCount = 0
+  //   val facebookId = bot.fbPageId
 
-    facebookId?.let {
-      api.getEvents(facebookId, Reading().fields(eventFields).since(Date())).execute().let { response ->
-        if (response.isSuccessful && response.body() != null) {
-          response.body()?.data?.map(this::buildEvent)?.forEach {
-            try {
-              it.page = bot.page
-              eventRepository.save(it)
+  //   facebookId?.let {
+  //     api.getEvents(facebookId, Reading().fields(eventFields).since(Date())).execute().let { response ->
+  //       if (response.isSuccessful && response.body() != null) {
+  //         response.body()?.data?.map(this::buildEvent)?.forEach {
+  //           try {
+  //             it.page = bot.page
+  //             eventRepository.save(it)
 
-              activityFeedService.publishActivity(Activity(
-                page = it.page,
-                type = ActivityType.CREATE_EVENT,
-                objectType = ObjectType.EVENT,
-                objectId = it.id.toString()
-              ))
+  //             activityFeedService.publishActivity(Activity(
+  //               page = it.page,
+  //               type = ActivityType.CREATE_EVENT,
+  //               objectType = ObjectType.EVENT,
+  //               objectId = it.id.toString()
+  //             ))
 
-              savedEventsCount++
-            } catch (ex: Exception) {
-            }
-          }
-        }
-      }
-    }
+  //             savedEventsCount++
+  //           } catch (ex: Exception) {
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
 
-    return BotRun(bot, BotRunState.SUCCESS).apply { dataCount = savedEventsCount }
-  }
+  //   return BotRun(bot, BotRunState.SUCCESS).apply { dataCount = savedEventsCount }
+  // }
 
-  private fun buildEvent(ev: Event) = com.pancisin.bookster.model.Event().apply {
-    name = ev.name;
-    summary = ev.description;
-    facebookId = ev.id;
-    visibility = Visibility.PUBLIC;
-    state = PageState.PUBLISHED
-    date = ev.startTime
+  private fun buildEvent(
+    // ev: Event
+    ) = com.pancisin.bookster.model.Event().apply {
+    // name = ev.name;
+    // summary = ev.description;
+    // facebookId = ev.id;
+    // visibility = Visibility.PUBLIC;
+    // state = PageState.PUBLISHED
+    // date = ev.startTime
 
-    ev.cover?.let {
-      poster = Media(it.source ?: "")
-    }
+    // ev.cover?.let {
+    //   poster = Media(it.source ?: "")
+    // }
 
-    ev.place?.location?.let {
-      latitude = BigDecimal.valueOf(it.latitude ?: 0.0)
-      longitude = BigDecimal.valueOf(it.longitude ?: 0.0)
-    }
+    // ev.place?.location?.let {
+    //   latitude = BigDecimal.valueOf(it.latitude ?: 0.0)
+    //   longitude = BigDecimal.valueOf(it.longitude ?: 0.0)
+    // }
+
+    throw UnsupportedOperationException("Not implemented!")
   }
 }
 

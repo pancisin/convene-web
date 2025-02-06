@@ -6,7 +6,6 @@
   <groupId>com.pancisin</groupId>
   <artifactId>bookster</artifactId>
   <version>0.7.0</version>
-  <packaging>war</packaging>
 
   <name>bookster</name>
   <description>Booking web application with rest API providing simple management of small and middle conferences or events.</description>
@@ -22,7 +21,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <kotlin.version>1.2.31</kotlin.version>
+    <kotlin.version>1.9.25</kotlin.version>
     <application.version.number>${version}</application.version.number>
   </properties>
 
@@ -74,10 +73,9 @@
       <artifactId>hibernate-search-orm</artifactId>
       <version>5.6.1.Final</version>
     </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
+  <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
@@ -99,27 +97,22 @@
       <artifactId>slugify</artifactId>
       <version>2.2</version>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>com.paylane.client</groupId>
       <artifactId>paylane-java-client</artifactId>
       <version>LATEST</version>
-    </dependency>
-    <dependency>
+    </dependency> -->
+    <!-- <dependency>
       <groupId>com.pancisin.api</groupId>
       <artifactId>facebook-api</artifactId>
       <version>LATEST</version>
-    </dependency>
-    <dependency>
+    </dependency> -->
+    <!-- <dependency>
       <groupId>com.pancisin.api</groupId>
       <artifactId>data-parser</artifactId>
       <version>LATEST</version>
-    </dependency>
+    </dependency> -->
 
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jre8</artifactId>
-      <version>${kotlin.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
@@ -135,6 +128,12 @@
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.squareup.retrofit2</groupId>
+      <artifactId>retrofit</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -185,46 +184,6 @@
           </dependency>
         </dependencies>
       </plugin>
-
-      <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>0.0.27</version>
-
-        <executions>
-          <execution>
-            <id>install node and npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <nodeVersion>v6.10.0</nodeVersion>
-              <npmVersion>4.4.4</npmVersion>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
-          </execution>
-
-          <execution>
-            <id>npm run build</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>run build</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

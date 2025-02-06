@@ -42,9 +42,9 @@ data class Address(
 	var longitude: BigDecimal? = null
 ) {
 
-	@JsonIgnore
-	fun getPaylaneAddress() : com.paylane.client.api.models.Address {
-		return com.paylane.client.api.models.Address( "${this.street} ${this.number}", this.city, this.state,
-				this.zip, "SK");
-	}
+	// @JsonIgnore
+	// fun getPaylaneAddress() : com.paylane.client.api.models.Address {
+	// 	return com.paylane.client.api.models.Address( "${this.street} ${this.number}", this.city, this.state,
+	// 			this.zip, "SK");
+	// }
 }

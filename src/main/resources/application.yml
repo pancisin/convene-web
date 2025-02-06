@@ -6,8 +6,8 @@ spring:
   application:
     name: bookster
   datasource:
-    url: jdbc:mysql://localhost:3306/bookster_db?characterEncoding=UTF-8
-    driver-class-name: com.mysql.jdbc.Driver
+    # url: jdbc:mysql://localhost:3306/bookster_db?characterEncoding=UTF-8
+    # driver-class-name: com.mysql.jdbc.Driver
     sql-script-encoding: UTF-8
   jpa:
     hibernate:
@@ -22,7 +22,7 @@ spring:
           validation:
             mode: none
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 jwt:
   header: Authorization
   secret: 4gB5UWoHNiJg47PE8J44ke6Pn728UZXi
@@ -67,8 +67,9 @@ mailing:
 spring:
   profiles: production
   datasource:
-    username: bookster_db
-    password: FMDg3bjHvBg87Oxw
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     properties:
       hibernate:
@@ -79,7 +80,7 @@ spring:
   mail:
     host: localhost
 server:
-  port: 8080
+  port: ${PORT}
   context-path: /bookster
 storage:
   path: /uploads/bookster/

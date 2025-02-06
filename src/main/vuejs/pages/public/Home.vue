@@ -1,22 +1,23 @@
 <template>
-  <dashboard v-if="authenticated">
-  </dashboard>
-  <landing v-else>
-  </landing>
+  <!-- <dashboard v-if="authenticated">
+  </dashboard> -->
+  <!-- <landing v-else> -->
+  <landing> </landing>
 </template>
 
 <script>
-import Dashboard from './Dashboard.vue';
-import Landing from './Landing.vue';
-import { mapGetters } from 'vuex';
+// import Dashboard from './Dashboard.vue';
+import Landing from "./Landing.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    Dashboard, Landing
+    // Dashboard,dsadsa
+    Landing,
   },
   computed: {
-    ...mapGetters(['authenticated'])
-  }
+    ...mapGetters(["authenticated"]),
+  },
 };
 </script>
