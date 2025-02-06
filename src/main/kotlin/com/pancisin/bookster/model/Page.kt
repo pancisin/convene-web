@@ -65,7 +65,7 @@ class Page() : IAuthor {
   @GeneratorType(type = UniqueSlugGenerator::class)
   var slug: String? = null
 
-  @Lob
+  // @Lob
   @Column
   var summary: String? = null
 

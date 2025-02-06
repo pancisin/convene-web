@@ -116,7 +116,7 @@ class User() : UserDetails, Principal {
   var profilePictureData: String? = null
 
   @ElementCollection
-  @Lob
+  // @Lob
   @MapKeyColumn(name = "meta_key")
   @Column(name = "meta_value")
   @CollectionTable(name = "users_metadata")

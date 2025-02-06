@@ -81,7 +81,7 @@ spring:
     host: localhost
 server:
   port: ${PORT}
-  context-path: /bookster
+  # context-path: /bookster
 storage:
   path: /uploads/bookster/
 mailing:

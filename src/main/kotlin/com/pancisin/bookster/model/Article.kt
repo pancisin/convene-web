@@ -24,7 +24,8 @@ data class Article(
   @Column
   var title: String? = null,
 
-  @Lob @Column
+  // @Lob 
+  @Column
   var content: String? = null,
 
   @OneToOne(optional = true, cascade = arrayOf(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH), orphanRemoval = true)

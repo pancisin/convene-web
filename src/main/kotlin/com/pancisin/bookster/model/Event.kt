@@ -78,7 +78,7 @@ class Event() {
   )
   var page: Page? = null
 
-  @Lob
+  // @Lob
   @Column
   var summary: String? = null
 
