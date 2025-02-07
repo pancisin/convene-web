@@ -10,6 +10,8 @@ services:
       POSTGRES_DB: convene_db
       POSTGRES_USER: convene_db
       POSTGRES_PASSWORD: Czhk4oZA7IGatlG7
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
   backend:
@@ -25,6 +27,10 @@ services:
       - DB_PASSWORD=Czhk4oZA7IGatlG7
     links:
       - db
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src/main/**/*
   web:
     build:
       context: .

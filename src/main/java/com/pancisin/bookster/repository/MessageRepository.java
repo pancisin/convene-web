@@ -28,7 +28,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 
 //	@Query("SELECT new com.pancisin.bookster.model.Conversation(user, message) FROM Message message, User user WHERE user.id = message.recipientId AND message.id IN (SELECT message.id as id, max(message.created) FROM Message message WHERE message.recipientType = 'USER' AND (message.sender.id = :user_id OR message.recipientId = :user_id) GROUP BY id)")
-	@Query("SELECT new com.pancisin.bookster.model.Conversation(user, message) FROM Message message, User user WHERE user.id = message.recipientId AND user.id != :user_id AND message.recipientType = 'USER' AND (message.sender.id = :user_id OR message.recipientId = :user_id) GROUP BY user")
+	@Query("SELECT new com.pancisin.bookster.model.Conversation(user, message) FROM Message message, User user WHERE user.id = message.recipientId AND user.id != :user_id AND message.recipientType = 'USER' AND (message.sender.id = :user_id OR message.recipientId = :user_id) GROUP BY user, message")
 	public List<Conversation> getConversations(@Param("user_id") Long user_id);
 
 }

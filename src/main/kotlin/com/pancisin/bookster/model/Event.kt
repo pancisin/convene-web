@@ -105,9 +105,9 @@ class Event() {
   @OneToOne
   var place: Place? = null
 
-  val startsAt: Time?
-    @JsonProperty(required = false)
-    get() = this.programme?.minBy { p -> p.time!!.time }?.time
+//  val startsAt: Time?
+//    @JsonProperty(required = false)
+//    get() = this.programme?.minBy { p -> p.time!!.time }?.time
 
   @JsonIgnore
   @OneToMany(mappedBy = "event")

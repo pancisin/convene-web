@@ -34,10 +34,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 	public Page<Event> getByPageRange(@Param("page_id") Long page_id, Pageable pageable,
 			@Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("userId") Long userId);
 
-	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.administrators administrator WHERE user.id = :userId AND event.date >= CURDATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
+	@Query("SELECT DISTINCT event FROM Event event JOIN event.attendees user JOIN event.page page JOIN page.administrators administrator WHERE user.id = :userId AND event.date >= CURRENT_DATE() AND (event.state = 'PUBLISHED' OR event.owner = :userId OR administrator.user.id = :userId) ORDER BY event.date ASC")
 	public List<Event> getAttending(@Param("userId") Long userId);
 
-	@Query("SELECT event FROM Event event WHERE DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.state = 'PUBLISHED' AND event.featured = 1")
+	@Query("SELECT event FROM Event event WHERE DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.state = 'PUBLISHED' AND event.featured IS TRUE")
 	public Page<Event> getFeaturedEvents(@Param("fromDate") Calendar fromDate, @Param("toDate") Calendar toDate, Pageable pageable);
 	// CHECKED LINE
 
@@ -49,28 +49,30 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 			Pageable pageable);
 
 	@Query("SELECT event FROM Event event WHERE (111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(event.latitude)) * COS(RADIANS(event.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(event.latitude))))) < :distance")
-	public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
+  public Page<Event> getEventsByDistance(@Param("latitude") BigDecimal latitude,
 			@Param("longitude") BigDecimal longitude, @Param("distance") Double distance, Pageable pageable);
 
-  @Query("SELECT event FROM Event event WHERE ((111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(event.latitude)) * COS(RADIANS(event.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(event.latitude))))) < :distance) AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate)")
+//  @Query("SELECT event FROM Event event WHERE ((111.045 * DEGREES(ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(event.latitude)) * COS(RADIANS(event.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(event.latitude))))) < :distance) AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate)")
+  @Query("SELECT event FROM Event event WHERE DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate)")
   public Page<Event> getEventsByDistanceFrom(
-    @Param("latitude") BigDecimal latitude,
-    @Param("longitude") BigDecimal longitude,
-    @Param("distance") Double distance,
+//    @Param("latitude") BigDecimal latitude,
+//    @Param("longitude") BigDecimal longitude,
+//    @Param("distance") Double distance,
     @Param("fromDate") Calendar fromDate,
     @Param("toDate") Calendar toDate,
     Pageable pageable);
 
-	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.state = 'PUBLISHED' AND event.page IS NULL AND DATE(event.date) >= CURDATE()")
+  //CURRENT_DATE
+	@Query("SELECT event FROM Event event JOIN event.owner user WHERE user.id = :user_id AND event.state = 'PUBLISHED' AND event.page IS NULL AND DATE(event.date) >= CURRENT_DATE()")
 	public Page<Event> getByUser(@Param("user_id") Long user_id, Pageable pageable);
 
-	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id AND DATE(event.date) >= CURDATE()")
+	@Query("SELECT event FROM Event event JOIN event.page page WHERE page.id = :page_id AND DATE(event.date) >= CURRENT_DATE()")
 	public Page<Event> getByPage(@Param("page_id") Long page_id, Pageable pageable);
 
 	@Query("SELECT event FROM Event event WHERE event.page.id = :conference_id")
 	public Page<Event> getByConference(@Param("conference_id") Long conference_id, Pageable pageable);
 
-	@Query("SELECT event FROM Event event JOIN event.page page WHERE event.id != :event_id AND page.id = (SELECT event.page.id FROM Event event WHERE event.id = :event_id) AND DATE(event.date) >= CURDATE()")
+	@Query("SELECT event FROM Event event JOIN event.page page WHERE event.id != :event_id AND page.id = (SELECT event.page.id FROM Event event WHERE event.id = :event_id) AND DATE(event.date) >= CURRENT_DATE()")
 	public Page<Event> getRelated(@Param("event_id") Long event_id, Pageable pageable);
 
 	@Query("SELECT event FROM Event event WHERE event.owner.id = :user_id AND DATE(event.date) >= DATE(:fromDate) AND DATE(event.date) <= DATE(:toDate) AND event.page IS NULL")

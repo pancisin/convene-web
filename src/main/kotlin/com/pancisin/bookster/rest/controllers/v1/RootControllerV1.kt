@@ -181,7 +181,8 @@ class RootControllerV1 {
     val fromDate = Calendar.getInstance().apply { timeInMillis = fromDateTimestamp }
     val toDate = Calendar.getInstance().apply { timeInMillis = toDateTimestamp }
 
-    return ResponseEntity.ok(eventRepository.getEventsByDistanceFrom(lat, lng, distance, fromDate, toDate, PageRequest(page, size, Sort(Direction.ASC, "date"))))
+//    return ResponseEntity.ok(eventRepository.getEventsByDistanceFrom(lat, lng, distance, fromDate, toDate, PageRequest(page, size, Sort(Direction.ASC, "date"))))
+    return ResponseEntity.ok(eventRepository.getEventsByDistanceFrom(fromDate, toDate, PageRequest(page, size, Sort(Direction.ASC, "date"))))
   }
 
   @PrivacyRestricted(constraint = "profile")
